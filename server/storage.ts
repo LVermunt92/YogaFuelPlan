@@ -10,6 +10,8 @@ import {
   type InsertMeal,
   type MealPlanWithMeals
 } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
@@ -139,4 +141,68 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+// Database storage implementation
+export class DatabaseStorage implements IStorage {
+  async getUser(id: number): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user || undefined;
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const [user] = await db
+      .insert(users)
+      .values(insertUser)
+      .returning();
+    return user;
+  }
+
+  async createMealPlan(insertMealPlan: InsertMealPlan): Promise<MealPlan> {
+    const [mealPlan] = await db
+      .insert(mealPlans)
+      .values(insertMealPlan)
+      .returning();
+    return mealPlan;
+  }
+
+  async getMealPlans(): Promise<MealPlan[]> {
+    return await db.select().from(mealPlans);
+  }
+
+  async getMealPlanWithMeals(id: number): Promise<MealPlanWithMeals | undefined> {
+    const [mealPlan] = await db.select().from(mealPlans).where(eq(mealPlans.id, id));
+    if (!mealPlan) return undefined;
+
+    const mealList = await db.select().from(meals).where(eq(meals.mealPlanId, id));
+    
+    return {
+      ...mealPlan,
+      meals: mealList
+    };
+  }
+
+  async createMeals(mealPlanId: number, insertMeals: InsertMeal[]): Promise<Meal[]> {
+    const mealsWithPlanId = insertMeals.map(meal => ({
+      ...meal,
+      mealPlanId
+    }));
+    
+    return await db
+      .insert(meals)
+      .values(mealsWithPlanId)
+      .returning();
+  }
+
+  async updateMealPlanSyncStatus(id: number, synced: boolean): Promise<void> {
+    await db
+      .update(mealPlans)
+      .set({ notionSynced: synced })
+      .where(eq(mealPlans.id, id));
+  }
+}
+
+export const storage = new DatabaseStorage();

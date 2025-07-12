@@ -33,15 +33,16 @@ Preferred communication style: Simple, everyday language.
 ## Key Components
 
 ### Meal Generation System
-- **Nutrition Database**: Pre-defined meal options with protein content and prep times
+- **Nutrition Database**: Pre-defined meal options with protein content, prep times, and ingredient lists
 - **Activity-Based Targeting**: Calculates protein targets based on user activity level (high/low)
 - **Meal Selection Algorithm**: Distributes protein across breakfast, lunch, and dinner with variety rotation
 - **Weekly Planning**: Generates 7-day meal plans with built-in meal variety
+- **Shopping List Generator**: Creates categorized ingredient lists from meal plans
 
 ### Data Storage Solutions
-- **Primary Storage**: PostgreSQL database via Neon serverless
+- **Primary Storage**: PostgreSQL database via Neon serverless (migrated from in-memory)
 - **ORM**: Drizzle for type-safe database operations
-- **Fallback Storage**: In-memory storage implementation for development
+- **Database Layer**: DatabaseStorage class implementing IStorage interface
 - **Migration System**: Drizzle Kit for database schema migrations
 
 ### External Integrations
@@ -55,7 +56,8 @@ Preferred communication style: Simple, everyday language.
 2. **Meal Generation**: Server calculates protein targets and selects appropriate meals
 3. **Storage**: Generated meal plans and meals are saved to PostgreSQL
 4. **Client Display**: React Query fetches and displays meal plans with real-time updates
-5. **Notion Sync**: Optional synchronization to user's Notion workspace
+5. **Shopping List**: Users can generate categorized shopping lists from meal plans
+6. **Notion Sync**: Optional synchronization to user's Notion workspace
 
 ## External Dependencies
 
