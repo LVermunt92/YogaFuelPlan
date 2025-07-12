@@ -1,0 +1,92 @@
+# Meal Planner Application
+
+## Overview
+
+This is a full-stack meal planning application built with React, Express, and PostgreSQL. The application helps users generate weekly meal plans based on their activity level and dietary preferences, with a focus on vegetarian, gluten-free, and lactose-free options. It includes integration with Notion for syncing meal plans.
+
+## User Preferences
+
+Preferred communication style: Simple, everyday language.
+
+## System Architecture
+
+### Frontend Architecture
+- **Framework**: React 18 with TypeScript
+- **Routing**: Wouter for client-side routing
+- **State Management**: TanStack React Query for server state management
+- **UI Components**: Radix UI primitives with shadcn/ui design system
+- **Styling**: Tailwind CSS with CSS variables for theming
+- **Build Tool**: Vite for development and building
+
+### Backend Architecture
+- **Framework**: Express.js with TypeScript
+- **Database**: PostgreSQL with Drizzle ORM
+- **Session Management**: Express sessions with PostgreSQL store
+- **API Design**: RESTful endpoints under `/api` prefix
+- **External Integration**: Notion API for meal plan synchronization
+
+### Database Schema
+- **Users**: Basic user information with weight, activity level, and protein targets
+- **Meal Plans**: Weekly meal plans with metadata and sync status
+- **Meals**: Individual meals linked to meal plans with nutritional information
+
+## Key Components
+
+### Meal Generation System
+- **Nutrition Database**: Pre-defined meal options with protein content and prep times
+- **Activity-Based Targeting**: Calculates protein targets based on user activity level (high/low)
+- **Meal Selection Algorithm**: Distributes protein across breakfast, lunch, and dinner with variety rotation
+- **Weekly Planning**: Generates 7-day meal plans with built-in meal variety
+
+### Data Storage Solutions
+- **Primary Storage**: PostgreSQL database via Neon serverless
+- **ORM**: Drizzle for type-safe database operations
+- **Fallback Storage**: In-memory storage implementation for development
+- **Migration System**: Drizzle Kit for database schema migrations
+
+### External Integrations
+- **Notion Integration**: Syncs meal plans to Notion databases
+- **Database Management**: Automatically creates Notion databases if they don't exist
+- **Page Extraction**: Parses Notion page URLs to extract page IDs
+
+## Data Flow
+
+1. **User Input**: User selects activity level and week start date
+2. **Meal Generation**: Server calculates protein targets and selects appropriate meals
+3. **Storage**: Generated meal plans and meals are saved to PostgreSQL
+4. **Client Display**: React Query fetches and displays meal plans with real-time updates
+5. **Notion Sync**: Optional synchronization to user's Notion workspace
+
+## External Dependencies
+
+### Core Dependencies
+- **@neondatabase/serverless**: PostgreSQL database connection
+- **@notionhq/client**: Notion API integration
+- **drizzle-orm**: Type-safe ORM for database operations
+- **@tanstack/react-query**: Server state management
+- **@radix-ui/***: Headless UI components
+- **tailwindcss**: Utility-first CSS framework
+
+### Development Tools
+- **tsx**: TypeScript execution for development
+- **esbuild**: Fast JavaScript bundler for production
+- **drizzle-kit**: Database schema management
+
+## Deployment Strategy
+
+### Build Process
+- **Frontend**: Vite builds React application to `dist/public`
+- **Backend**: esbuild bundles Express server to `dist/index.js`
+- **Database**: Drizzle migrations applied via `db:push` command
+
+### Environment Variables
+- **DATABASE_URL**: PostgreSQL connection string (required)
+- **NOTION_INTEGRATION_SECRET**: Notion API authentication token
+- **NOTION_PAGE_URL**: Target Notion page for meal plan synchronization
+
+### Production Configuration
+- **Server**: Express serves static files in production mode
+- **Database**: Uses PostgreSQL dialect with connection pooling
+- **Error Handling**: Comprehensive error middleware with proper status codes
+
+The application is designed to be easily deployable on platforms like Replit, with automatic detection of development vs. production environments and appropriate configuration for each.
