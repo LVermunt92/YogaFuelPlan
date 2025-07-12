@@ -38,6 +38,8 @@ interface ShoppingListItem {
   ingredient: string;
   category: string;
   count: number;
+  totalAmount: string;
+  unit: string;
 }
 
 interface ShoppingListResponse {
@@ -399,13 +401,18 @@ export default function MealPlanner() {
                               {shoppingListData.shoppingList
                                 .filter(item => item.category === category)
                                 .map((item, index) => (
-                                  <div key={index} className="flex justify-between items-center py-1 px-2 hover:bg-slate-50 rounded">
-                                    <span className="text-sm text-slate-900">{item.ingredient}</span>
-                                    {item.count > 1 && (
-                                      <Badge variant="outline" className="text-xs">
-                                        {item.count}x
+                                  <div key={index} className="flex justify-between items-center py-2 px-2 hover:bg-slate-50 rounded">
+                                    <span className="text-sm text-slate-900 flex-1">{item.ingredient}</span>
+                                    <div className="flex items-center gap-2">
+                                      <Badge variant="secondary" className="text-xs font-medium">
+                                        {item.totalAmount}
                                       </Badge>
-                                    )}
+                                      {item.count > 1 && (
+                                        <Badge variant="outline" className="text-xs">
+                                          {item.count}x
+                                        </Badge>
+                                      )}
+                                    </div>
                                   </div>
                                 ))}
                             </div>

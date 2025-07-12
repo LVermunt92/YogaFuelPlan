@@ -182,6 +182,8 @@ export interface ShoppingListItem {
   ingredient: string;
   category: string;
   count: number;
+  totalAmount: string;
+  unit: string;
 }
 
 export function generateShoppingList(meals: { foodDescription: string }[]): ShoppingListItem[] {
@@ -285,15 +287,116 @@ export function generateShoppingList(meals: { foodDescription: string }[]): Shop
     'red wine': 'Pantry Items'
   };
 
-  // Create shopping list with categories
+  // Ingredient portions mapping
+  const ingredientPortions: Record<string, { amount: number; unit: string }> = {
+    // Proteins
+    'extra firm tofu': { amount: 400, unit: 'g' },
+    'tempeh': { amount: 240, unit: 'g' },
+    'red lentils': { amount: 500, unit: 'g' },
+    'chickpeas': { amount: 800, unit: 'g' },
+    'black beans': { amount: 800, unit: 'g' },
+    'white beans': { amount: 800, unit: 'g' },
+    'edamame': { amount: 500, unit: 'g' },
+    'pea protein powder': { amount: 1000, unit: 'g' },
+    'vanilla protein powder': { amount: 1000, unit: 'g' },
+    'hummus': { amount: 400, unit: 'g' },
+    
+    // Grains & Starches
+    'quinoa': { amount: 1000, unit: 'g' },
+    'brown rice': { amount: 1000, unit: 'g' },
+    'rolled oats': { amount: 1000, unit: 'g' },
+    'gluten-free pasta': { amount: 500, unit: 'g' },
+    'gluten-free tortilla': { amount: 8, unit: 'pieces' },
+    'chickpea flour': { amount: 500, unit: 'g' },
+    'sweet potato': { amount: 1000, unit: 'g' },
+    
+    // Nuts & Seeds
+    'almond butter': { amount: 500, unit: 'g' },
+    'tahini': { amount: 400, unit: 'g' },
+    'chia seeds': { amount: 250, unit: 'g' },
+    'hemp hearts': { amount: 250, unit: 'g' },
+    'hemp seeds': { amount: 250, unit: 'g' },
+    'flax seeds': { amount: 250, unit: 'g' },
+    'mixed nuts': { amount: 500, unit: 'g' },
+    'walnuts': { amount: 500, unit: 'g' },
+    'sunflower seeds': { amount: 250, unit: 'g' },
+    
+    // Vegetables
+    'fresh spinach': { amount: 300, unit: 'g' },
+    'spinach': { amount: 300, unit: 'g' },
+    'bell peppers': { amount: 200, unit: 'g' },
+    'onions': { amount: 1000, unit: 'g' },
+    'red onion': { amount: 500, unit: 'g' },
+    'garlic': { amount: 100, unit: 'g' },
+    'ginger': { amount: 100, unit: 'g' },
+    'carrots': { amount: 500, unit: 'g' },
+    'celery': { amount: 500, unit: 'g' },
+    'cucumber': { amount: 400, unit: 'g' },
+    'cherry tomatoes': { amount: 500, unit: 'g' },
+    'tomatoes': { amount: 500, unit: 'g' },
+    'crushed tomatoes': { amount: 800, unit: 'g' },
+    'sun-dried tomatoes': { amount: 200, unit: 'g' },
+    'broccoli': { amount: 500, unit: 'g' },
+    'snap peas': { amount: 300, unit: 'g' },
+    'brussels sprouts': { amount: 500, unit: 'g' },
+    'zucchini': { amount: 500, unit: 'g' },
+    'kale': { amount: 300, unit: 'g' },
+    'mixed greens': { amount: 200, unit: 'g' },
+    'lettuce': { amount: 200, unit: 'g' },
+    'purple cabbage': { amount: 500, unit: 'g' },
+    'beets': { amount: 500, unit: 'g' },
+    'mushrooms': { amount: 300, unit: 'g' },
+    'sprouts': { amount: 100, unit: 'g' },
+    
+    // Fruits
+    'banana': { amount: 6, unit: 'pieces' },
+    'avocado': { amount: 4, unit: 'pieces' },
+    'lemon': { amount: 4, unit: 'pieces' },
+    'frozen berries': { amount: 500, unit: 'g' },
+    
+    // Dairy Alternatives
+    'almond milk': { amount: 2000, unit: 'ml' },
+    'coconut milk': { amount: 400, unit: 'ml' },
+    
+    // Pantry Items
+    'olive oil': { amount: 500, unit: 'ml' },
+    'sesame oil': { amount: 250, unit: 'ml' },
+    'balsamic vinegar': { amount: 250, unit: 'ml' },
+    'soy sauce': { amount: 250, unit: 'ml' },
+    'nutritional yeast': { amount: 200, unit: 'g' },
+    'maple syrup': { amount: 250, unit: 'ml' },
+    'vanilla extract': { amount: 100, unit: 'ml' },
+    'curry powder': { amount: 50, unit: 'g' },
+    'turmeric': { amount: 50, unit: 'g' },
+    'cumin': { amount: 50, unit: 'g' },
+    'cinnamon': { amount: 50, unit: 'g' },
+    'herbs': { amount: 50, unit: 'g' },
+    'vegetable broth': { amount: 1000, unit: 'ml' },
+    'red wine': { amount: 750, unit: 'ml' },
+    
+    // Other
+    'cilantro': { amount: 50, unit: 'g' },
+    'roasted chickpeas': { amount: 200, unit: 'g' }
+  };
+
+  // Create shopping list with categories and portions
   const shoppingList: ShoppingListItem[] = [];
   
   ingredientCount.forEach((count, ingredient) => {
     const category = ingredientCategories[ingredient] || 'Other';
+    const portion = ingredientPortions[ingredient] || { amount: 100, unit: 'g' };
+    
+    const totalAmount = portion.amount * count;
+    const displayAmount = portion.unit === 'pieces' ? 
+      `${totalAmount} ${portion.unit}` : 
+      formatAmount(totalAmount, portion.unit);
+    
     shoppingList.push({
       ingredient,
       category,
-      count
+      count,
+      totalAmount: displayAmount,
+      unit: portion.unit
     });
   });
 
@@ -304,4 +407,23 @@ export function generateShoppingList(meals: { foodDescription: string }[]): Shop
     }
     return a.ingredient.localeCompare(b.ingredient);
   });
+}
+
+// Helper function to format amounts nicely
+function formatAmount(amount: number, unit: string): string {
+  if (unit === 'ml') {
+    if (amount >= 1000) {
+      return `${(amount / 1000).toFixed(1)} L`;
+    }
+    return `${amount} ml`;
+  }
+  
+  if (unit === 'g') {
+    if (amount >= 1000) {
+      return `${(amount / 1000).toFixed(1)} kg`;
+    }
+    return `${amount} g`;
+  }
+  
+  return `${amount} ${unit}`;
 }
