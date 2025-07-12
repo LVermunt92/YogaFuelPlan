@@ -212,6 +212,68 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get recipe for a meal
+  app.get("/api/meals/:mealId/recipe", async (req, res) => {
+    try {
+      const mealId = parseInt(req.params.mealId);
+      const mealPlan = await storage.getMealPlanWithMeals(mealId);
+      
+      if (!mealPlan) {
+        return res.status(404).json({ message: "Meal plan not found" });
+      }
+
+      // Find the specific meal by searching through meal plans
+      let targetMeal = null;
+      for (const meal of mealPlan.meals) {
+        if (meal.id === mealId) {
+          targetMeal = meal;
+          break;
+        }
+      }
+
+      if (!targetMeal) {
+        // Try finding in all meal plans
+        const allMealPlans = await storage.getMealPlans();
+        for (const plan of allMealPlans) {
+          const planWithMeals = await storage.getMealPlanWithMeals(plan.id);
+          if (planWithMeals) {
+            for (const meal of planWithMeals.meals) {
+              if (meal.id === mealId) {
+                targetMeal = meal;
+                break;
+              }
+            }
+          }
+          if (targetMeal) break;
+        }
+      }
+
+      if (!targetMeal) {
+        return res.status(404).json({ message: "Meal not found" });
+      }
+
+      // Find the recipe from the meal database
+      const { MEAL_DATABASE } = await import("./nutrition");
+      const mealOption = MEAL_DATABASE.find(option => 
+        option.name === targetMeal.foodDescription
+      );
+
+      if (!mealOption || !mealOption.recipe) {
+        return res.status(404).json({ message: "Recipe not found for this meal" });
+      }
+
+      res.json({
+        meal: targetMeal,
+        recipe: mealOption.recipe,
+        ingredients: mealOption.ingredients,
+        tags: mealOption.tags
+      });
+    } catch (error) {
+      console.error("Error getting meal recipe:", error);
+      res.status(500).json({ message: "Failed to get meal recipe" });
+    }
+  });
+
   // Generate shopping list for meal plan
   app.get("/api/meal-plans/:id/shopping-list", async (req, res) => {
     try {

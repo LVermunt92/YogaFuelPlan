@@ -9,7 +9,8 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Calendar, Clock, Target, Upload, Eye, Download, Share, CheckCircle, Utensils, Activity, ShoppingCart } from "lucide-react";
+import { Calendar, Clock, Target, Upload, Eye, Download, Share, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
 interface MealPlan {
   id: number;
@@ -50,6 +51,17 @@ interface ShoppingListResponse {
   categories: string[];
 }
 
+interface RecipeResponse {
+  meal: Meal;
+  recipe: {
+    instructions: string[];
+    tips?: string[];
+    notes?: string;
+  };
+  ingredients: string[];
+  tags: string[];
+}
+
 export default function MealPlanner() {
   const [activityLevel, setActivityLevel] = useState<"high" | "low">("high");
   const [weekStart, setWeekStart] = useState(() => {
@@ -60,6 +72,7 @@ export default function MealPlanner() {
   });
   const [selectedMealPlan, setSelectedMealPlan] = useState<number | null>(null);
   const [showShoppingList, setShowShoppingList] = useState(false);
+  const [selectedMealId, setSelectedMealId] = useState<number | null>(null);
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -85,6 +98,12 @@ export default function MealPlanner() {
   const { data: shoppingListData, isLoading: loadingShoppingList } = useQuery<ShoppingListResponse>({
     queryKey: ['/api/meal-plans', selectedMealPlan, 'shopping-list'],
     enabled: !!selectedMealPlan && showShoppingList,
+  });
+
+  // Fetch recipe for selected meal
+  const { data: recipeData, isLoading: loadingRecipe } = useQuery<RecipeResponse>({
+    queryKey: ['/api/meals', selectedMealId, 'recipe'],
+    enabled: !!selectedMealId,
   });
 
   // Generate meal plan mutation
@@ -486,7 +505,13 @@ export default function MealPlanner() {
                                   {meal.mealType}
                                 </td>
                                 <td className="px-6 py-4 text-sm text-slate-900">
-                                  {meal.foodDescription}
+                                  <button
+                                    onClick={() => setSelectedMealId(meal.id)}
+                                    className="text-left hover:text-emerald-600 hover:underline cursor-pointer flex items-center gap-2"
+                                  >
+                                    <BookOpen className="w-4 h-4" />
+                                    {meal.foodDescription}
+                                  </button>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
                                   {meal.portion}
@@ -591,6 +616,143 @@ export default function MealPlanner() {
           </Card>
         </div>
       </div>
+
+      {/* Recipe Dialog */}
+      <Dialog open={!!selectedMealId} onOpenChange={() => setSelectedMealId(null)}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <ChefHat className="h-5 w-5 text-emerald-600" />
+              Recipe Details
+            </DialogTitle>
+          </DialogHeader>
+          
+          {loadingRecipe ? (
+            <div className="p-6">
+              <div className="animate-pulse space-y-4">
+                <div className="h-6 bg-slate-200 rounded" />
+                <div className="h-4 bg-slate-200 rounded w-3/4" />
+                <div className="space-y-2">
+                  {[1, 2, 3, 4, 5].map(i => (
+                    <div key={i} className="h-4 bg-slate-200 rounded" />
+                  ))}
+                </div>
+              </div>
+            </div>
+          ) : recipeData ? (
+            <div className="space-y-6">
+              {/* Meal Info */}
+              <div className="bg-slate-50 rounded-lg p-4">
+                <h3 className="font-semibold text-lg text-slate-900 mb-2">
+                  {recipeData.meal.foodDescription}
+                </h3>
+                <div className="grid grid-cols-3 gap-4 text-sm">
+                  <div>
+                    <span className="text-slate-600">Portion:</span>
+                    <p className="font-medium">{recipeData.meal.portion}</p>
+                  </div>
+                  <div>
+                    <span className="text-slate-600">Protein:</span>
+                    <p className="font-medium text-emerald-600">{recipeData.meal.protein}g</p>
+                  </div>
+                  <div>
+                    <span className="text-slate-600">Prep Time:</span>
+                    <p className="font-medium flex items-center gap-1">
+                      <Timer className="w-3 h-3" />
+                      {recipeData.meal.prepTime} min
+                    </p>
+                  </div>
+                </div>
+                
+                {/* Tags */}
+                {recipeData.tags && recipeData.tags.length > 0 && (
+                  <div className="mt-3">
+                    <div className="flex flex-wrap gap-2">
+                      {recipeData.tags.map((tag, index) => (
+                        <Badge key={index} variant="secondary" className="text-xs">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Ingredients */}
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                  <ShoppingCart className="w-4 h-4" />
+                  Ingredients
+                </h4>
+                <div className="grid grid-cols-2 gap-2">
+                  {recipeData.ingredients.map((ingredient, index) => (
+                    <div key={index} className="flex items-center gap-2 text-sm text-slate-700">
+                      <div className="w-2 h-2 bg-emerald-500 rounded-full flex-shrink-0" />
+                      {ingredient}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <Separator />
+
+              {/* Instructions */}
+              <div>
+                <h4 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                  <BookOpen className="w-4 h-4" />
+                  Instructions
+                </h4>
+                <ol className="space-y-3">
+                  {recipeData.recipe.instructions.map((instruction, index) => (
+                    <li key={index} className="flex gap-3">
+                      <span className="flex-shrink-0 w-6 h-6 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-sm font-medium">
+                        {index + 1}
+                      </span>
+                      <p className="text-slate-700 leading-relaxed">{instruction}</p>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+
+              {/* Tips */}
+              {recipeData.recipe.tips && recipeData.recipe.tips.length > 0 && (
+                <>
+                  <Separator />
+                  <div>
+                    <h4 className="font-semibold text-slate-900 mb-3">💡 Tips</h4>
+                    <ul className="space-y-2">
+                      {recipeData.recipe.tips.map((tip, index) => (
+                        <li key={index} className="flex gap-2 text-sm text-slate-600">
+                          <span className="text-emerald-500">•</span>
+                          {tip}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </>
+              )}
+
+              {/* Notes */}
+              {recipeData.recipe.notes && (
+                <>
+                  <Separator />
+                  <div className="bg-blue-50 rounded-lg p-4">
+                    <h4 className="font-semibold text-blue-900 mb-2">📝 Notes</h4>
+                    <p className="text-blue-800 text-sm leading-relaxed">
+                      {recipeData.recipe.notes}
+                    </p>
+                  </div>
+                </>
+              )}
+            </div>
+          ) : (
+            <div className="p-6 text-center text-slate-500">
+              <BookOpen className="mx-auto h-12 w-12 mb-4 opacity-50" />
+              <p>Recipe not available for this meal.</p>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

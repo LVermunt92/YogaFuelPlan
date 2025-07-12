@@ -10,6 +10,11 @@ export interface MealOption {
   category: 'breakfast' | 'lunch' | 'dinner';
   tags: string[];
   ingredients: string[];
+  recipe?: {
+    instructions: string[];
+    tips?: string[];
+    notes?: string;
+  };
 }
 
 // Vegetarian, gluten-free, lactose-free meal database
@@ -21,7 +26,21 @@ export const MEAL_DATABASE: MealOption[] = [
     nutrition: { protein: 24, prepTime: 15 },
     category: "breakfast",
     tags: ["high-protein", "quick", "filling"],
-    ingredients: ["quinoa", "almond butter", "chia seeds", "hemp hearts", "almond milk", "maple syrup", "cinnamon"]
+    ingredients: ["quinoa", "almond butter", "chia seeds", "hemp hearts", "almond milk", "maple syrup", "cinnamon"],
+    recipe: {
+      instructions: [
+        "Rinse 1/2 cup quinoa and cook in 1 cup almond milk with a pinch of cinnamon",
+        "Simmer for 12-15 minutes until quinoa is fluffy and liquid is absorbed",
+        "Stir in 2 tbsp almond butter and 1 tbsp maple syrup",
+        "Top with 1 tbsp chia seeds and 2 tbsp hemp hearts",
+        "Serve warm with extra almond milk if desired"
+      ],
+      tips: [
+        "Cook quinoa in bulk and reheat throughout the week",
+        "Add frozen berries for extra antioxidants"
+      ],
+      notes: "This breakfast provides complete protein and keeps you full for hours"
+    }
   },
   {
     name: "Protein smoothie with pea protein, spinach, banana, almond milk",
@@ -29,7 +48,23 @@ export const MEAL_DATABASE: MealOption[] = [
     nutrition: { protein: 28, prepTime: 10 },
     category: "breakfast",
     tags: ["high-protein", "quick", "refreshing"],
-    ingredients: ["pea protein powder", "fresh spinach", "banana", "almond milk", "frozen berries", "flax seeds"]
+    ingredients: ["pea protein powder", "fresh spinach", "banana", "almond milk", "frozen berries", "flax seeds"],
+    recipe: {
+      instructions: [
+        "Add 1 cup almond milk to blender",
+        "Add 1 scoop (30g) pea protein powder",
+        "Add 2 cups fresh spinach leaves",
+        "Add 1 ripe banana and 1/2 cup frozen berries",
+        "Add 1 tbsp ground flax seeds",
+        "Blend on high for 60-90 seconds until smooth",
+        "Add ice if you prefer it colder and blend again"
+      ],
+      tips: [
+        "Freeze bananas in advance for a thicker smoothie",
+        "Start with liquid ingredients to help blending"
+      ],
+      notes: "Great post-workout option with complete amino acids"
+    }
   },
   {
     name: "Chia pudding with protein powder and nuts",
@@ -37,7 +72,22 @@ export const MEAL_DATABASE: MealOption[] = [
     nutrition: { protein: 32, prepTime: 10 },
     category: "breakfast",
     tags: ["high-protein", "make-ahead", "omega-3"],
-    ingredients: ["chia seeds", "vanilla protein powder", "almond milk", "mixed nuts", "vanilla extract", "maple syrup"]
+    ingredients: ["chia seeds", "vanilla protein powder", "almond milk", "mixed nuts", "vanilla extract", "maple syrup"],
+    recipe: {
+      instructions: [
+        "In a bowl, whisk together 1/4 cup chia seeds and 1 scoop vanilla protein powder",
+        "Gradually add 1 cup almond milk while whisking to prevent clumps",
+        "Add 1 tsp vanilla extract and 2 tbsp maple syrup, whisk well",
+        "Cover and refrigerate for at least 2 hours or overnight",
+        "Stir before serving and top with 1/4 cup mixed nuts",
+        "Divide into portions if meal prepping for the week"
+      ],
+      tips: [
+        "Make 4-5 servings at once for easy breakfasts",
+        "Stir halfway through setting time for better texture"
+      ],
+      notes: "Perfect make-ahead breakfast with omega-3 fatty acids and complete protein"
+    }
   },
   {
     name: "Tofu scramble with nutritional yeast and vegetables",
@@ -63,7 +113,26 @@ export const MEAL_DATABASE: MealOption[] = [
     nutrition: { protein: 42, prepTime: 25 },
     category: "lunch",
     tags: ["high-protein", "fiber", "iron"],
-    ingredients: ["red lentils", "chickpeas", "brown rice", "coconut milk", "curry powder", "turmeric", "ginger", "garlic", "onions", "tomatoes", "spinach"]
+    ingredients: ["red lentils", "chickpeas", "brown rice", "coconut milk", "curry powder", "turmeric", "ginger", "garlic", "onions", "tomatoes", "spinach"],
+    recipe: {
+      instructions: [
+        "Heat 2 tbsp olive oil in a large pot over medium heat",
+        "Sauté 1 diced onion until soft, about 5 minutes",
+        "Add 3 cloves minced garlic, 1 tbsp ginger, 2 tsp curry powder, and 1 tsp turmeric",
+        "Cook for 1 minute until fragrant",
+        "Add 1 cup red lentils, 1 can chickpeas (drained), and 1 can diced tomatoes",
+        "Pour in 1 can coconut milk and 1 cup water",
+        "Bring to boil, then simmer 15 minutes until lentils are tender",
+        "Stir in 2 cups fresh spinach until wilted",
+        "Season with salt and pepper to taste",
+        "Serve over cooked brown rice"
+      ],
+      tips: [
+        "Cook brown rice separately using 1:2 ratio (rice:water)",
+        "Add extra water if curry becomes too thick"
+      ],
+      notes: "This curry freezes well and tastes better the next day"
+    }
   },
   {
     name: "Black bean and quinoa bowl with tahini dressing",
@@ -71,7 +140,23 @@ export const MEAL_DATABASE: MealOption[] = [
     nutrition: { protein: 35, prepTime: 20 },
     category: "lunch",
     tags: ["complete-protein", "magnesium", "filling"],
-    ingredients: ["black beans", "quinoa", "tahini", "lemon", "garlic", "olive oil", "cucumber", "bell peppers", "cherry tomatoes", "avocado", "cilantro"]
+    ingredients: ["black beans", "quinoa", "tahini", "lemon", "garlic", "olive oil", "cucumber", "bell peppers", "cherry tomatoes", "avocado", "cilantro"],
+    recipe: {
+      instructions: [
+        "Cook 1 cup quinoa in 2 cups water with a pinch of salt for 15 minutes",
+        "Meanwhile, make tahini dressing: whisk 3 tbsp tahini, 2 tbsp lemon juice, 1 clove minced garlic, 2 tbsp olive oil, and 2-3 tbsp water",
+        "Drain and rinse 1 can black beans, season with cumin and salt",
+        "Dice 1/2 cucumber, 1 bell pepper, and halve 1 cup cherry tomatoes",
+        "Assemble bowls: quinoa base, black beans, diced vegetables",
+        "Top with sliced avocado and fresh cilantro",
+        "Drizzle with tahini dressing and serve immediately"
+      ],
+      tips: [
+        "Prep vegetables in advance for quick assembly",
+        "Add extra lemon juice for brightness"
+      ],
+      notes: "Complete protein combination with all essential amino acids"
+    }
   },
   {
     name: "White bean and vegetable soup with hemp seeds",
