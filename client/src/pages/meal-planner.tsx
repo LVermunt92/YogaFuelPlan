@@ -8,7 +8,8 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
-import { Calendar, Clock, Target, Upload, Eye, Download, Share, CheckCircle, Utensils, Activity } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Calendar, Clock, Target, Upload, Eye, Download, Share, CheckCircle, Utensils, Activity, ShoppingCart } from "lucide-react";
 
 interface MealPlan {
   id: number;
@@ -33,6 +34,20 @@ interface MealPlanWithMeals extends MealPlan {
   meals: Meal[];
 }
 
+interface ShoppingListItem {
+  ingredient: string;
+  category: string;
+  count: number;
+}
+
+interface ShoppingListResponse {
+  mealPlanId: number;
+  weekStart: string;
+  shoppingList: ShoppingListItem[];
+  totalItems: number;
+  categories: string[];
+}
+
 export default function MealPlanner() {
   const [activityLevel, setActivityLevel] = useState<"high" | "low">("high");
   const [weekStart, setWeekStart] = useState(() => {
@@ -42,6 +57,7 @@ export default function MealPlanner() {
     return nextMonday.toISOString().split('T')[0];
   });
   const [selectedMealPlan, setSelectedMealPlan] = useState<number | null>(null);
+  const [showShoppingList, setShowShoppingList] = useState(false);
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -61,6 +77,12 @@ export default function MealPlanner() {
   const { data: notionStatus } = useQuery({
     queryKey: ['/api/notion/status'],
     retry: false,
+  });
+
+  // Fetch shopping list
+  const { data: shoppingListData, isLoading: loadingShoppingList } = useQuery<ShoppingListResponse>({
+    queryKey: ['/api/meal-plans', selectedMealPlan, 'shopping-list'],
+    enabled: !!selectedMealPlan && showShoppingList,
   });
 
   // Generate meal plan mutation
@@ -335,6 +357,68 @@ export default function MealPlanner() {
                     </>
                   )}
                 </Button>
+                
+                {/* Shopping List Button */}
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button 
+                      disabled={!selectedMealPlan}
+                      className="w-full bg-blue-600 hover:bg-blue-700"
+                      onClick={() => setShowShoppingList(true)}
+                    >
+                      <ShoppingCart className="mr-2 h-4 w-4" />
+                      Generate Shopping List
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle>Shopping List</DialogTitle>
+                    </DialogHeader>
+                    
+                    {loadingShoppingList ? (
+                      <div className="flex justify-center py-8">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+                      </div>
+                    ) : shoppingListData ? (
+                      <div className="space-y-6">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-slate-600">
+                            Week of {formatWeekRange(shoppingListData.weekStart)}
+                          </span>
+                          <Badge variant="secondary">
+                            {shoppingListData.totalItems} items
+                          </Badge>
+                        </div>
+                        
+                        {shoppingListData.categories.map(category => (
+                          <div key={category} className="space-y-2">
+                            <h3 className="font-semibold text-slate-900 border-b border-slate-200 pb-1">
+                              {category}
+                            </h3>
+                            <div className="grid grid-cols-1 gap-2">
+                              {shoppingListData.shoppingList
+                                .filter(item => item.category === category)
+                                .map((item, index) => (
+                                  <div key={index} className="flex justify-between items-center py-1 px-2 hover:bg-slate-50 rounded">
+                                    <span className="text-sm text-slate-900">{item.ingredient}</span>
+                                    {item.count > 1 && (
+                                      <Badge variant="outline" className="text-xs">
+                                        {item.count}x
+                                      </Badge>
+                                    )}
+                                  </div>
+                                ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-center text-slate-500 py-8">
+                        Select a meal plan to generate shopping list
+                      </p>
+                    )}
+                  </DialogContent>
+                </Dialog>
               </CardContent>
             </Card>
           </div>

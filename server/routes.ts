@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { generateWeeklyMealPlan, formatMealPlanForNotion } from "./meal-generator";
 import { mealPlanRequestSchema } from "@shared/schema";
 import { notion, createDatabaseIfNotExists, findDatabaseByTitle } from "./notion";
+import { generateShoppingList } from "./nutrition";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
@@ -208,6 +209,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error auto-generating meal plan:", error);
       res.status(500).json({ message: "Failed to auto-generate meal plan" });
+    }
+  });
+
+  // Generate shopping list for meal plan
+  app.get("/api/meal-plans/:id/shopping-list", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const mealPlan = await storage.getMealPlanWithMeals(id);
+      
+      if (!mealPlan) {
+        return res.status(404).json({ message: "Meal plan not found" });
+      }
+
+      const shoppingList = generateShoppingList(mealPlan.meals);
+      
+      res.json({
+        mealPlanId: id,
+        weekStart: mealPlan.weekStart,
+        shoppingList,
+        totalItems: shoppingList.length,
+        categories: Array.from(new Set(shoppingList.map(item => item.category))).sort()
+      });
+    } catch (error) {
+      console.error("Error generating shopping list:", error);
+      res.status(500).json({ message: "Failed to generate shopping list" });
     }
   });
 
