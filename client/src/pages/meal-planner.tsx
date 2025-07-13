@@ -115,16 +115,20 @@ export default function MealPlanner() {
   const { user: authUser } = useAuth();
 
   // Fetch user profile for dietary preferences
-  const { data: userProfile } = useQuery({
+  const { data: userProfile, isLoading: profileLoading } = useQuery({
     queryKey: ['/api/users', authUser?.id, 'profile'],
     enabled: !!authUser?.id,
+    staleTime: 0, // Always fetch fresh data
+    refetchOnMount: true, // Refetch when component mounts
   });
 
   // Fetch meal plans for current user
   const { data: mealPlans = [], isLoading: loadingPlans } = useQuery<MealPlan[]>({
-    queryKey: ['/api/meal-plans'],
-    queryFn: () => apiRequest(`/api/meal-plans?userId=${authUser?.id || 2}`),
-    enabled: !!authUser,
+    queryKey: ['/api/meal-plans', authUser?.id],
+    queryFn: () => apiRequest(`/api/meal-plans?userId=${authUser?.id}`),
+    enabled: !!authUser?.id,
+    staleTime: 0, // Always fetch fresh data
+    refetchOnMount: true, // Refetch when component mounts
   });
 
   // Fetch specific meal plan with meals
@@ -383,10 +387,9 @@ export default function MealPlanner() {
 
   const latestMealPlan = mealPlans[0];
 
-  // Auto-select meal plan 22 which has leftover functionality
+  // Auto-select the latest meal plan
   if (!selectedMealPlan && mealPlans.length > 0 && !loadingPlans) {
-    const mealPlanWithLeftovers = mealPlans.find(mp => mp.id === 22) || latestMealPlan;
-    setSelectedMealPlan(mealPlanWithLeftovers?.id);
+    setSelectedMealPlan(latestMealPlan?.id);
   }
 
   const displayedMealPlan = currentMealPlan || (latestMealPlan && mealPlans.find(mp => mp.id === latestMealPlan.id));
