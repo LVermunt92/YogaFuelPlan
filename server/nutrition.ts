@@ -796,14 +796,27 @@ export interface ShoppingListItem {
 }
 
 export function generateShoppingList(meals: { foodDescription: string }[]): ShoppingListItem[] {
-  const ingredientCount = new Map<string, number>();
+  const ingredientAmounts = new Map<string, { totalAmount: number; unit: string; count: number }>();
   
-  // Count ingredients from all meals
+  // Parse actual recipe amounts from meal instructions
   meals.forEach(meal => {
     const mealOption = MEAL_DATABASE.find(m => m.name === meal.foodDescription);
-    if (mealOption) {
+    if (mealOption && mealOption.recipe?.instructions) {
+      parseRecipeIngredients(mealOption.recipe.instructions, ingredientAmounts);
+    } else if (mealOption) {
+      // Fallback to counting ingredients if no recipe instructions
       mealOption.ingredients.forEach(ingredient => {
-        ingredientCount.set(ingredient, (ingredientCount.get(ingredient) || 0) + 1);
+        const existing = ingredientAmounts.get(ingredient);
+        if (existing) {
+          existing.count += 1;
+        } else {
+          const defaultPortion = getDefaultPortion(ingredient);
+          ingredientAmounts.set(ingredient, { 
+            totalAmount: defaultPortion.amount, 
+            unit: defaultPortion.unit, 
+            count: 1 
+          });
+        }
       });
     }
   });
@@ -896,12 +909,93 @@ export function generateShoppingList(meals: { foodDescription: string }[]): Shop
     'red wine': 'Pantry Items'
   };
 
-  // Ingredient portions mapping
-  const ingredientPortions: Record<string, { amount: number; unit: string }> = {
-    // Proteins
-    'extra firm tofu': { amount: 400, unit: 'g' },
-    'tempeh': { amount: 240, unit: 'g' },
-    'red lentils': { amount: 500, unit: 'g' },
+  // Helper function to parse recipe instructions for ingredient amounts
+  function parseRecipeIngredients(instructions: string[], ingredientAmounts: Map<string, { totalAmount: number; unit: string; count: number }>) {
+    instructions.forEach(instruction => {
+      // Parse common patterns like "1 cup quinoa", "2 tbsp olive oil", "1 can chickpeas"
+      const patterns = [
+        // Pattern: "1 cup quinoa", "2 cups water"
+        /(\d+(?:\.\d+)?)\s+cups?\s+([a-zA-Z\s]+)/gi,
+        // Pattern: "1 tbsp olive oil", "2 tbsp tahini"
+        /(\d+(?:\.\d+)?)\s+tbsp?\s+([a-zA-Z\s]+)/gi,
+        // Pattern: "1 tsp turmeric", "2 tsp curry powder"
+        /(\d+(?:\.\d+)?)\s+tsp?\s+([a-zA-Z\s]+)/gi,
+        // Pattern: "1 can chickpeas", "2 cans tomatoes"
+        /(\d+(?:\.\d+)?)\s+cans?\s+([a-zA-Z\s]+)/gi,
+        // Pattern: "150g tofu", "200g sweet potato"
+        /(\d+(?:\.\d+)?)\s*g\s+([a-zA-Z\s]+)/gi,
+        // Pattern: "1/2 avocado", "3 cloves garlic"
+        /(\d+\/\d+|\d+(?:\.\d+)?)\s+([a-zA-Z\s]+)/gi
+      ];
+
+      patterns.forEach(pattern => {
+        let match;
+        while ((match = pattern.exec(instruction)) !== null) {
+          const amount = parseFloat(match[1].includes('/') ? eval(match[1]) : match[1]);
+          const ingredient = match[2].trim().toLowerCase();
+          
+          // Convert to standard units and amounts
+          let standardAmount = amount;
+          let standardUnit = 'g';
+          
+          if (instruction.includes('cup')) {
+            // Convert cups to grams based on ingredient type
+            standardAmount = convertCupsToGrams(amount, ingredient);
+          } else if (instruction.includes('tbsp')) {
+            standardAmount = amount * 15; // 1 tbsp ≈ 15ml
+            standardUnit = 'ml';
+          } else if (instruction.includes('tsp')) {
+            standardAmount = amount * 5; // 1 tsp ≈ 5ml
+            standardUnit = 'ml';
+          } else if (instruction.includes('can')) {
+            standardAmount = amount * 400; // Assume standard 400g can
+            standardUnit = 'g';
+          }
+          
+          // Add to ingredient amounts
+          const existing = ingredientAmounts.get(ingredient);
+          if (existing) {
+            existing.totalAmount += standardAmount;
+            existing.count += 1;
+          } else {
+            ingredientAmounts.set(ingredient, {
+              totalAmount: standardAmount,
+              unit: standardUnit,
+              count: 1
+            });
+          }
+        }
+      });
+    });
+  }
+
+  // Helper function to convert cups to grams based on ingredient
+  function convertCupsToGrams(cups: number, ingredient: string): number {
+    const conversions: Record<string, number> = {
+      'quinoa': cups * 170,
+      'brown rice': cups * 195,
+      'oats': cups * 80,
+      'flour': cups * 120,
+      'chickpeas': cups * 164,
+      'lentils': cups * 192,
+      'black beans': cups * 172,
+      'white beans': cups * 179,
+      'spinach': cups * 30,
+      'water': cups * 240,
+      'milk': cups * 240,
+      'oil': cups * 220
+    };
+    
+    return conversions[ingredient] || cups * 100; // Default conversion
+  }
+
+  // Helper function to get default portions for ingredients without recipe details
+  function getDefaultPortion(ingredient: string): { amount: number; unit: string } {
+    const defaultPortions: Record<string, { amount: number; unit: string }> = {
+      // Proteins
+      'extra firm tofu': { amount: 400, unit: 'g' },
+      'tempeh': { amount: 240, unit: 'g' },
+      'red lentils': { amount: 500, unit: 'g' },
     'chickpeas': { amount: 800, unit: 'g' },
     'black beans': { amount: 800, unit: 'g' },
     'white beans': { amount: 800, unit: 'g' },
@@ -984,28 +1078,29 @@ export function generateShoppingList(meals: { foodDescription: string }[]): Shop
     'red wine': { amount: 750, unit: 'ml' },
     
     // Other
-    'cilantro': { amount: 50, unit: 'g' },
-    'roasted chickpeas': { amount: 200, unit: 'g' }
-  };
+      'cilantro': { amount: 50, unit: 'g' },
+      'roasted chickpeas': { amount: 200, unit: 'g' }
+    };
+    
+    return defaultPortions[ingredient] || { amount: 100, unit: 'g' };
+  }
 
-  // Create shopping list with categories and portions
+  // Create shopping list with categories and actual amounts
   const shoppingList: ShoppingListItem[] = [];
   
-  ingredientCount.forEach((count, ingredient) => {
+  ingredientAmounts.forEach((amounts, ingredient) => {
     const category = ingredientCategories[ingredient] || 'Other';
-    const portion = ingredientPortions[ingredient] || { amount: 100, unit: 'g' };
     
-    const totalAmount = portion.amount * count;
-    const displayAmount = portion.unit === 'pieces' ? 
-      `${totalAmount} ${portion.unit}` : 
-      formatAmount(totalAmount, portion.unit);
+    const displayAmount = amounts.unit === 'pieces' ? 
+      `${amounts.totalAmount} ${amounts.unit}` : 
+      formatAmount(amounts.totalAmount, amounts.unit);
     
     shoppingList.push({
       ingredient,
       category,
-      count,
+      count: amounts.count,
       totalAmount: displayAmount,
-      unit: portion.unit
+      unit: amounts.unit
     });
   });
 

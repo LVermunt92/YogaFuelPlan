@@ -677,50 +677,6 @@ export default function MealPlanner() {
                     )}
                   </Button>
                   
-                  <div className="grid grid-cols-1 gap-2">
-                    <Button 
-                      onClick={() => autoGenerateMutation.mutate()}
-                      disabled={autoGenerateMutation.isPending}
-                      className="btn-outline w-full"
-                    >
-                      {autoGenerateMutation.isPending ? (
-                        <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-foreground mr-2" />
-                          Auto-Generating...
-                        </>
-                      ) : (
-                        <>
-                          <Calendar className="mr-2 h-4 w-4" />
-                          Auto-Generate Next Week
-                        </>
-                      )}
-                    </Button>
-                    
-                    {userProfile && (
-                      <Button 
-                        onClick={() => regenerateMutation.mutate({ 
-                          weekStart: weekStart, 
-                          activityLevel: activityLevel 
-                        })}
-                        disabled={regenerateMutation.isPending || !authUser}
-                        variant="outline"
-                        className="w-full"
-                      >
-                        {regenerateMutation.isPending ? (
-                          <>
-                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-foreground mr-2" />
-                            Updating...
-                          </>
-                        ) : (
-                          <>
-                            <RefreshCw className="mr-2 h-4 w-4" />
-                            Update with Preferences
-                          </>
-                        )}
-                      </Button>
-                    )}
-                  </div>
-                  
                   <p className="text-xs text-muted-foreground">
                     Auto-generate creates a high-activity meal plan for next Monday and syncs to Notion if connected.
                     {userProfile && <span className="block mt-1">Use "Update with Preferences" to regenerate with your current dietary preferences.</span>}

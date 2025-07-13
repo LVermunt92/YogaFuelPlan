@@ -110,6 +110,7 @@ function adjustMealPortion(originalPortion: string, adjustmentFactor: number): s
 
 /**
  * Determine which days the user will be cooking and eating at home
+ * Supports special Sunday night cooking pattern
  */
 function planCookingDays(user?: User): { cookingDays: number[], eatingDays: number[] } {
   const cookingDaysPerWeek = user?.cookingDaysPerWeek || 7;
@@ -123,15 +124,24 @@ function planCookingDays(user?: User): { cookingDays: number[], eatingDays: numb
     };
   }
   
+  // Special pattern for 3 cooking days: Sunday night -> Tuesday -> Thursday
+  // This matches the user's preference for cooking every other day
+  if (cookingDaysPerWeek === 3) {
+    return {
+      cookingDays: [7, 2, 4], // Sunday, Tuesday, Thursday
+      eatingDays: [7, 1, 2, 3, 4, 5, 6].slice(0, eatingDaysAtHome)
+    };
+  }
+  
   // Prioritize weekdays for cooking (Sunday prep + weekdays)
   const cookingDays: number[] = [];
   if (cookingDaysPerWeek >= 1) cookingDays.push(7); // Sunday prep
-  if (cookingDaysPerWeek >= 2) cookingDays.push(1); // Monday
-  if (cookingDaysPerWeek >= 3) cookingDays.push(3); // Wednesday
-  if (cookingDaysPerWeek >= 4) cookingDays.push(5); // Friday
-  if (cookingDaysPerWeek >= 5) cookingDays.push(2); // Tuesday
-  if (cookingDaysPerWeek >= 6) cookingDays.push(4); // Thursday
-  if (cookingDaysPerWeek >= 7) cookingDays.push(6); // Saturday
+  if (cookingDaysPerWeek >= 2) cookingDays.push(2); // Tuesday (every other day from Sunday)
+  if (cookingDaysPerWeek >= 3) cookingDays.push(4); // Thursday (every other day pattern)
+  if (cookingDaysPerWeek >= 4) cookingDays.push(1); // Monday
+  if (cookingDaysPerWeek >= 5) cookingDays.push(6); // Saturday
+  if (cookingDaysPerWeek >= 6) cookingDays.push(3); // Wednesday
+  if (cookingDaysPerWeek >= 7) cookingDays.push(5); // Friday
   
   // Eating days - prioritize weekdays and when cooking happens
   const eatingDays: number[] = [];
@@ -173,7 +183,7 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
     return generateMealPrepPlan(request, user, cookingDays, eatingDays, dietaryTags, caloricAdjustment);
   }
 
-  // Generate meals for 7 days (normal cooking)
+  // Generate meals for 7 days with Sunday night cooking pattern
   for (let day = 1; day <= 7; day++) {
     let dailyProtein = 0;
     const isEatingDay = eatingDays.includes(day);
@@ -181,7 +191,6 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
 
     // Skip meal generation for days not eating at home
     if (!isEatingDay) {
-      // Add a placeholder note meal for tracking
       const placeholderMeal: InsertMeal = {
         mealPlanId: 0,
         day,
@@ -195,6 +204,12 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
       continue;
     }
 
+    // Sunday Night Pattern Implementation
+    // Day 7 (Sunday): Cook dinner
+    // Day 1 (Monday): Breakfast fresh, lunch is leftover from Sunday dinner
+    // Day 2 (Tuesday): Cook fresh breakfast and dinner, lunch fresh
+    // Day 3 (Wednesday): Breakfast fresh, lunch and dinner are leftovers from Tuesday
+    
     // Generate meals for each meal type (breakfast, lunch, dinner)
     ['breakfast', 'lunch', 'dinner'].forEach((mealType, index) => {
       const mealCategory = mealType as 'breakfast' | 'lunch' | 'dinner';
@@ -203,43 +218,49 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
       const shouldAddMeatFish = meatFishMealsAdded < meatFishMealsPerWeek && 
                                 (mealCategory === 'lunch' || mealCategory === 'dinner');
       
-      // Get base dietary tags
       let mealDietaryTags = [...dietaryTags];
-      
-      // Remove vegetarian tag if this meal should have meat/fish
       if (shouldAddMeatFish) {
         mealDietaryTags = mealDietaryTags.filter(tag => tag !== 'vegetarian');
         meatFishMealsAdded++;
       }
       
-      // Get available meals for this category that match dietary preferences
       const availableMeals = getMealsForCategoryAndDiet(mealCategory, mealDietaryTags);
-      
       if (availableMeals.length === 0) {
-        // Fallback to all meals in category if no matches found
         const fallbackMeals = getMealsForCategoryAndDiet(mealCategory, []);
-        console.warn(`No meals found for ${mealCategory} with dietary tags: ${mealDietaryTags.join(', ')}. Using fallback meals.`);
         availableMeals.push(...fallbackMeals);
       }
 
-      // For non-cooking days, prefer simpler meals or leftovers
+      // Implement Sunday night cooking pattern logic
+      let isLeftover = false;
       let selectedMeal: MealOption;
-      if (!isCookingDay && availableMeals.length > 0) {
-        // Prefer meals with shorter prep times for non-cooking days
-        const quickMeals = availableMeals.filter(meal => meal.nutrition.prepTime <= 15);
-        if (quickMeals.length > 0) {
-          const mealIndex = (day + index) % quickMeals.length;
-          selectedMeal = quickMeals[mealIndex];
+      
+      if (day === 7 && mealCategory === 'dinner') {
+        // Sunday dinner - fresh cooking
+        selectedMeal = availableMeals[0];
+      } else if (day === 1 && mealCategory === 'lunch') {
+        // Monday lunch - leftover from Sunday dinner
+        const dinnerMeals = getMealsForCategoryAndDiet('dinner', mealDietaryTags);
+        selectedMeal = dinnerMeals[0] || availableMeals[0];
+        isLeftover = true;
+      } else if (day === 2 && (mealCategory === 'breakfast' || mealCategory === 'dinner')) {
+        // Tuesday breakfast and dinner - fresh cooking
+        selectedMeal = availableMeals[day % availableMeals.length];
+      } else if (day === 3 && (mealCategory === 'lunch' || mealCategory === 'dinner')) {
+        // Wednesday lunch and dinner - leftovers from Tuesday
+        if (mealCategory === 'lunch') {
+          const breakfastMeals = getMealsForCategoryAndDiet('breakfast', mealDietaryTags);
+          selectedMeal = breakfastMeals[0] || availableMeals[0];
         } else {
-          // Fallback to regular meal rotation
-          const dayOffset = Math.floor((day - 1) / 2);
-          const mealIndex = (dayOffset + index) % availableMeals.length;
-          selectedMeal = availableMeals[mealIndex];
+          const dinnerMeals = getMealsForCategoryAndDiet('dinner', mealDietaryTags);
+          selectedMeal = dinnerMeals[1] || availableMeals[1];
         }
+        isLeftover = true;
+      } else if (mealCategory === 'breakfast') {
+        // Breakfast is always fresh (different each day)
+        selectedMeal = availableMeals[day % availableMeals.length];
       } else {
-        // Regular meal rotation for cooking days
-        const dayOffset = Math.floor((day - 1) / 2);
-        const mealIndex = (dayOffset + index) % availableMeals.length;
+        // Default rotation for other meals
+        const mealIndex = (day + index) % availableMeals.length;
         selectedMeal = availableMeals[mealIndex];
       }
 
@@ -251,16 +272,13 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
       
       const adjustedPortion = adjustMealPortion(selectedMeal.portion, portionMultiplier);
       const adjustedProtein = Math.round(selectedMeal.nutrition.protein * caloricAdjustment);
-
-      // Add cooking status to meal description for visual identification
-      const cookingStatus = isCookingDay ? 'fresh' : 'reheat';
-      const prepTimeForDay = isCookingDay ? selectedMeal.nutrition.prepTime : 5; // 5 min to reheat
+      const prepTimeForDay = isLeftover ? 5 : selectedMeal.nutrition.prepTime; // 5 min to reheat
       
       const meal: InsertMeal = {
-        mealPlanId: 0, // Will be set later
+        mealPlanId: 0,
         day,
         mealType: mealCategory,
-        foodDescription: isCookingDay ? selectedMeal.name : `${selectedMeal.name} (leftover)`,
+        foodDescription: isLeftover ? `${selectedMeal.name} (leftover)` : selectedMeal.name,
         portion: adjustedPortion,
         protein: adjustedProtein,
         prepTime: prepTimeForDay,
