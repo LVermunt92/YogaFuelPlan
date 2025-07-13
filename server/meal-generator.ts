@@ -120,7 +120,15 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
   const meatFishMealsPerWeek = user?.meatFishMealsPerWeek || 0;
   let meatFishMealsAdded = 0;
 
-  // Generate meals for 7 days
+  // Determine if meal prep is needed (cooking fewer days than eating)
+  const needsMealPrep = cookingDays.length < eatingDays.length;
+  
+  // If meal prep is needed, plan batch cooking for lunch and dinner
+  if (needsMealPrep) {
+    return generateMealPrepPlan(request, user, cookingDays, eatingDays, dietaryTags, caloricAdjustment);
+  }
+
+  // Generate meals for 7 days (normal cooking)
   for (let day = 1; day <= 7; day++) {
     let dailyProtein = 0;
     const isEatingDay = eatingDays.includes(day);
@@ -222,6 +230,171 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
     activityLevel: request.activityLevel,
     totalProtein: totalWeeklyProtein / 7, // Average daily protein
     notionSynced: false,
+  };
+
+  return { mealPlan, meals };
+}
+
+/**
+ * Generate meal prep plan when cooking days < eating days
+ */
+function generateMealPrepPlan(
+  request: MealPlanRequest, 
+  user: User | undefined, 
+  cookingDays: number[], 
+  eatingDays: number[],
+  dietaryTags: string[],
+  caloricAdjustment: number
+): GeneratedMealPlan {
+  const targetProtein = calculateProteinTarget(request.activityLevel);
+  const meals: InsertMeal[] = [];
+  let totalWeeklyProtein = 0;
+  
+  // Plan which meals to batch cook
+  const mealsPerCookingDay = Math.ceil(eatingDays.length / cookingDays.length);
+  
+  // Get meal options for each category with dietary filters
+  const breakfastOptions = getMealsForCategoryAndDiet('breakfast', dietaryTags);
+  const lunchOptions = getMealsForCategoryAndDiet('lunch', dietaryTags);
+  const dinnerOptions = getMealsForCategoryAndDiet('dinner', dietaryTags);
+  
+  // Plan meal prep schedule
+  const mealSchedule: Map<number, { lunch?: any, dinner?: any }> = new Map();
+  
+  // Assign lunch and dinner prep to cooking days
+  let cookingDayIndex = 0;
+  for (let i = 0; i < eatingDays.length; i++) {
+    const eatingDay = eatingDays[i];
+    const cookingDay = cookingDays[cookingDayIndex % cookingDays.length];
+    
+    if (!mealSchedule.has(eatingDay)) {
+      mealSchedule.set(eatingDay, {});
+    }
+    
+    // Assign which cooking day provides the meals for this eating day
+    const schedule = mealSchedule.get(eatingDay)!;
+    schedule.cookingDay = cookingDay;
+    
+    // Move to next cooking day every mealsPerCookingDay eating days
+    if ((i + 1) % mealsPerCookingDay === 0) {
+      cookingDayIndex++;
+    }
+  }
+  
+  // Generate meals for all 7 days
+  for (let day = 1; day <= 7; day++) {
+    let dailyProtein = 0;
+    const dailyProteinTarget = targetProtein / 3; // Distribute evenly across 3 meals
+
+    // Always include breakfast (quick daily meal)
+    const breakfastMeal = breakfastOptions[Math.floor(Math.random() * breakfastOptions.length)];
+    const adjustedBreakfastPortion = adjustMealPortion(breakfastMeal.portion, caloricAdjustment);
+    const breakfastProtein = breakfastMeal.nutrition.protein * caloricAdjustment;
+    
+    meals.push({
+      mealPlanId: 0, // Will be set later
+      day,
+      mealType: 'breakfast',
+      foodDescription: breakfastMeal.name,
+      portion: adjustedBreakfastPortion,
+      protein: Math.round(breakfastProtein),
+      prepTime: breakfastMeal.nutrition.prepTime
+    });
+    
+    dailyProtein += breakfastProtein;
+
+    // Handle lunch and dinner based on eating/cooking schedule
+    if (eatingDays.includes(day)) {
+      const schedule = mealSchedule.get(day);
+      const isCookingDay = cookingDays.includes(day);
+      
+      // Select lunch meal (batch cook if needed)
+      let lunchMeal = lunchOptions[Math.floor(Math.random() * lunchOptions.length)];
+      let lunchPortion = adjustMealPortion(lunchMeal.portion, caloricAdjustment);
+      let lunchPrepTime = lunchMeal.nutrition.prepTime;
+      
+      if (!isCookingDay) {
+        // This is a leftover day - adjust portion description and prep time
+        lunchPortion = `${lunchPortion} (meal prep leftover)`;
+        lunchPrepTime = 5; // Just reheating time
+      } else if (mealsPerCookingDay > 1) {
+        // Cooking day with batch cooking - adjust portion for multiple servings
+        lunchPortion = `${mealsPerCookingDay}x ${lunchPortion} (batch cook)`;
+      }
+      
+      const lunchProtein = lunchMeal.nutrition.protein * caloricAdjustment;
+      meals.push({
+        mealPlanId: 0,
+        day,
+        mealType: 'lunch',
+        foodDescription: lunchMeal.name,
+        portion: lunchPortion,
+        protein: Math.round(lunchProtein),
+        prepTime: lunchPrepTime
+      });
+      
+      dailyProtein += lunchProtein;
+
+      // Select dinner meal (batch cook if needed)
+      let dinnerMeal = dinnerOptions[Math.floor(Math.random() * dinnerOptions.length)];
+      let dinnerPortion = adjustMealPortion(dinnerMeal.portion, caloricAdjustment);
+      let dinnerPrepTime = dinnerMeal.nutrition.prepTime;
+      
+      if (!isCookingDay) {
+        // This is a leftover day
+        dinnerPortion = `${dinnerPortion} (meal prep leftover)`;
+        dinnerPrepTime = 5; // Just reheating time
+      } else if (mealsPerCookingDay > 1) {
+        // Cooking day with batch cooking
+        dinnerPortion = `${mealsPerCookingDay}x ${dinnerPortion} (batch cook)`;
+      }
+      
+      const dinnerProtein = dinnerMeal.nutrition.protein * caloricAdjustment;
+      meals.push({
+        mealPlanId: 0,
+        day,
+        mealType: 'dinner',
+        foodDescription: dinnerMeal.name,
+        portion: dinnerPortion,
+        protein: Math.round(dinnerProtein),
+        prepTime: dinnerPrepTime
+      });
+      
+      dailyProtein += dinnerProtein;
+    } else {
+      // Not an eating day - no lunch/dinner at home
+      const placeholderLunch: InsertMeal = {
+        mealPlanId: 0,
+        day,
+        mealType: 'lunch',
+        foodDescription: 'Eating out or packed lunch',
+        portion: 'Various',
+        protein: 0,
+        prepTime: 0
+      };
+      
+      const placeholderDinner: InsertMeal = {
+        mealPlanId: 0,
+        day,
+        mealType: 'dinner',
+        foodDescription: 'Eating out or social dining',
+        portion: 'Various',
+        protein: 0,
+        prepTime: 0
+      };
+      
+      meals.push(placeholderLunch, placeholderDinner);
+    }
+
+    totalWeeklyProtein += dailyProtein;
+  }
+
+  const mealPlan: InsertMealPlan = {
+    userId: request.userId,
+    weekStart: request.weekStart,
+    activityLevel: request.activityLevel,
+    totalProtein: Math.round(totalWeeklyProtein),
+    notionSynced: false
   };
 
   return { mealPlan, meals };
