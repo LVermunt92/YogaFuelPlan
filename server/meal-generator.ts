@@ -282,14 +282,24 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
       }
       
       const adjustedPortion = adjustMealPortion(selectedMeal.portion, portionMultiplier);
-      const adjustedProtein = Math.round(selectedMeal.nutrition.protein * caloricAdjustment);
+      const adjustedProtein = Math.round(selectedMeal.nutrition.protein * portionMultiplier);
       const prepTimeForDay = isLeftover ? 5 : selectedMeal.nutrition.prepTime;
+      
+      // Create descriptive meal name including household size
+      const householdSize = user?.householdSize || 1;
+      let mealDescription = selectedMeal.name;
+      
+      if (isLeftover) {
+        mealDescription = `${selectedMeal.name} (leftover)`;
+      } else if (householdSize > 1) {
+        mealDescription = `${selectedMeal.name} (${householdSize}x portions)`;
+      }
 
       const meal: InsertMeal = {
         mealPlanId: 0,
         day,
         mealType: mealCategory,
-        foodDescription: isLeftover ? `${selectedMeal.name} (leftover)` : selectedMeal.name,
+        foodDescription: mealDescription,
         portion: adjustedPortion,
         protein: adjustedProtein,
         prepTime: prepTimeForDay,
@@ -432,14 +442,26 @@ function generateMealPrepPlan(
     const selectedBreakfast = breakfastPool[day - 1];
     
     if (selectedBreakfast) {
-      const adjustedPortion = adjustMealPortion(selectedBreakfast.portion, caloricAdjustment);
-      const adjustedProtein = Math.round(selectedBreakfast.nutrition.protein * caloricAdjustment);
+      const householdSize = user?.householdSize || 1;
+      let adjustedPortion = adjustMealPortion(selectedBreakfast.portion, caloricAdjustment);
+      let adjustedProtein = Math.round(selectedBreakfast.nutrition.protein * caloricAdjustment);
+      
+      // Apply household size multiplier
+      if (householdSize > 1) {
+        adjustedPortion = adjustMealPortion(selectedBreakfast.portion, caloricAdjustment * householdSize);
+        adjustedProtein = Math.round(selectedBreakfast.nutrition.protein * caloricAdjustment * householdSize);
+      }
+      
+      // Create descriptive meal name
+      const mealDescription = householdSize > 1 ? 
+        `${selectedBreakfast.name} (${householdSize}x portions)` : 
+        selectedBreakfast.name;
       
       meals.push({
         mealPlanId: 0,
         day,
         mealType: 'breakfast',
-        foodDescription: selectedBreakfast.name,
+        foodDescription: mealDescription,
         portion: adjustedPortion,
         protein: adjustedProtein,
         prepTime: selectedBreakfast.nutrition.prepTime,
@@ -483,15 +505,30 @@ function generateMealPrepPlan(
       }
       
       if (lunchMeal) {
-        const adjustedPortion = adjustMealPortion(lunchMeal.portion, caloricAdjustment);
-        const adjustedProtein = Math.round(lunchMeal.nutrition.protein * caloricAdjustment);
+        const householdSize = user?.householdSize || 1;
+        let adjustedPortion = adjustMealPortion(lunchMeal.portion, caloricAdjustment);
+        let adjustedProtein = Math.round(lunchMeal.nutrition.protein * caloricAdjustment);
         const prepTime = isLunchLeftover ? 5 : lunchMeal.nutrition.prepTime;
+        
+        // Apply household size multiplier for fresh meals
+        if (householdSize > 1 && !isLunchLeftover) {
+          adjustedPortion = adjustMealPortion(lunchMeal.portion, caloricAdjustment * householdSize);
+          adjustedProtein = Math.round(lunchMeal.nutrition.protein * caloricAdjustment * householdSize);
+        }
+        
+        // Create descriptive meal name
+        let mealDescription = lunchMeal.name;
+        if (isLunchLeftover) {
+          mealDescription = `${lunchMeal.name} (leftover)`;
+        } else if (householdSize > 1) {
+          mealDescription = `${lunchMeal.name} (${householdSize}x portions)`;
+        }
         
         meals.push({
           mealPlanId: 0,
           day,
           mealType: 'lunch',
-          foodDescription: isLunchLeftover ? `${lunchMeal.name} (leftover)` : lunchMeal.name,
+          foodDescription: mealDescription,
           portion: adjustedPortion,
           protein: adjustedProtein,
           prepTime: prepTime,
@@ -544,15 +581,49 @@ function generateMealPrepPlan(
       }
       
       if (dinnerMeal) {
-        const adjustedPortion = adjustMealPortion(dinnerMeal.portion, caloricAdjustment);
-        const adjustedProtein = Math.round(dinnerMeal.nutrition.protein * caloricAdjustment);
+        // Check if this dinner will be used for tomorrow's lunch (batch cooking)
+        const willBeLeftover = (day === 1 && daysWithMeals.includes(2)) || // Sunday dinner → Monday lunch
+                               (day === 2 && daysWithMeals.includes(3)) || // Monday dinner → Tuesday lunch
+                               (day === 3 && daysWithMeals.includes(4)) || // Tuesday dinner → Wednesday lunch
+                               (day === 4 && daysWithMeals.includes(5)) || // Wednesday dinner → Thursday lunch
+                               (day === 5 && daysWithMeals.includes(6));   // Thursday dinner → Friday lunch
+        
+        let adjustedPortion = adjustMealPortion(dinnerMeal.portion, caloricAdjustment);
+        let adjustedProtein = Math.round(dinnerMeal.nutrition.protein * caloricAdjustment);
         const prepTime = isDinnerLeftover ? 5 : dinnerMeal.nutrition.prepTime;
+        
+        // Calculate total portions needed (household size + leftovers)
+        const householdSize = user?.householdSize || 1;
+        let totalPortions = householdSize;
+        
+        // If cooking for leftovers, add portions for tomorrow's lunch
+        if (willBeLeftover && !isDinnerLeftover) {
+          totalPortions += householdSize; // Double for leftovers
+        }
+        
+        // Apply total portion multiplier
+        if (totalPortions > 1 && !isDinnerLeftover) {
+          adjustedPortion = adjustMealPortion(dinnerMeal.portion, caloricAdjustment * totalPortions);
+          adjustedProtein = Math.round(dinnerMeal.nutrition.protein * caloricAdjustment * totalPortions);
+        }
+        
+        // Create descriptive meal name
+        let mealDescription = dinnerMeal.name;
+        if (isDinnerLeftover) {
+          mealDescription = `${dinnerMeal.name} (leftover)`;
+        } else if (willBeLeftover && householdSize > 1) {
+          mealDescription = `${dinnerMeal.name} (${totalPortions}x portions - ${householdSize} people + batch cook)`;
+        } else if (willBeLeftover) {
+          mealDescription = `${dinnerMeal.name} (2x portions - batch cook)`;
+        } else if (householdSize > 1) {
+          mealDescription = `${dinnerMeal.name} (${householdSize}x portions)`;
+        }
         
         meals.push({
           mealPlanId: 0,
           day,
           mealType: 'dinner',
-          foodDescription: isDinnerLeftover ? `${dinnerMeal.name} (leftover)` : dinnerMeal.name,
+          foodDescription: mealDescription,
           portion: adjustedPortion,
           protein: adjustedProtein,
           prepTime: prepTime,
