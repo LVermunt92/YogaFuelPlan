@@ -175,13 +175,8 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
   const meatFishMealsPerWeek = user?.meatFishMealsPerWeek || 0;
   let meatFishMealsAdded = 0;
 
-  // Determine if meal prep is needed (cooking fewer days than eating)
-  const needsMealPrep = cookingDays.length < eatingDays.length;
-  
-  // If meal prep is needed, plan batch cooking for lunch and dinner
-  if (needsMealPrep) {
-    return generateMealPrepPlan(request, user, cookingDays, eatingDays, dietaryTags, caloricAdjustment);
-  }
+  // Force Sunday night cooking pattern (8-day cycle) regardless of cooking/eating preferences
+  // This ensures consistent leftover linking as requested by user
 
   // Generate meals for 8 days with Sunday night cooking pattern
   // Day 1: Sunday dinner only (FIRST cooking moment - no leftovers possible)
