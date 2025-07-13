@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean, timestamp, real } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, real, date, unique } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -32,6 +32,24 @@ export const meals = pgTable("meals", {
   prepTime: integer("prep_time").default(30), // minutes
 });
 
+export const ouraData = pgTable("oura_data", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id, { onDelete: "cascade" }).notNull(),
+  date: date("date").notNull(),
+  activityScore: real("activity_score"),
+  steps: integer("steps"),
+  calories: real("calories"),
+  activeCalories: real("active_calories"),
+  workoutMinutes: integer("workout_minutes"),
+  readinessScore: real("readiness_score"),
+  sleepScore: real("sleep_score"),
+  periodPhase: text("period_phase"), // menstrual, follicular, ovulation, luteal
+  activityLevel: text("activity_level"), // high, low based on calculated threshold
+  syncedAt: timestamp("synced_at").notNull().defaultNow(),
+}, (table) => ({
+  uniqueUserDate: unique().on(table.userId, table.date),
+}));
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
@@ -55,6 +73,11 @@ export const mealPlanRequestSchema = z.object({
   userId: z.number().optional(),
 });
 
+export const insertOuraDataSchema = createInsertSchema(ouraData).omit({
+  id: true,
+  syncedAt: true,
+});
+
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type MealPlan = typeof mealPlans.$inferSelect;
@@ -62,6 +85,8 @@ export type InsertMealPlan = z.infer<typeof insertMealPlanSchema>;
 export type Meal = typeof meals.$inferSelect;
 export type InsertMeal = z.infer<typeof insertMealSchema>;
 export type MealPlanRequest = z.infer<typeof mealPlanRequestSchema>;
+export type OuraData = typeof ouraData.$inferSelect;
+export type InsertOuraData = z.infer<typeof insertOuraDataSchema>;
 
 export interface MealPlanWithMeals extends MealPlan {
   meals: Meal[];

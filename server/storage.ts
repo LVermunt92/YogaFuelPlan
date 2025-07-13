@@ -2,16 +2,19 @@ import {
   users, 
   mealPlans, 
   meals,
+  ouraData,
   type User, 
   type InsertUser, 
   type MealPlan, 
   type InsertMealPlan,
   type Meal,
   type InsertMeal,
-  type MealPlanWithMeals
+  type MealPlanWithMeals,
+  type OuraData,
+  type InsertOuraData
 } from "@shared/schema";
 import { db } from "./db";
-import { eq } from "drizzle-orm";
+import { eq, and, gte, lte, desc } from "drizzle-orm";
 
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
@@ -22,6 +25,9 @@ export interface IStorage {
   getMealPlanWithMeals(id: number): Promise<MealPlanWithMeals | undefined>;
   createMeals(mealPlanId: number, meals: InsertMeal[]): Promise<Meal[]>;
   updateMealPlanSyncStatus(id: number, synced: boolean): Promise<void>;
+  createOuraData(data: InsertOuraData): Promise<OuraData>;
+  getOuraData(userId: number, startDate: string, endDate?: string): Promise<OuraData[]>;
+  getLatestOuraData(userId: number): Promise<OuraData | undefined>;
 }
 
 export class MemStorage implements IStorage {
@@ -139,6 +145,22 @@ export class MemStorage implements IStorage {
       this.mealPlans.set(id, mealPlan);
     }
   }
+
+  // Oura data methods (MemStorage)
+  async createOuraData(data: InsertOuraData): Promise<OuraData> {
+    // Note: MemStorage doesn't persist Oura data - use DatabaseStorage for production
+    throw new Error("Oura data storage requires DatabaseStorage implementation");
+  }
+
+  async getOuraData(userId: number, startDate: string, endDate?: string): Promise<OuraData[]> {
+    // Note: MemStorage doesn't persist Oura data - use DatabaseStorage for production
+    return [];
+  }
+
+  async getLatestOuraData(userId: number): Promise<OuraData | undefined> {
+    // Note: MemStorage doesn't persist Oura data - use DatabaseStorage for production
+    return undefined;
+  }
 }
 
 // Database storage implementation
@@ -202,6 +224,68 @@ export class DatabaseStorage implements IStorage {
       .update(mealPlans)
       .set({ notionSynced: synced })
       .where(eq(mealPlans.id, id));
+  }
+
+  // Oura data methods (DatabaseStorage)
+  async createOuraData(data: InsertOuraData): Promise<OuraData> {
+    const [ouraRecord] = await db
+      .insert(ouraData)
+      .values(data)
+      .onConflictDoUpdate({
+        target: [ouraData.userId, ouraData.date],
+        set: {
+          activityScore: data.activityScore,
+          steps: data.steps,
+          calories: data.calories,
+          activeCalories: data.activeCalories,
+          workoutMinutes: data.workoutMinutes,
+          readinessScore: data.readinessScore,
+          sleepScore: data.sleepScore,
+          periodPhase: data.periodPhase,
+          activityLevel: data.activityLevel,
+          syncedAt: new Date(),
+        }
+      })
+      .returning();
+    return ouraRecord;
+  }
+
+  async getOuraData(userId: number, startDate: string, endDate?: string): Promise<OuraData[]> {
+    let query = db
+      .select()
+      .from(ouraData)
+      .where(
+        and(
+          eq(ouraData.userId, userId),
+          gte(ouraData.date, startDate)
+        )
+      );
+
+    if (endDate) {
+      query = db
+        .select()
+        .from(ouraData)
+        .where(
+          and(
+            eq(ouraData.userId, userId),
+            gte(ouraData.date, startDate),
+            lte(ouraData.date, endDate)
+          )
+        );
+    }
+
+    return await query.orderBy(ouraData.date);
+  }
+
+  async getLatestOuraData(userId: number): Promise<OuraData | undefined> {
+    const [latest] = await db
+      .select()
+      .from(ouraData)
+      .where(eq(ouraData.userId, userId))
+      .orderBy(desc(ouraData.date))
+      .limit(1);
+    
+    return latest || undefined;
   }
 }
 

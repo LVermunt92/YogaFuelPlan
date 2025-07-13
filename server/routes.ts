@@ -5,6 +5,8 @@ import { generateWeeklyMealPlan, formatMealPlanForNotion } from "./meal-generato
 import { mealPlanRequestSchema } from "@shared/schema";
 import { notion, createDatabaseIfNotExists, findDatabaseByTitle } from "./notion";
 import { generateShoppingList } from "./nutrition";
+import { OuraService } from "./oura";
+import cron from 'node-cron';
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
@@ -298,6 +300,254 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to generate shopping list" });
     }
   });
+
+  // Oura Ring Integration Endpoints
+  
+  // Test Oura connection
+  app.get("/api/oura/status", async (req, res) => {
+    try {
+      const ouraToken = process.env.OURA_ACCESS_TOKEN;
+      
+      if (!ouraToken) {
+        return res.status(400).json({ 
+          connected: false, 
+          message: "Oura access token not configured" 
+        });
+      }
+
+      const ouraService = new OuraService(ouraToken);
+      const isConnected = await ouraService.testConnection();
+      
+      if (isConnected) {
+        res.json({ 
+          connected: true, 
+          message: "Oura Ring connected successfully" 
+        });
+      } else {
+        res.status(400).json({ 
+          connected: false, 
+          message: "Invalid Oura access token or connection failed" 
+        });
+      }
+    } catch (error) {
+      console.error("Oura connection error:", error);
+      res.status(500).json({ 
+        connected: false, 
+        message: "Failed to test Oura connection" 
+      });
+    }
+  });
+
+  // Sync Oura data for a specific date
+  app.post("/api/oura/sync", async (req, res) => {
+    try {
+      const { date, userId = 1 } = req.body;
+      const ouraToken = process.env.OURA_ACCESS_TOKEN;
+      
+      if (!ouraToken) {
+        return res.status(400).json({ message: "Oura access token not configured" });
+      }
+
+      if (!date) {
+        return res.status(400).json({ message: "Date is required (YYYY-MM-DD format)" });
+      }
+
+      const ouraService = new OuraService(ouraToken);
+      const ouraData = await ouraService.transformOuraData(userId, date);
+      const savedData = await storage.createOuraData(ouraData);
+      
+      res.json({
+        message: "Oura data synced successfully",
+        data: savedData
+      });
+    } catch (error) {
+      console.error("Error syncing Oura data:", error);
+      res.status(500).json({ message: "Failed to sync Oura data" });
+    }
+  });
+
+  // Get Oura data for date range
+  app.get("/api/oura/data", async (req, res) => {
+    try {
+      const { userId = 1, startDate, endDate } = req.query;
+      
+      if (!startDate) {
+        return res.status(400).json({ message: "startDate is required" });
+      }
+
+      const ouraData = await storage.getOuraData(
+        Number(userId), 
+        startDate as string, 
+        endDate as string
+      );
+      
+      res.json({
+        data: ouraData,
+        count: ouraData.length
+      });
+    } catch (error) {
+      console.error("Error fetching Oura data:", error);
+      res.status(500).json({ message: "Failed to fetch Oura data" });
+    }
+  });
+
+  // Get latest Oura data
+  app.get("/api/oura/latest", async (req, res) => {
+    try {
+      const { userId = 1 } = req.query;
+      const latestData = await storage.getLatestOuraData(Number(userId));
+      
+      if (!latestData) {
+        return res.status(404).json({ message: "No Oura data found" });
+      }
+
+      res.json(latestData);
+    } catch (error) {
+      console.error("Error fetching latest Oura data:", error);
+      res.status(500).json({ message: "Failed to fetch latest Oura data" });
+    }
+  });
+
+  // Generate smart meal plan based on Oura activity
+  app.post("/api/meal-plans/smart-generate", async (req, res) => {
+    try {
+      const { weekStart, userId = 1 } = req.body;
+      
+      if (!weekStart) {
+        return res.status(400).json({ message: "weekStart is required" });
+      }
+
+      // Get Oura data for the week to determine activity levels
+      const weekStartDate = new Date(weekStart);
+      const weekEndDate = new Date(weekStartDate);
+      weekEndDate.setDate(weekEndDate.getDate() + 6);
+      
+      const ouraData = await storage.getOuraData(
+        userId,
+        weekStart,
+        weekEndDate.toISOString().split('T')[0]
+      );
+
+      // Determine activity level based on Oura data
+      let activityLevel: "high" | "low" = "high"; // Default
+      
+      if (ouraData.length > 0) {
+        // Calculate average activity indicators
+        const avgActivityScore = ouraData.reduce((sum, d) => sum + (d.activityScore || 0), 0) / ouraData.length;
+        const avgSteps = ouraData.reduce((sum, d) => sum + (d.steps || 0), 0) / ouraData.length;
+        const totalWorkoutMinutes = ouraData.reduce((sum, d) => sum + (d.workoutMinutes || 0), 0);
+        
+        // Decision logic for activity level
+        if (avgActivityScore < 70 || avgSteps < 6000 || totalWorkoutMinutes < 150) {
+          activityLevel = "low";
+        }
+      }
+
+      const request = {
+        activityLevel,
+        weekStart,
+        userId,
+      };
+
+      const generated = generateWeeklyMealPlan(request);
+      
+      // Save to storage
+      const savedMealPlan = await storage.createMealPlan(generated.mealPlan);
+      const savedMeals = await storage.createMeals(savedMealPlan.id, generated.meals);
+      
+      res.json({
+        mealPlan: savedMealPlan,
+        meals: savedMeals,
+        determinedActivityLevel: activityLevel,
+        ouraDataUsed: ouraData.length > 0,
+        message: `Meal plan generated based on ${ouraData.length > 0 ? 'Oura activity data' : 'default settings'}`
+      });
+    } catch (error) {
+      console.error("Error generating smart meal plan:", error);
+      res.status(500).json({ message: "Failed to generate smart meal plan" });
+    }
+  });
+
+  // Setup automatic daily Oura sync (runs every day at 6 AM)
+  if (process.env.NODE_ENV !== 'test') {
+    cron.schedule('0 6 * * *', async () => {
+      try {
+        console.log('Running daily Oura sync...');
+        const ouraToken = process.env.OURA_ACCESS_TOKEN;
+        
+        if (!ouraToken) {
+          console.log('Oura sync skipped - no access token configured');
+          return;
+        }
+
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const dateStr = yesterday.toISOString().split('T')[0];
+
+        const ouraService = new OuraService(ouraToken);
+        const ouraData = await ouraService.transformOuraData(1, dateStr); // Default user ID 1
+        await storage.createOuraData(ouraData);
+        
+        console.log(`Oura data synced successfully for ${dateStr}`);
+      } catch (error) {
+        console.error('Daily Oura sync failed:', error);
+      }
+    });
+
+    // Setup weekly smart meal plan generation (runs every Sunday at 8 PM)
+    cron.schedule('0 20 * * 0', async () => {
+      try {
+        console.log('Running weekly smart meal plan generation...');
+        
+        // Get next Monday's date
+        const nextMonday = new Date();
+        const daysUntilMonday = (8 - nextMonday.getDay()) % 7 || 7;
+        nextMonday.setDate(nextMonday.getDate() + daysUntilMonday);
+        const weekStart = nextMonday.toISOString().split('T')[0];
+        
+        // Get past week's Oura data to determine activity level
+        const pastWeekStart = new Date();
+        pastWeekStart.setDate(pastWeekStart.getDate() - 7);
+        const pastWeekEnd = new Date();
+        pastWeekEnd.setDate(pastWeekEnd.getDate() - 1);
+        
+        const ouraData = await storage.getOuraData(
+          1, // Default user ID
+          pastWeekStart.toISOString().split('T')[0],
+          pastWeekEnd.toISOString().split('T')[0]
+        );
+
+        // Determine activity level based on past week's data
+        let activityLevel: "high" | "low" = "high";
+        
+        if (ouraData.length > 0) {
+          const avgActivityScore = ouraData.reduce((sum, d) => sum + (d.activityScore || 0), 0) / ouraData.length;
+          const avgSteps = ouraData.reduce((sum, d) => sum + (d.steps || 0), 0) / ouraData.length;
+          const totalWorkoutMinutes = ouraData.reduce((sum, d) => sum + (d.workoutMinutes || 0), 0);
+          
+          if (avgActivityScore < 70 || avgSteps < 6000 || totalWorkoutMinutes < 150) {
+            activityLevel = "low";
+          }
+        }
+
+        const request = {
+          activityLevel,
+          weekStart,
+          userId: 1,
+        };
+
+        const generated = generateWeeklyMealPlan(request);
+        
+        // Save to storage
+        const savedMealPlan = await storage.createMealPlan(generated.mealPlan);
+        await storage.createMeals(savedMealPlan.id, generated.meals);
+        
+        console.log(`Weekly meal plan generated successfully for ${weekStart} with ${activityLevel} activity level`);
+      } catch (error) {
+        console.error('Weekly meal plan generation failed:', error);
+      }
+    });
+  }
 
   const httpServer = createServer(app);
   return httpServer;
