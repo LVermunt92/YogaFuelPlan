@@ -370,9 +370,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Find the recipe from the enhanced meal database
       const { ENHANCED_MEAL_DATABASE } = await import("./nutrition-enhanced");
+      
+      // Clean the meal name by removing portion scaling and leftover indicators
+      let cleanMealName = targetMeal.foodDescription
+        .replace(" (leftover)", "")
+        .replace(/ \(\d+x portions[^)]*\)/, "") // Remove "(2x portions - batch cook)" etc.
+        .replace(/ \(batch cook\)/, "") // Remove standalone "(batch cook)"
+        .trim();
+      
       let mealOption = ENHANCED_MEAL_DATABASE.find(option => 
-        option.name === targetMeal.foodDescription ||
-        option.name === targetMeal.foodDescription.replace(" (leftover)", "")
+        option.name === cleanMealName
       );
 
       // If recipe not found in database, generate with AI
@@ -388,7 +395,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const dietaryTags = user?.dietaryTags || [];
           
           const mealType = targetMeal.mealType as 'breakfast' | 'lunch' | 'dinner';
-          const cleanMealName = targetMeal.foodDescription.replace(" (leftover)", "");
           
           const aiRecipe = await generateRecipeWithAI(cleanMealName, dietaryTags, mealType);
           
