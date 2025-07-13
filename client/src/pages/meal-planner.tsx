@@ -806,7 +806,7 @@ export default function MealPlanner() {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-border">
-                        {[7, 1, 2, 3, 4, 5, 6].map(day => {
+                        {[1, 2, 3, 4, 5, 6, 7, 8].map(day => {
                           const dayMeals = getDayMeals(day);
                           const dayTotal = calculateDayTotal(day);
                           
@@ -824,12 +824,13 @@ export default function MealPlanner() {
                                         <div>
                                           <div className="font-semibold">Day {day}</div>
                                           <div className="text-xs text-muted-foreground">
-                                            {day === 7 ? 'Sunday' : 
-                                             day === 1 ? 'Monday' : 
-                                             day === 2 ? 'Tuesday' : 
-                                             day === 3 ? 'Wednesday' : 
-                                             day === 4 ? 'Thursday' : 
-                                             day === 5 ? 'Friday' : 'Saturday'}
+                                            {day === 1 ? 'Sunday' : 
+                                             day === 2 ? 'Monday' : 
+                                             day === 3 ? 'Tuesday' : 
+                                             day === 4 ? 'Wednesday' : 
+                                             day === 5 ? 'Thursday' : 
+                                             day === 6 ? 'Friday' : 
+                                             day === 7 ? 'Saturday' : 'Sunday'}
                                           </div>
                                         </div>
                                       ) : ''}
