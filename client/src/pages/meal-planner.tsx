@@ -313,7 +313,7 @@ export default function MealPlanner() {
   return (
     <div className="bg-background">
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-8 lg:px-12 py-8">
+      <main className="max-w-7xl mx-auto px-4 lg:px-6 py-4">
         {/* Page Title */}
         <div className="mb-6">
           <h1 className="text-3xl font-light text-foreground mb-2" style={{ fontFamily: 'Times New Roman, serif', letterSpacing: '0.05em' }}>

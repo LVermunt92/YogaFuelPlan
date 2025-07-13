@@ -138,7 +138,7 @@ export default function Profile() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#fefdf9] px-4 py-8">
+      <div className="min-h-screen bg-background px-2 py-4">
         <div className="max-w-4xl mx-auto">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
@@ -150,7 +150,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-[#fefdf9] px-4 py-8">
+    <div className="min-h-screen bg-background px-2 py-4">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-light text-foreground mb-2" style={{ fontFamily: 'Times New Roman, serif', letterSpacing: '0.05em' }}>
