@@ -56,6 +56,18 @@ export const ouraData = pgTable("oura_data", {
   uniqueUserDate: unique().on(table.userId, table.date),
 }));
 
+export const recipeRatings = pgTable("recipe_ratings", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id, { onDelete: "cascade" }).notNull(),
+  recipeName: text("recipe_name").notNull(),
+  rating: integer("rating").notNull(), // 1-5 stars
+  feedback: text("feedback"), // optional text feedback
+  mealType: text("meal_type").notNull(), // breakfast, lunch, dinner
+  ratedAt: timestamp("rated_at").notNull().defaultNow(),
+}, (table) => ({
+  uniqueUserRecipe: unique().on(table.userId, table.recipeName),
+}));
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
@@ -98,11 +110,25 @@ export const insertOuraDataSchema = createInsertSchema(ouraData).omit({
   syncedAt: true,
 });
 
+export const insertRecipeRatingSchema = createInsertSchema(recipeRatings).omit({
+  id: true,
+  ratedAt: true,
+});
+
+export const recipeRatingSchema = z.object({
+  recipeName: z.string().min(1),
+  rating: z.number().min(1).max(5),
+  feedback: z.string().optional(),
+  mealType: z.enum(["breakfast", "lunch", "dinner"]),
+});
+
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type UpdateUserProfile = z.infer<typeof updateUserProfileSchema>;
 export type MealPlan = typeof mealPlans.$inferSelect;
 export type InsertMealPlan = z.infer<typeof insertMealPlanSchema>;
+export type RecipeRating = typeof recipeRatings.$inferSelect;
+export type InsertRecipeRating = z.infer<typeof insertRecipeRatingSchema>;
 export type Meal = typeof meals.$inferSelect;
 export type InsertMeal = z.infer<typeof insertMealSchema>;
 export type MealPlanRequest = z.infer<typeof mealPlanRequestSchema>;

@@ -331,60 +331,51 @@ export default function MealPlanner() {
         {/* Welcome Message - Week Summary */}
         {latestMealPlan && (
           <div className="card-clean mb-16">
-            <div className="flex items-start space-x-6">
-              <div className="flex-shrink-0">
-                <div className="w-16 h-16 bg-muted/50 rounded-full flex items-center justify-center">
-                  <Calendar className="h-8 w-8 text-foreground" />
+            <h2 className="text-2xl font-bold text-foreground mb-4">
+              Welcome back to your week of {formatWeekRange(latestMealPlan.weekStart)}
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+              <div>
+                <div className="text-muted-foreground mb-2">Your protein target</div>
+                <div className="text-lg font-semibold text-foreground">
+                  {latestMealPlan.totalProtein}g daily
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">
+                  {latestMealPlan.activityLevel === 'high' ? 'High activity week' : 'Moderate activity week'}
                 </div>
               </div>
-              <div className="flex-1">
-                <h2 className="text-2xl font-bold text-foreground mb-4">
-                  Welcome back to your week of {formatWeekRange(latestMealPlan.weekStart)}
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
-                  <div>
-                    <div className="text-muted-foreground mb-2">Your protein target</div>
-                    <div className="text-lg font-semibold text-foreground">
-                      {latestMealPlan.totalProtein}g daily
-                    </div>
-                    <div className="text-xs text-muted-foreground mt-1">
-                      {latestMealPlan.activityLevel === 'high' ? 'High activity week' : 'Moderate activity week'}
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-muted-foreground mb-2">Meal preparation</div>
-                    <div className="text-lg font-semibold text-foreground">
-                      Under 30 minutes
-                    </div>
-                    <div className="text-xs text-muted-foreground mt-1">
-                      Quick & nutritious recipes
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-muted-foreground mb-2">This week's focus</div>
-                    <div className="text-lg font-semibold text-foreground">
-                      Plant-based nutrition
-                    </div>
-                    <div className="text-xs text-muted-foreground mt-1">
-                      Vegetarian, gluten & lactose-free
-                    </div>
-                  </div>
+              <div>
+                <div className="text-muted-foreground mb-2">Meal preparation</div>
+                <div className="text-lg font-semibold text-foreground">
+                  Under 30 minutes
                 </div>
-                {latestOuraData && (
-                  <div className="mt-6 p-4 bg-muted/30 rounded-lg">
-                    <div className="text-sm text-muted-foreground mb-2">
-                      Latest activity insight from {formatDate(latestOuraData.date)}
-                    </div>
-                    <div className="text-sm text-foreground">
-                      Your activity level is <span className="font-medium">{latestOuraData.activityLevel}</span> with {latestOuraData.steps?.toLocaleString() || 'N/A'} steps. 
-                      {latestOuraData.periodPhase && (
-                        <span className="ml-2">Currently in {latestOuraData.periodPhase} phase.</span>
-                      )}
-                    </div>
-                  </div>
-                )}
+                <div className="text-xs text-muted-foreground mt-1">
+                  Quick & nutritious recipes
+                </div>
+              </div>
+              <div>
+                <div className="text-muted-foreground mb-2">This week's focus</div>
+                <div className="text-lg font-semibold text-foreground">
+                  Plant-based nutrition
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">
+                  Vegetarian, gluten & lactose-free
+                </div>
               </div>
             </div>
+            {latestOuraData && (
+              <div className="mt-6 p-4 bg-muted/30 rounded-lg">
+                <div className="text-sm text-muted-foreground mb-2">
+                  Latest activity insight from {formatDate(latestOuraData.date)}
+                </div>
+                <div className="text-sm text-foreground">
+                  Your activity level is <span className="font-medium">{latestOuraData.activityLevel}</span> with {latestOuraData.steps?.toLocaleString() || 'N/A'} steps. 
+                  {latestOuraData.periodPhase && (
+                    <span className="ml-2">Currently in {latestOuraData.periodPhase} phase.</span>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
