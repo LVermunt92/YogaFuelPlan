@@ -866,21 +866,21 @@ export default function MealPlanner() {
                                 const isEatingOut = meal.foodDescription.includes('Eating out');
                                 const isFreshCooking = !isLeftover && !isEatingOut;
                                 
-                                const rowBgColor = isEatingOut 
-                                  ? 'bg-gray-50 border-l-4 border-l-gray-400' 
-                                  : isLeftover 
-                                    ? 'bg-blue-50 border-l-4 border-l-blue-500' 
-                                    : 'bg-emerald-50 border-l-4 border-l-emerald-500';
-                                
                                 return (
-                                  <tr key={meal.id} className={`hover:bg-muted/50 ${rowBgColor}`}>
+                                  <tr key={meal.id} className="hover:bg-muted/50">
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">
                                       {index === 0 ? `Day ${day}` : ''}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground capitalize">
                                       {meal.mealType}
                                     </td>
-                                    <td className="px-6 py-4 text-sm text-foreground">
+                                    <td className={`px-6 py-4 text-sm text-foreground relative ${
+                                      isEatingOut 
+                                        ? 'bg-gray-50 border-l-4 border-l-gray-400' 
+                                        : isLeftover 
+                                          ? 'bg-blue-50 border-l-4 border-l-blue-500' 
+                                          : 'bg-emerald-50 border-l-4 border-l-emerald-500'
+                                    }`}>
                                       {isEatingOut ? (
                                         <div className="flex items-center gap-2">
                                           <span className="w-4 h-4 text-gray-500">🍽️</span>
