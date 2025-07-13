@@ -542,48 +542,27 @@ export default function MealPlanner() {
                   </div>
                 )}
 
-                
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Button
-                    onClick={() => {
-                      const yesterday = new Date();
-                      yesterday.setDate(yesterday.getDate() - 1);
-                      syncOuraMutation.mutate(yesterday.toISOString().split('T')[0]);
-                    }}
-                    disabled={syncOuraMutation.isPending}
-                    className="btn-outline"
-                  >
-                    {syncOuraMutation.isPending ? (
-                      <>
-                        <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-foreground mr-2" />
-                        Syncing...
-                      </>
-                    ) : (
-                      <>
-                        <Upload className="mr-2 h-3 w-3" />
-                        Sync Yesterday's Data
-                      </>
-                    )}
-                  </Button>
-                  
-                  <Button
-                    onClick={() => smartGenerateMutation.mutate()}
-                    disabled={smartGenerateMutation.isPending}
-                    className="btn-minimal"
-                  >
-                    {smartGenerateMutation.isPending ? (
-                      <>
-                        <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-primary-foreground mr-2" />
-                        Generating...
-                      </>
-                    ) : (
-                      <>
-                        <Activity className="mr-2 h-3 w-3" />
-                        Smart Generate Plan
-                      </>
-                    )}
-                  </Button>
-                </div>
+                <Button
+                  onClick={() => {
+                    const yesterday = new Date();
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    syncOuraMutation.mutate(yesterday.toISOString().split('T')[0]);
+                  }}
+                  disabled={syncOuraMutation.isPending}
+                  className="btn-outline w-full"
+                >
+                  {syncOuraMutation.isPending ? (
+                    <>
+                      <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-foreground mr-2" />
+                      Syncing...
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="mr-2 h-3 w-3" />
+                      Sync Yesterday's Data
+                    </>
+                  )}
+                </Button>
                 
                 {latestOuraData && (
                   <div className="text-xs text-slate-600">
@@ -660,11 +639,18 @@ export default function MealPlanner() {
                 
                 <div className="space-y-4">
                   <Button 
-                    onClick={() => generateMutation.mutate()}
-                    disabled={generateMutation.isPending}
+                    onClick={() => {
+                      // Use smart generation if Oura data is available, otherwise use manual settings
+                      if (latestOuraData && ouraStatus?.connected) {
+                        smartGenerateMutation.mutate();
+                      } else {
+                        generateMutation.mutate();
+                      }
+                    }}
+                    disabled={generateMutation.isPending || smartGenerateMutation.isPending}
                     className="btn-minimal w-full"
                   >
-                    {generateMutation.isPending ? (
+                    {(generateMutation.isPending || smartGenerateMutation.isPending) ? (
                       <>
                         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground mr-2" />
                         Generating...
@@ -672,14 +658,16 @@ export default function MealPlanner() {
                     ) : (
                       <>
                         <Activity className="mr-2 h-4 w-4" />
-                        Generate Meal Plan
+                        {latestOuraData && ouraStatus?.connected ? 'Smart Generate Plan' : 'Generate Meal Plan'}
                       </>
                     )}
                   </Button>
                   
                   <p className="text-xs text-muted-foreground">
-                    Auto-generate creates a high-activity meal plan for next Monday and syncs to Notion if connected.
-                    {userProfile && <span className="block mt-1">Use "Update with Preferences" to regenerate with your current dietary preferences.</span>}
+                    {latestOuraData && ouraStatus?.connected 
+                      ? `Will automatically use your ${latestOuraData.activityLevel} activity level from Oura Ring data`
+                      : 'Creates a meal plan based on your selected activity level and dietary preferences'
+                    }
                   </p>
                   
                   {/* Shopping List Button */}

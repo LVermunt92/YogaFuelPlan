@@ -335,62 +335,8 @@ export default function Profile() {
                 </div>
               )}
             </div>
-
-            {/* Goals Section */}
-            <div className="mt-8">
-              <h3 className="text-lg font-medium text-foreground mb-4">Goals</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div>
-                  <Label htmlFor="goalWeight" className="text-sm font-medium text-foreground mb-2 block">
-                    Goal Weight (kg)
-                  </Label>
-                  <Input
-                    id="goalWeight"
-                    type="number"
-                    step="0.1"
-                    value={formData.goalWeight}
-                    onChange={(e) => setFormData(prev => ({ ...prev, goalWeight: e.target.value }))}
-                    className="input-clean"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="goalWaistline" className="text-sm font-medium text-foreground mb-2 block">
-                    Goal Waistline (cm)
-                  </Label>
-                  <Input
-                    id="goalWaistline"
-                    type="number"
-                    step="0.1"
-                    value={formData.goalWaistline}
-                    onChange={(e) => setFormData(prev => ({ ...prev, goalWaistline: e.target.value }))}
-                    className="input-clean"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="targetDate" className="text-sm font-medium text-foreground mb-2 block">
-                    Target Date
-                  </Label>
-                  <Input
-                    id="targetDate"
-                    type="date"
-                    value={formData.targetDate}
-                    onChange={(e) => setFormData(prev => ({ ...prev, targetDate: e.target.value }))}
-                    className="input-clean"
-                  />
-                </div>
-              </div>
-
-              {/* Goal Timeline Display */}
-              {formData.targetDate && (
-                <div className="mt-4 p-3 bg-muted rounded-md">
-                  <span className="text-sm text-muted-foreground">
-                    Timeline: {Math.max(0, Math.ceil((new Date(formData.targetDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24 * 7)))} weeks to reach your goals
-                  </span>
-                </div>
-              )}
-
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
               <div>
                 <Label htmlFor="activityLevel" className="text-sm font-medium text-foreground mb-2 block">
                   Default Activity Level
@@ -435,7 +381,7 @@ export default function Profile() {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
                 <Label htmlFor="goalWeight" className="text-sm font-medium text-foreground mb-2 block">
                   Goal Weight (kg)
@@ -465,7 +411,29 @@ export default function Profile() {
                   placeholder="Optional target waistline"
                 />
               </div>
+
+              <div>
+                <Label htmlFor="targetDate" className="text-sm font-medium text-foreground mb-2 block">
+                  Target Date
+                </Label>
+                <Input
+                  id="targetDate"
+                  type="date"
+                  value={formData.targetDate}
+                  onChange={(e) => setFormData(prev => ({ ...prev, targetDate: e.target.value }))}
+                  className="input-clean"
+                />
+              </div>
             </div>
+
+            {/* Goal Timeline Display */}
+            {formData.targetDate && (
+              <div className="mt-4 p-3 bg-muted rounded-md">
+                <span className="text-sm text-muted-foreground">
+                  Timeline: {Math.max(0, Math.ceil((new Date(formData.targetDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24 * 7)))} weeks to reach your goals
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Meal Planning Preferences */}
