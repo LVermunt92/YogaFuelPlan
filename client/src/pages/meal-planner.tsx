@@ -100,10 +100,11 @@ interface OuraStatus {
 export default function MealPlanner() {
   const [activityLevel, setActivityLevel] = useState<"high" | "low">("high");
   const [weekStart, setWeekStart] = useState(() => {
-    const nextMonday = new Date();
-    const daysUntilMonday = (8 - nextMonday.getDay()) % 7 || 7;
-    nextMonday.setDate(nextMonday.getDate() + daysUntilMonday);
-    return nextMonday.toISOString().split('T')[0];
+    // Week starts on Sunday for Sunday night cooking pattern
+    const nextSunday = new Date();
+    const daysUntilSunday = (7 - nextSunday.getDay()) % 7;
+    nextSunday.setDate(nextSunday.getDate() + daysUntilSunday);
+    return nextSunday.toISOString().split('T')[0];
   });
   const [selectedMealPlan, setSelectedMealPlan] = useState<number | null>(null); // Auto-select latest meal plan
   const [showShoppingList, setShowShoppingList] = useState(false);
@@ -805,7 +806,7 @@ export default function MealPlanner() {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-border">
-                        {[1, 2, 3, 4, 5, 6, 7].map(day => {
+                        {[7, 1, 2, 3, 4, 5, 6].map(day => {
                           const dayMeals = getDayMeals(day);
                           const dayTotal = calculateDayTotal(day);
                           
@@ -819,7 +820,19 @@ export default function MealPlanner() {
                                 return (
                                   <tr key={meal.id} className="hover:bg-muted/50">
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">
-                                      {index === 0 ? `Day ${day}` : ''}
+                                      {index === 0 ? (
+                                        <div>
+                                          <div className="font-semibold">Day {day}</div>
+                                          <div className="text-xs text-muted-foreground">
+                                            {day === 7 ? 'Sunday' : 
+                                             day === 1 ? 'Monday' : 
+                                             day === 2 ? 'Tuesday' : 
+                                             day === 3 ? 'Wednesday' : 
+                                             day === 4 ? 'Thursday' : 
+                                             day === 5 ? 'Friday' : 'Saturday'}
+                                          </div>
+                                        </div>
+                                      ) : ''}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground capitalize">
                                       {meal.mealType}
