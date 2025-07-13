@@ -322,30 +322,7 @@ export default function MealPlanner() {
       </header>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* User Profile */}
-        <Card className="mb-8">
-          <CardContent className="p-6">
-            <h2 className="text-lg font-semibold text-slate-900 mb-4">User Profile</h2>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="bg-slate-50 rounded-lg p-4">
-                <div className="text-sm text-slate-600 mb-1">Weight</div>
-                <div className="text-2xl font-semibold text-slate-900">60kg</div>
-              </div>
-              <div className="bg-slate-50 rounded-lg p-4">
-                <div className="text-sm text-slate-600 mb-1">Daily Activity</div>
-                <div className="text-lg font-medium text-slate-900">Ashtanga Yoga</div>
-              </div>
-              <div className="bg-slate-50 rounded-lg p-4">
-                <div className="text-sm text-slate-600 mb-1">Protein Target</div>
-                <div className="text-2xl font-semibold text-emerald-600">{proteinTarget}g/day</div>
-              </div>
-              <div className="bg-slate-50 rounded-lg p-4">
-                <div className="text-sm text-slate-600 mb-1">Dietary Restrictions</div>
-                <div className="text-sm text-slate-900">Vegetarian, GF, LF</div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+
 
         {/* Oura Ring Integration */}
         <Card className="mb-8">
@@ -397,7 +374,7 @@ export default function MealPlanner() {
                 {/* Personal Health Metrics */}
                 <div className="bg-slate-50 rounded-lg p-4">
                   <h3 className="text-sm font-semibold text-slate-700 mb-3">Personal Health Metrics</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="bg-white rounded-lg p-3 border border-slate-200">
                       <div className="text-xs text-slate-600 mb-1">Weight</div>
                       <div className="text-lg font-semibold text-slate-900">60 kg</div>
@@ -409,6 +386,10 @@ export default function MealPlanner() {
                     <div className="bg-white rounded-lg p-3 border border-slate-200">
                       <div className="text-xs text-slate-600 mb-1">Protein Target</div>
                       <div className="text-lg font-semibold text-emerald-600">{proteinTarget}g</div>
+                    </div>
+                    <div className="bg-white rounded-lg p-3 border border-slate-200">
+                      <div className="text-xs text-slate-600 mb-1">Diet Type</div>
+                      <div className="text-sm font-medium text-slate-900">Vegetarian, GF, LF</div>
                     </div>
                   </div>
                 </div>
@@ -535,12 +516,12 @@ export default function MealPlanner() {
                   <Button 
                     onClick={() => autoGenerateMutation.mutate()}
                     disabled={autoGenerateMutation.isPending}
-                    className="w-full bg-emerald-600 hover:bg-emerald-700"
-                    variant="secondary"
+                    className="w-full"
+                    variant="outline"
                   >
                     {autoGenerateMutation.isPending ? (
                       <>
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-slate-600 mr-2" />
                         Auto-Generating...
                       </>
                     ) : (
@@ -552,7 +533,7 @@ export default function MealPlanner() {
                   </Button>
                   
                   <p className="text-xs text-slate-500 mt-2">
-                    Auto-generate automatically creates a high-activity meal plan for next Monday and syncs to Notion if connected.
+                    Auto-generate creates a high-activity meal plan for next Monday and syncs to Notion if connected.
                   </p>
                 </div>
               </CardContent>
