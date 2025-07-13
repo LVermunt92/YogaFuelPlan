@@ -341,11 +341,54 @@ function generateMealPrepPlan(
   console.log(`Meal prep plan: ${cookingDaysPerWeek} cooking days, ${eatingDaysAtHome} eating days = ${totalMealsNeeded} meals`);
   console.log(`Days with meals: ${daysWithMeals.join(', ')}, Days skipped: ${daysToSkip.join(', ')}`);
   
-  // Generate cooking schedule based on the pattern:
-  // Cook on some days, eat leftovers on others
+  // Create a cooking schedule: track which meals are fresh vs leftovers
+  // For 3 cooking days and 12 meals: cook 4 meals fresh, repeat each 3 times (4*3=12)
   const mealsPerCookingDay = Math.ceil(totalMealsNeeded / cookingDaysPerWeek);
-  let mealIndex = 0;
-  let cookingDayIndex = 0;
+  const cookingSchedule = new Map<string, { mealOption: any, isLeftover: boolean }>();
+  
+  // Plan fresh cooking moments
+  let cookingMealIndex = 0;
+  let usedLunchMeals = 0;
+  let usedDinnerMeals = 0;
+  
+  daysWithMeals.forEach((day, dayIndex) => {
+    const lunchKey = `${day}-lunch`;
+    const dinnerKey = `${day}-dinner`;
+    
+    // Determine if this should be a fresh cooking day
+    const shouldCookLunch = dayIndex % 2 === 0; // Cook lunch every other day
+    const shouldCookDinner = dayIndex % 2 === 1; // Cook dinner on alternate days
+    
+    if (shouldCookLunch && usedLunchMeals < cookingDaysPerWeek) {
+      cookingSchedule.set(lunchKey, { 
+        mealOption: lunchOptions[usedLunchMeals % lunchOptions.length], 
+        isLeftover: false 
+      });
+      usedLunchMeals++;
+    } else if (usedLunchMeals > 0) {
+      // Use previous lunch meal as leftover
+      const prevMealIndex = Math.max(0, usedLunchMeals - 1);
+      cookingSchedule.set(lunchKey, { 
+        mealOption: lunchOptions[prevMealIndex % lunchOptions.length], 
+        isLeftover: true 
+      });
+    }
+    
+    if (shouldCookDinner && usedDinnerMeals < cookingDaysPerWeek) {
+      cookingSchedule.set(dinnerKey, { 
+        mealOption: dinnerOptions[usedDinnerMeals % dinnerOptions.length], 
+        isLeftover: false 
+      });
+      usedDinnerMeals++;
+    } else if (usedDinnerMeals > 0) {
+      // Use previous dinner meal as leftover
+      const prevMealIndex = Math.max(0, usedDinnerMeals - 1);
+      cookingSchedule.set(dinnerKey, { 
+        mealOption: dinnerOptions[prevMealIndex % dinnerOptions.length], 
+        isLeftover: true 
+      });
+    }
+  });
   
   // Generate meals for all 7 days (breakfast always included)
   for (let day = 1; day <= 7; day++) {
@@ -370,25 +413,25 @@ function generateMealPrepPlan(
       totalWeeklyProtein += adjustedProtein;
     }
     
-    // LUNCH & DINNER: Only for days included in the meal prep plan
+    // LUNCH & DINNER: Generate for all days, mark "eating out" for excluded days
     if (daysWithMeals.includes(day)) {
-      const dayMealIndex = daysWithMeals.indexOf(day);
+      // Days with home cooking - use the cooking schedule
+      const lunchKey = `${day}-lunch`;
+      const dinnerKey = `${day}-dinner`;
       
       // Generate lunch
-      const isLunchFresh = cookingDayIndex < cookingDaysPerWeek && mealIndex % mealsPerCookingDay === 0;
-      const lunchMealIndex = Math.floor(mealIndex / mealsPerCookingDay);
-      const selectedLunchMeal = lunchOptions[lunchMealIndex % lunchOptions.length];
-      
-      if (selectedLunchMeal) {
-        const adjustedPortion = adjustMealPortion(selectedLunchMeal.portion, caloricAdjustment);
-        const adjustedProtein = Math.round(selectedLunchMeal.nutrition.protein * caloricAdjustment);
-        const prepTime = isLunchFresh ? selectedLunchMeal.nutrition.prepTime : 5;
+      const lunchSchedule = cookingSchedule.get(lunchKey);
+      if (lunchSchedule) {
+        const { mealOption, isLeftover } = lunchSchedule;
+        const adjustedPortion = adjustMealPortion(mealOption.portion, caloricAdjustment);
+        const adjustedProtein = Math.round(mealOption.nutrition.protein * caloricAdjustment);
+        const prepTime = isLeftover ? 5 : mealOption.nutrition.prepTime;
         
         meals.push({
           mealPlanId: 0,
           day,
           mealType: 'lunch',
-          foodDescription: isLunchFresh ? selectedLunchMeal.name : `${selectedLunchMeal.name} (leftover)`,
+          foodDescription: isLeftover ? `${mealOption.name} (leftover)` : mealOption.name,
           portion: adjustedPortion,
           protein: adjustedProtein,
           prepTime: prepTime,
@@ -398,21 +441,18 @@ function generateMealPrepPlan(
       }
       
       // Generate dinner
-      mealIndex++;
-      const isDinnerFresh = cookingDayIndex < cookingDaysPerWeek && mealIndex % mealsPerCookingDay === 0;
-      const dinnerMealIndex = Math.floor(mealIndex / mealsPerCookingDay);
-      const selectedDinnerMeal = dinnerOptions[dinnerMealIndex % dinnerOptions.length];
-      
-      if (selectedDinnerMeal) {
-        const adjustedPortion = adjustMealPortion(selectedDinnerMeal.portion, caloricAdjustment);
-        const adjustedProtein = Math.round(selectedDinnerMeal.nutrition.protein * caloricAdjustment);
-        const prepTime = isDinnerFresh ? selectedDinnerMeal.nutrition.prepTime : 5;
+      const dinnerSchedule = cookingSchedule.get(dinnerKey);
+      if (dinnerSchedule) {
+        const { mealOption, isLeftover } = dinnerSchedule;
+        const adjustedPortion = adjustMealPortion(mealOption.portion, caloricAdjustment);
+        const adjustedProtein = Math.round(mealOption.nutrition.protein * caloricAdjustment);
+        const prepTime = isLeftover ? 5 : mealOption.nutrition.prepTime;
         
         meals.push({
           mealPlanId: 0,
           day,
           mealType: 'dinner',
-          foodDescription: isDinnerFresh ? selectedDinnerMeal.name : `${selectedDinnerMeal.name} (leftover)`,
+          foodDescription: isLeftover ? `${mealOption.name} (leftover)` : mealOption.name,
           portion: adjustedPortion,
           protein: adjustedProtein,
           prepTime: prepTime,
@@ -420,11 +460,27 @@ function generateMealPrepPlan(
         
         totalWeeklyProtein += adjustedProtein;
       }
+    } else {
+      // Days with eating out - add "eating out" placeholder meals
+      meals.push({
+        mealPlanId: 0,
+        day,
+        mealType: 'lunch',
+        foodDescription: 'Eating out',
+        portion: '',
+        protein: 0,
+        prepTime: 0,
+      });
       
-      mealIndex++;
-      if (isLunchFresh || isDinnerFresh) {
-        cookingDayIndex++;
-      }
+      meals.push({
+        mealPlanId: 0,
+        day,
+        mealType: 'dinner',
+        foodDescription: 'Eating out',
+        portion: '',
+        protein: 0,
+        prepTime: 0,
+      });
     }
   }
 
