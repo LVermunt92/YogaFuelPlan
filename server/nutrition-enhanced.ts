@@ -345,6 +345,218 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       ],
       notes: "Fresh herbs provide more flavour and nutrients than dried"
     }
+  },
+
+  // VIRAL SOCIAL MEDIA RECIPES - Trendy & Instagram-worthy meals
+  {
+    name: "Viral Green Goddess Salad Bowl (TikTok famous)",
+    portion: "1 large bowl",
+    nutrition: { 
+      protein: 22, 
+      prepTime: 15, 
+      calories: 380,
+      carbohydrates: 28,
+      fats: 24,
+      fiber: 12,
+      sugar: 8,
+      sodium: 420,
+      potassium: 650,
+      calcium: 180,
+      iron: 3.8,
+      vitaminC: 45,
+      costEuros: 4.50, 
+      proteinPerEuro: 4.9 
+    },
+    category: "lunch",
+    tags: ["vegetarian", "gluten-free", "viral", "social-media", "anti-inflammatory", "keto"],
+    ingredients: ["mixed greens", "cucumber", "avocado", "hemp seeds", "pumpkin seeds", "tahini", "lemon", "fresh herbs", "olive oil", "nutritional yeast"],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["mixed greens", "cucumber", "fresh herbs"],
+      benefits: ["Instagram-worthy presentation", "Packed with healthy fats", "Viral for good reason - incredibly satisfying"]
+    },
+    recipe: {
+      instructions: [
+        "Make viral green goddess dressing: blend tahini, lemon juice, herbs, olive oil, garlic",
+        "Arrange mixed greens as base in photogenic bowl",
+        "Add sliced cucumber in rows for visual appeal",
+        "Fan out avocado slices artistically",
+        "Sprinkle hemp seeds and pumpkin seeds generously",
+        "Drizzle green goddess dressing in Instagram-worthy pattern",
+        "Finish with nutritional yeast for umami flavor"
+      ],
+      tips: ["Use a white bowl for best photo contrast", "Arrange ingredients in sections for viral aesthetic", "This recipe went viral for its incredible taste and nutrition"],
+      notes: "This salad became TikTok famous for being both incredibly photogenic and satisfying"
+    }
+  },
+
+  {
+    name: "Viral Cottage Cheese Bowl (Social Media Trend)",
+    portion: "1 bowl (300g)",
+    nutrition: { 
+      protein: 34, 
+      prepTime: 5, 
+      calories: 420,
+      carbohydrates: 32,
+      fats: 18,
+      fiber: 8,
+      sugar: 24,
+      sodium: 380,
+      potassium: 480,
+      calcium: 280,
+      iron: 2.1,
+      vitaminC: 35,
+      costEuros: 3.20, 
+      proteinPerEuro: 10.6 
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "gluten-free", "viral", "social-media", "high-protein", "probiotic"],
+    ingredients: ["cottage cheese", "fresh berries", "honey", "granola", "chia seeds", "cinnamon", "vanilla extract"],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["berries"],
+      benefits: ["Viral protein powerhouse", "Perfect for content creators", "Trending for incredible protein content"]
+    },
+    recipe: {
+      instructions: [
+        "Place 200g cottage cheese in aesthetic bowl",
+        "Mix in vanilla extract and cinnamon for flavor",
+        "Top with fresh mixed berries in pretty arrangement",
+        "Drizzle honey in decorative pattern",
+        "Sprinkle granola and chia seeds for crunch",
+        "Style for photo before eating!"
+      ],
+      tips: ["This went viral for having 34g protein in one bowl", "Perfect for fitness influencers", "The trend started because it's incredibly filling"],
+      notes: "Cottage cheese bowls exploded on social media for their incredible protein content and versatility"
+    }
+  },
+
+  {
+    name: "Viral Marry Me Chicken Pasta (Social Media Hit)",
+    portion: "1 serving",
+    nutrition: { 
+      protein: 42, 
+      prepTime: 25, 
+      calories: 580,
+      carbohydrates: 48,
+      fats: 26,
+      fiber: 4,
+      sugar: 8,
+      sodium: 680,
+      potassium: 720,
+      calcium: 150,
+      iron: 3.2,
+      vitaminC: 12,
+      costEuros: 5.80, 
+      proteinPerEuro: 7.2 
+    },
+    category: "dinner",
+    tags: ["viral", "social-media", "high-protein", "comfort-food"],
+    ingredients: ["chicken breast", "pasta", "sun-dried tomatoes", "heavy cream", "parmesan", "garlic", "herbs", "white wine"],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["sun-dried tomatoes", "garlic", "herbs"],
+      benefits: ["Social media sensation", "Named for being so good it'll make someone propose", "Viral comfort food at its finest"]
+    },
+    recipe: {
+      instructions: [
+        "Season and sear chicken breast until golden (viral technique for max flavor)",
+        "Remove chicken, sauté garlic in same pan",
+        "Add sun-dried tomatoes and white wine",
+        "Pour in cream, add parmesan for viral creamy sauce",
+        "Return chicken to pan, simmer until cooked through",
+        "Serve over pasta with fresh herbs for Instagram appeal"
+      ],
+      tips: ["Called 'Marry Me' because it's proposal-worthy", "This recipe went viral for being restaurant-quality at home", "Perfect for date night content"],
+      notes: "This pasta went viral because it's so delicious, people joke it's good enough to propose over"
+    }
+  },
+
+  {
+    name: "Viral Cucumber Salad (TikTok Obsession)",
+    portion: "1 large serving",
+    nutrition: { 
+      protein: 8, 
+      prepTime: 10, 
+      calories: 180,
+      carbohydrates: 12,
+      fats: 14,
+      fiber: 6,
+      sugar: 8,
+      sodium: 520,
+      potassium: 320,
+      calcium: 45,
+      iron: 1.2,
+      vitaminC: 25,
+      costEuros: 2.10, 
+      proteinPerEuro: 3.8 
+    },
+    category: "lunch",
+    tags: ["vegetarian", "gluten-free", "viral", "social-media", "low-calorie", "refreshing"],
+    ingredients: ["cucumbers", "rice vinegar", "soy sauce", "sesame oil", "garlic", "chili flakes", "sesame seeds"],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["cucumbers"],
+      benefits: ["TikTok viral sensation", "Incredibly refreshing and hydrating", "Perfect for hot weather content"]
+    },
+    recipe: {
+      instructions: [
+        "Slice cucumbers thin using viral TikTok technique",
+        "Salt cucumbers and let drain for 10 minutes",
+        "Mix rice vinegar, soy sauce, sesame oil, minced garlic",
+        "Toss cucumbers with dressing",
+        "Top with chili flakes and sesame seeds",
+        "Let marinate for viral flavor development"
+      ],
+      tips: ["This salad broke TikTok for being addictively delicious", "The key is the perfect balance of salty, sour, and spicy", "Many creators make this daily"],
+      notes: "This cucumber salad went massively viral on TikTok for being incredibly simple yet addictive"
+    }
+  },
+
+  {
+    name: "Viral Cloud Bread (Social Media Phenomenon)",
+    portion: "4 pieces",
+    nutrition: { 
+      protein: 24, 
+      prepTime: 35, 
+      calories: 280,
+      carbohydrates: 4,
+      fats: 18,
+      fiber: 0,
+      sugar: 2,
+      sodium: 380,
+      potassium: 180,
+      calcium: 85,
+      iron: 1.8,
+      vitaminC: 0,
+      costEuros: 1.80, 
+      proteinPerEuro: 13.3 
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "gluten-free", "viral", "social-media", "keto", "low-carb"],
+    ingredients: ["eggs", "cream cheese", "baking powder", "salt"],
+    wholeFoodLevel: "minimal",
+    vegetableContent: {
+      servings: 0,
+      vegetables: [],
+      benefits: ["Instagram sensation for cloud-like appearance", "Keto community favorite", "Viral for looking impossible"]
+    },
+    recipe: {
+      instructions: [
+        "Separate 3 eggs (viral technique: use the shell to separate)",
+        "Whip egg whites to stiff peaks for viral cloud effect",
+        "Mix egg yolks with softened cream cheese until smooth",
+        "Gently fold yolk mixture into whites to maintain fluffiness",
+        "Bake at 300°F for 30 minutes until golden and cloud-like",
+        "Cool before serving for best viral texture"
+      ],
+      tips: ["Went viral for looking like literal clouds", "The folding technique is crucial for viral fluffiness", "Perfect for keto and low-carb content creators"],
+      notes: "Cloud bread became a social media sensation for its impossible cloud-like appearance and keto-friendly nature"
+    }
   }
 ];
 

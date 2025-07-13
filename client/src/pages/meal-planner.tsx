@@ -105,7 +105,7 @@ export default function MealPlanner() {
     nextMonday.setDate(nextMonday.getDate() + daysUntilMonday);
     return nextMonday.toISOString().split('T')[0];
   });
-  const [selectedMealPlan, setSelectedMealPlan] = useState<number | null>(23); // Force show meal plan 23 with leftover functionality
+  const [selectedMealPlan, setSelectedMealPlan] = useState<number | null>(null); // Auto-select latest meal plan
   const [showShoppingList, setShowShoppingList] = useState(false);
   const [selectedMealId, setSelectedMealId] = useState<number | null>(null);
   const [showOuraPanel, setShowOuraPanel] = useState(false);

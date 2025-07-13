@@ -181,7 +181,9 @@ export const DIETARY_TAGS = [
   "whole30",
   "raw",
   "pescatarian",
-  "ayurvedic"
+  "ayurvedic",
+  "viral",
+  "social-media"
 ] as const;
 
 export const mealPlanRequestSchema = z.object({
