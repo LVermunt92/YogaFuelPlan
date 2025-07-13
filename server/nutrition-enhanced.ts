@@ -160,12 +160,12 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   // Lunch options - Whole Foods Focus
   {
-    name: "Wild-caught salmon with roasted root vegetables",
-    portion: "150g salmon + 200g vegetables",
-    nutrition: { protein: 35, prepTime: 25, costEuros: 8.50, proteinPerEuro: 4.1 },
+    name: "Protein-packed lentil and roasted root vegetable bowl",
+    portion: "1.5 cups lentils + 200g vegetables",
+    nutrition: { protein: 24, prepTime: 35, costEuros: 4.50, proteinPerEuro: 5.3 },
     category: "lunch",
-    tags: ["pescatarian", "gluten-free", "dairy-free", "paleo", "anti-inflammatory", "high-protein"],
-    ingredients: ["wild salmon fillet", "sweet potato", "carrots", "parsnips", "red onion", "fresh rosemary", "olive oil", "lemon", "sea salt"],
+    tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "anti-inflammatory", "high-protein"],
+    ingredients: ["red lentils", "sweet potato", "carrots", "parsnips", "red onion", "fresh rosemary", "olive oil", "lemon", "sea salt", "tahini"],
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 3,
@@ -177,16 +177,16 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         "Preheat oven to 200°C",
         "Dice 1 medium sweet potato, 2 carrots, 1 parsnip into 2cm pieces",
         "Toss vegetables with 1 tbsp olive oil, salt, and fresh rosemary",
-        "Roast vegetables for 20 minutes",
-        "Season salmon with salt and lemon juice",
-        "Add salmon to oven for final 12-15 minutes",
-        "Serve with lemon wedges"
+        "Roast vegetables for 35 minutes until tender",
+        "Cook 1 cup red lentils in 2 cups water for 15 minutes",
+        "Make tahini dressing with lemon juice and herbs",
+        "Serve lentils over roasted vegetables with tahini drizzle"
       ],
       tips: [
-        "Choose wild-caught salmon for better omega-3 content",
-        "Don't overcook salmon - it should flake easily"
+        "Red lentils cook faster than other varieties",
+        "Roast vegetables until edges are caramelized for best flavor"
       ],
-      notes: "Wild salmon provides superior nutrition compared to farmed varieties"
+      notes: "Red lentils provide complete protein and cook quickly for meal prep"
     }
   },
   {
@@ -222,12 +222,12 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     }
   },
   {
-    name: "Grass-fed beef with roasted seasonal vegetables",
-    portion: "150g beef + mixed vegetables",
-    nutrition: { protein: 42, prepTime: 30, costEuros: 9.80, proteinPerEuro: 4.3 },
+    name: "High-protein tempeh with roasted seasonal vegetables",
+    portion: "200g tempeh + mixed vegetables",
+    nutrition: { protein: 31, prepTime: 30, costEuros: 6.80, proteinPerEuro: 4.6 },
     category: "lunch",
-    tags: ["paleo", "gluten-free", "dairy-free", "high-protein", "anti-inflammatory"],
-    ingredients: ["grass-fed beef sirloin", "seasonal vegetables (zucchini, eggplant, bell peppers)", "fresh thyme", "garlic", "olive oil", "balsamic vinegar", "sea salt"],
+    tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "high-protein", "anti-inflammatory"],
+    ingredients: ["tempeh", "seasonal vegetables (zucchini, eggplant, bell peppers)", "fresh thyme", "garlic", "olive oil", "balsamic vinegar", "sea salt", "tamari"],
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 3,
@@ -236,53 +236,53 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
-        "Let beef come to room temperature for 30 minutes",
+        "Slice tempeh into 1cm thick pieces",
         "Preheat oven to 220°C",
         "Cut vegetables into similar-sized pieces",
         "Toss vegetables with olive oil, salt, and fresh thyme",
         "Roast vegetables 20 minutes",
-        "Season beef with salt and sear in hot pan 2-3 minutes each side",
-        "Rest beef 5 minutes before slicing",
+        "Pan-fry tempeh slices with tamari until golden, 3-4 minutes each side",
+        "Serve tempeh over roasted vegetables",
         "Drizzle with balsamic vinegar"
       ],
       tips: [
-        "Choose grass-fed beef for better nutrient profile",
-        "Use a meat thermometer for perfect doneness"
+        "Choose organic tempeh for better flavor and nutrition",
+        "Don't overcook tempeh to maintain its texture"
       ],
-      notes: "Grass-fed beef contains more omega-3 fatty acids than grain-fed"
+      notes: "Tempeh provides complete protein and beneficial probiotics"
     }
   },
 
   // Dinner options - Whole Foods Focus
   {
-    name: "Free-range chicken thighs with roasted Brussels sprouts and sweet potato",
-    portion: "2 thighs + vegetables",
-    nutrition: { protein: 38, prepTime: 40, costEuros: 6.50, proteinPerEuro: 5.8 },
+    name: "Stuffed portobello mushrooms with Brussels sprouts and sweet potato",
+    portion: "2 large mushrooms + vegetables",
+    nutrition: { protein: 22, prepTime: 40, costEuros: 5.50, proteinPerEuro: 4.0 },
     category: "dinner",
-    tags: ["gluten-free", "dairy-free", "paleo", "high-protein"],
-    ingredients: ["free-range chicken thighs", "Brussels sprouts", "sweet potato", "red onion", "fresh sage", "olive oil", "lemon", "garlic", "sea salt"],
+    tags: ["vegetarian", "gluten-free", "dairy-free", "high-protein"],
+    ingredients: ["large portobello mushrooms", "Brussels sprouts", "sweet potato", "red onion", "fresh sage", "olive oil", "lemon", "garlic", "walnuts", "nutritional yeast"],
     wholeFoodLevel: "high",
     vegetableContent: {
-      servings: 2.5,
-      vegetables: ["Brussels sprouts", "sweet potato", "onion"],
+      servings: 3.5,
+      vegetables: ["mushrooms", "Brussels sprouts", "sweet potato", "onion"],
       benefits: ["High in vitamin K", "Rich in fiber", "Supports bone health"]
     },
     recipe: {
       instructions: [
         "Preheat oven to 200°C",
-        "Season chicken thighs with salt, pepper, and fresh sage",
+        "Remove stems from mushrooms, brush caps with olive oil",
         "Halve Brussels sprouts and cube sweet potato",
-        "Toss vegetables with olive oil and garlic",
+        "Toss vegetables with olive oil, garlic, and fresh sage",
         "Roast vegetables 15 minutes",
-        "Add chicken thighs to pan, roast 25-30 minutes",
-        "Check internal temperature reaches 75°C",
-        "Squeeze fresh lemon over everything before serving"
+        "Add mushroom caps gill-side up, roast 20 minutes",
+        "Fill mushrooms with roasted vegetables and chopped walnuts",
+        "Sprinkle with nutritional yeast and squeeze lemon over all"
       ],
       tips: [
-        "Free-range chicken has better flavour and nutrition",
+        "Choose meaty portobello mushrooms for best texture",
         "Don't overcrowd the pan for better roasting"
       ],
-      notes: "Chicken thighs stay more moist than breasts during roasting"
+      notes: "Portobello mushrooms provide umami flavor and meaty texture"
     }
   },
   {
@@ -434,44 +434,44 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   },
 
   {
-    name: "Viral Marry Me Chicken Pasta (Social Media Hit)",
+    name: "Viral Marry Me Mushroom Pasta (Plant-Based Hit)",
     portion: "1 serving",
     nutrition: { 
-      protein: 42, 
+      protein: 28, 
       prepTime: 25, 
-      calories: 580,
+      calories: 520,
       carbohydrates: 48,
       fats: 26,
-      fiber: 4,
+      fiber: 8,
       sugar: 8,
-      sodium: 680,
-      potassium: 720,
-      calcium: 150,
-      iron: 3.2,
+      sodium: 580,
+      potassium: 920,
+      calcium: 180,
+      iron: 4.2,
       vitaminC: 12,
-      costEuros: 5.80, 
-      proteinPerEuro: 7.2 
+      costEuros: 4.80, 
+      proteinPerEuro: 5.8 
     },
     category: "dinner",
-    tags: ["viral", "social-media", "high-protein", "comfort-food"],
-    ingredients: ["chicken breast", "pasta", "sun-dried tomatoes", "heavy cream", "parmesan", "garlic", "herbs", "white wine"],
+    tags: ["vegetarian", "viral", "social-media", "high-protein", "comfort-food"],
+    ingredients: ["king oyster mushrooms", "pasta", "sun-dried tomatoes", "cashew cream", "nutritional yeast", "garlic", "herbs", "white wine"],
     wholeFoodLevel: "moderate",
     vegetableContent: {
-      servings: 1,
-      vegetables: ["sun-dried tomatoes", "garlic", "herbs"],
-      benefits: ["Social media sensation", "Named for being so good it'll make someone propose", "Viral comfort food at its finest"]
+      servings: 2,
+      vegetables: ["mushrooms", "sun-dried tomatoes", "garlic", "herbs"],
+      benefits: ["Social media sensation adapted for vegetarians", "Named for being so good it'll make someone propose", "Viral comfort food at its finest"]
     },
     recipe: {
       instructions: [
-        "Season and sear chicken breast until golden (viral technique for max flavor)",
-        "Remove chicken, sauté garlic in same pan",
+        "Slice king oyster mushrooms thick and sear until golden (viral technique for meaty texture)",
+        "Remove mushrooms, sauté garlic in same pan",
         "Add sun-dried tomatoes and white wine",
-        "Pour in cream, add parmesan for viral creamy sauce",
-        "Return chicken to pan, simmer until cooked through",
+        "Pour in cashew cream, add nutritional yeast for viral creamy sauce",
+        "Return mushrooms to pan, simmer until heated through",
         "Serve over pasta with fresh herbs for Instagram appeal"
       ],
-      tips: ["Called 'Marry Me' because it's proposal-worthy", "This recipe went viral for being restaurant-quality at home", "Perfect for date night content"],
-      notes: "This pasta went viral because it's so delicious, people joke it's good enough to propose over"
+      tips: ["Called 'Marry Me' because it's proposal-worthy", "This vegetarian version went viral for being just as good as the original", "Perfect for date night content"],
+      notes: "This plant-based version maintains all the viral appeal while being completely vegetarian"
     }
   },
 
