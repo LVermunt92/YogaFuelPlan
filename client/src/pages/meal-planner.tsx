@@ -105,7 +105,7 @@ export default function MealPlanner() {
     nextMonday.setDate(nextMonday.getDate() + daysUntilMonday);
     return nextMonday.toISOString().split('T')[0];
   });
-  const [selectedMealPlan, setSelectedMealPlan] = useState<number | null>(20); // Default to latest meal plan with reheat functionality
+  const [selectedMealPlan, setSelectedMealPlan] = useState<number | null>(23); // Force show meal plan 23 with leftover functionality
   const [showShoppingList, setShowShoppingList] = useState(false);
   const [selectedMealId, setSelectedMealId] = useState<number | null>(null);
   const [showOuraPanel, setShowOuraPanel] = useState(false);
@@ -865,7 +865,7 @@ export default function MealPlanner() {
                           return (
                             <React.Fragment key={day}>
                               {dayMeals.map((meal, index) => {
-                                const isLeftover = meal.foodDescription.includes('(leftover)');
+                                const isLeftover = meal.portion.includes('(leftover)');
                                 const isEatingOut = meal.foodDescription.includes('Eating out');
                                 const isFreshCooking = !isLeftover && !isEatingOut;
                                 
