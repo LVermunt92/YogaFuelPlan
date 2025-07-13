@@ -243,24 +243,33 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
         selectedMeal = availableMeals[0];
         sundayDinnerMeal = selectedMeal; // Store for Monday lunch leftover
       } else if (day === 2 && mealCategory === 'lunch') {
-        // Day 2: Monday lunch - leftover from Sunday dinner
-        selectedMeal = sundayDinnerMeal || availableMeals[0];
+        // Day 2: Monday lunch - leftover from Sunday dinner (EXACT SAME MEAL)
+        if (!sundayDinnerMeal) {
+          throw new Error('Sunday dinner meal not found for Monday lunch leftover');
+        }
+        selectedMeal = sundayDinnerMeal; // Use exact same meal as Sunday dinner
         isLeftover = true;
       } else if (day === 3 && mealCategory === 'dinner') {
         // Day 3: Tuesday dinner - fresh cooking
         selectedMeal = availableMeals[1] || availableMeals[0];
         tuesdayDinnerMeal = selectedMeal; // Store for Wednesday leftovers
       } else if (day === 4 && (mealCategory === 'lunch' || mealCategory === 'dinner')) {
-        // Day 4: Wednesday lunch and dinner - leftovers from Tuesday
-        selectedMeal = tuesdayDinnerMeal || availableMeals[1] || availableMeals[0];
+        // Day 4: Wednesday lunch and dinner - leftovers from Tuesday (EXACT SAME MEAL)
+        if (!tuesdayDinnerMeal) {
+          throw new Error('Tuesday dinner meal not found for Wednesday leftovers');
+        }
+        selectedMeal = tuesdayDinnerMeal; // Use exact same meal as Tuesday dinner
         isLeftover = true;
       } else if (day === 5 && mealCategory === 'dinner') {
         // Day 5: Thursday dinner - fresh cooking
         selectedMeal = availableMeals[2] || availableMeals[0];
         thursdayDinnerMeal = selectedMeal; // Store for Friday leftovers
       } else if (day === 6 && (mealCategory === 'lunch' || mealCategory === 'dinner')) {
-        // Day 6: Friday lunch and dinner - leftovers from Thursday
-        selectedMeal = thursdayDinnerMeal || availableMeals[2] || availableMeals[0];
+        // Day 6: Friday lunch and dinner - leftovers from Thursday (EXACT SAME MEAL)
+        if (!thursdayDinnerMeal) {
+          throw new Error('Thursday dinner meal not found for Friday leftovers');
+        }
+        selectedMeal = thursdayDinnerMeal; // Use exact same meal as Thursday dinner
         isLeftover = true;
       } else if (mealCategory === 'breakfast') {
         // Breakfast is always fresh (different each day)
