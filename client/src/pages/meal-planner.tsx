@@ -828,7 +828,7 @@ export default function MealPlanner() {
                           return (
                             <React.Fragment key={day}>
                               {dayMeals.map((meal, index) => {
-                                const isLeftover = meal.portion.includes('(leftover)');
+                                const isLeftover = meal.foodDescription.includes('(leftover)');
                                 const isEatingOut = meal.foodDescription.includes('Eating out');
                                 const isFreshCooking = !isLeftover && !isEatingOut;
                                 
