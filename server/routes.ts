@@ -448,7 +448,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           fats: mealOption.nutrition?.fats || 0,
           fiber: mealOption.nutrition?.fiber || 0,
           sugar: mealOption.nutrition?.sugar || 0,
-          sodium: mealOption.nutrition?.sodium || 0
+          sodium: mealOption.nutrition?.sodium || 0,
+          costEuros: mealOption.nutrition?.costEuros,
+          proteinPerEuro: mealOption.nutrition?.proteinPerEuro
         },
         tags: mealOption.tags || [],
         vegetableContent: mealOption.vegetableContent || { servings: 0, vegetables: [], benefits: [] }

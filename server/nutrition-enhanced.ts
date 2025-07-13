@@ -789,7 +789,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         "Serve over pasta with fresh herbs for Instagram appeal"
       ],
       tips: ["Called 'Marry Me' because it's proposal-worthy", "This vegetarian version went viral for being just as good as the original", "Perfect for date night content"],
-      notes: "This plant-based version maintains all the viral appeal while being completely vegetarian"
+      notes: "This plant-based version maintains all the viral appeal while being completely vegetarian. For gluten-free diets, simply substitute with gluten-free pasta (rice, corn, or chickpea pasta work perfectly)."
     }
   },
 

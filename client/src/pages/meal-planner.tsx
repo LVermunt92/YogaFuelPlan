@@ -70,6 +70,8 @@ interface RecipeResponse {
     fiber: number;
     sugar: number;
     sodium: number;
+    costEuros?: number;
+    proteinPerEuro?: number;
   };
   tags: string[];
   vegetableContent: {
@@ -1065,7 +1067,7 @@ export default function MealPlanner() {
                 <h3 className="font-semibold text-lg text-slate-900 mb-2">
                   {recipeData.name}
                 </h3>
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 text-sm">
                   <div>
                     <span className="text-slate-600">Portion:</span>
                     <p className="font-medium">{recipeData.portion}</p>
@@ -1089,6 +1091,18 @@ export default function MealPlanner() {
                     <span className="text-slate-600">Carbs:</span>
                     <p className="font-medium text-blue-600">{recipeData.nutrition?.carbohydrates}g</p>
                   </div>
+                  {recipeData.nutrition?.costEuros && (
+                    <div>
+                      <span className="text-slate-600">Cost:</span>
+                      <p className="font-medium text-purple-600">€{recipeData.nutrition.costEuros.toFixed(2)}</p>
+                    </div>
+                  )}
+                  {recipeData.nutrition?.proteinPerEuro && (
+                    <div>
+                      <span className="text-slate-600">Protein/€:</span>
+                      <p className="font-medium text-indigo-600">{recipeData.nutrition.proteinPerEuro.toFixed(1)}g/€</p>
+                    </div>
+                  )}
                 </div>
                 
                 {/* Tags */}
