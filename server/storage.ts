@@ -3,6 +3,8 @@ import {
   mealPlans, 
   meals,
   ouraData,
+  mealHistory,
+  mealFavorites,
   type User, 
   type InsertUser,
   type UpdateUserProfile, 
@@ -12,7 +14,12 @@ import {
   type InsertMeal,
   type MealPlanWithMeals,
   type OuraData,
-  type InsertOuraData
+  type InsertOuraData,
+  type MealHistory,
+  type InsertMealHistory,
+  type MealFavorite,
+  type InsertMealFavorite,
+  type MealFavoriteUpdate
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, gte, lte, desc } from "drizzle-orm";
@@ -32,6 +39,15 @@ export interface IStorage {
   createOuraData(data: InsertOuraData): Promise<OuraData>;
   getOuraData(userId: number, startDate: string, endDate?: string): Promise<OuraData[]>;
   getLatestOuraData(userId: number): Promise<OuraData | undefined>;
+  // Meal History methods
+  addToMealHistory(data: InsertMealHistory): Promise<MealHistory>;
+  getMealHistory(userId: number, limit?: number): Promise<MealHistory[]>;
+  // Meal Favorites methods
+  addToFavorites(data: InsertMealFavorite): Promise<MealFavorite>;
+  removeFromFavorites(userId: number, mealName: string): Promise<void>;
+  getFavorites(userId: number): Promise<MealFavorite[]>;
+  updateFavorite(userId: number, mealName: string, updates: MealFavoriteUpdate): Promise<MealFavorite>;
+  isFavorite(userId: number, mealName: string): Promise<boolean>;
 }
 
 export class MemStorage implements IStorage {
@@ -195,6 +211,36 @@ export class MemStorage implements IStorage {
     // Note: MemStorage doesn't persist Oura data - use DatabaseStorage for production
     return undefined;
   }
+
+  // Meal History methods (MemStorage - not implemented)
+  async addToMealHistory(data: InsertMealHistory): Promise<MealHistory> {
+    throw new Error("Meal history storage requires DatabaseStorage implementation");
+  }
+
+  async getMealHistory(userId: number, limit?: number): Promise<MealHistory[]> {
+    return [];
+  }
+
+  // Meal Favorites methods (MemStorage - not implemented) 
+  async addToFavorites(data: InsertMealFavorite): Promise<MealFavorite> {
+    throw new Error("Meal favorites storage requires DatabaseStorage implementation");
+  }
+
+  async removeFromFavorites(userId: number, mealName: string): Promise<void> {
+    // No-op for MemStorage
+  }
+
+  async getFavorites(userId: number): Promise<MealFavorite[]> {
+    return [];
+  }
+
+  async updateFavorite(userId: number, mealName: string, updates: MealFavoriteUpdate): Promise<MealFavorite> {
+    throw new Error("Meal favorites storage requires DatabaseStorage implementation");
+  }
+
+  async isFavorite(userId: number, mealName: string): Promise<boolean> {
+    return false;
+  }
 }
 
 // Database storage implementation
@@ -346,6 +392,74 @@ export class DatabaseStorage implements IStorage {
       .limit(1);
     
     return latest || undefined;
+  }
+
+  // Meal History methods
+  async addToMealHistory(data: InsertMealHistory): Promise<MealHistory> {
+    const [history] = await db
+      .insert(mealHistory)
+      .values(data)
+      .returning();
+    return history;
+  }
+
+  async getMealHistory(userId: number, limit: number = 50): Promise<MealHistory[]> {
+    return await db
+      .select()
+      .from(mealHistory)
+      .where(eq(mealHistory.userId, userId))
+      .orderBy(desc(mealHistory.consumedAt))
+      .limit(limit);
+  }
+
+  // Meal Favorites methods
+  async addToFavorites(data: InsertMealFavorite): Promise<MealFavorite> {
+    const [favorite] = await db
+      .insert(mealFavorites)
+      .values(data)
+      .returning();
+    return favorite;
+  }
+
+  async removeFromFavorites(userId: number, mealName: string): Promise<void> {
+    await db
+      .delete(mealFavorites)
+      .where(and(
+        eq(mealFavorites.userId, userId),
+        eq(mealFavorites.mealName, mealName)
+      ));
+  }
+
+  async getFavorites(userId: number): Promise<MealFavorite[]> {
+    return await db
+      .select()
+      .from(mealFavorites)
+      .where(eq(mealFavorites.userId, userId))
+      .orderBy(desc(mealFavorites.favoritedAt));
+  }
+
+  async updateFavorite(userId: number, mealName: string, updates: MealFavoriteUpdate): Promise<MealFavorite> {
+    const [favorite] = await db
+      .update(mealFavorites)
+      .set(updates)
+      .where(and(
+        eq(mealFavorites.userId, userId),
+        eq(mealFavorites.mealName, mealName)
+      ))
+      .returning();
+    return favorite;
+  }
+
+  async isFavorite(userId: number, mealName: string): Promise<boolean> {
+    const [favorite] = await db
+      .select()
+      .from(mealFavorites)
+      .where(and(
+        eq(mealFavorites.userId, userId),
+        eq(mealFavorites.mealName, mealName)
+      ))
+      .limit(1);
+    return !!favorite;
   }
 }
 

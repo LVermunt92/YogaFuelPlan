@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Calendar, Clock, Target, Upload, Eye, Download, Share, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat } from "lucide-react";
+import { Calendar, Clock, Target, Upload, Eye, Download, Share, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 
@@ -201,6 +201,34 @@ export default function MealPlanner() {
     },
   });
 
+  // Regenerate meal plan mutation with user preferences
+  const regenerateMutation = useMutation({
+    mutationFn: async ({ weekStart, activityLevel }: { weekStart?: string; activityLevel?: string }) => {
+      const response = await apiRequest('POST', '/api/meal-plans/regenerate', {
+        userId: authUser?.id,
+        weekStart: weekStart || new Date().toISOString().split('T')[0],
+        activityLevel: activityLevel || 'high',
+        dietaryTags: userProfile?.dietaryTags || []
+      });
+      return response.json();
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['/api/meal-plans'] });
+      setSelectedMealPlan(data.mealPlan.id);
+      toast({
+        title: "Meal Plan Updated",
+        description: "Your meal plan has been regenerated with your current preferences.",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Regeneration Failed",
+        description: "Failed to update meal plan. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
   // Sync to Notion mutation
   const syncMutation = useMutation({
     mutationFn: async (mealPlanId: number) => {
@@ -287,6 +315,70 @@ export default function MealPlanner() {
       });
     },
   });
+
+  // Meal favorites mutations
+  const addToFavoritesMutation = useMutation({
+    mutationFn: async (meal: Meal) => {
+      const response = await apiRequest('POST', '/api/meal-favorites', {
+        userId: authUser?.id,
+        mealName: meal.foodDescription,
+        mealType: meal.mealType,
+        protein: meal.protein,
+        prepTime: meal.prepTime,
+        portion: meal.portion,
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Added to Favorites",
+        description: "This meal has been saved to your favorites.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to add meal to favorites.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const removeFromFavoritesMutation = useMutation({
+    mutationFn: async (mealName: string) => {
+      const response = await apiRequest('DELETE', `/api/meal-favorites/${authUser?.id}/${encodeURIComponent(mealName)}`);
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Removed from Favorites",
+        description: "This meal has been removed from your favorites.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to remove meal from favorites.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Meal history mutation
+  const addToHistoryMutation = useMutation({
+    mutationFn: async (meal: Meal) => {
+      const response = await apiRequest('POST', '/api/meal-history', {
+        userId: authUser?.id,
+        mealName: meal.foodDescription,
+        mealType: meal.mealType,
+        protein: meal.protein,
+        prepTime: meal.prepTime,
+        portion: meal.portion,
+      });
+      return response.json();
+    },
+  });
+
   const latestMealPlan = mealPlans[0];
 
   // Auto-select the latest meal plan if none selected
@@ -345,11 +437,11 @@ export default function MealPlanner() {
             <h2 className="text-2xl font-bold text-foreground mb-4">
               Welcome back to your week of {formatWeekRange(latestMealPlan.weekStart)}
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-sm">
               <div>
                 <div className="text-muted-foreground mb-2">Your protein target</div>
                 <div className="text-lg font-semibold text-foreground">
-                  {latestMealPlan.totalProtein}g daily
+                  {latestMealPlan.totalProtein.toFixed(1)}g daily
                 </div>
                 <div className="text-xs text-muted-foreground mt-1">
                   {latestMealPlan.activityLevel === 'high' ? 'High activity week' : 'Moderate activity week'}
@@ -365,12 +457,21 @@ export default function MealPlanner() {
                 </div>
               </div>
               <div>
-                <div className="text-muted-foreground mb-2">This week's focus</div>
+                <div className="text-muted-foreground mb-2">Cooking schedule</div>
                 <div className="text-lg font-semibold text-foreground">
-                  Plant-based nutrition
+                  {userProfile?.cookingDaysPerWeek || 7} days/week
                 </div>
                 <div className="text-xs text-muted-foreground mt-1">
-                  Vegetarian, gluten & lactose-free
+                  Eating {userProfile?.eatingDaysAtHome || 7} days at home
+                </div>
+              </div>
+              <div>
+                <div className="text-muted-foreground mb-2">This week's focus</div>
+                <div className="text-lg font-semibold text-foreground">
+                  {userProfile?.meatFishMealsPerWeek ? `${userProfile.meatFishMealsPerWeek} meat/fish meals` : 'Plant-based nutrition'}
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">
+                  {userProfile?.dietaryTags?.join(', ') || 'Vegetarian, gluten & lactose-free'}
                 </div>
               </div>
             </div>
@@ -434,31 +535,7 @@ export default function MealPlanner() {
                     </div>
                   </div>
                 )}
-                
-                {/* Personal Health Metrics */}
-                <div className="bg-card border border-border p-6">
-                  <h3 className="text-lg font-semibold text-foreground mb-6">
-                    Personal Health Metrics
-                  </h3>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                    <div className="bg-background border border-border p-4">
-                      <div className="text-xs text-muted-foreground mb-2 font-medium">Weight</div>
-                      <div className="text-xl font-bold text-foreground">60 kg</div>
-                    </div>
-                    <div className="bg-background border border-border p-4">
-                      <div className="text-xs text-muted-foreground mb-2 font-medium">Waistline</div>
-                      <div className="text-xl font-bold text-foreground">75 cm</div>
-                    </div>
-                    <div className="bg-background border border-border p-4">
-                      <div className="text-xs text-muted-foreground mb-2 font-medium">Protein Target</div>
-                      <div className="text-xl font-bold text-foreground">{proteinTarget}g</div>
-                    </div>
-                    <div className="bg-background border border-border p-4">
-                      <div className="text-xs text-muted-foreground mb-2 font-medium">Diet Type</div>
-                      <div className="text-sm font-medium text-foreground">Vegetarian, GF, LF</div>
-                    </div>
-                  </div>
-                </div>
+
                 
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Button
@@ -594,26 +671,53 @@ export default function MealPlanner() {
                     )}
                   </Button>
                   
-                  <Button 
-                    onClick={() => autoGenerateMutation.mutate()}
-                    disabled={autoGenerateMutation.isPending}
-                    className="btn-outline w-full"
-                  >
-                    {autoGenerateMutation.isPending ? (
-                      <>
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-foreground mr-2" />
-                        Auto-Generating...
-                      </>
-                    ) : (
-                      <>
-                        <Calendar className="mr-2 h-4 w-4" />
-                        Auto-Generate Next Week
-                      </>
+                  <div className="grid grid-cols-1 gap-2">
+                    <Button 
+                      onClick={() => autoGenerateMutation.mutate()}
+                      disabled={autoGenerateMutation.isPending}
+                      className="btn-outline w-full"
+                    >
+                      {autoGenerateMutation.isPending ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-foreground mr-2" />
+                          Auto-Generating...
+                        </>
+                      ) : (
+                        <>
+                          <Calendar className="mr-2 h-4 w-4" />
+                          Auto-Generate Next Week
+                        </>
+                      )}
+                    </Button>
+                    
+                    {userProfile && (
+                      <Button 
+                        onClick={() => regenerateMutation.mutate({ 
+                          weekStart: weekStart, 
+                          activityLevel: activityLevel 
+                        })}
+                        disabled={regenerateMutation.isPending || !authUser}
+                        variant="outline"
+                        className="w-full"
+                      >
+                        {regenerateMutation.isPending ? (
+                          <>
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-foreground mr-2" />
+                            Updating...
+                          </>
+                        ) : (
+                          <>
+                            <RefreshCw className="mr-2 h-4 w-4" />
+                            Update with Preferences
+                          </>
+                        )}
+                      </Button>
                     )}
-                  </Button>
+                  </div>
                   
                   <p className="text-xs text-muted-foreground">
                     Auto-generate creates a high-activity meal plan for next Monday and syncs to Notion if connected.
+                    {userProfile && <span className="block mt-1">Use "Update with Preferences" to regenerate with your current dietary preferences.</span>}
                   </p>
                   
                   {/* Shopping List Button */}

@@ -73,6 +73,37 @@ export const recipeRatings = pgTable("recipe_ratings", {
   uniqueUserRecipe: unique().on(table.userId, table.recipeName),
 }));
 
+export const mealHistory = pgTable("meal_history", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id, { onDelete: "cascade" }).notNull(),
+  mealName: text("meal_name").notNull(),
+  mealType: text("meal_type").notNull(), // breakfast, lunch, dinner
+  portion: text("portion").notNull(),
+  protein: real("protein").notNull(),
+  prepTime: integer("prep_time").notNull(),
+  costEuros: real("cost_euros"),
+  proteinPerEuro: real("protein_per_euro"),
+  consumedAt: timestamp("consumed_at").notNull().defaultNow(),
+  fromMealPlanId: integer("from_meal_plan_id").references(() => mealPlans.id),
+});
+
+export const mealFavorites = pgTable("meal_favorites", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id, { onDelete: "cascade" }).notNull(),
+  mealName: text("meal_name").notNull(),
+  mealType: text("meal_type").notNull(), // breakfast, lunch, dinner
+  portion: text("portion").notNull(),
+  protein: real("protein").notNull(),
+  prepTime: integer("prep_time").notNull(),
+  costEuros: real("cost_euros"),
+  proteinPerEuro: real("protein_per_euro"),
+  tags: text("tags").array().default([]),
+  favoritedAt: timestamp("favorited_at").notNull().defaultNow(),
+  notes: text("notes"), // user's personal notes about the meal
+}, (table) => ({
+  uniqueUserMeal: unique().on(table.userId, table.mealName),
+}));
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
@@ -139,7 +170,8 @@ export const DIETARY_TAGS = [
   "sugar-free",
   "whole30",
   "raw",
-  "pescatarian"
+  "pescatarian",
+  "ayurvedic"
 ] as const;
 
 export const mealPlanRequestSchema = z.object({
@@ -166,6 +198,21 @@ export const recipeRatingSchema = z.object({
   mealType: z.enum(["breakfast", "lunch", "dinner"]),
 });
 
+export const insertMealHistorySchema = createInsertSchema(mealHistory).omit({
+  id: true,
+  consumedAt: true,
+});
+
+export const insertMealFavoriteSchema = createInsertSchema(mealFavorites).omit({
+  id: true,
+  favoritedAt: true,
+});
+
+export const mealFavoriteUpdateSchema = z.object({
+  notes: z.string().optional(),
+  tags: z.array(z.string()).optional(),
+});
+
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type UpdateUserProfile = z.infer<typeof updateUserProfileSchema>;
@@ -180,6 +227,11 @@ export type InsertMeal = z.infer<typeof insertMealSchema>;
 export type MealPlanRequest = z.infer<typeof mealPlanRequestSchema>;
 export type OuraData = typeof ouraData.$inferSelect;
 export type InsertOuraData = z.infer<typeof insertOuraDataSchema>;
+export type MealHistory = typeof mealHistory.$inferSelect;
+export type InsertMealHistory = z.infer<typeof insertMealHistorySchema>;
+export type MealFavorite = typeof mealFavorites.$inferSelect;
+export type InsertMealFavorite = z.infer<typeof insertMealFavoriteSchema>;
+export type MealFavoriteUpdate = z.infer<typeof mealFavoriteUpdateSchema>;
 
 export interface MealPlanWithMeals extends MealPlan {
   meals: Meal[];

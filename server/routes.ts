@@ -271,6 +271,52 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Regenerate meal plan based on updated user preferences
+  app.post("/api/meal-plans/regenerate", async (req, res) => {
+    try {
+      const { userId, weekStart, activityLevel, dietaryTags } = req.body;
+      
+      if (!userId) {
+        return res.status(400).json({ message: "User ID is required" });
+      }
+
+      // Get updated user profile
+      const user = await storage.getUser(userId);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      
+      const request = {
+        userId,
+        weekStart: weekStart || new Date().toISOString().split('T')[0],
+        activityLevel: activityLevel || user.activityLevel || 'high',
+        dietaryTags: dietaryTags || user.dietaryTags || []
+      };
+      
+      const generatedPlan = generateWeeklyMealPlan(request, user);
+      
+      // Create new meal plan
+      const mealPlan = await storage.createMealPlan(generatedPlan.mealPlan);
+      
+      // Set mealPlanId for all meals and create them
+      const mealsWithPlanId = generatedPlan.meals.map(meal => ({
+        ...meal,
+        mealPlanId: mealPlan.id
+      }));
+      
+      const meals = await storage.createMeals(mealPlan.id, mealsWithPlanId);
+      
+      res.status(201).json({ 
+        mealPlan, 
+        meals,
+        message: "Meal plan regenerated with updated preferences"
+      });
+    } catch (error) {
+      console.error("Error regenerating meal plan:", error);
+      res.status(500).json({ message: "Failed to regenerate meal plan" });
+    }
+  });
+
   // Get recipe for a meal
   app.get("/api/meals/:mealId/recipe", async (req, res) => {
     try {
@@ -651,6 +697,94 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     });
   }
+
+  // Meal History endpoints
+  app.post("/api/meal-history", async (req, res) => {
+    try {
+      const result = req.body;
+      const history = await storage.addToMealHistory(result);
+      res.json(history);
+    } catch (error) {
+      console.error("Error adding to meal history:", error);
+      res.status(500).json({ message: "Failed to add to meal history" });
+    }
+  });
+
+  app.get("/api/meal-history/:userId", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const limit = req.query.limit ? parseInt(req.query.limit as string) : undefined;
+      
+      const history = await storage.getMealHistory(userId, limit);
+      res.json(history);
+    } catch (error) {
+      console.error("Error fetching meal history:", error);
+      res.status(500).json({ message: "Failed to fetch meal history" });
+    }
+  });
+
+  // Meal Favorites endpoints
+  app.post("/api/meal-favorites", async (req, res) => {
+    try {
+      const result = req.body;
+      const favorite = await storage.addToFavorites(result);
+      res.json(favorite);
+    } catch (error) {
+      console.error("Error adding to favorites:", error);
+      res.status(500).json({ message: "Failed to add to favorites" });
+    }
+  });
+
+  app.delete("/api/meal-favorites/:userId/:mealName", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const mealName = decodeURIComponent(req.params.mealName);
+      
+      await storage.removeFromFavorites(userId, mealName);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error removing from favorites:", error);
+      res.status(500).json({ message: "Failed to remove from favorites" });
+    }
+  });
+
+  app.get("/api/meal-favorites/:userId", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const favorites = await storage.getFavorites(userId);
+      res.json(favorites);
+    } catch (error) {
+      console.error("Error fetching favorites:", error);
+      res.status(500).json({ message: "Failed to fetch favorites" });
+    }
+  });
+
+  app.get("/api/meal-favorites/:userId/:mealName/check", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const mealName = decodeURIComponent(req.params.mealName);
+      
+      const isFavorite = await storage.isFavorite(userId, mealName);
+      res.json({ isFavorite });
+    } catch (error) {
+      console.error("Error checking favorite status:", error);
+      res.status(500).json({ message: "Failed to check favorite status" });
+    }
+  });
+
+  app.patch("/api/meal-favorites/:userId/:mealName", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const mealName = decodeURIComponent(req.params.mealName);
+      
+      const result = req.body;
+      const favorite = await storage.updateFavorite(userId, mealName, result);
+      res.json(favorite);
+    } catch (error) {
+      console.error("Error updating favorite:", error);
+      res.status(500).json({ message: "Failed to update favorite" });
+    }
+  });
 
   const httpServer = createServer(app);
   return httpServer;
