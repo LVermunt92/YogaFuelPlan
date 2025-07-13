@@ -102,6 +102,12 @@ Breakfast scheduling preference: Easy, quick breakfasts during weekdays (≤10 m
   - Added fermented kefir breakfast option (naturally lactose-free through 24+ hour fermentation)
   - Updated chia pudding recipe to be lactose-free with plant-based milk
   - Now provides 7 different breakfast options for complex dietary combinations
+- **Smart Breakfast Scheduling Fixed** (July 13, 2025):
+  - Fixed weekday vs weekend breakfast allocation in meal prep mode
+  - Weekdays (Mon-Fri) now correctly receive quick breakfasts (≤10 min prep): chia pudding, overnight oats, smoothie bowls, kefir bowls
+  - Weekends (Sat-Sun) receive elaborate breakfasts (≥15 min prep): pancakes, quinoa bowls, scrambled eggs
+  - Enhanced meal prep function with proper breakfast categorization logic
+  - Added detailed ingredient measurements with volumes, weights, and specific amounts to all recipes
 
 ### Development Tools
 - **tsx**: TypeScript execution for development

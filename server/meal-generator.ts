@@ -417,26 +417,73 @@ function generateMealPrepPlan(
     }
   }
   
-  // Create unique breakfast pool for 7 days without repeats
+  // Create smart breakfast pool respecting weekday/weekend preferences
   const breakfastPool = [];
   
-  // If we have enough unique breakfast options, use them all
-  if (breakfastOptions.length >= 7) {
-    const shuffledBreakfasts = [...breakfastOptions].sort(() => Math.random() - 0.5);
-    breakfastPool.push(...shuffledBreakfasts.slice(0, 7));
-  } else {
-    // If fewer than 7 options, cycle through them to ensure variety
-    for (let i = 0; i < 7; i++) {
-      const index = i % breakfastOptions.length;
-      breakfastPool.push(breakfastOptions[index]);
+  // Separate weekday and weekend breakfast options
+  const weekdayBreakfasts = breakfastOptions.filter(meal => {
+    // Explicitly exclude pancakes and other weekend-specific items
+    const name = meal.name.toLowerCase();
+    const isWeekendSpecific = name.includes('pancake') || name.includes('quinoa breakfast bowl');
+    const hasQuickPrep = meal.nutrition.prepTime <= 10;
+    const isQuickOption = name.includes('overnight') || name.includes('chia') || 
+                         name.includes('smoothie') || name.includes('kefir');
+    
+    return !isWeekendSpecific && (hasQuickPrep || isQuickOption);
+  });
+  
+  const weekendBreakfasts = breakfastOptions.filter(meal => {
+    // Weekend breakfasts: pancakes, quinoa bowls, or elaborate options (15+ min prep)
+    const name = meal.name.toLowerCase();
+    const isWeekendSpecific = name.includes('pancake') || name.includes('quinoa breakfast bowl');
+    const hasElaboratePrep = meal.nutrition.prepTime >= 15;
+    
+    return isWeekendSpecific || hasElaboratePrep;
+  });
+  
+  console.log(`📋 Weekday breakfasts (≤10min): ${weekdayBreakfasts.map(b => `${b.name} (${b.nutrition.prepTime}min)`).join(' | ')}`);
+  console.log(`🥞 Weekend breakfasts (≥15min): ${weekendBreakfasts.map(b => `${b.name} (${b.nutrition.prepTime}min)`).join(' | ')}`);
+  
+  // Assign breakfasts to each day (1=Monday, 7=Sunday)
+  for (let day = 1; day <= 7; day++) {
+    const isWeekend = day === 6 || day === 7; // Saturday or Sunday
+    
+    if (isWeekend && weekendBreakfasts.length > 0) {
+      // Weekend: use elaborate breakfasts
+      const weekendIndex = (day - 6) % weekendBreakfasts.length;
+      breakfastPool.push(weekendBreakfasts[weekendIndex]);
+    } else if (!isWeekend && weekdayBreakfasts.length > 0) {
+      // Weekday: use quick breakfasts
+      const weekdayIndex = (day - 1) % weekdayBreakfasts.length;
+      breakfastPool.push(weekdayBreakfasts[weekdayIndex]);
+    } else {
+      // Fallback: try to use appropriate category if possible
+      console.log(`⚠️ Fallback needed for day ${day} (${isWeekend ? 'weekend' : 'weekday'}). Weekday: ${weekdayBreakfasts.length}, Weekend: ${weekendBreakfasts.length}`);
+      
+      if (isWeekend && weekendBreakfasts.length === 0 && weekdayBreakfasts.length > 0) {
+        // Weekend but no weekend options - use weekday as fallback
+        const fallbackIndex = (day - 6) % weekdayBreakfasts.length;
+        breakfastPool.push(weekdayBreakfasts[fallbackIndex]);
+      } else if (!isWeekend && weekdayBreakfasts.length === 0 && weekendBreakfasts.length > 0) {
+        // Weekday but no weekday options - use weekend as fallback  
+        const fallbackIndex = (day - 1) % weekendBreakfasts.length;
+        breakfastPool.push(weekendBreakfasts[fallbackIndex]);
+      } else {
+        // General fallback
+        const fallbackIndex = (day - 1) % breakfastOptions.length;
+        breakfastPool.push(breakfastOptions[fallbackIndex]);
+      }
     }
   }
   
   console.log(`✓ Breakfast pool: ${breakfastPool.map(b => b.name).join(' | ')}`);
   
   for (let day = 1; day <= 7; day++) {
-    // BREAKFAST: Always include for every day (no duplicates in 7 days)
+    // BREAKFAST: Always include for every day with smart weekday/weekend scheduling
     const selectedBreakfast = breakfastPool[day - 1];
+    const isWeekend = day === 6 || day === 7; // Saturday or Sunday
+    
+    console.log(`Day ${day} (${isWeekend ? 'weekend' : 'weekday'}) breakfast: ${selectedBreakfast.name} (prep: ${selectedBreakfast.nutrition.prepTime}min)`);
     
     if (selectedBreakfast) {
       const householdSize = user?.householdSize || 1;
