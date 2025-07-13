@@ -6,14 +6,14 @@
 
 @layer base {
   :root {
-    /* madebysem.nl inspired color palette - softer whites and blacks */
-    --background: hsl(30, 8%, 97%);
+    /* madebysem.nl inspired color palette - warmer tinted whites */
+    --background: hsl(35, 15%, 96%);
     --foreground: hsl(0, 0%, 15%);
-    --muted: hsl(30, 6%, 93%);
+    --muted: hsl(35, 12%, 92%);
     --muted-foreground: hsl(0, 0%, 50%);
-    --popover: hsl(30, 8%, 98%);
+    --popover: hsl(35, 15%, 97%);
     --popover-foreground: hsl(0, 0%, 15%);
-    --card: hsl(30, 8%, 98%);
+    --card: hsl(35, 15%, 97%);
     --card-foreground: hsl(0, 0%, 15%);
     --border: transparent;
     --input: hsl(30, 6%, 93%);
