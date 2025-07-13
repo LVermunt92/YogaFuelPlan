@@ -62,6 +62,27 @@ interface RecipeResponse {
   tags: string[];
 }
 
+interface OuraData {
+  id: number;
+  userId: number;
+  date: string;
+  activityScore: number | null;
+  steps: number | null;
+  calories: number | null;
+  activeCalories: number | null;
+  workoutMinutes: number | null;
+  readinessScore: number | null;
+  sleepScore: number | null;
+  periodPhase: string | null;
+  activityLevel: string;
+  syncedAt: string;
+}
+
+interface OuraStatus {
+  connected: boolean;
+  message: string;
+}
+
 export default function MealPlanner() {
   const [activityLevel, setActivityLevel] = useState<"high" | "low">("high");
   const [weekStart, setWeekStart] = useState(() => {
@@ -73,6 +94,7 @@ export default function MealPlanner() {
   const [selectedMealPlan, setSelectedMealPlan] = useState<number | null>(null);
   const [showShoppingList, setShowShoppingList] = useState(false);
   const [selectedMealId, setSelectedMealId] = useState<number | null>(null);
+  const [showOuraPanel, setShowOuraPanel] = useState(false);
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -182,6 +204,65 @@ export default function MealPlanner() {
   });
 
   const proteinTarget = activityLevel === "high" ? 130 : 70;
+
+  // Oura queries
+  const { data: ouraStatus } = useQuery<OuraStatus>({
+    queryKey: ["/api/oura/status"],
+    refetchInterval: 10000,
+  });
+
+  const { data: latestOuraData } = useQuery<OuraData>({
+    queryKey: ["/api/oura/latest"],
+    enabled: ouraStatus?.connected === true,
+  });
+
+  // Oura sync mutation
+  const syncOuraMutation = useMutation({
+    mutationFn: async (date: string) => {
+      const response = await apiRequest('POST', '/api/oura/sync', { date });
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/oura/latest'] });
+      toast({
+        title: "Oura Data Synced",
+        description: "Your activity data has been synced successfully!",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Sync Failed",
+        description: "Failed to sync Oura data. Please check your connection.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Smart meal plan generation based on Oura data
+  const smartGenerateMutation = useMutation({
+    mutationFn: async () => {
+      const response = await apiRequest('POST', '/api/meal-plans/smart-generate', {
+        weekStart,
+        userId: 1,
+      });
+      return response.json();
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['/api/meal-plans'] });
+      setSelectedMealPlan(data.mealPlan.id);
+      toast({
+        title: "Smart Meal Plan Generated",
+        description: `Generated with ${data.determinedActivityLevel} activity level based on ${data.ouraDataUsed ? 'your Oura data' : 'default settings'}`,
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Generation Failed",
+        description: "Failed to generate smart meal plan. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
   const latestMealPlan = mealPlans[0];
 
   // Auto-select the latest meal plan if none selected
@@ -258,6 +339,119 @@ export default function MealPlanner() {
                 <div className="text-sm text-slate-900">Vegetarian, GF, LF</div>
               </div>
             </div>
+          </CardContent>
+        </Card>
+
+        {/* Oura Ring Integration */}
+        <Card className="mb-8">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center">
+                <Activity className="text-blue-600 mr-2 h-5 w-5" />
+                <h2 className="text-lg font-semibold text-slate-900">Oura Ring Integration</h2>
+              </div>
+              <Badge 
+                variant={ouraStatus?.connected ? "default" : "secondary"}
+                className={ouraStatus?.connected ? "bg-green-600" : "bg-gray-500"}
+              >
+                {ouraStatus?.connected ? "Connected" : "Not Connected"}
+              </Badge>
+            </div>
+            
+            {ouraStatus?.connected ? (
+              <div className="space-y-4">
+                {latestOuraData && (
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="bg-blue-50 rounded-lg p-3">
+                      <div className="text-xs text-blue-600 mb-1">Activity Score</div>
+                      <div className="text-lg font-semibold text-blue-900">
+                        {latestOuraData.activityScore || 'N/A'}
+                      </div>
+                    </div>
+                    <div className="bg-green-50 rounded-lg p-3">
+                      <div className="text-xs text-green-600 mb-1">Steps</div>
+                      <div className="text-lg font-semibold text-green-900">
+                        {latestOuraData.steps?.toLocaleString() || 'N/A'}
+                      </div>
+                    </div>
+                    <div className="bg-purple-50 rounded-lg p-3">
+                      <div className="text-xs text-purple-600 mb-1">Sleep Score</div>
+                      <div className="text-lg font-semibold text-purple-900">
+                        {latestOuraData.sleepScore || 'N/A'}
+                      </div>
+                    </div>
+                    <div className="bg-amber-50 rounded-lg p-3">
+                      <div className="text-xs text-amber-600 mb-1">Activity Level</div>
+                      <div className="text-sm font-semibold text-amber-900 capitalize">
+                        {latestOuraData.activityLevel}
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <Button
+                    onClick={() => {
+                      const yesterday = new Date();
+                      yesterday.setDate(yesterday.getDate() - 1);
+                      syncOuraMutation.mutate(yesterday.toISOString().split('T')[0]);
+                    }}
+                    disabled={syncOuraMutation.isPending}
+                    variant="outline"
+                    size="sm"
+                  >
+                    {syncOuraMutation.isPending ? (
+                      <>
+                        <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-blue-600 mr-2" />
+                        Syncing...
+                      </>
+                    ) : (
+                      <>
+                        <Upload className="mr-2 h-3 w-3" />
+                        Sync Yesterday's Data
+                      </>
+                    )}
+                  </Button>
+                  
+                  <Button
+                    onClick={() => smartGenerateMutation.mutate()}
+                    disabled={smartGenerateMutation.isPending}
+                    variant="default"
+                    size="sm"
+                    className="bg-blue-600 hover:bg-blue-700"
+                  >
+                    {smartGenerateMutation.isPending ? (
+                      <>
+                        <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-2" />
+                        Generating...
+                      </>
+                    ) : (
+                      <>
+                        <Activity className="mr-2 h-3 w-3" />
+                        Smart Generate Plan
+                      </>
+                    )}
+                  </Button>
+                </div>
+                
+                {latestOuraData && (
+                  <div className="text-xs text-slate-600">
+                    Last synced: {new Date(latestOuraData.syncedAt).toLocaleDateString()} at {new Date(latestOuraData.syncedAt).toLocaleTimeString()}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="text-center py-6">
+                <Activity className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+                <h3 className="text-sm font-medium text-gray-900 mb-2">Oura Ring Not Connected</h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  {ouraStatus?.message || "Connect your Oura Ring to automatically adjust meal plans based on your activity levels."}
+                </p>
+                <p className="text-xs text-gray-500">
+                  Add your OURA_ACCESS_TOKEN to the secrets panel to connect your device.
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
 
