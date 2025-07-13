@@ -383,9 +383,10 @@ export default function MealPlanner() {
 
   const latestMealPlan = mealPlans[0];
 
-  // Auto-select the latest meal plan if none selected
-  if (!selectedMealPlan && latestMealPlan && !loadingPlans) {
-    setSelectedMealPlan(latestMealPlan.id);
+  // Auto-select meal plan 22 which has leftover functionality
+  if (!selectedMealPlan && mealPlans.length > 0 && !loadingPlans) {
+    const mealPlanWithLeftovers = mealPlans.find(mp => mp.id === 22) || latestMealPlan;
+    setSelectedMealPlan(mealPlanWithLeftovers?.id);
   }
 
   const displayedMealPlan = currentMealPlan || (latestMealPlan && mealPlans.find(mp => mp.id === latestMealPlan.id));
