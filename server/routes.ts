@@ -4,7 +4,7 @@ import { storage } from "./storage";
 import { generateWeeklyMealPlan, formatMealPlanForNotion } from "./meal-generator";
 import { mealPlanRequestSchema } from "@shared/schema";
 import { notion, createDatabaseIfNotExists, findDatabaseByTitle } from "./notion";
-import { generateShoppingList } from "./nutrition";
+import { generateEnhancedShoppingList } from "./nutrition-enhanced";
 import { OuraService } from "./oura";
 import { updateUserProfileSchema, authRegisterSchema, authLoginSchema } from "@shared/schema";
 import cron from 'node-cron';
@@ -477,7 +477,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "Meal plan not found" });
       }
 
-      const shoppingList = generateShoppingList(mealPlan.meals);
+      const shoppingList = generateEnhancedShoppingList(mealPlan.meals);
       
       res.json({
         mealPlanId: id,

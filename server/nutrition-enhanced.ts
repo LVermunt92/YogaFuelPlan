@@ -1153,3 +1153,308 @@ export function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' | 'lunc
   
   return filteredMeals;
 }
+
+// Shopping list interfaces and functions
+export interface ShoppingListItem {
+  ingredient: string;
+  category: string;
+  count: number;
+  totalAmount: string;
+  unit: string;
+}
+
+export function generateEnhancedShoppingList(meals: { foodDescription: string }[]): ShoppingListItem[] {
+  const ingredientAmounts = new Map<string, { totalAmount: number; unit: string; count: number }>();
+  
+  // Parse actual recipe amounts from meal instructions
+  meals.forEach(meal => {
+    // Strip any leftover suffix and portion scaling for meal matching
+    const cleanMealName = meal.foodDescription
+      .replace(/ \(leftover\)$/, '')
+      .replace(/ \(2\.0x.*?\)$/, '')
+      .replace(/ \- batch cook$/, '')
+      .trim();
+    
+    const mealOption = ENHANCED_MEAL_DATABASE.find(m => m.name === cleanMealName);
+    if (mealOption) {
+      // Use ingredients directly since they already have proper measurements
+      mealOption.ingredients.forEach(ingredient => {
+        // Extract clean ingredient name from formatted text like "3 large free-range eggs" -> "eggs"
+        const cleanIngredient = cleanIngredientName(ingredient);
+        
+        const existing = ingredientAmounts.get(cleanIngredient);
+        if (existing) {
+          existing.count += 1;
+        } else {
+          const defaultPortion = getDefaultPortion(cleanIngredient);
+          ingredientAmounts.set(cleanIngredient, { 
+            totalAmount: defaultPortion.amount, 
+            unit: defaultPortion.unit, 
+            count: 1 
+          });
+        }
+      });
+    }
+  });
+
+  // Categorize ingredients
+  const ingredientCategories: Record<string, string> = {
+    // Proteins
+    'extra firm tofu': 'Proteins',
+    'tempeh': 'Proteins',
+    'red lentils': 'Proteins',
+    'chickpeas': 'Proteins',
+    'black beans': 'Proteins',
+    'white beans': 'Proteins',
+    'edamame': 'Proteins',
+    'pea protein powder': 'Proteins',
+    'vanilla protein powder': 'Proteins',
+    'plant protein powder': 'Proteins',
+    'hummus': 'Proteins',
+    'eggs': 'Proteins',
+    
+    // Grains & Starches
+    'quinoa': 'Grains & Starches',
+    'brown rice': 'Grains & Starches',
+    'rolled oats': 'Grains & Starches',
+    'gluten-free oats': 'Grains & Starches',
+    'gluten-free pasta': 'Grains & Starches',
+    'gluten-free tortilla': 'Grains & Starches',
+    'chickpea flour': 'Grains & Starches',
+    'coconut flour': 'Grains & Starches',
+    'sweet potato': 'Grains & Starches',
+    'gluten-free granola': 'Grains & Starches',
+    
+    // Nuts & Seeds
+    'almond butter': 'Nuts & Seeds',
+    'tahini': 'Nuts & Seeds',
+    'chia seeds': 'Nuts & Seeds',
+    'hemp hearts': 'Nuts & Seeds',
+    'hemp seeds': 'Nuts & Seeds',
+    'flax seeds': 'Nuts & Seeds',
+    'mixed nuts': 'Nuts & Seeds',
+    'almonds': 'Nuts & Seeds',
+    'walnuts': 'Nuts & Seeds',
+    'sunflower seeds': 'Nuts & Seeds',
+    
+    // Vegetables
+    'fresh spinach': 'Vegetables',
+    'spinach': 'Vegetables',
+    'bell peppers': 'Vegetables',
+    'onions': 'Vegetables',
+    'red onion': 'Vegetables',
+    'garlic': 'Vegetables',
+    'ginger': 'Vegetables',
+    'carrots': 'Vegetables',
+    'celery': 'Vegetables',
+    'cucumber': 'Vegetables',
+    'cherry tomatoes': 'Vegetables',
+    'tomatoes': 'Vegetables',
+    'crushed tomatoes': 'Vegetables',
+    'sun-dried tomatoes': 'Vegetables',
+    'broccoli': 'Vegetables',
+    'snap peas': 'Vegetables',
+    'brussels sprouts': 'Vegetables',
+    'zucchini': 'Vegetables',
+    'kale': 'Vegetables',
+    'mixed greens': 'Vegetables',
+    'lettuce': 'Vegetables',
+    'purple cabbage': 'Vegetables',
+    'beets': 'Vegetables',
+    'mushrooms': 'Vegetables',
+    'portobello mushrooms': 'Vegetables',
+    'sprouts': 'Vegetables',
+    
+    // Fruits
+    'banana': 'Fruits',
+    'avocado': 'Fruits',
+    'lemon': 'Fruits',
+    'frozen berries': 'Fruits',
+    'mixed berries': 'Fruits',
+    'blueberries': 'Fruits',
+    'fresh fruit': 'Fruits',
+    
+    // Dairy Alternatives
+    'almond milk': 'Dairy Alternatives',
+    'coconut milk': 'Dairy Alternatives',
+    'coconut yogurt': 'Dairy Alternatives',
+    'fermented kefir': 'Dairy Alternatives',
+    
+    // Pantry Items
+    'olive oil': 'Pantry Items',
+    'coconut oil': 'Pantry Items',
+    'sesame oil': 'Pantry Items',
+    'balsamic vinegar': 'Pantry Items',
+    'soy sauce': 'Pantry Items',
+    'nutritional yeast': 'Pantry Items',
+    'vanilla extract': 'Pantry Items',
+    'maple syrup': 'Pantry Items',
+    'baking powder': 'Pantry Items',
+    'salt': 'Pantry Items',
+    'cinnamon': 'Pantry Items',
+    'stevia': 'Pantry Items'
+  };
+
+  // Create shopping list with categories and actual amounts
+  const shoppingList: ShoppingListItem[] = [];
+  
+  ingredientAmounts.forEach((amounts, ingredient) => {
+    const category = ingredientCategories[ingredient] || 'Other';
+    
+    const displayAmount = amounts.unit === 'pieces' ? 
+      `${amounts.totalAmount} ${amounts.unit}` : 
+      formatAmount(amounts.totalAmount, amounts.unit);
+    
+    shoppingList.push({
+      ingredient,
+      category,
+      count: amounts.count,
+      totalAmount: displayAmount,
+      unit: amounts.unit
+    });
+  });
+
+  // Sort by category and then by ingredient name
+  return shoppingList.sort((a, b) => {
+    if (a.category !== b.category) {
+      return a.category.localeCompare(b.category);
+    }
+    return a.ingredient.localeCompare(b.ingredient);
+  });
+}
+
+function parseEnhancedRecipeIngredients(instructions: string[], ingredientAmounts: Map<string, { totalAmount: number; unit: string; count: number }>) {
+  instructions.forEach(instruction => {
+    // Extract ingredients with amounts from recipe instructions
+    const ingredientMatches = instruction.match(/(\d+(?:\.\d+)?)?\s*(cup|cups|tbsp|tsp|g|lb|lbs|oz|pieces?|cloves?|slices?)\s+([^,]+)/gi);
+    
+    if (ingredientMatches) {
+      ingredientMatches.forEach(match => {
+        const parts = match.trim().split(/\s+/);
+        const amount = parseFloat(parts[0]) || 1;
+        const unit = parts[1];
+        const ingredient = parts.slice(2).join(' ').toLowerCase().trim();
+        
+        const existing = ingredientAmounts.get(ingredient);
+        if (existing) {
+          existing.totalAmount += amount;
+          existing.count += 1;
+        } else {
+          ingredientAmounts.set(ingredient, { totalAmount: amount, unit, count: 1 });
+        }
+      });
+    }
+  });
+}
+
+function getDefaultPortion(ingredient: string): { amount: number; unit: string } {
+  // Default portions for common ingredients when no recipe amounts are found
+  const defaults: Record<string, { amount: number; unit: string }> = {
+    'almond milk': { amount: 1, unit: 'cup' },
+    'coconut milk': { amount: 1, unit: 'cup' },
+    'chia seeds': { amount: 2, unit: 'tbsp' },
+    'hemp hearts': { amount: 2, unit: 'tbsp' },
+    'mixed berries': { amount: 0.5, unit: 'cup' },
+    'banana': { amount: 1, unit: 'piece' },
+    'avocado': { amount: 1, unit: 'piece' },
+    'quinoa': { amount: 0.5, unit: 'cup' },
+    'brown rice': { amount: 0.5, unit: 'cup' },
+    'spinach': { amount: 2, unit: 'cup' },
+    'mushrooms': { amount: 1, unit: 'cup' },
+    'onions': { amount: 1, unit: 'piece' },
+    'garlic': { amount: 2, unit: 'cloves' },
+    'olive oil': { amount: 2, unit: 'tbsp' },
+    'coconut oil': { amount: 1, unit: 'tbsp' },
+    'eggs': { amount: 2, unit: 'pieces' }
+  };
+  
+  return defaults[ingredient] || { amount: 1, unit: 'g' };
+}
+
+function cleanIngredientName(ingredient: string): string {
+  // Extract the core ingredient name from formatted strings
+  // Examples:
+  // "3 large free-range eggs" -> "eggs"
+  // "½ cup coconut yogurt" -> "coconut yogurt"
+  // "¼ cup cherry tomatoes (halved)" -> "cherry tomatoes"
+  // "Pinch of sea salt and black pepper" -> "salt"
+  
+  let cleaned = ingredient.toLowerCase().trim();
+  
+  // Remove leading measurements and quantities
+  cleaned = cleaned.replace(/^[\d\/½¼¾⅓⅔⅛⅜⅝⅞]+\s*(cup|cups|tbsp|tsp|tablespoons?|teaspoons?|g|grams?|lb|lbs|pounds?|oz|ounces?|pieces?|slices?|cloves?|sprigs?|medium|large|small)\s*/, '');
+  
+  // Remove descriptive words and parenthetical content
+  cleaned = cleaned.replace(/\s*\([^)]*\)/g, ''); // Remove (content in parentheses)
+  cleaned = cleaned.replace(/\b(free-range|organic|fresh|raw|toasted|chopped|sliced|diced|minced|halved|cooked)\b/g, '');
+  cleaned = cleaned.replace(/\b(extra virgin|sea|black|white|ground|mixed|frozen)\b/g, '');
+  cleaned = cleaned.replace(/^(pinch of|dash of|handful of)\s*/i, '');
+  
+  // Clean up spaces and handle special cases
+  cleaned = cleaned.replace(/\s+/g, ' ').trim();
+  
+  // Handle compound ingredients
+  if (cleaned.includes(' and ')) {
+    const parts = cleaned.split(' and ');
+    // Take the first part for categorization
+    cleaned = parts[0].trim();
+  }
+  
+  // Map specific ingredients to standard names
+  const ingredientMappings: Record<string, string> = {
+    'eggs': 'eggs',
+    'free-range eggs': 'eggs',
+    'coconut yogurt': 'coconut yogurt',
+    'spinach leaves': 'spinach',
+    'bell pepper': 'bell peppers',
+    'cherry tomatoes': 'cherry tomatoes',
+    'herbs': 'fresh herbs',
+    'avocado': 'avocado',
+    'olive oil': 'olive oil',
+    'salt': 'salt',
+    'pepper': 'pepper',
+    'quinoa': 'quinoa',
+    'wild mushrooms': 'mushrooms',
+    'portobello mushrooms': 'mushrooms',
+    'king oyster mushrooms': 'mushrooms',
+    'mushrooms': 'mushrooms',
+    'garlic': 'garlic',
+    'onion': 'onions',
+    'red onion': 'onions',
+    'zucchini': 'zucchini',
+    'nuts': 'mixed nuts',
+    'almonds': 'mixed nuts',
+    'walnuts': 'mixed nuts',
+    'hemp seeds': 'hemp seeds',
+    'banana': 'banana',
+    'maple syrup': 'maple syrup',
+    'cinnamon': 'cinnamon',
+    'pasta': 'pasta',
+    'cashew cream': 'cashew cream',
+    'nutritional yeast': 'nutritional yeast',
+    'sun-dried tomatoes': 'sun-dried tomatoes',
+    'white wine': 'white wine',
+    'vegetable broth': 'vegetable broth'
+  };
+  
+  return ingredientMappings[cleaned] || cleaned;
+}
+
+function formatAmount(amount: number, unit: string): string {
+  if (amount < 1 && (unit === 'cup' || unit === 'cups')) {
+    const fractions = {
+      0.25: '1/4',
+      0.33: '1/3',
+      0.5: '1/2',
+      0.67: '2/3',
+      0.75: '3/4'
+    };
+    
+    const closestFraction = Object.keys(fractions).find(f => Math.abs(parseFloat(f) - amount) < 0.1);
+    if (closestFraction) {
+      return `${fractions[closestFraction as keyof typeof fractions]} ${unit}`;
+    }
+  }
+  
+  return `${amount} ${unit}`;
+}
