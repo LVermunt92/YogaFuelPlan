@@ -6,25 +6,25 @@
 
 @layer base {
   :root {
-    /* madebysem.nl inspired color palette - warmer tinted whites */
+    /* Single unified background color for everything */
     --background: hsl(35, 15%, 96%);
     --foreground: hsl(0, 0%, 15%);
-    --muted: hsl(35, 12%, 92%);
+    --muted: hsl(35, 15%, 96%);
     --muted-foreground: hsl(0, 0%, 50%);
-    --popover: hsl(35, 15%, 97%);
+    --popover: hsl(35, 15%, 96%);
     --popover-foreground: hsl(0, 0%, 15%);
-    --card: hsl(35, 15%, 97%);
+    --card: hsl(35, 15%, 96%);
     --card-foreground: hsl(0, 0%, 15%);
     --border: transparent;
-    --input: hsl(30, 6%, 93%);
+    --input: hsl(35, 15%, 96%);
     --primary: hsl(0, 0%, 15%);
-    --primary-foreground: hsl(30, 8%, 97%);
-    --secondary: hsl(30, 6%, 94%);
+    --primary-foreground: hsl(35, 15%, 96%);
+    --secondary: hsl(35, 15%, 96%);
     --secondary-foreground: hsl(0, 0%, 18%);
-    --accent: hsl(30, 6%, 91%);
+    --accent: hsl(35, 15%, 96%);
     --accent-foreground: hsl(0, 0%, 15%);
     --destructive: hsl(0, 65%, 51%);
-    --destructive-foreground: hsl(30, 8%, 97%);
+    --destructive-foreground: hsl(35, 15%, 96%);
     --ring: hsl(0, 0%, 15%);
     --radius: 0.25rem;
   }
@@ -32,19 +32,19 @@
   .dark {
     --background: hsl(0, 0%, 12%);
     --foreground: hsl(30, 5%, 92%);
-    --muted: hsl(0, 0%, 18%);
+    --muted: hsl(0, 0%, 12%);
     --muted-foreground: hsl(0, 0%, 65%);
     --popover: hsl(0, 0%, 12%);
     --popover-foreground: hsl(30, 5%, 92%);
     --card: hsl(0, 0%, 12%);
     --card-foreground: hsl(30, 5%, 92%);
     --border: transparent;
-    --input: hsl(0, 0%, 18%);
+    --input: hsl(0, 0%, 12%);
     --primary: hsl(30, 5%, 92%);
     --primary-foreground: hsl(0, 0%, 12%);
-    --secondary: hsl(0, 0%, 16%);
+    --secondary: hsl(0, 0%, 12%);
     --secondary-foreground: hsl(30, 5%, 92%);
-    --accent: hsl(0, 0%, 20%);
+    --accent: hsl(0, 0%, 12%);
     --accent-foreground: hsl(30, 5%, 92%);
     --destructive: hsl(0, 62.8%, 30.6%);
     --destructive-foreground: hsl(30, 5%, 92%);
@@ -141,7 +141,6 @@
   .card-clean {
     @apply bg-card border border-border;
     @apply rounded-sm shadow-none;
-    @apply p-8;
   }
   
   /* Clean input styling */

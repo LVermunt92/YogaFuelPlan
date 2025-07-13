@@ -330,6 +330,7 @@ export default function MealPlanner() {
         {/* Welcome Message - Week Summary */}
         {latestMealPlan && (
           <div className="card-clean mb-6">
+            <div className="p-4">
             <h2 className="text-2xl font-bold text-foreground mb-4">
               Welcome back to your week of {formatWeekRange(latestMealPlan.weekStart)}
             </h2>
@@ -375,12 +376,14 @@ export default function MealPlanner() {
                 </div>
               </div>
             )}
+            </div>
           </div>
         )}
 
         {/* Health & Activity Tracking */}
         <div className="card-clean mb-6">
-          <div className="flex items-center justify-between mb-6">
+          <div className="p-4">
+            <div className="flex items-center justify-between mb-6">
             <div className="flex items-center">
               <Activity className="h-6 w-6 text-foreground mr-4" />
               <h2 className="text-xl font-semibold text-foreground">Health & Activity Tracking</h2>
@@ -506,13 +509,14 @@ export default function MealPlanner() {
                 </p>
               </div>
             )}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Generation Panel */}
           <div className="lg:col-span-1">
             <div className="card-clean mb-6">
-              <div className="mb-4">
+              <div className="p-4 mb-4">
                 <h2 className="text-xl font-semibold text-foreground mb-2">
                   Generate Meal Plan
                 </h2>
