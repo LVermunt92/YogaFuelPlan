@@ -9,31 +9,10 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Calendar, Clock, Target, Upload, Eye, Download, Share, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
-// Available dietary tags for user selection
-const DIETARY_TAGS = [
-  "vegetarian",
-  "vegan", 
-  "gluten-free",
-  "lactose-free",
-  "dairy-free",
-  "nut-free",
-  "soy-free",
-  "low-carb",
-  "keto",
-  "paleo",
-  "mediterranean",
-  "anti-inflammatory",
-  "high-protein",
-  "low-sodium",
-  "sugar-free",
-  "whole30",
-  "raw",
-  "pescatarian"
-] as const;
+
 
 interface MealPlan {
   id: number;
@@ -123,10 +102,14 @@ export default function MealPlanner() {
   const [showShoppingList, setShowShoppingList] = useState(false);
   const [selectedMealId, setSelectedMealId] = useState<number | null>(null);
   const [showOuraPanel, setShowOuraPanel] = useState(false);
-  const [selectedDietaryTags, setSelectedDietaryTags] = useState<string[]>([]);
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
+  // Fetch user profile for dietary preferences
+  const { data: userProfile } = useQuery({
+    queryKey: ['/api/users/1/profile'],
+  });
 
   // Fetch meal plans
   const { data: mealPlans = [], isLoading: loadingPlans } = useQuery<MealPlan[]>({
@@ -164,7 +147,7 @@ export default function MealPlanner() {
         activityLevel,
         weekStart,
         userId: 1,
-        dietaryTags: selectedDietaryTags,
+        dietaryTags: userProfile?.dietaryTags || [],
       });
       return response.json();
     },
@@ -570,41 +553,21 @@ export default function MealPlanner() {
                   />
                 </div>
 
-                <div>
-                  <Label className="text-sm font-medium text-foreground mb-3 block">Dietary Preferences</Label>
-                  <div className="grid grid-cols-2 gap-3 max-h-40 overflow-y-auto">
-                    {DIETARY_TAGS.map((tag) => (
-                      <div key={tag} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={tag}
-                          checked={selectedDietaryTags.includes(tag)}
-                          onCheckedChange={(checked) => {
-                            if (checked) {
-                              setSelectedDietaryTags([...selectedDietaryTags, tag]);
-                            } else {
-                              setSelectedDietaryTags(selectedDietaryTags.filter(t => t !== tag));
-                            }
-                          }}
-                        />
-                        <Label 
-                          htmlFor={tag} 
-                          className="text-xs text-muted-foreground capitalize cursor-pointer"
-                        >
-                          {tag.replace(/-/g, ' ')}
-                        </Label>
-                      </div>
-                    ))}
-                  </div>
-                  {selectedDietaryTags.length > 0 && (
-                    <div className="mt-3 flex flex-wrap gap-1">
-                      {selectedDietaryTags.map((tag) => (
+                {userProfile?.dietaryTags && userProfile.dietaryTags.length > 0 && (
+                  <div>
+                    <Label className="text-sm font-medium text-foreground mb-3 block">Your Dietary Preferences</Label>
+                    <div className="flex flex-wrap gap-2">
+                      {userProfile.dietaryTags.map((tag) => (
                         <Badge key={tag} variant="secondary" className="text-xs">
                           {tag.replace(/-/g, ' ')}
                         </Badge>
                       ))}
                     </div>
-                  )}
-                </div>
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Meal plans will be filtered based on these preferences. Update them in your profile.
+                    </p>
+                  </div>
+                )}
                 
                 <div className="space-y-4">
                   <Button 

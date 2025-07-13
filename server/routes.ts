@@ -6,6 +6,7 @@ import { mealPlanRequestSchema } from "@shared/schema";
 import { notion, createDatabaseIfNotExists, findDatabaseByTitle } from "./notion";
 import { generateShoppingList } from "./nutrition";
 import { OuraService } from "./oura";
+import { updateUserProfileSchema } from "@shared/schema";
 import cron from 'node-cron';
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -299,6 +300,44 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error generating shopping list:", error);
       res.status(500).json({ message: "Failed to generate shopping list" });
+    }
+  });
+
+  // User profile routes
+  app.get('/api/users/:id/profile', async (req, res) => {
+    try {
+      const userId = parseInt(req.params.id);
+      const user = await storage.getUser(userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      
+      res.json(user);
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+      res.status(500).json({ message: 'Failed to fetch user profile' });
+    }
+  });
+
+  app.patch('/api/users/:id/profile', async (req, res) => {
+    try {
+      const userId = parseInt(req.params.id);
+      const profileData = req.body;
+      
+      // Validate the request body
+      const validatedData = updateUserProfileSchema.parse(profileData);
+      
+      const updatedUser = await storage.updateUserProfile(userId, validatedData);
+      
+      if (!updatedUser) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      
+      res.json(updatedUser);
+    } catch (error) {
+      console.error('Error updating user profile:', error);
+      res.status(500).json({ message: 'Failed to update user profile' });
     }
   });
 
