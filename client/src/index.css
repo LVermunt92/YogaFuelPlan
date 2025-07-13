@@ -67,27 +67,27 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Headers use serif font like madebysem.nl - elegant contrast with sans-serif body */
+  /* Headers use serif font like madebysem.nl - light weight with generous letter spacing */
   h1, h2, h3, h4, h5, h6 {
     font-family: "Times New Roman", Times, serif;
-    font-weight: 400;
-    letter-spacing: -0.015em;
-    line-height: 1.3;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    line-height: 1.4;
   }
 
   h1 {
-    font-weight: 300;
-    letter-spacing: -0.02em;
+    font-weight: 200;
+    letter-spacing: 0.08em;
   }
 
   h2 {
-    font-weight: 400;
-    letter-spacing: -0.015em;
+    font-weight: 300;
+    letter-spacing: 0.06em;
   }
 
   h3 {
-    font-weight: 400;
-    letter-spacing: -0.01em;
+    font-weight: 300;
+    letter-spacing: 0.04em;
   }
   
   h1, h2, h3, h4, h5, h6 {
