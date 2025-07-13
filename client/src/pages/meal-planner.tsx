@@ -311,30 +311,21 @@ export default function MealPlanner() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header - Clean minimal design */}
-      <header className="border-b border-border bg-background">
-        <div className="max-w-7xl mx-auto px-8 lg:px-12">
-          <div className="flex justify-between items-center h-24">
-            <div className="flex items-center">
-              <Utensils className="h-8 w-8 text-foreground mr-4" />
-              <div>
-                <h1 className="text-3xl font-bold text-foreground">
-                  Meal Planner
-                </h1>
-                <p className="text-muted-foreground mt-1">
-                  Personalised nutrition for your lifestyle
-                </p>
-              </div>
-            </div>
-            <div className="text-sm text-muted-foreground">
-              Last generated: <span className="text-foreground font-medium">{latestMealPlan ? formatDate(latestMealPlan.createdAt) : "Never"}</span>
-            </div>
+    <div className="bg-background">
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-8 lg:px-12 py-12">
+        {/* Page Title */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-light text-foreground mb-2" style={{ fontFamily: 'Times New Roman, serif', letterSpacing: '0.05em' }}>
+            Meal Planner
+          </h1>
+          <p className="text-muted-foreground">
+            Personalised nutrition for your lifestyle
+          </p>
+          <div className="text-sm text-muted-foreground mt-2">
+            Last generated: <span className="text-foreground font-medium">{latestMealPlan ? formatDate(latestMealPlan.createdAt) : "Never"}</span>
           </div>
         </div>
-      </header>
-
-      <div className="max-w-7xl mx-auto px-8 lg:px-12 py-12">
         
         {/* Welcome Message - Week Summary */}
         {latestMealPlan && (
@@ -882,10 +873,9 @@ export default function MealPlanner() {
             </Button>
           </div>
         </div>
-      </div>
 
-      {/* Recipe Dialog */}
-      <Dialog open={!!selectedMealId} onOpenChange={() => setSelectedMealId(null)}>
+        {/* Recipe Dialog */}
+        <Dialog open={!!selectedMealId} onOpenChange={() => setSelectedMealId(null)}>
         <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
@@ -1060,7 +1050,8 @@ export default function MealPlanner() {
             </div>
           )}
         </DialogContent>
-      </Dialog>
+        </Dialog>
+      </main>
     </div>
   );
 }
