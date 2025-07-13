@@ -185,6 +185,15 @@ export class DatabaseStorage implements IStorage {
     return user;
   }
 
+  async updateUserProfile(userId: number, profileData: UpdateUserProfile): Promise<User> {
+    const [user] = await db
+      .update(users)
+      .set({ ...profileData, updatedAt: new Date() })
+      .where(eq(users.id, userId))
+      .returning();
+    return user;
+  }
+
   async createMealPlan(insertMealPlan: InsertMealPlan): Promise<MealPlan> {
     const [mealPlan] = await db
       .insert(mealPlans)

@@ -15,7 +15,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/meal-plans/generate", async (req, res) => {
     try {
       const request = mealPlanRequestSchema.parse(req.body);
-      const generated = generateWeeklyMealPlan(request);
+      
+      // Fetch user data for caloric adjustments
+      const user = request.userId ? await storage.getUser(request.userId) : undefined;
+      
+      const generated = generateWeeklyMealPlan(request, user);
       
       // Save to storage
       const savedMealPlan = await storage.createMealPlan(generated.mealPlan);
@@ -147,7 +151,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         userId: 1,
       };
 
-      const generated = generateWeeklyMealPlan(request);
+      // Fetch user data for caloric adjustments
+      const user = await storage.getUser(request.userId);
+      
+      const generated = generateWeeklyMealPlan(request, user);
       
       // Save to storage
       const savedMealPlan = await storage.createMealPlan(generated.mealPlan);
@@ -489,7 +496,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         userId,
       };
 
-      const generated = generateWeeklyMealPlan(request);
+      // Fetch user data for caloric adjustments
+      const user = await storage.getUser(userId);
+
+      const generated = generateWeeklyMealPlan(request, user);
       
       // Save to storage
       const savedMealPlan = await storage.createMealPlan(generated.mealPlan);
@@ -576,7 +586,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
           userId: 1,
         };
 
-        const generated = generateWeeklyMealPlan(request);
+        // Fetch user data for caloric adjustments
+        const user = await storage.getUser(1);
+
+        const generated = generateWeeklyMealPlan(request, user);
         
         // Save to storage
         const savedMealPlan = await storage.createMealPlan(generated.mealPlan);
