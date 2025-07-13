@@ -822,63 +822,124 @@ export default function MealPlanner() {
                   ))}
                 </div>
               ) : currentMealPlan?.meals ? (
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead className="border-b border-border">
-                      <tr>
-                        <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Day</th>
-                        <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Meal</th>
-                        <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Food</th>
-                        <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Portion</th>
-                        <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Protein (g)</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-border">
-                      {[1, 2, 3, 4, 5, 6, 7].map(day => {
-                        const dayMeals = getDayMeals(day);
-                        const dayTotal = calculateDayTotal(day);
-                        
-                        return (
-                          <React.Fragment key={day}>
-                            {dayMeals.map((meal, index) => (
-                              <tr key={meal.id} className="hover:bg-muted/50">
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">
-                                  {index === 0 ? `Day ${day}` : ''}
+                <>
+                  {/* Meal Prep Legend */}
+                  <div className="mb-6 p-4 bg-muted/20 rounded-lg">
+                    <h3 className="text-sm font-medium text-foreground mb-3">Meal Prep Guide</h3>
+                    <div className="flex flex-wrap gap-4 text-xs">
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 bg-emerald-100 border-2 border-emerald-500 rounded"></div>
+                        <span className="text-muted-foreground">Fresh cooking day</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 bg-blue-100 border-2 border-blue-500 rounded"></div>
+                        <span className="text-muted-foreground">Reheat leftover (5 min)</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 bg-gray-100 border-2 border-gray-400 rounded"></div>
+                        <span className="text-muted-foreground">Eating out</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead className="border-b border-border">
+                        <tr>
+                          <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Day</th>
+                          <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Meal</th>
+                          <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Food</th>
+                          <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Portion</th>
+                          <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Protein (g)</th>
+                          <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Prep</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-border">
+                        {[1, 2, 3, 4, 5, 6, 7].map(day => {
+                          const dayMeals = getDayMeals(day);
+                          const dayTotal = calculateDayTotal(day);
+                          
+                          return (
+                            <React.Fragment key={day}>
+                              {dayMeals.map((meal, index) => {
+                                const isLeftover = meal.foodDescription.includes('(leftover)');
+                                const isEatingOut = meal.foodDescription.includes('Eating out');
+                                const isFreshCooking = !isLeftover && !isEatingOut;
+                                
+                                const rowBgColor = isEatingOut 
+                                  ? 'bg-gray-50 border-l-4 border-l-gray-400' 
+                                  : isLeftover 
+                                    ? 'bg-blue-50 border-l-4 border-l-blue-500' 
+                                    : 'bg-emerald-50 border-l-4 border-l-emerald-500';
+                                
+                                return (
+                                  <tr key={meal.id} className={`hover:bg-muted/50 ${rowBgColor}`}>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">
+                                      {index === 0 ? `Day ${day}` : ''}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground capitalize">
+                                      {meal.mealType}
+                                    </td>
+                                    <td className="px-6 py-4 text-sm text-foreground">
+                                      {isEatingOut ? (
+                                        <div className="flex items-center gap-2">
+                                          <span className="w-4 h-4 text-gray-500">🍽️</span>
+                                          {meal.foodDescription}
+                                        </div>
+                                      ) : (
+                                        <button
+                                          onClick={() => setSelectedMealId(meal.id)}
+                                          className="text-left hover:text-primary hover:underline cursor-pointer flex items-center gap-2"
+                                        >
+                                          <BookOpen className="w-4 h-4" />
+                                          {meal.foodDescription}
+                                        </button>
+                                      )}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
+                                      {meal.portion}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">
+                                      {meal.protein}g
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-xs">
+                                      {isEatingOut ? (
+                                        <span className="text-gray-500">N/A</span>
+                                      ) : (
+                                        <div className="flex items-center gap-1">
+                                          {isFreshCooking && (
+                                            <>
+                                              <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                                              <span className="text-emerald-700 font-medium">{meal.prepTime}min</span>
+                                            </>
+                                          )}
+                                          {isLeftover && (
+                                            <>
+                                              <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                                              <span className="text-blue-700 font-medium">5min</span>
+                                            </>
+                                          )}
+                                        </div>
+                                      )}
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+                              <tr className="bg-muted/30">
+                                <td colSpan={5} className="px-6 py-3 text-sm font-medium text-foreground">
+                                  Day {day} Total
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground capitalize">
-                                  {meal.mealType}
-                                </td>
-                                <td className="px-6 py-4 text-sm text-foreground">
-                                  <button
-                                    onClick={() => setSelectedMealId(meal.id)}
-                                    className="text-left hover:text-primary hover:underline cursor-pointer flex items-center gap-2"
-                                  >
-                                    <BookOpen className="w-4 h-4" />
-                                    {meal.foodDescription}
-                                  </button>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
-                                  {meal.portion}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">
-                                  {meal.protein}g
+                                <td className="px-6 py-3 text-sm font-semibold text-foreground">
+                                  {dayTotal.toFixed(1)}g
                                 </td>
                               </tr>
-                            ))}
-                            <tr className="bg-muted/30">
-                              <td colSpan={4} className="px-6 py-3 text-sm font-medium text-foreground">
-                                Day {day} Total
-                              </td>
-                              <td className="px-6 py-3 text-sm font-semibold text-foreground">
-                                {dayTotal.toFixed(1)}g
-                              </td>
-                            </tr>
-                          </React.Fragment>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
+                            </React.Fragment>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </>
               ) : (
                 <div className="text-center py-12">
                   <Activity className="mx-auto h-12 w-12 mb-4 text-muted-foreground" />

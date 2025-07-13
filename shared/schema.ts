@@ -9,8 +9,10 @@ export const users = pgTable("users", {
   email: text("email"),
   weight: integer("weight").default(60), // kg
   goalWeight: integer("goal_weight"), // target weight in kg
+  height: integer("height"), // cm
   waistline: real("waistline").default(75), // cm
   goalWaistline: real("goal_waistline"), // target waistline in cm
+  targetDate: date("target_date"), // when to reach goals by
   activityLevel: text("activity_level").default("high"), // high or low
   proteinTarget: integer("protein_target").default(130), // grams
   dietaryTags: text("dietary_tags").array().default([]),
@@ -131,8 +133,10 @@ export const authLoginSchema = z.object({
 export const updateUserProfileSchema = createInsertSchema(users).pick({
   weight: true,
   goalWeight: true,
+  height: true,
   waistline: true,
   goalWaistline: true,
+  targetDate: true,
   activityLevel: true,
   proteinTarget: true,
   dietaryTags: true,

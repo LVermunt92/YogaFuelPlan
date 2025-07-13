@@ -42,8 +42,10 @@ interface UserProfile {
   lastName: string | null;
   weight: number | null;
   goalWeight: number | null;
+  height: number | null;
   waistline: number | null;
   goalWaistline: number | null;
+  targetDate: string | null;
   activityLevel: string;
   proteinTarget: number;
   dietaryTags: string[];
@@ -73,8 +75,10 @@ export default function Profile() {
     lastName: '',
     weight: '',
     goalWeight: '',
+    height: '',
     waistline: '',
     goalWaistline: '',
+    targetDate: '',
     activityLevel: 'high',
     proteinTarget: '',
     dietaryTags: [] as string[],
@@ -94,8 +98,10 @@ export default function Profile() {
         lastName: user.lastName || '',
         weight: user.weight?.toString() || '',
         goalWeight: user.goalWeight?.toString() || '',
+        height: user.height?.toString() || '',
         waistline: user.waistline?.toString() || '',
         goalWaistline: user.goalWaistline?.toString() || '',
+        targetDate: user.targetDate || '',
         activityLevel: user.activityLevel || 'high',
         proteinTarget: user.proteinTarget?.toString() || '',
         dietaryTags: user.dietaryTags || [],
@@ -280,6 +286,19 @@ export default function Profile() {
               </div>
 
               <div>
+                <Label htmlFor="height" className="text-sm font-medium text-foreground mb-2 block">
+                  Height (cm)
+                </Label>
+                <Input
+                  id="height"
+                  type="number"
+                  value={formData.height}
+                  onChange={(e) => setFormData(prev => ({ ...prev, height: e.target.value }))}
+                  className="input-clean"
+                />
+              </div>
+
+              <div>
                 <Label htmlFor="waistline" className="text-sm font-medium text-foreground mb-2 block">
                   Waistline (cm)
                 </Label>
@@ -292,6 +311,85 @@ export default function Profile() {
                   className="input-clean"
                 />
               </div>
+
+              {/* BMI Display */}
+              {formData.weight && formData.height && (
+                <div>
+                  <Label className="text-sm font-medium text-foreground mb-2 block">
+                    Current BMI
+                  </Label>
+                  <div className="p-3 bg-muted rounded-md">
+                    <span className="text-lg font-medium">
+                      {(parseFloat(formData.weight) / Math.pow(parseFloat(formData.height) / 100, 2)).toFixed(1)}
+                    </span>
+                    <span className="text-sm text-muted-foreground ml-2">
+                      {(() => {
+                        const bmi = parseFloat(formData.weight) / Math.pow(parseFloat(formData.height) / 100, 2);
+                        if (bmi < 18.5) return "Underweight";
+                        if (bmi < 25) return "Normal";
+                        if (bmi < 30) return "Overweight";
+                        return "Obese";
+                      })()}
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Goals Section */}
+            <div className="mt-8">
+              <h3 className="text-lg font-medium text-foreground mb-4">Goals</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <Label htmlFor="goalWeight" className="text-sm font-medium text-foreground mb-2 block">
+                    Goal Weight (kg)
+                  </Label>
+                  <Input
+                    id="goalWeight"
+                    type="number"
+                    step="0.1"
+                    value={formData.goalWeight}
+                    onChange={(e) => setFormData(prev => ({ ...prev, goalWeight: e.target.value }))}
+                    className="input-clean"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="goalWaistline" className="text-sm font-medium text-foreground mb-2 block">
+                    Goal Waistline (cm)
+                  </Label>
+                  <Input
+                    id="goalWaistline"
+                    type="number"
+                    step="0.1"
+                    value={formData.goalWaistline}
+                    onChange={(e) => setFormData(prev => ({ ...prev, goalWaistline: e.target.value }))}
+                    className="input-clean"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="targetDate" className="text-sm font-medium text-foreground mb-2 block">
+                    Target Date
+                  </Label>
+                  <Input
+                    id="targetDate"
+                    type="date"
+                    value={formData.targetDate}
+                    onChange={(e) => setFormData(prev => ({ ...prev, targetDate: e.target.value }))}
+                    className="input-clean"
+                  />
+                </div>
+              </div>
+
+              {/* Goal Timeline Display */}
+              {formData.targetDate && (
+                <div className="mt-4 p-3 bg-muted rounded-md">
+                  <span className="text-sm text-muted-foreground">
+                    Timeline: {Math.max(0, Math.ceil((new Date(formData.targetDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24 * 7)))} weeks to reach your goals
+                  </span>
+                </div>
+              )}
 
               <div>
                 <Label htmlFor="activityLevel" className="text-sm font-medium text-foreground mb-2 block">

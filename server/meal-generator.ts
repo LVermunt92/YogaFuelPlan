@@ -7,36 +7,81 @@ export interface GeneratedMealPlan {
 }
 
 /**
- * Calculate caloric adjustment factor based on user's goals
+ * Calculate BMI from weight and height
+ */
+function calculateBMI(weight: number, height: number): number {
+  return weight / Math.pow(height / 100, 2);
+}
+
+/**
+ * Calculate caloric adjustment factor based on user's goals, BMI, and timeline
  * Returns a multiplier for portion sizes (1.0 = no change, <1.0 = smaller portions, >1.0 = larger portions)
  */
 function calculateCaloricAdjustment(user: User): number {
   let adjustmentFactor = 1.0;
+  const currentDate = new Date();
   
-  // Weight goal adjustment
+  // Calculate timeline factor if target date is set
+  let timelineMultiplier = 1.0;
+  if (user.targetDate) {
+    const targetDate = new Date(user.targetDate);
+    const daysUntilTarget = Math.max(1, (targetDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
+    const weeksUntilTarget = daysUntilTarget / 7;
+    
+    // More aggressive adjustments for shorter timelines
+    if (weeksUntilTarget < 8) {
+      timelineMultiplier = 1.3; // 30% more aggressive for < 2 months
+    } else if (weeksUntilTarget < 16) {
+      timelineMultiplier = 1.2; // 20% more aggressive for < 4 months
+    } else if (weeksUntilTarget < 24) {
+      timelineMultiplier = 1.1; // 10% more aggressive for < 6 months
+    }
+  }
+  
+  // Weight goal adjustment with timeline consideration
   if (user.weight && user.goalWeight) {
     const weightDifference = user.goalWeight - user.weight;
-    const weightChangePercent = weightDifference / user.weight;
+    const weightChangePercent = Math.abs(weightDifference) / user.weight;
     
-    // If goal weight is lower (weight loss), reduce calories by up to 15%
-    // If goal weight is higher (weight gain), increase calories by up to 15%
-    adjustmentFactor += weightChangePercent * 0.5; // 50% of the percentage change, capped
-    adjustmentFactor = Math.max(0.85, Math.min(1.15, adjustmentFactor)); // Cap between 85% and 115%
+    // Safe weight loss: 0.5-1kg per week, weight gain: 0.25-0.5kg per week
+    const weeksToTarget = user.targetDate ? 
+      Math.max(4, (new Date(user.targetDate).getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24 * 7)) : 24;
+    const weeklyChange = Math.abs(weightDifference) / weeksToTarget;
+    
+    if (weightDifference < -2) {
+      // Weight loss goal
+      const maxAdjustment = Math.min(0.25, weeklyChange * 0.12 * timelineMultiplier);
+      adjustmentFactor -= maxAdjustment;
+    } else if (weightDifference > 2) {
+      // Weight gain goal  
+      const maxAdjustment = Math.min(0.2, weeklyChange * 0.08 * timelineMultiplier);
+      adjustmentFactor += maxAdjustment;
+    }
   }
   
-  // Waistline goal adjustment (additional refinement)
+  // BMI-based adjustments if height is available
+  if (user.height && user.weight) {
+    const currentBMI = calculateBMI(user.weight, user.height);
+    
+    if (currentBMI > 25 && user.goalWeight && user.goalWeight < user.weight) {
+      adjustmentFactor *= 0.92; // Additional reduction for overweight individuals
+    } else if (currentBMI < 18.5 && user.goalWeight && user.goalWeight > user.weight) {
+      adjustmentFactor *= 1.08; // Additional increase for underweight individuals
+    } else if (currentBMI > 30) {
+      adjustmentFactor *= 0.88; // Stronger reduction for obesity
+    }
+  }
+  
+  // Waistline goal adjustment with timeline consideration
   if (user.waistline && user.goalWaistline) {
-    const waistlineDifference = user.goalWaistline - user.waistline;
-    const waistlineChangePercent = waistlineDifference / user.waistline;
-    
-    // Waistline reduction typically correlates with calorie reduction
-    // Apply a smaller adjustment factor for waistline goals
-    const waistlineAdjustment = waistlineChangePercent * 0.3; // 30% of the percentage change
-    adjustmentFactor += waistlineAdjustment;
-    adjustmentFactor = Math.max(0.85, Math.min(1.15, adjustmentFactor)); // Keep within reasonable bounds
+    const waistDifference = user.goalWaistline - user.waistline;
+    if (waistDifference < -2) {
+      const waistAdjustment = Math.min(0.12, Math.abs(waistDifference) * 0.008 * timelineMultiplier);
+      adjustmentFactor -= waistAdjustment;
+    }
   }
   
-  return adjustmentFactor;
+  return Math.max(0.7, Math.min(1.3, adjustmentFactor)); // Keep within reasonable bounds
 }
 
 /**
@@ -207,14 +252,18 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
       const adjustedPortion = adjustMealPortion(selectedMeal.portion, portionMultiplier);
       const adjustedProtein = Math.round(selectedMeal.nutrition.protein * caloricAdjustment);
 
+      // Add cooking status to meal description for visual identification
+      const cookingStatus = isCookingDay ? 'fresh' : 'reheat';
+      const prepTimeForDay = isCookingDay ? selectedMeal.nutrition.prepTime : 5; // 5 min to reheat
+      
       const meal: InsertMeal = {
         mealPlanId: 0, // Will be set later
         day,
         mealType: mealCategory,
-        foodDescription: selectedMeal.name,
+        foodDescription: isCookingDay ? selectedMeal.name : `${selectedMeal.name} (leftover)`,
         portion: adjustedPortion,
         protein: adjustedProtein,
-        prepTime: selectedMeal.nutrition.prepTime,
+        prepTime: prepTimeForDay,
       };
 
       meals.push(meal);
