@@ -688,10 +688,26 @@ export function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' | 'lunc
   const categoryMeals = getEnhancedMealsByCategory(category);
   const filteredMeals = filterEnhancedMealsByDietaryTags(categoryMeals, dietaryTags);
   
-  // If no meals match dietary tags, return all meals from category (with console warning)
+  // If no meals match dietary tags, implement smart fallback
   if (filteredMeals.length === 0) {
-    console.log(`No ${category} meals found for dietary tags: ${dietaryTags.join(', ')}. Falling back to all ${category} meals.`);
-    return categoryMeals;
+    console.log(`No ${category} meals found for dietary tags: ${dietaryTags.join(', ')}. Attempting smart fallback.`);
+    
+    // Define critical dietary restrictions that should never be violated
+    const criticalTags = ['vegetarian', 'vegan', 'kosher', 'halal'];
+    const criticalUserTags = dietaryTags.filter(tag => criticalTags.includes(tag));
+    
+    // If user has critical dietary restrictions, only respect those in fallback
+    if (criticalUserTags.length > 0) {
+      const criticalFilteredMeals = filterEnhancedMealsByDietaryTags(categoryMeals, criticalUserTags);
+      if (criticalFilteredMeals.length > 0) {
+        console.log(`Fallback: Found ${criticalFilteredMeals.length} ${category} meals respecting critical dietary restrictions: ${criticalUserTags.join(', ')}`);
+        return criticalFilteredMeals;
+      }
+    }
+    
+    // If even critical fallback fails, log error and return empty array to prevent inappropriate meals
+    console.error(`CRITICAL: No ${category} meals found that respect dietary restrictions. This should not happen.`);
+    return [];
   }
   
   return filteredMeals;

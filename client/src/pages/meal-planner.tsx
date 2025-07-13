@@ -826,7 +826,7 @@ export default function MealPlanner() {
                           const dayTotal = calculateDayTotal(day);
                           
                           return (
-                            <div key={day}>
+                            <React.Fragment key={day}>
                               {dayMeals.map((meal, index) => {
                                 const isLeftover = meal.foodDescription.includes('(leftover)');
                                 const isEatingOut = meal.foodDescription.includes('Eating out');
@@ -912,7 +912,7 @@ export default function MealPlanner() {
                                   {dayTotal.toFixed(1)}g
                                 </td>
                               </tr>
-                            </div>
+                            </React.Fragment>
                           );
                         })}
                       </tbody>

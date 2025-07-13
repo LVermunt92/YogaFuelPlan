@@ -161,10 +161,8 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
       const availableMeals = getEnhancedMealsForCategoryAndDiet(mealCategory, dietaryTags);
       
       if (availableMeals.length === 0) {
-        console.log(`No ${mealCategory} meals found for dietary tags: ${dietaryTags.join(', ')}. Falling back to all ${mealCategory} meals.`);
-        // Fallback to all meals in category if no matches
-        const allMeals = getEnhancedMealsForCategoryAndDiet(mealCategory, []);
-        availableMeals.push(...allMeals);
+        console.error(`CRITICAL: No ${mealCategory} meals available for dietary restrictions: ${dietaryTags.join(', ')}. Skipping this meal.`);
+        return; // Skip this meal instead of using inappropriate fallback
       }
 
       // Implement Sunday night cooking pattern logic
@@ -234,10 +232,12 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
         selectedMeal = thursdayDinnerMeal;
         isLeftover = true;
       } else if (mealCategory === 'breakfast') {
-        // Breakfast is always fresh (different each day with better variety)
-        const shuffledBreakfasts = [...availableMeals].sort(() => Math.random() - 0.5);
-        const breakfastIndex = (day - 1) % shuffledBreakfasts.length;
-        selectedMeal = shuffledBreakfasts[breakfastIndex];
+        // Breakfast is always fresh (ensure true variety each day)
+        const seed = day + Math.floor(Date.now() / 1000000); // Daily seed for consistent but varied selection
+        const shuffledBreakfasts = [...availableMeals].sort(() => (seed % 2) - 0.5);
+        // Use a different breakfast for each day by rotating through available options
+        const breakfastIndex = (day - 1) % availableMeals.length;
+        selectedMeal = availableMeals[breakfastIndex];
       } else {
         // Fresh lunch/dinner for other days
         const mealIndex = (day + mealCategory.length) % availableMeals.length;
