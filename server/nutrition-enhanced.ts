@@ -671,9 +671,17 @@ export function getEnhancedMealsByCategory(category: 'breakfast' | 'lunch' | 'di
 export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTags: string[]): MealOption[] {
   if (dietaryTags.length === 0) return meals;
   
-  return meals.filter(meal => 
-    dietaryTags.every(tag => meal.tags.includes(tag))
-  );
+  return meals.filter(meal => {
+    // Special handling for vegetarian tag - exclude non-vegetarian meals
+    if (dietaryTags.includes('vegetarian')) {
+      // If vegetarian is selected, meal must have vegetarian tag AND other dietary requirements
+      return dietaryTags.every(tag => meal.tags.includes(tag));
+    }
+    
+    // For non-vegetarian diets, check all dietary requirements but don't require vegetarian tag
+    const nonVegetarianTags = dietaryTags.filter(tag => tag !== 'vegetarian');
+    return nonVegetarianTags.every(tag => meal.tags.includes(tag));
+  });
 }
 
 export function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' | 'lunch' | 'dinner', dietaryTags: string[] = []): MealOption[] {

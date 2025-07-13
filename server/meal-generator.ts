@@ -362,10 +362,16 @@ function generateMealPrepPlan(
   const breakfastOptions = getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags);
   const shuffledBreakfasts = [...breakfastOptions].sort(() => Math.random() - 0.5);
   
-  // Ensure we have enough unique breakfasts for 7 days
+  // Create unique breakfast pool for 7 days without repeats
   const breakfastPool = [];
-  while (breakfastPool.length < 7) {
-    breakfastPool.push(...shuffledBreakfasts);
+  let breakfastCycle = [...shuffledBreakfasts];
+  
+  for (let i = 0; i < 7; i++) {
+    if (breakfastCycle.length === 0) {
+      // Reshuffle and start a new cycle if we run out
+      breakfastCycle = [...breakfastOptions].sort(() => Math.random() - 0.5);
+    }
+    breakfastPool.push(breakfastCycle.shift());
   }
   
   for (let day = 1; day <= 7; day++) {
