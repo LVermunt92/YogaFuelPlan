@@ -108,10 +108,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get meal plans
+  // Get meal plans (filter by current user)
   app.get("/api/meal-plans", async (req, res) => {
     try {
-      const mealPlans = await storage.getMealPlans();
+      const userId = req.query.userId ? parseInt(req.query.userId as string) : 2; // Default to user 2
+      const mealPlans = await storage.getMealPlans(userId);
       res.json(mealPlans);
     } catch (error) {
       console.error("Error fetching meal plans:", error);

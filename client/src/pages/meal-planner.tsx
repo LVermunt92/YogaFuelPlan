@@ -105,7 +105,7 @@ export default function MealPlanner() {
     nextMonday.setDate(nextMonday.getDate() + daysUntilMonday);
     return nextMonday.toISOString().split('T')[0];
   });
-  const [selectedMealPlan, setSelectedMealPlan] = useState<number | null>(null);
+  const [selectedMealPlan, setSelectedMealPlan] = useState<number | null>(20); // Default to latest meal plan with reheat functionality
   const [showShoppingList, setShowShoppingList] = useState(false);
   const [selectedMealId, setSelectedMealId] = useState<number | null>(null);
   const [showOuraPanel, setShowOuraPanel] = useState(false);
@@ -120,9 +120,11 @@ export default function MealPlanner() {
     enabled: !!authUser?.id,
   });
 
-  // Fetch meal plans
+  // Fetch meal plans for current user
   const { data: mealPlans = [], isLoading: loadingPlans } = useQuery<MealPlan[]>({
     queryKey: ['/api/meal-plans'],
+    queryFn: () => apiRequest(`/api/meal-plans?userId=${authUser?.id || 2}`),
+    enabled: !!authUser,
   });
 
   // Fetch specific meal plan with meals

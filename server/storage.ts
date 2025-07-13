@@ -297,8 +297,13 @@ export class DatabaseStorage implements IStorage {
     return mealPlan;
   }
 
-  async getMealPlans(): Promise<MealPlan[]> {
-    return await db.select().from(mealPlans);
+  async getMealPlans(userId?: number): Promise<MealPlan[]> {
+    if (userId) {
+      return await db.select().from(mealPlans)
+        .where(eq(mealPlans.userId, userId))
+        .orderBy(desc(mealPlans.id));
+    }
+    return await db.select().from(mealPlans).orderBy(desc(mealPlans.id));
   }
 
   async getMealPlanWithMeals(id: number): Promise<MealPlanWithMeals | undefined> {
