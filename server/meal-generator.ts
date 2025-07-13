@@ -250,30 +250,33 @@ function generateMealPrepPlan(
   const meals: InsertMeal[] = [];
   let totalWeeklyProtein = 0;
   
-  // Plan which meals to batch cook
-  const mealsPerCookingDay = Math.ceil(eatingDays.length / cookingDays.length);
+  // Calculate household portion multiplier
+  const householdSize = user?.householdSize || 1;
+  const householdMultiplier = householdSize;
+  
+  // Reduce meal variety for efficient meal prep - use fewer unique meals
+  const maxMealVariety = Math.max(1, Math.ceil(cookingDays.length / 2));
   
   // Get meal options for each category with dietary filters
   const breakfastOptions = getMealsForCategoryAndDiet('breakfast', dietaryTags);
-  const lunchOptions = getMealsForCategoryAndDiet('lunch', dietaryTags);
-  const dinnerOptions = getMealsForCategoryAndDiet('dinner', dietaryTags);
+  const lunchOptions = getMealsForCategoryAndDiet('lunch', dietaryTags).slice(0, maxMealVariety);
+  const dinnerOptions = getMealsForCategoryAndDiet('dinner', dietaryTags).slice(0, maxMealVariety);
   
-  // Plan meal prep schedule
-  const mealSchedule: Map<number, { lunch?: any, dinner?: any }> = new Map();
+  // Select specific meals for the week to minimize variety
+  const selectedLunchMeal = lunchOptions[0] || lunchOptions[Math.floor(Math.random() * lunchOptions.length)];
+  const selectedDinnerMeal = dinnerOptions[0] || dinnerOptions[Math.floor(Math.random() * dinnerOptions.length)];
   
-  // Assign lunch and dinner prep to cooking days
+  // Plan meal prep schedule - distribute eating days across cooking days
+  const mealSchedule: Map<number, { cookingDay: number, isLeftover: boolean }> = new Map();
+  const mealsPerCookingDay = Math.ceil(eatingDays.length / cookingDays.length);
+  
   let cookingDayIndex = 0;
   for (let i = 0; i < eatingDays.length; i++) {
     const eatingDay = eatingDays[i];
     const cookingDay = cookingDays[cookingDayIndex % cookingDays.length];
+    const isLeftover = eatingDay !== cookingDay;
     
-    if (!mealSchedule.has(eatingDay)) {
-      mealSchedule.set(eatingDay, {});
-    }
-    
-    // Assign which cooking day provides the meals for this eating day
-    const schedule = mealSchedule.get(eatingDay)!;
-    schedule.cookingDay = cookingDay;
+    mealSchedule.set(eatingDay, { cookingDay, isLeftover });
     
     // Move to next cooking day every mealsPerCookingDay eating days
     if ((i + 1) % mealsPerCookingDay === 0) {
@@ -302,7 +305,9 @@ function generateMealPrepPlan(
       });
       continue;
     }
-    const adjustedBreakfastPortion = adjustMealPortion(breakfastMeal.portion, caloricAdjustment);
+    // Apply both caloric and household size adjustments for breakfast
+    const totalAdjustment = caloricAdjustment * householdMultiplier;
+    const adjustedBreakfastPortion = adjustMealPortion(breakfastMeal.portion, totalAdjustment);
     const breakfastProtein = breakfastMeal.nutrition.protein * caloricAdjustment;
     
     meals.push({
@@ -322,30 +327,31 @@ function generateMealPrepPlan(
       const schedule = mealSchedule.get(day);
       const isCookingDay = cookingDays.includes(day);
       
-      // Select lunch meal (batch cook if needed)
-      const lunchMeal = lunchOptions[Math.floor(Math.random() * lunchOptions.length)];
-      if (!lunchMeal) {
+      // Use selected lunch meal for consistency (same meal all week)
+      if (!selectedLunchMeal) {
         console.error("No lunch options available for dietary tags:", dietaryTags);
         continue; // Skip this day if no meals available
       }
-      let lunchPortion = adjustMealPortion(lunchMeal.portion, caloricAdjustment);
-      let lunchPrepTime = lunchMeal.nutrition.prepTime;
       
-      if (!isCookingDay) {
+      let lunchPortion = adjustMealPortion(selectedLunchMeal.portion, totalAdjustment);
+      let lunchPrepTime = selectedLunchMeal.nutrition.prepTime;
+      
+      if (schedule?.isLeftover) {
         // This is a leftover day - adjust portion description and prep time
-        lunchPortion = `${lunchPortion} (meal prep leftover)`;
+        lunchPortion = `${selectedLunchMeal.portion} (leftover)`;
         lunchPrepTime = 5; // Just reheating time
-      } else if (mealsPerCookingDay > 1) {
+      } else if (isCookingDay && mealsPerCookingDay > 1) {
         // Cooking day with batch cooking - adjust portion for multiple servings
-        lunchPortion = `${mealsPerCookingDay}x ${lunchPortion} (batch cook)`;
+        lunchPortion = `${mealsPerCookingDay}x ${selectedLunchMeal.portion} (batch cook)`;
+        lunchPrepTime += 10; // Extra time for batch cooking
       }
       
-      const lunchProtein = lunchMeal.nutrition.protein * caloricAdjustment;
+      const lunchProtein = selectedLunchMeal.nutrition.protein * caloricAdjustment;
       meals.push({
         mealPlanId: 0,
         day,
         mealType: 'lunch',
-        foodDescription: lunchMeal.name,
+        foodDescription: selectedLunchMeal.name,
         portion: lunchPortion,
         protein: Math.round(lunchProtein),
         prepTime: lunchPrepTime
@@ -353,30 +359,31 @@ function generateMealPrepPlan(
       
       dailyProtein += lunchProtein;
 
-      // Select dinner meal (batch cook if needed)
-      const dinnerMeal = dinnerOptions[Math.floor(Math.random() * dinnerOptions.length)];
-      if (!dinnerMeal) {
+      // Use selected dinner meal for consistency (same meal all week)
+      if (!selectedDinnerMeal) {
         console.error("No dinner options available for dietary tags:", dietaryTags);
         continue; // Skip this day if no meals available
       }
-      let dinnerPortion = adjustMealPortion(dinnerMeal.portion, caloricAdjustment);
-      let dinnerPrepTime = dinnerMeal.nutrition.prepTime;
       
-      if (!isCookingDay) {
+      let dinnerPortion = adjustMealPortion(selectedDinnerMeal.portion, totalAdjustment);
+      let dinnerPrepTime = selectedDinnerMeal.nutrition.prepTime;
+      
+      if (schedule?.isLeftover) {
         // This is a leftover day
-        dinnerPortion = `${dinnerPortion} (meal prep leftover)`;
+        dinnerPortion = `${selectedDinnerMeal.portion} (leftover)`;
         dinnerPrepTime = 5; // Just reheating time
-      } else if (mealsPerCookingDay > 1) {
+      } else if (isCookingDay && mealsPerCookingDay > 1) {
         // Cooking day with batch cooking
-        dinnerPortion = `${mealsPerCookingDay}x ${dinnerPortion} (batch cook)`;
+        dinnerPortion = `${mealsPerCookingDay}x ${selectedDinnerMeal.portion} (batch cook)`;
+        dinnerPrepTime += 10; // Extra time for batch cooking
       }
       
-      const dinnerProtein = dinnerMeal.nutrition.protein * caloricAdjustment;
+      const dinnerProtein = selectedDinnerMeal.nutrition.protein * caloricAdjustment;
       meals.push({
         mealPlanId: 0,
         day,
         mealType: 'dinner',
-        foodDescription: dinnerMeal.name,
+        foodDescription: selectedDinnerMeal.name,
         portion: dinnerPortion,
         protein: Math.round(dinnerProtein),
         prepTime: dinnerPrepTime
