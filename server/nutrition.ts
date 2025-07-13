@@ -1,6 +1,8 @@
 export interface NutritionInfo {
   protein: number;
   prepTime: number;
+  costEuros?: number;
+  proteinPerEuro?: number;
 }
 
 export interface MealOption {
@@ -28,7 +30,7 @@ export const MEAL_DATABASE: MealOption[] = [
   {
     name: "Quinoa porridge with almond butter, chia seeds, and hemp hearts",
     portion: "1 bowl (200g)",
-    nutrition: { protein: 24, prepTime: 15 },
+    nutrition: { protein: 24, prepTime: 15, costEuros: 3.20, proteinPerEuro: 7.5 },
     category: "breakfast",
     tags: ["vegetarian", "gluten-free", "lactose-free", "dairy-free", "high-protein", "quick", "filling"],
     ingredients: ["quinoa", "almond butter", "chia seeds", "hemp hearts", "almond milk", "maple syrup", "cinnamon"],
@@ -55,7 +57,7 @@ export const MEAL_DATABASE: MealOption[] = [
   {
     name: "Protein smoothie with pea protein, spinach, banana, almond milk",
     portion: "1 large smoothie (400ml)",
-    nutrition: { protein: 28, prepTime: 10 },
+    nutrition: { protein: 28, prepTime: 10, costEuros: 2.80, proteinPerEuro: 10.0 },
     category: "breakfast",
     tags: ["vegetarian", "gluten-free", "lactose-free", "dairy-free", "high-protein", "quick", "refreshing"],
     ingredients: ["pea protein powder", "fresh spinach", "banana", "almond milk", "frozen berries", "flax seeds"],
@@ -84,7 +86,7 @@ export const MEAL_DATABASE: MealOption[] = [
   {
     name: "Chia pudding with protein powder and nuts",
     portion: "1 cup pudding + 1 scoop protein",
-    nutrition: { protein: 32, prepTime: 10 },
+    nutrition: { protein: 32, prepTime: 10, costEuros: 4.50, proteinPerEuro: 7.1 },
     category: "breakfast",
     tags: ["vegetarian", "gluten-free", "lactose-free", "dairy-free", "high-protein", "make-ahead", "omega-3"],
     ingredients: ["chia seeds", "vanilla protein powder", "almond milk", "mixed nuts", "vanilla extract", "maple syrup"],
@@ -112,7 +114,7 @@ export const MEAL_DATABASE: MealOption[] = [
   {
     name: "Tofu scramble with nutritional yeast and vegetables",
     portion: "150g tofu + vegetables",
-    nutrition: { protein: 22, prepTime: 20 },
+    nutrition: { protein: 22, prepTime: 20, costEuros: 2.60, proteinPerEuro: 8.5 },
     category: "breakfast",
     tags: ["vegan", "gluten-free", "lactose-free", "dairy-free", "savory", "B12", "filling"],
     ingredients: ["extra firm tofu", "nutritional yeast", "bell peppers", "onions", "spinach", "turmeric", "garlic", "olive oil"],
@@ -125,7 +127,7 @@ export const MEAL_DATABASE: MealOption[] = [
   {
     name: "Overnight oats with protein powder and nuts",
     portion: "1 cup oats + 1 scoop protein",
-    nutrition: { protein: 26, prepTime: 5 },
+    nutrition: { protein: 26, prepTime: 5, costEuros: 2.90, proteinPerEuro: 9.0 },
     category: "breakfast",
     tags: ["vegetarian", "make-ahead", "fiber", "convenient"],
     ingredients: ["rolled oats", "vanilla protein powder", "almond milk", "walnuts", "maple syrup", "vanilla extract", "cinnamon"],
@@ -140,7 +142,7 @@ export const MEAL_DATABASE: MealOption[] = [
   {
     name: "Lentil and chickpea curry with brown rice",
     portion: "1.5 cups curry + 1 cup rice",
-    nutrition: { protein: 42, prepTime: 25 },
+    nutrition: { protein: 42, prepTime: 25, costEuros: 3.50, proteinPerEuro: 12.0 },
     category: "lunch",
     tags: ["vegan", "gluten-free", "lactose-free", "dairy-free", "high-protein", "fiber", "iron"],
     ingredients: ["red lentils", "chickpeas", "brown rice", "coconut milk", "curry powder", "turmeric", "ginger", "garlic", "onions", "tomatoes", "spinach"],
@@ -172,7 +174,7 @@ export const MEAL_DATABASE: MealOption[] = [
   {
     name: "Black bean and quinoa bowl with tahini dressing",
     portion: "1.5 cups beans + 1 cup quinoa",
-    nutrition: { protein: 35, prepTime: 20 },
+    nutrition: { protein: 35, prepTime: 20, costEuros: 3.80, proteinPerEuro: 9.2 },
     category: "lunch",
     tags: ["vegan", "gluten-free", "lactose-free", "dairy-free", "high-protein", "mediterranean"],
     ingredients: ["black beans", "quinoa", "tahini", "lemon juice", "cucumber", "cherry tomatoes", "red onion", "parsley", "olive oil"],
@@ -186,7 +188,7 @@ export const MEAL_DATABASE: MealOption[] = [
   {
     name: "Grilled chicken breast with sweet potato and broccoli",
     portion: "150g chicken + 200g sweet potato + vegetables",
-    nutrition: { protein: 45, prepTime: 25 },
+    nutrition: { protein: 45, prepTime: 25, costEuros: 5.20, proteinPerEuro: 8.7 },
     category: "lunch", 
     tags: ["high-protein", "paleo", "gluten-free", "lactose-free", "anti-inflammatory"],
     ingredients: ["chicken breast", "sweet potato", "broccoli", "olive oil", "garlic", "rosemary", "salt", "pepper"],
@@ -199,7 +201,7 @@ export const MEAL_DATABASE: MealOption[] = [
   {
     name: "Salmon fillet with quinoa and asparagus",
     portion: "150g salmon + 1 cup quinoa + vegetables",
-    nutrition: { protein: 42, prepTime: 20 },
+    nutrition: { protein: 42, prepTime: 20, costEuros: 8.50, proteinPerEuro: 4.9 },
     category: "lunch",
     tags: ["pescatarian", "gluten-free", "high-protein", "omega-3", "anti-inflammatory"],
     ingredients: ["salmon fillet", "quinoa", "asparagus", "lemon", "olive oil", "dill", "garlic"],
@@ -213,7 +215,7 @@ export const MEAL_DATABASE: MealOption[] = [
   {
     name: "Avocado and hemp seed salad with olive oil dressing",
     portion: "2 avocados + mixed greens + seeds",
-    nutrition: { protein: 18, prepTime: 15 },
+    nutrition: { protein: 18, prepTime: 15, costEuros: 6.20, proteinPerEuro: 2.9 },
     category: "lunch",
     tags: ["vegan", "keto", "low-carb", "gluten-free", "lactose-free", "dairy-free", "high-protein"],
     ingredients: ["avocados", "mixed greens", "hemp seeds", "pumpkin seeds", "olive oil", "lemon juice", "nutritional yeast"],
@@ -227,7 +229,7 @@ export const MEAL_DATABASE: MealOption[] = [
   {
     name: "Greek yogurt parfait with nuts and seeds",
     portion: "200g yogurt + nuts + seeds",
-    nutrition: { protein: 25, prepTime: 5 },
+    nutrition: { protein: 25, prepTime: 5, costEuros: 3.80, proteinPerEuro: 6.6 },
     category: "breakfast",
     tags: ["vegetarian", "gluten-free", "high-protein", "quick", "probiotic"],
     ingredients: ["Greek yogurt", "almonds", "walnuts", "chia seeds", "honey", "cinnamon"],
@@ -240,7 +242,7 @@ export const MEAL_DATABASE: MealOption[] = [
   {
     name: "Black bean and quinoa power bowl with tahini dressing",
     portion: "1.5 cups quinoa + 1 cup black beans + vegetables",
-    nutrition: { protein: 32, prepTime: 25 },
+    nutrition: { protein: 32, prepTime: 25, costEuros: 4.20, proteinPerEuro: 7.6 },
     category: "lunch",
     tags: ["complete-protein", "magnesium", "filling"],
     ingredients: ["black beans", "quinoa", "tahini", "lemon", "garlic", "olive oil", "cucumber", "bell peppers", "cherry tomatoes", "avocado", "cilantro"],
@@ -269,7 +271,7 @@ export const MEAL_DATABASE: MealOption[] = [
   {
     name: "White bean and vegetable soup with hemp seeds",
     portion: "2 cups soup + 2 tbsp hemp seeds",
-    nutrition: { protein: 28, prepTime: 30 },
+    nutrition: { protein: 28, prepTime: 30, costEuros: 3.10, proteinPerEuro: 9.0 },
     category: "lunch",
     tags: ["warming", "omega-3", "fiber"],
     ingredients: ["white beans", "hemp seeds", "vegetable broth", "carrots", "celery", "onions", "garlic", "kale", "herbs", "olive oil"],
@@ -282,7 +284,7 @@ export const MEAL_DATABASE: MealOption[] = [
   {
     name: "Hummus and vegetable wrap with hemp hearts",
     portion: "Large GF wrap + 4 tbsp hummus + 2 tbsp hemp",
-    nutrition: { protein: 24, prepTime: 15 },
+    nutrition: { protein: 24, prepTime: 15, costEuros: 4.80, proteinPerEuro: 5.0 },
     category: "lunch",
     tags: ["portable", "quick", "raw-vegetables"],
     ingredients: ["gluten-free tortilla", "hummus", "hemp hearts", "lettuce", "cucumber", "carrots", "bell peppers", "sprouts", "avocado"],
@@ -295,7 +297,7 @@ export const MEAL_DATABASE: MealOption[] = [
   {
     name: "Tempeh salad with edamame and sunflower seeds",
     portion: "120g tempeh + 1 cup edamame + mixed greens",
-    nutrition: { protein: 38, prepTime: 20 },
+    nutrition: { protein: 38, prepTime: 20, costEuros: 5.60, proteinPerEuro: 6.8 },
     category: "lunch",
     tags: ["fresh", "probiotics", "vitamin-E"],
     ingredients: ["tempeh", "edamame", "mixed greens", "sunflower seeds", "cherry tomatoes", "cucumber", "red onion", "balsamic vinegar", "olive oil"],
@@ -310,7 +312,7 @@ export const MEAL_DATABASE: MealOption[] = [
   {
     name: "Tofu stir-fry with edamame and quinoa",
     portion: "150g tofu + 1 cup vegetables + 1 cup quinoa",
-    nutrition: { protein: 38, prepTime: 25 },
+    nutrition: { protein: 38, prepTime: 25, costEuros: 4.70, proteinPerEuro: 8.1 },
     category: "dinner",
     tags: ["complete-protein", "colorful", "satisfying"],
     ingredients: ["extra firm tofu", "edamame", "quinoa", "broccoli", "bell peppers", "snap peas", "carrots", "ginger", "garlic", "soy sauce", "sesame oil"],
@@ -323,7 +325,7 @@ export const MEAL_DATABASE: MealOption[] = [
   {
     name: "Tempeh with roasted vegetables and hemp seeds",
     portion: "120g tempeh + mixed vegetables + 2 tbsp hemp seeds",
-    nutrition: { protein: 41, prepTime: 30 },
+    nutrition: { protein: 41, prepTime: 30, costEuros: 6.20, proteinPerEuro: 6.6 },
     category: "dinner",
     tags: ["fermented", "omega-3", "antioxidants"],
     ingredients: ["tempeh", "hemp seeds", "sweet potato", "brussels sprouts", "red onion", "zucchini", "olive oil", "herbs", "balsamic vinegar"],
@@ -336,7 +338,7 @@ export const MEAL_DATABASE: MealOption[] = [
   {
     name: "Nutritional yeast pasta with white beans",
     portion: "GF pasta + 1 cup beans + 3 tbsp nutritional yeast",
-    nutrition: { protein: 36, prepTime: 25 },
+    nutrition: { protein: 36, prepTime: 25, costEuros: 4.40, proteinPerEuro: 8.2 },
     category: "dinner",
     tags: ["B12", "comfort-food", "fiber"],
     ingredients: ["gluten-free pasta", "white beans", "nutritional yeast", "garlic", "olive oil", "spinach", "sun-dried tomatoes", "herbs"],

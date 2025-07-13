@@ -50,6 +50,7 @@ interface UserProfile {
   householdSize: number;
   cookingDaysPerWeek: number;
   eatingDaysAtHome: number;
+  meatFishMealsPerWeek: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -79,7 +80,8 @@ export default function Profile() {
     dietaryTags: [] as string[],
     householdSize: '1',
     cookingDaysPerWeek: '7',
-    eatingDaysAtHome: '7'
+    eatingDaysAtHome: '7',
+    meatFishMealsPerWeek: '0'
   });
 
   // Update form data when user data loads
@@ -99,7 +101,8 @@ export default function Profile() {
         dietaryTags: user.dietaryTags || [],
         householdSize: user.householdSize?.toString() || '1',
         cookingDaysPerWeek: user.cookingDaysPerWeek?.toString() || '7',
-        eatingDaysAtHome: user.eatingDaysAtHome?.toString() || '7'
+        eatingDaysAtHome: user.eatingDaysAtHome?.toString() || '7',
+        meatFishMealsPerWeek: user.meatFishMealsPerWeek?.toString() || '0'
       });
     }
   }, [user]);
@@ -144,7 +147,8 @@ export default function Profile() {
       dietaryTags: formData.dietaryTags,
       householdSize: formData.householdSize ? parseInt(formData.householdSize) : 1,
       cookingDaysPerWeek: formData.cookingDaysPerWeek ? parseInt(formData.cookingDaysPerWeek) : 7,
-      eatingDaysAtHome: formData.eatingDaysAtHome ? parseInt(formData.eatingDaysAtHome) : 7
+      eatingDaysAtHome: formData.eatingDaysAtHome ? parseInt(formData.eatingDaysAtHome) : 7,
+      meatFishMealsPerWeek: formData.meatFishMealsPerWeek ? parseInt(formData.meatFishMealsPerWeek) : 0
     };
 
     updateProfileMutation.mutate(updateData);
@@ -377,7 +381,7 @@ export default function Profile() {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               <div>
                 <Label htmlFor="householdSize" className="text-sm font-medium text-foreground mb-2 block">
                   Household Size (people)
@@ -432,6 +436,25 @@ export default function Profile() {
                 />
                 <p className="text-xs text-muted-foreground mt-1">
                   How many days per week you eat at home vs eating out
+                </p>
+              </div>
+
+              <div>
+                <Label htmlFor="meatFishMealsPerWeek" className="text-sm font-medium text-foreground mb-2 block">
+                  Meat/Fish Meals Per Week
+                </Label>
+                <Input
+                  id="meatFishMealsPerWeek"
+                  type="number"
+                  min="0"
+                  max="21"
+                  value={formData.meatFishMealsPerWeek || 0}
+                  onChange={(e) => setFormData(prev => ({ ...prev, meatFishMealsPerWeek: e.target.value }))}
+                  className="input-clean"
+                  placeholder="0"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Number of meals per week that should include meat or fish (0 for vegetarian/vegan)
                 </p>
               </div>
             </div>
