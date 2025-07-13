@@ -397,7 +397,22 @@ export default function MealPlanner() {
 
   const getDayMeals = (day: number) => {
     if (!currentMealPlan?.meals) return [];
-    return currentMealPlan.meals.filter(meal => meal.day === day);
+    
+    // Filter meals based on 8-day Sunday night cooking pattern
+    const allDayMeals = currentMealPlan.meals.filter(meal => meal.day === day);
+    
+    // Day 1: Sunday dinner only
+    if (day === 1) {
+      return allDayMeals.filter(meal => meal.mealType === 'dinner');
+    }
+    // Day 8: Sunday breakfast only
+    else if (day === 8) {
+      return allDayMeals.filter(meal => meal.mealType === 'breakfast');
+    }
+    // Days 2-7: All meals (breakfast, lunch, dinner)
+    else {
+      return allDayMeals;
+    }
   };
 
   const calculateDayTotal = (day: number) => {
