@@ -5,13 +5,16 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import MealPlanner from "@/pages/meal-planner";
 import Profile from "@/pages/profile";
+import Auth from "@/pages/auth";
 import NotFound from "@/pages/not-found";
-import { Utensils, User, Menu } from "lucide-react";
+import { Utensils, User, Menu, LogOut } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 import { useState } from "react";
 
 function Navigation() {
   const [location] = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, logout } = useAuth();
 
   const navItems = [
     { path: "/", label: "Meal Planner", icon: Utensils },
@@ -48,6 +51,24 @@ function Navigation() {
                 );
               })}
             </div>
+          </div>
+          
+          {/* User info and logout */}
+          <div className="hidden sm:flex sm:items-center sm:space-x-4">
+            {user && (
+              <>
+                <span className="text-sm text-muted-foreground">
+                  Welcome, {user.username}
+                </span>
+                <button
+                  onClick={logout}
+                  className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors duration-200"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Logout
+                </button>
+              </>
+            )}
           </div>
           
           {/* Mobile menu button */}
@@ -95,6 +116,31 @@ function Navigation() {
 }
 
 function Router() {
+  const { isAuthenticated, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#fefdf9] flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-lg font-light" style={{ fontFamily: 'Times New Roman, serif' }}>
+            Loading...
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-[#fefdf9]">
+        <Switch>
+          <Route path="/auth" component={Auth} />
+          <Route component={Auth} />
+        </Switch>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#fefdf9]">
       <Navigation />

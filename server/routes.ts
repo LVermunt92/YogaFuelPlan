@@ -6,10 +6,59 @@ import { mealPlanRequestSchema } from "@shared/schema";
 import { notion, createDatabaseIfNotExists, findDatabaseByTitle } from "./notion";
 import { generateShoppingList } from "./nutrition";
 import { OuraService } from "./oura";
-import { updateUserProfileSchema } from "@shared/schema";
+import { updateUserProfileSchema, authRegisterSchema, authLoginSchema } from "@shared/schema";
 import cron from 'node-cron';
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  
+  // Authentication routes
+  app.post("/api/auth/register", async (req, res) => {
+    try {
+      const userData = authRegisterSchema.parse(req.body);
+      
+      // Check if username already exists
+      const existingUser = await storage.getUserByUsername(userData.username);
+      if (existingUser) {
+        return res.status(409).json({ message: "Username already exists" });
+      }
+
+      const user = await storage.createUser(userData);
+      
+      // Don't return password in response
+      const { password, ...userWithoutPassword } = user;
+      
+      res.status(201).json({
+        message: "Account created successfully",
+        user: userWithoutPassword,
+      });
+    } catch (error) {
+      console.error("Registration error:", error);
+      res.status(400).json({ message: "Registration failed" });
+    }
+  });
+
+  app.post("/api/auth/login", async (req, res) => {
+    try {
+      const { username, password } = authLoginSchema.parse(req.body);
+      
+      const user = await storage.authenticateUser(username, password);
+      
+      if (!user) {
+        return res.status(401).json({ message: "Invalid username or password" });
+      }
+
+      // Don't return password in response
+      const { password: _, ...userWithoutPassword } = user;
+      
+      res.json({
+        message: "Login successful",
+        user: userWithoutPassword,
+      });
+    } catch (error) {
+      console.error("Login error:", error);
+      res.status(400).json({ message: "Login failed" });
+    }
+  });
   
   // Generate meal plan
   app.post("/api/meal-plans/generate", async (req, res) => {

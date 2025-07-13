@@ -16,11 +16,13 @@ import {
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, gte, lte, desc } from "drizzle-orm";
+import bcrypt from "bcrypt";
 
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  authenticateUser(username: string, password: string): Promise<User | null>;
   updateUserProfile(userId: number, profileData: UpdateUserProfile): Promise<User>;
   createMealPlan(mealPlan: InsertMealPlan): Promise<MealPlan>;
   getMealPlans(userId?: number): Promise<MealPlan[]>;
@@ -51,11 +53,21 @@ export class MemStorage implements IStorage {
     // Create default user
     const defaultUser: User = {
       id: 1,
-      username: "default",
-      password: "password",
+      username: "user",
+      password: "password", 
+      email: null,
       weight: 60,
+      goalWeight: null,
+      waistline: 75,
+      goalWaistline: null,
       activityLevel: "high",
       proteinTarget: 130,
+      dietaryTags: [],
+      householdSize: 1,
+      cookingDaysPerWeek: 7,
+      eatingDaysAtHome: 7,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
     this.users.set(1, defaultUser);
     this.currentUserId = 2;
@@ -74,14 +86,34 @@ export class MemStorage implements IStorage {
   async createUser(insertUser: InsertUser): Promise<User> {
     const id = this.currentUserId++;
     const user: User = { 
-      ...insertUser, 
       id,
+      username: insertUser.username,
+      password: insertUser.password,
+      email: insertUser.email || null,
       weight: insertUser.weight || 60,
+      goalWeight: insertUser.goalWeight || null,
+      waistline: insertUser.waistline || 75,
+      goalWaistline: insertUser.goalWaistline || null,
       activityLevel: insertUser.activityLevel || "high",
       proteinTarget: insertUser.proteinTarget || 130,
+      dietaryTags: insertUser.dietaryTags || [],
+      householdSize: 1,
+      cookingDaysPerWeek: 7,
+      eatingDaysAtHome: 7,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
     this.users.set(id, user);
     return user;
+  }
+
+  async authenticateUser(username: string, password: string): Promise<User | null> {
+    for (const user of this.users.values()) {
+      if (user.username === username && user.password === password) {
+        return user;
+      }
+    }
+    return null;
   }
 
   async createMealPlan(insertMealPlan: InsertMealPlan): Promise<MealPlan> {
@@ -178,11 +210,28 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
+    // Hash password before storing
+    const hashedPassword = await bcrypt.hash(insertUser.password, 10);
+    
     const [user] = await db
       .insert(users)
-      .values(insertUser)
+      .values({
+        ...insertUser,
+        password: hashedPassword,
+      })
       .returning();
     return user;
+  }
+
+  async authenticateUser(username: string, password: string): Promise<User | null> {
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    
+    if (!user) {
+      return null;
+    }
+
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    return isValidPassword ? user : null;
   }
 
   async updateUserProfile(userId: number, profileData: UpdateUserProfile): Promise<User> {

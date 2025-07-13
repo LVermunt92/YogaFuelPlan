@@ -6,6 +6,7 @@ export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
+  email: text("email"),
   weight: integer("weight").default(60), // kg
   goalWeight: integer("goal_weight"), // target weight in kg
   waistline: real("waistline").default(75), // cm
@@ -74,6 +75,7 @@ export const recipeRatings = pgTable("recipe_ratings", {
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
+  email: true,
   weight: true,
   goalWeight: true,
   waistline: true,
@@ -81,6 +83,17 @@ export const insertUserSchema = createInsertSchema(users).pick({
   activityLevel: true,
   proteinTarget: true,
   dietaryTags: true,
+});
+
+export const authRegisterSchema = createInsertSchema(users).pick({
+  username: true,
+  password: true,
+  email: true,
+});
+
+export const authLoginSchema = z.object({
+  username: z.string(),
+  password: z.string(),
 });
 
 export const updateUserProfileSchema = createInsertSchema(users).pick({
@@ -154,6 +167,8 @@ export const recipeRatingSchema = z.object({
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type UpdateUserProfile = z.infer<typeof updateUserProfileSchema>;
+export type AuthRegister = z.infer<typeof authRegisterSchema>;
+export type AuthLogin = z.infer<typeof authLoginSchema>;
 export type MealPlan = typeof mealPlans.$inferSelect;
 export type InsertMealPlan = z.infer<typeof insertMealPlanSchema>;
 export type RecipeRating = typeof recipeRatings.$inferSelect;
