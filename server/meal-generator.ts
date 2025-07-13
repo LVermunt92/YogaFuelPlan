@@ -233,11 +233,10 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
         isLeftover = true;
       } else if (mealCategory === 'breakfast') {
         // Breakfast is always fresh (ensure true variety each day)
-        const seed = day + Math.floor(Date.now() / 1000000); // Daily seed for consistent but varied selection
-        const shuffledBreakfasts = [...availableMeals].sort(() => (seed % 2) - 0.5);
-        // Use a different breakfast for each day by rotating through available options
+        // Rotate through available breakfasts to ensure variety
         const breakfastIndex = (day - 1) % availableMeals.length;
         selectedMeal = availableMeals[breakfastIndex];
+        console.log(`Day ${day} breakfast: ${selectedMeal.name} (index: ${breakfastIndex}/${availableMeals.length})`);
       } else {
         // Fresh lunch/dinner for other days
         const mealIndex = (day + mealCategory.length) % availableMeals.length;
@@ -360,19 +359,24 @@ function generateMealPrepPlan(
   
   // Generate meals for all 7 days (breakfast always included)
   const breakfastOptions = getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags);
-  const shuffledBreakfasts = [...breakfastOptions].sort(() => Math.random() - 0.5);
+  console.log(`✓ Breakfast variety: Found ${breakfastOptions.length} breakfast options for dietary tags: ${dietaryTags.join(', ')}`);
   
   // Create unique breakfast pool for 7 days without repeats
   const breakfastPool = [];
-  let breakfastCycle = [...shuffledBreakfasts];
   
-  for (let i = 0; i < 7; i++) {
-    if (breakfastCycle.length === 0) {
-      // Reshuffle and start a new cycle if we run out
-      breakfastCycle = [...breakfastOptions].sort(() => Math.random() - 0.5);
+  // If we have enough unique breakfast options, use them all
+  if (breakfastOptions.length >= 7) {
+    const shuffledBreakfasts = [...breakfastOptions].sort(() => Math.random() - 0.5);
+    breakfastPool.push(...shuffledBreakfasts.slice(0, 7));
+  } else {
+    // If fewer than 7 options, cycle through them to ensure variety
+    for (let i = 0; i < 7; i++) {
+      const index = i % breakfastOptions.length;
+      breakfastPool.push(breakfastOptions[index]);
     }
-    breakfastPool.push(breakfastCycle.shift());
   }
+  
+  console.log(`✓ Breakfast pool: ${breakfastPool.map(b => b.name).join(' | ')}`);
   
   for (let day = 1; day <= 7; day++) {
     // BREAKFAST: Always include for every day (no duplicates in 7 days)
