@@ -7,6 +7,7 @@ This is a full-stack meal planning application built with React, Express, and Po
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+Breakfast scheduling preference: Easy, quick breakfasts during weekdays (≤10 min prep), elaborate breakfasts like pancakes on weekends (≥15 min prep).
 
 ## System Architecture
 

@@ -575,7 +575,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     portion: "2 thighs + vegetables",
     nutrition: { protein: 38, prepTime: 40, costEuros: 6.50, proteinPerEuro: 5.8 },
     category: "dinner",
-    tags: ["gluten-free", "dairy-free", "paleo", "high-protein"],
+    tags: ["non-vegetarian", "gluten-free", "dairy-free", "paleo", "high-protein"],
     ingredients: ["free-range chicken thighs", "Brussels sprouts", "sweet potato", "red onion", "fresh sage", "fresh thyme", "fresh rosemary", "olive oil", "lemon", "garlic", "toasted almonds", "sea salt"],
     wholeFoodLevel: "high",
     vegetableContent: {
@@ -729,7 +729,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 10.6 
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "viral", "social-media", "high-protein", "probiotic"],
+    tags: ["vegetarian", "viral", "social-media", "high-protein", "probiotic", "dairy"],
     ingredients: ["cottage cheese", "fresh berries", "honey", "granola", "chia seeds", "cinnamon", "vanilla extract"],
     wholeFoodLevel: "moderate",
     vegetableContent: {
@@ -883,7 +883,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     portion: "150g chicken + vegetables",
     nutrition: { protein: 36, prepTime: 30, costEuros: 6.80, proteinPerEuro: 5.3 },
     category: "lunch",
-    tags: ["gluten-free", "dairy-free", "paleo", "high-protein"],
+    tags: ["non-vegetarian", "gluten-free", "dairy-free", "paleo", "high-protein"],
     ingredients: ["free-range chicken breast", "mixed vegetables", "fresh rosemary", "fresh thyme", "fresh sage", "garlic", "olive oil", "lemon", "toasted pine nuts", "sea salt", "black pepper"],
     wholeFoodLevel: "high",
     vegetableContent: {

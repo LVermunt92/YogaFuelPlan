@@ -232,11 +232,43 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
         selectedMeal = thursdayDinnerMeal;
         isLeftover = true;
       } else if (mealCategory === 'breakfast') {
-        // Breakfast is always fresh (ensure true variety each day)
-        // Rotate through available breakfasts to ensure variety
-        const breakfastIndex = (day - 1) % availableMeals.length;
-        selectedMeal = availableMeals[breakfastIndex];
-        console.log(`Day ${day} breakfast: ${selectedMeal.name} (index: ${breakfastIndex}/${availableMeals.length})`);
+        // Smart breakfast scheduling: easy options for weekdays, elaborate for weekends
+        const isWeekend = day === 6 || day === 7; // Saturday or Sunday
+        
+        if (isWeekend) {
+          // Weekend breakfasts: pancakes, elaborate options (higher prep time)
+          const weekendBreakfasts = availableMeals.filter(meal => 
+            meal.nutrition.prepTime >= 15 || 
+            meal.name.toLowerCase().includes('pancake') ||
+            meal.name.toLowerCase().includes('bowl') ||
+            meal.name.toLowerCase().includes('quinoa')
+          );
+          
+          if (weekendBreakfasts.length > 0) {
+            const weekendIndex = (day - 6) % weekendBreakfasts.length; // Rotate weekend options
+            selectedMeal = weekendBreakfasts[weekendIndex];
+            console.log(`Day ${day} (weekend) breakfast: ${selectedMeal.name} (prep: ${selectedMeal.nutrition.prepTime}min)`);
+          } else {
+            selectedMeal = availableMeals[0];
+          }
+        } else {
+          // Weekday breakfasts: quick and easy options (lower prep time)
+          const weekdayBreakfasts = availableMeals.filter(meal => 
+            meal.nutrition.prepTime <= 10 ||
+            meal.name.toLowerCase().includes('overnight') ||
+            meal.name.toLowerCase().includes('chia') ||
+            meal.name.toLowerCase().includes('smoothie') ||
+            meal.name.toLowerCase().includes('kefir')
+          );
+          
+          if (weekdayBreakfasts.length > 0) {
+            const weekdayIndex = (day - 1) % weekdayBreakfasts.length; // Rotate weekday options
+            selectedMeal = weekdayBreakfasts[weekdayIndex];
+            console.log(`Day ${day} (weekday) breakfast: ${selectedMeal.name} (prep: ${selectedMeal.nutrition.prepTime}min)`);
+          } else {
+            selectedMeal = availableMeals[0];
+          }
+        }
       } else {
         // Fresh lunch/dinner for other days
         const mealIndex = (day + mealCategory.length) % availableMeals.length;
