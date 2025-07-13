@@ -13,6 +13,8 @@ export const users = pgTable("users", {
   activityLevel: text("activity_level").default("high"), // high or low
   proteinTarget: integer("protein_target").default(130), // grams
   dietaryTags: text("dietary_tags").array().default([]),
+  householdSize: integer("household_size").default(1),
+  cookingDaysPerWeek: integer("cooking_days_per_week").default(7),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -88,6 +90,8 @@ export const updateUserProfileSchema = createInsertSchema(users).pick({
   activityLevel: true,
   proteinTarget: true,
   dietaryTags: true,
+  householdSize: true,
+  cookingDaysPerWeek: true,
 });
 
 export const insertMealPlanSchema = createInsertSchema(mealPlans).omit({

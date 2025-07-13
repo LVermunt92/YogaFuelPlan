@@ -43,6 +43,8 @@ interface UserProfile {
   activityLevel: string;
   proteinTarget: number;
   dietaryTags: string[];
+  householdSize: number;
+  cookingDaysPerWeek: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -64,7 +66,9 @@ export default function Profile() {
     weight: '',
     activityLevel: 'high',
     proteinTarget: '',
-    dietaryTags: [] as string[]
+    dietaryTags: [] as string[],
+    householdSize: '1',
+    cookingDaysPerWeek: '7'
   });
 
   // Update form data when user data loads
@@ -78,7 +82,9 @@ export default function Profile() {
         weight: user.weight?.toString() || '',
         activityLevel: user.activityLevel || 'high',
         proteinTarget: user.proteinTarget?.toString() || '',
-        dietaryTags: user.dietaryTags || []
+        dietaryTags: user.dietaryTags || [],
+        householdSize: user.householdSize?.toString() || '1',
+        cookingDaysPerWeek: user.cookingDaysPerWeek?.toString() || '7'
       });
     }
   }, [user]);
@@ -116,7 +122,9 @@ export default function Profile() {
       weight: formData.weight ? parseFloat(formData.weight) : null,
       activityLevel: formData.activityLevel,
       proteinTarget: formData.proteinTarget ? parseInt(formData.proteinTarget) : null,
-      dietaryTags: formData.dietaryTags
+      dietaryTags: formData.dietaryTags,
+      householdSize: formData.householdSize ? parseInt(formData.householdSize) : 1,
+      cookingDaysPerWeek: formData.cookingDaysPerWeek ? parseInt(formData.cookingDaysPerWeek) : 7
     };
 
     updateProfileMutation.mutate(updateData);
@@ -280,6 +288,58 @@ export default function Profile() {
             </div>
           </div>
 
+          {/* Meal Planning Preferences */}
+          <div className="card-clean">
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-foreground mb-2">
+                Meal Planning Preferences
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                These settings help us tailor meal plans to your cooking habits and household size.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <Label htmlFor="householdSize" className="text-sm font-medium text-foreground mb-2 block">
+                  Household Size (people)
+                </Label>
+                <Input
+                  id="householdSize"
+                  type="number"
+                  min="1"
+                  max="10"
+                  value={formData.householdSize}
+                  onChange={(e) => setFormData(prev => ({ ...prev, householdSize: e.target.value }))}
+                  className="input-clean"
+                  placeholder="1"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Number of people you're cooking for
+                </p>
+              </div>
+
+              <div>
+                <Label htmlFor="cookingDaysPerWeek" className="text-sm font-medium text-foreground mb-2 block">
+                  Cooking Days Per Week
+                </Label>
+                <Input
+                  id="cookingDaysPerWeek"
+                  type="number"
+                  min="1"
+                  max="7"
+                  value={formData.cookingDaysPerWeek}
+                  onChange={(e) => setFormData(prev => ({ ...prev, cookingDaysPerWeek: e.target.value }))}
+                  className="input-clean"
+                  placeholder="7"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  How many days per week you cook meals (useful for batch cooking)
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* Dietary Preferences */}
           <div className="card-clean">
             <div className="mb-6">
@@ -300,10 +360,10 @@ export default function Profile() {
                     type="button"
                     onClick={() => handleDietaryTagChange(tag, !isSelected)}
                     className={`
-                      px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 border-2
+                      px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
                       ${isSelected 
-                        ? 'bg-[#2563eb] border-[#2563eb] text-white shadow-md' 
-                        : 'bg-white border-gray-200 text-gray-700 hover:border-gray-300 hover:bg-gray-50'
+                        ? 'bg-[#1e293b] text-white shadow-md' 
+                        : 'bg-[#64748b] text-white hover:bg-[#475569]'
                       }
                     `}
                   >
