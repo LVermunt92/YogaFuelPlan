@@ -285,14 +285,11 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
       const adjustedProtein = Math.round(selectedMeal.nutrition.protein * portionMultiplier);
       const prepTimeForDay = isLeftover ? 5 : selectedMeal.nutrition.prepTime;
       
-      // Create descriptive meal name including household size
-      const householdSize = user?.householdSize || 1;
+      // Create descriptive meal name
       let mealDescription = selectedMeal.name;
       
       if (isLeftover) {
         mealDescription = `${selectedMeal.name} (leftover)`;
-      } else if (householdSize > 1) {
-        mealDescription = `${selectedMeal.name} (${householdSize}x portions)`;
       }
 
       const meal: InsertMeal = {
@@ -453,9 +450,7 @@ function generateMealPrepPlan(
       }
       
       // Create descriptive meal name
-      const mealDescription = householdSize > 1 ? 
-        `${selectedBreakfast.name} (${householdSize}x portions)` : 
-        selectedBreakfast.name;
+      const mealDescription = selectedBreakfast.name;
       
       meals.push({
         mealPlanId: 0,
@@ -520,8 +515,6 @@ function generateMealPrepPlan(
         let mealDescription = lunchMeal.name;
         if (isLunchLeftover) {
           mealDescription = `${lunchMeal.name} (leftover)`;
-        } else if (householdSize > 1) {
-          mealDescription = `${lunchMeal.name} (${householdSize}x portions)`;
         }
         
         meals.push({
@@ -611,12 +604,6 @@ function generateMealPrepPlan(
         let mealDescription = dinnerMeal.name;
         if (isDinnerLeftover) {
           mealDescription = `${dinnerMeal.name} (leftover)`;
-        } else if (willBeLeftover && householdSize > 1) {
-          mealDescription = `${dinnerMeal.name} (${totalPortions}x portions - ${householdSize} people + batch cook)`;
-        } else if (willBeLeftover) {
-          mealDescription = `${dinnerMeal.name} (2x portions - batch cook)`;
-        } else if (householdSize > 1) {
-          mealDescription = `${dinnerMeal.name} (${householdSize}x portions)`;
         }
         
         meals.push({
