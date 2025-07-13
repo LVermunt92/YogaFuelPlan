@@ -234,9 +234,10 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
         selectedMeal = thursdayDinnerMeal;
         isLeftover = true;
       } else if (mealCategory === 'breakfast') {
-        // Breakfast is always fresh (different each day)
-        const breakfastIndex = (day - 1) % availableMeals.length;
-        selectedMeal = availableMeals[breakfastIndex];
+        // Breakfast is always fresh (different each day with better variety)
+        const shuffledBreakfasts = [...availableMeals].sort(() => Math.random() - 0.5);
+        const breakfastIndex = (day - 1) % shuffledBreakfasts.length;
+        selectedMeal = shuffledBreakfasts[breakfastIndex];
       } else {
         // Fresh lunch/dinner for other days
         const mealIndex = (day + mealCategory.length) % availableMeals.length;
@@ -350,10 +351,11 @@ function generateMealPrepPlan(
   let thursdayDinnerMeal: any = null;
   
   // Generate meals for all 7 days (breakfast always included)
+  const shuffledBreakfasts = [...getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags)].sort(() => Math.random() - 0.5);
+  
   for (let day = 1; day <= 7; day++) {
     // BREAKFAST: Always include for every day (no meal prep needed)
-    const breakfastOptions = getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags);
-    const selectedBreakfast = breakfastOptions[(day - 1) % breakfastOptions.length];
+    const selectedBreakfast = shuffledBreakfasts[(day - 1) % shuffledBreakfasts.length];
     
     if (selectedBreakfast) {
       const adjustedPortion = adjustMealPortion(selectedBreakfast.portion, caloricAdjustment);
@@ -448,10 +450,10 @@ function generateMealPrepPlan(
         // Day 5: Thursday dinner - fresh cooking
         thursdayDinnerMeal = dinnerOptions[4] || dinnerOptions[0];
         dinnerMeal = thursdayDinnerMeal;
-      } else if (day === 6 && thursdayDinnerMeal) {
-        // Day 6: Friday dinner - leftover from Thursday
-        dinnerMeal = thursdayDinnerMeal;
-        isDinnerLeftover = true;
+      } else if (day === 6) {
+        // Day 6: Friday dinner - fresh cooking (3rd cooking day)
+        const fridayDinnerMeal = dinnerOptions[5] || dinnerOptions[0];
+        dinnerMeal = fridayDinnerMeal;
       } else if (day === 7 && thursdayDinnerMeal) {
         // Day 7: Saturday dinner - leftover from Thursday
         dinnerMeal = thursdayDinnerMeal;
