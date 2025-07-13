@@ -55,24 +55,27 @@ interface ShoppingListResponse {
 }
 
 interface RecipeResponse {
-  meal: Meal;
-  recipe: {
-    instructions: string[];
-    tips?: string[];
-    notes?: string;
-  };
+  name: string;
+  portion: string;
   ingredients: string[];
+  instructions: string[];
+  tips?: string[];
+  notes?: string;
+  prepTime: number;
+  nutrition: {
+    protein: number;
+    calories: number;
+    carbohydrates: number;
+    fats: number;
+    fiber: number;
+    sugar: number;
+    sodium: number;
+  };
   tags: string[];
   vegetableContent: {
     servings: number;
     vegetables: string[];
     benefits: string[];
-  };
-  nutrition: {
-    protein: number;
-    prepTime: number;
-    costEuros?: number;
-    proteinPerEuro?: number;
   };
 }
 
@@ -1060,36 +1063,32 @@ export default function MealPlanner() {
               {/* Meal Info */}
               <div className="bg-slate-50 rounded-lg p-4">
                 <h3 className="font-semibold text-lg text-slate-900 mb-2">
-                  {recipeData.meal.foodDescription}
+                  {recipeData.name}
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
                   <div>
                     <span className="text-slate-600">Portion:</span>
-                    <p className="font-medium">{recipeData.meal.portion}</p>
+                    <p className="font-medium">{recipeData.portion}</p>
                   </div>
                   <div>
                     <span className="text-slate-600">Protein:</span>
-                    <p className="font-medium text-emerald-600">{recipeData.meal.protein}g</p>
+                    <p className="font-medium text-emerald-600">{recipeData.nutrition?.protein}g</p>
                   </div>
                   <div>
                     <span className="text-slate-600">Prep Time:</span>
                     <p className="font-medium flex items-center gap-1">
                       <Timer className="w-3 h-3" />
-                      {recipeData.meal.prepTime} min
+                      {recipeData.prepTime} min
                     </p>
                   </div>
-                  {recipeData.nutrition?.costEuros && (
-                    <div>
-                      <span className="text-slate-600">Cost:</span>
-                      <p className="font-medium text-blue-600">€{recipeData.nutrition.costEuros.toFixed(2)}</p>
-                    </div>
-                  )}
-                  {recipeData.nutrition?.proteinPerEuro && (
-                    <div>
-                      <span className="text-slate-600">Protein/€:</span>
-                      <p className="font-medium text-purple-600">{recipeData.nutrition.proteinPerEuro.toFixed(1)}g/€</p>
-                    </div>
-                  )}
+                  <div>
+                    <span className="text-slate-600">Calories:</span>
+                    <p className="font-medium text-orange-600">{recipeData.nutrition?.calories}</p>
+                  </div>
+                  <div>
+                    <span className="text-slate-600">Carbs:</span>
+                    <p className="font-medium text-blue-600">{recipeData.nutrition?.carbohydrates}g</p>
+                  </div>
                 </div>
                 
                 {/* Tags */}
@@ -1172,7 +1171,7 @@ export default function MealPlanner() {
                   Instructions
                 </h4>
                 <ol className="space-y-3">
-                  {recipeData.recipe.instructions.map((instruction, index) => (
+                  {recipeData.instructions.map((instruction, index) => (
                     <li key={index} className="flex gap-3">
                       <span className="flex-shrink-0 w-6 h-6 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-sm font-medium">
                         {index + 1}
@@ -1184,13 +1183,13 @@ export default function MealPlanner() {
               </div>
 
               {/* Tips */}
-              {recipeData.recipe.tips && recipeData.recipe.tips.length > 0 && (
+              {recipeData.tips && recipeData.tips.length > 0 && (
                 <>
                   <Separator />
                   <div>
                     <h4 className="font-semibold text-slate-900 mb-3">💡 Tips</h4>
                     <ul className="space-y-2">
-                      {recipeData.recipe.tips.map((tip, index) => (
+                      {recipeData.tips.map((tip, index) => (
                         <li key={index} className="flex gap-2 text-sm text-slate-600">
                           <span className="text-emerald-500">•</span>
                           {tip}
@@ -1202,13 +1201,13 @@ export default function MealPlanner() {
               )}
 
               {/* Notes */}
-              {recipeData.recipe.notes && (
+              {recipeData.notes && (
                 <>
                   <Separator />
                   <div className="bg-blue-50 rounded-lg p-4">
                     <h4 className="font-semibold text-blue-900 mb-2">📝 Notes</h4>
                     <p className="text-blue-800 text-sm leading-relaxed">
-                      {recipeData.recipe.notes}
+                      {recipeData.notes}
                     </p>
                   </div>
                 </>
