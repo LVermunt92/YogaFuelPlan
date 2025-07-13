@@ -321,36 +321,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/meals/:mealId/recipe", async (req, res) => {
     try {
       const mealId = parseInt(req.params.mealId);
-      const mealPlan = await storage.getMealPlanWithMeals(mealId);
       
-      if (!mealPlan) {
-        return res.status(404).json({ message: "Meal plan not found" });
-      }
-
-      // Find the specific meal by searching through meal plans
+      // Search through all meal plans to find the specific meal
       let targetMeal = null;
-      for (const meal of mealPlan.meals) {
-        if (meal.id === mealId) {
-          targetMeal = meal;
-          break;
-        }
-      }
-
-      if (!targetMeal) {
-        // Try finding in all meal plans
-        const allMealPlans = await storage.getMealPlans();
-        for (const plan of allMealPlans) {
-          const planWithMeals = await storage.getMealPlanWithMeals(plan.id);
-          if (planWithMeals) {
-            for (const meal of planWithMeals.meals) {
-              if (meal.id === mealId) {
-                targetMeal = meal;
-                break;
-              }
+      const allMealPlans = await storage.getMealPlans();
+      
+      for (const plan of allMealPlans) {
+        const planWithMeals = await storage.getMealPlanWithMeals(plan.id);
+        if (planWithMeals) {
+          for (const meal of planWithMeals.meals) {
+            if (meal.id === mealId) {
+              targetMeal = meal;
+              break;
             }
           }
-          if (targetMeal) break;
         }
+        if (targetMeal) break;
       }
 
       if (!targetMeal) {

@@ -586,6 +586,143 @@ export const MEAL_DATABASE: MealOption[] = [
       ],
       notes: "Colorful nutrient-dense bowl with complete protein and omega-3s"
     }
+  },
+
+  // Additional creative meal options
+  {
+    name: "Spiced chickpea and sweet potato curry with coconut quinoa",
+    portion: "1.5 cups curry + 1 cup quinoa",
+    nutrition: { protein: 26, prepTime: 25, costEuros: 4.20, proteinPerEuro: 6.2 },
+    category: "dinner",
+    tags: ["warming", "anti-inflammatory", "iron", "ayurvedic"],
+    ingredients: ["chickpeas", "sweet potato", "quinoa", "coconut milk", "curry powder", "turmeric", "ginger", "garlic", "onions", "spinach", "tomatoes"],
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["sweet potato", "spinach", "onions", "tomatoes", "ginger"],
+      benefits: ["High in vitamin A", "Rich in iron", "Anti-inflammatory", "Good source of lycopene", "Digestive support"]
+    },
+    recipe: {
+      instructions: [
+        "Cook 1 cup quinoa in 1 cup coconut milk and 1 cup water for 15 minutes",
+        "Heat 2 tbsp coconut oil in large pan over medium heat",
+        "Sauté diced onions until translucent, about 5 minutes",
+        "Add minced ginger, garlic, 2 tsp curry powder, and 1 tsp turmeric",
+        "Cook spices for 1 minute until fragrant",
+        "Add cubed sweet potato and cook 8 minutes until starting to soften",
+        "Add 1 can chickpeas, 1 can diced tomatoes, and 1/2 cup coconut milk",
+        "Simmer 12 minutes until sweet potato is tender",
+        "Stir in fresh spinach until wilted",
+        "Season with salt, pepper, and fresh cilantro",
+        "Serve over coconut quinoa"
+      ],
+      tips: [
+        "Adjust curry powder to taste preference",
+        "Add lime juice before serving for brightness"
+      ],
+      notes: "Warming Ayurvedic-inspired curry with complete protein and anti-inflammatory spices"
+    }
+  },
+
+  {
+    name: "Mediterranean white bean and artichoke stuffed peppers",
+    portion: "2 large stuffed peppers",
+    nutrition: { protein: 22, prepTime: 28, costEuros: 5.80, proteinPerEuro: 3.8 },
+    category: "dinner",
+    tags: ["Mediterranean", "fiber", "antioxidants", "colorful"],
+    ingredients: ["bell peppers", "white beans", "artichoke hearts", "sun-dried tomatoes", "pine nuts", "nutritional yeast", "fresh herbs", "olive oil", "garlic", "lemon"],
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["bell peppers", "artichoke hearts", "sun-dried tomatoes", "garlic"],
+      benefits: ["High in vitamin C", "Rich in antioxidants", "Good source of fiber", "Anti-inflammatory"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 400°F (200°C)",
+        "Cut tops off 2 large bell peppers and remove seeds and membranes",
+        "Mash 1 can white beans with fork, leaving some chunks",
+        "Chop artichoke hearts and sun-dried tomatoes",
+        "Sauté minced garlic in olive oil for 1 minute",
+        "Mix beans, artichokes, tomatoes, garlic, and 2 tbsp pine nuts",
+        "Add 3 tbsp nutritional yeast, lemon juice, and fresh herbs (basil, oregano)",
+        "Season filling with salt and pepper",
+        "Stuff peppers with bean mixture and place in baking dish",
+        "Add 1/4 inch water to dish and cover with foil",
+        "Bake 25 minutes until peppers are tender",
+        "Remove foil, sprinkle with extra pine nuts, bake 5 more minutes"
+      ],
+      tips: [
+        "Choose peppers that can stand upright",
+        "Pre-steam peppers for 3 minutes for quicker cooking"
+      ],
+      notes: "Colorful Mediterranean meal packed with plant protein and antioxidants"
+    }
+  },
+
+  {
+    name: "Green goddess smoothie bowl with hemp and chia",
+    portion: "Large smoothie bowl with toppings",
+    nutrition: { protein: 28, prepTime: 10, costEuros: 4.60, proteinPerEuro: 6.1 },
+    category: "breakfast",
+    tags: ["raw", "omega-3", "quick", "energizing", "alkalizing"],
+    ingredients: ["spinach", "avocado", "banana", "pea protein powder", "hemp hearts", "chia seeds", "coconut water", "spirulina", "mint", "lime", "coconut flakes", "berries"],
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["spinach", "avocado", "mint"],
+      benefits: ["High in vitamin K", "Rich in healthy fats", "Good source of folate", "Alkalizing", "Anti-inflammatory"]
+    },
+    recipe: {
+      instructions: [
+        "Freeze banana slices night before for thick consistency",
+        "Blend 2 cups spinach, 1/2 avocado, frozen banana, and 1 cup coconut water",
+        "Add 1 scoop pea protein powder and 1/2 tsp spirulina",
+        "Blend until completely smooth and creamy",
+        "Add fresh mint leaves and lime juice, blend briefly",
+        "Pour into bowl and let sit 2 minutes to thicken",
+        "Top with 2 tbsp hemp hearts, 1 tbsp chia seeds",
+        "Add coconut flakes and fresh berries",
+        "Drizzle with additional coconut water if needed",
+        "Serve immediately with a spoon"
+      ],
+      tips: [
+        "Start with less liquid and add more as needed",
+        "Frozen mango can substitute for banana"
+      ],
+      notes: "Nutrient-dense green smoothie bowl with complete protein and superfoods"
+    }
+  },
+
+  {
+    name: "Asian-inspired tempeh lettuce wraps with peanut sauce",
+    portion: "6 lettuce wraps with sauce",
+    nutrition: { protein: 31, prepTime: 20, costEuros: 5.40, proteinPerEuro: 5.7 },
+    category: "lunch",
+    tags: ["fresh", "crunchy", "probiotic", "Asian-inspired", "low-carb"],
+    ingredients: ["tempeh", "butter lettuce", "peanut butter", "soy sauce", "rice vinegar", "ginger", "garlic", "carrots", "cucumber", "bell peppers", "fresh herbs", "lime", "sesame oil"],
+    vegetableContent: {
+      servings: 5,
+      vegetables: ["lettuce", "carrots", "cucumber", "bell peppers", "fresh herbs"],
+      benefits: ["High in vitamin A", "Hydrating", "Crunchy texture", "Rich in antioxidants", "Good source of folate"]
+    },
+    recipe: {
+      instructions: [
+        "Steam 120g tempeh for 10 minutes, then crumble into small pieces",
+        "Make sauce: whisk 3 tbsp peanut butter, 2 tbsp soy sauce, 1 tbsp rice vinegar",
+        "Add 1 tsp grated ginger, 1 clove minced garlic, and 1 tsp sesame oil to sauce",
+        "Thin sauce with warm water to desired consistency",
+        "Sauté crumbled tempeh in 1 tbsp oil until golden, about 5 minutes",
+        "Season tempeh with soy sauce and remove from heat",
+        "Prepare vegetables: julienne carrots, slice cucumber and bell peppers",
+        "Wash and dry butter lettuce leaves, keeping them whole",
+        "Assemble wraps: place tempeh in lettuce cups",
+        "Top with vegetables and fresh herbs (cilantro, mint, basil)",
+        "Drizzle with peanut sauce and serve with lime wedges"
+      ],
+      tips: [
+        "Keep lettuce wraps cold until serving",
+        "Marinate tempeh in soy sauce for extra flavor"
+      ],
+      notes: "Fresh, probiotic-rich wraps with crunchy vegetables and protein-rich tempeh"
+    }
   }
 ];
 
