@@ -192,6 +192,7 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
   let sundayDinnerMeal: MealOption | null = null;
   let mondayDinnerMeal: MealOption | null = null;
   let tuesdayDinnerMeal: MealOption | null = null;
+  let wednesdayDinnerMeal: MealOption | null = null;
   let thursdayDinnerMeal: MealOption | null = null;
   
   for (let day = 1; day <= 8; day++) {
@@ -260,23 +261,27 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
         // Day 3: Tuesday dinner - fresh cooking
         selectedMeal = availableMeals[2] || availableMeals[0];
         tuesdayDinnerMeal = selectedMeal; // Store for Wednesday leftovers
-      } else if (day === 4 && (mealCategory === 'lunch' || mealCategory === 'dinner')) {
-        // Day 4: Wednesday lunch and dinner - leftovers from Tuesday (EXACT SAME MEAL)
+      } else if (day === 4 && mealCategory === 'lunch') {
+        // Day 4: Wednesday lunch - leftover from Tuesday dinner (EXACT SAME MEAL)
         if (!tuesdayDinnerMeal) {
-          throw new Error('Tuesday dinner meal not found for Wednesday leftovers');
+          throw new Error('Tuesday dinner meal not found for Wednesday lunch leftover');
         }
         selectedMeal = tuesdayDinnerMeal; // Use exact same meal as Tuesday dinner
         isLeftover = true;
+      } else if (day === 4 && mealCategory === 'dinner') {
+        // Day 4: Wednesday dinner - fresh cooking (different from Tuesday)
+        selectedMeal = availableMeals[3] || availableMeals[0];
+        wednesdayDinnerMeal = selectedMeal; // Store for Thursday lunch leftover
       } else if (day === 5 && mealCategory === 'lunch') {
         // Day 5: Thursday lunch - leftover from Wednesday dinner (EXACT SAME MEAL) 
-        if (!tuesdayDinnerMeal) {
-          throw new Error('Tuesday dinner meal not found for Thursday lunch leftover');
+        if (!wednesdayDinnerMeal) {
+          throw new Error('Wednesday dinner meal not found for Thursday lunch leftover');
         }
-        selectedMeal = tuesdayDinnerMeal; // Use exact same meal as Tuesday dinner (Wednesday leftover)
+        selectedMeal = wednesdayDinnerMeal; // Use exact same meal as Wednesday dinner
         isLeftover = true;
       } else if (day === 5 && mealCategory === 'dinner') {
         // Day 5: Thursday dinner - fresh cooking
-        selectedMeal = availableMeals[3] || availableMeals[0];
+        selectedMeal = availableMeals[4] || availableMeals[0];
         thursdayDinnerMeal = selectedMeal; // Store for Friday leftovers
       } else if (day === 6 && (mealCategory === 'lunch' || mealCategory === 'dinner')) {
         // Day 6: Friday lunch and dinner - leftovers from Thursday (EXACT SAME MEAL)
