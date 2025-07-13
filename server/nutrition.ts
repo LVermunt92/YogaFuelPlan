@@ -22,7 +22,7 @@ export interface MealOption {
   };
 }
 
-// Vegetarian, gluten-free, lactose-free meal database
+// Comprehensive meal database with diverse dietary options
 export const MEAL_DATABASE: MealOption[] = [
   // Breakfast options
   {
@@ -30,7 +30,7 @@ export const MEAL_DATABASE: MealOption[] = [
     portion: "1 bowl (200g)",
     nutrition: { protein: 24, prepTime: 15 },
     category: "breakfast",
-    tags: ["high-protein", "quick", "filling"],
+    tags: ["vegetarian", "gluten-free", "lactose-free", "dairy-free", "high-protein", "quick", "filling"],
     ingredients: ["quinoa", "almond butter", "chia seeds", "hemp hearts", "almond milk", "maple syrup", "cinnamon"],
     vegetableContent: {
       servings: 0,
@@ -57,7 +57,7 @@ export const MEAL_DATABASE: MealOption[] = [
     portion: "1 large smoothie (400ml)",
     nutrition: { protein: 28, prepTime: 10 },
     category: "breakfast",
-    tags: ["high-protein", "quick", "refreshing"],
+    tags: ["vegetarian", "gluten-free", "lactose-free", "dairy-free", "high-protein", "quick", "refreshing"],
     ingredients: ["pea protein powder", "fresh spinach", "banana", "almond milk", "frozen berries", "flax seeds"],
     vegetableContent: {
       servings: 2,
@@ -86,7 +86,7 @@ export const MEAL_DATABASE: MealOption[] = [
     portion: "1 cup pudding + 1 scoop protein",
     nutrition: { protein: 32, prepTime: 10 },
     category: "breakfast",
-    tags: ["high-protein", "make-ahead", "omega-3"],
+    tags: ["vegetarian", "gluten-free", "lactose-free", "dairy-free", "high-protein", "make-ahead", "omega-3"],
     ingredients: ["chia seeds", "vanilla protein powder", "almond milk", "mixed nuts", "vanilla extract", "maple syrup"],
     vegetableContent: {
       servings: 0,
@@ -114,7 +114,7 @@ export const MEAL_DATABASE: MealOption[] = [
     portion: "150g tofu + vegetables",
     nutrition: { protein: 22, prepTime: 20 },
     category: "breakfast",
-    tags: ["savory", "B12", "filling"],
+    tags: ["vegan", "gluten-free", "lactose-free", "dairy-free", "savory", "B12", "filling"],
     ingredients: ["extra firm tofu", "nutritional yeast", "bell peppers", "onions", "spinach", "turmeric", "garlic", "olive oil"],
     vegetableContent: {
       servings: 3,
@@ -127,7 +127,7 @@ export const MEAL_DATABASE: MealOption[] = [
     portion: "1 cup oats + 1 scoop protein",
     nutrition: { protein: 26, prepTime: 5 },
     category: "breakfast",
-    tags: ["make-ahead", "fiber", "convenient"],
+    tags: ["vegetarian", "make-ahead", "fiber", "convenient"],
     ingredients: ["rolled oats", "vanilla protein powder", "almond milk", "walnuts", "maple syrup", "vanilla extract", "cinnamon"],
     vegetableContent: {
       servings: 0,
@@ -142,7 +142,7 @@ export const MEAL_DATABASE: MealOption[] = [
     portion: "1.5 cups curry + 1 cup rice",
     nutrition: { protein: 42, prepTime: 25 },
     category: "lunch",
-    tags: ["high-protein", "fiber", "iron"],
+    tags: ["vegan", "gluten-free", "lactose-free", "dairy-free", "high-protein", "fiber", "iron"],
     ingredients: ["red lentils", "chickpeas", "brown rice", "coconut milk", "curry powder", "turmeric", "ginger", "garlic", "onions", "tomatoes", "spinach"],
     vegetableContent: {
       servings: 4,
@@ -173,6 +173,74 @@ export const MEAL_DATABASE: MealOption[] = [
     name: "Black bean and quinoa bowl with tahini dressing",
     portion: "1.5 cups beans + 1 cup quinoa",
     nutrition: { protein: 35, prepTime: 20 },
+    category: "lunch",
+    tags: ["vegan", "gluten-free", "lactose-free", "dairy-free", "high-protein", "mediterranean"],
+    ingredients: ["black beans", "quinoa", "tahini", "lemon juice", "cucumber", "cherry tomatoes", "red onion", "parsley", "olive oil"],
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["cucumber", "cherry tomatoes", "red onion", "parsley"],
+      benefits: ["High in antioxidants", "Good source of vitamin K", "Anti-inflammatory"]
+    }
+  },
+  // Add some non-vegetarian options for users without dietary restrictions
+  {
+    name: "Grilled chicken breast with sweet potato and broccoli",
+    portion: "150g chicken + 200g sweet potato + vegetables",
+    nutrition: { protein: 45, prepTime: 25 },
+    category: "lunch", 
+    tags: ["high-protein", "paleo", "gluten-free", "lactose-free", "anti-inflammatory"],
+    ingredients: ["chicken breast", "sweet potato", "broccoli", "olive oil", "garlic", "rosemary", "salt", "pepper"],
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["broccoli", "sweet potato"],
+      benefits: ["High in vitamin A", "Rich in fiber", "Good source of vitamin C"]
+    }
+  },
+  {
+    name: "Salmon fillet with quinoa and asparagus",
+    portion: "150g salmon + 1 cup quinoa + vegetables",
+    nutrition: { protein: 42, prepTime: 20 },
+    category: "lunch",
+    tags: ["pescatarian", "gluten-free", "high-protein", "omega-3", "anti-inflammatory"],
+    ingredients: ["salmon fillet", "quinoa", "asparagus", "lemon", "olive oil", "dill", "garlic"],
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["asparagus"],
+      benefits: ["High in omega-3", "Good source of folate", "Anti-inflammatory"]
+    }
+  },
+  // Keto options
+  {
+    name: "Avocado and hemp seed salad with olive oil dressing",
+    portion: "2 avocados + mixed greens + seeds",
+    nutrition: { protein: 18, prepTime: 15 },
+    category: "lunch",
+    tags: ["vegan", "keto", "low-carb", "gluten-free", "lactose-free", "dairy-free", "high-protein"],
+    ingredients: ["avocados", "mixed greens", "hemp seeds", "pumpkin seeds", "olive oil", "lemon juice", "nutritional yeast"],
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["mixed greens", "avocados"],
+      benefits: ["High in healthy fats", "Rich in potassium", "Good source of fiber"]
+    }
+  },
+  // Dairy-containing vegetarian option
+  {
+    name: "Greek yogurt parfait with nuts and seeds",
+    portion: "200g yogurt + nuts + seeds",
+    nutrition: { protein: 25, prepTime: 5 },
+    category: "breakfast",
+    tags: ["vegetarian", "gluten-free", "high-protein", "quick", "probiotic"],
+    ingredients: ["Greek yogurt", "almonds", "walnuts", "chia seeds", "honey", "cinnamon"],
+    vegetableContent: {
+      servings: 0,
+      vegetables: [],
+      benefits: ["Probiotic support", "High in calcium", "Good source of protein"]
+    }
+  },
+  {
+    name: "Black bean and quinoa power bowl with tahini dressing",
+    portion: "1.5 cups quinoa + 1 cup black beans + vegetables",
+    nutrition: { protein: 32, prepTime: 25 },
     category: "lunch",
     tags: ["complete-protein", "magnesium", "filling"],
     ingredients: ["black beans", "quinoa", "tahini", "lemon", "garlic", "olive oil", "cucumber", "bell peppers", "cherry tomatoes", "avocado", "cilantro"],
@@ -325,6 +393,24 @@ export function calculateProteinTarget(activityLevel: 'high' | 'low'): number {
 
 export function getMealsByCategory(category: 'breakfast' | 'lunch' | 'dinner'): MealOption[] {
   return MEAL_DATABASE.filter(meal => meal.category === category);
+}
+
+// Filter meals by dietary tags - meal must have ALL specified tags
+export function filterMealsByDietaryTags(meals: MealOption[], dietaryTags: string[]): MealOption[] {
+  if (!dietaryTags || dietaryTags.length === 0) {
+    return meals;
+  }
+  
+  return meals.filter(meal => {
+    // Check if meal has all required dietary tags
+    return dietaryTags.every(tag => meal.tags.includes(tag));
+  });
+}
+
+// Get meals for a specific category that match dietary preferences  
+export function getMealsForCategoryAndDiet(category: 'breakfast' | 'lunch' | 'dinner', dietaryTags: string[] = []): MealOption[] {
+  const categoryMeals = getMealsByCategory(category);
+  return filterMealsByDietaryTags(categoryMeals, dietaryTags);
 }
 
 export function calculateDailyProtein(meals: MealOption[]): number {

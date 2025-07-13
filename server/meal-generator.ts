@@ -1,4 +1,4 @@
-import { MealOption, selectMealsForDay, calculateProteinTarget, MEAL_DATABASE } from './nutrition';
+import { MealOption, selectMealsForDay, calculateProteinTarget, getMealsForCategoryAndDiet, MEAL_DATABASE } from './nutrition';
 import { InsertMeal, InsertMealPlan, MealPlanRequest } from '@shared/schema';
 
 export interface GeneratedMealPlan {
@@ -10,30 +10,35 @@ export function generateWeeklyMealPlan(request: MealPlanRequest): GeneratedMealP
   const targetProtein = calculateProteinTarget(request.activityLevel);
   const meals: InsertMeal[] = [];
   let totalWeeklyProtein = 0;
+  const dietaryTags = request.dietaryTags || [];
 
   // Generate meals for 7 days
   for (let day = 1; day <= 7; day++) {
-    const dailyMeals = selectMealsForDay(targetProtein);
     let dailyProtein = 0;
 
-    // Add some variety by rotating meals every few days
-    const dayOffset = Math.floor((day - 1) / 2);
-    
-    dailyMeals.forEach((mealOption, index) => {
-      const mealType = ['breakfast', 'lunch', 'dinner'][index] as 'breakfast' | 'lunch' | 'dinner';
+    // Generate meals for each meal type (breakfast, lunch, dinner)
+    ['breakfast', 'lunch', 'dinner'].forEach((mealType, index) => {
+      const mealCategory = mealType as 'breakfast' | 'lunch' | 'dinner';
       
-      // Add variety by cycling through options
-      let selectedMeal = mealOption;
-      if (day > 1) {
-        const categoryMeals = MEAL_DATABASE.filter(m => m.category === mealType);
-        const mealIndex = (dayOffset + index) % categoryMeals.length;
-        selectedMeal = categoryMeals[mealIndex];
+      // Get available meals for this category that match dietary preferences
+      const availableMeals = getMealsForCategoryAndDiet(mealCategory, dietaryTags);
+      
+      if (availableMeals.length === 0) {
+        // Fallback to all meals in category if no matches found
+        const fallbackMeals = getMealsForCategoryAndDiet(mealCategory, []);
+        console.warn(`No meals found for ${mealCategory} with dietary tags: ${dietaryTags.join(', ')}. Using fallback meals.`);
+        availableMeals.push(...fallbackMeals);
       }
+
+      // Add variety by rotating meals based on day
+      const dayOffset = Math.floor((day - 1) / 2);
+      const mealIndex = (dayOffset + index) % availableMeals.length;
+      const selectedMeal = availableMeals[mealIndex];
 
       const meal: InsertMeal = {
         mealPlanId: 0, // Will be set later
         day,
-        mealType,
+        mealType: mealCategory,
         foodDescription: selectedMeal.name,
         portion: selectedMeal.portion,
         protein: selectedMeal.nutrition.protein,

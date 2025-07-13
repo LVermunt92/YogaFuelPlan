@@ -12,7 +12,7 @@ export const users = pgTable("users", {
   goalWaistline: real("goal_waistline"), // target waistline in cm
   activityLevel: text("activity_level").default("high"), // high or low
   proteinTarget: integer("protein_target").default(130), // grams
-  dietaryPreferences: text("dietary_preferences").array().default(["vegetarian", "gluten-free", "lactose-free"]),
+  dietaryTags: text("dietary_tags").array().default([]),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -77,7 +77,7 @@ export const insertUserSchema = createInsertSchema(users).pick({
   goalWaistline: true,
   activityLevel: true,
   proteinTarget: true,
-  dietaryPreferences: true,
+  dietaryTags: true,
 });
 
 export const updateUserProfileSchema = createInsertSchema(users).pick({
@@ -87,7 +87,7 @@ export const updateUserProfileSchema = createInsertSchema(users).pick({
   goalWaistline: true,
   activityLevel: true,
   proteinTarget: true,
-  dietaryPreferences: true,
+  dietaryTags: true,
 });
 
 export const insertMealPlanSchema = createInsertSchema(mealPlans).omit({
@@ -99,10 +99,33 @@ export const insertMealSchema = createInsertSchema(meals).omit({
   id: true,
 });
 
+// Available dietary tags for user selection
+export const DIETARY_TAGS = [
+  "vegetarian",
+  "vegan", 
+  "gluten-free",
+  "lactose-free",
+  "dairy-free",
+  "nut-free",
+  "soy-free",
+  "low-carb",
+  "keto",
+  "paleo",
+  "mediterranean",
+  "anti-inflammatory",
+  "high-protein",
+  "low-sodium",
+  "sugar-free",
+  "whole30",
+  "raw",
+  "pescatarian"
+] as const;
+
 export const mealPlanRequestSchema = z.object({
   activityLevel: z.enum(["high", "low"]),
   weekStart: z.string(),
   userId: z.number().optional(),
+  dietaryTags: z.array(z.enum(DIETARY_TAGS)).optional(),
 });
 
 export const insertOuraDataSchema = createInsertSchema(ouraData).omit({
