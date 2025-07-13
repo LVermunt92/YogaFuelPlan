@@ -303,68 +303,69 @@ export default function MealPlanner() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+    <div className="min-h-screen bg-background">
+      {/* Header - Clean minimal design */}
+      <header className="border-b border-border bg-background">
+        <div className="max-w-7xl mx-auto px-8 lg:px-12">
+          <div className="flex justify-between items-center h-24">
             <div className="flex items-center">
-              <Utensils className="text-primary text-2xl mr-3" />
-              <h1 className="text-xl font-semibold text-slate-900">AI Meal Planner</h1>
+              <Utensils className="h-8 w-8 text-foreground mr-4" />
+              <div>
+                <h1 className="text-3xl font-bold text-foreground">
+                  Meal Planner
+                </h1>
+                <p className="text-muted-foreground mt-1">
+                  Personalized nutrition for your lifestyle
+                </p>
+              </div>
             </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-slate-600">
-                Last generated: <span>{latestMealPlan ? formatDate(latestMealPlan.createdAt) : "Never"}</span>
-              </span>
+            <div className="text-sm text-muted-foreground">
+              Last generated: <span className="text-foreground font-medium">{latestMealPlan ? formatDate(latestMealPlan.createdAt) : "Never"}</span>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-8 lg:px-12 py-12">
 
 
-        {/* Oura Ring Integration */}
-        <Card className="mb-8">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center">
-                <Activity className="text-blue-600 mr-2 h-5 w-5" />
-                <h2 className="text-lg font-semibold text-slate-900">Oura Ring Integration</h2>
-              </div>
-              <Badge 
-                variant={ouraStatus?.connected ? "default" : "secondary"}
-                className={ouraStatus?.connected ? "bg-green-600" : "bg-gray-500"}
-              >
-                {ouraStatus?.connected ? "Connected" : "Not Connected"}
-              </Badge>
+        {/* Health & Activity Tracking */}
+        <div className="card-clean mb-16">
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center">
+              <Activity className="h-6 w-6 text-foreground mr-4" />
+              <h2 className="text-xl font-semibold text-foreground">Health & Activity Tracking</h2>
             </div>
+            <Badge variant={ouraStatus?.connected ? "default" : "secondary"}>
+              {ouraStatus?.connected ? "Connected" : "Not Connected"}
+            </Badge>
+          </div>
             
             {ouraStatus?.connected ? (
               <div className="space-y-4">
                 {latestOuraData && (
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="bg-blue-50 rounded-lg p-3">
-                      <div className="text-xs text-blue-600 mb-1">Activity Score</div>
-                      <div className="text-lg font-semibold text-blue-900">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div className="bg-card border border-border p-6">
+                      <div className="text-xs text-muted-foreground mb-2 font-medium">Activity Score</div>
+                      <div className="text-2xl font-bold text-foreground">
                         {latestOuraData.activityScore || 'N/A'}
                       </div>
                     </div>
-                    <div className="bg-green-50 rounded-lg p-3">
-                      <div className="text-xs text-green-600 mb-1">Steps</div>
-                      <div className="text-lg font-semibold text-green-900">
+                    <div className="bg-card border border-border p-6">
+                      <div className="text-xs text-muted-foreground mb-2 font-medium">Steps</div>
+                      <div className="text-2xl font-bold text-foreground">
                         {latestOuraData.steps?.toLocaleString() || 'N/A'}
                       </div>
                     </div>
-                    <div className="bg-purple-50 rounded-lg p-3">
-                      <div className="text-xs text-purple-600 mb-1">Sleep Score</div>
-                      <div className="text-lg font-semibold text-purple-900">
+                    <div className="bg-card border border-border p-6">
+                      <div className="text-xs text-muted-foreground mb-2 font-medium">Sleep Score</div>
+                      <div className="text-2xl font-bold text-foreground">
                         {latestOuraData.sleepScore || 'N/A'}
                       </div>
                     </div>
-                    <div className="bg-amber-50 rounded-lg p-3">
-                      <div className="text-xs text-amber-600 mb-1">Activity Level</div>
-                      <div className="text-sm font-semibold text-amber-900 capitalize">
+                    <div className="bg-card border border-border p-6">
+                      <div className="text-xs text-muted-foreground mb-2 font-medium">Activity Level</div>
+                      <div className="text-lg font-bold text-foreground capitalize">
                         {latestOuraData.activityLevel}
                       </div>
                     </div>
@@ -372,29 +373,31 @@ export default function MealPlanner() {
                 )}
                 
                 {/* Personal Health Metrics */}
-                <div className="bg-slate-50 rounded-lg p-4">
-                  <h3 className="text-sm font-semibold text-slate-700 mb-3">Personal Health Metrics</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="bg-white rounded-lg p-3 border border-slate-200">
-                      <div className="text-xs text-slate-600 mb-1">Weight</div>
-                      <div className="text-lg font-semibold text-slate-900">60 kg</div>
+                <div className="bg-card border border-border p-6">
+                  <h3 className="text-lg font-semibold text-foreground mb-6">
+                    Personal Health Metrics
+                  </h3>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div className="bg-background border border-border p-4">
+                      <div className="text-xs text-muted-foreground mb-2 font-medium">Weight</div>
+                      <div className="text-xl font-bold text-foreground">60 kg</div>
                     </div>
-                    <div className="bg-white rounded-lg p-3 border border-slate-200">
-                      <div className="text-xs text-slate-600 mb-1">Waistline</div>
-                      <div className="text-lg font-semibold text-slate-900">75 cm</div>
+                    <div className="bg-background border border-border p-4">
+                      <div className="text-xs text-muted-foreground mb-2 font-medium">Waistline</div>
+                      <div className="text-xl font-bold text-foreground">75 cm</div>
                     </div>
-                    <div className="bg-white rounded-lg p-3 border border-slate-200">
-                      <div className="text-xs text-slate-600 mb-1">Protein Target</div>
-                      <div className="text-lg font-semibold text-emerald-600">{proteinTarget}g</div>
+                    <div className="bg-background border border-border p-4">
+                      <div className="text-xs text-muted-foreground mb-2 font-medium">Protein Target</div>
+                      <div className="text-xl font-bold text-foreground">{proteinTarget}g</div>
                     </div>
-                    <div className="bg-white rounded-lg p-3 border border-slate-200">
-                      <div className="text-xs text-slate-600 mb-1">Diet Type</div>
-                      <div className="text-sm font-medium text-slate-900">Vegetarian, GF, LF</div>
+                    <div className="bg-background border border-border p-4">
+                      <div className="text-xs text-muted-foreground mb-2 font-medium">Diet Type</div>
+                      <div className="text-sm font-medium text-foreground">Vegetarian, GF, LF</div>
                     </div>
                   </div>
                 </div>
                 
-                <div className="flex flex-col sm:flex-row gap-2">
+                <div className="flex flex-col sm:flex-row gap-3">
                   <Button
                     onClick={() => {
                       const yesterday = new Date();
@@ -402,12 +405,11 @@ export default function MealPlanner() {
                       syncOuraMutation.mutate(yesterday.toISOString().split('T')[0]);
                     }}
                     disabled={syncOuraMutation.isPending}
-                    variant="outline"
-                    size="sm"
+                    className="btn-outline"
                   >
                     {syncOuraMutation.isPending ? (
                       <>
-                        <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-blue-600 mr-2" />
+                        <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-foreground mr-2" />
                         Syncing...
                       </>
                     ) : (
@@ -421,13 +423,11 @@ export default function MealPlanner() {
                   <Button
                     onClick={() => smartGenerateMutation.mutate()}
                     disabled={smartGenerateMutation.isPending}
-                    variant="default"
-                    size="sm"
-                    className="bg-blue-600 hover:bg-blue-700"
+                    className="btn-minimal"
                   >
                     {smartGenerateMutation.isPending ? (
                       <>
-                        <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-2" />
+                        <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-primary-foreground mr-2" />
                         Generating...
                       </>
                     ) : (
@@ -457,24 +457,25 @@ export default function MealPlanner() {
                 </p>
               </div>
             )}
-          </CardContent>
-        </Card>
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Generation Panel */}
           <div className="lg:col-span-1">
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle className="text-lg font-semibold text-slate-900">Generate Meal Plan</CardTitle>
-                <p className="text-sm text-slate-600 mt-2">
+            <div className="card-clean mb-8">
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold text-foreground mb-2">
+                  Generate Meal Plan
+                </h2>
+                <p className="text-sm text-muted-foreground">
                   Create a 7-day vegetarian, gluten-free, lactose-free meal plan with precise protein tracking.
                 </p>
-              </CardHeader>
-              <CardContent className="space-y-4">
+              </div>
+              <div className="space-y-6">
                 <div>
-                  <Label className="text-sm font-medium text-slate-700">Activity Level</Label>
+                  <Label className="text-sm font-medium text-foreground mb-2 block">Activity Level</Label>
                   <Select value={activityLevel} onValueChange={(value: "high" | "low") => setActivityLevel(value)}>
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger className="input-clean w-full">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -485,24 +486,24 @@ export default function MealPlanner() {
                 </div>
                 
                 <div>
-                  <Label className="text-sm font-medium text-slate-700">Week Starting</Label>
+                  <Label className="text-sm font-medium text-foreground mb-2 block">Week Starting</Label>
                   <Input
                     type="date"
                     value={weekStart}
                     onChange={(e) => setWeekStart(e.target.value)}
-                    className="w-full"
+                    className="input-clean w-full"
                   />
                 </div>
                 
-                <div className="space-y-2">
+                <div className="space-y-4">
                   <Button 
                     onClick={() => generateMutation.mutate()}
                     disabled={generateMutation.isPending}
-                    className="w-full bg-primary hover:bg-primary/90"
+                    className="btn-minimal w-full"
                   >
                     {generateMutation.isPending ? (
                       <>
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground mr-2" />
                         Generating...
                       </>
                     ) : (
@@ -516,12 +517,11 @@ export default function MealPlanner() {
                   <Button 
                     onClick={() => autoGenerateMutation.mutate()}
                     disabled={autoGenerateMutation.isPending}
-                    className="w-full"
-                    variant="outline"
+                    className="btn-outline w-full"
                   >
                     {autoGenerateMutation.isPending ? (
                       <>
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-slate-600 mr-2" />
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-foreground mr-2" />
                         Auto-Generating...
                       </>
                     ) : (
@@ -532,7 +532,7 @@ export default function MealPlanner() {
                     )}
                   </Button>
                   
-                  <p className="text-xs text-slate-500 mt-2">
+                  <p className="text-xs text-muted-foreground">
                     Auto-generate creates a high-activity meal plan for next Monday and syncs to Notion if connected.
                   </p>
                   
@@ -541,7 +541,7 @@ export default function MealPlanner() {
                     <DialogTrigger asChild>
                       <Button 
                         disabled={!selectedMealPlan}
-                        className="w-full bg-blue-600 hover:bg-blue-700"
+                        className="btn-outline w-full"
                         onClick={() => setShowShoppingList(true)}
                       >
                         <ShoppingCart className="mr-2 h-4 w-4" />
@@ -603,53 +603,53 @@ export default function MealPlanner() {
                     </DialogContent>
                   </Dialog>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
 
           </div>
 
           {/* Meal Plan Display */}
           <div className="lg:col-span-2">
-            <Card>
-              <CardHeader className="border-b border-slate-200">
+            <div className="card-clean">
+              <div className="mb-8">
                 <div className="flex justify-between items-center">
-                  <CardTitle className="text-lg font-semibold text-slate-900">Weekly Meal Plan</CardTitle>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-sm text-slate-600">
-                      Week of {displayedMealPlan ? formatWeekRange(displayedMealPlan.weekStart) : "No plan"}
-                    </span>
+                  <h2 className="text-xl font-semibold text-foreground">
+                    Weekly Meal Plan
+                  </h2>
+                  <div className="flex items-center space-x-3">
+                    <div className="text-sm text-muted-foreground">
+                      Week of <span className="text-foreground font-medium">{displayedMealPlan ? formatWeekRange(displayedMealPlan.weekStart) : "No plan"}</span>
+                    </div>
                     {displayedMealPlan?.notionSynced && (
-                      <Badge variant="secondary" className="bg-emerald-100 text-emerald-700">
+                      <Badge variant="secondary">
                         <CheckCircle className="w-3 h-3 mr-1" />
                         Synced
                       </Badge>
                     )}
                   </div>
                 </div>
-              </CardHeader>
+              </div>
               
               {loadingCurrentPlan ? (
-                <CardContent className="p-6">
-                  <div className="animate-pulse space-y-4">
-                    {[1, 2, 3, 4, 5].map(i => (
-                      <div key={i} className="h-12 bg-slate-200 rounded" />
-                    ))}
-                  </div>
-                </CardContent>
+                <div className="animate-pulse space-y-4">
+                  {[1, 2, 3, 4, 5].map(i => (
+                    <div key={i} className="h-12 bg-muted rounded" />
+                  ))}
+                </div>
               ) : currentMealPlan?.meals ? (
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-slate-50">
+                    <thead className="border-b border-border">
                       <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Day</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Meal</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Food</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Portion</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Protein (g)</th>
+                        <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Day</th>
+                        <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Meal</th>
+                        <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Food</th>
+                        <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Portion</th>
+                        <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Protein (g)</th>
                       </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-slate-200">
+                    <tbody className="divide-y divide-border">
                       {[1, 2, 3, 4, 5, 6, 7].map(day => {
                         const dayMeals = getDayMeals(day);
                         const dayTotal = calculateDayTotal(day);
@@ -657,35 +657,35 @@ export default function MealPlanner() {
                         return (
                           <React.Fragment key={day}>
                             {dayMeals.map((meal, index) => (
-                              <tr key={meal.id} className="hover:bg-slate-50">
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
+                              <tr key={meal.id} className="hover:bg-muted/50">
+                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">
                                   {index === 0 ? `Day ${day}` : ''}
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 capitalize">
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground capitalize">
                                   {meal.mealType}
                                 </td>
-                                <td className="px-6 py-4 text-sm text-slate-900">
+                                <td className="px-6 py-4 text-sm text-foreground">
                                   <button
                                     onClick={() => setSelectedMealId(meal.id)}
-                                    className="text-left hover:text-emerald-600 hover:underline cursor-pointer flex items-center gap-2"
+                                    className="text-left hover:text-primary hover:underline cursor-pointer flex items-center gap-2"
                                   >
                                     <BookOpen className="w-4 h-4" />
                                     {meal.foodDescription}
                                   </button>
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
                                   {meal.portion}
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-emerald-600">
+                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">
                                   {meal.protein}g
                                 </td>
                               </tr>
                             ))}
-                            <tr className="bg-emerald-50">
-                              <td colSpan={4} className="px-6 py-3 text-sm font-semibold text-slate-900">
+                            <tr className="bg-muted/30">
+                              <td colSpan={4} className="px-6 py-3 text-sm font-medium text-foreground">
                                 Day {day} Total
                               </td>
-                              <td className="px-6 py-3 text-sm font-bold text-emerald-700">
+                              <td className="px-6 py-3 text-sm font-semibold text-foreground">
                                 {dayTotal.toFixed(1)}g
                               </td>
                             </tr>
@@ -696,24 +696,22 @@ export default function MealPlanner() {
                   </table>
                 </div>
               ) : (
-                <CardContent className="p-6 text-center">
-                  <div className="text-slate-500">
-                    <Activity className="mx-auto h-12 w-12 mb-4 opacity-50" />
-                    <p>No meal plan available. Generate your first meal plan to get started!</p>
-                  </div>
-                </CardContent>
+                <div className="text-center py-12">
+                  <Activity className="mx-auto h-12 w-12 mb-4 text-muted-foreground" />
+                  <p className="text-muted-foreground">No meal plan available. Generate your first meal plan to get started!</p>
+                </div>
               )}
               
               {currentMealPlan?.meals && (
-                <div className="px-6 py-4 bg-slate-50 border-t border-slate-200">
+                <div className="px-6 py-4 bg-muted/30 border-t border-border mt-6">
                   <div className="flex justify-between items-center">
-                    <div className="text-sm text-slate-600">
-                      Weekly Average: <span className="font-semibold text-slate-900">
+                    <div className="text-sm text-muted-foreground">
+                      Weekly Average: <span className="font-medium text-foreground">
                         {currentMealPlan.totalProtein.toFixed(1)}g protein/day
                       </span>
                     </div>
                     <div className="flex space-x-2">
-                      <Button variant="ghost" size="sm" className="text-slate-600 hover:text-slate-800">
+                      <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
                         <Download className="mr-1 h-4 w-4" />
                         Export
                       </Button>
@@ -725,73 +723,67 @@ export default function MealPlanner() {
                   </div>
                 </div>
               )}
-            </Card>
+            </div>
           </div>
         </div>
 
         {/* Status Panel */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <Calendar className="text-emerald-500 h-8 w-8" />
-                </div>
-                <div className="ml-4">
-                  <div className="text-sm font-medium text-slate-500">Last Sync</div>
-                  <div className="text-lg font-semibold text-slate-900">
-                    {latestMealPlan?.notionSynced ? "Synced" : "Not synced"}
-                  </div>
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="card-clean">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <Calendar className="text-foreground h-8 w-8" />
+              </div>
+              <div className="ml-4">
+                <div className="text-sm font-medium text-muted-foreground">Last Sync</div>
+                <div className="text-lg font-semibold text-foreground">
+                  {latestMealPlan?.notionSynced ? "Synced" : "Not synced"}
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <Target className="text-amber-500 h-8 w-8" />
-                </div>
-                <div className="ml-4">
-                  <div className="text-sm font-medium text-slate-500">Protein Goal</div>
-                  <div className="text-lg font-semibold text-emerald-600">On Track</div>
-                </div>
+          <div className="card-clean">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <Target className="text-foreground h-8 w-8" />
               </div>
-            </CardContent>
-          </Card>
+              <div className="ml-4">
+                <div className="text-sm font-medium text-muted-foreground">Protein Goal</div>
+                <div className="text-lg font-semibold text-foreground">On Track</div>
+              </div>
+            </div>
+          </div>
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <Clock className="text-blue-500 h-8 w-8" />
-                </div>
-                <div className="ml-4">
-                  <div className="text-sm font-medium text-slate-500">Prep Time</div>
-                  <div className="text-lg font-semibold text-slate-900">{"< 30 min/meal"}</div>
-                </div>
+          <div className="card-clean">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <Clock className="text-foreground h-8 w-8" />
               </div>
-            </CardContent>
-          </Card>
+              <div className="ml-4">
+                <div className="text-sm font-medium text-muted-foreground">Prep Time</div>
+                <div className="text-lg font-semibold text-foreground">{"< 30 min/meal"}</div>
+              </div>
+            </div>
+          </div>
         </div>
         
         {/* Notion Integration - Bottom Section */}
-        <Card className="mt-8">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold text-slate-900">Notion Integration</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
+        <div className="card-clean mt-16">
+          <div className="mb-6">
+            <h2 className="text-lg font-semibold text-foreground">Notion Integration</h2>
+          </div>
+          <div className="space-y-6">
             <div>
-              <Label className="text-sm font-medium text-slate-700">Integration Status</Label>
-              <div className="flex items-center mt-2">
-                <div className={`w-3 h-3 rounded-full mr-2 ${notionStatus?.connected ? 'bg-emerald-500' : 'bg-red-500'}`} />
-                <span className={`text-sm ${notionStatus?.connected ? 'text-emerald-600' : 'text-red-600'}`}>
+              <Label className="text-sm font-medium text-foreground mb-2 block">Integration Status</Label>
+              <div className="flex items-center">
+                <div className={`w-3 h-3 rounded-full mr-2 ${notionStatus?.connected ? 'bg-foreground' : 'bg-muted-foreground'}`} />
+                <span className={`text-sm ${notionStatus?.connected ? 'text-foreground' : 'text-muted-foreground'}`}>
                   {notionStatus?.connected ? 'Connected' : 'Not Connected'}
                 </span>
               </div>
               {!notionStatus?.connected && (
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-xs text-muted-foreground mt-2">
                   Please configure NOTION_INTEGRATION_SECRET and NOTION_PAGE_URL environment variables.
                 </p>
               )}
@@ -800,11 +792,11 @@ export default function MealPlanner() {
             <Button 
               onClick={() => selectedMealPlan && syncMutation.mutate(selectedMealPlan)}
               disabled={!selectedMealPlan || syncMutation.isPending || !notionStatus?.connected}
-              className="w-full bg-emerald-600 hover:bg-emerald-700"
+              className="btn-minimal w-full"
             >
               {syncMutation.isPending ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground mr-2" />
                   Syncing...
                 </>
               ) : (
@@ -814,8 +806,8 @@ export default function MealPlanner() {
                 </>
               )}
             </Button>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
 
       {/* Recipe Dialog */}

@@ -7,9 +7,14 @@ export const users = pgTable("users", {
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
   weight: integer("weight").default(60), // kg
-  waistline: real("waistline"), // cm
+  goalWeight: integer("goal_weight"), // target weight in kg
+  waistline: real("waistline").default(75), // cm
+  goalWaistline: real("goal_waistline"), // target waistline in cm
   activityLevel: text("activity_level").default("high"), // high or low
   proteinTarget: integer("protein_target").default(130), // grams
+  dietaryPreferences: text("dietary_preferences").array().default(["vegetarian", "gluten-free", "lactose-free"]),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 export const mealPlans = pgTable("meal_plans", {
@@ -55,8 +60,22 @@ export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
   weight: true,
+  goalWeight: true,
+  waistline: true,
+  goalWaistline: true,
   activityLevel: true,
   proteinTarget: true,
+  dietaryPreferences: true,
+});
+
+export const updateUserProfileSchema = createInsertSchema(users).pick({
+  weight: true,
+  goalWeight: true,
+  waistline: true,
+  goalWaistline: true,
+  activityLevel: true,
+  proteinTarget: true,
+  dietaryPreferences: true,
 });
 
 export const insertMealPlanSchema = createInsertSchema(mealPlans).omit({
@@ -81,6 +100,7 @@ export const insertOuraDataSchema = createInsertSchema(ouraData).omit({
 
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
+export type UpdateUserProfile = z.infer<typeof updateUserProfileSchema>;
 export type MealPlan = typeof mealPlans.$inferSelect;
 export type InsertMealPlan = z.infer<typeof insertMealPlanSchema>;
 export type Meal = typeof meals.$inferSelect;

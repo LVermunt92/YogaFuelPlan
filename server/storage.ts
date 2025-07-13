@@ -4,7 +4,8 @@ import {
   meals,
   ouraData,
   type User, 
-  type InsertUser, 
+  type InsertUser,
+  type UpdateUserProfile, 
   type MealPlan, 
   type InsertMealPlan,
   type Meal,
@@ -20,8 +21,9 @@ export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  updateUserProfile(userId: number, profileData: UpdateUserProfile): Promise<User>;
   createMealPlan(mealPlan: InsertMealPlan): Promise<MealPlan>;
-  getMealPlans(): Promise<MealPlan[]>;
+  getMealPlans(userId?: number): Promise<MealPlan[]>;
   getMealPlanWithMeals(id: number): Promise<MealPlanWithMeals | undefined>;
   createMeals(mealPlanId: number, meals: InsertMeal[]): Promise<Meal[]>;
   updateMealPlanSyncStatus(id: number, synced: boolean): Promise<void>;

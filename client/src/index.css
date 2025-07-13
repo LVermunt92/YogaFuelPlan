@@ -1,51 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: hsl(0, 0%, 100%);
-  --foreground: hsl(20, 14.3%, 4.1%);
-  --muted: hsl(60, 4.8%, 95.9%);
-  --muted-foreground: hsl(25, 5.3%, 44.7%);
-  --popover: hsl(0, 0%, 100%);
-  --popover-foreground: hsl(20, 14.3%, 4.1%);
-  --card: hsl(0, 0%, 100%);
-  --card-foreground: hsl(20, 14.3%, 4.1%);
-  --border: hsl(20, 5.9%, 90%);
-  --input: hsl(20, 5.9%, 90%);
-  --primary: hsl(217, 91%, 60%);
-  --primary-foreground: hsl(0, 0%, 100%);
-  --secondary: hsl(60, 4.8%, 95.9%);
-  --secondary-foreground: hsl(24, 9.8%, 10%);
-  --accent: hsl(60, 4.8%, 95.9%);
-  --accent-foreground: hsl(24, 9.8%, 10%);
-  --destructive: hsl(0, 84.2%, 60.2%);
-  --destructive-foreground: hsl(60, 9.1%, 97.8%);
-  --ring: hsl(20, 14.3%, 4.1%);
-  --radius: 0.5rem;
-}
+@layer base {
+  :root {
+    /* madebysem.nl inspired color palette */
+    --background: hsl(0, 0%, 99%);
+    --foreground: hsl(0, 0%, 8%);
+    --muted: hsl(0, 0%, 95%);
+    --muted-foreground: hsl(0, 0%, 45%);
+    --popover: hsl(0, 0%, 100%);
+    --popover-foreground: hsl(0, 0%, 8%);
+    --card: hsl(0, 0%, 100%);
+    --card-foreground: hsl(0, 0%, 8%);
+    --border: hsl(0, 0%, 90%);
+    --input: hsl(0, 0%, 90%);
+    --primary: hsl(0, 0%, 8%);
+    --primary-foreground: hsl(0, 0%, 98%);
+    --secondary: hsl(0, 0%, 96%);
+    --secondary-foreground: hsl(0, 0%, 12%);
+    --accent: hsl(0, 0%, 94%);
+    --accent-foreground: hsl(0, 0%, 8%);
+    --destructive: hsl(0, 65%, 51%);
+    --destructive-foreground: hsl(0, 0%, 98%);
+    --ring: hsl(0, 0%, 8%);
+    --radius: 0.25rem;
+  }
 
-.dark {
-  --background: hsl(240, 10%, 3.9%);
-  --foreground: hsl(0, 0%, 98%);
-  --muted: hsl(240, 3.7%, 15.9%);
-  --muted-foreground: hsl(240, 5%, 64.9%);
-  --popover: hsl(240, 10%, 3.9%);
-  --popover-foreground: hsl(0, 0%, 98%);
-  --card: hsl(240, 10%, 3.9%);
-  --card-foreground: hsl(0, 0%, 98%);
-  --border: hsl(240, 3.7%, 15.9%);
-  --input: hsl(240, 3.7%, 15.9%);
-  --primary: hsl(217, 91%, 60%);
-  --primary-foreground: hsl(0, 0%, 100%);
-  --secondary: hsl(240, 3.7%, 15.9%);
-  --secondary-foreground: hsl(0, 0%, 98%);
-  --accent: hsl(240, 3.7%, 15.9%);
-  --accent-foreground: hsl(0, 0%, 98%);
-  --destructive: hsl(0, 62.8%, 30.6%);
-  --destructive-foreground: hsl(0, 0%, 98%);
-  --ring: hsl(240, 4.9%, 83.9%);
-  --radius: 0.5rem;
+  .dark {
+    --background: hsl(0, 0%, 8%);
+    --foreground: hsl(0, 0%, 98%);
+    --muted: hsl(0, 0%, 15%);
+    --muted-foreground: hsl(0, 0%, 65%);
+    --popover: hsl(0, 0%, 8%);
+    --popover-foreground: hsl(0, 0%, 98%);
+    --card: hsl(0, 0%, 8%);
+    --card-foreground: hsl(0, 0%, 98%);
+    --border: hsl(0, 0%, 20%);
+    --input: hsl(0, 0%, 20%);
+    --primary: hsl(0, 0%, 98%);
+    --primary-foreground: hsl(0, 0%, 8%);
+    --secondary: hsl(0, 0%, 12%);
+    --secondary-foreground: hsl(0, 0%, 98%);
+    --accent: hsl(0, 0%, 16%);
+    --accent-foreground: hsl(0, 0%, 98%);
+    --destructive: hsl(0, 62.8%, 30.6%);
+    --destructive-foreground: hsl(0, 0%, 98%);
+    --ring: hsl(0, 0%, 98%);
+    --radius: 0.25rem;
+  }
 }
 
 @layer base {
@@ -54,6 +59,86 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+  }
+  
+  h2 {
+    font-size: 2rem;
+    font-weight: 600;
+  }
+  
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+}
+
+@layer components {
+  /* madebysem.nl inspired button styles - clean and minimal */
+  .btn-minimal {
+    @apply inline-flex items-center justify-center whitespace-nowrap text-sm font-medium;
+    @apply bg-primary text-primary-foreground;
+    @apply px-8 py-3 border-0 rounded-sm;
+    @apply transition-all duration-200 ease-in-out;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring;
+    @apply disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .btn-minimal:hover {
+    background-color: hsl(var(--primary) / 0.9);
+  }
+  
+  .btn-outline {
+    @apply inline-flex items-center justify-center whitespace-nowrap text-sm font-medium;
+    @apply bg-transparent text-foreground border border-border;
+    @apply px-8 py-3 rounded-sm;
+    @apply transition-all duration-200 ease-in-out;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring;
+    @apply disabled:pointer-events-none disabled:opacity-50;
+    @apply hover:bg-accent;
+  }
+  
+  /* Minimalist card styling */
+  .card-clean {
+    @apply bg-card border border-border;
+    @apply rounded-sm shadow-none;
+    @apply p-8;
+  }
+  
+  /* Clean input styling */
+  .input-clean {
+    @apply bg-background border border-border;
+    @apply rounded-sm px-4 py-3;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring;
+    @apply transition-all duration-200 ease-in-out;
+  }
+  
+  /* Typography utilities */
+  .text-large {
+    font-size: 1.125rem;
+    line-height: 1.5;
+  }
+  
+  .text-hero {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
   }
 }
