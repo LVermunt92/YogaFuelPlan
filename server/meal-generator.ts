@@ -288,6 +288,20 @@ function generateMealPrepPlan(
 
     // Always include breakfast (quick daily meal)
     const breakfastMeal = breakfastOptions[Math.floor(Math.random() * breakfastOptions.length)];
+    if (!breakfastMeal) {
+      console.error("No breakfast options available for dietary tags:", dietaryTags);
+      // Create placeholder breakfast if no options available
+      meals.push({
+        mealPlanId: 0,
+        day,
+        mealType: 'breakfast',
+        foodDescription: 'Simple breakfast (customize to preferences)',
+        portion: '1 serving',
+        protein: 20,
+        prepTime: 10
+      });
+      continue;
+    }
     const adjustedBreakfastPortion = adjustMealPortion(breakfastMeal.portion, caloricAdjustment);
     const breakfastProtein = breakfastMeal.nutrition.protein * caloricAdjustment;
     
@@ -309,7 +323,11 @@ function generateMealPrepPlan(
       const isCookingDay = cookingDays.includes(day);
       
       // Select lunch meal (batch cook if needed)
-      let lunchMeal = lunchOptions[Math.floor(Math.random() * lunchOptions.length)];
+      const lunchMeal = lunchOptions[Math.floor(Math.random() * lunchOptions.length)];
+      if (!lunchMeal) {
+        console.error("No lunch options available for dietary tags:", dietaryTags);
+        continue; // Skip this day if no meals available
+      }
       let lunchPortion = adjustMealPortion(lunchMeal.portion, caloricAdjustment);
       let lunchPrepTime = lunchMeal.nutrition.prepTime;
       
@@ -336,7 +354,11 @@ function generateMealPrepPlan(
       dailyProtein += lunchProtein;
 
       // Select dinner meal (batch cook if needed)
-      let dinnerMeal = dinnerOptions[Math.floor(Math.random() * dinnerOptions.length)];
+      const dinnerMeal = dinnerOptions[Math.floor(Math.random() * dinnerOptions.length)];
+      if (!dinnerMeal) {
+        console.error("No dinner options available for dietary tags:", dietaryTags);
+        continue; // Skip this day if no meals available
+      }
       let dinnerPortion = adjustMealPortion(dinnerMeal.portion, caloricAdjustment);
       let dinnerPrepTime = dinnerMeal.nutrition.prepTime;
       

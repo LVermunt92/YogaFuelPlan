@@ -749,7 +749,21 @@ export function filterMealsByDietaryTags(meals: MealOption[], dietaryTags: strin
 // Get meals for a specific category that match dietary preferences  
 export function getMealsForCategoryAndDiet(category: 'breakfast' | 'lunch' | 'dinner', dietaryTags: string[] = []): MealOption[] {
   const categoryMeals = getMealsByCategory(category);
-  return filterMealsByDietaryTags(categoryMeals, dietaryTags);
+  
+  if (dietaryTags.length === 0) {
+    return categoryMeals;
+  }
+  
+  const filteredMeals = filterMealsByDietaryTags(categoryMeals, dietaryTags);
+  
+  // If no meals match the dietary restrictions, fall back to all meals in category
+  // This ensures users always get meal plans even with restrictive dietary requirements
+  if (filteredMeals.length === 0) {
+    console.warn(`No ${category} meals found for dietary tags: ${dietaryTags.join(', ')}. Falling back to all ${category} meals.`);
+    return categoryMeals;
+  }
+  
+  return filteredMeals;
 }
 
 export function calculateDailyProtein(meals: MealOption[]): number {

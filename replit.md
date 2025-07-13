@@ -41,6 +41,11 @@ Preferred communication style: Simple, everyday language.
 - **Meal Selection Algorithm**: Distributes protein across breakfast, lunch, and dinner with variety rotation
 - **Weekly Planning**: Generates 7-day meal plans with built-in meal variety
 - **Shopping List Generator**: Creates categorized ingredient lists from meal plans
+- **Universal Meal Prep Engine**: Adapts to any user's cooking schedule:
+  - Batch cooking mode when cooking days < eating days
+  - Proper meal distribution and labeling system
+  - Intelligent fallback options for dietary restrictions
+  - Consistent behavior across all user profiles
 
 ### Data Storage Solutions
 - **Primary Storage**: PostgreSQL database via Neon serverless (migrated from in-memory)
@@ -84,7 +89,12 @@ Preferred communication style: Simple, everyday language.
 - **Meal Plan Regeneration**: Users can now regenerate meal plans with updated preferences
 - **Complete Recipe Database**: All meals now include detailed cooking instructions and tips
 - **Enhanced User Preferences**: Support for cooking days, eating days, and household size
-- **Cooking Day Logic**: Intelligent meal planning based on when users cook and eat at home
+- **Universal Meal Prep Logic**: Intelligent meal planning that works consistently for all users:
+  - Detects cooking vs eating day ratios automatically
+  - Generates batch cooking plans with proper labeling (e.g., "2x portions - batch cook")
+  - Adjusts prep times for leftovers (5 minutes for reheating)
+  - Fallback meal options ensure users always get complete meal plans
+  - Works across all dietary restrictions and user preferences
 
 ### Development Tools
 - **tsx**: TypeScript execution for development

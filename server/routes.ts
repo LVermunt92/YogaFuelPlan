@@ -60,12 +60,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // Generate meal plan
+  // Create/Generate meal plan
+  app.post("/api/meal-plans", async (req, res) => {
+    try {
+      const request = mealPlanRequestSchema.parse(req.body);
+      
+      // Fetch user data for meal prep logic and caloric adjustments
+      const user = request.userId ? await storage.getUser(request.userId) : undefined;
+      
+      const generated = generateWeeklyMealPlan(request, user);
+      
+      // Save to storage
+      const savedMealPlan = await storage.createMealPlan(generated.mealPlan);
+      const savedMeals = await storage.createMeals(savedMealPlan.id, generated.meals);
+      
+      res.json({
+        mealPlan: savedMealPlan,
+        meals: savedMeals,
+      });
+    } catch (error) {
+      console.error("Error generating meal plan:", error);
+      res.status(500).json({ message: "Failed to generate meal plan" });
+    }
+  });
+
+  // Legacy endpoint - redirect to new endpoint
   app.post("/api/meal-plans/generate", async (req, res) => {
     try {
       const request = mealPlanRequestSchema.parse(req.body);
       
-      // Fetch user data for caloric adjustments
+      // Fetch user data for meal prep logic and caloric adjustments
       const user = request.userId ? await storage.getUser(request.userId) : undefined;
       
       const generated = generateWeeklyMealPlan(request, user);
