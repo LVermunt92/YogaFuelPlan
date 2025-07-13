@@ -1185,6 +1185,9 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
         const existing = ingredientAmounts.get(cleanIngredient);
         if (existing) {
           existing.count += 1;
+          // Add the default portion amount for each occurrence
+          const defaultPortion = getDefaultPortion(cleanIngredient);
+          existing.totalAmount += defaultPortion.amount;
         } else {
           const defaultPortion = getDefaultPortion(cleanIngredient);
           ingredientAmounts.set(cleanIngredient, { 
@@ -1295,22 +1298,24 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'stevia': 'Pantry Items'
   };
 
-  // Create shopping list with categories and actual amounts
+  // Create shopping list with categories and converted amounts
   const shoppingList: ShoppingListItem[] = [];
   
   ingredientAmounts.forEach((amounts, ingredient) => {
     const category = ingredientCategories[ingredient] || 'Other';
     
-    const displayAmount = amounts.unit === 'pieces' ? 
-      `${amounts.totalAmount} ${amounts.unit}` : 
-      formatAmount(amounts.totalAmount, amounts.unit);
+    // Convert amounts to grams using the formatAmount function
+    const displayAmount = formatAmount(amounts.totalAmount, amounts.unit);
+    
+    // Determine final unit after conversion
+    const finalUnit = amounts.unit === 'pieces' || amounts.unit === 'cloves' ? amounts.unit : 'g';
     
     shoppingList.push({
       ingredient,
       category,
       count: amounts.count,
       totalAmount: displayAmount,
-      unit: amounts.unit
+      unit: finalUnit
     });
   });
 
@@ -1348,27 +1353,47 @@ function parseEnhancedRecipeIngredients(instructions: string[], ingredientAmount
 }
 
 function getDefaultPortion(ingredient: string): { amount: number; unit: string } {
-  // Default portions for common ingredients when no recipe amounts are found
+  // Default portions for common ingredients in grams (when no recipe amounts are found)
   const defaults: Record<string, { amount: number; unit: string }> = {
-    'almond milk': { amount: 1, unit: 'cup' },
-    'coconut milk': { amount: 1, unit: 'cup' },
-    'chia seeds': { amount: 2, unit: 'tbsp' },
-    'hemp hearts': { amount: 2, unit: 'tbsp' },
-    'mixed berries': { amount: 0.5, unit: 'cup' },
-    'banana': { amount: 1, unit: 'piece' },
-    'avocado': { amount: 1, unit: 'piece' },
-    'quinoa': { amount: 0.5, unit: 'cup' },
-    'brown rice': { amount: 0.5, unit: 'cup' },
-    'spinach': { amount: 2, unit: 'cup' },
-    'mushrooms': { amount: 1, unit: 'cup' },
-    'onions': { amount: 1, unit: 'piece' },
-    'garlic': { amount: 2, unit: 'cloves' },
-    'olive oil': { amount: 2, unit: 'tbsp' },
-    'coconut oil': { amount: 1, unit: 'tbsp' },
-    'eggs': { amount: 2, unit: 'pieces' }
+    'almond milk': { amount: 240, unit: 'g' }, // 1 cup = 240g
+    'coconut milk': { amount: 240, unit: 'g' }, // 1 cup = 240g
+    'chia seeds': { amount: 20, unit: 'g' }, // 2 tbsp = ~20g
+    'hemp hearts': { amount: 20, unit: 'g' }, // 2 tbsp = ~20g
+    'hemp seeds': { amount: 20, unit: 'g' },
+    'mixed berries': { amount: 75, unit: 'g' }, // 0.5 cup = ~75g
+    'banana': { amount: 1, unit: 'piece' }, // 1 medium banana
+    'avocado': { amount: 1, unit: 'piece' }, // 1 medium avocado
+    'lemon': { amount: 1, unit: 'piece' }, // 1 lemon
+    'quinoa': { amount: 85, unit: 'g' }, // 0.5 cup dry = ~85g
+    'brown rice': { amount: 95, unit: 'g' }, // 0.5 cup dry = ~95g
+    'spinach': { amount: 60, unit: 'g' }, // 2 cups fresh = ~60g
+    'mushrooms': { amount: 70, unit: 'g' }, // 1 cup sliced = ~70g
+    'onions': { amount: 1, unit: 'piece' }, // 1 medium onion
+    'garlic': { amount: 2, unit: 'cloves' }, // 2 cloves
+    'olive oil': { amount: 30, unit: 'g' }, // 2 tbsp = ~30g
+    'coconut oil': { amount: 15, unit: 'g' }, // 1 tbsp = ~15g
+    'eggs': { amount: 2, unit: 'pieces' }, // 2 large eggs
+    'nutritional yeast': { amount: 15, unit: 'g' }, // 2 tbsp = ~15g
+    'coconut yogurt': { amount: 120, unit: 'g' }, // 0.5 cup = ~120g
+    'cherry tomatoes': { amount: 150, unit: 'g' }, // 1 cup = ~150g
+    'bell peppers': { amount: 120, unit: 'g' }, // 1 medium pepper
+    'zucchini': { amount: 200, unit: 'g' }, // 1 medium zucchini
+    'brussels sprouts': { amount: 150, unit: 'g' }, // 1 cup = ~150g
+    'sweet potato': { amount: 200, unit: 'g' }, // 1 medium sweet potato
+    'cashew cream': { amount: 60, unit: 'g' }, // 1/4 cup = ~60g
+    'sun-dried tomatoes': { amount: 30, unit: 'g' }, // 2 tbsp = ~30g
+    'pasta': { amount: 100, unit: 'g' }, // 1 serving dry pasta
+    'vegetable broth': { amount: 240, unit: 'g' }, // 1 cup = 240g
+    'mixed nuts': { amount: 30, unit: 'g' }, // 2 tbsp = ~30g
+    'maple syrup': { amount: 20, unit: 'g' }, // 1 tbsp = ~20g
+    'vanilla extract': { amount: 5, unit: 'g' }, // 1 tsp = ~5g
+    'cinnamon': { amount: 2, unit: 'g' }, // 1 tsp = ~2g
+    'salt': { amount: 5, unit: 'g' }, // 1 tsp = ~5g
+    'pepper': { amount: 2, unit: 'g' }, // 1/2 tsp = ~2g
+    'fresh herbs': { amount: 10, unit: 'g' } // 2 tbsp chopped = ~10g
   };
   
-  return defaults[ingredient] || { amount: 1, unit: 'g' };
+  return defaults[ingredient] || { amount: 50, unit: 'g' };
 }
 
 function cleanIngredientName(ingredient: string): string {
@@ -1381,17 +1406,49 @@ function cleanIngredientName(ingredient: string): string {
   
   let cleaned = ingredient.toLowerCase().trim();
   
-  // Remove leading measurements and quantities
-  cleaned = cleaned.replace(/^[\d\/½¼¾⅓⅔⅛⅜⅝⅞]+\s*(cup|cups|tbsp|tsp|tablespoons?|teaspoons?|g|grams?|lb|lbs|pounds?|oz|ounces?|pieces?|slices?|cloves?|sprigs?|medium|large|small)\s*/, '');
+  // Remove leading measurements and quantities (including fractions and numbers)
+  cleaned = cleaned.replace(/^[\d\/½¼¾⅓⅔⅛⅜⅝⅞]+\s*(cup|cups|tbsp|tsp|tablespoons?|teaspoons?|g|grams?|lb|lbs|pounds?|oz|ounces?|pieces?|slices?|cloves?|sprigs?|medium|large|small|ml)\s*/, '');
+  
+  // Remove leading numbers and fractions that might still be there  
+  cleaned = cleaned.replace(/^[\d\/½¼¾⅓⅔⅛⅜⅝⅞]+\s*/, '');
   
   // Remove descriptive words and parenthetical content
   cleaned = cleaned.replace(/\s*\([^)]*\)/g, ''); // Remove (content in parentheses)
-  cleaned = cleaned.replace(/\b(free-range|organic|fresh|raw|toasted|chopped|sliced|diced|minced|halved|cooked)\b/g, '');
-  cleaned = cleaned.replace(/\b(extra virgin|sea|black|white|ground|mixed|frozen)\b/g, '');
+  cleaned = cleaned.replace(/\b(free-range|organic|fresh|raw|toasted|chopped|sliced|diced|minced|halved|cooked|long-fermented)\b/g, '');
+  cleaned = cleaned.replace(/\b(extra virgin|sea|black|white|ground|mixed|frozen|unsweetened|pure|gluten-free)\b/g, '');
   cleaned = cleaned.replace(/^(pinch of|dash of|handful of)\s*/i, '');
   
   // Clean up spaces and handle special cases
   cleaned = cleaned.replace(/\s+/g, ' ').trim();
+  
+  // Handle specific problematic cases to ensure proper consolidation
+  if (cleaned.includes('lemon') || cleaned === 'lemon') {
+    cleaned = 'lemon';
+  }
+  if (cleaned.includes('banana') || cleaned === 'd banana' || cleaned === 'sliced banana') {
+    cleaned = 'banana';
+  }
+  if (cleaned.includes('maple syrup') || cleaned === 'maple syrup') {
+    cleaned = 'maple syrup';
+  }
+  if (cleaned === 'wine' || cleaned.includes('wine') || cleaned === 'white wine') {
+    cleaned = 'white wine';
+  }
+  if (cleaned.includes('kefir') || cleaned === 'kefir') {
+    cleaned = 'fermented kefir';
+  }
+  if (cleaned.includes('almond milk') || cleaned === 'almond milk') {
+    cleaned = 'almond milk';
+  }
+  if (cleaned.includes('red onion') || cleaned === 'red onion') {
+    cleaned = 'onions';
+  }
+  if (cleaned.includes('bell pepper') || cleaned === 'bell pepper') {
+    cleaned = 'bell peppers';
+  }
+  if (cleaned === 'cinnamon to taste' || cleaned === 'stevia to taste') {
+    cleaned = cleaned.replace(' to taste', '');
+  }
   
   // Handle compound ingredients
   if (cleaned.includes(' and ')) {
@@ -1427,34 +1484,73 @@ function cleanIngredientName(ingredient: string): string {
     'walnuts': 'mixed nuts',
     'hemp seeds': 'hemp seeds',
     'banana': 'banana',
+    'lemon': 'lemon',
+    'lemons': 'lemon',
+    'banana': 'banana',
+    'bananas': 'banana',
+    'sliced banana': 'banana',
+    'd banana': 'banana',
     'maple syrup': 'maple syrup',
     'cinnamon': 'cinnamon',
+    'cinnamon to taste': 'cinnamon',
+    'stevia to taste': 'stevia',
     'pasta': 'pasta',
     'cashew cream': 'cashew cream',
     'nutritional yeast': 'nutritional yeast',
     'sun-dried tomatoes': 'sun-dried tomatoes',
     'white wine': 'white wine',
-    'vegetable broth': 'vegetable broth'
+    'wine': 'white wine',
+    'vegetable broth': 'vegetable broth',
+    'almond milk': 'almond milk',
+    'kefir': 'fermented kefir',
+    'berries': 'mixed berries',
+    'oats': 'rolled oats',
+    'granola': 'gluten-free granola'
   };
   
   return ingredientMappings[cleaned] || cleaned;
 }
 
 function formatAmount(amount: number, unit: string): string {
-  if (amount < 1 && (unit === 'cup' || unit === 'cups')) {
-    const fractions = {
-      0.25: '1/4',
-      0.33: '1/3',
-      0.5: '1/2',
-      0.67: '2/3',
-      0.75: '3/4'
-    };
-    
-    const closestFraction = Object.keys(fractions).find(f => Math.abs(parseFloat(f) - amount) < 0.1);
-    if (closestFraction) {
-      return `${fractions[closestFraction as keyof typeof fractions]} ${unit}`;
-    }
+  // Convert all measurements to grams for consistency
+  let finalAmount = amount;
+  let finalUnit = 'g';
+  
+  // Convert various units to grams
+  if (unit === 'cup' || unit === 'cups') {
+    finalAmount = amount * 240; // 1 cup ≈ 240g (for liquids)
+  } else if (unit === 'tbsp') {
+    finalAmount = amount * 15; // 1 tbsp ≈ 15g
+  } else if (unit === 'tsp') {
+    finalAmount = amount * 5; // 1 tsp ≈ 5g
+  } else if (unit === 'oz') {
+    finalAmount = amount * 28; // 1 oz ≈ 28g
+  } else if (unit === 'lb' || unit === 'lbs') {
+    finalAmount = amount * 454; // 1 lb ≈ 454g
+  } else if (unit === 'pieces' || unit === 'piece') {
+    // Keep pieces as is for countable items
+    finalUnit = 'pieces';
+    finalAmount = amount;
+  } else if (unit === 'cloves') {
+    // Keep cloves as is for garlic
+    finalUnit = 'cloves';
+    finalAmount = amount;
+  } else if (unit === 'g') {
+    // Already in grams
+    finalAmount = amount;
+    finalUnit = 'g';
+  } else {
+    // Default to grams for unknown units
+    finalAmount = amount;
+    finalUnit = 'g';
   }
   
-  return `${amount} ${unit}`;
+  // Format the final amount nicely
+  if (finalAmount >= 1000) {
+    return `${(finalAmount / 1000).toFixed(1)}kg`;
+  } else if (finalAmount < 1) {
+    return `${(finalAmount * 1000).toFixed(0)}mg`;
+  } else {
+    return `${Math.round(finalAmount)}${finalUnit}`;
+  }
 }
