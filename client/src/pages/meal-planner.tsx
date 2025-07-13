@@ -535,117 +535,78 @@ export default function MealPlanner() {
                   <p className="text-xs text-slate-500 mt-2">
                     Auto-generate creates a high-activity meal plan for next Monday and syncs to Notion if connected.
                   </p>
+                  
+                  {/* Shopping List Button */}
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button 
+                        disabled={!selectedMealPlan}
+                        className="w-full bg-blue-600 hover:bg-blue-700"
+                        onClick={() => setShowShoppingList(true)}
+                      >
+                        <ShoppingCart className="mr-2 h-4 w-4" />
+                        Generate Shopping List
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                      <DialogHeader>
+                        <DialogTitle>Shopping List</DialogTitle>
+                      </DialogHeader>
+                      
+                      {loadingShoppingList ? (
+                        <div className="flex justify-center py-8">
+                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+                        </div>
+                      ) : shoppingListData ? (
+                        <div className="space-y-6">
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm text-slate-600">
+                              Week of {formatWeekRange(shoppingListData.weekStart)}
+                            </span>
+                            <Badge variant="secondary">
+                              {shoppingListData.totalItems} items
+                            </Badge>
+                          </div>
+                          
+                          {shoppingListData.categories.map(category => (
+                            <div key={category} className="space-y-2">
+                              <h3 className="font-semibold text-slate-900 border-b border-slate-200 pb-1">
+                                {category}
+                              </h3>
+                              <div className="grid grid-cols-1 gap-2">
+                                {shoppingListData.shoppingList
+                                  .filter(item => item.category === category)
+                                  .map((item, index) => (
+                                    <div key={index} className="flex justify-between items-center py-2 px-2 hover:bg-slate-50 rounded">
+                                      <span className="text-sm text-slate-900 flex-1">{item.ingredient}</span>
+                                      <div className="flex items-center gap-2">
+                                        <Badge variant="secondary" className="text-xs font-medium">
+                                          {item.totalAmount}
+                                        </Badge>
+                                        {item.count > 1 && (
+                                          <Badge variant="outline" className="text-xs">
+                                            {item.count}x
+                                          </Badge>
+                                        )}
+                                      </div>
+                                    </div>
+                                  ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-center text-slate-500 py-8">
+                          Select a meal plan to generate shopping list
+                        </p>
+                      )}
+                    </DialogContent>
+                  </Dialog>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Notion Integration */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg font-semibold text-slate-900">Notion Integration</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label className="text-sm font-medium text-slate-700">Integration Status</Label>
-                  <div className="flex items-center mt-2">
-                    <div className={`w-3 h-3 rounded-full mr-2 ${notionStatus?.connected ? 'bg-emerald-500' : 'bg-red-500'}`} />
-                    <span className={`text-sm ${notionStatus?.connected ? 'text-emerald-600' : 'text-red-600'}`}>
-                      {notionStatus?.connected ? 'Connected' : 'Not Connected'}
-                    </span>
-                  </div>
-                  {!notionStatus?.connected && (
-                    <p className="text-xs text-slate-500 mt-1">
-                      Please configure NOTION_INTEGRATION_SECRET and NOTION_PAGE_URL environment variables.
-                    </p>
-                  )}
-                </div>
-                
-                <Button 
-                  onClick={() => selectedMealPlan && syncMutation.mutate(selectedMealPlan)}
-                  disabled={!selectedMealPlan || syncMutation.isPending || !notionStatus?.connected}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700"
-                >
-                  {syncMutation.isPending ? (
-                    <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                      Syncing...
-                    </>
-                  ) : (
-                    <>
-                      <Upload className="mr-2 h-4 w-4" />
-                      Sync to Notion
-                    </>
-                  )}
-                </Button>
-                
-                {/* Shopping List Button */}
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button 
-                      disabled={!selectedMealPlan}
-                      className="w-full bg-blue-600 hover:bg-blue-700"
-                      onClick={() => setShowShoppingList(true)}
-                    >
-                      <ShoppingCart className="mr-2 h-4 w-4" />
-                      Generate Shopping List
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-                    <DialogHeader>
-                      <DialogTitle>Shopping List</DialogTitle>
-                    </DialogHeader>
-                    
-                    {loadingShoppingList ? (
-                      <div className="flex justify-center py-8">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-                      </div>
-                    ) : shoppingListData ? (
-                      <div className="space-y-6">
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-slate-600">
-                            Week of {formatWeekRange(shoppingListData.weekStart)}
-                          </span>
-                          <Badge variant="secondary">
-                            {shoppingListData.totalItems} items
-                          </Badge>
-                        </div>
-                        
-                        {shoppingListData.categories.map(category => (
-                          <div key={category} className="space-y-2">
-                            <h3 className="font-semibold text-slate-900 border-b border-slate-200 pb-1">
-                              {category}
-                            </h3>
-                            <div className="grid grid-cols-1 gap-2">
-                              {shoppingListData.shoppingList
-                                .filter(item => item.category === category)
-                                .map((item, index) => (
-                                  <div key={index} className="flex justify-between items-center py-2 px-2 hover:bg-slate-50 rounded">
-                                    <span className="text-sm text-slate-900 flex-1">{item.ingredient}</span>
-                                    <div className="flex items-center gap-2">
-                                      <Badge variant="secondary" className="text-xs font-medium">
-                                        {item.totalAmount}
-                                      </Badge>
-                                      {item.count > 1 && (
-                                        <Badge variant="outline" className="text-xs">
-                                          {item.count}x
-                                        </Badge>
-                                      )}
-                                    </div>
-                                  </div>
-                                ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <p className="text-center text-slate-500 py-8">
-                        Select a meal plan to generate shopping list
-                      </p>
-                    )}
-                  </DialogContent>
-                </Dialog>
-              </CardContent>
-            </Card>
+
           </div>
 
           {/* Meal Plan Display */}
@@ -814,6 +775,47 @@ export default function MealPlanner() {
             </CardContent>
           </Card>
         </div>
+        
+        {/* Notion Integration - Bottom Section */}
+        <Card className="mt-8">
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold text-slate-900">Notion Integration</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <Label className="text-sm font-medium text-slate-700">Integration Status</Label>
+              <div className="flex items-center mt-2">
+                <div className={`w-3 h-3 rounded-full mr-2 ${notionStatus?.connected ? 'bg-emerald-500' : 'bg-red-500'}`} />
+                <span className={`text-sm ${notionStatus?.connected ? 'text-emerald-600' : 'text-red-600'}`}>
+                  {notionStatus?.connected ? 'Connected' : 'Not Connected'}
+                </span>
+              </div>
+              {!notionStatus?.connected && (
+                <p className="text-xs text-slate-500 mt-1">
+                  Please configure NOTION_INTEGRATION_SECRET and NOTION_PAGE_URL environment variables.
+                </p>
+              )}
+            </div>
+            
+            <Button 
+              onClick={() => selectedMealPlan && syncMutation.mutate(selectedMealPlan)}
+              disabled={!selectedMealPlan || syncMutation.isPending || !notionStatus?.connected}
+              className="w-full bg-emerald-600 hover:bg-emerald-700"
+            >
+              {syncMutation.isPending ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                  Syncing...
+                </>
+              ) : (
+                <>
+                  <Upload className="mr-2 h-4 w-4" />
+                  Sync to Notion
+                </>
+              )}
+            </Button>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Recipe Dialog */}
