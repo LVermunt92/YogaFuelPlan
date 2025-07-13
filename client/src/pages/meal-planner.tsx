@@ -313,9 +313,9 @@ export default function MealPlanner() {
   return (
     <div className="bg-background">
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-8 lg:px-12 py-12">
+      <main className="max-w-7xl mx-auto px-8 lg:px-12 py-8">
         {/* Page Title */}
-        <div className="mb-8">
+        <div className="mb-6">
           <h1 className="text-3xl font-light text-foreground mb-2" style={{ fontFamily: 'Times New Roman, serif', letterSpacing: '0.05em' }}>
             Meal Planner
           </h1>
@@ -329,7 +329,7 @@ export default function MealPlanner() {
         
         {/* Welcome Message - Week Summary */}
         {latestMealPlan && (
-          <div className="card-clean mb-16">
+          <div className="card-clean mb-6">
             <h2 className="text-2xl font-bold text-foreground mb-4">
               Welcome back to your week of {formatWeekRange(latestMealPlan.weekStart)}
             </h2>
@@ -379,8 +379,8 @@ export default function MealPlanner() {
         )}
 
         {/* Health & Activity Tracking */}
-        <div className="card-clean mb-16">
-          <div className="flex items-center justify-between mb-8">
+        <div className="card-clean mb-6">
+          <div className="flex items-center justify-between mb-6">
             <div className="flex items-center">
               <Activity className="h-6 w-6 text-foreground mr-4" />
               <h2 className="text-xl font-semibold text-foreground">Health & Activity Tracking</h2>
@@ -508,11 +508,11 @@ export default function MealPlanner() {
             )}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Generation Panel */}
           <div className="lg:col-span-1">
-            <div className="card-clean mb-8">
-              <div className="mb-6">
+            <div className="card-clean mb-6">
+              <div className="mb-4">
                 <h2 className="text-xl font-semibold text-foreground mb-2">
                   Generate Meal Plan
                 </h2>
@@ -520,7 +520,7 @@ export default function MealPlanner() {
                   Create a personalised 7-day meal plan with precise protein tracking based on your dietary preferences.
                 </p>
               </div>
-              <div className="space-y-6">
+              <div className="space-y-4">
                 <div>
                   <Label className="text-sm font-medium text-foreground mb-2 block">Activity Level</Label>
                   <Select value={activityLevel} onValueChange={(value: "high" | "low") => setActivityLevel(value)}>
