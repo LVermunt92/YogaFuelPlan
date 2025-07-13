@@ -362,8 +362,8 @@ export default function Profile() {
                     className={`
                       px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
                       ${isSelected 
-                        ? 'bg-[#374151] text-white shadow-md' 
-                        : 'bg-[#9ca3af] text-white hover:bg-[#6b7280]'
+                        ? 'bg-primary text-primary-foreground shadow-md' 
+                        : 'bg-transparent text-foreground border border-border hover:bg-accent'
                       }
                     `}
                   >
