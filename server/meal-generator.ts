@@ -358,8 +358,25 @@ function generateMealPrepPlan(
   let lunchIndex = 0;
   
   // Generate meals for all 7 days (breakfast always included)
-  const breakfastOptions = getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags);
+  let breakfastOptions = getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags);
   console.log(`✓ Breakfast variety: Found ${breakfastOptions.length} breakfast options for dietary tags: ${dietaryTags.join(', ')}`);
+  
+  // Smart fallback for breakfast variety - prioritize meal variety for better user experience
+  if (breakfastOptions.length < 4) {
+    console.log('⚠️ Limited breakfast variety, applying smart fallback for better meal rotation');
+    // Keep critical dietary restrictions (vegetarian) but relax others for breakfast variety
+    const criticalTags = dietaryTags.filter(tag => ['vegetarian', 'vegan', 'kosher', 'halal'].includes(tag));
+    
+    // Directly get breakfast meals with only critical restrictions
+    const { getEnhancedMealsByCategory, filterEnhancedMealsByDietaryTags } = require('./nutrition-enhanced');
+    const allBreakfasts = getEnhancedMealsByCategory('breakfast');
+    const fallbackBreakfasts = filterEnhancedMealsByDietaryTags(allBreakfasts, criticalTags);
+    
+    if (fallbackBreakfasts.length > breakfastOptions.length) {
+      breakfastOptions = fallbackBreakfasts;
+      console.log(`✓ Breakfast fallback: Found ${breakfastOptions.length} breakfast options respecting critical dietary restrictions: ${criticalTags.join(', ')}`);
+    }
+  }
   
   // Create unique breakfast pool for 7 days without repeats
   const breakfastPool = [];

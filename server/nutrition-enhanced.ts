@@ -158,6 +158,203 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     }
   },
 
+  // Additional gluten-free, lactose-free, vegetarian breakfast options
+  {
+    name: "Overnight gluten-free oats with almond milk and berries",
+    portion: "1 cup prepared oats",
+    nutrition: {
+      protein: 15,
+      prepTime: 5,
+      calories: 320,
+      carbohydrates: 45,
+      fats: 8,
+      fiber: 12,
+      sugar: 15,
+      sodium: 150,
+      costEuros: 2.2,
+      proteinPerEuro: 6.8
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "gluten-free", "lactose-free", "high-fiber", "make-ahead"],
+    ingredients: [
+      "½ cup gluten-free rolled oats",
+      "½ cup unsweetened almond milk",
+      "1 tbsp chia seeds",
+      "1 tbsp almond butter",
+      "½ cup mixed berries",
+      "1 tsp vanilla extract",
+      "Stevia to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["berries"],
+      benefits: ["antioxidants", "vitamin C", "fiber"]
+    },
+    recipe: {
+      instructions: [
+        "Mix oats, almond milk, chia seeds, and vanilla in a jar",
+        "Add almond butter and stevia, stir well",
+        "Refrigerate overnight (minimum 4 hours)",
+        "Top with fresh berries before serving",
+        "Can be eaten cold or warmed up"
+      ],
+      tips: [
+        "Prepare multiple jars for the week",
+        "Add more liquid if you prefer thinner consistency"
+      ],
+      notes: "Perfect make-ahead breakfast that's naturally gluten-free and dairy-free"
+    }
+  },
+
+  {
+    name: "Quinoa breakfast bowl with coconut yogurt and nuts",
+    portion: "1 cup quinoa bowl",
+    nutrition: {
+      protein: 18,
+      prepTime: 15,
+      calories: 380,
+      carbohydrates: 42,
+      fats: 12,
+      fiber: 8,
+      sugar: 12,
+      sodium: 120,
+      costEuros: 3.5,
+      proteinPerEuro: 5.1
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "gluten-free", "lactose-free", "high-protein", "superfood"],
+    ingredients: [
+      "½ cup cooked quinoa",
+      "½ cup coconut yogurt",
+      "2 tbsp mixed nuts (almonds, walnuts)",
+      "1 tbsp hemp seeds",
+      "½ sliced banana",
+      "1 tsp maple syrup",
+      "Cinnamon to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 0.5,
+      vegetables: ["banana"],
+      benefits: ["potassium", "natural sugars"]
+    },
+    recipe: {
+      instructions: [
+        "Cook quinoa according to package directions and let cool",
+        "Layer coconut yogurt in a bowl",
+        "Add cooked quinoa on top",
+        "Sprinkle with hemp seeds and chopped nuts",
+        "Arrange banana slices and drizzle with maple syrup",
+        "Add a pinch of cinnamon"
+      ],
+      tips: [
+        "Cook quinoa in batches for the week",
+        "Toast nuts for extra flavor"
+      ],
+      notes: "Complete protein breakfast with all essential amino acids"
+    }
+  },
+
+  {
+    name: "Coconut flour pancakes with dairy-free protein powder",
+    portion: "3 medium pancakes",
+    nutrition: {
+      protein: 22,
+      prepTime: 20,
+      calories: 285,
+      carbohydrates: 18,
+      fats: 15,
+      fiber: 10,
+      sugar: 8,
+      sodium: 280,
+      costEuros: 3.8,
+      proteinPerEuro: 5.8
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "gluten-free", "lactose-free", "high-protein", "low-carb"],
+    ingredients: [
+      "¼ cup coconut flour",
+      "1 scoop plant protein powder",
+      "3 eggs",
+      "¼ cup almond milk",
+      "1 tbsp coconut oil",
+      "1 tsp vanilla extract",
+      "½ tsp baking powder",
+      "Pinch of salt"
+    ],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 0,
+      vegetables: [],
+      benefits: []
+    },
+    recipe: {
+      instructions: [
+        "Mix coconut flour, protein powder, baking powder, and salt",
+        "Whisk eggs, almond milk, and vanilla in separate bowl",
+        "Combine wet and dry ingredients, let batter rest 5 minutes",
+        "Heat coconut oil in non-stick pan over medium-low heat",
+        "Pour batter to form 3-inch pancakes",
+        "Cook 3-4 minutes per side until golden"
+      ],
+      tips: [
+        "Coconut flour absorbs a lot of liquid, don't add more flour",
+        "Keep heat low to prevent burning"
+      ],
+      notes: "High-protein, low-carb pancakes that are naturally gluten and dairy-free"
+    }
+  },
+
+  {
+    name: "Green smoothie bowl with hemp hearts and coconut",
+    portion: "1 large bowl",
+    nutrition: {
+      protein: 16,
+      prepTime: 10,
+      calories: 295,
+      carbohydrates: 35,
+      fats: 11,
+      fiber: 15,
+      sugar: 20,
+      sodium: 95,
+      costEuros: 4.2,
+      proteinPerEuro: 3.8
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "gluten-free", "lactose-free", "high-fiber", "antioxidant"],
+    ingredients: [
+      "1 cup spinach",
+      "½ frozen banana",
+      "½ cup unsweetened almond milk",
+      "1 tbsp almond butter",
+      "2 tbsp hemp hearts",
+      "1 tbsp coconut flakes",
+      "½ cup frozen mango",
+      "1 tsp spirulina (optional)"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["spinach", "mango"],
+      benefits: ["iron", "folate", "vitamin C", "beta-carotene"]
+    },
+    recipe: {
+      instructions: [
+        "Blend spinach, banana, almond milk, and almond butter until smooth",
+        "Add frozen mango and blend until thick consistency",
+        "Pour into bowl",
+        "Top with hemp hearts and coconut flakes",
+        "Add spirulina for extra nutrients if desired"
+      ],
+      tips: [
+        "Use less liquid for thicker consistency",
+        "Freeze fruits in portions for convenience"
+      ],
+      notes: "Nutrient-dense breakfast packed with plant-based protein and greens"
+    }
+  },
+
   // Lunch options - Whole Foods Focus
   {
     name: "Protein-packed lentil and roasted root vegetable bowl",
