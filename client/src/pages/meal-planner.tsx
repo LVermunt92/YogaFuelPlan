@@ -60,6 +60,11 @@ interface RecipeResponse {
   };
   ingredients: string[];
   tags: string[];
+  vegetableContent: {
+    servings: number;
+    vegetables: string[];
+    benefits: string[];
+  };
 }
 
 interface OuraData {
@@ -388,6 +393,25 @@ export default function MealPlanner() {
                     </div>
                   </div>
                 )}
+                
+                {/* Personal Health Metrics */}
+                <div className="bg-slate-50 rounded-lg p-4">
+                  <h3 className="text-sm font-semibold text-slate-700 mb-3">Personal Health Metrics</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div className="bg-white rounded-lg p-3 border border-slate-200">
+                      <div className="text-xs text-slate-600 mb-1">Weight</div>
+                      <div className="text-lg font-semibold text-slate-900">60 kg</div>
+                    </div>
+                    <div className="bg-white rounded-lg p-3 border border-slate-200">
+                      <div className="text-xs text-slate-600 mb-1">Waistline</div>
+                      <div className="text-lg font-semibold text-slate-900">75 cm</div>
+                    </div>
+                    <div className="bg-white rounded-lg p-3 border border-slate-200">
+                      <div className="text-xs text-slate-600 mb-1">Protein Target</div>
+                      <div className="text-lg font-semibold text-emerald-600">{proteinTarget}g</div>
+                    </div>
+                  </div>
+                </div>
                 
                 <div className="flex flex-col sm:flex-row gap-2">
                   <Button
@@ -871,6 +895,47 @@ export default function MealPlanner() {
                   </div>
                 )}
               </div>
+
+              {/* Vegetable Content */}
+              {recipeData.vegetableContent && (
+                <div className="bg-green-50 rounded-lg p-4">
+                  <h4 className="font-semibold text-green-900 mb-3 flex items-center gap-2">
+                    🥬 Vegetable Content
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm text-green-700 mb-2">
+                        <span className="font-medium">Servings:</span> {recipeData.vegetableContent.servings}
+                      </p>
+                      {recipeData.vegetableContent.vegetables.length > 0 && (
+                        <div>
+                          <p className="text-sm font-medium text-green-700 mb-1">Vegetables:</p>
+                          <div className="flex flex-wrap gap-1">
+                            {recipeData.vegetableContent.vegetables.map((veg, index) => (
+                              <Badge key={index} variant="secondary" className="bg-green-100 text-green-800 text-xs">
+                                {veg}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    {recipeData.vegetableContent.benefits.length > 0 && (
+                      <div>
+                        <p className="text-sm font-medium text-green-700 mb-1">Health Benefits:</p>
+                        <ul className="space-y-1">
+                          {recipeData.vegetableContent.benefits.map((benefit, index) => (
+                            <li key={index} className="flex gap-2 text-sm text-green-600">
+                              <span className="text-green-500">•</span>
+                              {benefit}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
 
               {/* Ingredients */}
               <div>

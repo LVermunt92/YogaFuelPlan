@@ -7,6 +7,7 @@ export const users = pgTable("users", {
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
   weight: integer("weight").default(60), // kg
+  waistline: real("waistline"), // cm
   activityLevel: text("activity_level").default("high"), // high or low
   proteinTarget: integer("protein_target").default(130), // grams
 });

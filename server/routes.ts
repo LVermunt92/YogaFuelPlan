@@ -268,7 +268,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         meal: targetMeal,
         recipe: mealOption.recipe,
         ingredients: mealOption.ingredients,
-        tags: mealOption.tags
+        tags: mealOption.tags,
+        vegetableContent: mealOption.vegetableContent
       });
     } catch (error) {
       console.error("Error getting meal recipe:", error);

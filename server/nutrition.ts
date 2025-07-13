@@ -10,6 +10,11 @@ export interface MealOption {
   category: 'breakfast' | 'lunch' | 'dinner';
   tags: string[];
   ingredients: string[];
+  vegetableContent: {
+    servings: number;
+    vegetables: string[];
+    benefits: string[];
+  };
   recipe?: {
     instructions: string[];
     tips?: string[];
@@ -27,6 +32,11 @@ export const MEAL_DATABASE: MealOption[] = [
     category: "breakfast",
     tags: ["high-protein", "quick", "filling"],
     ingredients: ["quinoa", "almond butter", "chia seeds", "hemp hearts", "almond milk", "maple syrup", "cinnamon"],
+    vegetableContent: {
+      servings: 0,
+      vegetables: [],
+      benefits: ["High in complete proteins", "Rich in omega-3 fatty acids", "Good source of fiber"]
+    },
     recipe: {
       instructions: [
         "Rinse 1/2 cup quinoa and cook in 1 cup almond milk with a pinch of cinnamon",
@@ -49,6 +59,11 @@ export const MEAL_DATABASE: MealOption[] = [
     category: "breakfast",
     tags: ["high-protein", "quick", "refreshing"],
     ingredients: ["pea protein powder", "fresh spinach", "banana", "almond milk", "frozen berries", "flax seeds"],
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["spinach"],
+      benefits: ["High in iron and folate", "Rich in antioxidants", "Supports eye health"]
+    },
     recipe: {
       instructions: [
         "Add 1 cup almond milk to blender",
@@ -73,6 +88,11 @@ export const MEAL_DATABASE: MealOption[] = [
     category: "breakfast",
     tags: ["high-protein", "make-ahead", "omega-3"],
     ingredients: ["chia seeds", "vanilla protein powder", "almond milk", "mixed nuts", "vanilla extract", "maple syrup"],
+    vegetableContent: {
+      servings: 0,
+      vegetables: [],
+      benefits: ["High in omega-3 fatty acids", "Excellent fiber source", "Complete protein profile"]
+    },
     recipe: {
       instructions: [
         "In a bowl, whisk together 1/4 cup chia seeds and 1 scoop vanilla protein powder",
@@ -95,7 +115,12 @@ export const MEAL_DATABASE: MealOption[] = [
     nutrition: { protein: 22, prepTime: 20 },
     category: "breakfast",
     tags: ["savory", "B12", "filling"],
-    ingredients: ["extra firm tofu", "nutritional yeast", "bell peppers", "onions", "spinach", "turmeric", "garlic", "olive oil"]
+    ingredients: ["extra firm tofu", "nutritional yeast", "bell peppers", "onions", "spinach", "turmeric", "garlic", "olive oil"],
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["bell peppers", "onions", "spinach"],
+      benefits: ["High in vitamin C", "Good source of folate", "Anti-inflammatory properties"]
+    },
   },
   {
     name: "Overnight oats with protein powder and nuts",
@@ -103,7 +128,12 @@ export const MEAL_DATABASE: MealOption[] = [
     nutrition: { protein: 26, prepTime: 5 },
     category: "breakfast",
     tags: ["make-ahead", "fiber", "convenient"],
-    ingredients: ["rolled oats", "vanilla protein powder", "almond milk", "walnuts", "maple syrup", "vanilla extract", "cinnamon"]
+    ingredients: ["rolled oats", "vanilla protein powder", "almond milk", "walnuts", "maple syrup", "vanilla extract", "cinnamon"],
+    vegetableContent: {
+      servings: 0,
+      vegetables: [],
+      benefits: ["High in fiber", "Sustained energy release", "Heart-healthy"]
+    },
   },
 
   // Lunch options
@@ -114,6 +144,11 @@ export const MEAL_DATABASE: MealOption[] = [
     category: "lunch",
     tags: ["high-protein", "fiber", "iron"],
     ingredients: ["red lentils", "chickpeas", "brown rice", "coconut milk", "curry powder", "turmeric", "ginger", "garlic", "onions", "tomatoes", "spinach"],
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["onions", "tomatoes", "spinach", "garlic"],
+      benefits: ["High in vitamin A", "Rich in lycopene", "Anti-inflammatory", "Immune support"]
+    },
     recipe: {
       instructions: [
         "Heat 2 tbsp olive oil in a large pot over medium heat",
@@ -141,6 +176,11 @@ export const MEAL_DATABASE: MealOption[] = [
     category: "lunch",
     tags: ["complete-protein", "magnesium", "filling"],
     ingredients: ["black beans", "quinoa", "tahini", "lemon", "garlic", "olive oil", "cucumber", "bell peppers", "cherry tomatoes", "avocado", "cilantro"],
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["cucumber", "bell peppers", "cherry tomatoes"],
+      benefits: ["High in vitamin C", "Hydrating", "Rich in antioxidants", "Good source of potassium"]
+    },
     recipe: {
       instructions: [
         "Cook 1 cup quinoa in 2 cups water with a pinch of salt for 15 minutes",
@@ -164,7 +204,12 @@ export const MEAL_DATABASE: MealOption[] = [
     nutrition: { protein: 28, prepTime: 30 },
     category: "lunch",
     tags: ["warming", "omega-3", "fiber"],
-    ingredients: ["white beans", "hemp seeds", "vegetable broth", "carrots", "celery", "onions", "garlic", "kale", "herbs", "olive oil"]
+    ingredients: ["white beans", "hemp seeds", "vegetable broth", "carrots", "celery", "onions", "garlic", "kale", "herbs", "olive oil"],
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["carrots", "celery", "onions", "kale"],
+      benefits: ["High in beta-carotene", "Rich in vitamin K", "Good source of folate", "Antioxidant-rich"]
+    },
   },
   {
     name: "Hummus and vegetable wrap with hemp hearts",
@@ -172,7 +217,12 @@ export const MEAL_DATABASE: MealOption[] = [
     nutrition: { protein: 24, prepTime: 15 },
     category: "lunch",
     tags: ["portable", "quick", "raw-vegetables"],
-    ingredients: ["gluten-free tortilla", "hummus", "hemp hearts", "lettuce", "cucumber", "carrots", "bell peppers", "sprouts", "avocado"]
+    ingredients: ["gluten-free tortilla", "hummus", "hemp hearts", "lettuce", "cucumber", "carrots", "bell peppers", "sprouts", "avocado"],
+    vegetableContent: {
+      servings: 5,
+      vegetables: ["lettuce", "cucumber", "carrots", "bell peppers", "sprouts"],
+      benefits: ["High in vitamin A", "Hydrating", "Crunchy texture", "Rich in enzymes", "Good source of fiber"]
+    },
   },
   {
     name: "Tempeh salad with edamame and sunflower seeds",
@@ -180,7 +230,12 @@ export const MEAL_DATABASE: MealOption[] = [
     nutrition: { protein: 38, prepTime: 20 },
     category: "lunch",
     tags: ["fresh", "probiotics", "vitamin-E"],
-    ingredients: ["tempeh", "edamame", "mixed greens", "sunflower seeds", "cherry tomatoes", "cucumber", "red onion", "balsamic vinegar", "olive oil"]
+    ingredients: ["tempeh", "edamame", "mixed greens", "sunflower seeds", "cherry tomatoes", "cucumber", "red onion", "balsamic vinegar", "olive oil"],
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["mixed greens", "cherry tomatoes", "cucumber", "red onion"],
+      benefits: ["Rich in antioxidants", "High in vitamin K", "Hydrating", "Good source of quercetin"]
+    },
   },
 
   // Dinner options
@@ -190,7 +245,12 @@ export const MEAL_DATABASE: MealOption[] = [
     nutrition: { protein: 38, prepTime: 25 },
     category: "dinner",
     tags: ["complete-protein", "colorful", "satisfying"],
-    ingredients: ["extra firm tofu", "edamame", "quinoa", "broccoli", "bell peppers", "snap peas", "carrots", "ginger", "garlic", "soy sauce", "sesame oil"]
+    ingredients: ["extra firm tofu", "edamame", "quinoa", "broccoli", "bell peppers", "snap peas", "carrots", "ginger", "garlic", "soy sauce", "sesame oil"],
+    vegetableContent: {
+      servings: 5,
+      vegetables: ["broccoli", "bell peppers", "snap peas", "carrots", "edamame"],
+      benefits: ["High in vitamin C", "Rich in fiber", "Good source of folate", "High in beta-carotene", "Complete amino acids"]
+    },
   },
   {
     name: "Tempeh with roasted vegetables and hemp seeds",
@@ -198,7 +258,12 @@ export const MEAL_DATABASE: MealOption[] = [
     nutrition: { protein: 41, prepTime: 30 },
     category: "dinner",
     tags: ["fermented", "omega-3", "antioxidants"],
-    ingredients: ["tempeh", "hemp seeds", "sweet potato", "brussels sprouts", "red onion", "zucchini", "olive oil", "herbs", "balsamic vinegar"]
+    ingredients: ["tempeh", "hemp seeds", "sweet potato", "brussels sprouts", "red onion", "zucchini", "olive oil", "herbs", "balsamic vinegar"],
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["sweet potato", "brussels sprouts", "red onion", "zucchini"],
+      benefits: ["High in vitamin A", "Rich in vitamin C", "Good source of sulfur compounds", "High in potassium"]
+    },
   },
   {
     name: "Nutritional yeast pasta with white beans",
@@ -206,7 +271,12 @@ export const MEAL_DATABASE: MealOption[] = [
     nutrition: { protein: 36, prepTime: 25 },
     category: "dinner",
     tags: ["B12", "comfort-food", "fiber"],
-    ingredients: ["gluten-free pasta", "white beans", "nutritional yeast", "garlic", "olive oil", "spinach", "sun-dried tomatoes", "herbs"]
+    ingredients: ["gluten-free pasta", "white beans", "nutritional yeast", "garlic", "olive oil", "spinach", "sun-dried tomatoes", "herbs"],
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["spinach", "sun-dried tomatoes"],
+      benefits: ["High in vitamin K", "Rich in lycopene", "Good source of folate", "Antioxidant-rich"]
+    },
   },
   {
     name: "Lentil walnut bolognese with gluten-free pasta",
@@ -214,7 +284,12 @@ export const MEAL_DATABASE: MealOption[] = [
     nutrition: { protein: 32, prepTime: 30 },
     category: "dinner",
     tags: ["omega-3", "iron", "hearty"],
-    ingredients: ["red lentils", "walnuts", "gluten-free pasta", "crushed tomatoes", "onions", "carrots", "celery", "garlic", "herbs", "red wine"]
+    ingredients: ["red lentils", "walnuts", "gluten-free pasta", "crushed tomatoes", "onions", "carrots", "celery", "garlic", "herbs", "red wine"],
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["tomatoes", "onions", "carrots", "celery"],
+      benefits: ["Rich in lycopene", "Anti-inflammatory", "High in beta-carotene", "Good source of potassium"]
+    },
   },
   {
     name: "Chickpea flour pancakes with vegetables and tahini",
@@ -222,7 +297,12 @@ export const MEAL_DATABASE: MealOption[] = [
     nutrition: { protein: 34, prepTime: 25 },
     category: "dinner",
     tags: ["gluten-free-flour", "calcium", "unique"],
-    ingredients: ["chickpea flour", "tahini", "spinach", "mushrooms", "onions", "bell peppers", "turmeric", "cumin", "nutritional yeast", "olive oil"]
+    ingredients: ["chickpea flour", "tahini", "spinach", "mushrooms", "onions", "bell peppers", "turmeric", "cumin", "nutritional yeast", "olive oil"],
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["spinach", "mushrooms", "onions", "bell peppers"],
+      benefits: ["High in vitamin K", "Rich in B vitamins", "Antimicrobial properties", "High in vitamin C"]
+    },
   },
   {
     name: "Buddha bowl with hemp hearts and nut butter dressing",
@@ -230,7 +310,12 @@ export const MEAL_DATABASE: MealOption[] = [
     nutrition: { protein: 30, prepTime: 20 },
     category: "dinner",
     tags: ["rainbow", "omega-3", "customizable"],
-    ingredients: ["quinoa", "hemp hearts", "almond butter", "roasted chickpeas", "kale", "purple cabbage", "carrots", "beets", "avocado", "lemon", "ginger"]
+    ingredients: ["quinoa", "hemp hearts", "almond butter", "roasted chickpeas", "kale", "purple cabbage", "carrots", "beets", "avocado", "lemon", "ginger"],
+    vegetableContent: {
+      servings: 5,
+      vegetables: ["kale", "purple cabbage", "carrots", "beets", "ginger"],
+      benefits: ["High in vitamin K", "Rich in anthocyanins", "High in beta-carotene", "Good source of nitrates", "Anti-inflammatory"]
+    },
   }
 ];
 
