@@ -42,6 +42,12 @@ export const meals = pgTable("meals", {
   foodDescription: text("food_description").notNull(),
   portion: text("portion").notNull(),
   protein: real("protein").notNull(), // grams
+  calories: real("calories").default(0), // kcal
+  carbohydrates: real("carbohydrates").default(0), // grams
+  fats: real("fats").default(0), // grams
+  fiber: real("fiber").default(0), // grams
+  sugar: real("sugar").default(0), // grams
+  sodium: real("sodium").default(0), // mg
   prepTime: integer("prep_time").default(30), // minutes
 });
 

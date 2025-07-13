@@ -1,6 +1,16 @@
 export interface NutritionInfo {
   protein: number;
   prepTime: number;
+  calories: number;
+  carbohydrates: number; // grams
+  fats: number; // grams
+  fiber: number; // grams
+  sugar: number; // grams
+  sodium: number; // mg
+  potassium?: number; // mg
+  calcium?: number; // mg
+  iron?: number; // mg
+  vitaminC?: number; // mg
   costEuros?: number;
   proteinPerEuro?: number;
 }
@@ -31,7 +41,22 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   {
     name: "Steel-cut oats with raw nuts, fresh berries, and ground flax",
     portion: "1 bowl (250g)",
-    nutrition: { protein: 18, prepTime: 20, costEuros: 2.20, proteinPerEuro: 8.2 },
+    nutrition: { 
+      protein: 18, 
+      prepTime: 20, 
+      calories: 420,
+      carbohydrates: 58,
+      fats: 16,
+      fiber: 12,
+      sugar: 14,
+      sodium: 8,
+      potassium: 580,
+      calcium: 85,
+      iron: 4.2,
+      vitaminC: 12,
+      costEuros: 2.20, 
+      proteinPerEuro: 8.2 
+    },
     category: "breakfast",
     tags: ["vegetarian", "gluten-free", "dairy-free", "high-protein", "anti-inflammatory", "whole30"],
     ingredients: ["steel-cut oats", "raw almonds", "raw walnuts", "fresh blueberries", "fresh strawberries", "ground flaxseed", "cinnamon", "raw honey"],
@@ -61,7 +86,22 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   {
     name: "Fresh vegetable and herb scrambled eggs with avocado",
     portion: "3 eggs + vegetables",
-    nutrition: { protein: 24, prepTime: 15, costEuros: 3.50, proteinPerEuro: 6.9 },
+    nutrition: { 
+      protein: 24, 
+      prepTime: 15, 
+      calories: 380,
+      carbohydrates: 12,
+      fats: 28,
+      fiber: 8,
+      sugar: 6,
+      sodium: 420,
+      potassium: 720,
+      calcium: 110,
+      iron: 3.8,
+      vitaminC: 45,
+      costEuros: 3.50, 
+      proteinPerEuro: 6.9 
+    },
     category: "breakfast",
     tags: ["vegetarian", "gluten-free", "lactose-free", "keto", "paleo", "high-protein"],
     ingredients: ["free-range eggs", "fresh spinach", "cherry tomatoes", "fresh herbs (parsley, chives)", "red bell pepper", "avocado", "olive oil", "sea salt"],
