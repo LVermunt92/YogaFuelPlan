@@ -26,9 +26,12 @@ Preferred communication style: Simple, everyday language.
 - **External Integration**: Notion API for meal plan synchronization
 
 ### Database Schema
-- **Users**: Basic user information with weight, activity level, and protein targets
-- **Meal Plans**: Weekly meal plans with metadata and sync status
-- **Meals**: Individual meals linked to meal plans with nutritional information
+- **Users**: Comprehensive user profiles with weight, activity level, dietary preferences, and cooking preferences
+- **Meal Plans**: Weekly meal plans with metadata, sync status, and regeneration capability
+- **Meals**: Individual meals linked to meal plans with complete nutritional and recipe information
+- **Meal History**: Tracks user's meal consumption and preferences over time
+- **Meal Favorites**: User-curated favorite meals with custom ratings and notes
+- **Oura Data**: Health and activity metrics from Oura Ring for personalized planning
 
 ## Key Components
 
@@ -49,6 +52,13 @@ Preferred communication style: Simple, everyday language.
 - **Notion Integration**: Syncs meal plans to Notion databases
 - **Database Management**: Automatically creates Notion databases if they don't exist
 - **Page Extraction**: Parses Notion page URLs to extract page IDs
+- **Oura Ring Integration**: Syncs health and activity data for intelligent meal planning
+
+### Recipe System
+- **Complete Recipe Database**: All meals now include detailed cooking instructions
+- **Recipe Modal**: Users can view step-by-step cooking instructions for any meal
+- **Cooking Tips**: Each recipe includes helpful tips and preparation notes
+- **Nutritional Information**: Comprehensive nutrition data with cost analysis
 
 ## Data Flow
 
@@ -68,6 +78,13 @@ Preferred communication style: Simple, everyday language.
 - **@tanstack/react-query**: Server state management
 - **@radix-ui/***: Headless UI components
 - **tailwindcss**: Utility-first CSS framework
+
+### Recent Updates (July 2025)
+- **Added "ayurvedic" dietary tag**: Expanded dietary options to include Ayurvedic principles
+- **Meal Plan Regeneration**: Users can now regenerate meal plans with updated preferences
+- **Complete Recipe Database**: All meals now include detailed cooking instructions and tips
+- **Enhanced User Preferences**: Support for cooking days, eating days, and household size
+- **Cooking Day Logic**: Intelligent meal planning based on when users cook and eat at home
 
 ### Development Tools
 - **tsx**: TypeScript execution for development

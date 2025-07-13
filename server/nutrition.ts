@@ -123,6 +123,24 @@ export const MEAL_DATABASE: MealOption[] = [
       vegetables: ["bell peppers", "onions", "spinach"],
       benefits: ["High in vitamin C", "Good source of folate", "Anti-inflammatory properties"]
     },
+    recipe: {
+      instructions: [
+        "Press 150g extra firm tofu between paper towels for 10 minutes to remove moisture",
+        "Heat 2 tbsp olive oil in a large pan over medium heat",
+        "Sauté 1/2 diced onion and 1/2 diced bell pepper for 5 minutes",
+        "Add 2 cloves minced garlic and cook for 1 minute",
+        "Crumble the tofu into the pan using your hands or a fork",
+        "Add 1/2 tsp turmeric, 3 tbsp nutritional yeast, salt and pepper",
+        "Cook for 5-7 minutes, stirring frequently",
+        "Add 2 cups fresh spinach and cook until wilted",
+        "Taste and adjust seasoning as needed"
+      ],
+      tips: [
+        "Press tofu well for better texture and flavor absorption",
+        "Use turmeric for color that resembles scrambled eggs"
+      ],
+      notes: "Great source of B12 from nutritional yeast and complete protein"
+    }
   },
   {
     name: "Overnight oats with protein powder and nuts",
@@ -136,6 +154,22 @@ export const MEAL_DATABASE: MealOption[] = [
       vegetables: [],
       benefits: ["High in fiber", "Sustained energy release", "Heart-healthy"]
     },
+    recipe: {
+      instructions: [
+        "In a jar or bowl, combine 1/2 cup rolled oats with 1 scoop vanilla protein powder",
+        "Add 3/4 cup almond milk, 1 tbsp maple syrup, and 1/2 tsp vanilla extract",
+        "Add a pinch of cinnamon and mix well to combine",
+        "Cover and refrigerate overnight (at least 4 hours)",
+        "In the morning, stir well and top with 1/4 cup chopped walnuts",
+        "Add more almond milk if you prefer a thinner consistency",
+        "Enjoy cold or warm up in the microwave for 30-45 seconds"
+      ],
+      tips: [
+        "Make 3-4 jars at once for easy weekday breakfasts",
+        "Add fresh berries just before eating for extra nutrients"
+      ],
+      notes: "Perfect make-ahead breakfast with sustained energy release"
+    }
   },
 
   // Lunch options
@@ -280,6 +314,23 @@ export const MEAL_DATABASE: MealOption[] = [
       vegetables: ["carrots", "celery", "onions", "kale"],
       benefits: ["High in beta-carotene", "Rich in vitamin K", "Good source of folate", "Antioxidant-rich"]
     },
+    recipe: {
+      instructions: [
+        "Heat 2 tbsp olive oil in a large pot over medium heat",
+        "Sauté 1 diced onion, 2 diced carrots, and 2 diced celery stalks for 8 minutes",
+        "Add 3 cloves minced garlic and cook for 1 minute until fragrant",
+        "Add 4 cups vegetable broth and bring to boil",
+        "Add 2 cans drained white beans and simmer 15 minutes",
+        "Stir in 3 cups chopped kale and cook until wilted",
+        "Season with salt, pepper, and herbs (thyme, rosemary)",
+        "Serve hot, topped with 2 tbsp hemp seeds per bowl"
+      ],
+      tips: [
+        "Can be made in slow cooker for 4-6 hours on low",
+        "Freezes well for up to 3 months"
+      ],
+      notes: "Hearty soup packed with fiber and complete protein from hemp seeds"
+    }
   },
   {
     name: "Hummus and vegetable wrap with hemp hearts",
@@ -293,6 +344,23 @@ export const MEAL_DATABASE: MealOption[] = [
       vegetables: ["lettuce", "cucumber", "carrots", "bell peppers", "sprouts"],
       benefits: ["High in vitamin A", "Hydrating", "Crunchy texture", "Rich in enzymes", "Good source of fiber"]
     },
+    recipe: {
+      instructions: [
+        "Warm gluten-free tortilla in microwave for 15 seconds to make it more pliable",
+        "Spread 4 tbsp hummus evenly across the center of the wrap",
+        "Layer with lettuce leaves, thinly sliced cucumber, and grated carrots",
+        "Add strips of bell pepper and a handful of sprouts",
+        "Slice avocado and arrange on top of vegetables",
+        "Sprinkle 2 tbsp hemp hearts over the vegetables",
+        "Fold in the sides and roll tightly from bottom to top",
+        "Cut in half diagonally and serve immediately"
+      ],
+      tips: [
+        "Prep vegetables the night before for quick assembly",
+        "Wrap in parchment paper for easy eating on-the-go"
+      ],
+      notes: "Perfect portable lunch with raw vegetables and omega-3 fatty acids"
+    }
   },
   {
     name: "Tempeh salad with edamame and sunflower seeds",
@@ -306,6 +374,24 @@ export const MEAL_DATABASE: MealOption[] = [
       vegetables: ["mixed greens", "cherry tomatoes", "cucumber", "red onion"],
       benefits: ["Rich in antioxidants", "High in vitamin K", "Hydrating", "Good source of quercetin"]
     },
+    recipe: {
+      instructions: [
+        "Steam tempeh for 10 minutes, then slice into strips",
+        "Cook frozen edamame according to package directions, drain and cool",
+        "Make dressing: whisk 3 tbsp balsamic vinegar with 2 tbsp olive oil",
+        "Season dressing with salt, pepper, and herbs (basil or oregano)",
+        "Arrange mixed greens in a large bowl",
+        "Top with tempeh strips, edamame, halved cherry tomatoes",
+        "Add diced cucumber and thinly sliced red onion",
+        "Sprinkle with sunflower seeds and drizzle with dressing",
+        "Toss gently and serve immediately"
+      ],
+      tips: [
+        "Marinate tempeh in soy sauce for extra flavor",
+        "Toast sunflower seeds for better crunch"
+      ],
+      notes: "High-protein salad with probiotics from fermented tempeh"
+    }
   },
 
   // Dinner options
@@ -321,6 +407,25 @@ export const MEAL_DATABASE: MealOption[] = [
       vegetables: ["broccoli", "bell peppers", "snap peas", "carrots", "edamame"],
       benefits: ["High in vitamin C", "Rich in fiber", "Good source of folate", "High in beta-carotene", "Complete amino acids"]
     },
+    recipe: {
+      instructions: [
+        "Cook 1 cup quinoa in 2 cups water with a pinch of salt for 15 minutes",
+        "Press 150g tofu and cut into cubes, season with soy sauce",
+        "Heat 2 tbsp sesame oil in a large wok or pan over high heat",
+        "Stir-fry tofu cubes until golden, about 5 minutes, remove and set aside",
+        "Add broccoli florets and sliced carrots, stir-fry 3 minutes",
+        "Add bell pepper strips and snap peas, stir-fry 2 minutes",
+        "Add minced ginger and garlic, cook 30 seconds until fragrant",
+        "Return tofu to pan, add edamame and 3 tbsp soy sauce",
+        "Stir-fry 2 more minutes until heated through",
+        "Serve over cooked quinoa, drizzle with extra sesame oil"
+      ],
+      tips: [
+        "Keep vegetables crisp for better texture and nutrition",
+        "Prep all ingredients before starting to cook"
+      ],
+      notes: "Complete protein meal with colorful vegetables and quinoa"
+    }
   },
   {
     name: "Tempeh with roasted vegetables and hemp seeds",
@@ -334,6 +439,25 @@ export const MEAL_DATABASE: MealOption[] = [
       vegetables: ["sweet potato", "brussels sprouts", "red onion", "zucchini"],
       benefits: ["High in vitamin A", "Rich in vitamin C", "Good source of sulfur compounds", "High in potassium"]
     },
+    recipe: {
+      instructions: [
+        "Preheat oven to 425°F (220°C)",
+        "Cut sweet potato and zucchini into chunks, halve brussels sprouts",
+        "Slice red onion into wedges and cube 120g tempeh",
+        "Toss vegetables and tempeh with 3 tbsp olive oil and herbs",
+        "Season with salt, pepper, and dried rosemary or thyme",
+        "Spread on large baking sheet in single layer",
+        "Roast 25-30 minutes until vegetables are tender and caramelized",
+        "Drizzle with balsamic vinegar in last 5 minutes of cooking",
+        "Remove from oven and sprinkle with 2 tbsp hemp seeds",
+        "Serve immediately while hot"
+      ],
+      tips: [
+        "Don't overcrowd the pan for better browning",
+        "Cut vegetables similar sizes for even cooking"
+      ],
+      notes: "Probiotic-rich tempeh with antioxidant vegetables and omega-3s"
+    }
   },
   {
     name: "Nutritional yeast pasta with white beans",
@@ -347,11 +471,30 @@ export const MEAL_DATABASE: MealOption[] = [
       vegetables: ["spinach", "sun-dried tomatoes"],
       benefits: ["High in vitamin K", "Rich in lycopene", "Good source of folate", "Antioxidant-rich"]
     },
+    recipe: {
+      instructions: [
+        "Cook gluten-free pasta according to package directions, reserve 1 cup pasta water",
+        "Heat 3 tbsp olive oil in large pan over medium heat",
+        "Sauté 4 cloves minced garlic for 1 minute until fragrant",
+        "Add drained white beans and cook 3 minutes to warm through",
+        "Add chopped sun-dried tomatoes and cook 2 minutes",
+        "Add cooked pasta to pan with 1/2 cup pasta water",
+        "Toss with 3 tbsp nutritional yeast and fresh herbs (basil, parsley)",
+        "Add fresh spinach and toss until wilted",
+        "Season with salt, pepper, and red pepper flakes if desired",
+        "Serve immediately with extra nutritional yeast on top"
+      ],
+      tips: [
+        "Save pasta water for silky sauce consistency",
+        "Don't overcook the spinach to preserve nutrients"
+      ],
+      notes: "Comforting pasta dish rich in B12 from nutritional yeast"
+    }
   },
   {
     name: "Lentil walnut bolognese with gluten-free pasta",
     portion: "1.5 cups sauce + pasta",
-    nutrition: { protein: 32, prepTime: 30 },
+    nutrition: { protein: 32, prepTime: 30, costEuros: 3.80, proteinPerEuro: 8.4 },
     category: "dinner",
     tags: ["omega-3", "iron", "hearty"],
     ingredients: ["red lentils", "walnuts", "gluten-free pasta", "crushed tomatoes", "onions", "carrots", "celery", "garlic", "herbs", "red wine"],
@@ -360,11 +503,30 @@ export const MEAL_DATABASE: MealOption[] = [
       vegetables: ["tomatoes", "onions", "carrots", "celery"],
       benefits: ["Rich in lycopene", "Anti-inflammatory", "High in beta-carotene", "Good source of potassium"]
     },
+    recipe: {
+      instructions: [
+        "Heat 2 tbsp olive oil in large pot over medium heat",
+        "Sauté diced onion, carrot, and celery until soft, about 8 minutes",
+        "Add 4 cloves minced garlic and cook 1 minute",
+        "Add 1 cup red lentils and 1/2 cup chopped walnuts",
+        "Pour in 1 can crushed tomatoes and 2 cups vegetable broth",
+        "Add 1/4 cup red wine (optional) and dried herbs (oregano, basil)",
+        "Simmer 20 minutes until lentils are tender and sauce thickens",
+        "Meanwhile, cook gluten-free pasta according to package directions",
+        "Season bolognese with salt, pepper, and fresh herbs",
+        "Serve over pasta with extra chopped walnuts if desired"
+      ],
+      tips: [
+        "Toast walnuts beforehand for deeper flavor",
+        "Let sauce simmer longer for richer taste"
+      ],
+      notes: "Hearty plant-based bolognese with omega-3 rich walnuts"
+    }
   },
   {
     name: "Chickpea flour pancakes with vegetables and tahini",
     portion: "3 pancakes + vegetables + 2 tbsp tahini",
-    nutrition: { protein: 34, prepTime: 25 },
+    nutrition: { protein: 34, prepTime: 25, costEuros: 3.60, proteinPerEuro: 9.4 },
     category: "dinner",
     tags: ["gluten-free-flour", "calcium", "unique"],
     ingredients: ["chickpea flour", "tahini", "spinach", "mushrooms", "onions", "bell peppers", "turmeric", "cumin", "nutritional yeast", "olive oil"],
@@ -373,11 +535,30 @@ export const MEAL_DATABASE: MealOption[] = [
       vegetables: ["spinach", "mushrooms", "onions", "bell peppers"],
       benefits: ["High in vitamin K", "Rich in B vitamins", "Antimicrobial properties", "High in vitamin C"]
     },
+    recipe: {
+      instructions: [
+        "Make batter: whisk 1 cup chickpea flour with 1 cup water until smooth",
+        "Add 1 tsp turmeric, 1/2 tsp cumin, 2 tbsp nutritional yeast, salt and pepper",
+        "Let batter rest 10 minutes while preparing vegetables",
+        "Sauté diced onions and bell peppers in olive oil until soft",
+        "Add sliced mushrooms and cook until golden, about 5 minutes",
+        "Add spinach and cook until wilted, season with salt",
+        "Heat non-stick pan and pour 1/3 cup batter per pancake",
+        "Cook 3-4 minutes until edges set, flip and cook 2 minutes more",
+        "Serve pancakes topped with sautéed vegetables",
+        "Drizzle with tahini thinned with lemon juice and water"
+      ],
+      tips: [
+        "Let batter rest for better texture",
+        "Cook vegetables until slightly caramelized for more flavor"
+      ],
+      notes: "Protein-rich savory pancakes made from chickpea flour"
+    }
   },
   {
     name: "Buddha bowl with hemp hearts and nut butter dressing",
     portion: "Mixed vegetables + quinoa + 3 tbsp hemp + dressing",
-    nutrition: { protein: 30, prepTime: 20 },
+    nutrition: { protein: 30, prepTime: 20, costEuros: 5.40, proteinPerEuro: 5.6 },
     category: "dinner",
     tags: ["rainbow", "omega-3", "customizable"],
     ingredients: ["quinoa", "hemp hearts", "almond butter", "roasted chickpeas", "kale", "purple cabbage", "carrots", "beets", "avocado", "lemon", "ginger"],
@@ -386,6 +567,25 @@ export const MEAL_DATABASE: MealOption[] = [
       vegetables: ["kale", "purple cabbage", "carrots", "beets", "ginger"],
       benefits: ["High in vitamin K", "Rich in anthocyanins", "High in beta-carotene", "Good source of nitrates", "Anti-inflammatory"]
     },
+    recipe: {
+      instructions: [
+        "Cook 1/2 cup quinoa in 1 cup water for 15 minutes, let cool",
+        "Roast 1 cup chickpeas with olive oil and spices at 400°F for 20 minutes",
+        "Make dressing: whisk 3 tbsp almond butter, 2 tbsp lemon juice, 1 tsp grated ginger",
+        "Add 2-3 tbsp water to thin dressing to desired consistency",
+        "Massage chopped kale with a little olive oil and lemon",
+        "Arrange quinoa in bowl as base",
+        "Add sections of massaged kale, shredded purple cabbage, grated carrots",
+        "Top with roasted chickpeas, sliced avocado, and grated raw beets",
+        "Sprinkle 3 tbsp hemp hearts over everything",
+        "Drizzle with almond butter dressing before serving"
+      ],
+      tips: [
+        "Prep components ahead for quick assembly",
+        "Use a mandoline for uniform vegetable slices"
+      ],
+      notes: "Colorful nutrient-dense bowl with complete protein and omega-3s"
+    }
   }
 ];
 
