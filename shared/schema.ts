@@ -15,6 +15,7 @@ export const users = pgTable("users", {
   dietaryTags: text("dietary_tags").array().default([]),
   householdSize: integer("household_size").default(1),
   cookingDaysPerWeek: integer("cooking_days_per_week").default(7),
+  eatingDaysAtHome: integer("eating_days_at_home").default(7),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -92,6 +93,7 @@ export const updateUserProfileSchema = createInsertSchema(users).pick({
   dietaryTags: true,
   householdSize: true,
   cookingDaysPerWeek: true,
+  eatingDaysAtHome: true,
 });
 
 export const insertMealPlanSchema = createInsertSchema(mealPlans).omit({
