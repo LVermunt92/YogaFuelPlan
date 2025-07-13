@@ -569,7 +569,7 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
   if (dietaryTags.length === 0) return meals;
   
   return meals.filter(meal => 
-    dietaryTags.some(tag => meal.tags.includes(tag))
+    dietaryTags.every(tag => meal.tags.includes(tag))
   );
 }
 
