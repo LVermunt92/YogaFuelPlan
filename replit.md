@@ -95,6 +95,12 @@ Preferred communication style: Simple, everyday language.
   - Adjusts prep times for leftovers (5 minutes for reheating)
   - Fallback meal options ensure users always get complete meal plans
   - Works across all dietary restrictions and user preferences
+- **Enhanced Breakfast Variety for Complex Dietary Restrictions** (July 13, 2025):
+  - Resolved breakfast variety issue for users with multiple dietary tags
+  - Added 4 new breakfast recipes meeting vegetarian + gluten-free + lactose-free requirements
+  - Added fermented kefir breakfast option (naturally lactose-free through 24+ hour fermentation)
+  - Updated chia pudding recipe to be lactose-free with plant-based milk
+  - Now provides 7 different breakfast options for complex dietary combinations
 
 ### Development Tools
 - **tsx**: TypeScript execution for development

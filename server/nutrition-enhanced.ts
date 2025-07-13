@@ -133,7 +133,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     portion: "1 large serving (200g)",
     nutrition: { protein: 16, prepTime: 5, costEuros: 2.80, proteinPerEuro: 5.7 },
     category: "breakfast",
-    tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "raw", "anti-inflammatory"],
+    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "dairy-free", "raw", "anti-inflammatory"],
     ingredients: ["chia seeds", "unsweetened almond milk", "fresh mango", "fresh kiwi", "raw cashews", "raw coconut flakes", "vanilla extract", "maple syrup"],
     wholeFoodLevel: "high",
     vegetableContent: {
@@ -352,6 +352,59 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         "Freeze fruits in portions for convenience"
       ],
       notes: "Nutrient-dense breakfast packed with plant-based protein and greens"
+    }
+  },
+
+  {
+    name: "Fermented kefir bowl with gluten-free granola and berries",
+    portion: "1 large bowl (250g)",
+    nutrition: { 
+      protein: 20, 
+      prepTime: 5, 
+      calories: 380,
+      carbohydrates: 42,
+      fats: 14,
+      fiber: 8,
+      sugar: 28,
+      sodium: 120,
+      potassium: 450,
+      calcium: 350,
+      iron: 2.8,
+      vitaminC: 35,
+      costEuros: 2.60, 
+      proteinPerEuro: 7.7 
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "gluten-free", "lactose-free", "probiotic", "fermented", "high-protein"],
+    ingredients: [
+      "200ml long-fermented kefir (24+ hours)",
+      "¼ cup gluten-free oat granola", 
+      "½ cup mixed fresh berries",
+      "2 tbsp chopped almonds",
+      "1 tbsp ground flaxseed",
+      "1 tsp honey (optional)"
+    ],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 0.5,
+      vegetables: ["berries"],
+      benefits: ["Probiotics for gut health", "Antioxidants from berries", "Omega-3s from flaxseed"]
+    },
+    recipe: {
+      instructions: [
+        "Use kefir that has been fermented for 24+ hours (lactose-free)",
+        "Pour 200ml fermented kefir into a bowl",
+        "Top with ¼ cup gluten-free granola",
+        "Add ½ cup mixed fresh berries",
+        "Sprinkle with chopped almonds and ground flaxseed",
+        "Drizzle with 1 tsp honey if desired"
+      ],
+      tips: [
+        "Long fermentation (24+ hours) breaks down lactose completely",
+        "Check that granola is certified gluten-free",
+        "Kefir provides more probiotics than regular yogurt"
+      ],
+      notes: "Extended fermentation makes kefir naturally lactose-free while preserving beneficial probiotics"
     }
   },
 
