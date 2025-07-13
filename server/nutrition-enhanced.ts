@@ -190,6 +190,37 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     }
   },
   {
+    name: "Wild-caught salmon with roasted root vegetables",
+    portion: "150g salmon + 200g vegetables",
+    nutrition: { protein: 35, prepTime: 25, costEuros: 8.50, proteinPerEuro: 4.1 },
+    category: "lunch",
+    tags: ["pescatarian", "gluten-free", "dairy-free", "paleo", "anti-inflammatory", "high-protein"],
+    ingredients: ["wild salmon fillet", "sweet potato", "carrots", "parsnips", "red onion", "fresh rosemary", "olive oil", "lemon", "sea salt"],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["sweet potato", "carrots", "parsnips", "onion"],
+      benefits: ["High in beta-carotene", "Rich in omega-3 fatty acids", "Supports heart health", "Anti-inflammatory properties"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 200°C",
+        "Cut sweet potato, carrots, and parsnips into 2cm chunks",
+        "Slice red onion into wedges",
+        "Toss vegetables with 1 tbsp olive oil, salt, and fresh rosemary",
+        "Roast vegetables for 20 minutes",
+        "Season salmon with salt and lemon juice",
+        "Add salmon to oven for final 12-15 minutes",
+        "Serve with lemon wedges"
+      ],
+      tips: [
+        "Choose wild-caught salmon for better omega-3 content",
+        "Don't overcook salmon - it should flake easily"
+      ],
+      notes: "Wild salmon provides superior nutrition compared to farmed varieties"
+    }
+  },
+  {
     name: "Lentil and fresh vegetable curry with brown rice",
     portion: "1.5 cups curry + 1 cup rice",
     nutrition: { protein: 22, prepTime: 35, costEuros: 3.20, proteinPerEuro: 6.9 },
@@ -222,12 +253,12 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     }
   },
   {
-    name: "High-protein tempeh with roasted seasonal vegetables",
+    name: "Herb-marinated tempeh with roasted seasonal vegetables and seed mix",
     portion: "200g tempeh + mixed vegetables",
-    nutrition: { protein: 31, prepTime: 30, costEuros: 6.80, proteinPerEuro: 4.6 },
+    nutrition: { protein: 33, prepTime: 30, costEuros: 6.80, proteinPerEuro: 4.9 },
     category: "lunch",
     tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "high-protein", "anti-inflammatory"],
-    ingredients: ["tempeh", "seasonal vegetables (zucchini, eggplant, bell peppers)", "fresh thyme", "garlic", "olive oil", "balsamic vinegar", "sea salt", "tamari"],
+    ingredients: ["tempeh", "seasonal vegetables (zucchini, eggplant, bell peppers)", "fresh thyme", "fresh oregano", "fresh basil", "garlic", "olive oil", "balsamic vinegar", "sea salt", "tamari", "sunflower seeds", "pumpkin seeds", "sesame seeds"],
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 3,
@@ -237,30 +268,33 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     recipe: {
       instructions: [
         "Slice tempeh into 1cm thick pieces",
+        "Marinate tempeh in tamari, minced garlic, and chopped fresh herbs for 15 minutes",
         "Preheat oven to 220°C",
         "Cut vegetables into similar-sized pieces",
-        "Toss vegetables with olive oil, salt, and fresh thyme",
+        "Toss vegetables with olive oil, salt, fresh thyme, and oregano",
         "Roast vegetables 20 minutes",
-        "Pan-fry tempeh slices with tamari until golden, 3-4 minutes each side",
+        "Pan-fry marinated tempeh until golden, 3-4 minutes each side",
+        "Toast seed mix (sunflower, pumpkin, sesame) in dry pan until fragrant",
         "Serve tempeh over roasted vegetables",
+        "Sprinkle with toasted seed mix and fresh basil",
         "Drizzle with balsamic vinegar"
       ],
       tips: [
-        "Choose organic tempeh for better flavor and nutrition",
-        "Don't overcook tempeh to maintain its texture"
+        "Marinating tempeh enhances flavor absorption",
+        "Toast seeds just before serving for maximum crunch"
       ],
-      notes: "Tempeh provides complete protein and beneficial probiotics"
+      notes: "Fresh herb marinade and toasted seeds add layers of flavor and nutrition"
     }
   },
 
   // Dinner options - Whole Foods Focus
   {
-    name: "Stuffed portobello mushrooms with Brussels sprouts and sweet potato",
+    name: "Herb-crusted stuffed portobello mushrooms with Brussels sprouts and sweet potato",
     portion: "2 large mushrooms + vegetables",
-    nutrition: { protein: 22, prepTime: 40, costEuros: 5.50, proteinPerEuro: 4.0 },
+    nutrition: { protein: 24, prepTime: 40, costEuros: 5.50, proteinPerEuro: 4.4 },
     category: "dinner",
     tags: ["vegetarian", "gluten-free", "dairy-free", "high-protein"],
-    ingredients: ["large portobello mushrooms", "Brussels sprouts", "sweet potato", "red onion", "fresh sage", "olive oil", "lemon", "garlic", "walnuts", "nutritional yeast"],
+    ingredients: ["large portobello mushrooms", "Brussels sprouts", "sweet potato", "red onion", "fresh sage", "fresh thyme", "fresh rosemary", "olive oil", "lemon", "garlic", "toasted walnuts", "toasted pine nuts", "pumpkin seeds", "nutritional yeast", "fresh parsley"],
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 3.5,
@@ -270,19 +304,53 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     recipe: {
       instructions: [
         "Preheat oven to 200°C",
-        "Remove stems from mushrooms, brush caps with olive oil",
+        "Remove stems from mushrooms, brush caps with olive oil and fresh herb blend",
         "Halve Brussels sprouts and cube sweet potato",
-        "Toss vegetables with olive oil, garlic, and fresh sage",
+        "Toss vegetables with olive oil, minced garlic, fresh sage, and thyme",
         "Roast vegetables 15 minutes",
         "Add mushroom caps gill-side up, roast 20 minutes",
-        "Fill mushrooms with roasted vegetables and chopped walnuts",
+        "Make herb-nut topping: mix chopped walnuts, pine nuts, pumpkin seeds with fresh rosemary and parsley",
+        "Fill mushrooms with roasted vegetables and herb-nut mixture",
         "Sprinkle with nutritional yeast and squeeze lemon over all"
       ],
       tips: [
-        "Choose meaty portobello mushrooms for best texture",
-        "Don't overcrowd the pan for better roasting"
+        "Toast nuts and seeds beforehand for deeper flavor",
+        "Mix herbs just before serving to maintain bright color"
       ],
-      notes: "Portobello mushrooms provide umami flavor and meaty texture"
+      notes: "Fresh herbs and toasted nuts elevate this dish with complex flavors and textures"
+    }
+  },
+  {
+    name: "Free-range chicken thighs with herb crust and roasted vegetables",
+    portion: "2 thighs + vegetables",
+    nutrition: { protein: 38, prepTime: 40, costEuros: 6.50, proteinPerEuro: 5.8 },
+    category: "dinner",
+    tags: ["gluten-free", "dairy-free", "paleo", "high-protein"],
+    ingredients: ["free-range chicken thighs", "Brussels sprouts", "sweet potato", "red onion", "fresh sage", "fresh thyme", "fresh rosemary", "olive oil", "lemon", "garlic", "toasted almonds", "sea salt"],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2.5,
+      vegetables: ["Brussels sprouts", "sweet potato", "onion"],
+      benefits: ["High in vitamin K", "Rich in fiber", "Supports bone health"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 200°C",
+        "Make herb blend: finely chop sage, thyme, and rosemary",
+        "Season chicken thighs with salt, pepper, and herb blend",
+        "Halve Brussels sprouts and cube sweet potato",
+        "Toss vegetables with olive oil, garlic, and remaining herbs",
+        "Roast vegetables 15 minutes",
+        "Add chicken thighs to pan, roast 25-30 minutes",
+        "Sprinkle toasted sliced almonds over vegetables",
+        "Check internal temperature reaches 75°C",
+        "Squeeze fresh lemon over everything before serving"
+      ],
+      tips: [
+        "Free-range chicken has better flavour and nutrition",
+        "Toast almonds separately to prevent burning"
+      ],
+      notes: "Fresh herbs create an aromatic crust while almonds add delightful crunch"
     }
   },
   {
@@ -556,6 +624,41 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       ],
       tips: ["Went viral for looking like literal clouds", "The folding technique is crucial for viral fluffiness", "Perfect for keto and low-carb content creators"],
       notes: "Cloud bread became a social media sensation for its impossible cloud-like appearance and keto-friendly nature"
+    }
+  },
+
+  // Additional herb-enhanced options for balanced variety
+  {
+    name: "Herb-marinated chicken breast with roasted vegetables and pine nuts",
+    portion: "150g chicken + vegetables",
+    nutrition: { protein: 36, prepTime: 30, costEuros: 6.80, proteinPerEuro: 5.3 },
+    category: "lunch",
+    tags: ["gluten-free", "dairy-free", "paleo", "high-protein"],
+    ingredients: ["free-range chicken breast", "mixed vegetables", "fresh rosemary", "fresh thyme", "fresh sage", "garlic", "olive oil", "lemon", "toasted pine nuts", "sea salt", "black pepper"],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2.5,
+      vegetables: ["mixed seasonal vegetables"],
+      benefits: ["High in vitamins", "Lean protein source", "Supports muscle health"]
+    },
+    recipe: {
+      instructions: [
+        "Marinate chicken in herbs, garlic, olive oil and lemon for 20 minutes",
+        "Preheat oven to 200°C",
+        "Cut vegetables into similar-sized pieces",
+        "Toss vegetables with olive oil, salt, and fresh herbs",
+        "Roast vegetables 15 minutes",
+        "Sear marinated chicken in pan until golden, 2-3 minutes each side",
+        "Transfer chicken to oven with vegetables, roast 15-20 minutes",
+        "Toast pine nuts until golden and fragrant",
+        "Slice chicken and serve over vegetables with toasted pine nuts",
+        "Check internal temperature reaches 75°C"
+      ],
+      tips: [
+        "Marinating with fresh herbs creates deeper flavor",
+        "Toast pine nuts just before serving for maximum crunch"
+      ],
+      notes: "Fresh herb marinade and toasted pine nuts elevate simple chicken to restaurant quality"
     }
   }
 ];

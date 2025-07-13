@@ -298,6 +298,8 @@ function generateMealPrepPlan(
   // Get meal options for lunch and dinner with dietary filters
   const lunchOptions = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
   const dinnerOptions = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
+  const shuffledLunchOptions = [...lunchOptions].sort(() => Math.random() - 0.5);
+  const shuffledDinnerOptions = [...dinnerOptions].sort(() => Math.random() - 0.5);
   
   const cookingDaysPerWeek = user?.cookingDaysPerWeek || 3;
   const eatingDaysAtHome = user?.eatingDaysAtHome || 6;
@@ -342,6 +344,8 @@ function generateMealPrepPlan(
   console.log(`Meal prep plan: ${cookingDaysPerWeek} cooking days, ${eatingDaysAtHome} eating days = ${totalMealsNeeded} meals`);
   console.log(`Days with meals: ${daysWithMeals.join(', ')}, Days skipped: ${daysToSkip.join(', ')}`);
   
+  // Variables already declared above - use shuffled options for variety
+
   // Use Sunday night cooking pattern with proper leftover linking
   // Track which meals to use as leftovers
   let sundayDinnerMeal: any = null;
@@ -350,12 +354,23 @@ function generateMealPrepPlan(
   let wednesdayDinnerMeal: any = null;
   let thursdayDinnerMeal: any = null;
   
+  // Track used fresh meal indices to prevent duplicates
+  let dinnerIndex = 0;
+  let lunchIndex = 0;
+  
   // Generate meals for all 7 days (breakfast always included)
-  const shuffledBreakfasts = [...getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags)].sort(() => Math.random() - 0.5);
+  const breakfastOptions = getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags);
+  const shuffledBreakfasts = [...breakfastOptions].sort(() => Math.random() - 0.5);
+  
+  // Ensure we have enough unique breakfasts for 7 days
+  const breakfastPool = [];
+  while (breakfastPool.length < 7) {
+    breakfastPool.push(...shuffledBreakfasts);
+  }
   
   for (let day = 1; day <= 7; day++) {
-    // BREAKFAST: Always include for every day (no meal prep needed)
-    const selectedBreakfast = shuffledBreakfasts[(day - 1) % shuffledBreakfasts.length];
+    // BREAKFAST: Always include for every day (no duplicates in 7 days)
+    const selectedBreakfast = breakfastPool[day - 1];
     
     if (selectedBreakfast) {
       const adjustedPortion = adjustMealPortion(selectedBreakfast.portion, caloricAdjustment);
@@ -403,9 +418,9 @@ function generateMealPrepPlan(
         lunchMeal = thursdayDinnerMeal;
         isLunchLeftover = true;
       } else {
-        // Fresh lunch (Day 1, 7, or when no previous dinner)
-        const lunchIndex = Math.floor((day - 1) / 2) % lunchOptions.length;
-        lunchMeal = lunchOptions[lunchIndex];
+        // Fresh lunch (Day 1, 7, or when no previous dinner) - use unique meals
+        lunchMeal = shuffledLunchOptions[lunchIndex % shuffledLunchOptions.length];
+        lunchIndex++;
       }
       
       if (lunchMeal) {
@@ -431,37 +446,42 @@ function generateMealPrepPlan(
       let isDinnerLeftover = false;
       
       if (day === 1) {
-        // Day 1: Sunday dinner - FIRST cooking moment
-        sundayDinnerMeal = dinnerOptions[0];
+        // Day 1: Sunday dinner - FIRST cooking moment (use unique meals)
+        sundayDinnerMeal = shuffledDinnerOptions[dinnerIndex % shuffledDinnerOptions.length];
         dinnerMeal = sundayDinnerMeal;
+        dinnerIndex++;
       } else if (day === 2) {
-        // Day 2: Monday dinner - fresh cooking
-        mondayDinnerMeal = dinnerOptions[1] || dinnerOptions[0];
+        // Day 2: Monday dinner - fresh cooking (use unique meals)
+        mondayDinnerMeal = shuffledDinnerOptions[dinnerIndex % shuffledDinnerOptions.length];
         dinnerMeal = mondayDinnerMeal;
+        dinnerIndex++;
       } else if (day === 3) {
-        // Day 3: Tuesday dinner - fresh cooking
-        tuesdayDinnerMeal = dinnerOptions[2] || dinnerOptions[0];
+        // Day 3: Tuesday dinner - fresh cooking (use unique meals)
+        tuesdayDinnerMeal = shuffledDinnerOptions[dinnerIndex % shuffledDinnerOptions.length];
         dinnerMeal = tuesdayDinnerMeal;
+        dinnerIndex++;
       } else if (day === 4) {
-        // Day 4: Wednesday dinner - fresh cooking
-        wednesdayDinnerMeal = dinnerOptions[3] || dinnerOptions[0];
+        // Day 4: Wednesday dinner - fresh cooking (use unique meals)
+        wednesdayDinnerMeal = shuffledDinnerOptions[dinnerIndex % shuffledDinnerOptions.length];
         dinnerMeal = wednesdayDinnerMeal;
+        dinnerIndex++;
       } else if (day === 5) {
-        // Day 5: Thursday dinner - fresh cooking
-        thursdayDinnerMeal = dinnerOptions[4] || dinnerOptions[0];
+        // Day 5: Thursday dinner - fresh cooking (use unique meals)
+        thursdayDinnerMeal = shuffledDinnerOptions[dinnerIndex % shuffledDinnerOptions.length];
         dinnerMeal = thursdayDinnerMeal;
+        dinnerIndex++;
       } else if (day === 6) {
-        // Day 6: Friday dinner - fresh cooking (3rd cooking day)
-        const fridayDinnerMeal = dinnerOptions[5] || dinnerOptions[0];
-        dinnerMeal = fridayDinnerMeal;
+        // Day 6: Friday dinner - fresh cooking (3rd cooking day, use unique meals)
+        dinnerMeal = shuffledDinnerOptions[dinnerIndex % shuffledDinnerOptions.length];
+        dinnerIndex++;
       } else if (day === 7 && thursdayDinnerMeal) {
         // Day 7: Saturday dinner - leftover from Thursday
         dinnerMeal = thursdayDinnerMeal;
         isDinnerLeftover = true;
       } else {
-        // Fallback dinner
-        const dinnerIndex = (day - 1) % dinnerOptions.length;
-        dinnerMeal = dinnerOptions[dinnerIndex];
+        // Fallback dinner - use unique meals
+        dinnerMeal = shuffledDinnerOptions[dinnerIndex % shuffledDinnerOptions.length];
+        dinnerIndex++;
       }
       
       if (dinnerMeal) {
