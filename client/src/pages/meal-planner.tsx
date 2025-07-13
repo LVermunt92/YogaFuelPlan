@@ -315,7 +315,7 @@ export default function MealPlanner() {
                   Meal Planner
                 </h1>
                 <p className="text-muted-foreground mt-1">
-                  Personalized nutrition for your lifestyle
+                  Personalised nutrition for your lifestyle
                 </p>
               </div>
             </div>
