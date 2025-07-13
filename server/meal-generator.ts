@@ -249,9 +249,12 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
         }
         selectedMeal = sundayDinnerMeal; // Use exact same meal as Sunday dinner
         isLeftover = true;
+      } else if (day === 2 && mealCategory === 'dinner') {
+        // Day 2: Monday dinner - fresh cooking (different from Sunday)
+        selectedMeal = availableMeals[1] || availableMeals[0];
       } else if (day === 3 && mealCategory === 'dinner') {
         // Day 3: Tuesday dinner - fresh cooking
-        selectedMeal = availableMeals[1] || availableMeals[0];
+        selectedMeal = availableMeals[2] || availableMeals[0];
         tuesdayDinnerMeal = selectedMeal; // Store for Wednesday leftovers
       } else if (day === 4 && (mealCategory === 'lunch' || mealCategory === 'dinner')) {
         // Day 4: Wednesday lunch and dinner - leftovers from Tuesday (EXACT SAME MEAL)
@@ -262,7 +265,7 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
         isLeftover = true;
       } else if (day === 5 && mealCategory === 'dinner') {
         // Day 5: Thursday dinner - fresh cooking
-        selectedMeal = availableMeals[2] || availableMeals[0];
+        selectedMeal = availableMeals[3] || availableMeals[0];
         thursdayDinnerMeal = selectedMeal; // Store for Friday leftovers
       } else if (day === 6 && (mealCategory === 'lunch' || mealCategory === 'dinner')) {
         // Day 6: Friday lunch and dinner - leftovers from Thursday (EXACT SAME MEAL)
@@ -276,8 +279,8 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
         const breakfastIndex = (day - 1) % availableMeals.length;
         selectedMeal = availableMeals[breakfastIndex];
       } else {
-        // Fresh lunch/dinner for other days
-        const mealIndex = day % availableMeals.length;
+        // Fresh lunch/dinner for other days (ensure variety)
+        const mealIndex = (day + mealType.length) % availableMeals.length;
         selectedMeal = availableMeals[mealIndex];
       }
 
