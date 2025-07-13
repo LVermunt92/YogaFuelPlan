@@ -59,7 +59,15 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     category: "breakfast",
     tags: ["vegetarian", "gluten-free", "dairy-free", "high-protein", "anti-inflammatory", "whole30"],
-    ingredients: ["steel-cut oats", "raw almonds", "raw walnuts", "fresh blueberries", "fresh strawberries", "ground flaxseed", "cinnamon", "raw honey"],
+    ingredients: [
+      "½ cup steel-cut oats",
+      "¼ cup mixed raw almonds and walnuts (chopped)",
+      "½ cup fresh mixed berries (blueberries, strawberries)",
+      "1 tbsp ground flaxseed",
+      "½ tsp cinnamon",
+      "1 tsp raw honey (optional)",
+      "1½ cups water for cooking"
+    ],
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 1,
@@ -104,7 +112,16 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     category: "breakfast",
     tags: ["vegetarian", "gluten-free", "lactose-free", "keto", "paleo", "high-protein"],
-    ingredients: ["free-range eggs", "fresh spinach", "cherry tomatoes", "fresh herbs (parsley, chives)", "red bell pepper", "avocado", "olive oil", "sea salt"],
+    ingredients: [
+      "3 large free-range eggs",
+      "1 cup fresh spinach leaves",
+      "¼ cup cherry tomatoes (halved)",
+      "2 tbsp fresh herbs (parsley, chives, chopped)",
+      "¼ cup red bell pepper (diced)",
+      "½ medium avocado (sliced)",
+      "1 tsp extra virgin olive oil",
+      "Pinch of sea salt and black pepper"
+    ],
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 2.5,
@@ -131,10 +148,30 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   {
     name: "Homemade chia pudding with fresh fruit and raw nuts",
     portion: "1 large serving (200g)",
-    nutrition: { protein: 16, prepTime: 5, costEuros: 2.80, proteinPerEuro: 5.7 },
+    nutrition: { 
+      protein: 16, 
+      prepTime: 5, 
+      calories: 285,
+      carbohydrates: 25,
+      fats: 18,
+      fiber: 14,
+      sugar: 12,
+      sodium: 180,
+      costEuros: 2.80, 
+      proteinPerEuro: 5.7 
+    },
     category: "breakfast",
     tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "dairy-free", "raw", "anti-inflammatory"],
-    ingredients: ["chia seeds", "unsweetened almond milk", "fresh mango", "fresh kiwi", "raw cashews", "raw coconut flakes", "vanilla extract", "maple syrup"],
+    ingredients: [
+      "3 tbsp chia seeds",
+      "¾ cup unsweetened almond milk",
+      "½ cup fresh mango (diced)",
+      "½ cup fresh kiwi (diced)",
+      "2 tbsp raw cashews (chopped)",
+      "1 tbsp raw coconut flakes",
+      "¼ tsp vanilla extract",
+      "1 tsp pure maple syrup"
+    ],
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 1.5,
@@ -412,10 +449,32 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   {
     name: "Protein-packed lentil and roasted root vegetable bowl",
     portion: "1.5 cups lentils + 200g vegetables",
-    nutrition: { protein: 24, prepTime: 35, costEuros: 4.50, proteinPerEuro: 5.3 },
+    nutrition: { 
+      protein: 24, 
+      prepTime: 35, 
+      calories: 420,
+      carbohydrates: 55,
+      fats: 8,
+      fiber: 18,
+      sugar: 12,
+      sodium: 280,
+      costEuros: 4.50, 
+      proteinPerEuro: 5.3 
+    },
     category: "lunch",
     tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "anti-inflammatory", "high-protein"],
-    ingredients: ["red lentils", "sweet potato", "carrots", "parsnips", "red onion", "fresh rosemary", "olive oil", "lemon", "sea salt", "tahini"],
+    ingredients: [
+      "1 cup red lentils",
+      "1 medium sweet potato (diced)",
+      "2 large carrots (diced)",
+      "1 parsnip (diced)",
+      "½ red onion (sliced)",
+      "2 sprigs fresh rosemary",
+      "2 tbsp extra virgin olive oil",
+      "1 lemon (juiced)",
+      "Sea salt to taste",
+      "2 tbsp tahini"
+    ],
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 3,
@@ -442,10 +501,31 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   {
     name: "Wild-caught salmon with roasted root vegetables",
     portion: "150g salmon + 200g vegetables",
-    nutrition: { protein: 35, prepTime: 25, costEuros: 8.50, proteinPerEuro: 4.1 },
+    nutrition: { 
+      protein: 35, 
+      prepTime: 25, 
+      calories: 485,
+      carbohydrates: 35,
+      fats: 18,
+      fiber: 8,
+      sugar: 14,
+      sodium: 320,
+      costEuros: 8.50, 
+      proteinPerEuro: 4.1 
+    },
     category: "lunch",
     tags: ["pescatarian", "gluten-free", "dairy-free", "paleo", "anti-inflammatory", "high-protein"],
-    ingredients: ["wild salmon fillet", "sweet potato", "carrots", "parsnips", "red onion", "fresh rosemary", "olive oil", "lemon", "sea salt"],
+    ingredients: [
+      "150g wild salmon fillet",
+      "1 medium sweet potato (chunked)",
+      "2 large carrots (chunked)",
+      "1 parsnip (chunked)",
+      "½ red onion (wedged)",
+      "2 sprigs fresh rosemary",
+      "1 tbsp extra virgin olive oil",
+      "1 lemon (juiced + wedges)",
+      "Sea salt to taste"
+    ],
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 3,
@@ -473,10 +553,34 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   {
     name: "Lentil and fresh vegetable curry with brown rice",
     portion: "1.5 cups curry + 1 cup rice",
-    nutrition: { protein: 22, prepTime: 35, costEuros: 3.20, proteinPerEuro: 6.9 },
+    nutrition: { 
+      protein: 22, 
+      prepTime: 35, 
+      calories: 395,
+      carbohydrates: 58,
+      fats: 8,
+      fiber: 15,
+      sugar: 8,
+      sodium: 240,
+      costEuros: 3.20, 
+      proteinPerEuro: 6.9 
+    },
     category: "lunch",
     tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "ayurvedic", "anti-inflammatory"],
-    ingredients: ["green lentils", "brown rice", "fresh ginger", "fresh turmeric", "onion", "garlic", "tomatoes", "spinach", "coconut milk", "cumin seeds", "coriander seeds"],
+    ingredients: [
+      "¾ cup green lentils",
+      "½ cup brown rice", 
+      "1 tbsp fresh ginger (minced)",
+      "1 tsp fresh turmeric (grated)",
+      "1 medium onion (diced)",
+      "2 cloves garlic (minced)",
+      "2 medium tomatoes (diced)",
+      "2 cups fresh spinach",
+      "1 cup coconut milk",
+      "1 tsp cumin seeds",
+      "1 tsp coriander seeds",
+      "1 tbsp coconut oil"
+    ],
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 2.5,
@@ -505,10 +609,37 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   {
     name: "Herb-marinated tempeh with roasted seasonal vegetables and seed mix",
     portion: "200g tempeh + mixed vegetables",
-    nutrition: { protein: 33, prepTime: 30, costEuros: 6.80, proteinPerEuro: 4.9 },
+    nutrition: { 
+      protein: 33, 
+      prepTime: 30, 
+      calories: 455,
+      carbohydrates: 22,
+      fats: 22,
+      fiber: 8,
+      sugar: 10,
+      sodium: 420,
+      costEuros: 6.80, 
+      proteinPerEuro: 4.9 
+    },
     category: "lunch",
     tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "high-protein", "anti-inflammatory"],
-    ingredients: ["tempeh", "seasonal vegetables (zucchini, eggplant, bell peppers)", "fresh thyme", "fresh oregano", "fresh basil", "garlic", "olive oil", "balsamic vinegar", "sea salt", "tamari", "sunflower seeds", "pumpkin seeds", "sesame seeds"],
+    ingredients: [
+      "200g tempeh (sliced)",
+      "1 medium zucchini (sliced)",
+      "1 small eggplant (cubed)",
+      "2 bell peppers (strips)",
+      "2 sprigs fresh thyme",
+      "2 sprigs fresh oregano", 
+      "¼ cup fresh basil (chopped)",
+      "3 cloves garlic (minced)",
+      "2 tbsp extra virgin olive oil",
+      "1 tbsp balsamic vinegar",
+      "Sea salt to taste",
+      "2 tbsp tamari",
+      "1 tbsp sunflower seeds",
+      "1 tbsp pumpkin seeds",
+      "1 tbsp sesame seeds"
+    ],
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 3,
@@ -541,10 +672,37 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   {
     name: "Herb-crusted stuffed portobello mushrooms with Brussels sprouts and sweet potato",
     portion: "2 large mushrooms + vegetables",
-    nutrition: { protein: 24, prepTime: 40, costEuros: 5.50, proteinPerEuro: 4.4 },
+    nutrition: { 
+      protein: 24, 
+      prepTime: 40, 
+      calories: 385,
+      carbohydrates: 42,
+      fats: 16,
+      fiber: 12,
+      sugar: 18,
+      sodium: 280,
+      costEuros: 5.50, 
+      proteinPerEuro: 4.4 
+    },
     category: "dinner",
     tags: ["vegetarian", "gluten-free", "dairy-free", "high-protein"],
-    ingredients: ["large portobello mushrooms", "Brussels sprouts", "sweet potato", "red onion", "fresh sage", "fresh thyme", "fresh rosemary", "olive oil", "lemon", "garlic", "toasted walnuts", "toasted pine nuts", "pumpkin seeds", "nutritional yeast", "fresh parsley"],
+    ingredients: [
+      "2 large portobello mushrooms (stems removed)",
+      "200g Brussels sprouts (halved)",
+      "1 medium sweet potato (cubed)",
+      "½ red onion (sliced)",
+      "2 sprigs fresh sage",
+      "2 sprigs fresh thyme",
+      "1 sprig fresh rosemary",
+      "3 tbsp extra virgin olive oil",
+      "1 lemon (juiced)",
+      "3 cloves garlic (minced)",
+      "¼ cup toasted walnuts (chopped)",
+      "2 tbsp toasted pine nuts",
+      "2 tbsp pumpkin seeds",
+      "2 tbsp nutritional yeast",
+      "¼ cup fresh parsley (chopped)"
+    ],
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 3.5,
@@ -573,7 +731,18 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   {
     name: "Free-range chicken thighs with herb crust and roasted vegetables",
     portion: "2 thighs + vegetables",
-    nutrition: { protein: 38, prepTime: 40, costEuros: 6.50, proteinPerEuro: 5.8 },
+    nutrition: { 
+      protein: 38, 
+      prepTime: 40, 
+      calories: 520,
+      carbohydrates: 35,
+      fats: 28,
+      fiber: 8,
+      sugar: 14,
+      sodium: 420,
+      costEuros: 6.50, 
+      proteinPerEuro: 5.8 
+    },
     category: "dinner",
     tags: ["non-vegetarian", "gluten-free", "dairy-free", "paleo", "high-protein"],
     ingredients: ["free-range chicken thighs", "Brussels sprouts", "sweet potato", "red onion", "fresh sage", "fresh thyme", "fresh rosemary", "olive oil", "lemon", "garlic", "toasted almonds", "sea salt"],
@@ -606,7 +775,18 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   {
     name: "Wild mushroom and herb quinoa with roasted vegetables",
     portion: "1.5 cups quinoa + vegetables",
-    nutrition: { protein: 18, prepTime: 35, costEuros: 4.80, proteinPerEuro: 3.8 },
+    nutrition: { 
+      protein: 18, 
+      prepTime: 35, 
+      calories: 340,
+      carbohydrates: 48,
+      fats: 12,
+      fiber: 10,
+      sugar: 8,
+      sodium: 320,
+      costEuros: 4.80, 
+      proteinPerEuro: 3.8 
+    },
     category: "dinner",
     tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "anti-inflammatory"],
     ingredients: ["quinoa", "mixed wild mushrooms", "fresh herbs (parsley, thyme)", "zucchini", "red bell pepper", "red onion", "garlic", "olive oil", "vegetable broth"],
@@ -636,7 +816,18 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   {
     name: "Baked cod with Mediterranean vegetables and fresh herbs",
     portion: "180g cod + vegetables",
-    nutrition: { protein: 32, prepTime: 30, costEuros: 7.20, proteinPerEuro: 4.4 },
+    nutrition: { 
+      protein: 32, 
+      prepTime: 30, 
+      calories: 420,
+      carbohydrates: 18,
+      fats: 14,
+      fiber: 6,
+      sugar: 12,
+      sodium: 380,
+      costEuros: 7.20, 
+      proteinPerEuro: 4.4 
+    },
     category: "dinner",
     tags: ["pescatarian", "gluten-free", "dairy-free", "mediterranean", "anti-inflammatory"],
     ingredients: ["fresh cod fillet", "cherry tomatoes", "zucchini", "red onion", "black olives", "fresh basil", "fresh oregano", "olive oil", "lemon", "capers"],
