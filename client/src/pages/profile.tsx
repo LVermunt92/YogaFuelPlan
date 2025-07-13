@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
 import { User, Save, UserCircle } from "lucide-react";
 
@@ -56,10 +57,12 @@ interface UserProfile {
 export default function Profile() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { user: authUser } = useAuth();
 
-  // Fetch user profile
+  // Fetch user profile for the authenticated user
   const { data: user, isLoading } = useQuery<UserProfile>({
-    queryKey: ['/api/users/1/profile'],
+    queryKey: ['/api/users', authUser?.id, 'profile'],
+    enabled: !!authUser?.id,
   });
 
   const [formData, setFormData] = useState({
@@ -104,11 +107,12 @@ export default function Profile() {
   // Update profile mutation
   const updateProfileMutation = useMutation({
     mutationFn: async (data: any) => {
-      const response = await apiRequest('PATCH', '/api/users/1/profile', data);
+      if (!authUser?.id) throw new Error('User not authenticated');
+      const response = await apiRequest('PATCH', `/api/users/${authUser.id}/profile`, data);
       return response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/users/1/profile'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/users', authUser?.id, 'profile'] });
       toast({
         title: "Profile Updated",
         description: "Your personal information has been saved successfully.",

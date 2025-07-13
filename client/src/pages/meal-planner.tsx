@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Calendar, Clock, Target, Upload, Eye, Download, Share, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat } from "lucide-react";
@@ -105,10 +106,12 @@ export default function MealPlanner() {
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { user: authUser } = useAuth();
 
   // Fetch user profile for dietary preferences
   const { data: userProfile } = useQuery({
-    queryKey: ['/api/users/1/profile'],
+    queryKey: ['/api/users', authUser?.id, 'profile'],
+    enabled: !!authUser?.id,
   });
 
   // Fetch meal plans
@@ -143,10 +146,11 @@ export default function MealPlanner() {
   // Generate meal plan mutation
   const generateMutation = useMutation({
     mutationFn: async () => {
+      if (!authUser?.id) throw new Error('User not authenticated');
       const response = await apiRequest('POST', '/api/meal-plans/generate', {
         activityLevel,
         weekStart,
-        userId: 1,
+        userId: authUser.id,
         dietaryTags: userProfile?.dietaryTags || [],
       });
       return response.json();
@@ -225,8 +229,8 @@ export default function MealPlanner() {
   });
 
   const { data: latestOuraData } = useQuery<OuraData>({
-    queryKey: ["/api/oura/latest"],
-    enabled: ouraStatus?.connected === true,
+    queryKey: ["/api/oura/latest", authUser?.id],
+    enabled: ouraStatus?.connected === true && !!authUser?.id,
   });
 
   // Oura sync mutation
@@ -254,9 +258,10 @@ export default function MealPlanner() {
   // Smart meal plan generation based on Oura data
   const smartGenerateMutation = useMutation({
     mutationFn: async () => {
+      if (!authUser?.id) throw new Error('User not authenticated');
       const response = await apiRequest('POST', '/api/meal-plans/smart-generate', {
         weekStart,
-        userId: 1,
+        userId: authUser.id,
       });
       return response.json();
     },
