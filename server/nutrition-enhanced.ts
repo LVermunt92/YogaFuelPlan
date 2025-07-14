@@ -1835,6 +1835,275 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       ],
       notes: "Summer-appropriate Ayurvedic curry designed for pitta-balancing during grishma season"
     }
+  },
+
+  // Fresh summer vegetable and coconut milk soup (ayurvedic cooling)
+  {
+    name: "Fresh summer vegetable and coconut milk soup",
+    portion: "1 large bowl with quinoa",
+    nutrition: {
+      protein: 12,
+      prepTime: 20,
+      calories: 285,
+      carbohydrates: 42,
+      fats: 8,
+      fiber: 10,
+      sugar: 12,
+      sodium: 320,
+      costEuros: 2.80,
+      proteinPerEuro: 4.3
+    },
+    category: 'lunch',
+    tags: ['vegetarian', 'vegan', 'gluten-free', 'lactose-free', 'ayurvedic', 'cooling', 'quick'],
+    ingredients: [
+      '1 cup mixed summer vegetables (zucchini, cucumber, fresh corn)',
+      '1/2 cup coconut milk',
+      '1/4 cup cooked quinoa',
+      '1 tbsp coconut oil',
+      '1/2 tsp fennel seeds',
+      '1 cup vegetable broth',
+      '2 tbsp fresh cilantro',
+      '1 tbsp fresh mint',
+      '1/2 lime (juice)',
+      'Sea salt to taste'
+    ],
+    wholeFoodLevel: 'high',
+    vegetableContent: {
+      servings: 2,
+      vegetables: ['zucchini', 'cucumber', 'fresh corn'],
+      benefits: ['hydrating vegetables', 'cooling nature', 'easy digestion']
+    },
+    recipe: {
+      instructions: [
+        'Heat coconut oil gently, add fennel seeds until fragrant',
+        'Add diced summer vegetables, sauté lightly for 3 minutes',
+        'Pour in vegetable broth, bring to gentle simmer',
+        'Add coconut milk and cooked quinoa, warm through',
+        'Stir in fresh herbs and lime juice off heat',
+        'Serve warm or at room temperature'
+      ],
+      tips: [
+        'Keep vegetables slightly crisp for cooling properties',
+        'Can be served at room temperature in hot weather',
+        'Fresh herbs preserve cooling qualities when added last'
+      ],
+      notes: 'Light, cooling soup perfect for summer. The combination of fresh vegetables, coconut milk, and cooling herbs supports digestion while providing hydration.'
+    }
+  },
+
+  // Cooling cucumber and mint raita with quinoa (ayurvedic summer)
+  {
+    name: "Cooling cucumber and mint raita with quinoa",
+    portion: "1 serving",
+    nutrition: {
+      protein: 14,
+      prepTime: 15,
+      calories: 245,
+      carbohydrates: 35,
+      fats: 6,
+      fiber: 8,
+      sugar: 8,
+      sodium: 280,
+      costEuros: 2.20,
+      proteinPerEuro: 6.4
+    },
+    category: 'lunch',
+    tags: ['vegetarian', 'gluten-free', 'lactose-free', 'ayurvedic', 'cooling', 'quick'],
+    ingredients: [
+      '1 large cucumber, diced',
+      '1/2 cup cooked quinoa',
+      '1/2 cup coconut yogurt',
+      '2 tbsp fresh mint leaves',
+      '1 tbsp fresh cilantro',
+      '1/2 tsp fennel powder',
+      '1/4 tsp rock salt',
+      '1/2 lime (juice)',
+      '1 tbsp hemp hearts',
+      '1 tsp coconut oil'
+    ],
+    wholeFoodLevel: 'high',
+    vegetableContent: {
+      servings: 2,
+      vegetables: ['cucumber'],
+      benefits: ['extremely cooling', 'hydrating', 'digestive support']
+    },
+    recipe: {
+      instructions: [
+        'Cook quinoa and let cool to room temperature',
+        'Dice cucumber finely, sprinkle with rock salt, set aside 5 minutes',
+        'Whisk coconut yogurt with fennel powder and lime juice',
+        'Drain excess water from cucumber',
+        'Mix quinoa, cucumber, yogurt mixture, and fresh herbs',
+        'Top with hemp hearts and a drizzle of coconut oil'
+      ],
+      tips: [
+        'Salt the cucumber to remove excess water and concentrate cooling properties',
+        'Serve chilled or at room temperature',
+        'Best consumed fresh for maximum cooling effect'
+      ],
+      notes: 'Extremely cooling dish perfect for hot summer days. Cucumber and mint provide immediate cooling while fennel supports gentle digestion.'
+    }
+  },
+
+  // Fresh summer fruit and coconut quinoa bowl (ayurvedic cooling)
+  {
+    name: "Fresh summer fruit and coconut quinoa bowl",
+    portion: "1 bowl",
+    nutrition: {
+      protein: 16,
+      prepTime: 18,
+      calories: 365,
+      carbohydrates: 52,
+      fats: 11,
+      fiber: 12,
+      sugar: 18,
+      sodium: 150,
+      costEuros: 3.50,
+      proteinPerEuro: 4.6
+    },
+    category: 'dinner',
+    tags: ['vegetarian', 'vegan', 'gluten-free', 'lactose-free', 'ayurvedic', 'cooling'],
+    ingredients: [
+      '1/2 cup cooked quinoa',
+      '1/2 cup fresh seasonal fruit (melon, pear, berries)',
+      '1/4 cup coconut milk',
+      '2 tbsp coconut flakes',
+      '1 tbsp hemp hearts',
+      '1 tbsp pumpkin seeds',
+      '1 tsp coconut oil',
+      '1/4 tsp fennel powder',
+      '1 tbsp fresh mint',
+      'Pinch of rock salt'
+    ],
+    wholeFoodLevel: 'high',
+    vegetableContent: {
+      servings: 1,
+      vegetables: ['fresh herbs'],
+      benefits: ['cooling fruits', 'hydrating', 'satisfying']
+    },
+    recipe: {
+      instructions: [
+        'Cook quinoa and let cool to room temperature',
+        'Prepare fresh fruit - dice larger fruits, keep berries whole',
+        'Mix quinoa with coconut milk and fennel powder',
+        'Arrange fruit over quinoa base',
+        'Sprinkle with coconut flakes, hemp hearts, and pumpkin seeds',
+        'Drizzle with coconut oil, garnish with fresh mint'
+      ],
+      tips: [
+        'Use seasonal cooling fruits like melon or pears',
+        'Serve at room temperature or slightly chilled',
+        'Mix gently to preserve fruit texture'
+      ],
+      notes: 'Light, nourishing meal combining cooling fruits with protein-rich quinoa. Perfect for summer evenings when appetite is naturally lighter.'
+    }
+  },
+
+  // Cooling coconut and herb rice noodle soup (ayurvedic summer)
+  {
+    name: "Cooling coconut and herb rice noodle soup",
+    portion: "1 large bowl",
+    nutrition: {
+      protein: 10,
+      prepTime: 22,
+      calories: 315,
+      carbohydrates: 48,
+      fats: 9,
+      fiber: 6,
+      sugar: 8,
+      sodium: 380,
+      costEuros: 2.60,
+      proteinPerEuro: 3.8
+    },
+    category: 'dinner',
+    tags: ['vegetarian', 'vegan', 'gluten-free', 'lactose-free', 'ayurvedic', 'cooling', 'quick'],
+    ingredients: [
+      '2 oz rice noodles',
+      '1/2 cup coconut milk',
+      '1 cup vegetable broth',
+      '1/4 cup fresh vegetables (cucumber, zucchini)',
+      '2 tbsp fresh cilantro',
+      '1 tbsp fresh mint',
+      '1/2 tsp fennel seeds',
+      '1 tbsp coconut oil',
+      '1/2 lime (juice)',
+      'Sea salt to taste'
+    ],
+    wholeFoodLevel: 'moderate',
+    vegetableContent: {
+      servings: 1,
+      vegetables: ['cucumber', 'zucchini', 'fresh herbs'],
+      benefits: ['cooling vegetables', 'hydrating', 'light and digestible']
+    },
+    recipe: {
+      instructions: [
+        'Cook rice noodles according to package directions, drain',
+        'Heat coconut oil gently, add fennel seeds until fragrant',
+        'Add vegetable broth and coconut milk, bring to gentle simmer',
+        'Add fresh vegetables, cook 2-3 minutes until just tender',
+        'Add cooked noodles to warm through',
+        'Remove from heat, stir in herbs and lime juice'
+      ],
+      tips: [
+        'Keep vegetables barely cooked for cooling effect',
+        'Fresh herbs added at end preserve cooling properties',
+        'Can be served warm or at room temperature'
+      ],
+      notes: 'Light, cooling soup with rice noodles. The combination of coconut milk and fresh herbs creates a soothing meal perfect for summer.'
+    }
+  },
+
+  // Cooling barley water and vegetable soup (ayurvedic summer)
+  {
+    name: "Cooling barley water and vegetable soup",
+    portion: "1 large bowl",
+    nutrition: {
+      protein: 8,
+      prepTime: 25,
+      calories: 220,
+      carbohydrates: 42,
+      fats: 4,
+      fiber: 8,
+      sugar: 6,
+      sodium: 320,
+      costEuros: 1.80,
+      proteinPerEuro: 4.4
+    },
+    category: 'lunch',
+    tags: ['vegetarian', 'vegan', 'gluten-free', 'lactose-free', 'ayurvedic', 'cooling'],
+    ingredients: [
+      '1/2 cup pearl barley',
+      '1 cup cooling vegetables (cucumber, bottle gourd, fresh greens)',
+      '2 cups water',
+      '1 tbsp coconut oil',
+      '1/2 tsp fennel seeds',
+      '2 tbsp fresh cilantro',
+      '1 tbsp fresh mint',
+      '1/2 lime (juice)',
+      'Rock salt to taste'
+    ],
+    wholeFoodLevel: 'high',
+    vegetableContent: {
+      servings: 2,
+      vegetables: ['cucumber', 'bottle gourd', 'fresh greens'],
+      benefits: ['extremely cooling', 'hydrating', 'cleansing']
+    },
+    recipe: {
+      instructions: [
+        'Cook pearl barley in water until soft (20 minutes)',
+        'Heat coconut oil gently, add fennel seeds',
+        'Add cooling vegetables, cook very lightly 2 minutes',
+        'Add cooked barley with cooking water',
+        'Simmer gently 3 minutes, remove from heat',
+        'Stir in fresh herbs and lime juice'
+      ],
+      tips: [
+        'Barley water is traditionally very cooling',
+        'Keep vegetables barely cooked for maximum cooling effect',
+        'Can be consumed warm or at room temperature'
+      ],
+      notes: 'Traditional Ayurvedic cooling soup using barley water, which is naturally cooling and purifying. Perfect for very hot days.'
+    }
   }
 ];
 

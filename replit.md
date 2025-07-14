@@ -172,6 +172,14 @@ Breakfast scheduling preference: Easy, quick breakfasts during weekdays (≤10 m
   - Verification confirmed: Only cooling ayurvedic recipes appear in summer ("Cooling cucumber and mint quinoa salad", "Fresh coconut and herb steamed vegetables", "Cooling mung bean curry")
   - Complete exclusion: All warming recipes with heating spices properly filtered out during grishma season
   - System now provides authentic Ayurvedic seasonal adaptation universally across all user profiles and meal generation modes
+- **Expanded Cooling Ayurvedic Recipe Database for Complete Weekly Variety** (July 14, 2025):
+  - RESOLVED: Added 5 new cooling ayurvedic recipes to ensure sufficient variety for complete weekly meal plans during summer
+  - Enhanced lunch options: "Fresh summer vegetable and coconut milk soup", "Cooling cucumber and mint raita with quinoa", "Cooling barley water and vegetable soup"
+  - Enhanced dinner options: "Fresh summer fruit and coconut quinoa bowl", "Cooling coconut and herb rice noodle soup"
+  - Summer availability increased from 1→4 lunch options and 2→4 dinner options for cooling ayurvedic recipes
+  - All new recipes follow authentic Ayurvedic principles with cooling ingredients (cucumber, coconut milk, fennel, fresh herbs)
+  - System now provides complete weekly meal plans for ayurvedic dietary preferences during grishma season
+  - Verified successful meal plan generation with proper variety and authentic seasonal adaptation
 
 ### Development Tools
 - **tsx**: TypeScript execution for development
