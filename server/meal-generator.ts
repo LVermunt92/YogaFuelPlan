@@ -782,9 +782,9 @@ function generateMealPrepPlan(
         // Day 6: Friday dinner - fresh cooking (3rd cooking day, use unique meals)
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
-        const mealOptions = isWeekday ? shuffledWeekdayDinnerOptions : shuffledDinnerOptions;
-        dinnerMeal = mealOptions[dinnerIndex % mealOptions.length];
-        dinnerIndex++;
+        const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
+        dinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals);
+        usedDinnerMeals.add(dinnerMeal.name);
       } else if (day === 7 && thursdayDinnerMeal) {
         // Day 7: Saturday dinner - leftover from Thursday
         dinnerMeal = thursdayDinnerMeal;
@@ -793,9 +793,9 @@ function generateMealPrepPlan(
         // Fallback dinner - use unique meals
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
-        const mealOptions = isWeekday ? shuffledWeekdayDinnerOptions : shuffledDinnerOptions;
-        dinnerMeal = mealOptions[dinnerIndex % mealOptions.length];
-        dinnerIndex++;
+        const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
+        dinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals);
+        usedDinnerMeals.add(dinnerMeal.name);
       }
       
       if (dinnerMeal) {
