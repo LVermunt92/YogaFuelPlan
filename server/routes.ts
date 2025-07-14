@@ -522,7 +522,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.patch('/api/users/:id/profile', async (req, res) => {
+  // Handle both PATCH and PUT for user profile updates
+  const handleProfileUpdate = async (req: any, res: any) => {
     try {
       const userId = parseInt(req.params.id);
       const profileData = req.body;
@@ -541,7 +542,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.error('Error updating user profile:', error);
       res.status(500).json({ message: 'Failed to update user profile' });
     }
-  });
+  };
+
+  app.patch('/api/users/:id/profile', handleProfileUpdate);
+  app.put('/api/users/:id/profile', handleProfileUpdate);
 
   // Oura Ring Integration Endpoints
   
