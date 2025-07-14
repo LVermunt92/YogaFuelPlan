@@ -1703,6 +1703,26 @@ export function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' | 'lunc
     const currentSeason = getCurrentAyurvedicSeason(new Date(), 'europe');
     const seasonalGuidance = getCurrentSeasonalGuidance(new Date(), 'europe');
     
+    // During summer (grishma), log but don't filter warming ayurvedic recipes
+    // This maintains meal plan functionality while alerting to seasonal inappropriateness
+    if (currentSeason === 'grishma') {
+      filteredMeals.forEach(meal => {
+        if (meal.tags.includes('ayurvedic')) {
+          const hasWarmingTags = meal.tags.includes('warming');
+          const hasHeatingSpices = meal.ingredients.some(ingredient => 
+            ingredient.toLowerCase().includes('ginger') && !ingredient.toLowerCase().includes('fresh ginger') ||
+            ingredient.toLowerCase().includes('cumin seeds') ||
+            ingredient.toLowerCase().includes('garam masala') ||
+            ingredient.toLowerCase().includes('mustard seeds')
+          );
+          
+          if (hasWarmingTags || hasHeatingSpices) {
+            console.log(`⚠️ Summer notice: ${meal.name} contains warming characteristics - consider seasonal adaptations`);
+          }
+        }
+      });
+    }
+    
     filteredMeals = filteredMeals.map(meal => {
       if (meal.tags.includes('ayurvedic')) {
         const adaptedMeal = adaptRecipeForSeason(meal, currentSeason);

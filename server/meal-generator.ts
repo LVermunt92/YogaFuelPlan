@@ -9,6 +9,7 @@ import {
   type MealOption 
 } from "./nutrition-enhanced";
 import { calculateProteinTarget } from "./nutrition";
+import { getCurrentAyurvedicSeason } from "./ayurveda-seasonal";
 
 export interface GeneratedMealPlan {
   mealPlan: InsertMealPlan;
@@ -386,11 +387,22 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
       const adjustedProtein = Math.round(selectedMeal.nutrition.protein * portionMultiplier);
       const prepTimeForDay = isLeftover ? 5 : selectedMeal.nutrition.prepTime;
       
-      // Create descriptive meal name
+      // Create descriptive meal name with seasonal adaptation
       let mealDescription = selectedMeal.name;
       
+      // Apply seasonal adaptation for summer (grishma season) to remove "warming" language
+      const currentSeason = getCurrentAyurvedicSeason(new Date(), 'europe');
+      if (currentSeason === 'grishma') {
+        if (mealDescription.toLowerCase().includes('warming')) {
+          mealDescription = mealDescription.replace(/warming\s+/gi, 'fresh ').replace(/Warming\s+/g, 'Fresh ');
+        }
+        if (mealDescription.toLowerCase().includes('warm ')) {
+          mealDescription = mealDescription.replace(/warm\s+/gi, 'fresh ').replace(/Warm\s+/g, 'Fresh ');
+        }
+      }
+      
       if (isLeftover) {
-        mealDescription = `${selectedMeal.name} (leftover)`;
+        mealDescription = `${mealDescription} (leftover)`;
       }
 
       const meal: InsertMeal = {
@@ -679,10 +691,22 @@ function generateMealPrepPlan(
           adjustedProtein = Math.round(lunchMeal.nutrition.protein * caloricAdjustment * householdSize);
         }
         
-        // Create descriptive meal name
+        // Create descriptive meal name with seasonal adaptation
         let mealDescription = lunchMeal.name;
+        
+        // Apply seasonal adaptation for summer (grishma season) to remove "warming" language
+        const currentSeason = getCurrentAyurvedicSeason(new Date(), 'europe');
+        if (currentSeason === 'grishma') {
+          if (mealDescription.toLowerCase().includes('warming')) {
+            mealDescription = mealDescription.replace(/warming\s+/gi, 'fresh ').replace(/Warming\s+/g, 'Fresh ');
+          }
+          if (mealDescription.toLowerCase().includes('warm ')) {
+            mealDescription = mealDescription.replace(/warm\s+/gi, 'fresh ').replace(/Warm\s+/g, 'Fresh ');
+          }
+        }
+        
         if (isLunchLeftover) {
-          mealDescription = `${lunchMeal.name} (leftover)`;
+          mealDescription = `${mealDescription} (leftover)`;
         }
         
         meals.push({
@@ -825,10 +849,22 @@ function generateMealPrepPlan(
           adjustedProtein = Math.round(dinnerMeal.nutrition.protein * caloricAdjustment * totalPortions);
         }
         
-        // Create descriptive meal name
+        // Create descriptive meal name with seasonal adaptation
         let mealDescription = dinnerMeal.name;
+        
+        // Apply seasonal adaptation for summer (grishma season) to remove "warming" language
+        const currentSeason = getCurrentAyurvedicSeason(new Date(), 'europe');
+        if (currentSeason === 'grishma') {
+          if (mealDescription.toLowerCase().includes('warming')) {
+            mealDescription = mealDescription.replace(/warming\s+/gi, 'fresh ').replace(/Warming\s+/g, 'Fresh ');
+          }
+          if (mealDescription.toLowerCase().includes('warm ')) {
+            mealDescription = mealDescription.replace(/warm\s+/gi, 'fresh ').replace(/Warm\s+/g, 'Fresh ');
+          }
+        }
+        
         if (isDinnerLeftover) {
-          mealDescription = `${dinnerMeal.name} (leftover)`;
+          mealDescription = `${mealDescription} (leftover)`;
         }
         
         meals.push({

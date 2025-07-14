@@ -135,6 +135,16 @@ export function adaptRecipeForSeason(
   // Clone the recipe to avoid mutations
   const adaptedRecipe = JSON.parse(JSON.stringify(baseRecipe));
   
+  // Adapt recipe name for summer season (remove warming language)
+  if (season === 'grishma') {
+    if (adaptedRecipe.name.toLowerCase().includes('warming')) {
+      adaptedRecipe.name = adaptedRecipe.name.replace(/warming\s+/gi, 'fresh ').replace(/Warming\s+/g, 'Fresh ');
+    }
+    if (adaptedRecipe.name.toLowerCase().includes('warm ')) {
+      adaptedRecipe.name = adaptedRecipe.name.replace(/warm\s+/gi, 'fresh ').replace(/Warm\s+/g, 'Fresh ');
+    }
+  }
+  
   // Add seasonal notes
   const seasonalNote = generateSeasonalNote(season, guidance);
   adaptedRecipe.recipe.notes = `${adaptedRecipe.recipe.notes}. ${seasonalNote}`;
@@ -163,7 +173,7 @@ function generateSeasonalTip(season: AyurvedicSeason, guidance: SeasonalGuidance
   const tips: Record<AyurvedicSeason, string> = {
     shishira: 'Serve hot and add extra ghee for warmth during cold, dry winter',
     vasanta: 'Reduce oil and dairy; add detoxifying herbs for spring cleansing',
-    grishma: 'Perfect for summer - serve fresh and light; add cooling garnishes like fresh herbs or seasonal vegetables',
+    grishma: 'Perfect for summer - serve at room temperature or lightly chilled; add fresh cooling herbs like mint, cilantro, or basil',
     varsha: 'Add extra digestive spices and keep portions moderate during variable weather',
     sharad: 'Include sweet vegetables and avoid fermented additions during autumn',
     hemanta: 'Increase warming spices and healthy fats for early winter nourishment'
