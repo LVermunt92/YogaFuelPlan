@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,8 +10,10 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Calendar, Clock, Target, Upload, Eye, Download, Share, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw } from "lucide-react";
+import { Calendar, Clock, Target, Upload, Eye, Download, Share, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { useTranslations, Language } from "@/lib/translations";
+import { Textarea } from "@/components/ui/textarea";
 
 
 
@@ -115,11 +117,12 @@ export default function MealPlanner() {
   const [showShoppingList, setShowShoppingList] = useState(false);
   const [selectedMealId, setSelectedMealId] = useState<number | null>(null);
   const [showOuraPanel, setShowOuraPanel] = useState(false);
+  const [newLeftover, setNewLeftover] = useState("");
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { user: authUser } = useAuth();
-
+  
   // Fetch user profile for dietary preferences
   const { data: userProfile, isLoading: profileLoading } = useQuery({
     queryKey: ['/api/users', authUser?.id, 'profile'],
@@ -127,6 +130,10 @@ export default function MealPlanner() {
     staleTime: 0, // Always fetch fresh data
     refetchOnMount: true, // Refetch when component mounts
   });
+
+  // Get language from user profile
+  const language = (userProfile?.language as Language) || "en";
+  const t = useTranslations(language);
 
   // Fetch meal plans for current user
   const { data: mealPlans = [], isLoading: loadingPlans } = useQuery<MealPlan[]>({
@@ -161,6 +168,36 @@ export default function MealPlanner() {
     enabled: !!selectedMealId,
   });
 
+  // Update user profile mutation
+  const updateProfileMutation = useMutation({
+    mutationFn: async (updates: { leftovers?: string[] }) => {
+      if (!authUser?.id) throw new Error('User not authenticated');
+      const response = await apiRequest('PUT', `/api/users/${authUser.id}/profile`, updates);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/users', authUser?.id, 'profile'] });
+    },
+  });
+
+  // Add leftover function
+  const addLeftover = () => {
+    if (!newLeftover.trim()) return;
+    const currentLeftovers = userProfile?.leftovers || [];
+    const updatedLeftovers = [...currentLeftovers, newLeftover.trim()];
+    updateProfileMutation.mutate({ leftovers: updatedLeftovers });
+    setNewLeftover("");
+  };
+
+  // Remove leftover function
+  const removeLeftover = (index: number) => {
+    const currentLeftovers = userProfile?.leftovers || [];
+    const updatedLeftovers = currentLeftovers.filter((_, i) => i !== index);
+    updateProfileMutation.mutate({ leftovers: updatedLeftovers });
+  };
+
+
+
   // Generate meal plan mutation
   const generateMutation = useMutation({
     mutationFn: async () => {
@@ -170,6 +207,7 @@ export default function MealPlanner() {
         weekStart,
         userId: authUser.id,
         dietaryTags: userProfile?.dietaryTags || [],
+        leftovers: userProfile?.leftovers || [],
       });
       return response.json();
     },
@@ -657,6 +695,58 @@ export default function MealPlanner() {
                     </p>
                   </div>
                 )}
+
+
+
+                {/* Leftovers Input */}
+                <div>
+                  <Label className="text-sm font-medium text-foreground mb-2 block">
+                    {t.currentLeftovers}
+                  </Label>
+                  <div className="space-y-2">
+                    <div className="flex gap-2">
+                      <Input
+                        type="text"
+                        value={newLeftover}
+                        onChange={(e) => setNewLeftover(e.target.value)}
+                        placeholder={t.leftoverPlaceholder}
+                        className="input-clean flex-1"
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                            addLeftover();
+                          }
+                        }}
+                      />
+                      <Button
+                        onClick={addLeftover}
+                        disabled={!newLeftover.trim() || updateProfileMutation.isPending}
+                        className="btn-outline"
+                        size="sm"
+                      >
+                        <Plus className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    
+                    {userProfile?.leftovers && userProfile.leftovers.length > 0 && (
+                      <div className="space-y-1">
+                        {userProfile.leftovers.map((leftover, index) => (
+                          <div key={index} className="flex items-center justify-between bg-secondary/50 px-3 py-2 rounded text-sm">
+                            <span>{leftover}</span>
+                            <Button
+                              onClick={() => removeLeftover(index)}
+                              disabled={updateProfileMutation.isPending}
+                              variant="ghost"
+                              size="sm"
+                              className="h-6 w-6 p-0 text-muted-foreground hover:text-destructive"
+                            >
+                              <X className="h-3 w-3" />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
                 
                 <div className="space-y-4">
                   <Button 
@@ -674,7 +764,7 @@ export default function MealPlanner() {
                     {(generateMutation.isPending || smartGenerateMutation.isPending) ? (
                       <>
                         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground mr-2" />
-                        Generating...
+                        {t.generateMealPlan}...
                       </>
                     ) : (
                       <>

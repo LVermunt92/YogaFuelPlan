@@ -7,18 +7,56 @@ import MealPlanner from "@/pages/meal-planner";
 import Profile from "@/pages/profile";
 import Auth from "@/pages/auth";
 import NotFound from "@/pages/not-found";
-import { Utensils, User, Menu, LogOut } from "lucide-react";
+import { Utensils, User, Menu, LogOut, Languages } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useTranslations, Language } from "@/lib/translations";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 
 function Navigation() {
   const [location] = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logout } = useAuth();
+  const [language, setLanguage] = useState<Language>("en");
+  const queryClient = useQueryClient();
+
+  // Fetch user profile for language
+  const { data: userProfile } = useQuery({
+    queryKey: ['/api/users', user?.id, 'profile'],
+    enabled: !!user?.id,
+  });
+
+  // Set language from user profile
+  useEffect(() => {
+    if (userProfile?.language) {
+      setLanguage(userProfile.language as Language);
+    }
+  }, [userProfile]);
+
+  const t = useTranslations(language);
+
+  // Update user language mutation
+  const updateLanguageMutation = useMutation({
+    mutationFn: async (newLanguage: Language) => {
+      if (!user?.id) throw new Error('User not authenticated');
+      const response = await apiRequest('PUT', `/api/users/${user.id}/profile`, { language: newLanguage });
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/users', user?.id, 'profile'] });
+    },
+  });
+
+  const changeLanguage = (newLanguage: Language) => {
+    setLanguage(newLanguage);
+    updateLanguageMutation.mutate(newLanguage);
+  };
 
   const navItems = [
-    { path: "/", label: "Meal Planner", icon: Utensils },
-    { path: "/profile", label: "Profile", icon: User }
+    { path: "/", label: t.mealPlanner, icon: Utensils },
+    { path: "/profile", label: t.profile, icon: User }
   ];
 
   return (
@@ -53,10 +91,24 @@ function Navigation() {
             </div>
           </div>
           
-          {/* User info and logout */}
+          {/* User info and controls */}
           <div className="hidden sm:flex sm:items-center sm:space-x-4">
             {user && (
               <>
+                {/* Language Selector */}
+                <div className="flex items-center space-x-2">
+                  <Languages className="h-4 w-4 text-gray-500" />
+                  <Select value={language} onValueChange={changeLanguage}>
+                    <SelectTrigger className="w-[80px] h-8 text-sm">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="en">EN</SelectItem>
+                      <SelectItem value="nl">NL</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
                 <span className="text-sm text-muted-foreground">
                   Welcome, {user.username}
                 </span>
@@ -109,6 +161,50 @@ function Navigation() {
               );
             })}
           </div>
+          
+          {/* Mobile Language Selector */}
+          {user && (
+            <div className="pt-2 pb-3 border-t border-gray-200">
+              <div className="px-3 py-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <Languages className="h-5 w-5 text-gray-400 mr-3" />
+                    <span className="text-base font-medium text-gray-600">Taal / Language</span>
+                  </div>
+                  <Select value={language} onValueChange={changeLanguage}>
+                    <SelectTrigger className="w-[80px] h-8 text-sm">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="en">EN</SelectItem>
+                      <SelectItem value="nl">NL</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+          )}
+          
+          {/* Mobile user info */}
+          {user && (
+            <div className="pt-2 pb-3 border-t border-gray-200">
+              <div className="px-3 py-2">
+                <div className="text-sm text-gray-600 mb-2">
+                  Welcome, {user.username}
+                </div>
+                <button
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    logout();
+                  }}
+                  className="flex items-center text-gray-600 hover:text-gray-800"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Logout
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </nav>

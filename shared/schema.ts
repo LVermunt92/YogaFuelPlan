@@ -20,6 +20,8 @@ export const users = pgTable("users", {
   cookingDaysPerWeek: integer("cooking_days_per_week").default(7),
   eatingDaysAtHome: integer("eating_days_at_home").default(7),
   meatFishMealsPerWeek: integer("meat_fish_meals_per_week").default(0),
+  language: text("language").default("en"), // en, nl
+  leftovers: text("leftovers").array().default([]), // current leftovers to use in meal planning
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -123,6 +125,8 @@ export const insertUserSchema = createInsertSchema(users).pick({
   activityLevel: true,
   proteinTarget: true,
   dietaryTags: true,
+  language: true,
+  leftovers: true,
 });
 
 export const authRegisterSchema = createInsertSchema(users).pick({
@@ -150,6 +154,8 @@ export const updateUserProfileSchema = createInsertSchema(users).pick({
   cookingDaysPerWeek: true,
   eatingDaysAtHome: true,
   meatFishMealsPerWeek: true,
+  language: true,
+  leftovers: true,
 });
 
 export const insertMealPlanSchema = createInsertSchema(mealPlans).omit({
@@ -191,6 +197,7 @@ export const mealPlanRequestSchema = z.object({
   weekStart: z.string(),
   userId: z.number().optional(),
   dietaryTags: z.array(z.enum(DIETARY_TAGS)).optional(),
+  leftovers: z.array(z.string()).optional(),
 });
 
 export const insertOuraDataSchema = createInsertSchema(ouraData).omit({

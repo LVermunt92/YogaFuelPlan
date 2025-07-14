@@ -108,6 +108,12 @@ Breakfast scheduling preference: Easy, quick breakfasts during weekdays (≤10 m
   - Weekends (Sat-Sun) receive elaborate breakfasts (≥15 min prep): pancakes, quinoa bowls, scrambled eggs
   - Enhanced meal prep function with proper breakfast categorization logic
   - Added detailed ingredient measurements with volumes, weights, and specific amounts to all recipes
+- **Dutch Language Support & Leftovers Integration** (July 14, 2025):
+  - Added comprehensive Dutch language support with full translation system
+  - Language selector moved to navigation menu (both desktop and mobile)
+  - Implemented leftovers input feature for meal plan generation
+  - Updated database schema to support language preference and leftovers tracking
+  - Enhanced meal generation to consider existing leftovers when creating meal plans
 
 ### Development Tools
 - **tsx**: TypeScript execution for development

@@ -84,13 +84,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Legacy endpoint - redirect to new endpoint
+  // Generate meal plan with leftovers support
   app.post("/api/meal-plans/generate", async (req, res) => {
     try {
-      const request = mealPlanRequestSchema.parse(req.body);
+      const { userId, weekStart, activityLevel, dietaryTags, leftovers } = req.body;
+      
+      if (!userId) {
+        return res.status(400).json({ message: "User ID is required" });
+      }
+
+      const request = {
+        userId,
+        weekStart: weekStart || new Date().toISOString().split('T')[0],
+        activityLevel: activityLevel || 'high',
+        dietaryTags: dietaryTags || [],
+        leftovers: leftovers || [],
+      };
       
       // Fetch user data for meal prep logic and caloric adjustments
-      const user = request.userId ? await storage.getUser(request.userId) : undefined;
+      const user = await storage.getUser(request.userId);
       
       const generated = generateWeeklyMealPlan(request, user);
       
@@ -315,7 +327,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         userId,
         weekStart: weekStart || new Date().toISOString().split('T')[0],
         activityLevel: activityLevel || user.activityLevel || 'high',
-        dietaryTags: dietaryTags || user.dietaryTags || []
+        dietaryTags: dietaryTags || user.dietaryTags || [],
+        leftovers: user.leftovers || []
       };
       
       const generatedPlan = generateWeeklyMealPlan(request, user);
