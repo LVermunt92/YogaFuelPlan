@@ -951,6 +951,10 @@ export default function MealPlanner() {
                         <div className="w-3 h-3 bg-gray-100 border-2 border-gray-400 rounded"></div>
                         <span className="text-muted-foreground">{t.eatingOut}</span>
                       </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-orange-600 text-sm">🥕</span>
+                        <span className="text-muted-foreground">{language === 'nl' ? 'Ingrediënt gebruikt' : 'Ingredient used up'}</span>
+                      </div>
                     </div>
                   </div>
 

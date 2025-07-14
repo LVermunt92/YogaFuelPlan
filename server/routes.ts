@@ -359,17 +359,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/meals/:mealId/recipe", async (req, res) => {
     try {
       const mealId = parseInt(req.params.mealId);
+      console.log(`Looking for meal ID: ${mealId}`);
       
       // Search through all meal plans to find the specific meal
       let targetMeal = null;
       const allMealPlans = await storage.getMealPlans();
+      console.log(`Found ${allMealPlans.length} meal plans to search`);
       
       for (const plan of allMealPlans) {
         const planWithMeals = await storage.getMealPlanWithMeals(plan.id);
         if (planWithMeals) {
+          console.log(`Plan ${plan.id} has ${planWithMeals.meals.length} meals`);
           for (const meal of planWithMeals.meals) {
             if (meal.id === mealId) {
               targetMeal = meal;
+              console.log(`Found meal: "${meal.foodDescription}"`);
               break;
             }
           }
@@ -378,6 +382,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       if (!targetMeal) {
+        console.log(`Meal with ID ${mealId} not found`);
         return res.status(404).json({ message: "Meal not found" });
       }
 
@@ -389,11 +394,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         .replace(" (leftover)", "")
         .replace(/ \(\d+x portions[^)]*\)/, "") // Remove "(2x portions - batch cook)" etc.
         .replace(/ \(batch cook\)/, "") // Remove standalone "(batch cook)"
+        .replace(/ \(incorporating leftover [^)]+\)/, "") // Remove "(incorporating leftover ingredient)"
         .trim();
+      
+      console.log(`Looking for recipe: "${cleanMealName}" (original: "${targetMeal.foodDescription}")`);
       
       let mealOption = ENHANCED_MEAL_DATABASE.find(option => 
         option.name === cleanMealName
       );
+      
+      console.log(`Recipe found: ${mealOption ? 'YES' : 'NO'}`);
+      if (!mealOption) {
+        console.log(`Available recipes: ${ENHANCED_MEAL_DATABASE.slice(0, 5).map(m => m.name).join(', ')}...`);
+      }
 
       // If recipe not found in database, generate with AI
       if (!mealOption || !mealOption.recipe) {
