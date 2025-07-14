@@ -403,6 +403,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
         option.name === cleanMealName
       );
       
+      // If not found, try looking for recipes with seasonal name adaptations
+      if (!mealOption) {
+        // Try finding by seasonal variations (e.g., "fresh" vs "warming")
+        const alternativeNames = [
+          cleanMealName.replace(/^fresh\s+/i, 'Warming '),
+          cleanMealName.replace(/^Fresh\s+/i, 'Warming '),
+          cleanMealName.replace(/^warming\s+/i, 'fresh '),
+          cleanMealName.replace(/^Warming\s+/i, 'fresh ')
+        ];
+        
+        for (const altName of alternativeNames) {
+          mealOption = ENHANCED_MEAL_DATABASE.find(option => option.name === altName);
+          if (mealOption) {
+            console.log(`Found recipe using alternative name: "${altName}"`);
+            break;
+          }
+        }
+      }
+      
       console.log(`Recipe found: ${mealOption ? 'YES' : 'NO'}`);
       if (!mealOption) {
         console.log(`Available recipes: ${ENHANCED_MEAL_DATABASE.slice(0, 5).map(m => m.name).join(', ')}...`);

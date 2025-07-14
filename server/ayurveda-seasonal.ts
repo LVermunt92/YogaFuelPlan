@@ -135,6 +135,9 @@ export function adaptRecipeForSeason(
   // Clone the recipe to avoid mutations
   const adaptedRecipe = JSON.parse(JSON.stringify(baseRecipe));
   
+  // Store original name for recipe lookup
+  adaptedRecipe.originalName = baseRecipe.name;
+  
   // Adapt recipe name for summer season (remove warming language)
   if (season === 'grishma') {
     if (adaptedRecipe.name.toLowerCase().includes('warming')) {
