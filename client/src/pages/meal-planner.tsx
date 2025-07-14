@@ -186,15 +186,44 @@ export default function MealPlanner() {
     if (!newLeftover.trim()) return;
     const currentLeftovers = userProfile?.leftovers || [];
     const updatedLeftovers = [...currentLeftovers, newLeftover.trim()];
-    updateProfileMutation.mutate({ leftovers: updatedLeftovers });
+    updateProfileMutation.mutate({ leftovers: updatedLeftovers }, {
+      onSuccess: () => {
+        toast({
+          title: t.leftoverAdded,
+          description: `"${newLeftover.trim()}" ${t.leftoverAdded.toLowerCase()}`,
+        });
+      },
+      onError: () => {
+        toast({
+          title: t.error,
+          description: t.failedToAddLeftover,
+          variant: "destructive",
+        });
+      }
+    });
     setNewLeftover("");
   };
 
   // Remove leftover function
   const removeLeftover = (index: number) => {
     const currentLeftovers = userProfile?.leftovers || [];
+    const removedItem = currentLeftovers[index];
     const updatedLeftovers = currentLeftovers.filter((_, i) => i !== index);
-    updateProfileMutation.mutate({ leftovers: updatedLeftovers });
+    updateProfileMutation.mutate({ leftovers: updatedLeftovers }, {
+      onSuccess: () => {
+        toast({
+          title: t.leftoverRemoved,
+          description: `"${removedItem}" ${t.leftoverRemoved.toLowerCase()}`,
+        });
+      },
+      onError: () => {
+        toast({
+          title: t.error,
+          description: t.failedToRemoveLeftover,
+          variant: "destructive",
+        });
+      }
+    });
   };
 
 
@@ -384,14 +413,14 @@ export default function MealPlanner() {
     },
     onSuccess: () => {
       toast({
-        title: "Added to Favorites",
-        description: "This meal has been saved to your favorites.",
+        title: t.addedToFavorites,
+        description: t.mealSavedToFavorites,
       });
     },
     onError: () => {
       toast({
-        title: "Error",
-        description: "Failed to add meal to favorites.",
+        title: t.error,
+        description: t.failedToAddFavorite,
         variant: "destructive",
       });
     },
@@ -404,14 +433,14 @@ export default function MealPlanner() {
     },
     onSuccess: () => {
       toast({
-        title: "Removed from Favorites",
-        description: "This meal has been removed from your favorites.",
+        title: t.removedFromFavorites,
+        description: t.mealRemovedFromFavorites,
       });
     },
     onError: () => {
       toast({
-        title: "Error",
-        description: "Failed to remove meal from favorites.",
+        title: t.error,
+        description: t.failedToRemoveFavorite,
         variant: "destructive",
       });
     },
@@ -501,10 +530,10 @@ export default function MealPlanner() {
         {/* Page Title */}
         <div className="mb-6">
           <h1 className="text-3xl font-light text-foreground mb-2" style={{ fontFamily: 'Times New Roman, serif', letterSpacing: '0.05em' }}>
-            Meal Planner
+            {t.mealPlanner}
           </h1>
           <p className="text-muted-foreground">
-            Personalised nutrition for your lifestyle
+            {t.personalisedNutrition}
           </p>
           <div className="text-sm text-muted-foreground mt-2">
             {t.lastGenerated}: <span className="text-foreground font-medium">{latestMealPlan ? formatDate(latestMealPlan.createdAt) : t.never}</span>
@@ -516,55 +545,55 @@ export default function MealPlanner() {
           <div className="card-clean mb-6">
             <div className="p-4">
             <h2 className="text-2xl font-bold text-foreground mb-4">
-              Welcome back to your week of {formatWeekRange(latestMealPlan.weekStart)}
+              {t.welcomeBack} {formatWeekRange(latestMealPlan.weekStart)}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-sm">
               <div>
-                <div className="text-muted-foreground mb-2">Your protein target</div>
+                <div className="text-muted-foreground mb-2">{t.yourProteinTarget}</div>
                 <div className="text-lg font-semibold text-foreground">
-                  {latestMealPlan.totalProtein.toFixed(1)}g daily
+                  {latestMealPlan.totalProtein.toFixed(1)}g {t.daily}
                 </div>
                 <div className="text-xs text-muted-foreground mt-1">
-                  {latestMealPlan.activityLevel === 'high' ? 'High activity week' : 'Moderate activity week'}
+                  {latestMealPlan.activityLevel === 'high' ? t.highActivityWeek : t.moderateActivityWeek}
                 </div>
               </div>
               <div>
-                <div className="text-muted-foreground mb-2">Meal preparation</div>
+                <div className="text-muted-foreground mb-2">{t.mealPreparation}</div>
                 <div className="text-lg font-semibold text-foreground">
-                  Under 30 minutes
+                  {t.under30Minutes}
                 </div>
                 <div className="text-xs text-muted-foreground mt-1">
-                  Quick & nutritious recipes
+                  {t.quickNutritiousRecipes}
                 </div>
               </div>
               <div>
-                <div className="text-muted-foreground mb-2">Cooking schedule</div>
+                <div className="text-muted-foreground mb-2">{t.cookingSchedule}</div>
                 <div className="text-lg font-semibold text-foreground">
-                  {userProfile?.cookingDaysPerWeek || 7} days/week
+                  {userProfile?.cookingDaysPerWeek || 7} {t.daysPerWeek}
                 </div>
                 <div className="text-xs text-muted-foreground mt-1">
-                  Eating {userProfile?.eatingDaysAtHome || 7} days at home
+                  {t.eating} {userProfile?.eatingDaysAtHome || 7} {t.daysAtHome}
                 </div>
               </div>
               <div>
-                <div className="text-muted-foreground mb-2">This week's focus</div>
+                <div className="text-muted-foreground mb-2">{t.thisWeeksFocus}</div>
                 <div className="text-lg font-semibold text-foreground">
-                  {userProfile?.meatFishMealsPerWeek ? `${userProfile.meatFishMealsPerWeek} meat/fish meals` : 'Plant-based nutrition'}
+                  {userProfile?.meatFishMealsPerWeek ? `${userProfile.meatFishMealsPerWeek} ${t.meatFishMeals}` : t.plantBasedNutrition}
                 </div>
                 <div className="text-xs text-muted-foreground mt-1">
-                  {userProfile?.dietaryTags?.join(', ') || 'Vegetarian, gluten & lactose-free'}
+                  {userProfile?.dietaryTags?.join(', ') || t.vegetarianGlutenLactoseFree}
                 </div>
               </div>
             </div>
             {latestOuraData && (
               <div className="mt-6 p-4 bg-muted/30 rounded-lg">
                 <div className="text-sm text-muted-foreground mb-2">
-                  Latest activity insight from {formatDate(latestOuraData.date)}
+                  {t.latestActivityInsight} {formatDate(latestOuraData.date)}
                 </div>
                 <div className="text-sm text-foreground">
-                  Your activity level is <span className="font-medium">{latestOuraData.activityLevel}</span> with {latestOuraData.steps?.toLocaleString() || 'N/A'} steps. 
+                  {t.yourActivityLevel} <span className="font-medium">{latestOuraData.activityLevel}</span> {latestOuraData.steps?.toLocaleString() || 'N/A'} {t.steps}. 
                   {latestOuraData.periodPhase && (
-                    <span className="ml-2">Currently in {latestOuraData.periodPhase} phase.</span>
+                    <span className="ml-2">{t.currentlyInPhase} {latestOuraData.periodPhase} {t.phase}.</span>
                   )}
                 </div>
               </div>
@@ -579,10 +608,10 @@ export default function MealPlanner() {
             <div className="flex items-center justify-between mb-6">
             <div className="flex items-center">
               <Activity className="h-6 w-6 text-foreground mr-4" />
-              <h2 className="text-xl font-semibold text-foreground">Health & Activity Tracking</h2>
+              <h2 className="text-xl font-semibold text-foreground">{t.healthActivityTracking}</h2>
             </div>
             <Badge variant={ouraStatus?.connected ? "default" : "secondary"}>
-              {ouraStatus?.connected ? "Connected" : "Not Connected"}
+              {ouraStatus?.connected ? t.connected : t.notConnected}
             </Badge>
           </div>
             
@@ -591,13 +620,13 @@ export default function MealPlanner() {
                 {latestOuraData && (
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                     <div className="bg-card border border-border p-6">
-                      <div className="text-xs text-muted-foreground mb-2 font-medium">Activity Score</div>
+                      <div className="text-xs text-muted-foreground mb-2 font-medium">{t.activityScore}</div>
                       <div className="text-2xl font-bold text-foreground">
                         {latestOuraData.activityScore || 'N/A'}
                       </div>
                     </div>
                     <div className="bg-card border border-border p-6">
-                      <div className="text-xs text-muted-foreground mb-2 font-medium">Steps</div>
+                      <div className="text-xs text-muted-foreground mb-2 font-medium">{t.steps}</div>
                       <div className="text-2xl font-bold text-foreground">
                         {latestOuraData.steps?.toLocaleString() || 'N/A'}
                       </div>
@@ -785,7 +814,7 @@ export default function MealPlanner() {
                     ) : (
                       <>
                         <Activity className="mr-2 h-4 w-4" />
-                        {latestOuraData && ouraStatus?.connected ? 'Smart Generate Plan' : 'Generate Meal Plan'}
+                        {latestOuraData && ouraStatus?.connected ? t.smartGeneratePlan : t.generateMealPlan}
                       </>
                     )}
                   </Button>
@@ -806,12 +835,12 @@ export default function MealPlanner() {
                         onClick={() => setShowShoppingList(true)}
                       >
                         <ShoppingCart className="mr-2 h-4 w-4" />
-                        Generate Shopping List
+                        {t.generateShoppingList}
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
                       <DialogHeader>
-                        <DialogTitle>Shopping List</DialogTitle>
+                        <DialogTitle>{t.shoppingListHeader}</DialogTitle>
                       </DialogHeader>
                       
                       {loadingShoppingList ? (
@@ -822,10 +851,10 @@ export default function MealPlanner() {
                         <div className="space-y-6">
                           <div className="flex justify-between items-center">
                             <span className="text-sm text-slate-600">
-                              Week of {formatWeekRange(shoppingListData.weekStart)}
+                              {t.weekOf} {formatWeekRange(shoppingListData.weekStart)}
                             </span>
                             <Badge variant="secondary">
-                              {shoppingListData.totalItems} items
+                              {shoppingListData.totalItems} {t.items}
                             </Badge>
                           </div>
                           
@@ -858,7 +887,7 @@ export default function MealPlanner() {
                         </div>
                       ) : (
                         <p className="text-center text-slate-500 py-8">
-                          Select a meal plan to generate shopping list
+                          {t.selectMealPlanForShoppingList}
                         </p>
                       )}
                     </DialogContent>
@@ -876,11 +905,11 @@ export default function MealPlanner() {
               <div className="mb-8">
                 <div className="flex justify-between items-center">
                   <h2 className="text-xl font-semibold text-foreground">
-                    Weekly Meal Plan
+                    {t.weeklyMealPlan}
                   </h2>
                   <div className="flex items-center space-x-3">
                     <div className="text-sm text-muted-foreground">
-                      Week of <span className="text-foreground font-medium">{displayedMealPlan ? formatWeekRange(displayedMealPlan.weekStart) : "No plan"}</span>
+                      {t.weekOf} <span className="text-foreground font-medium">{displayedMealPlan ? formatWeekRange(displayedMealPlan.weekStart) : t.noPlan}</span>
                     </div>
                     {displayedMealPlan?.notionSynced && (
                       <Badge variant="secondary">
@@ -902,19 +931,19 @@ export default function MealPlanner() {
                 <>
                   {/* Meal Prep Legend */}
                   <div className="mb-6 p-4 bg-muted/20 rounded-lg">
-                    <h3 className="text-sm font-medium text-foreground mb-3">Meal Prep Guide</h3>
+                    <h3 className="text-sm font-medium text-foreground mb-3">{t.mealPrepGuide}</h3>
                     <div className="flex flex-wrap gap-4 text-xs">
                       <div className="flex items-center gap-2">
                         <div className="w-3 h-3 bg-emerald-100 border-2 border-emerald-500 rounded"></div>
-                        <span className="text-muted-foreground">Fresh cooking day</span>
+                        <span className="text-muted-foreground">{t.freshCookingDay}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-3 h-3 bg-blue-100 border-2 border-blue-500 rounded"></div>
-                        <span className="text-muted-foreground">Reheat leftover (5 min)</span>
+                        <span className="text-muted-foreground">{t.reheatLeftover}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-3 h-3 bg-gray-100 border-2 border-gray-400 rounded"></div>
-                        <span className="text-muted-foreground">Eating out</span>
+                        <span className="text-muted-foreground">{t.eatingOut}</span>
                       </div>
                     </div>
                   </div>
@@ -923,12 +952,12 @@ export default function MealPlanner() {
                     <table className="w-full">
                       <thead className="border-b border-border">
                         <tr>
-                          <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Day</th>
-                          <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Meal</th>
-                          <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Food</th>
-                          <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Portion</th>
-                          <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Protein (g)</th>
-                          <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Prep</th>
+                          <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.day}</th>
+                          <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.meal}</th>
+                          <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.food}</th>
+                          <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.portion}</th>
+                          <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.protein} (g)</th>
+                          <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.prep}</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-border">
@@ -948,15 +977,15 @@ export default function MealPlanner() {
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">
                                       {index === 0 ? (
                                         <div>
-                                          <div className="font-semibold">Day {day}</div>
+                                          <div className="font-semibold">{t.day} {day}</div>
                                           <div className="text-xs text-muted-foreground">
-                                            {day === 1 ? 'Sunday' : 
-                                             day === 2 ? 'Monday' : 
-                                             day === 3 ? 'Tuesday' : 
-                                             day === 4 ? 'Wednesday' : 
-                                             day === 5 ? 'Thursday' : 
-                                             day === 6 ? 'Friday' : 
-                                             day === 7 ? 'Saturday' : 'Sunday'}
+                                            {day === 1 ? t.sunday : 
+                                             day === 2 ? t.monday : 
+                                             day === 3 ? t.tuesday : 
+                                             day === 4 ? t.wednesday : 
+                                             day === 5 ? t.thursday : 
+                                             day === 6 ? t.friday : 
+                                             day === 7 ? t.saturday : t.sunday}
                                           </div>
                                         </div>
                                       ) : ''}
@@ -982,6 +1011,11 @@ export default function MealPlanner() {
                                           className="text-left hover:text-primary hover:underline cursor-pointer flex items-center gap-2"
                                         >
                                           <BookOpen className="w-4 h-4" />
+                                          {isLeftover && (
+                                            <span className="text-blue-600 text-sm" title={t.leftoverItem}>
+                                              ♻️
+                                            </span>
+                                          )}
                                           {meal.foodDescription}
                                         </button>
                                       )}
@@ -1150,7 +1184,7 @@ export default function MealPlanner() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <ChefHat className="h-5 w-5 text-emerald-600" />
-              Recipe Details
+              {t.recipeDetails}
             </DialogTitle>
           </DialogHeader>
           
@@ -1175,37 +1209,37 @@ export default function MealPlanner() {
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 text-sm">
                   <div>
-                    <span className="text-slate-600">Portion:</span>
+                    <span className="text-slate-600">{t.portion}:</span>
                     <p className="font-medium">{recipeData.portion}</p>
                   </div>
                   <div>
-                    <span className="text-slate-600">Protein:</span>
+                    <span className="text-slate-600">{t.protein}:</span>
                     <p className="font-medium text-emerald-600">{recipeData.nutrition?.protein}g</p>
                   </div>
                   <div>
-                    <span className="text-slate-600">Prep Time:</span>
+                    <span className="text-slate-600">{t.prepTime}:</span>
                     <p className="font-medium flex items-center gap-1">
                       <Timer className="w-3 h-3" />
-                      {recipeData.prepTime} min
+                      {recipeData.prepTime} {t.min}
                     </p>
                   </div>
                   <div>
-                    <span className="text-slate-600">Calories:</span>
+                    <span className="text-slate-600">{t.calories}:</span>
                     <p className="font-medium text-orange-600">{recipeData.nutrition?.calories}</p>
                   </div>
                   <div>
-                    <span className="text-slate-600">Carbs:</span>
+                    <span className="text-slate-600">{t.carbs}:</span>
                     <p className="font-medium text-blue-600">{recipeData.nutrition?.carbohydrates}g</p>
                   </div>
                   {recipeData.nutrition?.costEuros && (
                     <div>
-                      <span className="text-slate-600">Cost:</span>
+                      <span className="text-slate-600">{t.cost}:</span>
                       <p className="font-medium text-purple-600">€{recipeData.nutrition.costEuros.toFixed(2)}</p>
                     </div>
                   )}
                   {recipeData.nutrition?.proteinPerEuro && (
                     <div>
-                      <span className="text-slate-600">Protein/€:</span>
+                      <span className="text-slate-600">{t.proteinPerEuro}:</span>
                       <p className="font-medium text-indigo-600">{recipeData.nutrition.proteinPerEuro.toFixed(1)}g/€</p>
                     </div>
                   )}
@@ -1229,16 +1263,16 @@ export default function MealPlanner() {
               {recipeData.vegetableContent && (
                 <div className="bg-green-50 rounded-lg p-4">
                   <h4 className="font-semibold text-green-900 mb-3 flex items-center gap-2">
-                    🥬 Vegetable Content
+                    🥬 {t.vegetableContent}
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <p className="text-sm text-green-700 mb-2">
-                        <span className="font-medium">Servings:</span> {recipeData.vegetableContent.servings}
+                        <span className="font-medium">{t.servings}:</span> {recipeData.vegetableContent.servings}
                       </p>
                       {recipeData.vegetableContent.vegetables.length > 0 && (
                         <div>
-                          <p className="text-sm font-medium text-green-700 mb-1">Vegetables:</p>
+                          <p className="text-sm font-medium text-green-700 mb-1">{t.vegetables}:</p>
                           <div className="flex flex-wrap gap-1">
                             {recipeData.vegetableContent.vegetables.map((veg, index) => (
                               <Badge key={index} variant="secondary" className="bg-green-100 text-green-800 text-xs">
@@ -1251,7 +1285,7 @@ export default function MealPlanner() {
                     </div>
                     {recipeData.vegetableContent.benefits.length > 0 && (
                       <div>
-                        <p className="text-sm font-medium text-green-700 mb-1">Health Benefits:</p>
+                        <p className="text-sm font-medium text-green-700 mb-1">{t.healthBenefits}:</p>
                         <ul className="space-y-1">
                           {recipeData.vegetableContent.benefits.map((benefit, index) => (
                             <li key={index} className="flex gap-2 text-sm text-green-600">
@@ -1270,7 +1304,7 @@ export default function MealPlanner() {
               <div>
                 <h4 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
                   <ShoppingCart className="w-4 h-4" />
-                  Ingredients
+                  {t.ingredients}
                 </h4>
                 <div className="grid grid-cols-2 gap-2">
                   {recipeData.ingredients.map((ingredient, index) => (
@@ -1288,7 +1322,7 @@ export default function MealPlanner() {
               <div>
                 <h4 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
                   <BookOpen className="w-4 h-4" />
-                  Instructions
+                  {t.instructions}
                 </h4>
                 <ol className="space-y-3">
                   {recipeData.instructions.map((instruction, index) => (
@@ -1307,7 +1341,7 @@ export default function MealPlanner() {
                 <>
                   <Separator />
                   <div>
-                    <h4 className="font-semibold text-slate-900 mb-3">💡 Tips</h4>
+                    <h4 className="font-semibold text-slate-900 mb-3">💡 {t.tips}</h4>
                     <ul className="space-y-2">
                       {recipeData.tips.map((tip, index) => (
                         <li key={index} className="flex gap-2 text-sm text-slate-600">
@@ -1325,7 +1359,7 @@ export default function MealPlanner() {
                 <>
                   <Separator />
                   <div className="bg-blue-50 rounded-lg p-4">
-                    <h4 className="font-semibold text-blue-900 mb-2">📝 Notes</h4>
+                    <h4 className="font-semibold text-blue-900 mb-2">📝 {t.notes}</h4>
                     <p className="text-blue-800 text-sm leading-relaxed">
                       {recipeData.notes}
                     </p>
@@ -1336,7 +1370,7 @@ export default function MealPlanner() {
           ) : (
             <div className="p-6 text-center text-slate-500">
               <BookOpen className="mx-auto h-12 w-12 mb-4 opacity-50" />
-              <p>Recipe not available for this meal.</p>
+              <p>{t.recipeNotAvailable}</p>
             </div>
           )}
         </DialogContent>

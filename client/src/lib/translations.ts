@@ -44,6 +44,50 @@ export const translations = {
     count: "Count",
     amount: "Amount",
     
+    // Common UI
+    close: "Close",
+    loading: "Loading...",
+    generate: "Generate",
+    regenerate: "Regenerate",
+    export: "Export",
+    view: "View",
+    add: "Add",
+    remove: "Remove",
+    save: "Save",
+    cancel: "Cancel",
+    edit: "Edit",
+    delete: "Delete",
+    
+    // Welcome and Summary
+    welcomeBack: "Welcome back to your week of",
+    yourProteinTarget: "Your protein target",
+    daily: "daily",
+    activityLevelSet: "Activity level set",
+    personalisedNutrition: "Personalised nutrition for your lifestyle",
+    
+    // Meal Plan Display
+    totalProtein: "Total Protein",
+    prepTimeTotal: "Total Prep Time",
+    mealPlanFor: "Meal Plan for",
+    noMealPlan: "No meal plan selected",
+    selectMealPlan: "Select a meal plan to view",
+    
+    // Favorites and History
+    addToFavorites: "Add to Favorites",
+    removeFromFavorites: "Remove from Favorites",
+    addedToFavorites: "Added to Favorites",
+    removedFromFavorites: "Removed from Favorites",
+    mealSavedToFavorites: "This meal has been saved to your favorites.",
+    mealRemovedFromFavorites: "This meal has been removed from your favorites.",
+    failedToAddFavorite: "Failed to add meal to favorites.",
+    failedToRemoveFavorite: "Failed to remove meal from favorites.",
+    
+    // Status and Errors
+    error: "Error",
+    success: "Success",
+    warning: "Warning",
+    info: "Info",
+    
     // Days
     monday: "Monday",
     tuesday: "Tuesday", 
@@ -128,6 +172,126 @@ export const translations = {
     categories: "Categorieën",
     count: "Aantal",
     amount: "Hoeveelheid",
+    
+    // Common UI
+    close: "Sluiten",
+    loading: "Laden...",
+    generate: "Genereren",
+    regenerate: "Opnieuw Genereren",
+    export: "Exporteren",
+    view: "Bekijken",
+    add: "Toevoegen",
+    remove: "Verwijderen",
+    save: "Opslaan",
+    cancel: "Annuleren",
+    edit: "Bewerken",
+    delete: "Verwijderen",
+    
+    // Welcome and Summary
+    welcomeBack: "Welkom terug bij je week van",
+    yourProteinTarget: "Je eiwitdoel",
+    daily: "dagelijks",
+    activityLevelSet: "Activiteitsniveau ingesteld",
+    personalisedNutrition: "Gepersonaliseerde voeding voor jouw levensstijl",
+    
+    // Meal Plan Display
+    totalProtein: "Totaal Eiwit",
+    prepTimeTotal: "Totale Bereidingstijd",
+    mealPlanFor: "Maaltijdplan voor",
+    noMealPlan: "Geen maaltijdplan geselecteerd",
+    selectMealPlan: "Selecteer een maaltijdplan om te bekijken",
+    
+    // Favorites and History
+    addToFavorites: "Toevoegen aan Favorieten",
+    removeFromFavorites: "Verwijderen van Favorieten",
+    addedToFavorites: "Toegevoegd aan Favorieten",
+    removedFromFavorites: "Verwijderd van Favorieten",
+    mealSavedToFavorites: "Deze maaltijd is opgeslagen in je favorieten.",
+    mealRemovedFromFavorites: "Deze maaltijd is verwijderd uit je favorieten.",
+    failedToAddFavorite: "Kon maaltijd niet toevoegen aan favorieten.",
+    failedToRemoveFavorite: "Kon maaltijd niet verwijderen uit favorieten.",
+    
+    // Status and Errors
+    error: "Fout",
+    success: "Succes",
+    warning: "Waarschuwing",
+    info: "Info",
+    
+    // Activity and Health
+    highActivityWeek: "Hoge activiteit week",
+    moderateActivityWeek: "Gematigde activiteit week",
+    mealPreparation: "Maaltijdbereiding",
+    under30Minutes: "Onder 30 minuten",
+    quickNutritiousRecipes: "Snelle & voedzame recepten",
+    cookingSchedule: "Kookschema",
+    daysPerWeek: "dagen/week",
+    eating: "Eten",
+    daysAtHome: "dagen thuis",
+    thisWeeksFocus: "Deze week's focus",
+    meatFishMeals: "vlees/vis maaltijden",
+    plantBasedNutrition: "Plantaardige voeding",
+    vegetarianGlutenLactoseFree: "Vegetarisch, gluten & lactosevrij",
+    latestActivityInsight: "Laatste activiteit inzicht van",
+    yourActivityLevel: "Je activiteitsniveau is",
+    steps: "stappen",
+    currentlyInPhase: "Momenteel in",
+    phase: "fase",
+    
+    // Health Tracking
+    healthActivityTracking: "Gezondheid & Activiteit Tracking",
+    connected: "Verbonden",
+    notConnected: "Niet Verbonden",
+    activityScore: "Activiteit Score",
+    sleepScore: "Slaap Score",
+    readinessScore: "Gereedheid Score",
+    
+    // Meal Plan Generation
+    mealPlanGeneration: "Maaltijdplan Generatie",
+    selectedOptions: "Geselecteerde Opties",
+    
+    // Shopping List Headers
+    shoppingListFor: "Boodschappenlijst voor",
+    categoryHeader: "Categorie",
+    ingredientHeader: "Ingrediënt",
+    countHeader: "Aantal",
+    amountHeader: "Hoeveelheid",
+    
+    // Leftovers
+    leftoverItem: "Restje gebruikt",
+    usingLeftovers: "Gebruikt restjes",
+    leftoverAdded: "Restje toegevoegd",
+    leftoverRemoved: "Restje verwijderd",
+    failedToAddLeftover: "Kon restje niet toevoegen",
+    failedToRemoveLeftover: "Kon restje niet verwijderen",
+    
+    // Recipe Dialog
+    recipeDetails: "Recept Details",
+    recipeNotAvailable: "Recept niet beschikbaar voor deze maaltijd.",
+    vegetableContent: "Groente Inhoud",
+    servings: "Porties",
+    vegetables: "Groenten",
+    healthBenefits: "Gezondheidsvoordelen",
+    min: "min",
+    
+    // Shopping List
+    shoppingListHeader: "Boodschappenlijst",
+    generateShoppingList: "Genereer Boodschappenlijst",
+    smartGeneratePlan: "Smart Genereer Plan",
+    selectMealPlanForShoppingList: "Selecteer een maaltijdplan om een boodschappenlijst te genereren",
+    weekOf: "Week van",
+    items: "items",
+    
+    // Meal Plan Display
+    weeklyMealPlan: "Wekelijks Maaltijdplan",
+    noPlan: "Geen plan",
+    freshCookingDay: "Verse kook dag",
+    reheatLeftover: "Restje opwarmen (5 min)",
+    eatingOut: "Uit eten",
+    day: "Dag",
+    meal: "Maaltijd",
+    food: "Voedsel",
+    prep: "Bereiden",
+    mealPrepGuide: "Maaltijd Bereidingsgids",
     
     // Days
     monday: "Maandag",
