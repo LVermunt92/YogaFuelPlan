@@ -73,6 +73,8 @@ export const translations = {
     mealPlanGenerated: "Meal plan generated successfully!",
     mealPlanRegenerated: "Meal plan regenerated successfully!",
     errorGenerating: "Error generating meal plan",
+    lastGenerated: "Last generated",
+    never: "Never",
     errorSyncing: "Error syncing to Notion",
     syncedSuccessfully: "Synced to Notion successfully!",
     
@@ -156,6 +158,8 @@ export const translations = {
     mealPlanGenerated: "Maaltijdplan succesvol gegenereerd!",
     mealPlanRegenerated: "Maaltijdplan succesvol opnieuw gegenereerd!",
     errorGenerating: "Fout bij het genereren van maaltijdplan",
+    lastGenerated: "Laatst gegenereerd",
+    never: "Nooit",
     errorSyncing: "Fout bij synchroniseren naar Notion",
     syncedSuccessfully: "Succesvol gesynchroniseerd naar Notion!",
     

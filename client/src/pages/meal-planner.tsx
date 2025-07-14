@@ -215,6 +215,7 @@ export default function MealPlanner() {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['/api/meal-plans'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/meal-plans', authUser?.id] });
       setSelectedMealPlan(data.mealPlan.id);
       toast({
         title: "Meal Plan Generated",
@@ -353,6 +354,7 @@ export default function MealPlanner() {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['/api/meal-plans'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/meal-plans', authUser?.id] });
       setSelectedMealPlan(data.mealPlan.id);
       toast({
         title: "Smart Meal Plan Generated",
@@ -506,7 +508,7 @@ export default function MealPlanner() {
             Personalised nutrition for your lifestyle
           </p>
           <div className="text-sm text-muted-foreground mt-2">
-            Last generated: <span className="text-foreground font-medium">{latestMealPlan ? formatDate(latestMealPlan.createdAt) : "Never"}</span>
+            {t.lastGenerated}: <span className="text-foreground font-medium">{latestMealPlan ? formatDate(latestMealPlan.createdAt) : t.never}</span>
           </div>
         </div>
         

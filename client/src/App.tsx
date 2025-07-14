@@ -58,16 +58,15 @@ function Navigation() {
 
   const changeLanguage = (newLanguage: Language) => {
     setLanguage(newLanguage);
+    // Save language to localStorage immediately
+    localStorage.setItem('preferred_language', newLanguage);
+    
     updateLanguageMutation.mutate(newLanguage, {
       onSuccess: () => {
         // Force refresh of all components by invalidating all queries
         queryClient.invalidateQueries();
-        // Save language to localStorage for immediate use
-        localStorage.setItem('preferred_language', newLanguage);
-        // Force a longer delay to ensure database update completes
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
+        // Reload the page to ensure all components re-render with new language
+        window.location.reload();
       }
     });
   };
