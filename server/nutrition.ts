@@ -528,7 +528,7 @@ export const MEAL_DATABASE: MealOption[] = [
     portion: "3 pancakes + vegetables + 2 tbsp tahini",
     nutrition: { protein: 34, prepTime: 25, costEuros: 3.60, proteinPerEuro: 9.4 },
     category: "dinner",
-    tags: ["gluten-free-flour", "calcium", "unique"],
+    tags: ["gluten-free-flour", "calcium", "unique", "ayurvedic"],
     ingredients: ["chickpea flour", "tahini", "spinach", "mushrooms", "onions", "bell peppers", "turmeric", "cumin", "nutritional yeast", "olive oil"],
     vegetableContent: {
       servings: 4,
@@ -560,7 +560,7 @@ export const MEAL_DATABASE: MealOption[] = [
     portion: "Mixed vegetables + quinoa + 3 tbsp hemp + dressing",
     nutrition: { protein: 30, prepTime: 20, costEuros: 5.40, proteinPerEuro: 5.6 },
     category: "dinner",
-    tags: ["rainbow", "omega-3", "customizable"],
+    tags: ["rainbow", "omega-3", "customizable", "ayurvedic"],
     ingredients: ["quinoa", "hemp hearts", "almond butter", "roasted chickpeas", "kale", "purple cabbage", "carrots", "beets", "avocado", "lemon", "ginger"],
     vegetableContent: {
       servings: 5,

@@ -58,7 +58,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 8.2 
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "dairy-free", "high-protein", "anti-inflammatory", "whole30"],
+    tags: ["vegetarian", "gluten-free", "dairy-free", "high-protein", "anti-inflammatory", "whole30", "ayurvedic"],
     ingredients: [
       "½ cup steel-cut oats",
       "¼ cup mixed raw almonds and walnuts (chopped)",
@@ -161,7 +161,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.7 
     },
     category: "breakfast",
-    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "dairy-free", "raw", "anti-inflammatory"],
+    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "dairy-free", "raw", "anti-inflammatory", "ayurvedic"],
     ingredients: [
       "3 tbsp chia seeds",
       "¾ cup unsweetened almond milk",
@@ -212,7 +212,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.8
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "lactose-free", "high-fiber", "make-ahead"],
+    tags: ["vegetarian", "gluten-free", "lactose-free", "high-fiber", "make-ahead", "ayurvedic"],
     ingredients: [
       "½ cup gluten-free rolled oats",
       "½ cup unsweetened almond milk",
@@ -260,7 +260,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.1
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "lactose-free", "high-protein", "superfood"],
+    tags: ["vegetarian", "gluten-free", "lactose-free", "high-protein", "superfood", "ayurvedic"],
     ingredients: [
       "½ cup cooked quinoa",
       "½ cup coconut yogurt",
@@ -359,7 +359,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.8
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "lactose-free", "high-fiber", "antioxidant"],
+    tags: ["vegetarian", "gluten-free", "lactose-free", "high-fiber", "antioxidant", "ayurvedic"],
     ingredients: [
       "1 cup spinach",
       "½ frozen banana",
@@ -412,7 +412,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.7 
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "lactose-free", "probiotic", "fermented", "high-protein"],
+    tags: ["vegetarian", "gluten-free", "lactose-free", "probiotic", "fermented", "high-protein", "ayurvedic"],
     ingredients: [
       "200ml long-fermented kefir (24+ hours)",
       "¼ cup gluten-free oat granola", 
@@ -622,7 +622,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.9 
     },
     category: "lunch",
-    tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "high-protein", "anti-inflammatory"],
+    tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "high-protein", "anti-inflammatory", "ayurvedic"],
     ingredients: [
       "200g tempeh (sliced)",
       "1 medium zucchini (sliced)",

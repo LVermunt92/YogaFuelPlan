@@ -31,7 +31,8 @@ const DIETARY_TAGS = [
   "sugar-free",
   "whole30",
   "raw",
-  "pescatarian"
+  "pescatarian",
+  "ayurvedic"
 ] as const;
 
 interface UserProfile {
