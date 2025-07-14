@@ -1884,7 +1884,7 @@ export function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' | 'lunc
           ingredient.toLowerCase().includes('mustard seeds')
         );
         
-        console.log(`DEBUG: ${meal.name} - warming tags: ${hasWarmingTags}, heating spices: ${hasHeatingSpices}, tags: [${meal.tags.join(', ')}]`);
+
         
         if (hasWarmingTags || hasHeatingSpices) {
           console.log(`🚫 Summer exclusion: ${meal.name} removed (inappropriate warming characteristics for grishma season)`);

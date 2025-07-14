@@ -166,6 +166,12 @@ Breakfast scheduling preference: Easy, quick breakfasts during weekdays (≤10 m
   - Fixed comprehensive heating spice detection (ginger, turmeric, cumin, cinnamon, cardamom, cloves, garam masala, mustard seeds)
   - Summer filtering now works completely across both regular and meal prep generation modes
   - Zero warming recipes appear in summer meal plans, ensuring authentic Ayurvedic practice
+- **Complete Resolution of Summer Filtering Architecture** (July 14, 2025):
+  - RESOLVED: Universal summer filtering now correctly applies to ALL ayurvedic recipes regardless of user's dietary preference selection
+  - Critical fix: Modified filtering logic to check meal.tags.includes('ayurvedic') instead of dietaryTags.includes('ayurvedic')
+  - Verification confirmed: Only cooling ayurvedic recipes appear in summer ("Cooling cucumber and mint quinoa salad", "Fresh coconut and herb steamed vegetables", "Cooling mung bean curry")
+  - Complete exclusion: All warming recipes with heating spices properly filtered out during grishma season
+  - System now provides authentic Ayurvedic seasonal adaptation universally across all user profiles and meal generation modes
 
 ### Development Tools
 - **tsx**: TypeScript execution for development

@@ -243,36 +243,35 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
     mealsToGenerate.forEach(mealCategory => {
       let availableMeals = getEnhancedMealsForCategoryAndDiet(mealCategory, dietaryTags);
       
-      // Apply summer filtering for ayurvedic meals - completely exclude warming recipes during grishma season
-      if (dietaryTags.includes('ayurvedic')) {
-        const currentSeason = getCurrentAyurvedicSeason(new Date(), 'europe');
-        if (currentSeason === 'grishma') {
-          const originalCount = availableMeals.length;
-          availableMeals = availableMeals.filter(meal => {
-            if (!meal.tags.includes('ayurvedic')) return true; // Keep non-ayurvedic meals
-            
-            const hasWarmingTags = meal.tags.includes('warming');
-            const hasHeatingSpices = meal.ingredients.some(ingredient => 
-              ingredient.toLowerCase().includes('ginger') ||
-              ingredient.toLowerCase().includes('turmeric') ||
-              ingredient.toLowerCase().includes('cumin') ||
-              ingredient.toLowerCase().includes('garam masala') ||
-              ingredient.toLowerCase().includes('mustard seeds') ||
-              ingredient.toLowerCase().includes('cinnamon') ||
-              ingredient.toLowerCase().includes('cardamom') ||
-              ingredient.toLowerCase().includes('cloves')
-            );
-            
-            if (hasWarmingTags || hasHeatingSpices) {
-              console.log(`🚫 Summer exclusion: ${meal.name} removed (inappropriate warming characteristics for grishma season)`);
-              return false; // Exclude warming recipes completely
-            }
-            return true; // Keep cooling/neutral ayurvedic recipes
-          });
+      // Apply summer filtering for ALL ayurvedic meals - regardless of user's dietary selection
+      // All ayurvedic recipes should follow seasonal guidelines during grishma season
+      const currentSeason = getCurrentAyurvedicSeason(new Date(), 'europe');
+      if (currentSeason === 'grishma') {
+        const originalCount = availableMeals.length;
+        availableMeals = availableMeals.filter(meal => {
+          if (!meal.tags.includes('ayurvedic')) return true; // Keep non-ayurvedic meals
           
-          if (originalCount !== availableMeals.length) {
-            console.log(`Summer filter: ${originalCount} → ${availableMeals.length} ayurvedic ${mealCategory} meals (excluded warming recipes)`);
+          const hasWarmingTags = meal.tags.includes('warming');
+          const hasHeatingSpices = meal.ingredients.some(ingredient => 
+            ingredient.toLowerCase().includes('ginger') ||
+            ingredient.toLowerCase().includes('turmeric') ||
+            ingredient.toLowerCase().includes('cumin') ||
+            ingredient.toLowerCase().includes('garam masala') ||
+            ingredient.toLowerCase().includes('mustard seeds') ||
+            ingredient.toLowerCase().includes('cinnamon') ||
+            ingredient.toLowerCase().includes('cardamom') ||
+            ingredient.toLowerCase().includes('cloves')
+          );
+          
+          if (hasWarmingTags || hasHeatingSpices) {
+            console.log(`🚫 Summer exclusion: ${meal.name} removed (ayurvedic recipe with inappropriate warming characteristics for grishma season)`);
+            return false; // Exclude warming recipes completely
           }
+          return true; // Keep cooling/neutral ayurvedic recipes
+        });
+        
+        if (originalCount !== availableMeals.length) {
+          console.log(`Summer filter: ${originalCount} → ${availableMeals.length} ${mealCategory} meals (excluded warming ayurvedic recipes)`);
         }
       }
       
@@ -479,43 +478,42 @@ function generateMealPrepPlan(
   let lunchOptions = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
   let dinnerOptions = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
   
-  // Apply summer filtering for ayurvedic meals - completely exclude warming recipes during grishma season
-  if (dietaryTags.includes('ayurvedic')) {
-    const currentSeason = getCurrentAyurvedicSeason(new Date(), 'europe');
-    if (currentSeason === 'grishma') {
-      const applySeasonalFilter = (meals: any[], category: string) => {
-        const originalCount = meals.length;
-        const filtered = meals.filter(meal => {
-          if (!meal.tags.includes('ayurvedic')) return true; // Keep non-ayurvedic meals
-          
-          const hasWarmingTags = meal.tags.includes('warming');
-          const hasHeatingSpices = meal.ingredients.some((ingredient: string) => 
-            ingredient.toLowerCase().includes('ginger') ||
-            ingredient.toLowerCase().includes('turmeric') ||
-            ingredient.toLowerCase().includes('cumin') ||
-            ingredient.toLowerCase().includes('garam masala') ||
-            ingredient.toLowerCase().includes('mustard seeds') ||
-            ingredient.toLowerCase().includes('cinnamon') ||
-            ingredient.toLowerCase().includes('cardamom') ||
-            ingredient.toLowerCase().includes('cloves')
-          );
-          
-          if (hasWarmingTags || hasHeatingSpices) {
-            console.log(`🚫 Summer exclusion: ${meal.name} removed (inappropriate warming characteristics for grishma season)`);
-            return false; // Exclude warming recipes completely
-          }
-          return true; // Keep cooling/neutral ayurvedic recipes
-        });
+  // Apply summer filtering for ALL ayurvedic meals - regardless of user's dietary selection
+  // All ayurvedic recipes should follow seasonal guidelines during grishma season
+  const currentSeason = getCurrentAyurvedicSeason(new Date(), 'europe');
+  if (currentSeason === 'grishma') {
+    const applySeasonalFilter = (meals: any[], category: string) => {
+      const originalCount = meals.length;
+      const filtered = meals.filter(meal => {
+        if (!meal.tags.includes('ayurvedic')) return true; // Keep non-ayurvedic meals
         
-        if (originalCount !== filtered.length) {
-          console.log(`Summer filter: ${originalCount} → ${filtered.length} ayurvedic ${category} meals (excluded warming recipes)`);
+        const hasWarmingTags = meal.tags.includes('warming');
+        const hasHeatingSpices = meal.ingredients.some((ingredient: string) => 
+          ingredient.toLowerCase().includes('ginger') ||
+          ingredient.toLowerCase().includes('turmeric') ||
+          ingredient.toLowerCase().includes('cumin') ||
+          ingredient.toLowerCase().includes('garam masala') ||
+          ingredient.toLowerCase().includes('mustard seeds') ||
+          ingredient.toLowerCase().includes('cinnamon') ||
+          ingredient.toLowerCase().includes('cardamom') ||
+          ingredient.toLowerCase().includes('cloves')
+        );
+        
+        if (hasWarmingTags || hasHeatingSpices) {
+          console.log(`🚫 Summer exclusion: ${meal.name} removed (ayurvedic recipe with inappropriate warming characteristics for grishma season)`);
+          return false; // Exclude warming recipes completely
         }
-        return filtered;
-      };
+        return true; // Keep cooling/neutral ayurvedic recipes
+      });
       
-      lunchOptions = applySeasonalFilter(lunchOptions, 'lunch');
-      dinnerOptions = applySeasonalFilter(dinnerOptions, 'dinner');
-    }
+      if (originalCount !== filtered.length) {
+        console.log(`Summer filter: ${originalCount} → ${filtered.length} ${category} meals (excluded warming ayurvedic recipes)`);
+      }
+      return filtered;
+    };
+    
+    lunchOptions = applySeasonalFilter(lunchOptions, 'lunch');
+    dinnerOptions = applySeasonalFilter(dinnerOptions, 'dinner');
   }
   
   // Apply 30-minute cooking time limit for weekday meals
