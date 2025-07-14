@@ -153,6 +153,14 @@ Breakfast scheduling preference: Easy, quick breakfasts during weekdays (≤10 m
   - **Geographic Adaptation for Netherlands**: System now correctly identifies July as "grishma season" (summer) instead of monsoon season, providing appropriate light, fresh meal guidance for Dutch summer climate
   - European seasonal calendar: Winter (Dec-Feb), Spring (Mar-May), Summer (Jun-Aug), Autumn (Sep-Nov) aligns with local climate patterns
   - Summer season emphasizes fresh vegetables, lighter cooking methods, and cooling preparations suitable for Netherlands summer weather
+- **Authentic Summer Filtering for Ayurvedic Recipes** (July 14, 2025):
+  - Implemented complete exclusion of warming recipes during grishma (summer) season following authentic Ayurvedic principles
+  - System now removes recipes with warming tags or heating spices (ginger, cumin seeds, garam masala, mustard seeds) rather than just warnings
+  - Added comprehensive debugging system to identify why specific recipes are excluded during summer
+  - Enhanced recipe database with cooling summer ayurvedic recipes: cucumber mint quinoa salad, coconut herb steamed vegetables, cooling mung bean curry
+  - Summer filtering works across all meal generation modes (regular and meal prep) ensuring consistency
+  - System respects traditional Ayurvedic practice of avoiding heating foods during pitta-aggravating seasons
+  - Maintains meal plan variety by providing sufficient cooling/neutral ayurvedic alternatives for complete weekly planning
 
 ### Development Tools
 - **tsx**: TypeScript execution for development

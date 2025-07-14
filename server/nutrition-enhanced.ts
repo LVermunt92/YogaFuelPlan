@@ -1670,6 +1670,171 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       ],
       notes: "Warming meal that kindles digestive fire according to Ayurveda"
     }
+  },
+
+  // Cooling summer ayurvedic meals for grishma season
+  {
+    name: "Cooling cucumber and mint quinoa salad with coconut",
+    portion: "1.5 cups quinoa salad",
+    nutrition: { 
+      protein: 18, 
+      prepTime: 20, 
+      calories: 340,
+      carbohydrates: 48,
+      fats: 11,
+      fiber: 7,
+      sugar: 6,
+      sodium: 220,
+      costEuros: 3.60, 
+      proteinPerEuro: 5.0 
+    },
+    category: "lunch",
+    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "ayurvedic", "cooling", "quick"],
+    ingredients: [
+      "1 cup cooked quinoa (cooled)",
+      "1 cucumber (diced)",
+      "1/2 cup fresh mint leaves",
+      "1/4 cup coconut flakes",
+      "2 tbsp coconut oil",
+      "1 lime (juiced)",
+      "1/2 tsp ground coriander",
+      "1/4 tsp fennel powder",
+      "Fresh cilantro",
+      "Sea salt to taste",
+      "1/4 cup pumpkin seeds"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["cucumber"],
+      benefits: ["Hydrating cucumber", "Cooling mint", "Alkalizing quinoa"]
+    },
+    recipe: {
+      instructions: [
+        "Cook quinoa and let cool completely",
+        "Dice cucumber and mix with lime juice",
+        "Chop fresh mint and cilantro finely",
+        "Combine quinoa, cucumber, herbs, and coconut flakes",
+        "Mix coriander and fennel with coconut oil",
+        "Toss salad with spiced oil dressing",
+        "Top with pumpkin seeds for protein",
+        "Serve at room temperature or chilled"
+      ],
+      tips: [
+        "Prepare ahead and serve cool for maximum cooling effect",
+        "Add extra mint for enhanced pitta-balancing properties"
+      ],
+      notes: "Perfect cooling meal for grishma season following Ayurvedic summer principles"
+    }
+  },
+
+  {
+    name: "Fresh coconut and herb steamed vegetables with basmati rice",
+    portion: "1.5 cups vegetables with rice",
+    nutrition: { 
+      protein: 14, 
+      prepTime: 25, 
+      calories: 330,
+      carbohydrates: 52,
+      fats: 10,
+      fiber: 8,
+      sugar: 8,
+      sodium: 240,
+      costEuros: 3.40, 
+      proteinPerEuro: 4.1 
+    },
+    category: "dinner",
+    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "ayurvedic", "cooling"],
+    ingredients: [
+      "1 cup basmati rice",
+      "2 cups mixed green vegetables (zucchini, green beans, spinach)",
+      "1/4 cup fresh coconut (grated)",
+      "2 tbsp coconut oil",
+      "1/2 tsp ground coriander",
+      "1/4 tsp fennel seeds",
+      "Fresh mint leaves",
+      "Fresh cilantro",
+      "1 lime (juiced)",
+      "Sea salt to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["zucchini", "green beans", "spinach"],
+      benefits: ["Cooling green vegetables", "Fresh coconut", "Light steaming preserves nutrients"]
+    },
+    recipe: {
+      instructions: [
+        "Steam basmati rice until fluffy",
+        "Steam vegetables lightly to retain cooling properties",
+        "Heat coconut oil gently, add fennel seeds",
+        "Add coriander powder and cook 30 seconds",
+        "Toss steamed vegetables with spiced oil",
+        "Mix in fresh coconut and herbs",
+        "Serve over rice with lime juice",
+        "Garnish with fresh mint for cooling effect"
+      ],
+      tips: [
+        "Steam vegetables minimally to preserve cooling qualities",
+        "Serve at moderate temperature, not hot"
+      ],
+      notes: "Authentic summer Ayurvedic preparation emphasizing cooling and fresh ingredients"
+    }
+  },
+
+  {
+    name: "Cooling mung bean and fresh vegetable curry with coconut milk",
+    portion: "1.5 cups curry",
+    nutrition: { 
+      protein: 20, 
+      prepTime: 28, 
+      calories: 380,
+      carbohydrates: 45,
+      fats: 12,
+      fiber: 15,
+      sugar: 8,
+      sodium: 290,
+      costEuros: 3.80, 
+      proteinPerEuro: 5.3 
+    },
+    category: "dinner",
+    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "ayurvedic", "cooling", "quick"],
+    ingredients: [
+      "1 cup whole mung beans (soaked 4 hours)",
+      "1 zucchini (diced)",
+      "1 cup spinach leaves",
+      "1/2 cup coconut milk",
+      "1/2 tsp ground coriander",
+      "1/4 tsp fennel powder",
+      "2 tbsp coconut oil",
+      "Fresh cilantro",
+      "Fresh mint leaves",
+      "1 lime (juiced)",
+      "Sea salt to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2.5,
+      vegetables: ["zucchini", "spinach"],
+      benefits: ["Easy to digest protein", "Cooling vegetables", "Balancing for Pitta"]
+    },
+    recipe: {
+      instructions: [
+        "Cook soaked mung beans until tender (15 minutes)",
+        "Heat coconut oil gently in pan",
+        "Add coriander and fennel powder, cook 30 seconds",
+        "Add diced zucchini and cook 3 minutes",
+        "Add cooked mung beans with cooking liquid",
+        "Simmer 5 minutes, add coconut milk",
+        "Stir in spinach during last minute",
+        "Finish with lime juice and fresh herbs"
+      ],
+      tips: [
+        "Keep cooking gentle to maintain cooling qualities",
+        "Coconut milk provides natural cooling properties"
+      ],
+      notes: "Summer-appropriate Ayurvedic curry designed for pitta-balancing during grishma season"
+    }
   }
 ];
 
@@ -1698,29 +1863,39 @@ export function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' | 'lunc
   const categoryMeals = getEnhancedMealsByCategory(category);
   let filteredMeals = filterEnhancedMealsByDietaryTags(categoryMeals, dietaryTags);
   
+  
   // Apply seasonal adaptations for ayurvedic meals
   if (dietaryTags.includes('ayurvedic') && filteredMeals.length > 0) {
     const currentSeason = getCurrentAyurvedicSeason(new Date(), 'europe');
     const seasonalGuidance = getCurrentSeasonalGuidance(new Date(), 'europe');
     
-    // During summer (grishma), log but don't filter warming ayurvedic recipes
-    // This maintains meal plan functionality while alerting to seasonal inappropriateness
+    // During summer (grishma), completely exclude warming ayurvedic recipes
+    // This follows authentic Ayurvedic principles for seasonal eating
     if (currentSeason === 'grishma') {
-      filteredMeals.forEach(meal => {
-        if (meal.tags.includes('ayurvedic')) {
-          const hasWarmingTags = meal.tags.includes('warming');
-          const hasHeatingSpices = meal.ingredients.some(ingredient => 
-            ingredient.toLowerCase().includes('ginger') && !ingredient.toLowerCase().includes('fresh ginger') ||
-            ingredient.toLowerCase().includes('cumin seeds') ||
-            ingredient.toLowerCase().includes('garam masala') ||
-            ingredient.toLowerCase().includes('mustard seeds')
-          );
-          
-          if (hasWarmingTags || hasHeatingSpices) {
-            console.log(`⚠️ Summer notice: ${meal.name} contains warming characteristics - consider seasonal adaptations`);
-          }
+      const originalCount = filteredMeals.length;
+      filteredMeals = filteredMeals.filter(meal => {
+        if (!meal.tags.includes('ayurvedic')) return true; // Keep non-ayurvedic meals
+        
+        const hasWarmingTags = meal.tags.includes('warming');
+        const hasHeatingSpices = meal.ingredients.some(ingredient => 
+          ingredient.toLowerCase().includes('ginger') && !ingredient.toLowerCase().includes('fresh ginger') ||
+          ingredient.toLowerCase().includes('cumin seeds') ||
+          ingredient.toLowerCase().includes('garam masala') ||
+          ingredient.toLowerCase().includes('mustard seeds')
+        );
+        
+        console.log(`DEBUG: ${meal.name} - warming tags: ${hasWarmingTags}, heating spices: ${hasHeatingSpices}, tags: [${meal.tags.join(', ')}]`);
+        
+        if (hasWarmingTags || hasHeatingSpices) {
+          console.log(`🚫 Summer exclusion: ${meal.name} removed (inappropriate warming characteristics for grishma season)`);
+          return false; // Exclude warming recipes completely
         }
+        return true; // Keep cooling/neutral ayurvedic recipes
       });
+      
+      if (originalCount !== filteredMeals.length) {
+        console.log(`Summer filter: ${originalCount} → ${filteredMeals.length} ayurvedic meals (excluded warming recipes)`);
+      }
     }
     
     filteredMeals = filteredMeals.map(meal => {
