@@ -71,6 +71,61 @@ function adjustMealPortion(originalPortion: string, adjustmentFactor: number): s
 }
 
 /**
+ * Check if a meal can incorporate leftover ingredients and modify description
+ */
+function incorporateLeftoverIngredients(meal: MealOption, ingredientsToUseUp: string[]): { modifiedMeal: MealOption, usedIngredients: string[] } {
+  if (!ingredientsToUseUp.length) return { modifiedMeal: meal, usedIngredients: [] };
+  
+  const mealIngredients = meal.ingredients.map(i => i.toLowerCase());
+  const usedIngredients: string[] = [];
+  
+  // Check which leftover ingredients can be incorporated
+  for (const leftoverIngredient of ingredientsToUseUp) {
+    const leftoverLower = leftoverIngredient.toLowerCase();
+    
+    // Check if this ingredient or similar can be used in this meal
+    const canIncorporate = mealIngredients.some(ingredient => 
+      ingredient.includes(leftoverLower) || 
+      leftoverLower.includes(ingredient) ||
+      // Common ingredient matches (English and Dutch)
+      ((leftoverLower.includes('celery') || leftoverLower.includes('bleekselderij')) && 
+       (ingredient.includes('vegetable') || ingredient.includes('soup') || ingredient.includes('broth') || 
+        ingredient.includes('stir') || ingredient.includes('onion') || ingredient.includes('mushroom') || 
+        ingredient.includes('quinoa') || ingredient.includes('herbs'))) ||
+      ((leftoverLower.includes('carrot') || leftoverLower.includes('wortel')) && 
+       (ingredient.includes('vegetable') || ingredient.includes('soup') || ingredient.includes('stir') || 
+        ingredient.includes('roasted') || ingredient.includes('quinoa'))) ||
+      ((leftoverLower.includes('onion') || leftoverLower.includes('ui')) && 
+       (ingredient.includes('vegetable') || ingredient.includes('soup') || ingredient.includes('stir') || 
+        ingredient.includes('mushroom') || ingredient.includes('quinoa'))) ||
+      ((leftoverLower.includes('pepper') || leftoverLower.includes('paprika')) && 
+       (ingredient.includes('vegetable') || ingredient.includes('stir') || ingredient.includes('roasted'))) ||
+      ((leftoverLower.includes('spinach') || leftoverLower.includes('spinazie')) && 
+       (ingredient.includes('leafy') || ingredient.includes('green') || ingredient.includes('spinach') || 
+        ingredient.includes('vegetable'))) ||
+      ((leftoverLower.includes('tomato') || leftoverLower.includes('tomaat')) && 
+       (ingredient.includes('vegetable') || ingredient.includes('sauce') || ingredient.includes('tomato')))
+    );
+    
+    if (canIncorporate) {
+      usedIngredients.push(leftoverIngredient);
+    }
+  }
+  
+  // If we can use leftover ingredients, modify the meal description
+  if (usedIngredients.length > 0) {
+    const modifiedMeal = {
+      ...meal,
+      name: `${meal.name} (incorporating leftover ${usedIngredients.join(', ')})`,
+      ingredients: [...meal.ingredients, ...usedIngredients.map(ing => `leftover ${ing}`)]
+    };
+    return { modifiedMeal, usedIngredients };
+  }
+  
+  return { modifiedMeal: meal, usedIngredients: [] };
+}
+
+/**
  * Plan cooking and eating schedule
  */
 function planCookingDays(user?: User): { cookingDays: number[], eatingDays: number[] } {
@@ -118,6 +173,10 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
   const meals: InsertMeal[] = [];
   let totalWeeklyProtein = 0;
   const dietaryTags = request.dietaryTags || [];
+  const ingredientsToUseUp = user?.leftovers || [];
+  let remainingIngredientsToUseUp = [...ingredientsToUseUp];
+  
+  console.log(`🥕 Starting meal generation with leftover ingredients: ${JSON.stringify(ingredientsToUseUp)}`);
   
   // Calculate caloric adjustment based on user goals
   const caloricAdjustment = user ? calculateCaloricAdjustment(user) : 1.0;
@@ -332,6 +391,10 @@ function generateMealPrepPlan(
   const meals: InsertMeal[] = [];
   let totalWeeklyProtein = 0;
   const dietaryTags = request.dietaryTags || [];
+  const ingredientsToUseUp = user?.leftovers || [];
+  let remainingIngredientsToUseUp = [...ingredientsToUseUp];
+  
+  console.log(`🥕 Starting meal prep plan with leftover ingredients: ${JSON.stringify(ingredientsToUseUp)}`);
   
   // Get meal options for lunch and dinner with dietary filters
   const lunchOptions = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
@@ -583,17 +646,53 @@ function generateMealPrepPlan(
       
       if (day === 1) {
         // Day 1: Sunday dinner - FIRST cooking moment (use unique meals)
-        sundayDinnerMeal = shuffledDinnerOptions[dinnerIndex % shuffledDinnerOptions.length];
+        let selectedDinnerMeal = shuffledDinnerOptions[dinnerIndex % shuffledDinnerOptions.length];
+        
+        // Try to incorporate leftover ingredients
+        if (remainingIngredientsToUseUp.length > 0) {
+          const { modifiedMeal, usedIngredients } = incorporateLeftoverIngredients(selectedDinnerMeal, remainingIngredientsToUseUp);
+          if (usedIngredients.length > 0) {
+            selectedDinnerMeal = modifiedMeal;
+            remainingIngredientsToUseUp = remainingIngredientsToUseUp.filter(ing => !usedIngredients.includes(ing));
+            console.log(`✓ Incorporated leftover ingredients: ${usedIngredients.join(', ')} into ${selectedDinnerMeal.name}`);
+          }
+        }
+        
+        sundayDinnerMeal = selectedDinnerMeal;
         dinnerMeal = sundayDinnerMeal;
         dinnerIndex++;
       } else if (day === 2) {
         // Day 2: Monday dinner - fresh cooking (use unique meals)
-        mondayDinnerMeal = shuffledDinnerOptions[dinnerIndex % shuffledDinnerOptions.length];
+        let selectedDinnerMeal = shuffledDinnerOptions[dinnerIndex % shuffledDinnerOptions.length];
+        
+        // Try to incorporate leftover ingredients
+        if (remainingIngredientsToUseUp.length > 0) {
+          const { modifiedMeal, usedIngredients } = incorporateLeftoverIngredients(selectedDinnerMeal, remainingIngredientsToUseUp);
+          if (usedIngredients.length > 0) {
+            selectedDinnerMeal = modifiedMeal;
+            remainingIngredientsToUseUp = remainingIngredientsToUseUp.filter(ing => !usedIngredients.includes(ing));
+            console.log(`✓ Incorporated leftover ingredients: ${usedIngredients.join(', ')} into ${selectedDinnerMeal.name}`);
+          }
+        }
+        
+        mondayDinnerMeal = selectedDinnerMeal;
         dinnerMeal = mondayDinnerMeal;
         dinnerIndex++;
       } else if (day === 3) {
         // Day 3: Tuesday dinner - fresh cooking (use unique meals)
-        tuesdayDinnerMeal = shuffledDinnerOptions[dinnerIndex % shuffledDinnerOptions.length];
+        let selectedDinnerMeal = shuffledDinnerOptions[dinnerIndex % shuffledDinnerOptions.length];
+        
+        // Try to incorporate leftover ingredients
+        if (remainingIngredientsToUseUp.length > 0) {
+          const { modifiedMeal, usedIngredients } = incorporateLeftoverIngredients(selectedDinnerMeal, remainingIngredientsToUseUp);
+          if (usedIngredients.length > 0) {
+            selectedDinnerMeal = modifiedMeal;
+            remainingIngredientsToUseUp = remainingIngredientsToUseUp.filter(ing => !usedIngredients.includes(ing));
+            console.log(`✓ Incorporated leftover ingredients: ${usedIngredients.join(', ')} into ${selectedDinnerMeal.name}`);
+          }
+        }
+        
+        tuesdayDinnerMeal = selectedDinnerMeal;
         dinnerMeal = tuesdayDinnerMeal;
         dinnerIndex++;
       } else if (day === 4) {
