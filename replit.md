@@ -161,6 +161,8 @@ Breakfast scheduling preference: Easy, quick breakfasts during weekdays (≤10 m
   - Summer filtering works across all meal generation modes (regular and meal prep) ensuring consistency
   - System respects traditional Ayurvedic practice of avoiding heating foods during pitta-aggravating seasons
   - Maintains meal plan variety by providing sufficient cooling/neutral ayurvedic alternatives for complete weekly planning
+  - Recipe names preserved during filtering to ensure proper recipe lookup and availability
+  - All meal names maintain proper capitalization for consistent user experience
 
 ### Development Tools
 - **tsx**: TypeScript execution for development
