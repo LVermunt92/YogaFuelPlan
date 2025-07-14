@@ -131,8 +131,10 @@ export default function MealPlanner() {
     refetchOnMount: true, // Refetch when component mounts
   });
 
-  // Get language from user profile
-  const language = (userProfile?.language as Language) || "en";
+  // Get language from user profile or localStorage as fallback
+  const language = (userProfile?.language as Language) || 
+                   (localStorage.getItem('preferred_language') as Language) || 
+                   "en";
   const t = useTranslations(language);
 
   // Fetch meal plans for current user
@@ -429,14 +431,27 @@ export default function MealPlanner() {
     },
   });
 
-  const latestMealPlan = mealPlans[0];
+  // Helper function to check if meal plan is current week
+  const isCurrentWeek = (weekStart: string) => {
+    const today = new Date();
+    const planDate = new Date(weekStart);
+    const weekEndDate = new Date(planDate);
+    weekEndDate.setDate(weekEndDate.getDate() + 6); // Add 6 days for week end
+    
+    return today >= planDate && today <= weekEndDate;
+  };
 
-  // Auto-select the latest meal plan
-  if (!selectedMealPlan && mealPlans.length > 0 && !loadingPlans) {
-    setSelectedMealPlan(latestMealPlan?.id);
+  // Find current week's meal plan or latest meal plan
+  const currentWeekPlan = mealPlans.find(plan => isCurrentWeek(plan.weekStart));
+  const latestMealPlan = mealPlans[0];
+  const preferredPlan = currentWeekPlan || latestMealPlan;
+
+  // Auto-select the current week's meal plan (or latest if no current week plan)
+  if (!selectedMealPlan && mealPlans.length > 0 && !loadingPlans && preferredPlan) {
+    setSelectedMealPlan(preferredPlan.id);
   }
 
-  const displayedMealPlan = currentMealPlan || (latestMealPlan && mealPlans.find(mp => mp.id === latestMealPlan.id));
+  const displayedMealPlan = currentMealPlan || (preferredPlan && mealPlans.find(mp => mp.id === preferredPlan.id));
 
   const getDayMeals = (day: number) => {
     if (!currentMealPlan?.meals) return [];

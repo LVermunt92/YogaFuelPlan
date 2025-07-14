@@ -28,10 +28,17 @@ function Navigation() {
     enabled: !!user?.id,
   });
 
-  // Set language from user profile
+  // Set language from user profile or localStorage
   useEffect(() => {
     if (userProfile?.language) {
       setLanguage(userProfile.language as Language);
+      localStorage.setItem('preferred_language', userProfile.language);
+    } else {
+      // Use localStorage as fallback
+      const savedLanguage = localStorage.getItem('preferred_language') as Language;
+      if (savedLanguage) {
+        setLanguage(savedLanguage);
+      }
     }
   }, [userProfile]);
 
@@ -55,10 +62,12 @@ function Navigation() {
       onSuccess: () => {
         // Force refresh of all components by invalidating all queries
         queryClient.invalidateQueries();
-        // Force a small delay to ensure all components re-render
+        // Save language to localStorage for immediate use
+        localStorage.setItem('preferred_language', newLanguage);
+        // Force a longer delay to ensure database update completes
         setTimeout(() => {
           window.location.reload();
-        }, 100);
+        }, 500);
       }
     });
   };
