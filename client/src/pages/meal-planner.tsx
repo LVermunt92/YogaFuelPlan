@@ -1017,9 +1017,9 @@ export default function MealPlanner() {
                                           className="text-left hover:text-primary hover:underline cursor-pointer flex items-center gap-2"
                                         >
                                           <BookOpen className="w-4 h-4" />
-                                          {isLeftover && (
-                                            <span className="text-blue-600 text-sm" title={language === 'nl' ? 'Maaltijd prep (opwarmen)' : 'Meal prep (reheat)'}>
-                                              🔄
+                                          {meal.foodDescription.includes('incorporating leftover') && (
+                                            <span className="text-orange-600 text-sm" title={language === 'nl' ? 'Ingrediënt opgemaakt' : 'Ingredient used up'}>
+                                              🥕
                                             </span>
                                           )}
                                           {meal.foodDescription}
