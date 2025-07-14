@@ -1101,6 +1101,290 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       ],
       notes: "Fresh herb marinade and toasted pine nuts elevate simple chicken to restaurant quality"
     }
+  },
+
+  // Quick weekday dinner options for complex dietary restrictions
+  {
+    name: "Quick veggie stir-fry with rice noodles and tahini sauce",
+    portion: "1.5 cups noodles + vegetables",
+    nutrition: { 
+      protein: 18, 
+      prepTime: 20, 
+      calories: 420,
+      carbohydrates: 58,
+      fats: 14,
+      fiber: 8,
+      sugar: 12,
+      sodium: 380,
+      costEuros: 4.20, 
+      proteinPerEuro: 4.3 
+    },
+    category: "dinner",
+    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "quick", "colorful"],
+    ingredients: [
+      "200g rice noodles",
+      "1 red bell pepper (sliced)",
+      "1 zucchini (sliced)",
+      "150g snap peas",
+      "2 carrots (julienned)",
+      "3 tbsp tahini",
+      "2 tbsp gluten-free soy sauce",
+      "1 tbsp rice vinegar",
+      "2 tsp sesame oil",
+      "2 cloves garlic (minced)",
+      "1 tsp fresh ginger (grated)",
+      "2 green onions (chopped)"
+    ],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["bell pepper", "zucchini", "snap peas", "carrots"],
+      benefits: ["High in vitamin C", "Rich in beta-carotene", "Good source of fiber"]
+    },
+    recipe: {
+      instructions: [
+        "Soak rice noodles in hot water for 8-10 minutes until tender",
+        "Meanwhile, heat sesame oil in large wok over high heat",
+        "Stir-fry bell pepper and carrots for 2 minutes",
+        "Add zucchini and snap peas, stir-fry 3 minutes more",
+        "Add minced garlic and ginger, cook 30 seconds",
+        "Whisk tahini, soy sauce, and rice vinegar in small bowl",
+        "Drain noodles and add to wok with vegetables",
+        "Pour tahini sauce over noodles and toss until coated",
+        "Garnish with chopped green onions and serve immediately"
+      ],
+      tips: [
+        "Keep vegetables crisp by cooking on high heat",
+        "Add tahini sauce last to prevent burning"
+      ],
+      notes: "Quick weekday dinner ready in under 25 minutes"
+    }
+  },
+
+  {
+    name: "Speedy chickpea curry with coconut milk and quinoa",
+    portion: "1.5 cups curry + 1 cup quinoa",
+    nutrition: { 
+      protein: 22, 
+      prepTime: 25, 
+      calories: 480,
+      carbohydrates: 62,
+      fats: 16,
+      fiber: 12,
+      sugar: 8,
+      sodium: 420,
+      costEuros: 3.80, 
+      proteinPerEuro: 5.8 
+    },
+    category: "dinner",
+    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "quick", "protein-rich"],
+    ingredients: [
+      "1 cup quinoa",
+      "1 can (400g) chickpeas (drained)",
+      "1 can (200ml) coconut milk",
+      "1 onion (diced)",
+      "2 cloves garlic (minced)",
+      "1 tsp curry powder",
+      "1/2 tsp turmeric",
+      "1/2 tsp cumin",
+      "1 can (400g) diced tomatoes",
+      "2 tbsp olive oil",
+      "1 tsp fresh ginger (grated)",
+      "Fresh cilantro for garnish"
+    ],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["onion", "tomatoes"],
+      benefits: ["Anti-inflammatory", "Rich in lycopene", "Immune supporting"]
+    },
+    recipe: {
+      instructions: [
+        "Cook quinoa in 2 cups water for 15 minutes",
+        "Heat olive oil in large pan over medium heat",
+        "Sauté diced onion until soft, about 4 minutes",
+        "Add garlic, ginger, curry powder, turmeric, and cumin - cook 1 minute",
+        "Add diced tomatoes and simmer 5 minutes",
+        "Stir in drained chickpeas and coconut milk",
+        "Simmer 8-10 minutes until thickened",
+        "Season with salt and pepper to taste",
+        "Serve over quinoa, garnish with fresh cilantro"
+      ],
+      tips: [
+        "Toast spices briefly for deeper flavor",
+        "Use lite coconut milk for lighter version"
+      ],
+      notes: "Protein-packed comfort food ready in 25 minutes"
+    }
+  },
+
+  {
+    name: "Mediterranean quinoa bowl with roasted vegetables",
+    portion: "1.5 cups quinoa bowl",
+    nutrition: { 
+      protein: 16, 
+      prepTime: 30, 
+      calories: 440,
+      carbohydrates: 58,
+      fats: 18,
+      fiber: 10,
+      sugar: 14,
+      sodium: 320,
+      costEuros: 4.60, 
+      proteinPerEuro: 3.5 
+    },
+    category: "dinner",
+    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "mediterranean", "colorful"],
+    ingredients: [
+      "1 cup quinoa",
+      "1 zucchini (diced)",
+      "1 red bell pepper (diced)",
+      "1 red onion (sliced)",
+      "150g cherry tomatoes (halved)",
+      "3 tbsp olive oil",
+      "2 tbsp tahini",
+      "1 lemon (juiced)",
+      "2 cloves garlic (minced)",
+      "1/4 cup pine nuts",
+      "2 tbsp fresh parsley (chopped)",
+      "1 tsp oregano"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["zucchini", "bell pepper", "onion", "tomatoes"],
+      benefits: ["High in antioxidants", "Rich in vitamin C", "Heart healthy"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 200°C",
+        "Cook quinoa in 2 cups water for 15 minutes",
+        "Toss diced vegetables with 2 tbsp olive oil, salt, and oregano",
+        "Roast vegetables for 20 minutes until tender",
+        "Whisk tahini, lemon juice, garlic, and remaining olive oil",
+        "Toast pine nuts in dry pan for 2 minutes",
+        "Fluff cooked quinoa and mix with roasted vegetables",
+        "Drizzle with tahini dressing",
+        "Top with toasted pine nuts and fresh parsley"
+      ],
+      tips: [
+        "Cut vegetables evenly for consistent cooking",
+        "Don't overcrowd the roasting pan"
+      ],
+      notes: "Fresh Mediterranean flavors in 30 minutes"
+    }
+  },
+
+  {
+    name: "Quick black bean and sweet potato hash",
+    portion: "1.5 cups hash",
+    nutrition: { 
+      protein: 20, 
+      prepTime: 25, 
+      calories: 460,
+      carbohydrates: 68,
+      fats: 12,
+      fiber: 16,
+      sugar: 18,
+      sodium: 380,
+      costEuros: 3.20, 
+      proteinPerEuro: 6.3 
+    },
+    category: "dinner",
+    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "quick", "high-fiber"],
+    ingredients: [
+      "1 large sweet potato (cubed)",
+      "1 can (400g) black beans (drained)",
+      "1 red bell pepper (diced)",
+      "1 onion (diced)",
+      "2 cloves garlic (minced)",
+      "3 tbsp olive oil",
+      "1 tsp cumin",
+      "1/2 tsp paprika",
+      "1/4 tsp chili powder",
+      "2 tbsp fresh lime juice",
+      "1/4 cup fresh cilantro (chopped)",
+      "1 avocado (sliced)"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["sweet potato", "bell pepper", "onion"],
+      benefits: ["High in beta-carotene", "Rich in potassium", "Anti-inflammatory"]
+    },
+    recipe: {
+      instructions: [
+        "Heat olive oil in large skillet over medium-high heat",
+        "Add cubed sweet potato and cook 10 minutes, stirring occasionally",
+        "Add diced onion and bell pepper, cook 5 minutes",
+        "Add garlic, cumin, paprika, and chili powder - cook 1 minute",
+        "Add drained black beans and cook 5 minutes until heated",
+        "Season with salt, pepper, and lime juice",
+        "Garnish with fresh cilantro and sliced avocado",
+        "Serve immediately while hot"
+      ],
+      tips: [
+        "Cut sweet potato small for faster cooking",
+        "Don't overcook vegetables - keep them slightly crisp"
+      ],
+      notes: "Satisfying one-pan dinner with complete protein from beans"
+    }
+  },
+
+  {
+    name: "Asian-style vegetable fried rice with tofu",
+    portion: "1.5 cups fried rice",
+    nutrition: { 
+      protein: 24, 
+      prepTime: 20, 
+      calories: 440,
+      carbohydrates: 52,
+      fats: 16,
+      fiber: 6,
+      sugar: 8,
+      sodium: 480,
+      costEuros: 4.40, 
+      proteinPerEuro: 5.5 
+    },
+    category: "dinner",
+    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "quick", "asian"],
+    ingredients: [
+      "2 cups cooked brown rice (day-old preferred)",
+      "200g firm tofu (cubed)",
+      "2 eggs or flax eggs for vegan option",
+      "1 cup frozen mixed vegetables",
+      "2 green onions (chopped)",
+      "2 cloves garlic (minced)",
+      "1 tsp fresh ginger (grated)",
+      "3 tbsp gluten-free soy sauce",
+      "2 tbsp sesame oil",
+      "1 tbsp rice vinegar",
+      "1 tsp sesame seeds"
+    ],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["mixed vegetables", "green onions"],
+      benefits: ["Balanced nutrition", "Quick energy", "Good source of fiber"]
+    },
+    recipe: {
+      instructions: [
+        "Heat 1 tbsp sesame oil in large wok or skillet",
+        "Add cubed tofu and cook until golden, about 5 minutes",
+        "Push tofu to one side, scramble eggs on other side",
+        "Add garlic and ginger, cook 30 seconds",
+        "Add day-old rice, breaking up clumps",
+        "Stir in frozen vegetables and cook 3 minutes",
+        "Add soy sauce, remaining sesame oil, and rice vinegar",
+        "Toss everything together for 2 minutes",
+        "Garnish with green onions and sesame seeds"
+      ],
+      tips: [
+        "Use day-old rice for best texture",
+        "Keep heat high for proper 'wok hei' flavor"
+      ],
+      notes: "Quick takeout-style dinner made healthy at home"
+    }
   }
 ];
 

@@ -133,6 +133,12 @@ Breakfast scheduling preference: Easy, quick breakfasts during weekdays (≤10 m
   - Weekend meals (Saturday-Sunday) have no time restrictions for more elaborate cooking
   - System filters available meals to only show quick options during busy weekdays
   - Maintains meal variety while accommodating working schedule constraints
+- **Expanded Quick Dinner Recipe Database for Complex Dietary Restrictions** (July 14, 2025):
+  - Added 5 new quick dinner recipes (≤30 minutes) meeting vegetarian + gluten-free + lactose-free requirements
+  - Recipes include: Asian-style vegetable fried rice with tofu, Speedy chickpea curry with coconut milk and quinoa, Quick black bean and sweet potato hash, Quick veggie stir-fry with rice noodles and tahini sauce, Mediterranean quinoa bowl with roasted vegetables
+  - Resolved meal variety issue where only 1 dinner option was available for complex dietary combinations
+  - System now provides 5+ different dinner options for weekdays with complete nutrition profiles
+  - All recipes include detailed cooking instructions and nutritional information
 
 ### Development Tools
 - **tsx**: TypeScript execution for development
