@@ -465,13 +465,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
 
+      // Check if this meal incorporates leftover ingredients
+      const incorporatedIngredients = [];
+      console.log(`DEBUG: Checking for incorporated ingredients in: "${targetMeal.foodDescription}"`);
+      const incorporateMatch = targetMeal.foodDescription.match(/\(incorporating leftover ([^)]+)\)/);
+      if (incorporateMatch) {
+        const leftoverIngredient = incorporateMatch[1];
+        console.log(`DEBUG: Found incorporated ingredient: ${leftoverIngredient}`);
+        incorporatedIngredients.push(leftoverIngredient);
+      } else {
+        console.log(`DEBUG: No incorporated ingredients found in this meal`);
+      }
+
+      // Add incorporated ingredients to the recipe ingredients list
+      let finalIngredients = [...(mealOption.ingredients || [])];
+      let incorporationNote = "";
+      
+      if (incorporatedIngredients.length > 0) {
+        console.log(`DEBUG: Adding ${incorporatedIngredients.length} leftover ingredients to recipe`);
+        // Add the leftover ingredients to the top of the list with a note
+        incorporatedIngredients.forEach(ingredient => {
+          const ingredientNote = `${ingredient} (leftover ingredient - add to roasted vegetables or use as garnish)`;
+          if (!finalIngredients.some(ing => ing.toLowerCase().includes(ingredient.toLowerCase()))) {
+            finalIngredients.unshift(ingredientNote);
+            console.log(`DEBUG: Added ${ingredient} to ingredients list`);
+          }
+        });
+        incorporationNote = ` This recipe naturally accommodates ${incorporatedIngredients.join(', ')} from your leftover ingredients.`;
+      }
+
       res.json({
         name: mealOption.name,
         portion: mealOption.portion,
-        ingredients: mealOption.ingredients || [],
+        ingredients: finalIngredients,
         instructions: mealOption.recipe?.instructions || ["Instructions not available"],
         tips: mealOption.recipe?.tips || [],
-        notes: mealOption.recipe?.notes || "",
+        notes: (mealOption.recipe?.notes || "") + incorporationNote,
         prepTime: mealOption.nutrition?.prepTime || 30,
         nutrition: {
           protein: mealOption.nutrition?.protein || 0,
