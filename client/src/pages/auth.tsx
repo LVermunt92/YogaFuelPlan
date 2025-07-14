@@ -41,7 +41,10 @@ export default function Auth() {
         title: "Welcome back!",
         description: `Logged in as ${data.user.username}`,
       });
-      navigate('/');
+      // Auto-refresh the page after successful login
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 500);
     },
     onError: (error) => {
       toast({
@@ -63,7 +66,10 @@ export default function Auth() {
         title: "Account Created!",
         description: `Welcome to the meal planner, ${data.user.username}!`,
       });
-      navigate('/');
+      // Auto-refresh the page after successful registration
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 500);
     },
     onError: (error) => {
       toast({

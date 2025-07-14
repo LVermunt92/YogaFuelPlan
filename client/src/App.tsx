@@ -51,7 +51,16 @@ function Navigation() {
 
   const changeLanguage = (newLanguage: Language) => {
     setLanguage(newLanguage);
-    updateLanguageMutation.mutate(newLanguage);
+    updateLanguageMutation.mutate(newLanguage, {
+      onSuccess: () => {
+        // Force refresh of all components by invalidating all queries
+        queryClient.invalidateQueries();
+        // Force a small delay to ensure all components re-render
+        setTimeout(() => {
+          window.location.reload();
+        }, 100);
+      }
+    });
   };
 
   const navItems = [
@@ -171,7 +180,10 @@ function Navigation() {
                     <Languages className="h-5 w-5 text-gray-400 mr-3" />
                     <span className="text-base font-medium text-gray-600">Taal / Language</span>
                   </div>
-                  <Select value={language} onValueChange={changeLanguage}>
+                  <Select value={language} onValueChange={(value) => {
+                    setIsMenuOpen(false);
+                    changeLanguage(value as Language);
+                  }}>
                     <SelectTrigger className="w-[80px] h-8 text-sm">
                       <SelectValue />
                     </SelectTrigger>
