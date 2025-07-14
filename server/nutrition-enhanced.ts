@@ -1700,8 +1700,8 @@ export function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' | 'lunc
   
   // Apply seasonal adaptations for ayurvedic meals
   if (dietaryTags.includes('ayurvedic') && filteredMeals.length > 0) {
-    const currentSeason = getCurrentAyurvedicSeason();
-    const seasonalGuidance = getCurrentSeasonalGuidance();
+    const currentSeason = getCurrentAyurvedicSeason(new Date(), 'europe');
+    const seasonalGuidance = getCurrentSeasonalGuidance(new Date(), 'europe');
     
     filteredMeals = filteredMeals.map(meal => {
       if (meal.tags.includes('ayurvedic')) {

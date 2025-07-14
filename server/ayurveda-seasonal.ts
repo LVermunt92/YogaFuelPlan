@@ -15,20 +15,29 @@ export interface SeasonalGuidance {
 }
 
 /**
- * Determine current Ayurvedic season based on date
- * Northern hemisphere calendar adapted for modern use
+ * Determine current Ayurvedic season based on date and location
+ * Adapts traditional seasons to local climate patterns
  */
-export function getCurrentAyurvedicSeason(date: Date = new Date()): AyurvedicSeason {
+export function getCurrentAyurvedicSeason(date: Date = new Date(), location: 'india' | 'europe' = 'europe'): AyurvedicSeason {
   const month = date.getMonth() + 1; // 1-12
   
-  if (month >= 12 || month <= 1) return 'shishira'; // Late Winter (Dec-Jan)
-  if (month >= 2 && month <= 3) return 'vasanta';   // Spring (Feb-Mar)
-  if (month >= 4 && month <= 5) return 'grishma';   // Early Summer (Apr-May)
-  if (month >= 6 && month <= 7) return 'varsha';    // Monsoon (Jun-Jul)
-  if (month >= 8 && month <= 9) return 'sharad';    // Autumn (Aug-Sep)
-  if (month >= 10 && month <= 11) return 'hemanta'; // Early Winter (Oct-Nov)
-  
-  return 'vasanta'; // Default fallback
+  if (location === 'europe') {
+    // European/Netherlands climate adaptation
+    if (month >= 12 || month <= 2) return 'shishira'; // Winter (Dec-Feb) - cold, dry
+    if (month >= 3 && month <= 5) return 'vasanta';   // Spring (Mar-May) - cool, fresh
+    if (month >= 6 && month <= 8) return 'grishma';   // Summer (Jun-Aug) - warm, light
+    if (month >= 9 && month <= 11) return 'sharad';   // Autumn (Sep-Nov) - cool, dry
+    return 'vasanta'; // default to spring
+  } else {
+    // Traditional Indian Ayurvedic calendar
+    if (month >= 12 || month <= 1) return 'shishira'; // Late Winter (Dec-Jan)
+    if (month >= 2 && month <= 3) return 'vasanta';   // Spring (Feb-Mar)
+    if (month >= 4 && month <= 5) return 'grishma';   // Early Summer (Apr-May)
+    if (month >= 6 && month <= 7) return 'varsha';    // Monsoon (Jun-Jul)
+    if (month >= 8 && month <= 9) return 'sharad';    // Autumn (Aug-Sep)
+    if (month >= 10 && month <= 11) return 'hemanta'; // Early Winter (Oct-Nov)
+    return 'vasanta'; // default to spring
+  }
 }
 
 /**
@@ -58,15 +67,15 @@ export function getSeasonalGuidance(season: AyurvedicSeason): SeasonalGuidance {
       spicesForBalance: ['turmeric', 'coriander', 'fennel', 'cumin', 'fenugreek', 'mustard seeds']
     },
     
-    grishma: { // Early Summer (Apr-May) - Warm, dry
+    grishma: { // Summer (Jun-Aug in Europe) - Warm, light, energetic
       season: 'grishma',
       dominantDosha: 'pitta',
-      qualities: ['warm', 'dry', 'light'],
+      qualities: ['warm', 'light', 'energetic'],
       recommendedTastes: ['sweet', 'bitter', 'astringent'],
-      ingredientsToFavor: ['cooling foods', 'cucumber', 'coconut', 'sweet fruits', 'mint'],
-      ingredientsToAvoid: ['heating spices', 'sour foods', 'salty foods'],
-      cookingMethods: ['minimal cooking', 'cooling preparations', 'room temperature'],
-      spicesForBalance: ['coriander', 'fennel', 'cardamom', 'mint', 'rose petals', 'cooling herbs']
+      ingredientsToFavor: ['fresh vegetables', 'cooling foods', 'seasonal fruits', 'lighter grains', 'fresh herbs'],
+      ingredientsToAvoid: ['heavy heating foods', 'excessive warming spices', 'overly rich meals'],
+      cookingMethods: ['light cooking', 'fresh preparations', 'cooling methods', 'grilling', 'fresh salads'],
+      spicesForBalance: ['coriander', 'fennel', 'mint', 'fresh herbs', 'cooling spices', 'fresh ginger']
     },
     
     varsha: { // Monsoon (Jun-Jul) - Humid, variable
@@ -109,8 +118,8 @@ export function getSeasonalGuidance(season: AyurvedicSeason): SeasonalGuidance {
 /**
  * Get current seasonal cooking guidance
  */
-export function getCurrentSeasonalGuidance(date: Date = new Date()): SeasonalGuidance {
-  const season = getCurrentAyurvedicSeason(date);
+export function getCurrentSeasonalGuidance(date: Date = new Date(), location: 'india' | 'europe' = 'europe'): SeasonalGuidance {
+  const season = getCurrentAyurvedicSeason(date, location);
   return getSeasonalGuidance(season);
 }
 
@@ -139,10 +148,10 @@ export function adaptRecipeForSeason(
 
 function generateSeasonalNote(season: AyurvedicSeason, guidance: SeasonalGuidance): string {
   const seasonNames: Record<AyurvedicSeason, string> = {
-    shishira: 'Late Winter',
+    shishira: 'Winter',
     vasanta: 'Spring', 
-    grishma: 'Early Summer',
-    varsha: 'Monsoon',
+    grishma: 'Summer',
+    varsha: 'Late Summer',
     sharad: 'Autumn',
     hemanta: 'Early Winter'
   };
@@ -154,8 +163,8 @@ function generateSeasonalTip(season: AyurvedicSeason, guidance: SeasonalGuidance
   const tips: Record<AyurvedicSeason, string> = {
     shishira: 'Serve hot and add extra ghee for warmth during cold, dry winter',
     vasanta: 'Reduce oil and dairy; add detoxifying herbs for spring cleansing',
-    grishma: 'Serve at room temperature; add cooling garnishes like mint or coconut',
-    varsha: 'Add extra digestive spices and keep portions moderate during humid weather',
+    grishma: 'Perfect for summer - serve fresh and light; add cooling garnishes like fresh herbs or seasonal vegetables',
+    varsha: 'Add extra digestive spices and keep portions moderate during variable weather',
     sharad: 'Include sweet vegetables and avoid fermented additions during autumn',
     hemanta: 'Increase warming spices and healthy fats for early winter nourishment'
   };

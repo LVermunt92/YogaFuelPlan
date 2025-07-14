@@ -147,11 +147,12 @@ Breakfast scheduling preference: Easy, quick breakfasts during weekdays (≤10 m
   - All recipes follow traditional Ayurvedic principles with warming spices, proper food combinations, and dosha-balancing properties
 - **Seasonal Ayurvedic Meal Adaptation System** (July 14, 2025):
   - Implemented traditional 6-season Ayurvedic calendar (Ritu) for authentic seasonal eating
-  - System automatically detects current season: Shishira (Late Winter), Vasanta (Spring), Grishma (Early Summer), Varsha (Monsoon), Sharad (Autumn), Hemanta (Early Winter)
+  - System automatically detects current season: Shishira (Winter), Vasanta (Spring), Grishma (Summer), Varsha (Late Summer), Sharad (Autumn), Hemanta (Early Winter)
   - Ayurvedic recipes now include seasonal adaptations with dosha-balancing guidance for current time of year
   - Each recipe receives seasonal cooking tips and notes appropriate for the dominant dosha and qualities of the season
-  - Currently showing "varsha season" (July monsoon period) with humid, variable qualities and vata-balancing spices
-  - Seasonal system enhances authenticity and effectiveness of Ayurvedic meal planning by aligning with natural cycles
+  - **Geographic Adaptation for Netherlands**: System now correctly identifies July as "grishma season" (summer) instead of monsoon season, providing appropriate light, fresh meal guidance for Dutch summer climate
+  - European seasonal calendar: Winter (Dec-Feb), Spring (Mar-May), Summer (Jun-Aug), Autumn (Sep-Nov) aligns with local climate patterns
+  - Summer season emphasizes fresh vegetables, lighter cooking methods, and cooling preparations suitable for Netherlands summer weather
 
 ### Development Tools
 - **tsx**: TypeScript execution for development
