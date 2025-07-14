@@ -139,6 +139,12 @@ Breakfast scheduling preference: Easy, quick breakfasts during weekdays (≤10 m
   - Resolved meal variety issue where only 1 dinner option was available for complex dietary combinations
   - System now provides 5+ different dinner options for weekdays with complete nutrition profiles
   - All recipes include detailed cooking instructions and nutritional information
+- **Enhanced Ayurvedic Recipe Database for Sufficient Meal Variety** (July 14, 2025):
+  - Added 5 new ayurvedic recipes to resolve insufficient variety for ayurvedic dietary preferences
+  - Added authentic Ayurvedic recipes: Spiced lentil dal with cumin and turmeric, Quick kitchari with mung beans and basmati rice, Warm spiced quinoa bowl with roasted root vegetables, Quick mung bean and vegetable curry, Warming ginger-turmeric vegetable stir-fry
+  - Resolved critical shortage where only 0 ayurvedic dinner options were available for weekdays
+  - System now provides 3 ayurvedic dinner options (≤30min) and 3 lunch options for complete meal planning
+  - All recipes follow traditional Ayurvedic principles with warming spices, proper food combinations, and dosha-balancing properties
 
 ### Development Tools
 - **tsx**: TypeScript execution for development

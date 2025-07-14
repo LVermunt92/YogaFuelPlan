@@ -1385,6 +1385,289 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       ],
       notes: "Quick takeout-style dinner made healthy at home"
     }
+  },
+
+  // Quick Ayurvedic lunch and dinner options
+  {
+    name: "Ayurvedic spiced lentil dal with cumin and turmeric",
+    portion: "1.5 cups dal with rice",
+    nutrition: { 
+      protein: 22, 
+      prepTime: 25, 
+      calories: 380,
+      carbohydrates: 58,
+      fats: 8,
+      fiber: 14,
+      sugar: 6,
+      sodium: 320,
+      costEuros: 2.80, 
+      proteinPerEuro: 7.9 
+    },
+    category: "dinner",
+    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "ayurvedic", "quick", "warming"],
+    ingredients: [
+      "1 cup red lentils (masoor dal)",
+      "1/2 cup basmati rice",
+      "1 tsp turmeric",
+      "1 tsp cumin seeds",
+      "1/2 tsp coriander seeds",
+      "1 tsp fresh ginger (grated)",
+      "2 cloves garlic (minced)",
+      "1 tbsp ghee or coconut oil",
+      "1/2 tsp asafoetida (hing)",
+      "1 tsp mustard seeds",
+      "Fresh cilantro for garnish",
+      "1 lemon (juiced)"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["garlic", "ginger"],
+      benefits: ["Digestive support", "Anti-inflammatory", "Warming for constitution"]
+    },
+    recipe: {
+      instructions: [
+        "Rinse lentils and cook with turmeric in 3 cups water for 15 minutes",
+        "Cook basmati rice separately in 1 cup water for 12 minutes",
+        "Heat ghee in pan, add mustard seeds until they pop",
+        "Add cumin and coriander seeds, toast 30 seconds",
+        "Add ginger, garlic, and asafoetida, cook 1 minute",
+        "Add cooked lentils and simmer 5 minutes",
+        "Season with salt and lemon juice",
+        "Serve over rice, garnish with fresh cilantro"
+      ],
+      tips: [
+        "Toast whole spices for deeper flavor",
+        "Add ghee at the end for better digestion according to Ayurveda"
+      ],
+      notes: "Classical Ayurvedic meal that balances all three doshas"
+    }
+  },
+
+  {
+    name: "Quick Ayurvedic kitchari with mung beans and basmati rice",
+    portion: "1.5 cups kitchari",
+    nutrition: { 
+      protein: 18, 
+      prepTime: 30, 
+      calories: 360,
+      carbohydrates: 55,
+      fats: 10,
+      fiber: 12,
+      sugar: 4,
+      sodium: 280,
+      costEuros: 3.20, 
+      proteinPerEuro: 5.6 
+    },
+    category: "lunch",
+    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "ayurvedic", "digestive", "warming"],
+    ingredients: [
+      "1/2 cup split mung beans (moong dal)",
+      "1/2 cup basmati rice",
+      "1 tsp turmeric",
+      "1 tsp cumin seeds",
+      "1 tsp fresh ginger (grated)",
+      "1 tbsp ghee or coconut oil",
+      "1/2 tsp rock salt or sea salt",
+      "1 tsp coriander seeds",
+      "1/2 tsp fennel seeds",
+      "Fresh cilantro leaves",
+      "1 lime (juiced)"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["ginger"],
+      benefits: ["Easy to digest", "Cleansing properties", "Balances all doshas"]
+    },
+    recipe: {
+      instructions: [
+        "Rinse mung beans and rice together until water runs clear",
+        "Heat ghee in heavy-bottomed pot",
+        "Add cumin, coriander, and fennel seeds, toast until fragrant",
+        "Add ginger and turmeric, cook 30 seconds",
+        "Add mung beans and rice, stir to coat with spices",
+        "Add 4 cups water and bring to boil",
+        "Reduce heat and simmer 20-25 minutes until creamy",
+        "Season with salt and lime juice",
+        "Garnish with fresh cilantro"
+      ],
+      tips: [
+        "Consistency should be like a thick soup",
+        "Perfect one-pot meal for digestive rest"
+      ],
+      notes: "Traditional Ayurvedic healing food, excellent for detox and easy digestion"
+    }
+  },
+
+  {
+    name: "Warm spiced quinoa bowl with roasted root vegetables",
+    portion: "1.5 cups quinoa bowl",
+    nutrition: { 
+      protein: 16, 
+      prepTime: 28, 
+      calories: 420,
+      carbohydrates: 62,
+      fats: 14,
+      fiber: 10,
+      sugar: 16,
+      sodium: 300,
+      costEuros: 4.20, 
+      proteinPerEuro: 3.8 
+    },
+    category: "dinner",
+    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "ayurvedic", "warming", "grounding"],
+    ingredients: [
+      "1 cup quinoa",
+      "1 large sweet potato (cubed)",
+      "2 large carrots (sliced)",
+      "1 beet (cubed)",
+      "2 tbsp ghee or coconut oil",
+      "1 tsp cumin powder",
+      "1/2 tsp cinnamon",
+      "1/2 tsp turmeric",
+      "1 tsp fresh ginger (grated)",
+      "2 tbsp tahini",
+      "1 lemon (juiced)",
+      "Fresh mint leaves"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["sweet potato", "carrots", "beet"],
+      benefits: ["Grounding for Vata", "Warming spices", "Rich in beta-carotene"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 200°C",
+        "Cube root vegetables evenly",
+        "Toss vegetables with ghee, cumin, cinnamon, and turmeric",
+        "Roast for 25 minutes until tender",
+        "Meanwhile, cook quinoa in 2 cups water for 15 minutes",
+        "Whisk tahini with lemon juice and ginger",
+        "Combine warm quinoa with roasted vegetables",
+        "Drizzle with tahini dressing",
+        "Garnish with fresh mint"
+      ],
+      tips: [
+        "Sweet warming spices balance Vata dosha",
+        "Eat warm for better digestion"
+      ],
+      notes: "Grounding meal perfect for fall and winter seasons in Ayurveda"
+    }
+  },
+
+  {
+    name: "Quick Ayurvedic mung bean and vegetable curry",
+    portion: "1.5 cups curry",
+    nutrition: { 
+      protein: 20, 
+      prepTime: 22, 
+      calories: 340,
+      carbohydrates: 48,
+      fats: 10,
+      fiber: 14,
+      sugar: 8,
+      sodium: 350,
+      costEuros: 3.40, 
+      proteinPerEuro: 5.9 
+    },
+    category: "lunch",
+    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "ayurvedic", "quick", "digestive"],
+    ingredients: [
+      "1 cup whole mung beans (soaked overnight)",
+      "1 zucchini (diced)",
+      "1 carrot (diced)",
+      "1 tsp turmeric",
+      "1 tsp cumin seeds",
+      "1 tsp coriander powder",
+      "1/2 tsp garam masala",
+      "1 tbsp ghee or coconut oil",
+      "1 tsp fresh ginger (grated)",
+      "2 cloves garlic (minced)",
+      "1 tomato (chopped)",
+      "Fresh curry leaves (optional)"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["zucchini", "carrot", "tomato"],
+      benefits: ["Easy to digest protein", "Anti-inflammatory", "Balancing for Pitta"]
+    },
+    recipe: {
+      instructions: [
+        "Drain soaked mung beans and pressure cook 10 minutes",
+        "Heat ghee in pan, add cumin seeds until fragrant",
+        "Add ginger, garlic, and curry leaves, cook 1 minute",
+        "Add diced vegetables and cook 5 minutes",
+        "Add turmeric, coriander, and garam masala",
+        "Add cooked mung beans with cooking liquid",
+        "Add chopped tomato and simmer 8 minutes",
+        "Season with salt and serve warm"
+      ],
+      tips: [
+        "Soaking mung beans overnight improves digestibility",
+        "Fresh curry leaves add authentic Ayurvedic flavor"
+      ],
+      notes: "Light but nourishing curry ideal for Pitta constitution"
+    }
+  },
+
+  {
+    name: "Warming ginger-turmeric vegetable stir-fry with brown rice",
+    portion: "1.5 cups stir-fry with rice",
+    nutrition: { 
+      protein: 14, 
+      prepTime: 20, 
+      calories: 380,
+      carbohydrates: 58,
+      fats: 12,
+      fiber: 8,
+      sugar: 10,
+      sodium: 320,
+      costEuros: 3.80, 
+      proteinPerEuro: 3.7 
+    },
+    category: "dinner",
+    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "ayurvedic", "quick", "warming"],
+    ingredients: [
+      "1 cup cooked brown rice",
+      "1 bell pepper (sliced)",
+      "1 zucchini (sliced)",
+      "150g green beans",
+      "2 tbsp ghee or coconut oil",
+      "1 tbsp fresh ginger (julienned)",
+      "1 tsp turmeric",
+      "1 tsp cumin seeds",
+      "1/2 tsp black mustard seeds",
+      "1/4 tsp asafoetida",
+      "2 tbsp fresh cilantro",
+      "1 lime (juiced)"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["bell pepper", "zucchini", "green beans"],
+      benefits: ["Warming spices", "Digestive fire boost", "Antioxidant-rich"]
+    },
+    recipe: {
+      instructions: [
+        "Heat ghee in large wok or skillet",
+        "Add mustard seeds and cumin seeds, let pop",
+        "Add julienned ginger and asafoetida, cook 30 seconds",
+        "Add green beans first, stir-fry 3 minutes",
+        "Add bell pepper and zucchini, stir-fry 4 minutes",
+        "Sprinkle turmeric and mix well",
+        "Add pre-cooked brown rice and toss 2 minutes",
+        "Season with salt and lime juice",
+        "Garnish with fresh cilantro"
+      ],
+      tips: [
+        "Keep vegetables slightly crisp for better texture",
+        "Fresh ginger is essential for digestive fire"
+      ],
+      notes: "Warming meal that kindles digestive fire according to Ayurveda"
+    }
   }
 ];
 
