@@ -127,6 +127,12 @@ Breakfast scheduling preference: Easy, quick breakfasts during weekdays (≤10 m
   - Replaced wine with vegetable broth in all recipes and cooking instructions
   - Updated shopping list generation to handle alcohol-free substitutions
   - All recipes now suitable for alcohol-free dietary preferences
+- **30-Minute Weekday Cooking Time Limit** (July 14, 2025):
+  - Added automatic 30-minute cooking time filter for weekday meals (Monday-Friday)
+  - Both regular meal planning and meal prep modes now respect weekday time constraints
+  - Weekend meals (Saturday-Sunday) have no time restrictions for more elaborate cooking
+  - System filters available meals to only show quick options during busy weekdays
+  - Maintains meal variety while accommodating working schedule constraints
 
 ### Development Tools
 - **tsx**: TypeScript execution for development

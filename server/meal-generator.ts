@@ -217,7 +217,15 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
     }
 
     mealsToGenerate.forEach(mealCategory => {
-      const availableMeals = getEnhancedMealsForCategoryAndDiet(mealCategory, dietaryTags);
+      let availableMeals = getEnhancedMealsForCategoryAndDiet(mealCategory, dietaryTags);
+      
+      // Apply 30-minute cooking time limit for weekdays (Monday-Friday)
+      const isWeekday = day >= 2 && day <= 6; // Days 2-6 are Monday-Friday
+      if (isWeekday && (mealCategory === 'lunch' || mealCategory === 'dinner')) {
+        const originalCount = availableMeals.length;
+        availableMeals = availableMeals.filter(meal => meal.nutrition.prepTime <= 30);
+        console.log(`Weekday time filter: ${originalCount} → ${availableMeals.length} ${mealCategory} meals (≤30min)`);
+      }
       
       if (availableMeals.length === 0) {
         console.error(`CRITICAL: No ${mealCategory} meals available for dietary restrictions: ${dietaryTags.join(', ')}. Skipping this meal.`);
@@ -397,10 +405,20 @@ function generateMealPrepPlan(
   console.log(`🥕 Starting meal prep plan with leftover ingredients: ${JSON.stringify(ingredientsToUseUp)}`);
   
   // Get meal options for lunch and dinner with dietary filters
-  const lunchOptions = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
-  const dinnerOptions = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
+  let lunchOptions = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
+  let dinnerOptions = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
+  
+  // Apply 30-minute cooking time limit for weekday meals
+  const weekdayLunchOptions = lunchOptions.filter(meal => meal.nutrition.prepTime <= 30);
+  const weekdayDinnerOptions = dinnerOptions.filter(meal => meal.nutrition.prepTime <= 30);
+  
+  console.log(`Weekday time filter: ${lunchOptions.length} → ${weekdayLunchOptions.length} lunch meals (≤30min)`);
+  console.log(`Weekday time filter: ${dinnerOptions.length} → ${weekdayDinnerOptions.length} dinner meals (≤30min)`);
+  
   const shuffledLunchOptions = [...lunchOptions].sort(() => Math.random() - 0.5);
   const shuffledDinnerOptions = [...dinnerOptions].sort(() => Math.random() - 0.5);
+  const shuffledWeekdayLunchOptions = [...weekdayLunchOptions].sort(() => Math.random() - 0.5);
+  const shuffledWeekdayDinnerOptions = [...weekdayDinnerOptions].sort(() => Math.random() - 0.5);
   
   const cookingDaysPerWeek = user?.cookingDaysPerWeek || 3;
   const eatingDaysAtHome = user?.eatingDaysAtHome || 6;
@@ -605,7 +623,10 @@ function generateMealPrepPlan(
         isLunchLeftover = true;
       } else {
         // Fresh lunch (Day 1, 7, or when no previous dinner) - use unique meals
-        lunchMeal = shuffledLunchOptions[lunchIndex % shuffledLunchOptions.length];
+        // Apply weekday time limit (Monday-Friday = days 2-6)
+        const isWeekday = day >= 2 && day <= 6;
+        const mealOptions = isWeekday ? shuffledWeekdayLunchOptions : shuffledLunchOptions;
+        lunchMeal = mealOptions[lunchIndex % mealOptions.length];
         lunchIndex++;
       }
       
@@ -646,7 +667,10 @@ function generateMealPrepPlan(
       
       if (day === 1) {
         // Day 1: Sunday dinner - FIRST cooking moment (use unique meals)
-        let selectedDinnerMeal = shuffledDinnerOptions[dinnerIndex % shuffledDinnerOptions.length];
+        // Apply weekday time limit (Monday-Friday = days 2-6)
+        const isWeekday = day >= 2 && day <= 6;
+        const mealOptions = isWeekday ? shuffledWeekdayDinnerOptions : shuffledDinnerOptions;
+        let selectedDinnerMeal = mealOptions[dinnerIndex % mealOptions.length];
         
         // Try to incorporate leftover ingredients
         if (remainingIngredientsToUseUp.length > 0) {
@@ -663,7 +687,10 @@ function generateMealPrepPlan(
         dinnerIndex++;
       } else if (day === 2) {
         // Day 2: Monday dinner - fresh cooking (use unique meals)
-        let selectedDinnerMeal = shuffledDinnerOptions[dinnerIndex % shuffledDinnerOptions.length];
+        // Apply weekday time limit (Monday-Friday = days 2-6)
+        const isWeekday = day >= 2 && day <= 6;
+        const mealOptions = isWeekday ? shuffledWeekdayDinnerOptions : shuffledDinnerOptions;
+        let selectedDinnerMeal = mealOptions[dinnerIndex % mealOptions.length];
         
         // Try to incorporate leftover ingredients
         if (remainingIngredientsToUseUp.length > 0) {
@@ -680,7 +707,10 @@ function generateMealPrepPlan(
         dinnerIndex++;
       } else if (day === 3) {
         // Day 3: Tuesday dinner - fresh cooking (use unique meals)
-        let selectedDinnerMeal = shuffledDinnerOptions[dinnerIndex % shuffledDinnerOptions.length];
+        // Apply weekday time limit (Monday-Friday = days 2-6)
+        const isWeekday = day >= 2 && day <= 6;
+        const mealOptions = isWeekday ? shuffledWeekdayDinnerOptions : shuffledDinnerOptions;
+        let selectedDinnerMeal = mealOptions[dinnerIndex % mealOptions.length];
         
         // Try to incorporate leftover ingredients
         if (remainingIngredientsToUseUp.length > 0) {
@@ -697,17 +727,26 @@ function generateMealPrepPlan(
         dinnerIndex++;
       } else if (day === 4) {
         // Day 4: Wednesday dinner - fresh cooking (use unique meals)
-        wednesdayDinnerMeal = shuffledDinnerOptions[dinnerIndex % shuffledDinnerOptions.length];
+        // Apply weekday time limit (Monday-Friday = days 2-6)
+        const isWeekday = day >= 2 && day <= 6;
+        const mealOptions = isWeekday ? shuffledWeekdayDinnerOptions : shuffledDinnerOptions;
+        wednesdayDinnerMeal = mealOptions[dinnerIndex % mealOptions.length];
         dinnerMeal = wednesdayDinnerMeal;
         dinnerIndex++;
       } else if (day === 5) {
         // Day 5: Thursday dinner - fresh cooking (use unique meals)
-        thursdayDinnerMeal = shuffledDinnerOptions[dinnerIndex % shuffledDinnerOptions.length];
+        // Apply weekday time limit (Monday-Friday = days 2-6)
+        const isWeekday = day >= 2 && day <= 6;
+        const mealOptions = isWeekday ? shuffledWeekdayDinnerOptions : shuffledDinnerOptions;
+        thursdayDinnerMeal = mealOptions[dinnerIndex % mealOptions.length];
         dinnerMeal = thursdayDinnerMeal;
         dinnerIndex++;
       } else if (day === 6) {
         // Day 6: Friday dinner - fresh cooking (3rd cooking day, use unique meals)
-        dinnerMeal = shuffledDinnerOptions[dinnerIndex % shuffledDinnerOptions.length];
+        // Apply weekday time limit (Monday-Friday = days 2-6)
+        const isWeekday = day >= 2 && day <= 6;
+        const mealOptions = isWeekday ? shuffledWeekdayDinnerOptions : shuffledDinnerOptions;
+        dinnerMeal = mealOptions[dinnerIndex % mealOptions.length];
         dinnerIndex++;
       } else if (day === 7 && thursdayDinnerMeal) {
         // Day 7: Saturday dinner - leftover from Thursday
@@ -715,7 +754,10 @@ function generateMealPrepPlan(
         isDinnerLeftover = true;
       } else {
         // Fallback dinner - use unique meals
-        dinnerMeal = shuffledDinnerOptions[dinnerIndex % shuffledDinnerOptions.length];
+        // Apply weekday time limit (Monday-Friday = days 2-6)
+        const isWeekday = day >= 2 && day <= 6;
+        const mealOptions = isWeekday ? shuffledWeekdayDinnerOptions : shuffledDinnerOptions;
+        dinnerMeal = mealOptions[dinnerIndex % mealOptions.length];
         dinnerIndex++;
       }
       
