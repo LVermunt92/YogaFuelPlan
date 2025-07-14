@@ -126,6 +126,24 @@ function incorporateLeftoverIngredients(meal: MealOption, ingredientsToUseUp: st
 }
 
 /**
+ * Select an unused meal from available options, ensuring variety
+ */
+function selectUnusedMeal(availableMeals: MealOption[], usedMeals: Set<string>): MealOption {
+  // First try to find a meal that hasn't been used yet
+  const unusedMeals = availableMeals.filter(meal => !usedMeals.has(meal.name));
+  
+  if (unusedMeals.length > 0) {
+    // Select a random unused meal for variety
+    return unusedMeals[Math.floor(Math.random() * unusedMeals.length)];
+  }
+  
+  // If all meals have been used, reset and start over (should rarely happen)
+  console.log('All meals used, resetting for continued variety');
+  usedMeals.clear();
+  return availableMeals[Math.floor(Math.random() * availableMeals.length)];
+}
+
+/**
  * Plan cooking and eating schedule
  */
 function planCookingDays(user?: User): { cookingDays: number[], eatingDays: number[] } {
@@ -193,6 +211,11 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
   // Use regular 8-day Sunday cooking pattern for other cases
   console.log('Using 8-day Sunday cooking pattern');
 
+  // Track used meals to ensure variety in cooking moments
+  const usedBreakfastMeals: Set<string> = new Set();
+  const usedLunchMeals: Set<string> = new Set();
+  const usedDinnerMeals: Set<string> = new Set();
+
   // Track which meals to use as leftovers
   let sundayDinnerMeal: MealOption | null = null;
   let mondayDinnerMeal: MealOption | null = null;
@@ -238,8 +261,9 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
       
       if (day === 1 && mealCategory === 'dinner') {
         // Day 1: Sunday dinner - FIRST cooking moment
-        selectedMeal = availableMeals[0];
+        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals);
         sundayDinnerMeal = selectedMeal;
+        usedDinnerMeals.add(selectedMeal.name);
       } else if (day === 2 && mealCategory === 'lunch') {
         // Day 2: Monday lunch - leftover from Sunday dinner
         if (!sundayDinnerMeal) {
@@ -249,8 +273,9 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
         isLeftover = true;
       } else if (day === 2 && mealCategory === 'dinner') {
         // Day 2: Monday dinner - fresh cooking
-        selectedMeal = availableMeals[1] || availableMeals[0];
+        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals);
         mondayDinnerMeal = selectedMeal;
+        usedDinnerMeals.add(selectedMeal.name);
       } else if (day === 3 && mealCategory === 'lunch') {
         // Day 3: Tuesday lunch - leftover from Monday dinner
         if (!mondayDinnerMeal) {
@@ -260,8 +285,9 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
         isLeftover = true;
       } else if (day === 3 && mealCategory === 'dinner') {
         // Day 3: Tuesday dinner - fresh cooking
-        selectedMeal = availableMeals[2] || availableMeals[0];
+        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals);
         tuesdayDinnerMeal = selectedMeal;
+        usedDinnerMeals.add(selectedMeal.name);
       } else if (day === 4 && mealCategory === 'lunch') {
         // Day 4: Wednesday lunch - leftover from Tuesday dinner
         if (!tuesdayDinnerMeal) {
@@ -271,8 +297,9 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
         isLeftover = true;
       } else if (day === 4 && mealCategory === 'dinner') {
         // Day 4: Wednesday dinner - fresh cooking
-        selectedMeal = availableMeals[3] || availableMeals[0];
+        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals);
         wednesdayDinnerMeal = selectedMeal;
+        usedDinnerMeals.add(selectedMeal.name);
       } else if (day === 5 && mealCategory === 'lunch') {
         // Day 5: Thursday lunch - leftover from Wednesday dinner
         if (!wednesdayDinnerMeal) {
@@ -282,8 +309,9 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
         isLeftover = true;
       } else if (day === 5 && mealCategory === 'dinner') {
         // Day 5: Thursday dinner - fresh cooking
-        selectedMeal = availableMeals[4] || availableMeals[0];
+        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals);
         thursdayDinnerMeal = selectedMeal;
+        usedDinnerMeals.add(selectedMeal.name);
       } else if (day === 6 && (mealCategory === 'lunch' || mealCategory === 'dinner')) {
         // Day 6: Friday lunch and dinner - leftovers from Thursday
         if (!thursdayDinnerMeal) {
@@ -312,11 +340,12 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
           );
           
           if (weekendBreakfasts.length > 0) {
-            const weekendIndex = (day - 6) % weekendBreakfasts.length; // Rotate weekend options
-            selectedMeal = weekendBreakfasts[weekendIndex];
+            selectedMeal = selectUnusedMeal(weekendBreakfasts, usedBreakfastMeals);
+            usedBreakfastMeals.add(selectedMeal.name);
             console.log(`Day ${day} (weekend) breakfast: ${selectedMeal.name} (prep: ${selectedMeal.nutrition.prepTime}min)`);
           } else {
-            selectedMeal = availableMeals[0];
+            selectedMeal = selectUnusedMeal(availableMeals, usedBreakfastMeals);
+            usedBreakfastMeals.add(selectedMeal.name);
           }
         } else {
           // Weekday breakfasts: quick and easy options (lower prep time)
@@ -329,17 +358,22 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
           );
           
           if (weekdayBreakfasts.length > 0) {
-            const weekdayIndex = (day - 1) % weekdayBreakfasts.length; // Rotate weekday options
-            selectedMeal = weekdayBreakfasts[weekdayIndex];
+            selectedMeal = selectUnusedMeal(weekdayBreakfasts, usedBreakfastMeals);
+            usedBreakfastMeals.add(selectedMeal.name);
             console.log(`Day ${day} (weekday) breakfast: ${selectedMeal.name} (prep: ${selectedMeal.nutrition.prepTime}min)`);
           } else {
-            selectedMeal = availableMeals[0];
+            selectedMeal = selectUnusedMeal(availableMeals, usedBreakfastMeals);
+            usedBreakfastMeals.add(selectedMeal.name);
           }
         }
       } else {
-        // Fresh lunch/dinner for other days
-        const mealIndex = (day + mealCategory.length) % availableMeals.length;
-        selectedMeal = availableMeals[mealIndex];
+        // Fresh lunch/dinner for other days - use variety tracking
+        selectedMeal = selectUnusedMeal(availableMeals, mealCategory === 'lunch' ? usedLunchMeals : usedDinnerMeals);
+        if (mealCategory === 'lunch') {
+          usedLunchMeals.add(selectedMeal.name);
+        } else {
+          usedDinnerMeals.add(selectedMeal.name);
+        }
       }
 
       // Adjust portion based on caloric goals and household size
@@ -415,10 +449,10 @@ function generateMealPrepPlan(
   console.log(`Weekday time filter: ${lunchOptions.length} → ${weekdayLunchOptions.length} lunch meals (≤30min)`);
   console.log(`Weekday time filter: ${dinnerOptions.length} → ${weekdayDinnerOptions.length} dinner meals (≤30min)`);
   
-  const shuffledLunchOptions = [...lunchOptions].sort(() => Math.random() - 0.5);
-  const shuffledDinnerOptions = [...dinnerOptions].sort(() => Math.random() - 0.5);
-  const shuffledWeekdayLunchOptions = [...weekdayLunchOptions].sort(() => Math.random() - 0.5);
-  const shuffledWeekdayDinnerOptions = [...weekdayDinnerOptions].sort(() => Math.random() - 0.5);
+  // Initialize meal variety tracking for meal prep mode
+  const usedBreakfastMeals: Set<string> = new Set();
+  const usedLunchMeals: Set<string> = new Set();
+  const usedDinnerMeals: Set<string> = new Set();
   
   const cookingDaysPerWeek = user?.cookingDaysPerWeek || 3;
   const eatingDaysAtHome = user?.eatingDaysAtHome || 6;
@@ -473,9 +507,7 @@ function generateMealPrepPlan(
   let wednesdayDinnerMeal: any = null;
   let thursdayDinnerMeal: any = null;
   
-  // Track used fresh meal indices to prevent duplicates
-  let dinnerIndex = 0;
-  let lunchIndex = 0;
+
   
   // Generate meals for all 7 days (breakfast always included)
   let breakfastOptions = getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags);
@@ -525,34 +557,39 @@ function generateMealPrepPlan(
   console.log(`📋 Weekday breakfasts (≤10min): ${weekdayBreakfasts.map(b => `${b.name} (${b.nutrition.prepTime}min)`).join(' | ')}`);
   console.log(`🥞 Weekend breakfasts (≥15min): ${weekendBreakfasts.map(b => `${b.name} (${b.nutrition.prepTime}min)`).join(' | ')}`);
   
-  // Assign breakfasts to each day (1=Monday, 7=Sunday)
+  // Assign breakfasts to each day with variety tracking
   for (let day = 1; day <= 7; day++) {
     const isWeekend = day === 6 || day === 7; // Saturday or Sunday
     
     if (isWeekend && weekendBreakfasts.length > 0) {
-      // Weekend: use elaborate breakfasts
-      const weekendIndex = (day - 6) % weekendBreakfasts.length;
-      breakfastPool.push(weekendBreakfasts[weekendIndex]);
+      // Weekend: use elaborate breakfasts with variety
+      const selectedBreakfast = selectUnusedMeal(weekendBreakfasts, usedBreakfastMeals);
+      usedBreakfastMeals.add(selectedBreakfast.name);
+      breakfastPool.push(selectedBreakfast);
     } else if (!isWeekend && weekdayBreakfasts.length > 0) {
-      // Weekday: use quick breakfasts
-      const weekdayIndex = (day - 1) % weekdayBreakfasts.length;
-      breakfastPool.push(weekdayBreakfasts[weekdayIndex]);
+      // Weekday: use quick breakfasts with variety
+      const selectedBreakfast = selectUnusedMeal(weekdayBreakfasts, usedBreakfastMeals);
+      usedBreakfastMeals.add(selectedBreakfast.name);
+      breakfastPool.push(selectedBreakfast);
     } else {
       // Fallback: try to use appropriate category if possible
       console.log(`⚠️ Fallback needed for day ${day} (${isWeekend ? 'weekend' : 'weekday'}). Weekday: ${weekdayBreakfasts.length}, Weekend: ${weekendBreakfasts.length}`);
       
       if (isWeekend && weekendBreakfasts.length === 0 && weekdayBreakfasts.length > 0) {
         // Weekend but no weekend options - use weekday as fallback
-        const fallbackIndex = (day - 6) % weekdayBreakfasts.length;
-        breakfastPool.push(weekdayBreakfasts[fallbackIndex]);
+        const selectedBreakfast = selectUnusedMeal(weekdayBreakfasts, usedBreakfastMeals);
+        usedBreakfastMeals.add(selectedBreakfast.name);
+        breakfastPool.push(selectedBreakfast);
       } else if (!isWeekend && weekdayBreakfasts.length === 0 && weekendBreakfasts.length > 0) {
         // Weekday but no weekday options - use weekend as fallback  
-        const fallbackIndex = (day - 1) % weekendBreakfasts.length;
-        breakfastPool.push(weekendBreakfasts[fallbackIndex]);
+        const selectedBreakfast = selectUnusedMeal(weekendBreakfasts, usedBreakfastMeals);
+        usedBreakfastMeals.add(selectedBreakfast.name);
+        breakfastPool.push(selectedBreakfast);
       } else {
         // General fallback
-        const fallbackIndex = (day - 1) % breakfastOptions.length;
-        breakfastPool.push(breakfastOptions[fallbackIndex]);
+        const selectedBreakfast = selectUnusedMeal(breakfastOptions, usedBreakfastMeals);
+        usedBreakfastMeals.add(selectedBreakfast.name);
+        breakfastPool.push(selectedBreakfast);
       }
     }
   }
@@ -625,9 +662,9 @@ function generateMealPrepPlan(
         // Fresh lunch (Day 1, 7, or when no previous dinner) - use unique meals
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
-        const mealOptions = isWeekday ? shuffledWeekdayLunchOptions : shuffledLunchOptions;
-        lunchMeal = mealOptions[lunchIndex % mealOptions.length];
-        lunchIndex++;
+        const mealOptions = isWeekday ? weekdayLunchOptions : lunchOptions;
+        lunchMeal = selectUnusedMeal(mealOptions, usedLunchMeals);
+        usedLunchMeals.add(lunchMeal.name);
       }
       
       if (lunchMeal) {
@@ -669,8 +706,9 @@ function generateMealPrepPlan(
         // Day 1: Sunday dinner - FIRST cooking moment (use unique meals)
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
-        const mealOptions = isWeekday ? shuffledWeekdayDinnerOptions : shuffledDinnerOptions;
-        let selectedDinnerMeal = mealOptions[dinnerIndex % mealOptions.length];
+        const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
+        let selectedDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals);
+        usedDinnerMeals.add(selectedDinnerMeal.name);
         
         // Try to incorporate leftover ingredients
         if (remainingIngredientsToUseUp.length > 0) {
@@ -684,13 +722,13 @@ function generateMealPrepPlan(
         
         sundayDinnerMeal = selectedDinnerMeal;
         dinnerMeal = sundayDinnerMeal;
-        dinnerIndex++;
       } else if (day === 2) {
         // Day 2: Monday dinner - fresh cooking (use unique meals)
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
-        const mealOptions = isWeekday ? shuffledWeekdayDinnerOptions : shuffledDinnerOptions;
-        let selectedDinnerMeal = mealOptions[dinnerIndex % mealOptions.length];
+        const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
+        let selectedDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals);
+        usedDinnerMeals.add(selectedDinnerMeal.name);
         
         // Try to incorporate leftover ingredients
         if (remainingIngredientsToUseUp.length > 0) {
@@ -704,13 +742,13 @@ function generateMealPrepPlan(
         
         mondayDinnerMeal = selectedDinnerMeal;
         dinnerMeal = mondayDinnerMeal;
-        dinnerIndex++;
       } else if (day === 3) {
         // Day 3: Tuesday dinner - fresh cooking (use unique meals)
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
-        const mealOptions = isWeekday ? shuffledWeekdayDinnerOptions : shuffledDinnerOptions;
-        let selectedDinnerMeal = mealOptions[dinnerIndex % mealOptions.length];
+        const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
+        let selectedDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals);
+        usedDinnerMeals.add(selectedDinnerMeal.name);
         
         // Try to incorporate leftover ingredients
         if (remainingIngredientsToUseUp.length > 0) {
@@ -724,23 +762,22 @@ function generateMealPrepPlan(
         
         tuesdayDinnerMeal = selectedDinnerMeal;
         dinnerMeal = tuesdayDinnerMeal;
-        dinnerIndex++;
       } else if (day === 4) {
         // Day 4: Wednesday dinner - fresh cooking (use unique meals)
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
-        const mealOptions = isWeekday ? shuffledWeekdayDinnerOptions : shuffledDinnerOptions;
-        wednesdayDinnerMeal = mealOptions[dinnerIndex % mealOptions.length];
+        const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
+        wednesdayDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals);
+        usedDinnerMeals.add(wednesdayDinnerMeal.name);
         dinnerMeal = wednesdayDinnerMeal;
-        dinnerIndex++;
       } else if (day === 5) {
         // Day 5: Thursday dinner - fresh cooking (use unique meals)
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
-        const mealOptions = isWeekday ? shuffledWeekdayDinnerOptions : shuffledDinnerOptions;
-        thursdayDinnerMeal = mealOptions[dinnerIndex % mealOptions.length];
+        const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
+        thursdayDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals);
+        usedDinnerMeals.add(thursdayDinnerMeal.name);
         dinnerMeal = thursdayDinnerMeal;
-        dinnerIndex++;
       } else if (day === 6) {
         // Day 6: Friday dinner - fresh cooking (3rd cooking day, use unique meals)
         // Apply weekday time limit (Monday-Friday = days 2-6)
