@@ -253,10 +253,14 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
             
             const hasWarmingTags = meal.tags.includes('warming');
             const hasHeatingSpices = meal.ingredients.some(ingredient => 
-              ingredient.toLowerCase().includes('ginger') && !ingredient.toLowerCase().includes('fresh ginger') ||
-              ingredient.toLowerCase().includes('cumin seeds') ||
+              ingredient.toLowerCase().includes('ginger') ||
+              ingredient.toLowerCase().includes('turmeric') ||
+              ingredient.toLowerCase().includes('cumin') ||
               ingredient.toLowerCase().includes('garam masala') ||
-              ingredient.toLowerCase().includes('mustard seeds')
+              ingredient.toLowerCase().includes('mustard seeds') ||
+              ingredient.toLowerCase().includes('cinnamon') ||
+              ingredient.toLowerCase().includes('cardamom') ||
+              ingredient.toLowerCase().includes('cloves')
             );
             
             if (hasWarmingTags || hasHeatingSpices) {
@@ -486,10 +490,14 @@ function generateMealPrepPlan(
           
           const hasWarmingTags = meal.tags.includes('warming');
           const hasHeatingSpices = meal.ingredients.some((ingredient: string) => 
-            ingredient.toLowerCase().includes('ginger') && !ingredient.toLowerCase().includes('fresh ginger') ||
-            ingredient.toLowerCase().includes('cumin seeds') ||
+            ingredient.toLowerCase().includes('ginger') ||
+            ingredient.toLowerCase().includes('turmeric') ||
+            ingredient.toLowerCase().includes('cumin') ||
             ingredient.toLowerCase().includes('garam masala') ||
-            ingredient.toLowerCase().includes('mustard seeds')
+            ingredient.toLowerCase().includes('mustard seeds') ||
+            ingredient.toLowerCase().includes('cinnamon') ||
+            ingredient.toLowerCase().includes('cardamom') ||
+            ingredient.toLowerCase().includes('cloves')
           );
           
           if (hasWarmingTags || hasHeatingSpices) {

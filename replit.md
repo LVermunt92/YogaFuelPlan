@@ -163,6 +163,9 @@ Breakfast scheduling preference: Easy, quick breakfasts during weekdays (≤10 m
   - Maintains meal plan variety by providing sufficient cooling/neutral ayurvedic alternatives for complete weekly planning
   - Recipe names preserved during filtering to ensure proper recipe lookup and availability
   - All meal names maintain proper capitalization for consistent user experience
+  - Fixed comprehensive heating spice detection (ginger, turmeric, cumin, cinnamon, cardamom, cloves, garam masala, mustard seeds)
+  - Summer filtering now works completely across both regular and meal prep generation modes
+  - Zero warming recipes appear in summer meal plans, ensuring authentic Ayurvedic practice
 
 ### Development Tools
 - **tsx**: TypeScript execution for development
