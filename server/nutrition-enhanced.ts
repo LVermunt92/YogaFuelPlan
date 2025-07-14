@@ -963,7 +963,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     category: "dinner",
     tags: ["vegetarian", "viral", "social-media", "high-protein", "comfort-food"],
-    ingredients: ["king oyster mushrooms", "pasta", "sun-dried tomatoes", "cashew cream", "nutritional yeast", "garlic", "herbs", "white wine"],
+    ingredients: ["king oyster mushrooms", "pasta", "sun-dried tomatoes", "cashew cream", "nutritional yeast", "garlic", "herbs", "vegetable broth"],
     wholeFoodLevel: "moderate",
     vegetableContent: {
       servings: 2,
@@ -974,7 +974,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       instructions: [
         "Slice king oyster mushrooms thick and sear until golden (viral technique for meaty texture)",
         "Remove mushrooms, sauté garlic in same pan",
-        "Add sun-dried tomatoes and white wine",
+        "Add sun-dried tomatoes and a splash of vegetable broth",
         "Pour in cashew cream, add nutritional yeast for viral creamy sauce",
         "Return mushrooms to pan, simmer until heated through",
         "Serve over pasta with fresh herbs for Instagram appeal"
@@ -1432,7 +1432,7 @@ function cleanIngredientName(ingredient: string): string {
     cleaned = 'maple syrup';
   }
   if (cleaned === 'wine' || cleaned.includes('wine') || cleaned === 'white wine') {
-    cleaned = 'white wine';
+    cleaned = 'vegetable broth';
   }
   if (cleaned.includes('kefir') || cleaned === 'kefir') {
     cleaned = 'fermented kefir';
@@ -1498,8 +1498,8 @@ function cleanIngredientName(ingredient: string): string {
     'cashew cream': 'cashew cream',
     'nutritional yeast': 'nutritional yeast',
     'sun-dried tomatoes': 'sun-dried tomatoes',
-    'white wine': 'white wine',
-    'wine': 'white wine',
+    'white wine': 'vegetable broth',
+    'wine': 'vegetable broth',
     'vegetable broth': 'vegetable broth',
     'almond milk': 'almond milk',
     'kefir': 'fermented kefir',

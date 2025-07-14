@@ -115,6 +115,18 @@ Breakfast scheduling preference: Easy, quick breakfasts during weekdays (≤10 m
   - Updated UI terminology from "leftovers" to "ingredients to use up" for clarity
   - Enhanced visual indicators: 🔄 for meal prep (reheating) vs ♻️ for ingredient incorporation
   - Fixed server routes to accept both PUT and PATCH requests for profile updates
+- **Enhanced Leftover Ingredient Recipe Integration** (July 14, 2025):
+  - Complete leftover ingredient incorporation into recipe instructions
+  - Recipe-specific cooking guidance: pasta dishes, quinoa/roasted vegetables, curries, salads, etc.
+  - Intelligent timing instructions (e.g., "add during last 3-4 minutes" for pasta sauce)
+  - Clear preparation guidance (dicing, timing, expected texture/flavor results)
+  - Cooking instructions now include dedicated "LEFTOVER INGREDIENT:" steps
+  - System makes smart culinary choices about when and how to incorporate ingredients
+- **Alcohol-Free Recipe Database** (July 14, 2025):
+  - Removed all alcoholic ingredients from meal database (wine, beer, spirits)
+  - Replaced wine with vegetable broth in all recipes and cooking instructions
+  - Updated shopping list generation to handle alcohol-free substitutions
+  - All recipes now suitable for alcohol-free dietary preferences
 
 ### Development Tools
 - **tsx**: TypeScript execution for development

@@ -497,7 +497,7 @@ export const MEAL_DATABASE: MealOption[] = [
     nutrition: { protein: 32, prepTime: 30, costEuros: 3.80, proteinPerEuro: 8.4 },
     category: "dinner",
     tags: ["omega-3", "iron", "hearty"],
-    ingredients: ["red lentils", "walnuts", "gluten-free pasta", "crushed tomatoes", "onions", "carrots", "celery", "garlic", "herbs", "red wine"],
+    ingredients: ["red lentils", "walnuts", "gluten-free pasta", "crushed tomatoes", "onions", "carrots", "celery", "garlic", "herbs", "vegetable broth"],
     vegetableContent: {
       servings: 4,
       vegetables: ["tomatoes", "onions", "carrots", "celery"],
@@ -510,7 +510,7 @@ export const MEAL_DATABASE: MealOption[] = [
         "Add 4 cloves minced garlic and cook 1 minute",
         "Add 1 cup red lentils and 1/2 cup chopped walnuts",
         "Pour in 1 can crushed tomatoes and 2 cups vegetable broth",
-        "Add 1/4 cup red wine (optional) and dried herbs (oregano, basil)",
+        "Add 1/4 cup vegetable broth and dried herbs (oregano, basil)",
         "Simmer 20 minutes until lentils are tender and sauce thickens",
         "Meanwhile, cook gluten-free pasta according to package directions",
         "Season bolognese with salt, pepper, and fresh herbs",
@@ -905,8 +905,7 @@ export function generateShoppingList(meals: { foodDescription: string }[]): Shop
     'cumin': 'Pantry Items',
     'cinnamon': 'Pantry Items',
     'herbs': 'Pantry Items',
-    'vegetable broth': 'Pantry Items',
-    'red wine': 'Pantry Items'
+    'vegetable broth': 'Pantry Items'
   };
 
   // Helper function to parse recipe instructions for ingredient amounts
@@ -1075,7 +1074,6 @@ export function generateShoppingList(meals: { foodDescription: string }[]): Shop
     'cinnamon': { amount: 50, unit: 'g' },
     'herbs': { amount: 50, unit: 'g' },
     'vegetable broth': { amount: 1000, unit: 'ml' },
-    'red wine': { amount: 750, unit: 'ml' },
     
     // Other
       'cilantro': { amount: 50, unit: 'g' },

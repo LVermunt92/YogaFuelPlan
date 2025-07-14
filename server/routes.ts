@@ -477,28 +477,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log(`DEBUG: No incorporated ingredients found in this meal`);
       }
 
-      // Add incorporated ingredients to the recipe ingredients list
+      // Add incorporated ingredients to the recipe ingredients list and instructions
       let finalIngredients = [...(mealOption.ingredients || [])];
+      let finalInstructions = [...(mealOption.recipe?.instructions || ["Instructions not available"])];
       let incorporationNote = "";
       
       if (incorporatedIngredients.length > 0) {
         console.log(`DEBUG: Adding ${incorporatedIngredients.length} leftover ingredients to recipe`);
+        
         // Add the leftover ingredients to the top of the list with a note
         incorporatedIngredients.forEach(ingredient => {
-          const ingredientNote = `${ingredient} (leftover ingredient - add to roasted vegetables or use as garnish)`;
+          const ingredientNote = `${ingredient} (leftover ingredient - diced)`;
           if (!finalIngredients.some(ing => ing.toLowerCase().includes(ingredient.toLowerCase()))) {
             finalIngredients.unshift(ingredientNote);
             console.log(`DEBUG: Added ${ingredient} to ingredients list`);
           }
         });
-        incorporationNote = ` This recipe naturally accommodates ${incorporatedIngredients.join(', ')} from your leftover ingredients.`;
+        
+        // Enhance instructions to include leftover ingredient incorporation
+        const recipeType = mealOption.name.toLowerCase();
+        let incorporationStep = "";
+        
+        if (recipeType.includes('pasta')) {
+          incorporationStep = `Add diced ${incorporatedIngredients.join(', ')} to the sauce during the last 3-4 minutes of cooking for fresh crunch and flavor.`;
+        } else if (recipeType.includes('quinoa') || recipeType.includes('roasted vegetables')) {
+          incorporationStep = `Dice ${incorporatedIngredients.join(', ')} and add to vegetables during roasting, or stir into quinoa just before serving for fresh texture.`;
+        } else if (recipeType.includes('curry') || recipeType.includes('stir')) {
+          incorporationStep = `Add diced ${incorporatedIngredients.join(', ')} to the dish 2-3 minutes before serving to maintain crispness.`;
+        } else if (recipeType.includes('salad')) {
+          incorporationStep = `Finely dice ${incorporatedIngredients.join(', ')} and mix into the salad for added crunch and freshness.`;
+        } else {
+          incorporationStep = `Incorporate diced ${incorporatedIngredients.join(', ')} into the dish according to your preference - add early for softer texture or late for more crunch.`;
+        }
+        
+        // Add the incorporation step to instructions
+        finalInstructions.push(`LEFTOVER INGREDIENT: ${incorporationStep}`);
+        
+        incorporationNote = ` This recipe has been adapted to include ${incorporatedIngredients.join(', ')} from your leftover ingredients.`;
       }
 
       res.json({
         name: mealOption.name,
         portion: mealOption.portion,
         ingredients: finalIngredients,
-        instructions: mealOption.recipe?.instructions || ["Instructions not available"],
+        instructions: finalInstructions,
         tips: mealOption.recipe?.tips || [],
         notes: (mealOption.recipe?.notes || "") + incorporationNote,
         prepTime: mealOption.nutrition?.prepTime || 30,
