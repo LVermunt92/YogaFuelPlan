@@ -108,12 +108,13 @@ Breakfast scheduling preference: Easy, quick breakfasts during weekdays (≤10 m
   - Weekends (Sat-Sun) receive elaborate breakfasts (≥15 min prep): pancakes, quinoa bowls, scrambled eggs
   - Enhanced meal prep function with proper breakfast categorization logic
   - Added detailed ingredient measurements with volumes, weights, and specific amounts to all recipes
-- **Dutch Language Support & Leftovers Integration** (July 14, 2025):
+- **Dutch Language Support & Ingredient Management** (July 14, 2025):
   - Added comprehensive Dutch language support with full translation system
   - Language selector moved to navigation menu (both desktop and mobile)
-  - Implemented leftovers input feature for meal plan generation
-  - Updated database schema to support language preference and leftovers tracking
-  - Enhanced meal generation to consider existing leftovers when creating meal plans
+  - Clarified leftover terminology: Distinguished between "meal prep leftovers" (reheating pre-cooked meals) and "ingredient leftovers" (leftover ingredients to incorporate into fresh recipes)
+  - Updated UI terminology from "leftovers" to "ingredients to use up" for clarity
+  - Enhanced visual indicators: 🔄 for meal prep (reheating) vs ♻️ for ingredient incorporation
+  - Fixed server routes to accept both PUT and PATCH requests for profile updates
 
 ### Development Tools
 - **tsx**: TypeScript execution for development

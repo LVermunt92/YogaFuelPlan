@@ -102,11 +102,11 @@ export const translations = {
     lunch: "Lunch",
     dinner: "Dinner",
     
-    // Leftovers
-    currentLeftovers: "Current Leftovers",
-    addLeftover: "Add Leftover",
-    leftoverPlaceholder: "Enter leftover item...",
-    removeLeftover: "Remove",
+    // Ingredients to Use Up
+    ingredientsToUseUp: "Ingredients to Use Up",
+    addIngredient: "Add Ingredient",
+    ingredientPlaceholder: "e.g. chicken, rice, vegetables...",
+    removeIngredient: "Remove",
     
     // Language
     language: "Language",
@@ -256,13 +256,13 @@ export const translations = {
     countHeader: "Aantal",
     amountHeader: "Hoeveelheid",
     
-    // Leftovers
-    leftoverItem: "Restje gebruikt",
-    usingLeftovers: "Gebruikt restjes",
-    leftoverAdded: "Restje toegevoegd",
-    leftoverRemoved: "Restje verwijderd",
-    failedToAddLeftover: "Kon restje niet toevoegen",
-    failedToRemoveLeftover: "Kon restje niet verwijderen",
+    // Ingredients to Use Up
+    ingredientToUseUp: "Ingrediënt om op te maken",
+    usingIngredientsToUseUp: "Gebruikt ingrediënten om op te maken",
+    ingredientAdded: "Ingrediënt toegevoegd",
+    ingredientRemoved: "Ingrediënt verwijderd",
+    failedToAddIngredient: "Kon ingrediënt niet toevoegen",
+    failedToRemoveIngredient: "Kon ingrediënt niet verwijderen",
     
     // Recipe Dialog
     recipeDetails: "Recept Details",
@@ -285,7 +285,7 @@ export const translations = {
     weeklyMealPlan: "Wekelijks Maaltijdplan",
     noPlan: "Geen plan",
     freshCookingDay: "Verse kook dag",
-    reheatLeftover: "Restje opwarmen (5 min)",
+    reheatLeftover: "Maaltijd opwarmen (5 min)",
     eatingOut: "Uit eten",
     day: "Dag",
     meal: "Maaltijd",
@@ -307,11 +307,11 @@ export const translations = {
     lunch: "Lunch",
     dinner: "Diner",
     
-    // Leftovers
-    currentLeftovers: "Huidige Restjes",
-    addLeftover: "Restje Toevoegen",
-    leftoverPlaceholder: "Voer restje item in...",
-    removeLeftover: "Verwijderen",
+    // Ingredients to Use Up
+    ingredientsToUseUp: "Ingrediënten om Op te Maken",
+    addIngredient: "Ingrediënt Toevoegen",
+    ingredientPlaceholder: "bijv. kip, rijst, groenten...",
+    removeIngredient: "Verwijderen",
     
     // Language
     language: "Taal",

@@ -181,7 +181,7 @@ export default function MealPlanner() {
     },
   });
 
-  // Add leftover function
+  // Add ingredient function
   const addLeftover = () => {
     if (!newLeftover.trim()) return;
     const currentLeftovers = userProfile?.leftovers || [];
@@ -189,14 +189,14 @@ export default function MealPlanner() {
     updateProfileMutation.mutate({ leftovers: updatedLeftovers }, {
       onSuccess: () => {
         toast({
-          title: t.leftoverAdded,
-          description: `"${newLeftover.trim()}" ${t.leftoverAdded.toLowerCase()}`,
+          title: t.ingredientAdded,
+          description: `"${newLeftover.trim()}" ${t.ingredientAdded.toLowerCase()}`,
         });
       },
       onError: () => {
         toast({
           title: t.error,
-          description: t.failedToAddLeftover,
+          description: t.failedToAddIngredient,
           variant: "destructive",
         });
       }
@@ -204,7 +204,7 @@ export default function MealPlanner() {
     setNewLeftover("");
   };
 
-  // Remove leftover function
+  // Remove ingredient function
   const removeLeftover = (index: number) => {
     const currentLeftovers = userProfile?.leftovers || [];
     const removedItem = currentLeftovers[index];
@@ -212,14 +212,14 @@ export default function MealPlanner() {
     updateProfileMutation.mutate({ leftovers: updatedLeftovers }, {
       onSuccess: () => {
         toast({
-          title: t.leftoverRemoved,
-          description: `"${removedItem}" ${t.leftoverRemoved.toLowerCase()}`,
+          title: t.ingredientRemoved,
+          description: `"${removedItem}" ${t.ingredientRemoved.toLowerCase()}`,
         });
       },
       onError: () => {
         toast({
           title: t.error,
-          description: t.failedToRemoveLeftover,
+          description: t.failedToRemoveIngredient,
           variant: "destructive",
         });
       }
@@ -743,18 +743,24 @@ export default function MealPlanner() {
 
 
 
-                {/* Leftovers Input */}
+                {/* Ingredients to Use Up Input */}
                 <div>
                   <Label className="text-sm font-medium text-foreground mb-2 block">
-                    {t.currentLeftovers}
+                    {t.ingredientsToUseUp}
                   </Label>
+                  <p className="text-xs text-muted-foreground mb-3">
+                    {language === 'nl' 
+                      ? 'Voeg ingrediënten toe die je deze week wilt opmaken. Deze worden verwerkt in nieuwe recepten.' 
+                      : 'Add ingredients you want to use up this week. These will be incorporated into fresh recipes.'
+                    }
+                  </p>
                   <div className="space-y-2">
                     <div className="flex gap-2">
                       <Input
                         type="text"
                         value={newLeftover}
                         onChange={(e) => setNewLeftover(e.target.value)}
-                        placeholder={t.leftoverPlaceholder}
+                        placeholder={t.ingredientPlaceholder}
                         className="input-clean flex-1"
                         onKeyPress={(e) => {
                           if (e.key === 'Enter') {
@@ -1012,8 +1018,8 @@ export default function MealPlanner() {
                                         >
                                           <BookOpen className="w-4 h-4" />
                                           {isLeftover && (
-                                            <span className="text-blue-600 text-sm" title={t.leftoverItem}>
-                                              ♻️
+                                            <span className="text-blue-600 text-sm" title={language === 'nl' ? 'Maaltijd prep (opwarmen)' : 'Meal prep (reheat)'}>
+                                              🔄
                                             </span>
                                           )}
                                           {meal.foodDescription}
