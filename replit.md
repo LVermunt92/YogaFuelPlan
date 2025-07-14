@@ -145,6 +145,13 @@ Breakfast scheduling preference: Easy, quick breakfasts during weekdays (≤10 m
   - Resolved critical shortage where only 0 ayurvedic dinner options were available for weekdays
   - System now provides 3 ayurvedic dinner options (≤30min) and 3 lunch options for complete meal planning
   - All recipes follow traditional Ayurvedic principles with warming spices, proper food combinations, and dosha-balancing properties
+- **Seasonal Ayurvedic Meal Adaptation System** (July 14, 2025):
+  - Implemented traditional 6-season Ayurvedic calendar (Ritu) for authentic seasonal eating
+  - System automatically detects current season: Shishira (Late Winter), Vasanta (Spring), Grishma (Early Summer), Varsha (Monsoon), Sharad (Autumn), Hemanta (Early Winter)
+  - Ayurvedic recipes now include seasonal adaptations with dosha-balancing guidance for current time of year
+  - Each recipe receives seasonal cooking tips and notes appropriate for the dominant dosha and qualities of the season
+  - Currently showing "varsha season" (July monsoon period) with humid, variable qualities and vata-balancing spices
+  - Seasonal system enhances authenticity and effectiveness of Ayurvedic meal planning by aligning with natural cycles
 
 ### Development Tools
 - **tsx**: TypeScript execution for development

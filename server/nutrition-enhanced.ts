@@ -1,3 +1,5 @@
+import { getCurrentSeasonalGuidance, adaptRecipeForSeason, getCurrentAyurvedicSeason } from './ayurveda-seasonal';
+
 export interface NutritionInfo {
   protein: number;
   prepTime: number;
@@ -1694,7 +1696,23 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
 
 export function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' | 'lunch' | 'dinner', dietaryTags: string[] = []): MealOption[] {
   const categoryMeals = getEnhancedMealsByCategory(category);
-  const filteredMeals = filterEnhancedMealsByDietaryTags(categoryMeals, dietaryTags);
+  let filteredMeals = filterEnhancedMealsByDietaryTags(categoryMeals, dietaryTags);
+  
+  // Apply seasonal adaptations for ayurvedic meals
+  if (dietaryTags.includes('ayurvedic') && filteredMeals.length > 0) {
+    const currentSeason = getCurrentAyurvedicSeason();
+    const seasonalGuidance = getCurrentSeasonalGuidance();
+    
+    filteredMeals = filteredMeals.map(meal => {
+      if (meal.tags.includes('ayurvedic')) {
+        const adaptedMeal = adaptRecipeForSeason(meal, currentSeason);
+        // Add seasonal context to the portion for display, keep original name for recipe lookup
+        adaptedMeal.portion = `${meal.portion} (${seasonalGuidance.season} season)`;
+        return adaptedMeal;
+      }
+      return meal;
+    });
+  }
   
   // If no meals match dietary tags, implement smart fallback
   if (filteredMeals.length === 0) {
