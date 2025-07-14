@@ -12,7 +12,8 @@ import { apiRequest } from "@/lib/queryClient";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Calendar, Clock, Target, Upload, Eye, Download, Share, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { useTranslations, Language } from "@/lib/translations";
+import { useTranslations } from "@/lib/translations";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Textarea } from "@/components/ui/textarea";
 
 
@@ -131,10 +132,8 @@ export default function MealPlanner() {
     refetchOnMount: true, // Refetch when component mounts
   });
 
-  // Get language from user profile or localStorage as fallback
-  const language = (userProfile?.language as Language) || 
-                   (localStorage.getItem('preferred_language') as Language) || 
-                   "en";
+  // Get language from context
+  const { language } = useLanguage();
   const t = useTranslations(language);
 
   // Fetch meal plans for current user

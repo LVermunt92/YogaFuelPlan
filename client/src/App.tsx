@@ -9,67 +9,18 @@ import Auth from "@/pages/auth";
 import NotFound from "@/pages/not-found";
 import { Utensils, User, Menu, LogOut, Languages } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useTranslations, Language } from "@/lib/translations";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
+import { useTranslations } from "@/lib/translations";
+import { LanguageProvider, useLanguage } from "@/contexts/LanguageContext";
 
 function Navigation() {
   const [location] = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logout } = useAuth();
-  const [language, setLanguage] = useState<Language>("en");
-  const queryClient = useQueryClient();
-
-  // Fetch user profile for language
-  const { data: userProfile } = useQuery({
-    queryKey: ['/api/users', user?.id, 'profile'],
-    enabled: !!user?.id,
-  });
-
-  // Set language from user profile or localStorage
-  useEffect(() => {
-    if (userProfile?.language) {
-      setLanguage(userProfile.language as Language);
-      localStorage.setItem('preferred_language', userProfile.language);
-    } else {
-      // Use localStorage as fallback
-      const savedLanguage = localStorage.getItem('preferred_language') as Language;
-      if (savedLanguage) {
-        setLanguage(savedLanguage);
-      }
-    }
-  }, [userProfile]);
+  const { language, changeLanguage, isChangingLanguage } = useLanguage();
 
   const t = useTranslations(language);
-
-  // Update user language mutation
-  const updateLanguageMutation = useMutation({
-    mutationFn: async (newLanguage: Language) => {
-      if (!user?.id) throw new Error('User not authenticated');
-      const response = await apiRequest('PUT', `/api/users/${user.id}/profile`, { language: newLanguage });
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/users', user?.id, 'profile'] });
-    },
-  });
-
-  const changeLanguage = (newLanguage: Language) => {
-    setLanguage(newLanguage);
-    // Save language to localStorage immediately
-    localStorage.setItem('preferred_language', newLanguage);
-    
-    updateLanguageMutation.mutate(newLanguage, {
-      onSuccess: () => {
-        // Force refresh of all components by invalidating all queries
-        queryClient.invalidateQueries();
-        // Reload the page to ensure all components re-render with new language
-        window.location.reload();
-      }
-    });
-  };
 
   const navItems = [
     { path: "/", label: t.mealPlanner, icon: Utensils },
@@ -115,7 +66,7 @@ function Navigation() {
                 {/* Language Selector */}
                 <div className="flex items-center space-x-2">
                   <Languages className="h-4 w-4 text-gray-500" />
-                  <Select value={language} onValueChange={changeLanguage}>
+                  <Select value={language} onValueChange={changeLanguage} disabled={isChangingLanguage}>
                     <SelectTrigger className="w-[80px] h-8 text-sm">
                       <SelectValue />
                     </SelectTrigger>
@@ -191,7 +142,7 @@ function Navigation() {
                   <Select value={language} onValueChange={(value) => {
                     setIsMenuOpen(false);
                     changeLanguage(value as Language);
-                  }}>
+                  }} disabled={isChangingLanguage}>
                     <SelectTrigger className="w-[80px] h-8 text-sm">
                       <SelectValue />
                     </SelectTrigger>
@@ -272,10 +223,12 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Router />
-      </TooltipProvider>
+      <LanguageProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Router />
+        </TooltipProvider>
+      </LanguageProvider>
     </QueryClientProvider>
   );
 }
