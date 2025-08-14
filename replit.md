@@ -11,6 +11,7 @@ Enhanced unit conversion system: Intelligently converts liquids (milk, oils) to 
 Smart seasonal fruit specification: Automatically replaces vague "seasonal fruit" entries with specific Netherlands-appropriate fruits based on current season (spring: strawberries, summer: mixed berries, autumn: apples, winter: citrus fruit) for clearer shopping lists.
 Enhanced recipe indulgence: AI-generated recipes now include healthy but satisfying sauces or toppings made from whole foods (roasted pepper sauces, tahini dressings, herb oils, nut creams, vegetable salsas) to make meals feel more indulgent while maintaining nutritional value.
 Instagram-inspired viral recipes: Added three viral social media recipes with healthy indulgent toppings - herb-infused chicken lasagna with avocado oil drizzle, chicken and basil pesto lasagna with cottage cheese sauce, and pasta with roasted zucchini cream and burrata topping.
+Terminology standardization: Updated all references from "snap peas" to "sugar snaps" across recipes, ingredient lists, and Dutch translations for consistency and user preference.
 
 ## System Architecture
 

@@ -1202,7 +1202,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       "200g rice noodles",
       "1 red bell pepper (sliced)",
       "1 zucchini (sliced)",
-      "150g snap peas",
+      "150g sugar snaps",
       "2 carrots (julienned)",
       "3 tbsp tahini",
       "2 tbsp gluten-free soy sauce",
@@ -1215,7 +1215,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     wholeFoodLevel: "moderate",
     vegetableContent: {
       servings: 4,
-      vegetables: ["bell pepper", "zucchini", "snap peas", "carrots"],
+      vegetables: ["bell pepper", "zucchini", "sugar snaps", "carrots"],
       benefits: ["High in vitamin C", "Rich in beta-carotene", "Good source of fiber"]
     },
     recipe: {
@@ -1223,7 +1223,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         "Soak rice noodles in hot water for 8-10 minutes until tender",
         "Meanwhile, heat sesame oil in large wok over high heat",
         "Stir-fry bell pepper and carrots for 2 minutes",
-        "Add zucchini and snap peas, stir-fry 3 minutes more",
+        "Add zucchini and sugar snaps, stir-fry 3 minutes more",
         "Add minced garlic and ginger, cook 30 seconds",
         "Whisk tahini, soy sauce, and rice vinegar in small bowl",
         "Drain noodles and add to wok with vegetables",
@@ -2545,7 +2545,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'crushed tomatoes': 'Vegetables',
     'sun-dried tomatoes': 'Vegetables',
     'broccoli': 'Vegetables',
-    'snap peas': 'Vegetables',
+    'sugar snaps': 'Vegetables',
     'brussels sprouts': 'Vegetables',
     'zucchini': 'Vegetables',
     'kale': 'Vegetables',

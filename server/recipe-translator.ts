@@ -102,6 +102,7 @@ const ingredientTranslations: Record<string, string> = {
   'lettuce': 'sla',
   'cabbage': 'kool',
   'cauliflower': 'bloemkool',
+  'sugar snaps': 'sugarsnaps',
   
   // Fruits
   'fruits': 'fruit',
