@@ -642,12 +642,20 @@ export function translateShoppingList(shoppingList: any, language: 'en' | 'nl'):
   
   const translatedList = JSON.parse(JSON.stringify(shoppingList));
   
-  if (translatedList.items) {
-    translatedList.items = translatedList.items.map((item: any) => ({
+  // Translate individual shopping list items
+  if (translatedList.shoppingList) {
+    translatedList.shoppingList = translatedList.shoppingList.map((item: any) => ({
       ...item,
       ingredient: translateIngredient(item.ingredient),
       category: categoryTranslations[item.category] || item.category
     }));
+  }
+  
+  // Translate the categories array for headers
+  if (translatedList.categories) {
+    translatedList.categories = translatedList.categories.map((category: string) => 
+      categoryTranslations[category] || category
+    );
   }
   
   return translatedList;

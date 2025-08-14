@@ -115,7 +115,11 @@ export default function MealPlanner() {
     nextSunday.setDate(nextSunday.getDate() + daysUntilSunday);
     return nextSunday.toISOString().split('T')[0];
   });
-  const [selectedMealPlan, setSelectedMealPlan] = useState<number | null>(null); // Auto-select latest meal plan
+  const [selectedMealPlan, setSelectedMealPlan] = useState<number | null>(() => {
+    // Try to load from localStorage on initial mount
+    const stored = localStorage.getItem('selectedMealPlan');
+    return stored ? parseInt(stored) : null;
+  });
   const [showShoppingList, setShowShoppingList] = useState(false);
   const [selectedMealId, setSelectedMealId] = useState<number | null>(null);
   const [showOuraPanel, setShowOuraPanel] = useState(false);
@@ -546,9 +550,26 @@ export default function MealPlanner() {
   const preferredPlan = currentWeekPlan || latestMealPlan;
 
   // Auto-select the current week's meal plan (or latest if no current week plan)
-  if (!selectedMealPlan && mealPlans.length > 0 && !loadingPlans && preferredPlan) {
-    setSelectedMealPlan(preferredPlan.id);
-  }
+  useEffect(() => {
+    if (!selectedMealPlan && mealPlans.length > 0 && !loadingPlans && preferredPlan) {
+      setSelectedMealPlan(preferredPlan.id);
+      // Store in localStorage for persistence across sessions
+      localStorage.setItem('selectedMealPlan', preferredPlan.id.toString());
+    }
+  }, [selectedMealPlan, mealPlans, loadingPlans, preferredPlan]);
+
+  // Load meal plan from localStorage on component mount
+  useEffect(() => {
+    const storedMealPlanId = localStorage.getItem('selectedMealPlan');
+    if (storedMealPlanId && !selectedMealPlan && mealPlans.length > 0) {
+      const storedPlan = mealPlans.find(plan => plan.id === parseInt(storedMealPlanId));
+      if (storedPlan) {
+        setSelectedMealPlan(storedPlan.id);
+        // Update localStorage to ensure persistence
+        localStorage.setItem('selectedMealPlan', storedPlan.id.toString());
+      }
+    }
+  }, [mealPlans, selectedMealPlan]);
 
   const displayedMealPlan = currentMealPlan || (preferredPlan && mealPlans.find(mp => mp.id === preferredPlan.id));
 

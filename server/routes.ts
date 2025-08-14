@@ -963,18 +963,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       let shoppingList = generateEnhancedShoppingList(mealPlan.meals, language);
       
-      // Translate shopping list items if Dutch is requested
-      const translatedShoppingList = translateShoppingList({
-        items: shoppingList
-      }, language);
-      
-      res.json({
+      // Create proper structure for translation
+      const shoppingListResponse = {
         mealPlanId: id,
         weekStart: mealPlan.weekStart,
-        shoppingList: translatedShoppingList.items,
-        totalItems: translatedShoppingList.items.length,
-        categories: Array.from(new Set(translatedShoppingList.items.map(item => item.category))).sort()
-      });
+        shoppingList: shoppingList,
+        totalItems: shoppingList.length,
+        categories: Array.from(new Set(shoppingList.map(item => item.category))).sort()
+      };
+      
+      // Translate shopping list if Dutch is requested
+      const translatedResponse = translateShoppingList(shoppingListResponse, language);
+      
+      res.json(translatedResponse);
     } catch (error) {
       console.error("Error generating shopping list:", error);
       res.status(500).json({ message: "Failed to generate shopping list" });
