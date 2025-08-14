@@ -598,11 +598,17 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
     totalWeeklyProtein += dailyProtein;
   }
 
+  // Calculate actual days with meals for proper protein average
+  const totalMealsGenerated = meals.length;
+  const averageProteinPerDay = totalMealsGenerated > 0 ? totalWeeklyProtein / totalMealsGenerated : 0;
+  
+  console.log(`🥩 Protein calculation: ${totalWeeklyProtein}g total / ${totalMealsGenerated} meals = ${averageProteinPerDay.toFixed(1)}g per meal`);
+
   const mealPlan: InsertMealPlan = {
     userId: request.userId || 1,
     weekStart: request.weekStart,
     activityLevel: request.activityLevel,
-    totalProtein: totalWeeklyProtein / 7, // Average daily protein
+    totalProtein: Math.round(averageProteinPerDay), // Average protein per meal
     notionSynced: false,
   };
 
@@ -1129,11 +1135,28 @@ async function generateMealPrepPlan(
     }
   }
 
+  // Calculate actual days with meals for proper protein average
+  // Count days with at least one meal (breakfast always exists for days 2-7, plus lunch/dinner for daysWithMeals)
+  const actualDaysWithMeals = new Set();
+  
+  // Add days 2-7 (breakfast days)
+  for (let day = 2; day <= 7; day++) {
+    actualDaysWithMeals.add(day);
+  }
+  
+  // Add days with lunch/dinner
+  daysWithMeals.forEach(day => actualDaysWithMeals.add(day));
+  
+  const totalDaysWithMeals = actualDaysWithMeals.size;
+  const averageProteinPerDay = totalDaysWithMeals > 0 ? totalWeeklyProtein / totalDaysWithMeals : 0;
+  
+  console.log(`🥩 Protein calculation: ${totalWeeklyProtein}g total / ${totalDaysWithMeals} days = ${averageProteinPerDay.toFixed(1)}g per day`);
+
   const mealPlan: InsertMealPlan = {
     userId: request.userId || 1,
     weekStart: request.weekStart,
     activityLevel: request.activityLevel,
-    totalProtein: totalWeeklyProtein / (7 + totalMealsNeeded), // 7 breakfasts + variable lunch/dinner
+    totalProtein: Math.round(averageProteinPerDay), // Average daily protein for days with meals
     notionSynced: false,
   };
 
