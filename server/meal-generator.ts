@@ -464,27 +464,48 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         usedDinnerMeals.add(selectedMeal.name);
         allSelectedMealNames.add(selectedMeal.name);
       } else if (day === 7 && mealCategory === 'lunch') {
-        // Day 7: Saturday lunch - eating out
-        // Create eating out meal
-        selectedMeal = {
-          name: "Eating out",
-          portion: "",
-          nutrition: { protein: 0, prepTime: 30 },
-          ingredients: [],
-          tags: [],
-          recipe: { instructions: [], tips: [] }
-        };
+        // Day 7: Saturday lunch - only add eating out if user doesn't eat at home
+        if (!daysWithMeals.includes(day)) {
+          selectedMeal = {
+            name: "Eating out",
+            portion: "",
+            nutrition: { protein: 0, prepTime: 30 },
+            ingredients: [],
+            tags: [],
+            recipe: { instructions: [], tips: [] }
+          };
+        } else {
+          // User eats at home - select proper meal
+          selectedMeal = selectUnusedMeal(availableMeals, usedLunchMeals, allSelectedMealNames);
+          usedLunchMeals.add(selectedMeal.name);
+          allSelectedMealNames.add(selectedMeal.name);
+        }
       } else if (day === 7 && mealCategory === 'dinner') {
-        // Day 7: Saturday dinner - eating out  
-        // Create eating out meal
-        selectedMeal = {
-          name: "Eating out",
-          portion: "",
-          nutrition: { protein: 0, prepTime: 30 },
-          ingredients: [],
-          tags: [],
-          recipe: { instructions: [], tips: [] }
-        };
+        // Day 7: Saturday dinner - only add eating out if different from lunch
+        if (!daysWithMeals.includes(day)) {
+          // Only add "Eating out" for dinner if lunch wasn't already "Eating out"
+          const lunchMeal = meals.find(m => m.day === day && m.mealType === 'lunch');
+          if (!lunchMeal || lunchMeal.foodDescription !== 'Eating out') {
+            selectedMeal = {
+              name: "Eating out",
+              portion: "",
+              nutrition: { protein: 0, prepTime: 30 },
+              ingredients: [],
+              tags: [],
+              recipe: { instructions: [], tips: [] }
+            };
+          } else {
+            // Skip duplicate eating out - generate actual meal instead
+            selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames);
+            usedDinnerMeals.add(selectedMeal.name);
+            allSelectedMealNames.add(selectedMeal.name);
+          }
+        } else {
+          // User eats at home - select proper meal
+          selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames);
+          usedDinnerMeals.add(selectedMeal.name);
+          allSelectedMealNames.add(selectedMeal.name);
+        }
       } else if (mealCategory === 'breakfast') {
         // Smart breakfast scheduling: easy options for weekdays, elaborate for weekends
         const isWeekend = day === 6 || day === 7; // Saturday or Sunday
@@ -1092,21 +1113,14 @@ async function generateMealPrepPlan(
         totalWeeklyProtein += adjustedProtein;
       }
     } else {
-      // Days with eating out - add "eating out" placeholder meals
-      meals.push({
-        mealPlanId: 0,
-        day,
-        mealType: 'lunch',
-        foodDescription: 'Eating out',
-        portion: '',
-        protein: 0,
-        prepTime: 0,
-      });
+      // Days with eating out - add single "eating out" placeholder meal to avoid repetition
+      // Alternate between lunch and dinner for variety
+      const mealType = (day % 2 === 0) ? 'lunch' : 'dinner';
       
       meals.push({
         mealPlanId: 0,
         day,
-        mealType: 'dinner',
+        mealType,
         foodDescription: 'Eating out',
         portion: '',
         protein: 0,
