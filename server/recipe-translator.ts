@@ -121,7 +121,7 @@ const ingredientTranslations: Record<string, string> = {
   'black pepper': 'zwarte peper',
   'garlic powder': 'knoflookpoeder',
   'onion powder': 'uienpoeder',
-  'paprika': 'paprikapoeder',
+  'paprika powder': 'paprikapoeder',
   'cumin': 'komijn',
   'turmeric': 'kurkuma',
   'ginger': 'gember',
