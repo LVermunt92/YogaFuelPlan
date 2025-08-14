@@ -510,7 +510,10 @@ function translateInstruction(instruction: string): string {
     translated = translated.replace(regex, dutch);
   }
   
-  return translated;
+  // Capitalize first letter of each sentence
+  return translated.replace(/(^|\. )([a-z])/g, (match, prefix, letter) => 
+    prefix + letter.toUpperCase()
+  );
 }
 
 function translateRecipeName(name: string): string {
@@ -527,7 +530,8 @@ function translateRecipeName(name: string): string {
     translated = translated.replace(regex, dutch);
   }
   
-  return translated;
+  // Capitalize first letter
+  return translated.charAt(0).toUpperCase() + translated.slice(1);
 }
 
 export function translateRecipe(recipe: any, language: 'en' | 'nl'): TranslatedRecipe {
