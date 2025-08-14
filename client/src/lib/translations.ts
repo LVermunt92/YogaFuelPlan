@@ -424,7 +424,7 @@ export const dietaryTagTranslations = {
   nl: {
     "vegetarian": "Vegetarisch",
     "vegan": "Veganistisch", 
-    "gluten-free": "Glutenvrij",
+    "gluten-free": "glutenvrij",
     "lactose-free": "Lactosevrij",
     "dairy-free": "Zuivelvrij",
     "nut-free": "Notenvrij",
