@@ -976,10 +976,11 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
+        "Make cashew cream: Soak 1/2 cup raw cashews in hot water for 30 minutes, then drain and blend with 1/3 cup water until smooth and creamy",
         "Slice king oyster mushrooms thick and sear until golden (viral technique for meaty texture)",
         "Remove mushrooms, sauté garlic in same pan",
         "Add sun-dried tomatoes and a splash of vegetable broth",
-        "Pour in cashew cream, add nutritional yeast for viral creamy sauce",
+        "Pour in the prepared cashew cream, add nutritional yeast for viral creamy sauce",
         "Return mushrooms to pan, simmer until heated through",
         "Serve over pasta with fresh herbs for Instagram appeal"
       ],
@@ -2519,6 +2520,9 @@ function cleanIngredientName(ingredient: string): string {
     cleaned = 'lemon'; // Convert lemon juice to whole lemon for shopping
   } else if (cleaned.includes('lemon') || cleaned === 'lemon') {
     cleaned = 'lemon';
+  }
+  if (cleaned.includes('cashew cream') || cleaned === 'cashew cream') {
+    cleaned = 'cashews'; // Convert cashew cream to whole cashews for shopping
   }
   if (cleaned.includes('banana') || cleaned === 'd banana' || cleaned === 'sliced banana') {
     cleaned = 'banana';
