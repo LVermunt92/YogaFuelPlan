@@ -2328,9 +2328,13 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'extra firm tofu': 'Proteins',
     'tempeh': 'Proteins',
     'red lentils': 'Proteins',
+    'green lentils': 'Proteins',
+    'lentils': 'Proteins',
     'chickpeas': 'Proteins',
     'black beans': 'Proteins',
     'white beans': 'Proteins',
+    'kidney beans': 'Proteins',
+    'mung beans': 'Proteins',
     'edamame': 'Proteins',
     'pea protein powder': 'Proteins',
     'vanilla protein powder': 'Proteins',
@@ -2598,10 +2602,32 @@ function cleanIngredientName(ingredient: string): string {
   // Remove leading numbers and fractions that might still be there  
   cleaned = cleaned.replace(/^[\d\/½¼¾⅓⅔⅛⅜⅝⅞]+\s*/, '');
   
-  // Remove descriptive words and parenthetical content
-  cleaned = cleaned.replace(/\s*\([^)]*\)/g, ''); // Remove (content in parentheses)
-  cleaned = cleaned.replace(/\b(free-range|organic|fresh|raw|toasted|chopped|sliced|diced|minced|halved|cooked|long-fermented)\b/g, '');
-  cleaned = cleaned.replace(/\b(extra virgin|sea|black|white|ground|mixed|frozen|unsweetened|pure|gluten-free)\b/g, '');
+  // Handle specific bean types BEFORE removing descriptive words (including canned versions)
+  if (cleaned.includes('black beans') || cleaned === 'black beans' || cleaned.includes('can black beans')) {
+    cleaned = 'black beans';
+  } else if (cleaned.includes('white beans') || cleaned === 'white beans' || cleaned.includes('can white beans')) {
+    cleaned = 'white beans';
+  } else if (cleaned.includes('kidney beans') || cleaned === 'kidney beans' || cleaned.includes('can kidney beans')) {
+    cleaned = 'kidney beans';
+  } else if (cleaned.includes('chickpeas') || cleaned === 'chickpeas' || cleaned.includes('garbanzo beans') || cleaned.includes('can chickpeas') || cleaned.includes('cooked chickpeas')) {
+    cleaned = 'chickpeas';
+  } else if (cleaned.includes('mung beans') || cleaned === 'mung beans' || cleaned.includes('whole mung beans') || cleaned.includes('can mung beans')) {
+    cleaned = 'mung beans';
+  } else if (cleaned.includes('red lentils') || cleaned === 'red lentils') {
+    cleaned = 'red lentils';
+  } else if (cleaned.includes('green lentils') || cleaned === 'green lentils') {
+    cleaned = 'green lentils';
+  } else if (cleaned.includes('lentils') || cleaned === 'lentils') {
+    cleaned = 'lentils';
+  } else if (cleaned.includes('can beans') || cleaned === 'can beans' || (cleaned.includes('beans') && cleaned.includes('can'))) {
+    // This is a fallback for any generic "can beans" - this shouldn't happen with proper recipes
+    cleaned = 'mixed beans';
+  } else {
+    // Remove descriptive words and parenthetical content (only if not a specific bean type)
+    cleaned = cleaned.replace(/\s*\([^)]*\)/g, ''); // Remove (content in parentheses)
+    cleaned = cleaned.replace(/\b(free-range|organic|fresh|raw|toasted|chopped|sliced|diced|minced|halved|cooked|long-fermented)\b/g, '');
+    cleaned = cleaned.replace(/\b(extra virgin|sea|black|white|ground|mixed|frozen|unsweetened|pure|gluten-free)\b/g, '');
+  }
   cleaned = cleaned.replace(/^(pinch of|dash of|handful of)\s*/i, '');
   
   // Clean up spaces and handle special cases
@@ -2714,7 +2740,26 @@ function cleanIngredientName(ingredient: string): string {
     'kefir': 'fermented kefir',
     'berries': 'mixed berries',
     'oats': 'rolled oats',
-    'granola': 'gluten-free granola'
+    'granola': 'gluten-free granola',
+    // Bean and legume specific mappings
+    'black beans': 'black beans',
+    'white beans': 'white beans', 
+    'kidney beans': 'kidney beans',
+    'chickpeas': 'chickpeas',
+    'garbanzo beans': 'chickpeas',
+    'mung beans': 'mung beans',
+    'whole mung beans': 'mung beans',
+    'red lentils': 'red lentils',
+    'green lentils': 'green lentils',
+    'lentils': 'lentils',
+    'can black beans': 'black beans',
+    'can white beans': 'white beans',
+    'can kidney beans': 'kidney beans', 
+    'can chickpeas': 'chickpeas',
+    'can mung beans': 'mung beans',
+    'can beans': 'mixed beans',
+    'cooked chickpeas': 'chickpeas',
+    'mixed beans': 'mixed beans'
   };
   
   return ingredientMappings[cleaned] || cleaned;
