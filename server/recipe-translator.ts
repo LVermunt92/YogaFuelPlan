@@ -63,6 +63,9 @@ const ingredientTranslations: Record<string, string> = {
   'coconut flour': 'kokosmeel',
   'almond flour': 'amandelmeel',
   
+  // Common words
+  'with': 'met',
+  
   // Vegetables
   'vegetables': 'groenten',
   'onion': 'ui',
