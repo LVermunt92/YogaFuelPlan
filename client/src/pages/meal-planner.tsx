@@ -888,16 +888,6 @@ export default function MealPlanner() {
                         {plan.planName || `Meal Plan ${index + 1}`}
                       </h4>
                       <div className="flex items-center gap-2">
-                        {plan.id === latestMealPlan?.id && (
-                          <Button
-                            variant="default"
-                            size="sm"
-                            className="h-6 px-2 text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90"
-                            disabled
-                          >
-                            {t.current || 'Current'}
-                          </Button>
-                        )}
                         <Button
                           variant="ghost"
                           size="sm"
