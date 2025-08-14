@@ -95,6 +95,7 @@ const ingredientTranslations: Record<string, string> = {
   'apple': 'appel',
   'banana': 'banaan',
   'berries': 'bessen',
+  'summer fruit': 'zomerfruit',
   'blueberries': 'bosbessen',
   'strawberries': 'aardbeien',
   'raspberries': 'frambozen',
