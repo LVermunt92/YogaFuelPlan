@@ -948,7 +948,7 @@ export default function MealPlanner() {
                     <div className="flex flex-wrap gap-2">
                       {userProfile.dietaryTags.map((tag) => (
                         <Badge key={tag} variant="secondary" className="text-xs">
-                          {tag.replace(/-/g, ' ')}
+                          {translateDietaryTag(tag, language)}
                         </Badge>
                       ))}
                     </div>
