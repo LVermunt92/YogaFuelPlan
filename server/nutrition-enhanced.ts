@@ -2383,6 +2383,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'smoked paprika': 'Pantry Items',
     'cayenne pepper': 'Pantry Items',
     'red pepper flakes': 'Pantry Items',
+    'chili flakes': 'Pantry Items',
     'dried oregano': 'Pantry Items',
     'dried basil': 'Pantry Items',
     'dried thyme': 'Pantry Items',

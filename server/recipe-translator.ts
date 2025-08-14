@@ -204,6 +204,7 @@ const ingredientTranslations: Record<string, string> = {
   'smoked paprika': 'gerookte paprika',
   'cayenne pepper': 'cayennepeper',
   'red pepper flakes': 'rode pepervlokken',
+  'chili flakes': 'chilivlokken',
   'dried oregano': 'gedroogde oregano',
   'dried basil': 'gedroogde basilicum',
   'dried thyme': 'gedroogde tijm',
