@@ -251,6 +251,26 @@ export const translations = {
     
     // Colors  
     green: "Green",
+    
+    // Additional Meal Plan Management
+    savedMealPlans: "Saved Meal Plans", 
+    manageMultiplePlans: "Select and manage your meal plans",
+    deletePlanConfirm: "Are you sure you want to delete this meal plan?",
+    savePlanCopy: "Save Plan as Copy",
+    saveMealPlan: "Save Meal Plan",
+    planLabel: "Plan Label",
+    planLabelPlaceholder: "e.g., Next Week, Backup Plan",
+    savedPlan: "Save Plan",
+    
+    // Additional meal plan features
+    daysPerWeek: "days per week",
+    eating: "eating",
+    daysAtHome: "days at home",
+    thisWeeksFocus: "This week's focus",
+    meatFishMeals: "meat/fish meals",
+    plantBasedNutrition: "plant-based nutrition",
+    vegetarianGlutenLactoseFree: "vegetarian, gluten & lactose-free",
+    healthActivityTracking: "Health & Activity Tracking",
   },
   
   nl: {

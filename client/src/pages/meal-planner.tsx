@@ -1335,15 +1335,15 @@ export default function MealPlanner() {
                             </Badge>
                           </div>
                           
-                          {shoppingListData.categories.map(category => (
+                          {shoppingListData.categories?.map(category => (
                             <div key={category} className="space-y-2">
                               <h3 className="font-semibold text-slate-900 border-b border-slate-200 pb-1">
                                 {category}
                               </h3>
                               <div className="grid grid-cols-1 gap-2">
                                 {shoppingListData.shoppingList
-                                  .filter(item => item.category === category)
-                                  .map((item, index) => (
+                                  ?.filter(item => item.category === category)
+                                  ?.map((item, index) => (
                                     <div key={index} className="flex justify-between items-center py-2 px-2 hover:bg-slate-50 rounded">
                                       <span className="text-sm text-slate-900 flex-1">{item.ingredient}</span>
                                       <div className="flex items-center">
@@ -1365,12 +1365,12 @@ export default function MealPlanner() {
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                               <Button
                                 onClick={() => {
-                                  const text = shoppingListData.categories.map(category => 
+                                  const text = shoppingListData.categories?.map(category => 
                                     `${category}:\n${shoppingListData.shoppingList
-                                      .filter(item => item.category === category)
-                                      .map(item => `- ${item.ingredient} (${item.totalAmount})`)
-                                      .join('\n')}`
-                                  ).join('\n\n');
+                                      ?.filter(item => item.category === category)
+                                      ?.map(item => `- ${item.ingredient} (${item.totalAmount})`)
+                                      ?.join('\n') || ''}`
+                                  )?.join('\n\n') || '';
                                   navigator.clipboard.writeText(text);
                                 }}
                                 variant="outline"
