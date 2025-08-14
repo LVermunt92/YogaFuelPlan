@@ -939,8 +939,9 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        let selectedDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals);
+        let selectedDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames);
         usedDinnerMeals.add(selectedDinnerMeal.name);
+        allSelectedMealNames.add(selectedDinnerMeal.name);
         
         // Try to incorporate leftover ingredients
         if (remainingIngredientsToUseUp.length > 0) {
@@ -959,8 +960,9 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        let selectedDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals);
+        let selectedDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames);
         usedDinnerMeals.add(selectedDinnerMeal.name);
+        allSelectedMealNames.add(selectedDinnerMeal.name);
         
         // Try to incorporate leftover ingredients
         if (remainingIngredientsToUseUp.length > 0) {
@@ -979,8 +981,9 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        let selectedDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals);
+        let selectedDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames);
         usedDinnerMeals.add(selectedDinnerMeal.name);
+        allSelectedMealNames.add(selectedDinnerMeal.name);
         
         // Try to incorporate leftover ingredients
         if (remainingIngredientsToUseUp.length > 0) {
@@ -999,24 +1002,27 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        wednesdayDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals);
+        wednesdayDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames);
         usedDinnerMeals.add(wednesdayDinnerMeal.name);
+        allSelectedMealNames.add(wednesdayDinnerMeal.name);
         dinnerMeal = wednesdayDinnerMeal;
       } else if (day === 5) {
         // Day 5: Thursday dinner - fresh cooking (use unique meals)
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        thursdayDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals);
+        thursdayDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames);
         usedDinnerMeals.add(thursdayDinnerMeal.name);
+        allSelectedMealNames.add(thursdayDinnerMeal.name);
         dinnerMeal = thursdayDinnerMeal;
       } else if (day === 6) {
         // Day 6: Friday dinner - fresh cooking (3rd cooking day, use unique meals)
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        dinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals);
+        dinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames);
         usedDinnerMeals.add(dinnerMeal.name);
+        allSelectedMealNames.add(dinnerMeal.name);
       } else if (day === 7 && thursdayDinnerMeal) {
         // Day 7: Saturday dinner - leftover from Thursday
         dinnerMeal = thursdayDinnerMeal;
@@ -1026,8 +1032,9 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        dinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals);
+        dinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames);
         usedDinnerMeals.add(dinnerMeal.name);
+        allSelectedMealNames.add(dinnerMeal.name);
       }
       
       if (dinnerMeal) {
