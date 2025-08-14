@@ -348,8 +348,12 @@ const recipeNamePatterns: Array<{pattern: RegExp, replacement: string}> = [
 function translateIngredient(ingredient: string): string {
   let translated = ingredient.toLowerCase();
   
+  // Sort translations by length (longest first) to handle compound ingredients correctly
+  const sortedTranslations = Object.entries(ingredientTranslations)
+    .sort(([a], [b]) => b.length - a.length);
+  
   // Apply ingredient translations
-  for (const [english, dutch] of Object.entries(ingredientTranslations)) {
+  for (const [english, dutch] of sortedTranslations) {
     const regex = new RegExp(`\\b${english}\\b`, 'gi');
     translated = translated.replace(regex, dutch);
   }

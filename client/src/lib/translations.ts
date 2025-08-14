@@ -39,6 +39,7 @@ export const translations = {
     proteinPerEuro: "Protein per Euro",
     
     // Shopping List
+    generateShoppingList: "Grocery List",
     totalItems: "Total Items",
     categories: "Categories",
     count: "Count",
@@ -305,7 +306,7 @@ export const translations = {
     
     // Shopping List
     shoppingListHeader: "Boodschappenlijst",
-    generateShoppingList: "Genereer Boodschappenlijst",
+    generateShoppingList: "Boodschappenlijst",
     smartGeneratePlan: "Smart Genereer Plan",
     selectMealPlanForShoppingList: "Selecteer een maaltijdplan om een boodschappenlijst te genereren",
     weekOf: "Week van",
