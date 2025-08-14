@@ -125,6 +125,7 @@ const ingredientTranslations: Record<string, string> = {
   'parsley': 'peterselie',
   'cilantro': 'koriander',
   'coriander': 'koriander',
+  'fresh herbs': 'verse kruiden',
   'bay leaves': 'laurierbladeren',
   
   // Oils & Vinegars
@@ -159,6 +160,7 @@ const ingredientTranslations: Record<string, string> = {
   'fresh': 'vers',
   'dried': 'gedroogd',
   'frozen': 'bevroren',
+  'can': 'blik',
   'organic': 'biologisch',
   'raw': 'rauw',
   'cooked': 'gekookt',
