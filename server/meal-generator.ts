@@ -386,20 +386,40 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals);
         thursdayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
-      } else if (day === 6 && (mealCategory === 'lunch' || mealCategory === 'dinner')) {
-        // Day 6: Friday lunch and dinner - leftovers from Thursday
+      } else if (day === 6 && mealCategory === 'lunch') {
+        // Day 6: Friday lunch - leftover from Thursday dinner
         if (!thursdayDinnerMeal) {
-          throw new Error('Thursday dinner meal not found for Friday leftovers');
+          throw new Error('Thursday dinner meal not found for Friday lunch leftover');
         }
         selectedMeal = thursdayDinnerMeal;
         isLeftover = true;
+      } else if (day === 6 && mealCategory === 'dinner') {
+        // Day 6: Friday dinner - fresh cooking
+        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals);
+        let fridayDinnerMeal = selectedMeal;
+        usedDinnerMeals.add(selectedMeal.name);
       } else if (day === 7 && mealCategory === 'lunch') {
-        // Day 7: Saturday lunch - leftover from Friday dinner
-        if (!thursdayDinnerMeal) {
-          throw new Error('Thursday dinner meal not found for Saturday lunch leftover');
-        }
-        selectedMeal = thursdayDinnerMeal;
-        isLeftover = true;
+        // Day 7: Saturday lunch - eating out
+        // Create eating out meal
+        selectedMeal = {
+          name: "Eating out",
+          portion: "",
+          nutrition: { protein: 0, prepTime: 30 },
+          ingredients: [],
+          tags: [],
+          recipe: { instructions: [], tips: [] }
+        };
+      } else if (day === 7 && mealCategory === 'dinner') {
+        // Day 7: Saturday dinner - eating out  
+        // Create eating out meal
+        selectedMeal = {
+          name: "Eating out",
+          portion: "",
+          nutrition: { protein: 0, prepTime: 30 },
+          ingredients: [],
+          tags: [],
+          recipe: { instructions: [], tips: [] }
+        };
       } else if (mealCategory === 'breakfast') {
         // Smart breakfast scheduling: easy options for weekdays, elaborate for weekends
         const isWeekend = day === 6 || day === 7; // Saturday or Sunday
