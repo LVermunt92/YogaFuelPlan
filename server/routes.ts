@@ -906,6 +906,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         .replace(/ \(\d+x portions[^)]*\)/, "") // Remove "(2x portions - batch cook)" etc.
         .replace(/ \(batch cook\)/, "") // Remove standalone "(batch cook)"
         .replace(/ \(incorporating leftover [^)]+\)/, "") // Remove "(incorporating leftover ingredient)"
+        .replace(/ \(protein-enhanced\)/, "") // Remove "(protein-enhanced)" suffix
         .trim();
       
       console.log(`Looking for recipe: "${cleanMealName}" (original: "${targetMeal.foodDescription}")`);
