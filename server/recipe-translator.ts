@@ -61,6 +61,7 @@ const ingredientTranslations: Record<string, string> = {
   'almond flour': 'amandelmeel',
   
   // Vegetables
+  'vegetables': 'groenten',
   'onion': 'ui',
   'garlic': 'knoflook',
   'tomato': 'tomaat',
