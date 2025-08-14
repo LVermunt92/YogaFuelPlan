@@ -17,9 +17,11 @@ Terminology standardization: Updated all references from "snap peas" to "sugar s
 
 ### Authentication & Multi-User Support
 - **User Authentication**: Complete login/registration system with secure password hashing
+- **Secure Password Reset**: Two-step email verification with 6-digit codes (15-minute expiration)
 - **Multi-User Support**: Each user gets unique ID and isolated data (profiles, meal plans, settings)
 - **Data Isolation**: Users cannot see or access other users' data
-- **Routing**: Unauthenticated users automatically redirected to login/registration page
+- **Route Protection**: Logged-out users only see login screen - complete protection of all authenticated pages
+- **Development Mode**: Password reset codes shown in console/frontend for testing without email service
 
 ### UI/UX Decisions
 - **Design System**: shadcn/ui built on Radix UI primitives

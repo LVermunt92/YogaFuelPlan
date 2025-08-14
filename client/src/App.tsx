@@ -197,17 +197,16 @@ function Router() {
     );
   }
 
+  // If not authenticated, only show Auth page regardless of route
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-[#fefdf9]">
-        <Switch>
-          <Route path="/auth" component={Auth} />
-          <Route component={Auth} />
-        </Switch>
+        <Auth />
       </div>
     );
   }
 
+  // If authenticated, show full app with navigation
   return (
     <div className="min-h-screen bg-[#fefdf9]">
       <Navigation />
