@@ -109,16 +109,15 @@ interface OuraStatus {
 export default function MealPlanner() {
   const [activityLevel, setActivityLevel] = useState<"high" | "low">("high");
   const [weekStart, setWeekStart] = useState(() => {
-    // Week starts on Sunday for Sunday night cooking pattern
-    const nextSunday = new Date();
-    const daysUntilSunday = (7 - nextSunday.getDay()) % 7;
-    if (daysUntilSunday === 0 && nextSunday.getHours() < 18) {
-      // If it's Sunday before 6 PM, use today as the start
-    } else {
-      nextSunday.setDate(nextSunday.getDate() + daysUntilSunday);
+    // Start with current week (this Sunday)
+    const thisWeek = new Date();
+    const daysUntilSunday = (7 - thisWeek.getDay()) % 7;
+    if (daysUntilSunday > 0) {
+      thisWeek.setDate(thisWeek.getDate() - thisWeek.getDay()); // Go back to this Sunday
     }
-    return nextSunday.toISOString().split('T')[0];
+    return thisWeek.toISOString().split('T')[0];
   });
+  const [selectedWeekType, setSelectedWeekType] = useState<"current" | "next">("current");
   const [selectedMealPlan, setSelectedMealPlan] = useState<number | null>(() => {
     // Try to load from localStorage on initial mount
     const stored = localStorage.getItem('selectedMealPlan');
@@ -268,13 +267,55 @@ export default function MealPlanner() {
 
 
 
+  // Helper to calculate week dates
+  const getWeekDates = () => {
+    const today = new Date();
+    const currentSunday = new Date(today);
+    currentSunday.setDate(today.getDate() - today.getDay()); // This Sunday
+    
+    const nextSunday = new Date(currentSunday);
+    nextSunday.setDate(currentSunday.getDate() + 7); // Next Sunday
+    
+    return {
+      current: currentSunday.toISOString().split('T')[0],
+      next: nextSunday.toISOString().split('T')[0]
+    };
+  };
+
+  // Check for existing plans before generating
+  const checkAndGenerate = async () => {
+    const weekDates = getWeekDates();
+    const targetWeek = selectedWeekType === "current" ? weekDates.current : weekDates.next;
+    
+    // Check if a plan already exists for this week
+    const existingPlan = mealPlans.find(plan => plan.weekStart === targetWeek);
+    
+    if (existingPlan) {
+      // Ask user if they want to overwrite
+      const confirmed = window.confirm(
+        `You already have a meal plan for ${selectedWeekType === "current" ? "this week" : "next week"}. Do you want to replace it?`
+      );
+      if (!confirmed) {
+        return;
+      }
+      // Delete existing plan first
+      await apiRequest('DELETE', `/api/meal-plans/${existingPlan.id}?userId=${authUser.id}`);
+    }
+    
+    // Generate new plan
+    generateMutation.mutate();
+  };
+
   // Generate meal plan mutation
   const generateMutation = useMutation({
     mutationFn: async () => {
       if (!authUser?.id) throw new Error('User not authenticated');
+      const weekDates = getWeekDates();
+      const targetWeek = selectedWeekType === "current" ? weekDates.current : weekDates.next;
+      
       const response = await apiRequest('POST', '/api/meal-plans/generate', {
         activityLevel,
-        weekStart,
+        weekStart: targetWeek,
         userId: authUser.id,
         dietaryTags: userProfile?.dietaryTags || [],
         leftovers: userProfile?.leftovers || [],
@@ -287,7 +328,7 @@ export default function MealPlanner() {
       setSelectedMealPlan(data.mealPlan.id);
       toast({
         title: t.mealPlanGenerated,
-        description: t.yourWeeklyMealPlanCreated,
+        description: `${selectedWeekType === "current" ? "This week's" : "Next week's"} meal plan created!`,
       });
     },
     onError: (error) => {
@@ -1153,13 +1194,19 @@ export default function MealPlanner() {
                 </div>
                 
                 <div>
-                  <Label className="text-sm font-medium text-foreground mb-2 block">{t.weekStartDate}</Label>
-                  <Input
-                    type="date"
-                    value={weekStart}
-                    onChange={(e) => setWeekStart(e.target.value)}
-                    className="input-clean w-full"
-                  />
+                  <Label className="text-sm font-medium text-foreground mb-2 block">Week Selection</Label>
+                  <Select value={selectedWeekType} onValueChange={(value: "current" | "next") => setSelectedWeekType(value)}>
+                    <SelectTrigger className="input-clean w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="current">This Week</SelectItem>
+                      <SelectItem value="next">Next Week</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {selectedWeekType === "current" ? "Generate meal plan for current week" : "Generate meal plan for upcoming week"}
+                  </p>
                 </div>
 
                 {userProfile?.dietaryTags && userProfile.dietaryTags.length > 0 && (
@@ -1243,7 +1290,7 @@ export default function MealPlanner() {
                       if (latestOuraData && ouraStatus?.connected) {
                         smartGenerateMutation.mutate();
                       } else {
-                        generateMutation.mutate();
+                        checkAndGenerate();
                       }
                     }}
                     disabled={generateMutation.isPending || smartGenerateMutation.isPending}
@@ -1257,7 +1304,7 @@ export default function MealPlanner() {
                     ) : (
                       <>
                         <Activity className="mr-2 h-4 w-4" />
-                        {latestOuraData && ouraStatus?.connected ? t.smartGeneratePlan : t.generateMealPlan}
+                        {latestOuraData && ouraStatus?.connected ? t.smartGeneratePlan : `Generate ${selectedWeekType === "current" ? "This Week" : "Next Week"}`}
                       </>
                     )}
                   </Button>

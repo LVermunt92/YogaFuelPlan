@@ -713,8 +713,8 @@ async function generateMealPrepPlan(
   }
   
   // Apply 30-minute cooking time limit for weekday meals
-  const weekdayLunchOptions = lunchOptions.filter(meal => meal.nutrition.prepTime <= 30);
-  const weekdayDinnerOptions = dinnerOptions.filter(meal => meal.nutrition.prepTime <= 30);
+  let weekdayLunchOptions = lunchOptions.filter(meal => meal.nutrition.prepTime <= 30);
+  let weekdayDinnerOptions = dinnerOptions.filter(meal => meal.nutrition.prepTime <= 30);
   
   console.log(`Weekday time filter: ${lunchOptions.length} → ${weekdayLunchOptions.length} lunch meals (≤30min)`);
   console.log(`Weekday time filter: ${dinnerOptions.length} → ${weekdayDinnerOptions.length} dinner meals (≤30min)`);
