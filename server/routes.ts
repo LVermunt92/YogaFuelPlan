@@ -397,6 +397,82 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Create next week's plan from current plan
+  app.post("/api/meal-plans/:id/create-next-week", async (req, res) => {
+    try {
+      const mealPlanId = parseInt(req.params.id);
+      
+      // Get the current plan to determine next week's start date
+      const currentPlan = await storage.getMealPlanWithMeals(mealPlanId);
+      if (!currentPlan) {
+        return res.status(404).json({ message: "Current meal plan not found" });
+      }
+      
+      // Calculate next week's start date (add 7 days to current week start)
+      const currentWeekStart = new Date(currentPlan.weekStart);
+      const nextWeekStart = new Date(currentWeekStart);
+      nextWeekStart.setDate(currentWeekStart.getDate() + 7);
+      const nextWeekStartStr = nextWeekStart.toISOString().split('T')[0];
+      
+      const nextWeekPlan = await storage.duplicateMealPlan(
+        mealPlanId, 
+        nextWeekStartStr, 
+        'next',
+        'Next Week Plan'
+      );
+      
+      const planWithMeals = await storage.getMealPlanWithMeals(nextWeekPlan.id);
+      
+      res.status(201).json({
+        mealPlan: nextWeekPlan,
+        meals: planWithMeals?.meals || [],
+        message: "Next week's plan created for weekend grocery planning",
+        tip: "You now have both this week (for remaining cooking) and next week (for grocery shopping) available"
+      });
+    } catch (error) {
+      console.error("Error creating next week plan:", error);
+      res.status(500).json({ message: "Failed to create next week plan" });
+    }
+  });
+
+  // Weekend grocery mode - get current + next week plans
+  app.get("/api/meal-plans/weekend-grocery/:userId", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      
+      // Get all active plans for the user
+      const activePlans = await storage.getActiveMealPlans(userId);
+      
+      // Separate current week and next week plans
+      const currentDate = new Date().toISOString().split('T')[0];
+      const currentWeekPlans = activePlans.filter(plan => {
+        const planDate = new Date(plan.weekStart);
+        const currentWeekDate = new Date(currentDate);
+        return planDate <= currentWeekDate;
+      });
+      
+      const nextWeekPlans = activePlans.filter(plan => {
+        const planDate = new Date(plan.weekStart);
+        const currentWeekDate = new Date(currentDate);
+        return planDate > currentWeekDate;
+      });
+      
+      res.json({
+        weekendGroceryMode: true,
+        currentWeekPlans: currentWeekPlans.slice(0, 2), // Max 2 current week plans
+        nextWeekPlans: nextWeekPlans.slice(0, 2), // Max 2 next week plans
+        totalActivePlans: activePlans.length,
+        canAlternate: activePlans.length >= 2,
+        message: activePlans.length >= 2 ? 
+          "Ready for weekend grocery shopping with multiple plan options" : 
+          "Create additional plans to enable alternating during grocery shopping"
+      });
+    } catch (error) {
+      console.error("Error fetching weekend grocery plans:", error);
+      res.status(500).json({ message: "Failed to fetch weekend grocery plans" });
+    }
+  });
+
   // Check Notion connection status
   app.get("/api/notion/status", async (req, res) => {
     try {

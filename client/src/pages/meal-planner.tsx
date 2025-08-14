@@ -156,6 +156,13 @@ export default function MealPlanner() {
     enabled: !!authUser?.id,
   });
 
+  // Fetch weekend grocery plans (current + next week)
+  const { data: weekendGroceryData } = useQuery({
+    queryKey: ['/api/meal-plans/weekend-grocery', authUser?.id],
+    queryFn: () => apiRequest(`/api/meal-plans/weekend-grocery/${authUser?.id}`),
+    enabled: !!authUser?.id,
+  });
+
   // Fetch specific meal plan with meals
   const { data: currentMealPlan, isLoading: loadingCurrentPlan } = useQuery<MealPlanWithMeals>({
     queryKey: ['/api/meal-plans', selectedMealPlan?.toString()],
@@ -355,9 +362,26 @@ export default function MealPlanner() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/meal-plans'] });
       queryClient.invalidateQueries({ queryKey: ['/api/meal-plans/active'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/meal-plans/weekend-grocery'] });
       toast({
         title: "Backup Plan Created",
         description: "You can now alternate between your current and backup plans for weekend groceries",
+      });
+    },
+  });
+
+  const createNextWeekPlanMutation = useMutation({
+    mutationFn: async (mealPlanId: number) => {
+      const response = await apiRequest('POST', `/api/meal-plans/${mealPlanId}/create-next-week`);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/meal-plans'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/meal-plans/active'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/meal-plans/weekend-grocery'] });
+      toast({
+        title: "Next Week Plan Created",
+        description: "You now have both this week and next week plans for complete grocery planning",
       });
     },
   });
@@ -730,25 +754,25 @@ export default function MealPlanner() {
           </div>
         </div>
 
-        {/* Multi-Plan Management */}
-        {activePlansData && activePlansData.activePlans?.length > 0 && (
+        {/* Weekend Grocery Management */}
+        {weekendGroceryData && (weekendGroceryData.currentWeekPlans?.length > 0 || weekendGroceryData.nextWeekPlans?.length > 0) && (
           <div className="card-clean mb-6">
             <div className="p-4">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center">
-                  <RefreshCw className="h-6 w-6 text-foreground mr-3" />
+                  <ShoppingCart className="h-6 w-6 text-foreground mr-3" />
                   <div>
-                    <h2 className="text-xl font-semibold text-foreground">Plan Management</h2>
-                    <p className="text-sm text-muted-foreground">Alternate between plans for weekend grocery shopping</p>
+                    <h2 className="text-xl font-semibold text-foreground">Weekend Grocery Planning</h2>
+                    <p className="text-sm text-muted-foreground">Manage both current week cooking and next week shopping</p>
                   </div>
                 </div>
                 <Badge variant="outline" className="text-xs">
-                  {activePlansData.activePlans.length} Active Plan{activePlansData.activePlans.length > 1 ? 's' : ''}
+                  {weekendGroceryData.totalActivePlans} Active Plan{weekendGroceryData.totalActivePlans > 1 ? 's' : ''}
                 </Badge>
               </div>
               
-              {activePlansData.canAlternate ? (
-                <div className="space-y-4">
+              {weekendGroceryData.canAlternate ? (
+                <div className="space-y-6">
                   <div className="p-4 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg">
                     <div className="flex items-center mb-2">
                       <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
@@ -757,77 +781,120 @@ export default function MealPlanner() {
                       </span>
                     </div>
                     <p className="text-sm text-green-700 dark:text-green-400">
-                      You have multiple active plans! Switch between them when doing weekend groceries to keep meals interesting.
+                      You have both current and next week plans! Use current week for remaining cooking, switch to next week for grocery shopping.
                     </p>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {activePlansData.activePlans.map((plan: any, index: number) => (
-                      <div 
-                        key={plan.id} 
-                        className={`p-4 border rounded-lg cursor-pointer transition-colors ${
-                          selectedMealPlan === plan.id 
-                            ? 'border-primary bg-primary/5' 
-                            : 'border-border hover:border-primary/50'
-                        }`}
-                        onClick={() => setSelectedMealPlan(plan.id)}
-                      >
-                        <div className="flex items-center justify-between mb-2">
-                          <h3 className="font-medium text-foreground">
-                            {plan.planName || `Plan ${index + 1}`}
-                          </h3>
-                          <Badge variant={plan.planType === 'backup' ? 'secondary' : 'default'} className="text-xs">
-                            {plan.planType}
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-muted-foreground mb-2">
-                          Week of {plan.weekStart}
-                        </p>
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs text-muted-foreground">
-                            {plan.totalProtein}g protein/day
-                          </span>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              togglePlanActiveMutation.mutate({ 
-                                mealPlanId: plan.id, 
-                                isActive: false 
-                              });
-                            }}
-                            disabled={togglePlanActiveMutation.isPending}
+                  {/* Current Week Plans */}
+                  {weekendGroceryData.currentWeekPlans?.length > 0 && (
+                    <div>
+                      <h3 className="text-lg font-medium text-foreground mb-3 flex items-center">
+                        <Timer className="h-5 w-5 mr-2" />
+                        This Week (Finish Cooking)
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {weekendGroceryData.currentWeekPlans.map((plan: any, index: number) => (
+                          <div 
+                            key={plan.id} 
+                            className={`p-4 border rounded-lg cursor-pointer transition-colors ${
+                              selectedMealPlan === plan.id 
+                                ? 'border-primary bg-primary/5' 
+                                : 'border-border hover:border-primary/50'
+                            }`}
+                            onClick={() => setSelectedMealPlan(plan.id)}
                           >
-                            <X className="h-3 w-3 mr-1" />
-                            Deactivate
-                          </Button>
-                        </div>
+                            <div className="flex items-center justify-between mb-2">
+                              <h4 className="font-medium text-foreground">
+                                {plan.planName || `Current Week Plan ${index + 1}`}
+                              </h4>
+                              <Badge variant="default" className="text-xs">
+                                {plan.planType || 'current'}
+                              </Badge>
+                            </div>
+                            <p className="text-sm text-muted-foreground mb-2">
+                              Week of {plan.weekStart}
+                            </p>
+                            <span className="text-xs text-muted-foreground">
+                              {plan.totalProtein}g protein/day
+                            </span>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  )}
+                  
+                  {/* Next Week Plans */}
+                  {weekendGroceryData.nextWeekPlans?.length > 0 && (
+                    <div>
+                      <h3 className="text-lg font-medium text-foreground mb-3 flex items-center">
+                        <ShoppingCart className="h-5 w-5 mr-2" />
+                        Next Week (Grocery Shopping)
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {weekendGroceryData.nextWeekPlans.map((plan: any, index: number) => (
+                          <div 
+                            key={plan.id} 
+                            className={`p-4 border rounded-lg cursor-pointer transition-colors ${
+                              selectedMealPlan === plan.id 
+                                ? 'border-primary bg-primary/5' 
+                                : 'border-border hover:border-primary/50'
+                            }`}
+                            onClick={() => setSelectedMealPlan(plan.id)}
+                          >
+                            <div className="flex items-center justify-between mb-2">
+                              <h4 className="font-medium text-foreground">
+                                {plan.planName || `Next Week Plan ${index + 1}`}
+                              </h4>
+                              <Badge variant="secondary" className="text-xs">
+                                {plan.planType || 'next'}
+                              </Badge>
+                            </div>
+                            <p className="text-sm text-muted-foreground mb-2">
+                              Week of {plan.weekStart}
+                            </p>
+                            <span className="text-xs text-muted-foreground">
+                              {plan.totalProtein}g protein/day
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ) : (
-                <div className="p-4 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-blue-800 dark:text-blue-300 mb-1">
-                        Create a Backup Plan
-                      </p>
-                      <p className="text-sm text-blue-700 dark:text-blue-400">
-                        Generate an alternative meal plan to switch between during weekend grocery shopping.
-                      </p>
+                <div className="space-y-4">
+                  <div className="p-4 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium text-blue-800 dark:text-blue-300 mb-1">
+                          Set Up Weekend Grocery Planning
+                        </p>
+                        <p className="text-sm text-blue-700 dark:text-blue-400">
+                          Create both backup and next week plans for complete grocery shopping flexibility.
+                        </p>
+                      </div>
+                      {selectedMealPlan && (
+                        <div className="flex gap-2">
+                          <Button
+                            onClick={() => createBackupPlanMutation.mutate(selectedMealPlan)}
+                            disabled={createBackupPlanMutation.isPending}
+                            size="sm"
+                            variant="outline"
+                          >
+                            <Plus className="h-4 w-4 mr-1" />
+                            Backup
+                          </Button>
+                          <Button
+                            onClick={() => createNextWeekPlanMutation.mutate(selectedMealPlan)}
+                            disabled={createNextWeekPlanMutation.isPending}
+                            size="sm"
+                          >
+                            <Calendar className="h-4 w-4 mr-1" />
+                            Next Week
+                          </Button>
+                        </div>
+                      )}
                     </div>
-                    {selectedMealPlan && (
-                      <Button
-                        onClick={() => createBackupPlanMutation.mutate(selectedMealPlan)}
-                        disabled={createBackupPlanMutation.isPending}
-                        size="sm"
-                      >
-                        <Plus className="h-4 w-4 mr-1" />
-                        Create Backup
-                      </Button>
-                    )}
                   </div>
                 </div>
               )}
