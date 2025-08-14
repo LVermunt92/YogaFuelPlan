@@ -178,13 +178,15 @@ export default function MealPlanner() {
 
   // Fetch shopping list
   const { data: shoppingListData, isLoading: loadingShoppingList } = useQuery<ShoppingListResponse>({
-    queryKey: ['/api/meal-plans', selectedMealPlan, 'shopping-list'],
+    queryKey: ['/api/meal-plans', selectedMealPlan, 'shopping-list', language],
+    queryFn: () => fetch(`/api/meal-plans/${selectedMealPlan}/shopping-list?language=${language}`).then(res => res.json()),
     enabled: !!selectedMealPlan && showShoppingList,
   });
 
   // Fetch recipe for selected meal
   const { data: recipeData, isLoading: loadingRecipe } = useQuery<RecipeResponse>({
-    queryKey: ['/api/meals', selectedMealId, 'recipe'],
+    queryKey: ['/api/meals', selectedMealId, 'recipe', language],
+    queryFn: () => fetch(`/api/meals/${selectedMealId}/recipe?language=${language}`).then(res => res.json()),
     enabled: !!selectedMealId,
   });
 
