@@ -293,7 +293,10 @@ export default function MealPlanner() {
     if (existingPlan) {
       // Ask user if they want to overwrite
       const confirmed = window.confirm(
-        `You already have a meal plan for ${selectedWeekType === "current" ? "this week" : "next week"}. Do you want to replace it?`
+        `${language === 'nl' ? 
+          `Je hebt al een maaltijdplan voor ${selectedWeekType === "current" ? "deze week" : "volgende week"}. Wil je het vervangen?` :
+          `You already have a meal plan for ${selectedWeekType === "current" ? "this week" : "next week"}. Do you want to replace it?`
+        }`
       );
       if (!confirmed) {
         return;
@@ -1194,18 +1197,18 @@ export default function MealPlanner() {
                 </div>
                 
                 <div>
-                  <Label className="text-sm font-medium text-foreground mb-2 block">Week Selection</Label>
+                  <Label className="text-sm font-medium text-foreground mb-2 block">{t.weekSelection}</Label>
                   <Select value={selectedWeekType} onValueChange={(value: "current" | "next") => setSelectedWeekType(value)}>
                     <SelectTrigger className="input-clean w-full">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="current">This Week</SelectItem>
-                      <SelectItem value="next">Next Week</SelectItem>
+                      <SelectItem value="current">{t.thisWeek}</SelectItem>
+                      <SelectItem value="next">{t.nextWeek}</SelectItem>
                     </SelectContent>
                   </Select>
                   <p className="text-xs text-muted-foreground mt-1">
-                    {selectedWeekType === "current" ? "Generate meal plan for current week" : "Generate meal plan for upcoming week"}
+                    {selectedWeekType === "current" ? t.generateCurrentWeek : t.generateUpcomingWeek}
                   </p>
                 </div>
 
@@ -1304,7 +1307,7 @@ export default function MealPlanner() {
                     ) : (
                       <>
                         <Activity className="mr-2 h-4 w-4" />
-                        {latestOuraData && ouraStatus?.connected ? t.smartGeneratePlan : `Generate ${selectedWeekType === "current" ? "This Week" : "Next Week"}`}
+                        {latestOuraData && ouraStatus?.connected ? t.smartGeneratePlan : (selectedWeekType === "current" ? t.generateThisWeek : t.generateNextWeek)}
                       </>
                     )}
                   </Button>

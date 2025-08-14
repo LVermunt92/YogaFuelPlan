@@ -197,10 +197,10 @@ export default function Profile() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-light text-foreground mb-2" style={{ fontFamily: 'Times New Roman, serif', letterSpacing: '0.05em' }}>
-            Personal Information
+            {t.personalInformation}
           </h1>
           <p className="text-muted-foreground">
-            Manage your profile settings and dietary preferences to personalise your meal plans.
+            {t.manageProfileSettings}
           </p>
         </div>
 
@@ -210,14 +210,14 @@ export default function Profile() {
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-foreground mb-2 flex items-center">
                 <UserCircle className="mr-2 h-5 w-5" />
-                Basic Information
+                {t.basicInformation}
               </h2>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <Label htmlFor="username" className="text-sm font-medium text-foreground mb-2 block">
-                  Username
+                  {t.username}
                 </Label>
                 <Input
                   id="username"
@@ -230,7 +230,7 @@ export default function Profile() {
 
               <div>
                 <Label htmlFor="email" className="text-sm font-medium text-foreground mb-2 block">
-                  Email
+                  {t.email}
                 </Label>
                 <Input
                   id="email"
@@ -243,7 +243,7 @@ export default function Profile() {
 
               <div>
                 <Label htmlFor="firstName" className="text-sm font-medium text-foreground mb-2 block">
-                  First Name
+                  {t.firstName}
                 </Label>
                 <Input
                   id="firstName"
@@ -255,7 +255,7 @@ export default function Profile() {
 
               <div>
                 <Label htmlFor="lastName" className="text-sm font-medium text-foreground mb-2 block">
-                  Last Name
+                  {t.lastName}
                 </Label>
                 <Input
                   id="lastName"
@@ -271,14 +271,14 @@ export default function Profile() {
           <div className="card-clean">
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-foreground mb-2">
-                Health & Fitness
+                {t.healthFitness}
               </h2>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               <div>
                 <Label htmlFor="weight" className="text-sm font-medium text-foreground mb-2 block">
-                  Weight (kg)
+                  {t.weight}
                 </Label>
                 <Input
                   id="weight"
@@ -292,7 +292,7 @@ export default function Profile() {
 
               <div>
                 <Label htmlFor="height" className="text-sm font-medium text-foreground mb-2 block">
-                  Height (cm)
+                  {t.height}
                 </Label>
                 <Input
                   id="height"
@@ -305,7 +305,7 @@ export default function Profile() {
 
               <div>
                 <Label htmlFor="waistline" className="text-sm font-medium text-foreground mb-2 block">
-                  Waistline (cm)
+                  {t.waistline}
                 </Label>
                 <Input
                   id="waistline"
@@ -321,7 +321,7 @@ export default function Profile() {
               {formData.weight && formData.height && (
                 <div>
                   <Label className="text-sm font-medium text-foreground mb-2 block">
-                    Current BMI
+                    {t.currentBMI}
                   </Label>
                   <div className="p-3 bg-muted rounded-md">
                     <span className="text-lg font-medium">
@@ -330,10 +330,10 @@ export default function Profile() {
                     <span className="text-sm text-muted-foreground ml-2">
                       {(() => {
                         const bmi = parseFloat(formData.weight) / Math.pow(parseFloat(formData.height) / 100, 2);
-                        if (bmi < 18.5) return "Underweight";
-                        if (bmi < 25) return "Normal";
-                        if (bmi < 30) return "Overweight";
-                        return "Obese";
+                        if (bmi < 18.5) return t.underweight;
+                        if (bmi < 25) return t.normal;
+                        if (bmi < 30) return t.overweight;
+                        return t.obese;
                       })()}
                     </span>
                   </div>
@@ -344,7 +344,7 @@ export default function Profile() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
               <div>
                 <Label htmlFor="activityLevel" className="text-sm font-medium text-foreground mb-2 block">
-                  Default Activity Level
+                  {t.defaultActivityLevel}
                 </Label>
                 <Select
                   value={formData.activityLevel}
@@ -354,15 +354,15 @@ export default function Profile() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="high">High Activity</SelectItem>
-                    <SelectItem value="low">Low Activity</SelectItem>
+                    <SelectItem value="high">{t.highActivity}</SelectItem>
+                    <SelectItem value="low">{t.lowActivity}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div>
                 <Label htmlFor="proteinTarget" className="text-sm font-medium text-foreground mb-2 block">
-                  Daily Protein Target (g)
+                  {t.dailyProteinTarget}
                 </Label>
                 <Input
                   id="proteinTarget"
@@ -379,17 +379,17 @@ export default function Profile() {
           <div className="card-clean">
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-foreground mb-2">
-                Health Goals
+                {t.healthGoals}
               </h2>
               <p className="text-sm text-muted-foreground">
-                Set optional targets for your health journey. Leave blank if you don't have specific goals.
+                {t.healthGoalsHelp}
               </p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
                 <Label htmlFor="goalWeight" className="text-sm font-medium text-foreground mb-2 block">
-                  Goal Weight (kg)
+                  {t.goalWeight}
                 </Label>
                 <Input
                   id="goalWeight"
@@ -404,7 +404,7 @@ export default function Profile() {
 
               <div>
                 <Label htmlFor="goalWaistline" className="text-sm font-medium text-foreground mb-2 block">
-                  Goal Waistline (cm)
+                  {t.goalWaistline}
                 </Label>
                 <Input
                   id="goalWaistline"
@@ -419,7 +419,7 @@ export default function Profile() {
 
               <div>
                 <Label htmlFor="targetDate" className="text-sm font-medium text-foreground mb-2 block">
-                  Target Date
+                  {t.targetDate}
                 </Label>
                 <Input
                   id="targetDate"
@@ -435,7 +435,7 @@ export default function Profile() {
             {formData.targetDate && (
               <div className="mt-4 p-3 bg-muted rounded-md">
                 <span className="text-sm text-muted-foreground">
-                  Timeline: {Math.max(0, Math.ceil((new Date(formData.targetDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24 * 7)))} weeks to reach your goals
+                  {t.timeline}: {Math.max(0, Math.ceil((new Date(formData.targetDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24 * 7)))} {t.weeksToReachGoals}
                 </span>
               </div>
             )}
@@ -445,17 +445,17 @@ export default function Profile() {
           <div className="card-clean">
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-foreground mb-2">
-                Meal Planning Preferences
+                {t.mealPlanningPreferences}
               </h2>
               <p className="text-sm text-muted-foreground">
-                These settings help us tailor meal plans to your cooking habits and household size.
+                {t.cookingHabitsHelp}
               </p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               <div>
                 <Label htmlFor="householdSize" className="text-sm font-medium text-foreground mb-2 block">
-                  Household Size (people)
+                  {t.householdSizePeople}
                 </Label>
                 <Input
                   id="householdSize"
@@ -468,13 +468,13 @@ export default function Profile() {
                   placeholder="1"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  Number of people you're cooking for
+                  {t.peopleYouCookFor}
                 </p>
               </div>
 
               <div>
                 <Label htmlFor="cookingDaysPerWeek" className="text-sm font-medium text-foreground mb-2 block">
-                  Cooking Days Per Week
+                  {t.cookingDaysPerWeek}
                 </Label>
                 <Input
                   id="cookingDaysPerWeek"
@@ -487,13 +487,13 @@ export default function Profile() {
                   placeholder="7"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  How many days per week you cook meals (useful for batch cooking)
+                  {t.cookingDaysHelp}
                 </p>
               </div>
 
               <div>
                 <Label htmlFor="eatingDaysAtHome" className="text-sm font-medium text-foreground mb-2 block">
-                  Eating Days At Home
+                  {t.eatingDaysAtHome}
                 </Label>
                 <Input
                   id="eatingDaysAtHome"
@@ -506,13 +506,13 @@ export default function Profile() {
                   placeholder="7"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  How many days per week you eat at home vs eating out
+                  {t.eatingDaysHelp}
                 </p>
               </div>
 
               <div>
                 <Label htmlFor="meatFishMealsPerWeek" className="text-sm font-medium text-foreground mb-2 block">
-                  Meat/Fish Meals Per Week
+                  {t.meatFishMealsPerWeekFull}
                 </Label>
                 <Input
                   id="meatFishMealsPerWeek"
@@ -525,7 +525,7 @@ export default function Profile() {
                   placeholder="0"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  Number of meals per week that should include meat or fish (0 for vegetarian/vegan)
+                  {t.meatFishMealsHelp}
                 </p>
               </div>
             </div>
@@ -535,10 +535,10 @@ export default function Profile() {
           <div className="card-clean">
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-foreground mb-2">
-                Dietary Preferences
+                {t.dietaryPreferences}
               </h2>
               <p className="text-sm text-muted-foreground">
-                Tap to select dietary preferences that apply to you. These will be used to filter meal recommendations.
+                {t.tapToSelectDietaryPrefs}
               </p>
             </div>
             
@@ -568,14 +568,14 @@ export default function Profile() {
               <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
                 <div className="flex items-center justify-between mb-2">
                   <Label className="text-sm font-medium text-blue-900">
-                    {formData.dietaryTags.length} preference{formData.dietaryTags.length !== 1 ? 's' : ''} selected
+                    {formData.dietaryTags.length} {formData.dietaryTags.length !== 1 ? t.preferencesSelected : t.preferenceSelected}
                   </Label>
                   <button
                     type="button"
                     onClick={() => setFormData(prev => ({ ...prev, dietaryTags: [] }))}
                     className="text-xs text-blue-700 hover:text-blue-900 underline"
                   >
-                    Clear all
+                    {t.clearAll}
                   </button>
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -602,12 +602,12 @@ export default function Profile() {
               {updateProfileMutation.isPending ? (
                 <>
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground mr-2" />
-                  Saving...
+                  {language === 'dutch' ? 'Opslaan...' : 'Saving...'}
                 </>
               ) : (
                 <>
                   <Save className="mr-2 h-4 w-4" />
-                  Save Changes
+                  {t.saveProfile}
                 </>
               )}
             </Button>
