@@ -2285,7 +2285,7 @@ export interface ShoppingListItem {
   unit: string;
 }
 
-export function generateEnhancedShoppingList(meals: { foodDescription: string }[], language: string = 'en'): ShoppingListItem[] {
+export function generateEnhancedShoppingList(meals: { foodDescription: string }[], language: string = 'en', dietaryTags: string[] = []): ShoppingListItem[] {
   const ingredientAmounts = new Map<string, { totalAmount: number; unit: string; count: number }>();
   
   // Parse actual recipe amounts from meal instructions
@@ -2478,6 +2478,13 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
   const shoppingList: ShoppingListItem[] = [];
   
   ingredientAmounts.forEach((amounts, ingredient) => {
+    let finalIngredient = ingredient;
+    
+    // Handle vegan egg alternatives
+    if (ingredient === 'eggs' && dietaryTags.includes('vegan')) {
+      finalIngredient = 'vegan egg substitute (flax eggs or aquafaba)';
+    }
+    
     const category = ingredientCategories[ingredient] || 'Other';
     
     // Convert amounts to grams using the formatAmount function
@@ -2487,7 +2494,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     const finalUnit = amounts.unit;
     
     shoppingList.push({
-      ingredient,
+      ingredient: finalIngredient,
       category,
       count: amounts.count,
       totalAmount: displayAmount,
@@ -2726,6 +2733,10 @@ function cleanIngredientName(ingredient: string): string {
   // Consolidate all tofu variations into "tofu", except silken tofu
   if ((cleaned.includes('tofu') || cleaned === 'extra firm tofu' || cleaned === 'firm tofu' || cleaned === 'medium tofu' || cleaned === 'soft tofu') && !cleaned.includes('silken')) {
     cleaned = 'tofu';
+  }
+  // Consolidate all egg variations into "eggs"
+  if (cleaned.includes('egg') && !cleaned.includes('eggplant')) {
+    cleaned = 'eggs';
   }
   
   // Handle compound ingredients

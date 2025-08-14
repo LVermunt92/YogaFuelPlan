@@ -1045,7 +1045,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "Meal plan not found" });
       }
 
-      let shoppingList = generateEnhancedShoppingList(mealPlan.meals, language);
+      // Get user dietary preferences for vegan egg alternatives
+      const user = await storage.getUser(mealPlan.userId);
+      const dietaryTags = user?.dietaryTags || [];
+
+      let shoppingList = generateEnhancedShoppingList(mealPlan.meals, language, dietaryTags);
       
       // Create proper structure for translation
       const shoppingListResponse = {

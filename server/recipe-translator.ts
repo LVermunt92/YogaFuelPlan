@@ -23,6 +23,7 @@ const ingredientTranslations: Record<string, string> = {
   'cod': 'kabeljauw',
   'eggs': 'eieren',
   'egg': 'ei',
+  'vegan egg substitute (flax eggs or aquafaba)': 'veganistisch ei-alternatief (lijnzaad-eieren of aquafaba)',
   'tofu': 'tofu',
   'tempeh': 'tempeh',
   'fermented': 'gefermenteerd',
