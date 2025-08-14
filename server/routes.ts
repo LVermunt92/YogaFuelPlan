@@ -7,6 +7,7 @@ import { notion, createDatabaseIfNotExists, findDatabaseByTitle } from "./notion
 import { generateEnhancedShoppingList } from "./nutrition-enhanced";
 import { OuraService } from "./oura";
 import { updateUserProfileSchema, authRegisterSchema, authLoginSchema } from "@shared/schema";
+import { albertHeijnService, type ShoppingListExport } from "./albert-heijn";
 import cron from 'node-cron';
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -1241,6 +1242,96 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error updating favorite:", error);
       res.status(500).json({ message: "Failed to update favorite" });
+    }
+  });
+
+  // Albert Heijn Shopping List Integration
+  app.post("/api/shopping-list/albert-heijn", async (req, res) => {
+    try {
+      const { ingredients, mealPlanId } = req.body;
+      
+      if (!ingredients || !Array.isArray(ingredients)) {
+        return res.status(400).json({ message: "Invalid ingredients list" });
+      }
+
+      console.log(`🛒 Creating Albert Heijn shopping list from ${ingredients.length} ingredients`);
+      
+      // Map ingredients to Dutch terms
+      const dutchIngredients = albertHeijnService.mapIngredientsToAH(ingredients);
+      
+      // Create shopping list
+      const shoppingList = await albertHeijnService.createShoppingListFromMealPlan(dutchIngredients);
+      
+      // Optimize store route
+      shoppingList.items = await albertHeijnService.optimizeShoppingRoute(shoppingList.items);
+      
+      res.json({
+        success: true,
+        shoppingList,
+        message: `Shopping list created with ${shoppingList.totalItems} items`
+      });
+    } catch (error) {
+      console.error("Error creating Albert Heijn shopping list:", error);
+      res.status(500).json({ message: "Failed to create shopping list" });
+    }
+  });
+
+  app.get("/api/shopping-list/albert-heijn/:format", async (req, res) => {
+    try {
+      const { format } = req.params;
+      const { ingredients } = req.query;
+      
+      if (!ingredients) {
+        return res.status(400).json({ message: "Missing ingredients parameter" });
+      }
+      
+      const ingredientsList = (ingredients as string).split(',');
+      const dutchIngredients = albertHeijnService.mapIngredientsToAH(ingredientsList);
+      
+      const shoppingList = await albertHeijnService.createShoppingListFromMealPlan(dutchIngredients);
+      shoppingList.items = await albertHeijnService.optimizeShoppingRoute(shoppingList.items);
+      
+      const exportData = await albertHeijnService.exportShoppingList(shoppingList, format as 'json' | 'text' | 'csv');
+      
+      // Set appropriate content type
+      switch (format) {
+        case 'text':
+          res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+          res.setHeader('Content-Disposition', `attachment; filename="albert-heijn-shopping-list.txt"`);
+          break;
+        case 'csv':
+          res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+          res.setHeader('Content-Disposition', `attachment; filename="albert-heijn-shopping-list.csv"`);
+          break;
+        default:
+          res.setHeader('Content-Type', 'application/json');
+      }
+      
+      res.send(exportData);
+    } catch (error) {
+      console.error("Error exporting Albert Heijn shopping list:", error);
+      res.status(500).json({ message: "Failed to export shopping list" });
+    }
+  });
+
+  app.post("/api/shopping-list/albert-heijn/search", async (req, res) => {
+    try {
+      const { query } = req.body;
+      
+      if (!query) {
+        return res.status(400).json({ message: "Search query required" });
+      }
+      
+      const products = await albertHeijnService.searchProduct(query);
+      
+      res.json({
+        success: true,
+        products,
+        count: products.length
+      });
+    } catch (error) {
+      console.error("Error searching Albert Heijn products:", error);
+      res.status(500).json({ message: "Failed to search products" });
     }
   });
 

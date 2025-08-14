@@ -15,6 +15,7 @@ import { Separator } from "@/components/ui/separator";
 import { useTranslations } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Textarea } from "@/components/ui/textarea";
+import { AlbertHeijnIntegration } from "@/components/albert-heijn-integration";
 
 
 
@@ -1318,6 +1319,16 @@ export default function MealPlanner() {
             </div>
           </div>
         </div>
+
+        {/* Albert Heijn Shopping Integration */}
+        {currentMealPlan?.meals && (
+          <div className="mt-8">
+            <AlbertHeijnIntegration 
+              ingredients={currentMealPlan.meals.map(meal => meal.foodDescription)}
+              mealPlanId={currentMealPlan.id}
+            />
+          </div>
+        )}
 
         {/* Status Panel */}
         <div className="mt-8 sm:mt-12 lg:mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
