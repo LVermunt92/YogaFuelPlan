@@ -166,7 +166,8 @@ export default function MealPlanner() {
 
   // Fetch specific meal plan with meals
   const { data: currentMealPlan, isLoading: loadingCurrentPlan } = useQuery<MealPlanWithMeals>({
-    queryKey: ['/api/meal-plans', selectedMealPlan?.toString()],
+    queryKey: ['/api/meal-plans', selectedMealPlan?.toString(), language],
+    queryFn: () => fetch(`/api/meal-plans/${selectedMealPlan}?language=${language}`).then(res => res.json()),
     enabled: !!selectedMealPlan,
   });
 

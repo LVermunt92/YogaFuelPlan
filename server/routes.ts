@@ -138,13 +138,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/meal-plans/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
+      const language = (req.query.language as 'en' | 'nl') || 'en';
       const mealPlan = await storage.getMealPlanWithMeals(id);
       
       if (!mealPlan) {
         return res.status(404).json({ message: "Meal plan not found" });
       }
       
-      res.json(mealPlan);
+      // Translate meal names and types if Dutch is requested
+      if (language === 'nl' && mealPlan.meals) {
+        const translatedMeals = mealPlan.meals.map(meal => {
+          const translatedRecipe = translateRecipe({
+            name: meal.foodDescription,
+            ingredients: [],
+            instructions: [],
+            tips: [],
+            notes: []
+          }, language);
+          
+          return {
+            ...meal,
+            foodDescription: translatedRecipe.name,
+            mealType: meal.mealType === 'breakfast' ? 'ontbijt' : 
+                     meal.mealType === 'lunch' ? 'lunch' : 
+                     meal.mealType === 'dinner' ? 'diner' : meal.mealType
+          };
+        });
+        
+        res.json({
+          ...mealPlan,
+          meals: translatedMeals
+        });
+      } else {
+        res.json(mealPlan);
+      }
     } catch (error) {
       console.error("Error fetching meal plan:", error);
       res.status(500).json({ message: "Failed to fetch meal plan" });

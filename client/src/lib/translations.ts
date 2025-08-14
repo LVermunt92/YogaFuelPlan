@@ -102,6 +102,11 @@ export const translations = {
     lunch: "Lunch",
     dinner: "Dinner",
     
+    // Portion sizes
+    portion: "Portion",
+    portions: "Portions",
+    servings: "Servings",
+    
     // Ingredients to Use Up
     ingredientsToUseUp: "Ingredients to Use Up",
     addIngredient: "Add Ingredient",
@@ -164,7 +169,6 @@ export const translations = {
     
     // Recipe Modal
     recipe: "Recept",
-    portion: "Portie",
     prepTime: "Bereidingstijd",
     minutes: "minuten",
     ingredients: "Ingrediënten",
@@ -269,10 +273,11 @@ export const translations = {
     countHeader: "Aantal",
     amountHeader: "Hoeveelheid",
     
-    // Ingredients to Use Up
+    // Ingredients to Use Up  
     ingredientToUseUp: "Ingrediënt om op te maken",
     usingIngredientsToUseUp: "Gebruikt ingrediënten om op te maken",
     ingredientAdded: "Ingrediënt toegevoegd",
+    servings: "Porties",
     ingredientRemoved: "Ingrediënt verwijderd",
     failedToAddIngredient: "Kon ingrediënt niet toevoegen",
     failedToRemoveIngredient: "Kon ingrediënt niet verwijderen",
@@ -280,8 +285,7 @@ export const translations = {
     // Recipe Dialog
     recipeDetails: "Recept Details",
     recipeNotAvailable: "Recept niet beschikbaar voor deze maaltijd.",
-    vegetableContent: "Groente Inhoud",
-    servings: "Porties",
+    vegetableContent: "Groente Inhoud", 
     vegetables: "Groenten",
     healthBenefits: "Gezondheidsvoordelen",
     min: "min",
@@ -319,6 +323,11 @@ export const translations = {
     breakfast: "Ontbijt",
     lunch: "Lunch",
     dinner: "Diner",
+    ontbijt: "Ontbijt", // Server-side translation
+    diner: "Diner", // Server-side translation
+    
+    // Portion sizes  
+    portions: "Porties",
     
     // Ingredients to Use Up
     ingredientsToUseUp: "Ingrediënten om Op te Maken",
