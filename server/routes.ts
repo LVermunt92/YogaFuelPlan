@@ -68,7 +68,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Fetch user data for meal prep logic and caloric adjustments
       const user = request.userId ? await storage.getUser(request.userId) : undefined;
       
-      const generated = generateWeeklyMealPlan(request, user);
+      const generated = await generateWeeklyMealPlan(request, user);
       
       // Save to storage
       const savedMealPlan = await storage.createMealPlan(generated.mealPlan);
@@ -104,7 +104,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Fetch user data for meal prep logic and caloric adjustments
       const user = await storage.getUser(request.userId);
       
-      const generated = generateWeeklyMealPlan(request, user);
+      const generated = await generateWeeklyMealPlan(request, user);
       
       // Save to storage
       const savedMealPlan = await storage.createMealPlan(generated.mealPlan);
@@ -229,6 +229,174 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Analyze recipe variety and generate missing recipes
+  app.post("/api/admin/analyze-recipe-variety", async (req, res) => {
+    try {
+      const { dietaryTags = [] } = req.body;
+      const { analyzeAllRecipeVariety, ensureRecipeVariety } = await import("./recipe-variety-manager");
+      
+      console.log(`🔍 Analyzing recipe variety for dietary tags: [${dietaryTags.join(', ')}]`);
+      
+      const analysis = analyzeAllRecipeVariety(dietaryTags);
+      const improvements = [];
+      
+      // Check if we need to generate recipes for any category
+      for (const categoryAnalysis of analysis) {
+        if (!categoryAnalysis.hasEnoughVariety) {
+          console.log(`🚀 Generating ${categoryAnalysis.needsGeneration} recipes for ${categoryAnalysis.category}`);
+          
+          try {
+            await ensureRecipeVariety(categoryAnalysis.category, dietaryTags, 22);
+            improvements.push({
+              category: categoryAnalysis.category,
+              generated: categoryAnalysis.needsGeneration,
+              success: true
+            });
+          } catch (error) {
+            console.error(`Failed to generate recipes for ${categoryAnalysis.category}:`, error);
+            improvements.push({
+              category: categoryAnalysis.category,
+              generated: 0,
+              success: false,
+              error: (error as Error).message
+            });
+          }
+        }
+      }
+      
+      res.json({
+        success: true,
+        analysis,
+        improvements,
+        message: `Recipe variety analysis complete. Generated ${improvements.reduce((sum, imp) => sum + imp.generated, 0)} new recipes.`
+      });
+    } catch (error) {
+      console.error("Error analyzing recipe variety:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "Failed to analyze recipe variety",
+        error: (error as Error).message 
+      });
+    }
+  });
+
+  // Meal plan management endpoints
+  
+  // Get meal plans by type (current, next, backup, saved)
+  app.get("/api/meal-plans/type/:planType", async (req, res) => {
+    try {
+      const userId = req.query.userId ? parseInt(req.query.userId as string) : 2;
+      const planType = req.params.planType;
+      
+      const mealPlans = await storage.getMealPlansByType(userId, planType);
+      res.json(mealPlans);
+    } catch (error) {
+      console.error("Error fetching meal plans by type:", error);
+      res.status(500).json({ message: "Failed to fetch meal plans" });
+    }
+  });
+
+  // Get active meal plans (for alternating between plans)
+  app.get("/api/meal-plans/active", async (req, res) => {
+    try {
+      const userId = req.query.userId ? parseInt(req.query.userId as string) : 2;
+      
+      const activePlans = await storage.getActiveMealPlans(userId);
+      res.json({
+        activePlans,
+        canAlternate: activePlans.length >= 2,
+        message: activePlans.length >= 2 ? 
+          "Multiple active plans available for alternating" : 
+          "Create a backup plan to enable alternating"
+      });
+    } catch (error) {
+      console.error("Error fetching active meal plans:", error);
+      res.status(500).json({ message: "Failed to fetch active meal plans" });
+    }
+  });
+
+  // Toggle meal plan active status
+  app.patch("/api/meal-plans/:id/toggle-active", async (req, res) => {
+    try {
+      const mealPlanId = parseInt(req.params.id);
+      const { isActive } = req.body;
+      
+      await storage.setMealPlanActive(mealPlanId, isActive);
+      res.json({ 
+        success: true, 
+        message: `Meal plan ${isActive ? 'activated' : 'deactivated'} successfully`
+      });
+    } catch (error) {
+      console.error("Error toggling meal plan status:", error);
+      res.status(500).json({ message: "Failed to update meal plan status" });
+    }
+  });
+
+  // Duplicate meal plan for next week or backup
+  app.post("/api/meal-plans/:id/duplicate", async (req, res) => {
+    try {
+      const mealPlanId = parseInt(req.params.id);
+      const { newWeekStart, planType, planName } = req.body;
+      
+      if (!newWeekStart || !planType) {
+        return res.status(400).json({ 
+          message: "New week start date and plan type are required" 
+        });
+      }
+      
+      const duplicatedPlan = await storage.duplicateMealPlan(
+        mealPlanId, 
+        newWeekStart, 
+        planType, 
+        planName
+      );
+      
+      // Get the duplicated plan with its meals
+      const planWithMeals = await storage.getMealPlanWithMeals(duplicatedPlan.id);
+      
+      res.status(201).json({
+        mealPlan: duplicatedPlan,
+        meals: planWithMeals?.meals || [],
+        message: `Meal plan duplicated as ${planType} plan for ${newWeekStart}`
+      });
+    } catch (error) {
+      console.error("Error duplicating meal plan:", error);
+      res.status(500).json({ message: "Failed to duplicate meal plan" });
+    }
+  });
+
+  // Create backup plan from current plan (convenience endpoint)
+  app.post("/api/meal-plans/:id/create-backup", async (req, res) => {
+    try {
+      const mealPlanId = parseInt(req.params.id);
+      
+      // Get next Sunday's date for backup plan
+      const nextSunday = new Date();
+      const daysUntilSunday = 7 - nextSunday.getDay();
+      nextSunday.setDate(nextSunday.getDate() + daysUntilSunday);
+      const newWeekStart = nextSunday.toISOString().split('T')[0];
+      
+      const backupPlan = await storage.duplicateMealPlan(
+        mealPlanId, 
+        newWeekStart, 
+        'backup',
+        'Weekend Grocery Backup Plan'
+      );
+      
+      const planWithMeals = await storage.getMealPlanWithMeals(backupPlan.id);
+      
+      res.status(201).json({
+        mealPlan: backupPlan,
+        meals: planWithMeals?.meals || [],
+        message: "Backup plan created for weekend grocery alternating",
+        tip: "You can now alternate between your current and backup plans when doing weekend groceries"
+      });
+    } catch (error) {
+      console.error("Error creating backup plan:", error);
+      res.status(500).json({ message: "Failed to create backup plan" });
+    }
+  });
+
   // Check Notion connection status
   app.get("/api/notion/status", async (req, res) => {
     try {
@@ -267,7 +435,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Fetch user data for caloric adjustments
       const user = await storage.getUser(request.userId);
       
-      const generated = generateWeeklyMealPlan(request, user);
+      const generated = await generateWeeklyMealPlan(request, user);
       
       // Save to storage
       const savedMealPlan = await storage.createMealPlan(generated.mealPlan);
@@ -358,7 +526,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         leftovers: user.leftovers || []
       };
       
-      const generatedPlan = generateWeeklyMealPlan(request, user);
+      const generatedPlan = await generateWeeklyMealPlan(request, user);
       
       // Create new meal plan
       const mealPlan = await storage.createMealPlan(generatedPlan.mealPlan);
@@ -809,7 +977,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Fetch user data for caloric adjustments
       const user = await storage.getUser(userId);
 
-      const generated = generateWeeklyMealPlan(request, user);
+      const generated = await generateWeeklyMealPlan(request, user);
       
       // Save to storage
       const savedMealPlan = await storage.createMealPlan(generated.mealPlan);
@@ -899,7 +1067,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Fetch user data for caloric adjustments
         const user = await storage.getUser(1);
 
-        const generated = generateWeeklyMealPlan(request, user);
+        const generated = await generateWeeklyMealPlan(request, user);
         
         // Save to storage
         const savedMealPlan = await storage.createMealPlan(generated.mealPlan);

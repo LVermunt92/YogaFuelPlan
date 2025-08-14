@@ -8,6 +8,7 @@ import {
   getEnhancedMealsForCategoryAndDiet, 
   type MealOption 
 } from "./nutrition-enhanced";
+import { ensureRecipeVariety, selectMealsWithBetterVariety } from "./recipe-variety-manager";
 import { calculateProteinTarget } from "./nutrition";
 import { getCurrentAyurvedicSeason } from "./ayurveda-seasonal";
 
@@ -187,7 +188,7 @@ function planCookingDays(user?: User): { cookingDays: number[], eatingDays: numb
   return { cookingDays: cookingDays.slice(0, cookingDaysPerWeek), eatingDays: eatingDays.slice(0, eatingDaysAtHome) };
 }
 
-export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): GeneratedMealPlan {
+export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): Promise<GeneratedMealPlan> {
   const targetProtein = calculateProteinTarget(request.activityLevel);
   const meals: InsertMeal[] = [];
   let totalWeeklyProtein = 0;
@@ -206,7 +207,7 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
   // Check if we should use meal prep mode (cooking days < eating days)
   if (cookingDays.length < eatingDays.length) {
     console.log(`Using meal prep mode: ${cookingDays.length} cooking days for ${eatingDays.length} eating days`);
-    return generateMealPrepPlan(request, user, caloricAdjustment);
+    return await generateMealPrepPlan(request, user, caloricAdjustment);
   }
 
   // Use regular 8-day Sunday cooking pattern for other cases
@@ -461,11 +462,11 @@ export function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): G
  * Generate meal prep plan based on cooking/eating days configuration
  * Always prioritize removing weekend days first, then weekdays if needed
  */
-function generateMealPrepPlan(
+async function generateMealPrepPlan(
   request: MealPlanRequest, 
   user: User | undefined, 
   caloricAdjustment: number
-): GeneratedMealPlan {
+): Promise<GeneratedMealPlan> {
   const meals: InsertMeal[] = [];
   let totalWeeklyProtein = 0;
   const dietaryTags = request.dietaryTags || [];
@@ -474,9 +475,21 @@ function generateMealPrepPlan(
   
   console.log(`🥕 Starting meal prep plan with leftover ingredients: ${JSON.stringify(ingredientsToUseUp)}`);
   
-  // Get meal options for lunch and dinner with dietary filters
-  let lunchOptions = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
-  let dinnerOptions = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
+  // Get meal options for lunch and dinner with dietary filters - ensure sufficient variety
+  console.log(`🍽️ Ensuring recipe variety for dietary tags: [${dietaryTags.join(', ')}]`);
+  let lunchOptions: MealOption[] = [];
+  let dinnerOptions: MealOption[] = [];
+  
+  try {
+    // Use enhanced variety management to ensure enough recipes
+    lunchOptions = await ensureRecipeVariety('lunch', dietaryTags, 22);
+    dinnerOptions = await ensureRecipeVariety('dinner', dietaryTags, 25);
+  } catch (error) {
+    console.warn('⚠️ AI recipe generation failed, using available recipes:', error);
+    // Fallback to standard method
+    lunchOptions = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
+    dinnerOptions = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
+  }
   
   // Apply summer filtering for ALL ayurvedic meals - regardless of user's dietary selection
   // All ayurvedic recipes should follow seasonal guidelines during grishma season

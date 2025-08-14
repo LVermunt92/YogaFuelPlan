@@ -145,10 +145,74 @@ export class MemStorage implements IStorage {
     return mealPlan;
   }
 
-  async getMealPlans(): Promise<MealPlan[]> {
-    return Array.from(this.mealPlans.values()).sort((a, b) => 
+  async getMealPlans(userId?: number): Promise<MealPlan[]> {
+    let plans = Array.from(this.mealPlans.values());
+    if (userId) {
+      plans = plans.filter(plan => plan.userId === userId);
+    }
+    return plans.sort((a, b) => 
       new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime()
     );
+  }
+
+  // Get meal plans by type (current, next, saved, backup)
+  async getMealPlansByType(userId: number, planType: string): Promise<MealPlan[]> {
+    return Array.from(this.mealPlans.values())
+      .filter(plan => plan.userId === userId && (plan as any).planType === planType)
+      .sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime());
+  }
+
+  // Get active meal plans (multiple plans can be active for alternating)
+  async getActiveMealPlans(userId: number): Promise<MealPlan[]> {
+    return Array.from(this.mealPlans.values())
+      .filter(plan => plan.userId === userId && (plan as any).isActive === true)
+      .sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime());
+  }
+
+  // Set meal plan as active/inactive
+  async setMealPlanActive(mealPlanId: number, isActive: boolean): Promise<void> {
+    const mealPlan = this.mealPlans.get(mealPlanId);
+    if (mealPlan) {
+      (mealPlan as any).isActive = isActive;
+      this.mealPlans.set(mealPlanId, mealPlan);
+    }
+  }
+
+  // Duplicate a meal plan for next week or backup
+  async duplicateMealPlan(mealPlanId: number, newWeekStart: string, planType: string, planName?: string): Promise<MealPlan> {
+    const originalPlan = this.mealPlans.get(mealPlanId);
+    if (!originalPlan) throw new Error('Meal plan not found');
+
+    // Create new meal plan
+    const newPlanId = this.currentMealPlanId++;
+    const newPlan: MealPlan = {
+      ...originalPlan,
+      id: newPlanId,
+      weekStart: newWeekStart,
+      notionSynced: false,
+      createdAt: new Date(),
+      ...(planName && { planName }),
+      planType,
+      isActive: planType === 'current' || planType === 'backup'
+    } as any;
+
+    this.mealPlans.set(newPlanId, newPlan);
+
+    // Copy all meals from original plan
+    const originalMeals = Array.from(this.meals.values())
+      .filter(meal => meal.mealPlanId === mealPlanId);
+    
+    for (const originalMeal of originalMeals) {
+      const newMealId = this.currentMealId++;
+      const newMeal: Meal = {
+        ...originalMeal,
+        id: newMealId,
+        mealPlanId: newPlanId
+      };
+      this.meals.set(newMealId, newMeal);
+    }
+
+    return newPlan;
   }
 
   async getMealPlanWithMeals(id: number): Promise<MealPlanWithMeals | undefined> {
@@ -335,6 +399,71 @@ export class DatabaseStorage implements IStorage {
       .update(mealPlans)
       .set({ notionSynced: synced })
       .where(eq(mealPlans.id, id));
+  }
+
+  // Get meal plans by type (current, next, saved, backup)
+  async getMealPlansByType(userId: number, planType: string): Promise<MealPlan[]> {
+    return await db.select().from(mealPlans)
+      .where(and(eq(mealPlans.userId, userId), eq(mealPlans.planType, planType)))
+      .orderBy(desc(mealPlans.createdAt));
+  }
+
+  // Get active meal plans (multiple plans can be active for alternating)
+  async getActiveMealPlans(userId: number): Promise<MealPlan[]> {
+    return await db.select().from(mealPlans)
+      .where(and(eq(mealPlans.userId, userId), eq(mealPlans.isActive, true)))
+      .orderBy(desc(mealPlans.createdAt));
+  }
+
+  // Set meal plan as active/inactive
+  async setMealPlanActive(mealPlanId: number, isActive: boolean): Promise<void> {
+    await db.update(mealPlans)
+      .set({ isActive })
+      .where(eq(mealPlans.id, mealPlanId));
+  }
+
+  // Duplicate a meal plan for next week or backup
+  async duplicateMealPlan(mealPlanId: number, newWeekStart: string, planType: string, planName?: string): Promise<MealPlan> {
+    // Get original meal plan
+    const [originalPlan] = await db.select().from(mealPlans).where(eq(mealPlans.id, mealPlanId));
+    if (!originalPlan) throw new Error('Meal plan not found');
+
+    // Create new meal plan
+    const [newPlan] = await db.insert(mealPlans).values({
+      userId: originalPlan.userId,
+      weekStart: newWeekStart,
+      activityLevel: originalPlan.activityLevel,
+      totalProtein: originalPlan.totalProtein,
+      notionSynced: false,
+      planName: planName || `${planType} plan`,
+      planType,
+      isActive: planType === 'current' || planType === 'backup'
+    }).returning();
+
+    // Copy all meals from original plan
+    const originalMeals = await db.select().from(meals).where(eq(meals.mealPlanId, mealPlanId));
+    
+    if (originalMeals.length > 0) {
+      const newMeals = originalMeals.map(meal => ({
+        day: meal.day,
+        mealType: meal.mealType,
+        foodDescription: meal.foodDescription,
+        portion: meal.portion,
+        protein: meal.protein,
+        calories: meal.calories,
+        carbohydrates: meal.carbohydrates,
+        fats: meal.fats,
+        fiber: meal.fiber,
+        sugar: meal.sugar,
+        sodium: meal.sodium,
+        prepTime: meal.prepTime,
+        mealPlanId: newPlan.id
+      }));
+      
+      await db.insert(meals).values(newMeals);
+    }
+
+    return newPlan;
   }
 
   // Oura data methods (DatabaseStorage)

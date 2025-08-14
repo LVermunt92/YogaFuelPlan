@@ -136,6 +136,10 @@ export default function MealPlanner() {
   const { language } = useLanguage();
   const t = useTranslations(language);
 
+  // Additional state for multi-plan management
+  const [showPlanManagement, setShowPlanManagement] = useState(false);
+  const [selectedBackupPlan, setSelectedBackupPlan] = useState<number | null>(null);
+
   // Fetch meal plans for current user
   const { data: mealPlans = [], isLoading: loadingPlans } = useQuery<MealPlan[]>({
     queryKey: ['/api/meal-plans', authUser?.id],
@@ -143,6 +147,13 @@ export default function MealPlanner() {
     enabled: !!authUser?.id,
     staleTime: 0, // Always fetch fresh data
     refetchOnMount: true, // Refetch when component mounts
+  });
+
+  // Fetch active meal plans (for alternating)
+  const { data: activePlansData } = useQuery({
+    queryKey: ['/api/meal-plans/active', authUser?.id],
+    queryFn: () => apiRequest(`/api/meal-plans/active?userId=${authUser?.id}`),
+    enabled: !!authUser?.id,
   });
 
   // Fetch specific meal plan with meals
@@ -331,6 +342,36 @@ export default function MealPlanner() {
         title: "Sync Failed",
         description: error.message || "Failed to sync to Notion. Please check your integration.",
         variant: "destructive",
+      });
+    },
+  });
+
+  // Mutations for meal plan management  
+  const createBackupPlanMutation = useMutation({
+    mutationFn: async (mealPlanId: number) => {
+      const response = await apiRequest('POST', `/api/meal-plans/${mealPlanId}/create-backup`);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/meal-plans'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/meal-plans/active'] });
+      toast({
+        title: "Backup Plan Created",
+        description: "You can now alternate between your current and backup plans for weekend groceries",
+      });
+    },
+  });
+
+  const togglePlanActiveMutation = useMutation({
+    mutationFn: async ({ mealPlanId, isActive }: { mealPlanId: number; isActive: boolean }) => {
+      const response = await apiRequest('PATCH', `/api/meal-plans/${mealPlanId}/toggle-active`, { isActive });
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/meal-plans/active'] });
+      toast({
+        title: "Plan Status Updated",
+        description: "Plan activation status changed successfully",
       });
     },
   });
@@ -688,6 +729,111 @@ export default function MealPlanner() {
             )}
           </div>
         </div>
+
+        {/* Multi-Plan Management */}
+        {activePlansData && activePlansData.activePlans?.length > 0 && (
+          <div className="card-clean mb-6">
+            <div className="p-4">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center">
+                  <RefreshCw className="h-6 w-6 text-foreground mr-3" />
+                  <div>
+                    <h2 className="text-xl font-semibold text-foreground">Plan Management</h2>
+                    <p className="text-sm text-muted-foreground">Alternate between plans for weekend grocery shopping</p>
+                  </div>
+                </div>
+                <Badge variant="outline" className="text-xs">
+                  {activePlansData.activePlans.length} Active Plan{activePlansData.activePlans.length > 1 ? 's' : ''}
+                </Badge>
+              </div>
+              
+              {activePlansData.canAlternate ? (
+                <div className="space-y-4">
+                  <div className="p-4 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg">
+                    <div className="flex items-center mb-2">
+                      <CheckCircle className="h-4 w-4 text-green-600 mr-2" />
+                      <span className="text-sm font-medium text-green-800 dark:text-green-300">
+                        Ready for Weekend Grocery Shopping
+                      </span>
+                    </div>
+                    <p className="text-sm text-green-700 dark:text-green-400">
+                      You have multiple active plans! Switch between them when doing weekend groceries to keep meals interesting.
+                    </p>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {activePlansData.activePlans.map((plan: any, index: number) => (
+                      <div 
+                        key={plan.id} 
+                        className={`p-4 border rounded-lg cursor-pointer transition-colors ${
+                          selectedMealPlan === plan.id 
+                            ? 'border-primary bg-primary/5' 
+                            : 'border-border hover:border-primary/50'
+                        }`}
+                        onClick={() => setSelectedMealPlan(plan.id)}
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <h3 className="font-medium text-foreground">
+                            {plan.planName || `Plan ${index + 1}`}
+                          </h3>
+                          <Badge variant={plan.planType === 'backup' ? 'secondary' : 'default'} className="text-xs">
+                            {plan.planType}
+                          </Badge>
+                        </div>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          Week of {plan.weekStart}
+                        </p>
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs text-muted-foreground">
+                            {plan.totalProtein}g protein/day
+                          </span>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              togglePlanActiveMutation.mutate({ 
+                                mealPlanId: plan.id, 
+                                isActive: false 
+                              });
+                            }}
+                            disabled={togglePlanActiveMutation.isPending}
+                          >
+                            <X className="h-3 w-3 mr-1" />
+                            Deactivate
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="p-4 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-blue-800 dark:text-blue-300 mb-1">
+                        Create a Backup Plan
+                      </p>
+                      <p className="text-sm text-blue-700 dark:text-blue-400">
+                        Generate an alternative meal plan to switch between during weekend grocery shopping.
+                      </p>
+                    </div>
+                    {selectedMealPlan && (
+                      <Button
+                        onClick={() => createBackupPlanMutation.mutate(selectedMealPlan)}
+                        disabled={createBackupPlanMutation.isPending}
+                        size="sm"
+                      >
+                        <Plus className="h-4 w-4 mr-1" />
+                        Create Backup
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Generation Panel */}

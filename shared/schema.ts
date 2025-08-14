@@ -34,6 +34,9 @@ export const mealPlans = pgTable("meal_plans", {
   totalProtein: real("total_protein").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
   notionSynced: boolean("notion_synced").default(false),
+  planName: text("plan_name"), // Optional name for the plan like "Week 1" or "Backup Plan"
+  planType: text("plan_type").default("current"), // 'current', 'next', 'saved', 'backup'
+  isActive: boolean("is_active").default(true), // Whether this plan is currently being used
 });
 
 export const meals = pgTable("meals", {
