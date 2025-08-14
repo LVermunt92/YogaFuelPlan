@@ -35,6 +35,7 @@ const ingredientTranslations: Record<string, string> = {
   // Dairy & Alternatives
   'milk': 'melk',
   'almond milk': 'amandelmelk',
+  'almond butter': 'amandelpasta',
   'oat milk': 'havermelk',
   'coconut milk': 'kokosmelk',
   'yogurt': 'yoghurt',

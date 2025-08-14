@@ -435,6 +435,7 @@ export const dietaryTagTranslations = {
     "mediterranean": "Mediterraan",
     "anti-inflammatory": "Anti-inflammatoir",
     "high-protein": "Eiwitrijk",
+    "protein-packed": "Eiwitrijk",
     "low-sodium": "Zoutarm",
     "sugar-free": "Suikervrij",
     "whole30": "Whole30",
