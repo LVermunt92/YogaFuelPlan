@@ -545,6 +545,19 @@ const cookingInstructions: Record<string, string> = {
   'lastly': 'als laatste'
 };
 
+// Terms that are commonly used in Dutch and should not be translated
+const dutchFriendlyTerms = [
+  'overnight oats',
+  'smoothie',
+  'quinoa',
+  'tofu',
+  'tempeh',
+  'pasta',
+  'pizza',
+  'buddha bowl',
+  'wrap'
+];
+
 function translateInstruction(instruction: string): string {
   let translated = instruction;
   
@@ -572,7 +585,22 @@ function translateInstruction(instruction: string): string {
 function translateRecipeName(name: string): string {
   let translated = name;
   
-  // Apply pattern-based translations first
+  // Create a map to temporarily replace Dutch-friendly terms
+  const tempReplacements: Record<string, string> = {};
+  let counter = 0;
+  
+  // Replace Dutch-friendly terms with temporary placeholders
+  for (const term of dutchFriendlyTerms) {
+    const regex = new RegExp(`\\b${term}\\b`, 'gi');
+    const placeholder = `__DUTCH_TERM_${counter}__`;
+    if (translated.match(regex)) {
+      tempReplacements[placeholder] = term;
+      translated = translated.replace(regex, placeholder);
+      counter++;
+    }
+  }
+  
+  // Apply pattern-based translations
   for (const {pattern, replacement} of recipeNamePatterns) {
     translated = translated.replace(pattern, replacement);
   }
@@ -581,6 +609,11 @@ function translateRecipeName(name: string): string {
   for (const [english, dutch] of Object.entries(ingredientTranslations)) {
     const regex = new RegExp(`\\b${english}\\b`, 'gi');
     translated = translated.replace(regex, dutch);
+  }
+  
+  // Restore Dutch-friendly terms
+  for (const [placeholder, originalTerm] of Object.entries(tempReplacements)) {
+    translated = translated.replace(placeholder, originalTerm);
   }
   
   // Capitalize first letter
