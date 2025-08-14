@@ -114,13 +114,28 @@ export const translations = {
     dutch: "Dutch",
     
     // Messages
-    mealPlanGenerated: "Meal plan generated successfully!",
+    mealPlanGenerated: "Meal Plan Generated",
     mealPlanRegenerated: "Meal plan regenerated successfully!",
     errorGenerating: "Error generating meal plan",
     lastGenerated: "Last generated",
     never: "Never",
     errorSyncing: "Error syncing to Notion",
     syncedSuccessfully: "Synced to Notion successfully!",
+    generationFailed: "Generation Failed",
+    failedToGenerateMealPlan: "Failed to generate meal plan. Please try again.",
+    yourWeeklyMealPlanCreated: "Your weekly meal plan has been created successfully!",
+    syncToNotion: "Sync to Notion",
+    syncing: "Syncing...",
+    integrationStatus: "Integration Status",
+    notConnectedPleaseConfigureSecrets: "Please configure NOTION_INTEGRATION_SECRET and NOTION_PAGE_URL environment variables.",
+    medium: "Medium",
+    moderate: "Moderate",
+    createPersonalizedMealPlan: "Create a personalised 7-day meal plan with precise protein tracking based on your dietary preferences.",
+    yourDietaryPreferences: "Your Dietary Preferences",
+    mealPlansFilteredBased: "Meal plans will be filtered based on these preferences. Update them in your profile.",
+    activity: "Activity",
+    connected: "Connected",
+    notConnected: "Not Connected",
     
     // Profile
     saveProfile: "Save Profile",
@@ -239,8 +254,6 @@ export const translations = {
     
     // Health Tracking
     healthActivityTracking: "Gezondheid & Activiteit Tracking",
-    connected: "Verbonden",
-    notConnected: "Niet Verbonden",
     activityScore: "Activiteit Score",
     sleepScore: "Slaap Score",
     readinessScore: "Gereedheid Score",
@@ -319,13 +332,28 @@ export const translations = {
     dutch: "Nederlands",
     
     // Messages
-    mealPlanGenerated: "Maaltijdplan succesvol gegenereerd!",
+    mealPlanGenerated: "Maaltijdplan Gegenereerd",
     mealPlanRegenerated: "Maaltijdplan succesvol opnieuw gegenereerd!",
     errorGenerating: "Fout bij het genereren van maaltijdplan",
     lastGenerated: "Laatst gegenereerd",
     never: "Nooit",
     errorSyncing: "Fout bij synchroniseren naar Notion",
     syncedSuccessfully: "Succesvol gesynchroniseerd naar Notion!",
+    generationFailed: "Generatie Mislukt",
+    failedToGenerateMealPlan: "Kon maaltijdplan niet genereren. Probeer het opnieuw.",
+    yourWeeklyMealPlanCreated: "Je wekelijkse maaltijdplan is succesvol aangemaakt!",
+    syncToNotion: "Synchroniseren naar Notion",
+    syncing: "Synchroniseren...",
+    integrationStatus: "Integratie Status",
+    notConnectedPleaseConfigureSecrets: "Configureer alstublieft NOTION_INTEGRATION_SECRET en NOTION_PAGE_URL omgevingsvariabelen.",
+    medium: "Gemiddeld",
+    moderate: "Gematigd",
+    createPersonalizedMealPlan: "Maak een gepersonaliseerd 7-daags maaltijdplan met nauwkeurige eiwitregistratie gebaseerd op je voedingsvoorkeuren.",
+    yourDietaryPreferences: "Je Voedingsvoorkeuren",
+    mealPlansFilteredBased: "Maaltijdplannen worden gefilterd op basis van deze voorkeuren. Werk ze bij in je profiel.",
+    activity: "Activiteit",
+    connected: "Verbonden",
+    notConnected: "Niet Verbonden",
     
     // Profile
     saveProfile: "Profiel Opslaan",

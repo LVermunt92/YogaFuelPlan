@@ -265,14 +265,14 @@ export default function MealPlanner() {
       queryClient.invalidateQueries({ queryKey: ['/api/meal-plans', authUser?.id] });
       setSelectedMealPlan(data.mealPlan.id);
       toast({
-        title: "Meal Plan Generated",
-        description: "Your weekly meal plan has been created successfully!",
+        title: t.mealPlanGenerated,
+        description: t.yourWeeklyMealPlanCreated,
       });
     },
     onError: (error) => {
       toast({
-        title: "Generation Failed",
-        description: "Failed to generate meal plan. Please try again.",
+        title: t.generationFailed,
+        description: t.failedToGenerateMealPlan,
         variant: "destructive",
       });
     },
@@ -909,28 +909,28 @@ export default function MealPlanner() {
             <div className="card-clean mb-6">
               <div className="p-4 mb-4">
                 <h2 className="text-xl font-semibold text-foreground mb-2">
-                  Generate Meal Plan
+                  {t.generateMealPlan}
                 </h2>
                 <p className="text-sm text-muted-foreground">
-                  Create a personalised 7-day meal plan with precise protein tracking based on your dietary preferences.
+                  {t.createPersonalizedMealPlan}
                 </p>
               </div>
               <div className="space-y-4">
                 <div>
-                  <Label className="text-sm font-medium text-foreground mb-2 block">Activity Level</Label>
+                  <Label className="text-sm font-medium text-foreground mb-2 block">{t.activityLevel}</Label>
                   <Select value={activityLevel} onValueChange={(value: "high" | "low") => setActivityLevel(value)}>
                     <SelectTrigger className="input-clean w-full">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="high">High Activity (130g protein)</SelectItem>
-                      <SelectItem value="low">Low Activity (70g protein)</SelectItem>
+                      <SelectItem value="high">{t.high} {t.activity} (130g protein)</SelectItem>
+                      <SelectItem value="low">{t.low} {t.activity} (70g protein)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 
                 <div>
-                  <Label className="text-sm font-medium text-foreground mb-2 block">Week Starting</Label>
+                  <Label className="text-sm font-medium text-foreground mb-2 block">{t.weekStartDate}</Label>
                   <Input
                     type="date"
                     value={weekStart}
@@ -941,7 +941,7 @@ export default function MealPlanner() {
 
                 {userProfile?.dietaryTags && userProfile.dietaryTags.length > 0 && (
                   <div>
-                    <Label className="text-sm font-medium text-foreground mb-3 block">Your Dietary Preferences</Label>
+                    <Label className="text-sm font-medium text-foreground mb-3 block">{t.yourDietaryPreferences}</Label>
                     <div className="flex flex-wrap gap-2">
                       {userProfile.dietaryTags.map((tag) => (
                         <Badge key={tag} variant="secondary" className="text-xs">
@@ -950,7 +950,7 @@ export default function MealPlanner() {
                       ))}
                     </div>
                     <p className="text-xs text-muted-foreground mt-2">
-                      Meal plans will be filtered based on these preferences. Update them in your profile.
+                      {t.mealPlansFilteredBased}
                     </p>
                   </div>
                 )}
@@ -1378,16 +1378,16 @@ export default function MealPlanner() {
           </div>
           <div className="space-y-6">
             <div>
-              <Label className="text-sm font-medium text-foreground mb-2 block">Integration Status</Label>
+              <Label className="text-sm font-medium text-foreground mb-2 block">{t.integrationStatus}</Label>
               <div className="flex items-center">
                 <div className={`w-3 h-3 rounded-full mr-2 ${notionStatus?.connected ? 'bg-foreground' : 'bg-muted-foreground'}`} />
                 <span className={`text-sm ${notionStatus?.connected ? 'text-foreground' : 'text-muted-foreground'}`}>
-                  {notionStatus?.connected ? 'Connected' : 'Not Connected'}
+                  {notionStatus?.connected ? t.connected : t.notConnected}
                 </span>
               </div>
               {!notionStatus?.connected && (
                 <p className="text-xs text-muted-foreground mt-2">
-                  Please configure NOTION_INTEGRATION_SECRET and NOTION_PAGE_URL environment variables.
+                  {t.notConnectedPleaseConfigureSecrets}
                 </p>
               )}
             </div>
