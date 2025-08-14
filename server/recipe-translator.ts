@@ -64,6 +64,7 @@ const ingredientTranslations: Record<string, string> = {
   'almond flour': 'amandelmeel',
   'baking powder': 'bakpoeder',
   'cinnamon': 'kaneel',
+  'soy sauce': 'sojasaus',
   
   // Common words
   'with': 'met',

@@ -6,7 +6,7 @@ This full-stack meal planning application helps users generate personalized week
 ## User Preferences
 Preferred communication style: Simple, everyday language.
 Breakfast scheduling preference: Easy, quick breakfasts during weekdays (≤10 min prep), elaborate breakfasts like pancakes on weekends (≥15 min prep).
-Translation continuity plan: Continue AI-enhanced Dutch translation process when OpenAI subscription renews next month. System caches translations to minimize future API costs. Latest additions: "hemp" → "hennep", "beans" → "bonen", "speedy" → "snelle", "protein-packed" → "eiwitrijke", "with" → "met", "green" → "groene", "baking powder" → "bakpoeder", "cinnamon" → "kaneel". Fixed compound ingredient translations (amandelmelk, kokosmelk). Dutch-friendly terms preserved: "overnight oats", "smoothie", "quinoa", "tofu", "tempeh", "pasta", "pizza", "buddha bowl", "wrap" - these remain untranslated as they're commonly used in Dutch.
+Translation continuity plan: Continue AI-enhanced Dutch translation process when OpenAI subscription renews next month. System caches translations to minimize future API costs. Latest additions: "hemp" → "hennep", "beans" → "bonen", "speedy" → "snelle", "protein-packed" → "eiwitrijke", "with" → "met", "green" → "groene", "baking powder" → "bakpoeder", "cinnamon" → "kaneel", "soy sauce" → "sojasaus". Fixed compound ingredient translations (amandelmelk, kokosmelk). Dutch-friendly terms preserved: "overnight oats", "smoothie", "quinoa", "tofu", "tempeh", "pasta", "pizza", "buddha bowl", "wrap" - these remain untranslated as they're commonly used in Dutch.
 Enhanced unit conversion system: Intelligently converts liquids (milk, oils) to milliliters and dry ingredients to grams.
 
 ## System Architecture
