@@ -2352,15 +2352,23 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
   if (dietaryTags.length === 0) return meals;
   
   return meals.filter(meal => {
-    // Special handling for vegetarian tag - exclude non-vegetarian meals
-    if (dietaryTags.includes('vegetarian')) {
-      // If vegetarian is selected, meal must have vegetarian tag AND other dietary requirements
-      return dietaryTags.every(tag => meal.tags.includes(tag));
+    // Handle critical dietary restrictions that must be enforced
+    const criticalTags = ['vegetarian', 'vegan', 'gluten-free', 'lactose-free', 'dairy-free'];
+    const userCriticalTags = dietaryTags.filter(tag => criticalTags.includes(tag));
+    
+    // All critical dietary tags must be satisfied
+    if (userCriticalTags.length > 0) {
+      const criticalSatisfied = userCriticalTags.every(tag => meal.tags.includes(tag));
+      if (!criticalSatisfied) return false;
     }
     
-    // For non-vegetarian diets, check all dietary requirements but don't require vegetarian tag
-    const nonVegetarianTags = dietaryTags.filter(tag => tag !== 'vegetarian');
-    return nonVegetarianTags.every(tag => meal.tags.includes(tag));
+    // For preference tags (high-protein, ayurvedic, etc.), be more flexible
+    const preferenceTags = dietaryTags.filter(tag => !criticalTags.includes(tag));
+    if (preferenceTags.length === 0) return true; // Only critical tags were specified
+    
+    // At least 50% of preference tags should match (allows for some variety)
+    const matchingPreferenceTags = preferenceTags.filter(tag => meal.tags.includes(tag));
+    return matchingPreferenceTags.length >= Math.ceil(preferenceTags.length * 0.5);
   });
 }
 
