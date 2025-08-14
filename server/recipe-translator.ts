@@ -179,6 +179,10 @@ const ingredientTranslations: Record<string, string> = {
   'dash': 'scheutje',
   'to taste': 'naar smaak',
   
+  // Kitchen and pantry terms
+  'pantry items': 'voorraadkast',
+  'pantry': 'voorraadkast',
+  
   // Common recipe phrases
   'heat oil': 'verhit olie',
   'add': 'voeg toe',
