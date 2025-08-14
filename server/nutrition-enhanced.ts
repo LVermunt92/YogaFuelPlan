@@ -2799,6 +2799,359 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       ],
       notes: "Perfect for weekend brunch or make-ahead breakfast option"
     }
+  },
+
+  // ============ MISSING VIRAL RECIPES - ADDING ALL REMAINING ONES ============
+  {
+    name: "Viral Walking Taco Salad (Social media hit)",
+    portion: "1 serving bowl",
+    nutrition: { 
+      protein: 25, 
+      prepTime: 10, 
+      calories: 420,
+      carbohydrates: 32,
+      fats: 22,
+      fiber: 12,
+      sugar: 8,
+      sodium: 380,
+      costEuros: 4.80, 
+      proteinPerEuro: 5.2 
+    },
+    category: "lunch",
+    tags: ["viral", "social-media", "vegetarian", "gluten-free", "quick", "high-protein"],
+    ingredients: [
+      "120g mixed greens",
+      "100g black beans",
+      "80g corn kernels",
+      "30g shredded cheese",
+      "1 avocado (diced)",
+      "30ml Greek yogurt",
+      "15ml lime juice",
+      "Crushed tortilla chips",
+      "Fresh cilantro"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["greens", "avocado", "corn"],
+      benefits: ["Viral walking taco trend", "Perfect portable meal", "Instagram-worthy presentation"]
+    },
+    recipe: {
+      instructions: [
+        "Layer mixed greens in bowl as viral base",
+        "Top with seasoned black beans and corn",
+        "Add diced avocado for creaminess",
+        "Mix Greek yogurt with lime juice for viral dressing",
+        "Sprinkle cheese and crushed tortilla chips",
+        "Garnish with fresh cilantro",
+        "Serve immediately for best crunch"
+      ],
+      tips: [
+        "Viral because it's handheld taco flavors in salad form",
+        "Perfect for content creators and busy lifestyles",
+        "The crunch factor is what made this trend explode"
+      ],
+      notes: "This salad went viral for combining all the best taco flavors in a healthy, portable format"
+    }
+  },
+  {
+    name: "Viral Marry Me Chickpea Curry (Plant-based viral hit)",
+    portion: "1 serving",
+    nutrition: { 
+      protein: 22, 
+      prepTime: 20, 
+      calories: 380,
+      carbohydrates: 45,
+      fats: 14,
+      fiber: 12,
+      sugar: 8,
+      sodium: 420,
+      costEuros: 3.60, 
+      proteinPerEuro: 6.1 
+    },
+    category: "dinner",
+    tags: ["viral", "social-media", "vegetarian", "vegan", "gluten-free", "high-protein"],
+    ingredients: [
+      "120g chickpeas (cooked)",
+      "150g diced tomatoes",
+      "120ml coconut milk",
+      "1 onion (diced)",
+      "3 garlic cloves",
+      "5ml turmeric",
+      "5ml garam masala",
+      "Fresh cilantro",
+      "Basmati rice"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["tomatoes", "onion", "garlic"],
+      benefits: ["Plant-based viral sensation", "Proposal-worthy comfort food", "Perfect for food content"]
+    },
+    recipe: {
+      instructions: [
+        "Sauté diced onion until golden",
+        "Add minced garlic, turmeric, garam masala",
+        "Pour in diced tomatoes and cook until thick",
+        "Add chickpeas and coconut milk",
+        "Simmer until creamy and flavorful",
+        "Garnish with fresh cilantro",
+        "Serve over basmati rice"
+      ],
+      tips: [
+        "Called 'Marry Me' because it's so good it'll get you proposed to",
+        "This vegan version went viral for being incredibly satisfying",
+        "Perfect for cozy content and date nights"
+      ],
+      notes: "This plant-based curry maintains all the viral appeal while being completely vegan"
+    }
+  },
+  {
+    name: "Viral Nature's Cereal (Health Trend Bowl)",
+    portion: "1 bowl",
+    nutrition: { 
+      protein: 8, 
+      prepTime: 5, 
+      calories: 160,
+      carbohydrates: 35,
+      fats: 2,
+      fiber: 8,
+      sugar: 28,
+      sodium: 45,
+      costEuros: 3.20, 
+      proteinPerEuro: 2.5 
+    },
+    category: "breakfast",
+    tags: ["viral", "social-media", "vegan", "gluten-free", "raw", "refreshing"],
+    ingredients: [
+      "150g fresh blueberries",
+      "30ml pomegranate seeds",
+      "240ml coconut water",
+      "Ice cubes",
+      "Optional: mint leaves"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["blueberries", "pomegranate"],
+      benefits: ["TikTok health trend", "Natural hydration", "Antioxidant powerhouse"]
+    },
+    recipe: {
+      instructions: [
+        "Fill bowl with fresh blueberries",
+        "Sprinkle pomegranate seeds on top",
+        "Pour chilled coconut water over fruit",
+        "Add ice cubes for viral crunch",
+        "Garnish with mint if desired",
+        "Eat immediately for best texture"
+      ],
+      tips: [
+        "Went viral as 'nature's cereal'",
+        "Perfect for hot summer mornings",
+        "The ice creates the satisfying crunch that made this trend explode"
+      ],
+      notes: "This simple combination became a massive TikTok trend for being refreshing and naturally sweet"
+    }
+  },
+  {
+    name: "Viral Pasta Chips (Crunchy Social Media Hit)",
+    portion: "1 serving",
+    nutrition: { 
+      protein: 12, 
+      prepTime: 15, 
+      calories: 290,
+      carbohydrates: 38,
+      fats: 11,
+      fiber: 3,
+      sugar: 2,
+      sodium: 380,
+      costEuros: 2.40, 
+      proteinPerEuro: 5.0 
+    },
+    category: "lunch",
+    tags: ["viral", "social-media", "vegetarian", "crispy", "snack"],
+    ingredients: [
+      "300g cooked pasta (any shape)",
+      "30ml olive oil",
+      "30ml parmesan cheese",
+      "5ml garlic powder",
+      "5ml paprika",
+      "Salt and pepper",
+      "Marinara sauce for dipping"
+    ],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 0,
+      vegetables: [],
+      benefits: ["Viral for incredible crunch", "Perfect snack or side", "Social media gold"]
+    },
+    recipe: {
+      instructions: [
+        "Cook pasta until al dente, drain well",
+        "Toss hot pasta with olive oil",
+        "Sprinkle with parmesan, garlic powder, paprika",
+        "Air fry at 200°C for 10-12 minutes until crispy",
+        "Season with salt and pepper",
+        "Serve immediately with marinara for dipping"
+      ],
+      tips: [
+        "Went viral for transforming leftover pasta into chips",
+        "The key is getting them really crispy",
+        "Perfect for using up leftover pasta"
+      ],
+      notes: "This trend exploded because it's such a creative way to repurpose pasta into a crunchy snack"
+    }
+  },
+
+  // ============ MISSING ADDITIONAL RECIPES ============
+  {
+    name: "High-protein smoothie bowl with granola",
+    portion: "1 large bowl",
+    nutrition: { 
+      protein: 26, 
+      prepTime: 8, 
+      calories: 380,
+      carbohydrates: 42,
+      fats: 12,
+      fiber: 8,
+      sugar: 18,
+      sodium: 180,
+      costEuros: 3.40, 
+      proteinPerEuro: 7.6 
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "high-protein", "post-workout", "energizing"],
+    ingredients: [
+      "1 scoop vanilla protein powder",
+      "150g frozen berries",
+      "120ml almond milk",
+      "60g granola",
+      "15ml almond butter",
+      "30g fresh strawberries",
+      "15ml chia seeds"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["berries", "strawberries"],
+      benefits: ["Post-workout recovery", "Sustained energy", "Antioxidant rich"]
+    },
+    recipe: {
+      instructions: [
+        "Blend protein powder, frozen berries, almond milk until thick",
+        "Pour into bowl with thick smoothie consistency",
+        "Top with granola in decorative pattern",
+        "Add fresh strawberry slices",
+        "Drizzle with almond butter",
+        "Sprinkle chia seeds for extra nutrition"
+      ],
+      tips: [
+        "Use frozen fruit for thick texture",
+        "Add granola just before eating to maintain crunch",
+        "Perfect post-workout breakfast"
+      ],
+      notes: "Ideal for active mornings when you need sustained energy and protein"
+    }
+  },
+  {
+    name: "Savory quinoa breakfast bowl",
+    portion: "1 bowl",
+    nutrition: { 
+      protein: 18, 
+      prepTime: 20, 
+      calories: 340,
+      carbohydrates: 38,
+      fats: 14,
+      fiber: 6,
+      sugar: 4,
+      sodium: 420,
+      costEuros: 3.60, 
+      proteinPerEuro: 5.0 
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "gluten-free", "high-protein", "savory"],
+    ingredients: [
+      "80g quinoa",
+      "2 eggs",
+      "60g spinach",
+      "1/2 avocado",
+      "30g feta cheese",
+      "15ml olive oil",
+      "Everything bagel seasoning"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["spinach", "avocado"],
+      benefits: ["Complete protein", "Savory breakfast option", "Nutrient dense"]
+    },
+    recipe: {
+      instructions: [
+        "Cook quinoa according to package directions",
+        "Sauté spinach in olive oil until wilted",
+        "Fry eggs to desired doneness",
+        "Layer warm quinoa in bowl",
+        "Top with sautéed spinach and fried eggs",
+        "Add avocado slices and crumbled feta",
+        "Finish with everything bagel seasoning"
+      ],
+      tips: [
+        "Cook quinoa in vegetable broth for extra flavor",
+        "Perfect for those who prefer savory breakfasts",
+        "Make quinoa ahead for quick assembly"
+      ],
+      notes: "A protein-rich savory alternative to sweet breakfast options"
+    }
+  },
+  {
+    name: "Protein pancakes with berry compote",
+    portion: "3 pancakes",
+    nutrition: { 
+      protein: 24, 
+      prepTime: 15, 
+      calories: 320,
+      carbohydrates: 28,
+      fats: 12,
+      fiber: 5,
+      sugar: 14,
+      sodium: 280,
+      costEuros: 2.80, 
+      proteinPerEuro: 8.6 
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "high-protein", "weekend-treat"],
+    ingredients: [
+      "2 eggs",
+      "1 scoop vanilla protein powder",
+      "30g oat flour",
+      "120ml almond milk",
+      "5ml baking powder",
+      "150g mixed berries",
+      "15ml maple syrup"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["berries"],
+      benefits: ["High protein weekend treat", "Natural fruit sweetness", "Satisfying breakfast"]
+    },
+    recipe: {
+      instructions: [
+        "Mix eggs, protein powder, oat flour, almond milk",
+        "Add baking powder and whisk until smooth",
+        "Heat non-stick pan over medium heat",
+        "Pour batter to form 3 pancakes",
+        "Cook until bubbles form, flip carefully",
+        "Simmer berries with maple syrup for compote",
+        "Serve pancakes topped with warm berry compote"
+      ],
+      tips: [
+        "Don't overmix the batter to keep pancakes fluffy",
+        "Use low heat to prevent protein powder from burning",
+        "Make extra compote - it keeps well in fridge"
+      ],
+      notes: "Weekend-worthy pancakes that don't compromise on nutrition"
+    }
   }
 ];
 
