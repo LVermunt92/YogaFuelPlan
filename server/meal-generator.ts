@@ -145,13 +145,20 @@ function selectUnusedMeal(availableMeals: MealOption[], usedMeals: Set<string>):
     return selectedMeal;
   }
   
-  // If all meals have been used, select least recently used
-  // For now, just reset and continue with any meal
-  console.log('⚠️ All meals used, resetting for continued variety');
-  usedMeals.clear();
-  const selectedMeal = availableMeals[Math.floor(Math.random() * availableMeals.length)];
-  console.log(`📋 Reset and selected: ${selectedMeal.name}`);
-  return selectedMeal;
+  // If all meals have been used, reset and select a new one
+  // Only reset if we have more than 1 meal option
+  if (availableMeals.length > 1) {
+    console.log('⚠️ All meals used, resetting for continued variety');
+    usedMeals.clear();
+    // Select the first unused meal after reset to ensure variety
+    const selectedMeal = availableMeals[0];
+    console.log(`📋 Reset and selected: ${selectedMeal.name}`);
+    return selectedMeal;
+  } else {
+    // Only one meal available, use it
+    console.log(`⚠️ Only one meal option available: ${availableMeals[0].name}`);
+    return availableMeals[0];
+  }
 }
 
 /**
@@ -256,19 +263,18 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   let wednesdayDinnerMeal: MealOption | null = null;
   let thursdayDinnerMeal: MealOption | null = null;
   
-  for (let day = 1; day <= 8; day++) {
+  // Loop through days 1-7 (Sunday through Saturday)
+  // Day 1 = Sunday, Day 2 = Monday, Day 3 = Tuesday, Day 4 = Wednesday, Day 5 = Thursday, Day 6 = Friday, Day 7 = Saturday
+  for (let day = 1; day <= 7; day++) {
     let dailyProtein = 0;
     
     // Determine which meals to generate for this day
     let mealsToGenerate: ('breakfast' | 'lunch' | 'dinner')[] = [];
-    if (day === 1) {
-      // Day 1: Sunday dinner only (FIRST cooking moment)
-      mealsToGenerate = ['dinner'];
-    } else if (day === 8) {
-      // Day 8: Sunday breakfast only
-      mealsToGenerate = ['breakfast'];
+    if (day === 7) {
+      // Day 7: Saturday - include eating out option for weekend
+      mealsToGenerate = ['breakfast', 'lunch', 'dinner'];
     } else {
-      // Days 2-7: Full days
+      // Days 1-6: Sunday through Friday - full meal planning
       mealsToGenerate = ['breakfast', 'lunch', 'dinner'];
     }
 
@@ -311,7 +317,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
       }
       
       // Apply 30-minute cooking time limit for weekdays (Monday-Friday)
-      const isWeekday = day >= 2 && day <= 6; // Days 2-6 are Monday-Friday
+      const isWeekday = day >= 2 && day <= 6; // Days 2-6 are Monday-Friday (Day 1 = Sunday)
       if (isWeekday && (mealCategory === 'lunch' || mealCategory === 'dinner')) {
         const originalCount = availableMeals.length;
         availableMeals = availableMeals.filter(meal => meal.nutrition.prepTime <= 30);
