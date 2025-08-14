@@ -1249,7 +1249,6 @@ export default function MealPlanner() {
                     <table className="w-full min-w-[600px]">
                       <thead className="border-b border-border">
                         <tr>
-                          <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.day}</th>
                           <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.meal}</th>
                           <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.food}</th>
                           <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.prep}</th>
@@ -1262,6 +1261,27 @@ export default function MealPlanner() {
                           
                           return (
                             <React.Fragment key={day}>
+                              {/* Day Header Row */}
+                              <tr className="bg-muted/20 border-b-2 border-border">
+                                <td className="px-3 sm:px-6 py-3 text-sm font-semibold text-foreground">
+                                  <div className="flex items-center justify-between">
+                                    <div>
+                                      {day === 1 ? t.sunday : 
+                                       day === 2 ? t.monday : 
+                                       day === 3 ? t.tuesday : 
+                                       day === 4 ? t.wednesday : 
+                                       day === 5 ? t.thursday : 
+                                       day === 6 ? t.friday : 
+                                       day === 7 ? t.saturday : t.sunday}
+                                    </div>
+                                    <div className="text-xs text-muted-foreground">
+                                      {dayTotal.toFixed(1)}g protein
+                                    </div>
+                                  </div>
+                                </td>
+                                <td colSpan={2} className="px-3 sm:px-6 py-3"></td>
+                              </tr>
+                              {/* Meal Rows */}
                               {dayMeals.map((meal, index) => {
                                 const isLeftover = meal.foodDescription.includes('(leftover)');
                                 const isEatingOut = meal.foodDescription.includes('Eating out');
@@ -1269,23 +1289,7 @@ export default function MealPlanner() {
                                 
                                 return (
                                   <tr key={meal.id} className="hover:bg-muted/50">
-                                    <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">
-                                      {index === 0 ? (
-                                        <div>
-                                          <div className="font-semibold">{t.day} {day}</div>
-                                          <div className="text-xs text-muted-foreground">
-                                            {day === 1 ? t.sunday : 
-                                             day === 2 ? t.monday : 
-                                             day === 3 ? t.tuesday : 
-                                             day === 4 ? t.wednesday : 
-                                             day === 5 ? t.thursday : 
-                                             day === 6 ? t.friday : 
-                                             day === 7 ? t.saturday : t.sunday}
-                                          </div>
-                                        </div>
-                                      ) : ''}
-                                    </td>
-                                    <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-muted-foreground capitalize">
+                                    <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-muted-foreground capitalize pl-8">
                                       {meal.mealType}
                                     </td>
                                     <td className={`px-3 sm:px-6 py-4 text-sm text-foreground relative ${
@@ -1338,11 +1342,6 @@ export default function MealPlanner() {
                                   </tr>
                                 );
                               })}
-                              <tr className="bg-muted/30">
-                                <td colSpan={4} className="px-3 sm:px-6 py-3 text-sm font-medium text-foreground">
-                                  Day {day} Total: {dayTotal.toFixed(1)}g protein
-                                </td>
-                              </tr>
                             </React.Fragment>
                           );
                         })}
