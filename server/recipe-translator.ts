@@ -145,6 +145,7 @@ const ingredientTranslations: Record<string, string> = {
   'pine nuts': 'pijnboompitten',
   'chia seeds': 'chiazaad',
   'flax seeds': 'lijnzaad',
+  'flaxseed': 'lijnzaad',
   'hemp seeds': 'hennepzaad',
   'sunflower seeds': 'zonnebloempitten',
   'pumpkin seeds': 'pompoenpitten',
