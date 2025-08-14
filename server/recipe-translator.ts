@@ -90,6 +90,7 @@ const ingredientTranslations: Record<string, string> = {
   'cauliflower': 'bloemkool',
   
   // Fruits
+  'fruits': 'fruit',
   'apple': 'appel',
   'banana': 'banaan',
   'berries': 'bessen',
@@ -132,6 +133,9 @@ const ingredientTranslations: Record<string, string> = {
   'apple cider vinegar': 'appelciderazijn',
   
   // Nuts & Seeds
+  'nuts and seeds': 'noten en zaden',
+  'nuts': 'noten',
+  'seeds': 'zaden',
   'almonds': 'amandelen',
   'walnuts': 'walnoten',
   'cashews': 'cashewnoten',
