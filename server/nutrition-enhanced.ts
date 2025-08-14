@@ -1,6 +1,4 @@
 import { getCurrentSeasonalGuidance, adaptRecipeForSeason, getCurrentAyurvedicSeason } from './ayurveda-seasonal';
-import { getCurrentViralRecipes } from './viral-recipe-updater';
-import { getAllAdditionalRecipes } from './recipe-expansion';
 
 export interface NutritionInfo {
   protein: number;
@@ -2485,29 +2483,329 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       ],
       notes: "Dairy-free version of viral recipe with cashew cheese providing protein and indulgent creaminess"
     }
+  },
+
+  // ============ VIRAL RECIPES - INTEGRATED INTO UNIFIED DATABASE ============
+  {
+    name: "Viral Protein Ice Cream Bowl (TikTok sensation)",
+    portion: "1 large bowl",
+    nutrition: { 
+      protein: 28, 
+      prepTime: 5, 
+      calories: 220,
+      carbohydrates: 15,
+      fats: 8,
+      fiber: 6,
+      sugar: 12,
+      sodium: 150,
+      costEuros: 3.20, 
+      proteinPerEuro: 8.8 
+    },
+    category: "breakfast",
+    tags: ["viral", "social-media", "high-protein", "gluten-free", "vegetarian", "quick"],
+    ingredients: [
+      "150g frozen mixed berries",
+      "1 scoop vanilla protein powder",
+      "120g Greek yogurt",
+      "30ml almond butter",
+      "15ml chia seeds",
+      "Fresh strawberries for topping",
+      "Crushed almonds"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["berries", "strawberries"],
+      benefits: ["Instagram-worthy swirls", "Viral for incredible protein content", "Tastes like dessert but healthy"]
+    },
+    recipe: {
+      instructions: [
+        "Blend frozen berries, protein powder, and Greek yogurt until thick like soft serve",
+        "Swirl in almond butter for viral marbled effect",
+        "Transfer to chilled bowl for best presentation",
+        "Top with fresh strawberries arranged in Instagram pattern",
+        "Sprinkle chia seeds and crushed almonds",
+        "Serve immediately while frozen texture is perfect"
+      ],
+      tips: [
+        "Use frozen fruit for thick ice cream texture",
+        "Swirl technique is key for viral aesthetic",
+        "Film the swirl creation for social media"
+      ],
+      notes: "This protein ice cream went viral for looking like dessert while packing 28g protein"
+    }
+  },
+  {
+    name: "Viral Cloud Bread (Social Media Phenomenon)",
+    portion: "2 pieces",
+    nutrition: { 
+      protein: 12, 
+      prepTime: 35, 
+      calories: 160,
+      carbohydrates: 4,
+      fats: 11,
+      fiber: 1,
+      sugar: 2,
+      sodium: 220,
+      costEuros: 1.80, 
+      proteinPerEuro: 6.7 
+    },
+    category: "breakfast",
+    tags: ["viral", "social-media", "vegetarian", "gluten-free", "low-carb", "keto-friendly"],
+    ingredients: [
+      "3 egg whites",
+      "30ml cream cheese",
+      "15ml honey",
+      "2ml vanilla extract",
+      "Pinch of salt"
+    ],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 0,
+      vegetables: [],
+      benefits: ["Viral for fluffy texture", "Zero carb bread alternative", "Perfect for food photography"]
+    },
+    recipe: {
+      instructions: [
+        "Separate eggs and ensure bowl is completely clean",
+        "Whip egg whites until stiff peaks form (crucial for viral texture)",
+        "In separate bowl, mix cream cheese, honey, vanilla until smooth",
+        "Gently fold cream cheese mixture into egg whites",
+        "Spoon onto parchment-lined baking sheet in cloud shapes",
+        "Bake at 150°C for 30 minutes until golden",
+        "Cool completely before handling - they're very delicate"
+      ],
+      tips: [
+        "Any fat will prevent egg whites from whipping properly",
+        "Don't overmix or clouds will deflate",
+        "Viral because they look like actual clouds"
+      ],
+      notes: "This bread went viral for looking like fluffy clouds and being nearly carb-free"
+    }
+  },
+  {
+    name: "Viral Baked Oats (TikTok Breakfast Trend)",
+    portion: "1 ramekin",
+    nutrition: { 
+      protein: 16, 
+      prepTime: 20, 
+      calories: 290,
+      carbohydrates: 38,
+      fats: 8,
+      fiber: 6,
+      sugar: 12,
+      sodium: 180,
+      costEuros: 2.20, 
+      proteinPerEuro: 7.3 
+    },
+    category: "breakfast",
+    tags: ["viral", "social-media", "vegetarian", "gluten-free", "high-protein"],
+    ingredients: [
+      "50g rolled oats",
+      "1 scoop vanilla protein powder", 
+      "1/2 mashed banana",
+      "60ml almond milk",
+      "15ml almond butter",
+      "5ml cinnamon",
+      "25g blueberries",
+      "15ml maple syrup"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["banana", "blueberries"],
+      benefits: ["Viral for cake-like texture", "High protein breakfast", "Instagram-worthy presentation"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 180°C",
+        "Mash banana in oven-safe ramekin",
+        "Mix in oats, protein powder, cinnamon",
+        "Add almond milk and almond butter, stir well",
+        "Fold in half the blueberries",
+        "Bake for 15-18 minutes until set and golden",
+        "Top with remaining blueberries and maple syrup drizzle",
+        "Serve warm directly from ramekin"
+      ],
+      tips: [
+        "Use frozen blueberries to prevent them from sinking",
+        "Add extra liquid if mixture seems too thick",
+        "Viral because it tastes like cake for breakfast"
+      ],
+      notes: "This became viral for transforming healthy oats into dessert-like breakfast"
+    }
+  },
+  {
+    name: "Viral Salmon Rice Bowl (TikTok Sensation)",
+    portion: "1 bowl",
+    nutrition: { 
+      protein: 28, 
+      prepTime: 15, 
+      calories: 420,
+      carbohydrates: 35,
+      fats: 18,
+      fiber: 4,
+      sugar: 8,
+      sodium: 450,
+      costEuros: 6.20, 
+      proteinPerEuro: 4.5 
+    },
+    category: "dinner",
+    tags: ["viral", "social-media", "gluten-free", "high-protein", "omega-3"],
+    ingredients: [
+      "150g salmon fillet",
+      "160g cooked sushi rice",
+      "1/2 avocado (sliced)",
+      "60g cucumber (diced)",
+      "30ml soy sauce",
+      "15ml mayo",
+      "5ml sriracha",
+      "5ml sesame oil",
+      "Sesame seeds",
+      "Nori sheets (cut into strips)"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["avocado", "cucumber"],
+      benefits: ["Viral for umami flavor combo", "Restaurant-quality at home", "Perfect macro balance"]
+    },
+    recipe: {
+      instructions: [
+        "Season salmon with salt and pepper",
+        "Pan-sear salmon 3-4 minutes each side until flaky",
+        "Flake salmon into bite-sized pieces",
+        "Mix soy sauce, mayo, sriracha for viral sauce",
+        "Place warm rice in bowl as base",
+        "Top with flaked salmon and avocado slices",
+        "Add diced cucumber for crunch",
+        "Drizzle with sauce and sesame oil",
+        "Garnish with sesame seeds and nori strips"
+      ],
+      tips: [
+        "Don't overcook salmon - it should be tender",
+        "Make extra sauce - it's addictive",
+        "Viral for restaurant-quality results at home"
+      ],
+      notes: "This bowl went viral for combining all the best Japanese flavors in one satisfying meal"
+    }
+  },
+
+  // ============ ADDITIONAL RECIPES - INTEGRATED INTO UNIFIED DATABASE ============
+  {
+    name: "Protein-packed chia pudding with almond butter",
+    portion: "1 bowl (200g)",
+    nutrition: { 
+      protein: 22, 
+      prepTime: 10, 
+      calories: 340,
+      carbohydrates: 24,
+      fats: 20,
+      fiber: 12,
+      sugar: 8,
+      sodium: 120,
+      potassium: 450,
+      calcium: 180,
+      iron: 3.5,
+      vitaminC: 8,
+      costEuros: 2.80, 
+      proteinPerEuro: 7.9 
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "high-protein", "overnight"],
+    ingredients: [
+      "45ml chia seeds",
+      "240ml almond milk",
+      "30ml almond butter",
+      "15ml maple syrup",
+      "2ml vanilla extract",
+      "60g fresh berries",
+      "15ml chopped almonds"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["berries"],
+      benefits: ["High fiber", "Omega-3 rich", "Antioxidant-packed"]
+    },
+    recipe: {
+      instructions: [
+        "Mix chia seeds with almond milk in bowl",
+        "Whisk in almond butter, maple syrup, and vanilla",
+        "Refrigerate overnight or 4+ hours",
+        "Stir before serving to break up any clumps",
+        "Top with fresh berries and chopped almonds"
+      ],
+      tips: [
+        "Make multiple servings at once for easy weekday breakfasts",
+        "Adjust thickness by adding more liquid if needed"
+      ],
+      notes: "Perfect make-ahead breakfast with sustained energy"
+    }
+  },
+  {
+    name: "Mediterranean vegetable frittata",
+    portion: "1 slice (150g)",
+    nutrition: { 
+      protein: 20, 
+      prepTime: 25, 
+      calories: 280,
+      carbohydrates: 8,
+      fats: 22,
+      fiber: 3,
+      sugar: 5,
+      sodium: 380,
+      potassium: 420,
+      calcium: 150,
+      iron: 2.8,
+      vitaminC: 25,
+      costEuros: 3.20, 
+      proteinPerEuro: 6.3 
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "gluten-free", "high-protein", "mediterranean"],
+    ingredients: [
+      "6 large eggs",
+      "80g spinach",
+      "100g cherry tomatoes (halved)",
+      "60g feta cheese",
+      "15ml olive oil",
+      "1 small onion (diced)",
+      "2 cloves garlic (minced)",
+      "Fresh herbs (basil, oregano)",
+      "Salt and pepper"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["spinach", "tomatoes", "onion"],
+      benefits: ["Rich in folate", "Mediterranean antioxidants", "Heart-healthy"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 180°C",
+        "Heat olive oil in oven-safe skillet",
+        "Sauté onion and garlic until fragrant",
+        "Add spinach and cook until wilted",
+        "Whisk eggs with salt, pepper, and herbs",
+        "Pour eggs over vegetables",
+        "Add cherry tomatoes and feta on top",
+        "Cook on stovetop for 3-4 minutes",
+        "Transfer to oven for 12-15 minutes until set"
+      ],
+      tips: [
+        "Don't overcook - center should be slightly jiggly",
+        "Great for meal prep - stores well in fridge"
+      ],
+      notes: "Perfect for weekend brunch or make-ahead breakfast option"
+    }
   }
 ];
 
-// Initialize unified database - this will be populated at startup
-let UNIFIED_MEAL_DATABASE: MealOption[] = [];
-
-// Initialize the unified database with all recipes
-export function initializeUnifiedDatabase(): MealOption[] {
-  if (UNIFIED_MEAL_DATABASE.length === 0) {
-    const viralRecipes = getCurrentViralRecipes();
-    const additionalRecipes = getAllAdditionalRecipes();
-    
-    UNIFIED_MEAL_DATABASE = [...ENHANCED_MEAL_DATABASE, ...viralRecipes, ...additionalRecipes];
-    
-    console.log(`📊 Unified meal database initialized: ${ENHANCED_MEAL_DATABASE.length} base + ${viralRecipes.length} viral + ${additionalRecipes.length} additional = ${UNIFIED_MEAL_DATABASE.length} total recipes`);
-  }
-  
-  return UNIFIED_MEAL_DATABASE;
-}
-
-// Function to get complete unified meal database
+// Function to get complete unified meal database (now contains all recipes in one place)
 export function getCompleteEnhancedMealDatabase(): MealOption[] {
-  return initializeUnifiedDatabase();
+  console.log(`📊 Unified meal database: ${ENHANCED_MEAL_DATABASE.length} total recipes available`);
+  return ENHANCED_MEAL_DATABASE;
 }
 
 // Function to get meals from unified database filtered by dietary requirements

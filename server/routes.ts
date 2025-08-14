@@ -393,19 +393,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Update viral recipes manually
   app.post("/api/admin/update-viral-recipes", async (req, res) => {
     try {
-      const { getCurrentViralRecipes, addViralRecipeBatch, UPCOMING_VIRAL_RECIPES } = await import("./viral-recipe-updater");
+      // Viral recipes are now integrated directly into the unified database
+      const { getCompleteEnhancedMealDatabase } = await import("./nutrition-enhanced");
+      const allRecipes = getCompleteEnhancedMealDatabase();
+      const currentRecipes = allRecipes.filter(recipe => recipe.tags.includes('viral'));
+      console.log(`🔥 Unified database viral recipes: ${currentRecipes.length} recipes`);
       
-      const currentRecipes = getCurrentViralRecipes();
-      console.log(`🔥 Current viral recipes: ${currentRecipes.length} recipes`);
-      
-      // Log upcoming viral recipes that will be added in future cycles
-      console.log(`🔥 Upcoming viral recipes scheduled: ${UPCOMING_VIRAL_RECIPES.slice(0, 3).join(', ')}...`);
+      // All recipes are now permanently in the unified database
+      console.log(`📊 Total unified database recipes: ${allRecipes.length}`);
       
       res.json({
         success: true,
-        message: `Viral recipes updated! Currently serving ${currentRecipes.length} viral recipes`,
+        message: `Unified database active! Currently serving ${currentRecipes.length} viral recipes from ${allRecipes.length} total recipes`,
         currentRecipes: currentRecipes.map(r => r.name),
-        upcomingRecipes: UPCOMING_VIRAL_RECIPES.slice(0, 5)
+        totalRecipes: allRecipes.length,
+        viralRecipes: currentRecipes.length
       });
     } catch (error) {
       console.error("Error updating viral recipes:", error);

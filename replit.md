@@ -17,6 +17,14 @@ Instagram-inspired viral recipes: Added three viral social media recipes with he
 Terminology standardization: Updated all references from "snap peas" to "sugar snaps" across recipes, ingredient lists, and Dutch translations for consistency and user preference.
 Unified Recipe Database: Consolidated three separate recipe databases (base, viral, additional) into single unified system for better consistency, easier management, and improved variety distribution. Total database now contains 66+ recipes with all viral and additional recipes seamlessly integrated.
 
+## Recipe Management Workflow
+**IMPORTANT: All new recipes must be added to the unified database in `server/nutrition-enhanced.ts` only. Never create separate recipe databases or files.**
+- Single source of truth: `ENHANCED_MEAL_DATABASE` in `server/nutrition-enhanced.ts`
+- All recipe additions go directly to this unified database
+- No separate viral, additional, or category-specific databases
+- System automatically handles variety distribution and dietary filtering
+- Recipe database is initialized once at startup for optimal performance
+
 ## System Architecture
 
 ### Authentication & Multi-User Support
