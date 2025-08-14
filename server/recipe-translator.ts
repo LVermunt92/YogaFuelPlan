@@ -63,6 +63,7 @@ const ingredientTranslations: Record<string, string> = {
   // Vegetables
   'vegetables': 'groenten',
   'onion': 'ui',
+  'onions': 'uien',
   'garlic': 'knoflook',
   'tomato': 'tomaat',
   'tomatoes': 'tomaten',
@@ -74,6 +75,7 @@ const ingredientTranslations: Record<string, string> = {
   'spinach': 'spinazie',
   'kale': 'boerenkool',
   'bell pepper': 'paprika',
+  'bell peppers': 'paprika\'s',
   'red bell pepper': 'rode paprika',
   'cucumber': 'komkommer',
   'zucchini': 'courgette',
