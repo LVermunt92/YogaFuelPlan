@@ -161,6 +161,7 @@ const ingredientTranslations: Record<string, string> = {
   'dried': 'gedroogd',
   'frozen': 'bevroren',
   'can': 'blik',
+  'protein': 'proteïne',
   'organic': 'biologisch',
   'raw': 'rauw',
   'cooked': 'gekookt',
