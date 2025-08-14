@@ -28,6 +28,7 @@ const ingredientTranslations: Record<string, string> = {
   'fermented': 'gefermenteerd',
   'lentils': 'linzen',
   'chickpeas': 'kikkererwten',
+  'beans': 'bonen',
   'black beans': 'zwarte bonen',
   'kidney beans': 'kidneybonen',
   'white beans': 'witte bonen',
