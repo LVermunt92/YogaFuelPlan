@@ -205,53 +205,10 @@ export function selectMealsWithBetterVariety(
     candidateMeals = availableMeals;
   }
 
-  // Balance viral vs regular recipes: prioritize regular recipes to reduce viral dominance
-  const regularMeals = candidateMeals.filter(meal => 
-    !meal.tags.includes('viral') && !meal.tags.includes('social-media')
-  );
-  const viralMeals = candidateMeals.filter(meal => 
-    meal.tags.includes('viral') || meal.tags.includes('social-media')
-  );
-
-  console.log(`🎯 Recipe selection: ${regularMeals.length} regular, ${viralMeals.length} viral recipes available`);
-
-  let selectedMeals: MealOption[] = [];
-  
-  // For better balance: prioritize regular recipes, but include some viral ones
-  if (count === 1) {
-    // Single selection: 70% chance for regular recipe if available
-    if (regularMeals.length > 0 && Math.random() < 0.7) {
-      selectedMeals = [regularMeals[Math.floor(Math.random() * regularMeals.length)]];
-    } else if (viralMeals.length > 0) {
-      selectedMeals = [viralMeals[Math.floor(Math.random() * viralMeals.length)]];
-    } else if (regularMeals.length > 0) {
-      selectedMeals = [regularMeals[Math.floor(Math.random() * regularMeals.length)]];
-    }
-  } else {
-    // Multiple selections: 60-70% regular recipes
-    const regularCount = Math.ceil(count * 0.65);
-    const viralCount = count - regularCount;
-    
-    // Shuffle and select
-    const shuffledRegular = [...regularMeals].sort(() => Math.random() - 0.5);
-    const shuffledViral = [...viralMeals].sort(() => Math.random() - 0.5);
-    
-    selectedMeals = [
-      ...shuffledRegular.slice(0, Math.min(regularCount, regularMeals.length)),
-      ...shuffledViral.slice(0, Math.min(viralCount, viralMeals.length))
-    ];
-    
-    // If we don't have enough, fill from the other category
-    if (selectedMeals.length < count) {
-      const remaining = count - selectedMeals.length;
-      const otherMeals = candidateMeals.filter(meal => !selectedMeals.includes(meal));
-      const shuffledOther = [...otherMeals].sort(() => Math.random() - 0.5);
-      selectedMeals = [...selectedMeals, ...shuffledOther.slice(0, remaining)];
-    }
-  }
-
-  // Final shuffle for better distribution
-  return selectedMeals.sort(() => Math.random() - 0.5);
+  // Equal treatment for viral and regular recipes - no prioritization
+  // Just shuffle for variety and return requested count
+  const shuffled = [...candidateMeals].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, count);
 }
 
 export default {
