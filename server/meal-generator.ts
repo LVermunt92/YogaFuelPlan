@@ -229,6 +229,15 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   const dinnerOptions = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
   
   console.log(`📊 Available recipes: ${breakfastOptions.length} breakfast, ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
+  console.log(`🔍 Dietary tags being used: [${dietaryTags.join(', ')}]`);
+  
+  // Debug: Show first few recipes for each category
+  if (lunchOptions.length > 0) {
+    console.log(`🍽️ Sample lunch recipes: ${lunchOptions.slice(0, 3).map(m => m.name).join(', ')}`);
+  }
+  if (dinnerOptions.length > 0) {
+    console.log(`🍽️ Sample dinner recipes: ${dinnerOptions.slice(0, 3).map(m => m.name).join(', ')}`);
+  }
   
   // If very few recipes available, broaden dietary search to avoid empty results
   if (lunchOptions.length < 3 || dinnerOptions.length < 3) {
@@ -511,6 +520,15 @@ async function generateMealPrepPlan(
   dinnerOptions = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
   
   console.log(`📊 Available recipe counts: ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
+  console.log(`🔍 Dietary tags being used: [${dietaryTags.join(', ')}]`);
+  
+  // Debug: Show first few recipes for each category
+  if (lunchOptions.length > 0) {
+    console.log(`🍽️ Sample lunch recipes: ${lunchOptions.slice(0, 3).map(m => m.name).join(', ')}`);
+  }
+  if (dinnerOptions.length > 0) {
+    console.log(`🍽️ Sample dinner recipes: ${dinnerOptions.slice(0, 3).map(m => m.name).join(', ')}`);
+  }
   
   // Apply summer filtering for ALL ayurvedic meals - regardless of user's dietary selection
   // All ayurvedic recipes should follow seasonal guidelines during grishma season
