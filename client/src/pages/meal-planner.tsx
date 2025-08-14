@@ -1094,15 +1094,10 @@ export default function MealPlanner() {
                                   .map((item, index) => (
                                     <div key={index} className="flex justify-between items-center py-2 px-2 hover:bg-slate-50 rounded">
                                       <span className="text-sm text-slate-900 flex-1">{item.ingredient}</span>
-                                      <div className="flex items-center gap-2">
+                                      <div className="flex items-center">
                                         <Badge variant="secondary" className="text-xs font-medium">
-                                          {item.totalAmount}
+                                          {item.count > 1 ? `${item.totalAmount} (${item.count}x)` : item.totalAmount}
                                         </Badge>
-                                        {item.count > 1 && (
-                                          <Badge variant="outline" className="text-xs">
-                                            {item.count}x
-                                          </Badge>
-                                        )}
                                       </div>
                                     </div>
                                   ))}

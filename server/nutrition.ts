@@ -938,14 +938,16 @@ export function generateShoppingList(meals: { foodDescription: string }[]): Shop
           let standardUnit = 'g';
           
           if (instruction.includes('cup')) {
-            // Convert cups to grams based on ingredient type
-            standardAmount = convertCupsToGrams(amount, ingredient);
+            // Convert cups to grams/ml based on ingredient type
+            const convertedResult = convertCupsToGramsOrMl(amount, ingredient);
+            standardAmount = convertedResult.amount;
+            standardUnit = convertedResult.unit;
           } else if (instruction.includes('tbsp')) {
             standardAmount = amount * 15; // 1 tbsp ≈ 15ml
-            standardUnit = 'ml';
+            standardUnit = isLiquidIngredient(ingredient) ? 'ml' : 'g';
           } else if (instruction.includes('tsp')) {
             standardAmount = amount * 5; // 1 tsp ≈ 5ml
-            standardUnit = 'ml';
+            standardUnit = isLiquidIngredient(ingredient) ? 'ml' : 'g';
           } else if (instruction.includes('can')) {
             standardAmount = amount * 400; // Assume standard 400g can
             standardUnit = 'g';
@@ -968,24 +970,63 @@ export function generateShoppingList(meals: { foodDescription: string }[]): Shop
     });
   }
 
-  // Helper function to convert cups to grams based on ingredient
-  function convertCupsToGrams(cups: number, ingredient: string): number {
-    const conversions: Record<string, number> = {
-      'quinoa': cups * 170,
-      'brown rice': cups * 195,
-      'oats': cups * 80,
-      'flour': cups * 120,
-      'chickpeas': cups * 164,
-      'lentils': cups * 192,
-      'black beans': cups * 172,
-      'white beans': cups * 179,
-      'spinach': cups * 30,
-      'water': cups * 240,
-      'milk': cups * 240,
-      'oil': cups * 220
-    };
+  // Check if ingredient is primarily liquid (same logic as unit-converter)
+  function isLiquidIngredient(ingredient: string): boolean {
+    const liquidKeywords = [
+      // Milk and dairy liquids
+      'milk', 'almond milk', 'soy milk', 'oat milk', 'coconut milk', 'rice milk',
+      'cashew milk', 'hemp milk', 'buttermilk', 'heavy cream', 'light cream',
+      
+      // Water and basic liquids
+      'water', 'sparkling water', 'coconut water',
+      
+      // Broths and stocks
+      'broth', 'stock', 'chicken broth', 'vegetable broth', 'beef broth',
+      
+      // Juices
+      'juice', 'lemon juice', 'lime juice', 'orange juice', 'apple juice',
+      
+      // Oils and liquid fats
+      'oil', 'olive oil', 'vegetable oil', 'coconut oil', 'sesame oil',
+      
+      // Sauces and liquid condiments
+      'sauce', 'soy sauce', 'vinegar', 'balsamic vinegar',
+      
+      // Syrups and liquid sweeteners
+      'syrup', 'maple syrup', 'honey', 'agave',
+      
+      // Extracts
+      'extract', 'vanilla extract', 'almond extract'
+    ];
     
-    return conversions[ingredient] || cups * 100; // Default conversion
+    const normalized = ingredient.toLowerCase();
+    return liquidKeywords.some(keyword => normalized.includes(keyword));
+  }
+
+  // Helper function to convert cups to grams or ml based on ingredient type
+  function convertCupsToGramsOrMl(cups: number, ingredient: string): { amount: number; unit: string } {
+    const isLiquid = isLiquidIngredient(ingredient);
+    
+    if (isLiquid) {
+      // Liquid ingredients: convert to ml
+      return { amount: cups * 240, unit: 'ml' };
+    } else {
+      // Dry ingredients: convert to grams based on density
+      const conversions: Record<string, number> = {
+        'quinoa': cups * 170,
+        'brown rice': cups * 195,
+        'oats': cups * 80,
+        'flour': cups * 120,
+        'chickpeas': cups * 164,
+        'lentils': cups * 192,
+        'black beans': cups * 172,
+        'white beans': cups * 179,
+        'spinach': cups * 30
+      };
+      
+      const amount = conversions[ingredient] || cups * 120; // Default conversion for dry ingredients
+      return { amount, unit: 'g' };
+    }
   }
 
   // Helper function to get default portions for ingredients without recipe details
