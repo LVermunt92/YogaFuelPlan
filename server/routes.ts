@@ -666,6 +666,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Get recipe for a meal
+  // Get translation status endpoint
+  app.get("/api/translation/status", async (req, res) => {
+    try {
+      const status = getTranslationStatus();
+      res.json(status);
+    } catch (error) {
+      console.error("Error getting translation status:", error);
+      res.status(500).json({ message: "Failed to get translation status" });
+    }
+  });
+
   app.get("/api/meals/:mealId/recipe", async (req, res) => {
     try {
       const mealId = parseInt(req.params.mealId);
