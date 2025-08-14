@@ -66,7 +66,7 @@ export class MemStorage implements IStorage {
     this.currentMealPlanId = 1;
     this.currentMealId = 1;
 
-    // Create default user
+    // Create default user with enhanced profile
     const defaultUser: User = {
       id: 1,
       username: "user",
@@ -85,8 +85,30 @@ export class MemStorage implements IStorage {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
+    
+    // Add user with id=2 to match frontend expectations
+    const user2: User = {
+      id: 2,
+      username: "default",
+      password: "password", 
+      email: null,
+      weight: 70,
+      goalWeight: null,
+      waistline: 85,
+      goalWaistline: null,
+      activityLevel: "moderate",
+      proteinTarget: 100,
+      dietaryTags: [],
+      householdSize: 1,
+      cookingDaysPerWeek: 3,
+      eatingDaysAtHome: 6,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    
     this.users.set(1, defaultUser);
-    this.currentUserId = 2;
+    this.users.set(2, user2);
+    this.currentUserId = 3;
   }
 
   async getUser(id: number): Promise<User | undefined> {
