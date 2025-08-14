@@ -161,6 +161,7 @@ const ingredientTranslations: Record<string, string> = {
   
   // Cooking terms
   'fresh': 'vers',
+  'speedy': 'snelle',
   'dried': 'gedroogd',
   'frozen': 'bevroren',
   'can': 'blik',
