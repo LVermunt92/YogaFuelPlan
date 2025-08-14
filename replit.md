@@ -24,6 +24,7 @@ Breakfast scheduling preference: Easy, quick breakfasts during weekdays (≤10 m
 - **Recipe System**: All meals include detailed cooking instructions, tips, and nutritional information. Recipes are alcohol-free.
 - **Smart Time Constraints**: Weekday meals (Mon-Fri) are limited to ≤30 minutes prep time; weekends have no time restrictions.
 - **Ayurvedic Integration**: Supports Ayurvedic dietary tags, including seasonal adaptation based on a 6-season calendar (adapted for European seasons) that filters warming recipes in summer and provides cooling alternatives.
+- **Meal Plan Persistence**: Meal plans persist across browser sessions with automatic loading of current week or latest plan. Enhanced login flow redirects users to homepage after authentication.
 
 ### System Design Choices
 - **Data Flow**: User input drives meal generation, which is stored in PostgreSQL, displayed via React Query, and can be synced to Notion.

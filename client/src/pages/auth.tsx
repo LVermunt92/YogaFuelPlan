@@ -26,7 +26,7 @@ export default function Auth() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [, navigate] = useLocation();
+  const [location, navigate] = useLocation();
   const { toast } = useToast();
   const { login } = useAuth();
 
@@ -41,9 +41,9 @@ export default function Auth() {
         title: "Welcome back!",
         description: `Logged in as ${data.user.username}`,
       });
-      // Auto-refresh the page after successful login
+      // Navigate to homepage after successful login
       setTimeout(() => {
-        window.location.href = '/';
+        navigate('/');
       }, 500);
     },
     onError: (error) => {
@@ -66,9 +66,9 @@ export default function Auth() {
         title: "Account Created!",
         description: `Welcome to the meal planner, ${data.user.username}!`,
       });
-      // Auto-refresh the page after successful registration
+      // Navigate to homepage after successful registration
       setTimeout(() => {
-        window.location.href = '/';
+        navigate('/');
       }, 500);
     },
     onError: (error) => {
