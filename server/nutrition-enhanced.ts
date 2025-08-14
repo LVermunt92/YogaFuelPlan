@@ -2583,6 +2583,10 @@ function cleanIngredientName(ingredient: string): string {
   if (cleaned.includes('salt') || cleaned === 'sea salt' || cleaned === 'kosher salt' || cleaned === 'table salt' || cleaned === 'himalayan salt' || cleaned === 'rock salt') {
     cleaned = 'salt';
   }
+  // Consolidate all tofu variations into "tofu", except silken tofu
+  if ((cleaned.includes('tofu') || cleaned === 'extra firm tofu' || cleaned === 'firm tofu' || cleaned === 'medium tofu' || cleaned === 'soft tofu') && !cleaned.includes('silken')) {
+    cleaned = 'tofu';
+  }
   
   // Handle compound ingredients
   if (cleaned.includes(' and ')) {
@@ -2608,6 +2612,12 @@ function cleanIngredientName(ingredient: string): string {
     'table salt': 'salt',
     'himalayan salt': 'salt',
     'rock salt': 'salt',
+    'tofu': 'tofu',
+    'extra firm tofu': 'tofu',
+    'firm tofu': 'tofu',
+    'medium tofu': 'tofu',
+    'soft tofu': 'tofu',
+    'silken tofu': 'silken tofu',
     'pepper': 'pepper',
     'quinoa': 'quinoa',
     'wild mushrooms': 'mushrooms',
