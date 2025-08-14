@@ -2344,6 +2344,18 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'coconut yogurt': 'Dairy Alternatives',
     'fermented kefir': 'Dairy Alternatives',
     
+    // Fresh Herbs
+    'fresh herbs': 'Fresh Herbs',
+    'parsley': 'Fresh Herbs',
+    'cilantro': 'Fresh Herbs',
+    'basil': 'Fresh Herbs',
+    'oregano': 'Fresh Herbs',
+    'thyme': 'Fresh Herbs',
+    'rosemary': 'Fresh Herbs',
+    'mint': 'Fresh Herbs',
+    'dill': 'Fresh Herbs',
+    'chives': 'Fresh Herbs',
+    
     // Pantry Items
     'olive oil': 'Pantry Items',
     'coconut oil': 'Pantry Items',
@@ -2355,8 +2367,26 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'maple syrup': 'Pantry Items',
     'baking powder': 'Pantry Items',
     'salt': 'Pantry Items',
+    'pepper': 'Pantry Items',
+    'black pepper': 'Pantry Items',
     'cinnamon': 'Pantry Items',
-    'stevia': 'Pantry Items'
+    'stevia': 'Pantry Items',
+    'chili powder': 'Pantry Items',
+    'fennel powder': 'Pantry Items',
+    'garlic powder': 'Pantry Items',
+    'onion powder': 'Pantry Items',
+    'paprika': 'Pantry Items',
+    'cumin': 'Pantry Items',
+    'turmeric': 'Pantry Items',
+    'curry powder': 'Pantry Items',
+    'garam masala': 'Pantry Items',
+    'smoked paprika': 'Pantry Items',
+    'cayenne pepper': 'Pantry Items',
+    'red pepper flakes': 'Pantry Items',
+    'dried oregano': 'Pantry Items',
+    'dried basil': 'Pantry Items',
+    'dried thyme': 'Pantry Items',
+    'bay leaves': 'Pantry Items'
   };
 
   // Create shopping list with categories and converted amounts

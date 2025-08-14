@@ -189,7 +189,23 @@ const ingredientTranslations: Record<string, string> = {
   // Kitchen and pantry terms
   'pantry items': 'voorraadkast',
   'pantry': 'voorraadkast',
+  'fresh herbs': 'verse kruiden',
   'other': 'overig',
+  
+  // Spices and powders
+  'chili powder': 'chilipoeder',
+  'fennel powder': 'venkelpoeder',
+  'garlic powder': 'knoflookpoeder',
+  'onion powder': 'uienpoeder',
+  'curry powder': 'kerrie',
+  'garam masala': 'garam masala',
+  'smoked paprika': 'gerookte paprika',
+  'cayenne pepper': 'cayennepeper',
+  'red pepper flakes': 'rode pepervlokken',
+  'dried oregano': 'gedroogde oregano',
+  'dried basil': 'gedroogde basilicum',
+  'dried thyme': 'gedroogde tijm',
+  'bay leaves': 'laurierbladeren',
   
   // Common recipe phrases
   'heat oil': 'verhit olie',
