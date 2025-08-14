@@ -136,6 +136,7 @@ const ingredientTranslations: Record<string, string> = {
   // Nuts & Seeds
   'nuts and seeds': 'noten en zaden',
   'nuts': 'noten',
+  'mixed nuts': 'gemengde noten',
   'seeds': 'zaden',
   'almonds': 'amandelen',
   'almond butter': 'amandelpasta',
