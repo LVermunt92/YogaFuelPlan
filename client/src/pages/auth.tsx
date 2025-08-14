@@ -45,8 +45,8 @@ export default function Auth() {
         title: "Welcome back!",
         description: `Logged in as ${data.user.username}`,
       });
-      // Navigate to homepage immediately after successful login
-      navigate('/');
+      // Force a page refresh to ensure authentication state is properly updated
+      window.location.href = '/';
     },
     onError: (error) => {
       toast({
@@ -68,8 +68,8 @@ export default function Auth() {
         title: "Account Created!",
         description: `Welcome to the meal planner, ${data.user.username}!`,
       });
-      // Navigate to homepage immediately after successful registration
-      navigate('/');
+      // Force a page refresh to ensure authentication state is properly updated
+      window.location.href = '/';
     },
     onError: (error) => {
       toast({
