@@ -17,6 +17,9 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Textarea } from "@/components/ui/textarea";
 import type { User, MealPlan as MealPlanType, Meal as MealType } from "@shared/schema";
 
+// Type alias for easier use
+type Meal = MealType;
+
 
 
 
@@ -1365,8 +1368,8 @@ export default function MealPlanner() {
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                               <Button
                                 onClick={() => {
-                                  const text = shoppingListData.categories?.map(category => 
-                                    `${category}:\n${shoppingListData.shoppingList
+                                  const text = shoppingListData?.categories?.map(category => 
+                                    `${category}:\n${shoppingListData?.shoppingList
                                       ?.filter(item => item.category === category)
                                       ?.map(item => `- ${item.ingredient} (${item.totalAmount})`)
                                       ?.join('\n') || ''}`
@@ -1385,7 +1388,7 @@ export default function MealPlanner() {
                                 onClick={() => {
                                   const csv = [
                                     'Category,Ingredient,Amount',
-                                    ...shoppingListData.shoppingList.map(item => 
+                                    ...(shoppingListData?.shoppingList || []).map(item => 
                                       `"${item.category}","${item.ingredient}","${item.totalAmount}"`
                                     )
                                   ].join('\n');
@@ -1393,7 +1396,7 @@ export default function MealPlanner() {
                                   const url = URL.createObjectURL(blob);
                                   const a = document.createElement('a');
                                   a.href = url;
-                                  a.download = `shopping-list-${formatWeekRange(shoppingListData.weekStart).replace(/ /g, '-')}.csv`;
+                                  a.download = `shopping-list-${formatWeekRange(shoppingListData?.weekStart || '').replace(/ /g, '-')}.csv`;
                                   a.click();
                                   URL.revokeObjectURL(url);
                                 }}
@@ -1409,7 +1412,7 @@ export default function MealPlanner() {
                                 onClick={() => {
                                   // Create Albert Heijn deep link
                                   const ahUrl = `ah://list?items=${encodeURIComponent(
-                                    (shoppingListData.shoppingList || [])
+                                    (shoppingListData?.shoppingList || [])
                                       .map(item => `${item.ingredient} ${item.totalAmount}`)
                                       .join(',')
                                   )}`;

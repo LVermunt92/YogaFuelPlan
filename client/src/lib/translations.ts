@@ -572,6 +572,23 @@ export const translations = {
     
     // Colors
     green: "Groene",
+    
+    // Additional Meal Plan Management (Dutch)
+    savedMealPlans: "Opgeslagen Maaltijdplannen", 
+    manageMultiplePlans: "Selecteer en beheer je maaltijdplannen",
+    deletePlanConfirm: "Weet je zeker dat je dit maaltijdplan wilt verwijderen?",
+    savePlanCopy: "Plan Opslaan als Kopie",
+    saveMealPlan: "Maaltijdplan Opslaan",
+    planLabel: "Plan Label",
+    planLabelPlaceholder: "bijv., Volgende Week, Backup Plan",
+    savedPlan: "Plan Opslaan",
+    
+    // Shopping List Dutch (only new keys)
+    proteinDaily: "eiwit/dag",
+    
+    // New missing keys
+    saving: "Opslaan",
+    savePlan: "Plan Opslaan",
   }
 };
 
