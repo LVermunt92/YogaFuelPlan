@@ -222,43 +222,18 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   // Use regular 8-day Sunday cooking pattern for other cases
   console.log('Using 8-day Sunday cooking pattern');
 
-  // Smart recipe loading: Use existing database, AI only if insufficient variety
-  console.log('🧠 Smart recipe loading for optimal speed and variety');
-  let breakfastOptions = getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags);
-  let lunchOptions = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
-  let dinnerOptions = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
+  // Fast recipe loading: Use existing database for maximum speed
+  console.log('🚀 Fast recipe loading using existing database (AI generation temporarily disabled for speed)');
+  const breakfastOptions = getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags);
+  const lunchOptions = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
+  const dinnerOptions = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
   
-  const minRecipesNeeded = 15; // Need enough for 2+ weeks variety
+  console.log(`📊 Available recipes: ${breakfastOptions.length} breakfast, ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
   
-  // Only use AI if we have insufficient variety for specific dietary needs
-  if (breakfastOptions.length < minRecipesNeeded && dietaryTags.length > 0) {
-    console.log(`⚠️ Only ${breakfastOptions.length} breakfast recipes for [${dietaryTags.join(', ')}] - using AI to fill gaps`);
-    try {
-      breakfastOptions = await ensureRecipeVariety('breakfast', dietaryTags, 18);
-    } catch (error) {
-      console.warn('AI generation failed for breakfast, using available recipes:', error);
-    }
+  // If very few recipes available, broaden dietary search to avoid empty results
+  if (lunchOptions.length < 3 || dinnerOptions.length < 3) {
+    console.log(`⚠️ Very few recipes available for [${dietaryTags.join(', ')}], will use broader dietary matching if needed`);
   }
-  
-  if (lunchOptions.length < minRecipesNeeded && dietaryTags.length > 0) {
-    console.log(`⚠️ Only ${lunchOptions.length} lunch recipes for [${dietaryTags.join(', ')}] - using AI to fill gaps`);
-    try {
-      lunchOptions = await ensureRecipeVariety('lunch', dietaryTags, 22);
-    } catch (error) {
-      console.warn('AI generation failed for lunch, using available recipes:', error);
-    }
-  }
-  
-  if (dinnerOptions.length < minRecipesNeeded && dietaryTags.length > 0) {
-    console.log(`⚠️ Only ${dinnerOptions.length} dinner recipes for [${dietaryTags.join(', ')}] - using AI to fill gaps`);
-    try {
-      dinnerOptions = await ensureRecipeVariety('dinner', dietaryTags, 25);
-    } catch (error) {
-      console.warn('AI generation failed for dinner, using available recipes:', error);
-    }
-  }
-  
-  console.log(`📊 Final cached options: ${breakfastOptions.length} breakfast, ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
 
   // Track used meals to ensure variety in cooking moments
   const usedBreakfastMeals: Set<string> = new Set();
@@ -530,35 +505,12 @@ async function generateMealPrepPlan(
   let lunchOptions: MealOption[] = [];
   let dinnerOptions: MealOption[] = [];
   
-  // Smart hybrid approach: Use existing database first, AI only if needed
-  console.log('🧠 Smart recipe selection: checking existing database first');
+  // Fast recipe selection: Use existing database only (AI generation disabled for speed)
+  console.log('🚀 Fast recipe selection: using existing database only');
   lunchOptions = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
   dinnerOptions = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
   
-  // Check if we have insufficient variety for the dietary requirements
-  const minRecipesNeeded = 15; // Need enough for 2+ weeks variety
-  
-  if (lunchOptions.length < minRecipesNeeded && dietaryTags.length > 0) {
-    console.log(`⚠️ Only ${lunchOptions.length} lunch recipes for [${dietaryTags.join(', ')}] - generating ${minRecipesNeeded - lunchOptions.length} more with AI`);
-    try {
-      const additionalLunch = await ensureRecipeVariety('lunch', dietaryTags, 22);
-      lunchOptions = additionalLunch;
-    } catch (error) {
-      console.warn('AI generation failed, using available recipes:', error);
-    }
-  }
-  
-  if (dinnerOptions.length < minRecipesNeeded && dietaryTags.length > 0) {
-    console.log(`⚠️ Only ${dinnerOptions.length} dinner recipes for [${dietaryTags.join(', ')}] - generating ${minRecipesNeeded - dinnerOptions.length} more with AI`);
-    try {
-      const additionalDinner = await ensureRecipeVariety('dinner', dietaryTags, 25);
-      dinnerOptions = additionalDinner;
-    } catch (error) {
-      console.warn('AI generation failed, using available recipes:', error);
-    }
-  }
-  
-  console.log(`📊 Final recipe counts: ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
+  console.log(`📊 Available recipe counts: ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
   
   // Apply summer filtering for ALL ayurvedic meals - regardless of user's dietary selection
   // All ayurvedic recipes should follow seasonal guidelines during grishma season
