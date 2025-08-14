@@ -2428,14 +2428,14 @@ function formatAmountWithLanguage(amount: number, unit: string, language: string
     return `${amount} g`;
   }
   
-  if (unit === 'pieces') {
+  if (unit === 'pieces' || unit === 'piece') {
     if (language === 'nl') {
       return amount === 1 ? `${amount} stuk` : `${amount} stuks`;
     }
     return amount === 1 ? `${amount} piece` : `${amount} pieces`;
   }
   
-  if (unit === 'cloves') {
+  if (unit === 'cloves' || unit === 'clove') {
     if (language === 'nl') {
       return amount === 1 ? `${amount} teen` : `${amount} tenen`;
     }
