@@ -921,7 +921,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   // VIRAL SOCIAL MEDIA RECIPES - Trendy & Instagram-worthy meals
   {
-    name: "Viral Green Goddess Salad Bowl (TikTok famous)",
+    name: "Green Goddess Salad Bowl",
     portion: "1 large bowl",
     nutrition: { 
       protein: 22, 
@@ -964,7 +964,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   },
 
   {
-    name: "Viral Cottage Cheese Bowl (Social Media Trend)",
+    name: "Cottage Cheese Bowl",
     portion: "1 bowl (300g)",
     nutrition: { 
       protein: 34, 
@@ -1006,7 +1006,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   },
 
   {
-    name: "Viral Marry Me Mushroom Pasta (Plant-Based Hit)",
+    name: "Marry Me Mushroom Pasta",
     portion: "1 serving",
     nutrition: { 
       protein: 28, 
@@ -1049,7 +1049,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   },
 
   {
-    name: "Viral Cucumber Salad (TikTok Obsession)",
+    name: "Cucumber Salad",
     portion: "1 large serving",
     nutrition: { 
       protein: 8, 
@@ -1091,7 +1091,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   },
 
   {
-    name: "Viral Cloud Bread (Social Media Phenomenon)",
+    name: "Cloud Bread",
     portion: "4 pieces",
     nutrition: { 
       protein: 24, 
@@ -2487,7 +2487,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   // ============ VIRAL RECIPES - INTEGRATED INTO UNIFIED DATABASE ============
   {
-    name: "Viral Protein Ice Cream Bowl (TikTok sensation)",
+    name: "Protein Ice Cream Bowl",
     portion: "1 large bowl",
     nutrition: { 
       protein: 28, 
@@ -2536,7 +2536,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     }
   },
   {
-    name: "Viral Cloud Bread (Social Media Phenomenon)",
+    name: "Fluffy Cloud Bread",
     portion: "2 pieces",
     nutrition: { 
       protein: 12, 
@@ -2584,7 +2584,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     }
   },
   {
-    name: "Viral Baked Oats (TikTok Breakfast Trend)",
+    name: "Baked Oats",
     portion: "1 ramekin",
     nutrition: { 
       protein: 16, 
@@ -2636,7 +2636,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     }
   },
   {
-    name: "Viral Salmon Rice Bowl (TikTok Sensation)",
+    name: "Salmon Rice Bowl",
     portion: "1 bowl",
     nutrition: { 
       protein: 28, 
@@ -2803,7 +2803,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   // ============ MISSING VIRAL RECIPES - ADDING ALL REMAINING ONES ============
   {
-    name: "Viral Walking Taco Salad (Social media hit)",
+    name: "Walking Taco Salad",
     portion: "1 serving bowl",
     nutrition: { 
       protein: 25, 
@@ -2855,7 +2855,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     }
   },
   {
-    name: "Viral Marry Me Chickpea Curry (Plant-based viral hit)",
+    name: "Marry Me Chickpea Curry",
     portion: "1 serving",
     nutrition: { 
       protein: 22, 
@@ -2907,7 +2907,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     }
   },
   {
-    name: "Viral Nature's Cereal (Health Trend Bowl)",
+    name: "Nature's Cereal",
     portion: "1 bowl",
     nutrition: { 
       protein: 8, 
@@ -2954,7 +2954,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     }
   },
   {
-    name: "Viral Pasta Chips (Crunchy Social Media Hit)",
+    name: "Pasta Chips",
     portion: "1 serving",
     nutrition: { 
       protein: 12, 
