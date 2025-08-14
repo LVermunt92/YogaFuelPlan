@@ -2413,6 +2413,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'fresh herbs': 'Fresh Herbs',
     'parsley': 'Fresh Herbs',
     'cilantro': 'Fresh Herbs',
+    'fresh cilantro': 'Fresh Herbs',
     'basil': 'Fresh Herbs',
     'oregano': 'Fresh Herbs',
     'thyme': 'Fresh Herbs',
@@ -2442,6 +2443,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'onion powder': 'Pantry Items',
     'paprika': 'Pantry Items',
     'cumin': 'Pantry Items',
+    'ground coriander': 'Pantry Items',
     'turmeric': 'Pantry Items',
     'curry powder': 'Pantry Items',
     'garam masala': 'Pantry Items',
@@ -2601,6 +2603,17 @@ function cleanIngredientName(ingredient: string): string {
   
   // Remove leading numbers and fractions that might still be there  
   cleaned = cleaned.replace(/^[\d\/½¼¾⅓⅔⅛⅜⅝⅞]+\s*/, '');
+  
+  // Consolidate herbs that have different names but are essentially the same for shopping
+  // This prevents duplicate listings in shopping list (e.g., both "cilantro" and "coriander" appearing)
+  if (cleaned.includes('fresh cilantro') || cleaned.includes('cilantro') || cleaned.includes('fresh coriander') || cleaned.includes('coriander')) {
+    // Check if it's ground/powder coriander (spice) vs fresh cilantro (herb)
+    if (cleaned.includes('ground') || cleaned.includes('powder')) {
+      cleaned = 'ground coriander';
+    } else {
+      cleaned = 'fresh cilantro'; // Consolidate all fresh forms to cilantro
+    }
+  }
   
   // Handle specific bean types BEFORE removing descriptive words (including canned versions)
   if (cleaned.includes('black beans') || cleaned === 'black beans' || cleaned.includes('can black beans')) {
