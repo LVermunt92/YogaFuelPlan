@@ -44,6 +44,7 @@ export interface IStorage {
   createMeals(mealPlanId: number, meals: InsertMeal[]): Promise<Meal[]>;
   updateMealPlanSyncStatus(id: number, synced: boolean): Promise<void>;
   deleteMealPlan(id: number): Promise<boolean>;
+  cleanupOldMealPlans(userId: number, keepCount?: number): Promise<number>;
   createOuraData(data: InsertOuraData): Promise<OuraData>;
   getOuraData(userId: number, startDate: string, endDate?: string): Promise<OuraData[]>;
   getLatestOuraData(userId: number): Promise<OuraData | undefined>;
@@ -287,6 +288,30 @@ export class MemStorage implements IStorage {
     }
     
     return deleted;
+  }
+
+  async cleanupOldMealPlans(userId: number, keepCount: number = 3): Promise<number> {
+    // Get all meal plans for the user, sorted by ID (newest first)
+    const userMealPlans = Array.from(this.mealPlans.values())
+      .filter(plan => plan.userId === userId)
+      .sort((a, b) => b.id - a.id);
+    
+    if (userMealPlans.length <= keepCount) {
+      console.log(`👍 User ${userId} has ${userMealPlans.length} meal plans, no cleanup needed`);
+      return 0;
+    }
+    
+    // Get meal plans to delete (everything beyond keepCount)
+    const plansToDelete = userMealPlans.slice(keepCount);
+    let deletedCount = 0;
+    
+    for (const plan of plansToDelete) {
+      const success = await this.deleteMealPlan(plan.id);
+      if (success) deletedCount++;
+    }
+    
+    console.log(`🧹 Cleaned up ${deletedCount} old meal plans for user ${userId}, keeping ${keepCount} most recent`);
+    return deletedCount;
   }
 
   async getMealPlans(userId?: number): Promise<MealPlan[]> {
@@ -620,6 +645,35 @@ export class DatabaseStorage implements IStorage {
     } catch (error) {
       console.error(`Failed to delete meal plan ${id}:`, error);
       return false;
+    }
+  }
+
+  async cleanupOldMealPlans(userId: number, keepCount: number = 3): Promise<number> {
+    try {
+      // Get all meal plans for the user, ordered by creation date (newest first)
+      const userMealPlans = await db.select().from(mealPlans)
+        .where(eq(mealPlans.userId, userId))
+        .orderBy(desc(mealPlans.createdAt));
+      
+      if (userMealPlans.length <= keepCount) {
+        console.log(`👍 User ${userId} has ${userMealPlans.length} meal plans, no cleanup needed`);
+        return 0;
+      }
+      
+      // Get meal plans to delete (everything beyond keepCount)
+      const plansToDelete = userMealPlans.slice(keepCount);
+      let deletedCount = 0;
+      
+      for (const plan of plansToDelete) {
+        const success = await this.deleteMealPlan(plan.id);
+        if (success) deletedCount++;
+      }
+      
+      console.log(`🧹 Cleaned up ${deletedCount} old meal plans for user ${userId}, keeping ${keepCount} most recent`);
+      return deletedCount;
+    } catch (error) {
+      console.error(`Failed to cleanup meal plans for user ${userId}:`, error);
+      return 0;
     }
   }
 

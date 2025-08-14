@@ -150,6 +150,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const savedMealPlan = await storage.createMealPlan(generated.mealPlan);
       const savedMeals = await storage.createMeals(savedMealPlan.id, generated.meals);
       
+      // Automatically cleanup old meal plans, keeping only 3 most recent
+      if (request.userId) {
+        await storage.cleanupOldMealPlans(request.userId, 3);
+      }
+      
       res.json({
         mealPlan: savedMealPlan,
         meals: savedMeals,
@@ -185,6 +190,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Save to storage
       const savedMealPlan = await storage.createMealPlan(generated.mealPlan);
       const savedMeals = await storage.createMeals(savedMealPlan.id, generated.meals);
+      
+      // Automatically cleanup old meal plans, keeping only 3 most recent
+      await storage.cleanupOldMealPlans(request.userId, 3);
       
       res.json({
         mealPlan: savedMealPlan,
@@ -251,6 +259,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }))
       );
 
+      // Automatically cleanup old meal plans, keeping only 3 most recent
+      await storage.cleanupOldMealPlans(mealPlan.userId, 3);
+
       res.json({
         message: "Meal plan saved successfully",
         mealPlan: savedMealPlan,
@@ -259,6 +270,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error saving meal plan:", error);
       res.status(500).json({ message: "Failed to save meal plan" });
+    }
+  });
+
+  // Manual cleanup endpoint for testing
+  app.post("/api/cleanup-meal-plans", async (req, res) => {
+    try {
+      const { userId } = req.body;
+      
+      if (!userId) {
+        return res.status(400).json({ message: "User ID is required" });
+      }
+      
+      const deletedCount = await storage.cleanupOldMealPlans(userId, 3);
+      
+      res.json({
+        message: `Cleaned up ${deletedCount} old meal plans`,
+        deletedCount,
+      });
+    } catch (error) {
+      console.error("Error cleaning up meal plans:", error);
+      res.status(500).json({ message: "Failed to cleanup meal plans" });
     }
   });
 
