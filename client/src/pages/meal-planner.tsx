@@ -647,17 +647,15 @@ export default function MealPlanner() {
   const getDayMeals = (day: number) => {
     if (!currentMealPlan?.meals) return [];
     
-    // Filter meals based on 8-day Sunday night cooking pattern
-    // Day 8: All Sunday meals (breakfast, lunch, dinner)
-    if (day === 8) {
-      const sundayMeals = currentMealPlan.meals.filter(meal => meal.day === 1 || meal.day === 8);
-      return sundayMeals;
+    // Filter meals based on proper Sunday-Saturday pattern
+    // Day 1: Sunday dinner only (first cooking moment)
+    if (day === 1) {
+      return currentMealPlan.meals.filter(meal => meal.day === 1);
     }
     // Days 2-7: All meals for that day (breakfast, lunch, dinner)
     else if (day >= 2 && day <= 7) {
       return currentMealPlan.meals.filter(meal => meal.day === day);
     }
-    // Day 1: Skip (Sunday meals are shown on day 8)
     else {
       return [];
     }
@@ -1464,7 +1462,7 @@ export default function MealPlanner() {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-border">
-                        {[2, 3, 4, 5, 6, 7, 8].map(day => {
+                        {[1, 2, 3, 4, 5, 6, 7].map(day => {
                           const dayMeals = getDayMeals(day);
                           const dayTotal = calculateDayTotal(day);
                           
@@ -1473,13 +1471,13 @@ export default function MealPlanner() {
                               {/* Day Header Row */}
                               <tr className="bg-muted/20 border-b-2 border-border">
                                 <td className="px-3 sm:px-6 py-3 text-sm font-semibold text-foreground">
-                                  {day === 2 ? t.monday : 
+                                  {day === 1 ? t.sunday : 
+                                   day === 2 ? t.monday : 
                                    day === 3 ? t.tuesday : 
                                    day === 4 ? t.wednesday : 
                                    day === 5 ? t.thursday : 
                                    day === 6 ? t.friday : 
-                                   day === 7 ? t.saturday : 
-                                   day === 8 ? t.sunday : t.sunday}
+                                   day === 7 ? t.saturday : t.sunday}
                                 </td>
                                 <td className="px-3 sm:px-6 py-3 text-xs text-muted-foreground font-medium">
                                   {dayTotal.toFixed(1)}g protein
