@@ -1006,7 +1006,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   },
 
   {
-    name: "Creamy Mushroom Pasta with Herbs",
+    name: "Marry Me Mushroom Pasta",
     portion: "1 serving",
     nutrition: { 
       protein: 28, 
@@ -1043,7 +1043,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         "Return mushrooms to pan, simmer until heated through",
         "Serve over pasta with fresh herbs for Instagram appeal"
       ],
-      tips: ["Rich and creamy pasta that's surprisingly healthy", "The herb blend makes this restaurant-quality at home", "Perfect for date night dinners"],
+      tips: ["Called 'Marry Me' because it's proposal-worthy", "This vegetarian version went viral for being just as good as the original", "Perfect for date night content"],
       notes: "This plant-based version maintains all the viral appeal while being completely vegetarian. For gluten-free diets, simply substitute with gluten-free pasta (rice, corn, or chickpea pasta work perfectly)."
     }
   },
@@ -2855,7 +2855,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     }
   },
   {
-    name: "Rich Coconut Chickpea Curry",
+    name: "Marry Me Chickpea Curry",
     portion: "1 serving",
     nutrition: { 
       protein: 22, 
@@ -2899,7 +2899,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         "Serve over basmati rice"
       ],
       tips: [
-        "Rich coconut curry that's incredibly satisfying and healthy",
+        "Called 'Marry Me' because it's so good it'll get you proposed to",
         "This vegan version went viral for being incredibly satisfying",
         "Perfect for cozy content and date nights"
       ],

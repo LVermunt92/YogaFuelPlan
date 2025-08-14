@@ -128,37 +128,14 @@ function incorporateLeftoverIngredients(meal: MealOption, ingredientsToUseUp: st
 }
 
 /**
- * Check if two meal names are too similar or conflict with each other
+ * Check if two meal names are exactly the same (prevent duplicates of identical recipes)
  */
 function areMealsSimilar(meal1: string, meal2: string): boolean {
-  const name1 = meal1.toLowerCase();
-  const name2 = meal2.toLowerCase();
+  const name1 = meal1.toLowerCase().trim();
+  const name2 = meal2.toLowerCase().trim();
   
-  // Check for former "Marry Me" recipes - only allow one per meal plan
-  // These were renamed to avoid confusion
-  const formerMarryMeRecipes = [
-    'creamy mushroom pasta with herbs',
-    'rich coconut chickpea curry'
-  ];
-  
-  if (formerMarryMeRecipes.includes(name1) && formerMarryMeRecipes.includes(name2)) {
-    return true;
-  }
-  
-  // Check for other viral recipe patterns
-  const viralPatterns = [
-    'viral cottage cheese',
-    'viral protein ice cream',
-    'viral cloud bread'
-  ];
-  
-  for (const pattern of viralPatterns) {
-    if (name1.includes(pattern) && name2.includes(pattern)) {
-      return true;
-    }
-  }
-  
-  return false;
+  // Only prevent exact duplicates of the same recipe
+  return name1 === name2;
 }
 
 /**
