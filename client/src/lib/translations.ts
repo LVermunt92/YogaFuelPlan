@@ -161,6 +161,9 @@ export const translations = {
     notionIntegration: "Notion Integration",
     syncToNotion: "Sync to Notion",
     syncing: "Syncing",
+    
+    // Colors  
+    green: "Green",
   },
   
   nl: {
@@ -398,6 +401,9 @@ export const translations = {
     notionIntegration: "Notion Integratie",
     syncToNotion: "Synchroniseren naar Notion",
     syncing: "Synchroniseren",
+    
+    // Colors
+    green: "Groene",
   }
 };
 
