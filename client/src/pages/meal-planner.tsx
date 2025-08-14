@@ -1246,14 +1246,12 @@ export default function MealPlanner() {
                   </div>
 
                   <div className="table-responsive">
-                    <table className="w-full min-w-[800px]">
+                    <table className="w-full min-w-[600px]">
                       <thead className="border-b border-border">
                         <tr>
                           <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.day}</th>
                           <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.meal}</th>
                           <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.food}</th>
-                          <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.portion}</th>
-                          <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.protein} (g)</th>
                           <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.prep}</th>
                         </tr>
                       </thead>
@@ -1317,12 +1315,6 @@ export default function MealPlanner() {
                                         </button>
                                       )}
                                     </td>
-                                    <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
-                                      {meal.portion}
-                                    </td>
-                                    <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">
-                                      {meal.protein}g
-                                    </td>
                                     <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-xs">
                                       {isEatingOut ? (
                                         <span className="text-gray-500">N/A</span>
@@ -1347,11 +1339,8 @@ export default function MealPlanner() {
                                 );
                               })}
                               <tr className="bg-muted/30">
-                                <td colSpan={5} className="px-3 sm:px-6 py-3 text-sm font-medium text-foreground">
-                                  Day {day} Total
-                                </td>
-                                <td className="px-3 sm:px-6 py-3 text-sm font-semibold text-foreground">
-                                  {dayTotal.toFixed(1)}g
+                                <td colSpan={4} className="px-3 sm:px-6 py-3 text-sm font-medium text-foreground">
+                                  Day {day} Total: {dayTotal.toFixed(1)}g protein
                                 </td>
                               </tr>
                             </React.Fragment>
