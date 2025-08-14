@@ -1282,22 +1282,18 @@ export default function MealPlanner() {
                               {/* Day Header Row */}
                               <tr className="bg-muted/20 border-b-2 border-border">
                                 <td className="px-3 sm:px-6 py-3 text-sm font-semibold text-foreground">
-                                  <div className="flex items-center justify-between">
-                                    <div>
-                                      {day === 2 ? t.monday : 
-                                       day === 3 ? t.tuesday : 
-                                       day === 4 ? t.wednesday : 
-                                       day === 5 ? t.thursday : 
-                                       day === 6 ? t.friday : 
-                                       day === 7 ? t.saturday : 
-                                       day === 8 ? t.sunday : t.sunday}
-                                    </div>
-                                    <div className="text-xs text-muted-foreground">
-                                      {dayTotal.toFixed(1)}g protein
-                                    </div>
-                                  </div>
+                                  {day === 2 ? t.monday : 
+                                   day === 3 ? t.tuesday : 
+                                   day === 4 ? t.wednesday : 
+                                   day === 5 ? t.thursday : 
+                                   day === 6 ? t.friday : 
+                                   day === 7 ? t.saturday : 
+                                   day === 8 ? t.sunday : t.sunday}
                                 </td>
-                                <td colSpan={2} className="px-3 sm:px-6 py-3"></td>
+                                <td className="px-3 sm:px-6 py-3 text-xs text-muted-foreground font-medium">
+                                  {dayTotal.toFixed(1)}g protein
+                                </td>
+                                <td className="px-3 sm:px-6 py-3"></td>
                               </tr>
                               {/* Meal Rows */}
                               {dayMeals.map((meal, index) => {
