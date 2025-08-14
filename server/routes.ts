@@ -62,6 +62,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(400).json({ message: "Login failed" });
     }
   });
+
+  app.post("/api/auth/reset-password", async (req, res) => {
+    try {
+      const { username, newPassword } = z.object({
+        username: z.string(),
+        newPassword: z.string().min(6, "Password must be at least 6 characters"),
+      }).parse(req.body);
+      
+      const user = await storage.getUserByUsername(username);
+      
+      if (!user) {
+        return res.status(404).json({ message: "Username not found" });
+      }
+
+      await storage.updateUserPassword(user.id, newPassword);
+      
+      res.json({
+        message: "Password reset successful. You can now log in with your new password.",
+      });
+    } catch (error) {
+      console.error("Password reset error:", error);
+      res.status(400).json({ message: "Password reset failed" });
+    }
+  });
   
   // Create/Generate meal plan
   app.post("/api/meal-plans", async (req, res) => {

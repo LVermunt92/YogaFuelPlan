@@ -23,8 +23,10 @@ const registerSchema = z.object({
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [email, setEmail] = useState("");
   const [location, navigate] = useLocation();
   const { toast } = useToast();
@@ -80,11 +82,53 @@ export default function Auth() {
     },
   });
 
+  const resetPasswordMutation = useMutation({
+    mutationFn: async (data: { username: string; newPassword: string }) => {
+      const response = await apiRequest('POST', '/api/auth/reset-password', data);
+      return response.json();
+    },
+    onSuccess: (data) => {
+      toast({
+        title: "Password Reset Successful!",
+        description: "You can now log in with your new password.",
+      });
+      setIsForgotPassword(false);
+      setIsLogin(true);
+      setPassword("");
+      setNewPassword("");
+    },
+    onError: (error) => {
+      toast({
+        title: "Password Reset Failed",
+        description: "Username not found or invalid data",
+        variant: "destructive",
+      });
+    },
+  });
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     try {
-      if (isLogin) {
+      if (isForgotPassword) {
+        if (!username || !newPassword) {
+          toast({
+            title: "Validation Error",
+            description: "Username and new password are required",
+            variant: "destructive",
+          });
+          return;
+        }
+        if (newPassword.length < 6) {
+          toast({
+            title: "Validation Error", 
+            description: "Password must be at least 6 characters",
+            variant: "destructive",
+          });
+          return;
+        }
+        resetPasswordMutation.mutate({ username, newPassword });
+      } else if (isLogin) {
         const validatedData = loginSchema.parse({ username, password });
         loginMutation.mutate(validatedData);
       } else {
@@ -106,7 +150,7 @@ export default function Auth() {
     }
   };
 
-  const isLoading = loginMutation.isPending || registerMutation.isPending;
+  const isLoading = loginMutation.isPending || registerMutation.isPending || resetPasswordMutation.isPending;
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
@@ -116,7 +160,12 @@ export default function Auth() {
             Meal Planner
           </CardTitle>
           <CardDescription>
-            {isLogin ? "Welcome back to your personal meal planner" : "Create your account to get started"}
+            {isForgotPassword 
+              ? "Reset your password by entering your username and a new password" 
+              : isLogin 
+                ? "Welcome back to your personal meal planner" 
+                : "Create your account to get started"
+            }
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -133,7 +182,7 @@ export default function Auth() {
               />
             </div>
             
-            {!isLogin && (
+            {!isLogin && !isForgotPassword && (
               <div className="space-y-2">
                 <Label htmlFor="email">Email (optional)</Label>
                 <Input
@@ -146,35 +195,85 @@ export default function Auth() {
               </div>
             )}
             
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
-                required
-              />
-            </div>
+            {isForgotPassword ? (
+              <div className="space-y-2">
+                <Label htmlFor="newPassword">New Password</Label>
+                <Input
+                  id="newPassword"
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="Enter your new password"
+                  required
+                />
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                  required
+                />
+              </div>
+            )}
             
             <Button 
               type="submit" 
               className="w-full" 
               disabled={isLoading}
             >
-              {isLoading ? "Please wait..." : (isLogin ? "Log In" : "Create Account")}
+              {isLoading 
+                ? "Please wait..." 
+                : isForgotPassword 
+                  ? "Reset Password" 
+                  : isLogin 
+                    ? "Log In" 
+                    : "Create Account"
+              }
             </Button>
           </form>
           
-          <div className="mt-6 text-center">
-            <button
-              type="button"
-              onClick={() => setIsLogin(!isLogin)}
-              className="text-sm text-muted-foreground hover:text-foreground underline"
-            >
-              {isLogin ? "Don't have an account? Create one" : "Already have an account? Log in"}
-            </button>
+          <div className="mt-6 text-center space-y-2">
+            {isForgotPassword ? (
+              <button
+                type="button"
+                onClick={() => {
+                  setIsForgotPassword(false);
+                  setIsLogin(true);
+                  setNewPassword("");
+                }}
+                className="text-sm text-muted-foreground hover:text-foreground underline"
+              >
+                Back to login
+              </button>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  onClick={() => setIsLogin(!isLogin)}
+                  className="text-sm text-muted-foreground hover:text-foreground underline block"
+                >
+                  {isLogin ? "Don't have an account? Create one" : "Already have an account? Log in"}
+                </button>
+                {isLogin && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsForgotPassword(true);
+                      setIsLogin(false);
+                      setPassword("");
+                    }}
+                    className="text-sm text-muted-foreground hover:text-foreground underline block"
+                  >
+                    Forgot your password?
+                  </button>
+                )}
+              </>
+            )}
           </div>
         </CardContent>
       </Card>

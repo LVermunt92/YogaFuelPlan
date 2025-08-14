@@ -30,6 +30,7 @@ export interface IStorage {
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   authenticateUser(username: string, password: string): Promise<User | null>;
+  updateUserPassword(userId: number, newPassword: string): Promise<void>;
   updateUserProfile(userId: number, profileData: UpdateUserProfile): Promise<User>;
   createMealPlan(mealPlan: InsertMealPlan): Promise<MealPlan>;
   getMealPlans(userId?: number): Promise<MealPlan[]>;
@@ -159,6 +160,24 @@ export class MemStorage implements IStorage {
       }
     }
     return null;
+  }
+
+  async updateUserPassword(userId: number, newPassword: string): Promise<void> {
+    const user = this.users.get(userId);
+    
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    
+    // Update the password
+    this.users.set(userId, {
+      ...user,
+      password: hashedPassword,
+      updatedAt: new Date(),
+    });
   }
 
   async createMealPlan(insertMealPlan: InsertMealPlan): Promise<MealPlan> {
@@ -423,6 +442,20 @@ export class DatabaseStorage implements IStorage {
 
     const isValidPassword = await bcrypt.compare(password, user.password);
     return isValidPassword ? user : null;
+  }
+
+  async updateUserPassword(userId: number, newPassword: string): Promise<void> {
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    
+    // Update the password in database
+    await db
+      .update(users)
+      .set({
+        password: hashedPassword,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId));
   }
 
   async updateUserProfile(userId: number, profileData: UpdateUserProfile): Promise<User> {
