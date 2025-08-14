@@ -1409,7 +1409,7 @@ export default function MealPlanner() {
                                 onClick={() => {
                                   // Create Albert Heijn deep link
                                   const ahUrl = `ah://list?items=${encodeURIComponent(
-                                    shoppingListData.shoppingList
+                                    (shoppingListData.shoppingList || [])
                                       .map(item => `${item.ingredient} ${item.totalAmount}`)
                                       .join(',')
                                   )}`;
