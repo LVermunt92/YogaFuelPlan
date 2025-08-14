@@ -2403,6 +2403,23 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'blueberries': 'Fruits',
     'fresh fruit': 'Fruits',
     
+    // Dairy & Cheese
+    'cheese': 'Dairy & Cheese',
+    'feta cheese': 'Dairy & Cheese',
+    'goat cheese': 'Dairy & Cheese',
+    'mozzarella': 'Dairy & Cheese',
+    'parmesan': 'Dairy & Cheese',
+    'cheddar': 'Dairy & Cheese',
+    'cottage cheese': 'Dairy & Cheese',
+    'cream cheese': 'Dairy & Cheese',
+    'ricotta': 'Dairy & Cheese',
+    'greek yogurt': 'Dairy & Cheese',
+    'yogurt': 'Dairy & Cheese',
+    'milk': 'Dairy & Cheese',
+    'butter': 'Dairy & Cheese',
+    'sour cream': 'Dairy & Cheese',
+    'heavy cream': 'Dairy & Cheese',
+    
     // Dairy Alternatives
     'almond milk': 'Dairy Alternatives',
     'coconut milk': 'Dairy Alternatives',
@@ -2615,6 +2632,29 @@ function cleanIngredientName(ingredient: string): string {
     }
   }
   
+  // Handle specific cheese types
+  if (cleaned.includes('cheese')) {
+    if (cleaned.includes('feta')) {
+      cleaned = 'feta cheese';
+    } else if (cleaned.includes('goat')) {
+      cleaned = 'goat cheese';
+    } else if (cleaned.includes('mozzarella')) {
+      cleaned = 'mozzarella';
+    } else if (cleaned.includes('parmesan') || cleaned.includes('parmigiano')) {
+      cleaned = 'parmesan';
+    } else if (cleaned.includes('cheddar')) {
+      cleaned = 'cheddar';
+    } else if (cleaned.includes('cottage')) {
+      cleaned = 'cottage cheese';
+    } else if (cleaned.includes('cream cheese')) {
+      cleaned = 'cream cheese';
+    } else if (cleaned.includes('ricotta')) {
+      cleaned = 'ricotta';
+    } else {
+      cleaned = 'cheese'; // Generic cheese category
+    }
+  }
+  
   // Handle specific bean types BEFORE removing descriptive words (including canned versions)
   if (cleaned.includes('black beans') || cleaned === 'black beans' || cleaned.includes('can black beans')) {
     cleaned = 'black beans';
@@ -2767,7 +2807,21 @@ function cleanIngredientName(ingredient: string): string {
     'lentils': 'lentils',
     'can black beans': 'black beans',
     'can white beans': 'white beans',
-    'can kidney beans': 'kidney beans', 
+    'can kidney beans': 'kidney beans',
+    // Cheese mappings
+    'cheese': 'cheese',
+    'feta cheese': 'feta cheese',
+    'goat cheese': 'goat cheese',
+    'mozzarella cheese': 'mozzarella',
+    'mozzarella': 'mozzarella',
+    'parmesan cheese': 'parmesan',
+    'parmesan': 'parmesan',
+    'cheddar cheese': 'cheddar',
+    'cheddar': 'cheddar',
+    'cottage cheese': 'cottage cheese',
+    'cream cheese': 'cream cheese',
+    'ricotta cheese': 'ricotta',
+    'ricotta': 'ricotta', 
     'can chickpeas': 'chickpeas',
     'can mung beans': 'mung beans',
     'can beans': 'mixed beans',
