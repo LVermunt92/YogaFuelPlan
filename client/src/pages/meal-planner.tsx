@@ -12,7 +12,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Calendar, Clock, Target, Upload, Eye, Download, Share, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages, Copy, ExternalLink } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { useTranslations, translateDietaryTags } from "@/lib/translations";
+import { useTranslations, translateDietaryTags, translateDietaryTag } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -149,7 +149,10 @@ export default function MealPlanner() {
   // Fetch meal plans for current user
   const { data: mealPlans = [], isLoading: loadingPlans } = useQuery<MealPlan[]>({
     queryKey: ['/api/meal-plans', authUser?.id],
-    queryFn: () => apiRequest(`/api/meal-plans?userId=${authUser?.id}`),
+    queryFn: async () => {
+      const response = await apiRequest('GET', `/api/meal-plans?userId=${authUser?.id}`);
+      return response.json();
+    },
     enabled: !!authUser?.id,
     staleTime: 0, // Always fetch fresh data
     refetchOnMount: true, // Refetch when component mounts
@@ -158,14 +161,20 @@ export default function MealPlanner() {
   // Fetch active meal plans (for alternating)
   const { data: activePlansData } = useQuery({
     queryKey: ['/api/meal-plans/active', authUser?.id],
-    queryFn: () => apiRequest(`/api/meal-plans/active?userId=${authUser?.id}`),
+    queryFn: async () => {
+      const response = await apiRequest('GET', `/api/meal-plans/active?userId=${authUser?.id}`);
+      return response.json();
+    },
     enabled: !!authUser?.id,
   });
 
   // Fetch weekend grocery plans (current + next week)
   const { data: weekendGroceryData } = useQuery({
     queryKey: ['/api/meal-plans/weekend-grocery', authUser?.id],
-    queryFn: () => apiRequest(`/api/meal-plans/weekend-grocery/${authUser?.id}`),
+    queryFn: async () => {
+      const response = await apiRequest('GET', `/api/meal-plans/weekend-grocery/${authUser?.id}`);
+      return response.json();
+    },
     enabled: !!authUser?.id,
   });
 
@@ -596,13 +605,13 @@ export default function MealPlanner() {
   };
 
   // Find current week's meal plan or latest meal plan
-  const currentWeekPlan = mealPlans.find(plan => isCurrentWeek(plan.weekStart));
-  const latestMealPlan = mealPlans[0];
+  const currentWeekPlan = Array.isArray(mealPlans) ? mealPlans.find((plan: any) => isCurrentWeek(plan.weekStart)) : null;
+  const latestMealPlan = Array.isArray(mealPlans) && mealPlans.length > 0 ? mealPlans[0] : null;
   const preferredPlan = currentWeekPlan || latestMealPlan;
 
   // Auto-select the current week's meal plan (or latest if no current week plan)
   useEffect(() => {
-    if (!selectedMealPlan && mealPlans.length > 0 && !loadingPlans && preferredPlan) {
+    if (!selectedMealPlan && Array.isArray(mealPlans) && mealPlans.length > 0 && !loadingPlans && preferredPlan) {
       setSelectedMealPlan(preferredPlan.id);
       // Store in localStorage for persistence across sessions
       localStorage.setItem('selectedMealPlan', preferredPlan.id.toString());
@@ -612,8 +621,8 @@ export default function MealPlanner() {
   // Load meal plan from localStorage on component mount
   useEffect(() => {
     const storedMealPlanId = localStorage.getItem('selectedMealPlan');
-    if (storedMealPlanId && !selectedMealPlan && mealPlans.length > 0) {
-      const storedPlan = mealPlans.find(plan => plan.id === parseInt(storedMealPlanId));
+    if (storedMealPlanId && !selectedMealPlan && Array.isArray(mealPlans) && mealPlans.length > 0) {
+      const storedPlan = mealPlans.find((plan: any) => plan.id === parseInt(storedMealPlanId));
       if (storedPlan) {
         setSelectedMealPlan(storedPlan.id);
         // Update localStorage to ensure persistence
@@ -622,7 +631,14 @@ export default function MealPlanner() {
     }
   }, [mealPlans, selectedMealPlan]);
 
-  const displayedMealPlan = currentMealPlan || (preferredPlan && mealPlans.find(mp => mp.id === preferredPlan.id));
+  // Enhanced persistence - save selected plan whenever it changes
+  useEffect(() => {
+    if (selectedMealPlan) {
+      localStorage.setItem('selectedMealPlan', selectedMealPlan.toString());
+    }
+  }, [selectedMealPlan]);
+
+  const displayedMealPlan = currentMealPlan || (preferredPlan && Array.isArray(mealPlans) ? mealPlans.find((mp: any) => mp.id === preferredPlan.id) : null);
 
   const getDayMeals = (day: number) => {
     if (!currentMealPlan?.meals) return [];

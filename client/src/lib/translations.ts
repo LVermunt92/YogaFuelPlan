@@ -110,9 +110,14 @@ export const translations = {
     
     // Ingredients to Use Up
     ingredientsToUseUp: "Ingredients to Use Up",
+    leftovers: "Leftovers",
     addIngredient: "Add Ingredient",
     ingredientPlaceholder: "e.g. chicken, rice, vegetables...",
     removeIngredient: "Remove",
+    ingredientAdded: "Ingredient added",
+    ingredientRemoved: "Ingredient removed",
+    failedToAddIngredient: "Failed to add ingredient",
+    failedToRemoveIngredient: "Failed to remove ingredient",
     
     // Language
     language: "Language",
@@ -138,6 +143,24 @@ export const translations = {
     yourDietaryPreferences: "Your Dietary Preferences",
     mealPlansFilteredBased: "Meal plans will be filtered based on these preferences. Update them in your profile.",
     activity: "Activity",
+    
+    // Plan Management
+    planSaved: "Plan saved",
+    mealPlanSavedSuccessfully: "Meal plan saved successfully",
+    failedToSavePlan: "Failed to save plan",
+    planDeleted: "Plan deleted", 
+    mealPlanDeletedSuccessfully: "Meal plan deleted successfully",
+    failedToDeletePlan: "Failed to delete plan",
+    
+    // Activity and Time
+    highActivityWeek: "High activity week",
+    moderateActivityWeek: "Moderate activity week", 
+    mealPreparation: "Meal preparation",
+    under30Minutes: "Under 30 minutes",
+    quickNutritiousRecipes: "Quick & nutritious recipes",
+    cookingSchedule: "Cooking schedule",
+    cookingDaysPerWeek: "Cooking days per week",
+    eatingDaysAtHome: "Eating days at home",
     connected: "Connected",
     notConnected: "Not Connected",
     
@@ -293,6 +316,7 @@ export const translations = {
     amountHeader: "Hoeveelheid",
     
     // Ingredients to Use Up  
+    leftovers: "Restjes",
     ingredientToUseUp: "Ingrediënt om op te maken",
     usingIngredientsToUseUp: "Gebruikt ingrediënten om op te maken",
     ingredientAdded: "Ingrediënt toegevoegd",
