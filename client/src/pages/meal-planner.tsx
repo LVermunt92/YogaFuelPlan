@@ -188,8 +188,8 @@ export default function MealPlanner() {
 
   // Fetch recipe for selected meal
   const { data: recipeData, isLoading: loadingRecipe } = useQuery<RecipeResponse>({
-    queryKey: ['/api/recipes', selectedMealId, 'recipe', language],
-    queryFn: () => fetch(`/api/recipes/${selectedMealId}?language=${language}`).then(res => res.json()),
+    queryKey: ['/api/meals', selectedMealId, 'recipe', language],
+    queryFn: () => fetch(`/api/meals/${selectedMealId}/recipe?language=${language}`).then(res => res.json()),
     enabled: !!selectedMealId,
   });
 
