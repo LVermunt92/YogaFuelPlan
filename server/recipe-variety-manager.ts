@@ -149,7 +149,7 @@ export async function preGenerateCommonRecipes(): Promise<void> {
   console.log('✅ Recipe pre-generation completed');
 }
 
-// Enhanced meal selection with better variety
+// Enhanced meal selection with better variety and smart similarity filtering
 export function selectMealsWithBetterVariety(
   availableMeals: MealOption[],
   count: number,
@@ -158,21 +158,55 @@ export function selectMealsWithBetterVariety(
   if (availableMeals.length === 0) return [];
   
   // Filter out previously used meals if we have enough variety
-  let candidateMeals = availableMeals;
-  if (availableMeals.length > count * 2) {
-    candidateMeals = availableMeals.filter(meal => 
-      !previousMeals.includes(meal.name)
-    );
-  }
+  let candidateMeals = availableMeals.filter(meal => 
+    !previousMeals.includes(meal.name)
+  );
 
-  // If we filtered too aggressively, use all meals
-  if (candidateMeals.length < count) {
+  // Smart similarity filtering: avoid similar recipe names (like multiple "Marry Me" recipes)
+  const selectedNames: string[] = [];
+  const diverseCandidates = candidateMeals.filter(meal => {
+    const mealNameLower = meal.name.toLowerCase();
+    
+    // Check if this meal is too similar to already selected ones
+    const hasSimilarName = selectedNames.some(selectedName => {
+      const selectedLower = selectedName.toLowerCase();
+      
+      // Check for common pattern words that indicate similar recipes
+      const patternWords = ['marry me', 'viral cottage', 'viral protein', 'viral cloud'];
+      for (const pattern of patternWords) {
+        if (mealNameLower.includes(pattern) && selectedLower.includes(pattern)) {
+          return true; // Skip this meal as it's too similar
+        }
+      }
+      
+      // Check for exact cuisine/style matches
+      const cuisineWords = ['chickpea curry', 'mushroom pasta', 'cottage cheese', 'protein ice cream'];
+      for (const cuisine of cuisineWords) {
+        if (mealNameLower.includes(cuisine) && selectedLower.includes(cuisine)) {
+          return true; // Skip similar cuisine styles
+        }
+      }
+      
+      return false;
+    });
+    
+    if (!hasSimilarName) {
+      selectedNames.push(meal.name);
+      return true;
+    }
+    return false;
+  });
+
+  // Use diverse candidates if we have enough, otherwise fall back to regular filtering
+  if (diverseCandidates.length >= count) {
+    candidateMeals = diverseCandidates;
+  } else if (candidateMeals.length < count) {
+    // If we filtered too aggressively, use all meals
     candidateMeals = availableMeals;
   }
 
-  // Shuffle for variety
+  // Shuffle for variety and return requested count
   const shuffled = [...candidateMeals].sort(() => Math.random() - 0.5);
-  
   return shuffled.slice(0, count);
 }
 

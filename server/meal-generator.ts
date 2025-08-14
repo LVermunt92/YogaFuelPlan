@@ -128,15 +128,56 @@ function incorporateLeftoverIngredients(meal: MealOption, ingredientsToUseUp: st
 }
 
 /**
- * Select an unused meal from available options, ensuring intelligent variety
+ * Check if two meal names are too similar (e.g., both "Marry Me" recipes)
  */
-function selectUnusedMeal(availableMeals: MealOption[], usedMeals: Set<string>): MealOption {
+function areMealsSimilar(meal1: string, meal2: string): boolean {
+  const name1 = meal1.toLowerCase();
+  const name2 = meal2.toLowerCase();
+  
+  // Check for "Marry Me" recipes - only allow one per meal plan
+  if (name1.includes('marry me') && name2.includes('marry me')) {
+    return true;
+  }
+  
+  // Check for other viral recipe patterns
+  const viralPatterns = [
+    'viral cottage cheese',
+    'viral protein ice cream',
+    'viral cloud bread'
+  ];
+  
+  for (const pattern of viralPatterns) {
+    if (name1.includes(pattern) && name2.includes(pattern)) {
+      return true;
+    }
+  }
+  
+  return false;
+}
+
+/**
+ * Select an unused meal from available options, ensuring intelligent variety and preventing similar recipes
+ */
+function selectUnusedMeal(
+  availableMeals: MealOption[], 
+  usedMeals: Set<string>, 
+  allSelectedMeals?: Set<string>
+): MealOption {
   if (availableMeals.length === 0) {
     throw new Error('No available meals to select from');
   }
   
   // First try to find a meal that hasn't been used yet
-  const unusedMeals = availableMeals.filter(meal => !usedMeals.has(meal.name));
+  let unusedMeals = availableMeals.filter(meal => !usedMeals.has(meal.name));
+  
+  // If we have a global tracker, also filter out similar recipes across all categories
+  if (allSelectedMeals && allSelectedMeals.size > 0) {
+    unusedMeals = unusedMeals.filter(candidateMeal => {
+      return !Array.from(allSelectedMeals).some(selectedMeal => 
+        areMealsSimilar(candidateMeal.name, selectedMeal)
+      );
+    });
+  }
   
   if (unusedMeals.length > 0) {
     // Use intelligent variety selection instead of pure random
@@ -256,6 +297,9 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   const usedBreakfastMeals: Set<string> = new Set();
   const usedLunchMeals: Set<string> = new Set();
   const usedDinnerMeals: Set<string> = new Set();
+  
+  // Track all selected meal names to prevent similar recipes across all categories
+  const allSelectedMealNames: Set<string> = new Set();
 
   // Track which meals to use as leftovers
   let sundayDinnerMeal: MealOption | null = null;
@@ -342,9 +386,10 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
       
       if (day === 1 && mealCategory === 'dinner') {
         // Day 1: Sunday dinner - FIRST cooking moment (only meal on Sunday)
-        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals);
+        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames);
         sundayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
+        allSelectedMealNames.add(selectedMeal.name);
       } else if (day === 2 && mealCategory === 'lunch') {
         // Day 2: Monday lunch - leftover from Sunday dinner
         if (!sundayDinnerMeal) {
@@ -354,9 +399,10 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         isLeftover = true;
       } else if (day === 2 && mealCategory === 'dinner') {
         // Day 2: Monday dinner - fresh cooking
-        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals);
+        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames);
         mondayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
+        allSelectedMealNames.add(selectedMeal.name);
       } else if (day === 3 && mealCategory === 'lunch') {
         // Day 3: Tuesday lunch - leftover from Monday dinner
         if (!mondayDinnerMeal) {
@@ -366,9 +412,10 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         isLeftover = true;
       } else if (day === 3 && mealCategory === 'dinner') {
         // Day 3: Tuesday dinner - fresh cooking
-        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals);
+        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames);
         tuesdayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
+        allSelectedMealNames.add(selectedMeal.name);
       } else if (day === 4 && mealCategory === 'lunch') {
         // Day 4: Wednesday lunch - leftover from Tuesday dinner
         if (!tuesdayDinnerMeal) {
@@ -378,9 +425,10 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         isLeftover = true;
       } else if (day === 4 && mealCategory === 'dinner') {
         // Day 4: Wednesday dinner - fresh cooking
-        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals);
+        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames);
         wednesdayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
+        allSelectedMealNames.add(selectedMeal.name);
       } else if (day === 5 && mealCategory === 'lunch') {
         // Day 5: Thursday lunch - leftover from Wednesday dinner
         if (!wednesdayDinnerMeal) {
@@ -390,9 +438,10 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         isLeftover = true;
       } else if (day === 5 && mealCategory === 'dinner') {
         // Day 5: Thursday dinner - fresh cooking
-        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals);
+        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames);
         thursdayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
+        allSelectedMealNames.add(selectedMeal.name);
       } else if (day === 6 && mealCategory === 'lunch') {
         // Day 6: Friday lunch - leftover from Thursday dinner
         if (!thursdayDinnerMeal) {
@@ -402,9 +451,10 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         isLeftover = true;
       } else if (day === 6 && mealCategory === 'dinner') {
         // Day 6: Friday dinner - fresh cooking
-        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals);
+        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames);
         let fridayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
+        allSelectedMealNames.add(selectedMeal.name);
       } else if (day === 7 && mealCategory === 'lunch') {
         // Day 7: Saturday lunch - eating out
         // Create eating out meal
@@ -441,8 +491,9 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
           );
           
           if (weekendBreakfasts.length > 0) {
-            selectedMeal = selectUnusedMeal(weekendBreakfasts, usedBreakfastMeals);
+            selectedMeal = selectUnusedMeal(weekendBreakfasts, usedBreakfastMeals, allSelectedMealNames);
             usedBreakfastMeals.add(selectedMeal.name);
+            allSelectedMealNames.add(selectedMeal.name);
             console.log(`Day ${day} (weekend) breakfast: ${selectedMeal.name} (prep: ${selectedMeal.nutrition.prepTime}min)`);
           } else {
             selectedMeal = selectUnusedMeal(availableMeals, usedBreakfastMeals);
