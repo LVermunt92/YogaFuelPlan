@@ -591,10 +591,10 @@ export default function MealPlanner() {
   return (
     <div className="bg-background">
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 lg:px-6 py-4">
+      <main className="responsive-container py-4 sm:py-6 lg:py-8">
         {/* Page Title */}
         <div className="mb-6">
-          <h1 className="text-3xl font-light text-foreground mb-2" style={{ fontFamily: 'Times New Roman, serif', letterSpacing: '0.05em' }}>
+          <h1 className="text-responsive-xl font-light text-foreground mb-2" style={{ fontFamily: 'Times New Roman, serif', letterSpacing: '0.05em' }}>
             {t.mealPlanner}
           </h1>
           <p className="text-muted-foreground">
@@ -612,7 +612,7 @@ export default function MealPlanner() {
             <h2 className="text-2xl font-bold text-foreground mb-4">
               {t.welcomeBack} {formatWeekRange(latestMealPlan.weekStart)}
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 text-sm">
               <div>
                 <div className="text-muted-foreground mb-2">{t.yourProteinTarget}</div>
                 <div className="text-lg font-semibold text-foreground">
@@ -792,7 +792,7 @@ export default function MealPlanner() {
                         <Timer className="h-5 w-5 mr-2" />
                         This Week (Finish Cooking)
                       </h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 gap-4">
                         {weekendGroceryData.currentWeekPlans.map((plan: any, index: number) => (
                           <div 
                             key={plan.id} 
@@ -830,7 +830,7 @@ export default function MealPlanner() {
                         <ShoppingCart className="h-5 w-5 mr-2" />
                         Next Week (Grocery Shopping)
                       </h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 gap-4">
                         {weekendGroceryData.nextWeekPlans.map((plan: any, index: number) => (
                           <div 
                             key={plan.id} 
@@ -902,7 +902,7 @@ export default function MealPlanner() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Generation Panel */}
           <div className="lg:col-span-1">
             <div className="card-clean mb-6">
@@ -974,7 +974,7 @@ export default function MealPlanner() {
                         value={newLeftover}
                         onChange={(e) => setNewLeftover(e.target.value)}
                         placeholder={t.ingredientPlaceholder}
-                        className="input-clean flex-1"
+                        className="input-clean input-mobile flex-1"
                         onKeyPress={(e) => {
                           if (e.key === 'Enter') {
                             addLeftover();
@@ -984,7 +984,7 @@ export default function MealPlanner() {
                       <Button
                         onClick={addLeftover}
                         disabled={!newLeftover.trim() || updateProfileMutation.isPending}
-                        className="btn-outline"
+                        className="btn-outline btn-touch"
                         size="sm"
                       >
                         <Plus className="h-4 w-4" />
@@ -1023,7 +1023,7 @@ export default function MealPlanner() {
                       }
                     }}
                     disabled={generateMutation.isPending || smartGenerateMutation.isPending}
-                    className="btn-minimal w-full"
+                    className="btn-minimal btn-touch w-full"
                   >
                     {(generateMutation.isPending || smartGenerateMutation.isPending) ? (
                       <>
@@ -1171,16 +1171,16 @@ export default function MealPlanner() {
                     </div>
                   </div>
 
-                  <div className="overflow-x-auto">
-                    <table className="w-full">
+                  <div className="table-responsive">
+                    <table className="w-full min-w-[800px]">
                       <thead className="border-b border-border">
                         <tr>
-                          <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.day}</th>
-                          <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.meal}</th>
-                          <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.food}</th>
-                          <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.portion}</th>
-                          <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.protein} (g)</th>
-                          <th className="px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.prep}</th>
+                          <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.day}</th>
+                          <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.meal}</th>
+                          <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.food}</th>
+                          <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.portion}</th>
+                          <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.protein} (g)</th>
+                          <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.prep}</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-border">
@@ -1197,7 +1197,7 @@ export default function MealPlanner() {
                                 
                                 return (
                                   <tr key={meal.id} className="hover:bg-muted/50">
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">
+                                    <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">
                                       {index === 0 ? (
                                         <div>
                                           <div className="font-semibold">{t.day} {day}</div>
@@ -1213,10 +1213,10 @@ export default function MealPlanner() {
                                         </div>
                                       ) : ''}
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground capitalize">
+                                    <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-muted-foreground capitalize">
                                       {meal.mealType}
                                     </td>
-                                    <td className={`px-6 py-4 text-sm text-foreground relative ${
+                                    <td className={`px-3 sm:px-6 py-4 text-sm text-foreground relative ${
                                       isEatingOut 
                                         ? 'bg-gray-50 border-l-4 border-l-gray-400' 
                                         : isLeftover 
@@ -1243,13 +1243,13 @@ export default function MealPlanner() {
                                         </button>
                                       )}
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
+                                    <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
                                       {meal.portion}
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">
+                                    <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-foreground">
                                       {meal.protein}g
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-xs">
+                                    <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-xs">
                                       {isEatingOut ? (
                                         <span className="text-gray-500">N/A</span>
                                       ) : (
@@ -1273,10 +1273,10 @@ export default function MealPlanner() {
                                 );
                               })}
                               <tr className="bg-muted/30">
-                                <td colSpan={5} className="px-6 py-3 text-sm font-medium text-foreground">
+                                <td colSpan={5} className="px-3 sm:px-6 py-3 text-sm font-medium text-foreground">
                                   Day {day} Total
                                 </td>
-                                <td className="px-6 py-3 text-sm font-semibold text-foreground">
+                                <td className="px-3 sm:px-6 py-3 text-sm font-semibold text-foreground">
                                   {dayTotal.toFixed(1)}g
                                 </td>
                               </tr>
@@ -1320,7 +1320,7 @@ export default function MealPlanner() {
         </div>
 
         {/* Status Panel */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="mt-8 sm:mt-12 lg:mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           <div className="card-clean">
             <div className="flex items-center">
               <div className="flex-shrink-0">

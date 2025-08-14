@@ -65,6 +65,50 @@
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Prevent horizontal scrolling on mobile */
+    overflow-x: hidden;
+  }
+
+  /* Responsive container with proper padding */
+  .responsive-container {
+    @apply px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto;
+  }
+
+  /* Mobile-first responsive text sizes */
+  .text-responsive-lg {
+    @apply text-lg sm:text-xl lg:text-2xl;
+  }
+  
+  .text-responsive-xl {
+    @apply text-xl sm:text-2xl lg:text-3xl;
+  }
+
+  /* Touch-friendly buttons for mobile */
+  .btn-touch {
+    @apply min-h-[44px] min-w-[44px] px-4 py-2;
+  }
+
+  /* Mobile-friendly card spacing */
+  .card-clean {
+    @apply bg-card border border-border rounded-lg shadow-sm;
+  }
+
+  /* Responsive tables for mobile */
+  .table-responsive {
+    @apply overflow-x-auto;
+  }
+
+  /* Mobile-optimized form inputs */
+  .input-mobile {
+    @apply min-h-[44px] text-base;
+  }
+
+  /* Safe area insets for iOS devices */
+  @supports (padding: max(0px)) {
+    body {
+      padding-left: max(0px, env(safe-area-inset-left));
+      padding-right: max(0px, env(safe-area-inset-right));
+    }
   }
 
   /* Headers use serif font like madebysem.nl - light weight with generous letter spacing */
