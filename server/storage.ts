@@ -40,6 +40,7 @@ export interface IStorage {
   createOuraData(data: InsertOuraData): Promise<OuraData>;
   getOuraData(userId: number, startDate: string, endDate?: string): Promise<OuraData[]>;
   getLatestOuraData(userId: number): Promise<OuraData | undefined>;
+  getOuraDataByDate(userId: number, date: string): Promise<OuraData | undefined>;
   // Meal History methods
   addToMealHistory(data: InsertMealHistory): Promise<MealHistory>;
   getMealHistory(userId: number, limit?: number): Promise<MealHistory[]>;
@@ -346,6 +347,11 @@ export class MemStorage implements IStorage {
     return undefined;
   }
 
+  async getOuraDataByDate(userId: number, date: string): Promise<OuraData | undefined> {
+    // Note: MemStorage doesn't persist Oura data - use DatabaseStorage for production
+    return undefined;
+  }
+
   // Meal History methods (MemStorage - not implemented)
   async addToMealHistory(data: InsertMealHistory): Promise<MealHistory> {
     throw new Error("Meal history storage requires DatabaseStorage implementation");
@@ -596,6 +602,20 @@ export class DatabaseStorage implements IStorage {
       .limit(1);
     
     return latest || undefined;
+  }
+
+  async getOuraDataByDate(userId: number, date: string): Promise<OuraData | undefined> {
+    const [data] = await db
+      .select()
+      .from(ouraData)
+      .where(
+        and(
+          eq(ouraData.userId, userId),
+          eq(ouraData.date, date)
+        )
+      );
+    
+    return data || undefined;
   }
 
   // Meal History methods

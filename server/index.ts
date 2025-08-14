@@ -45,6 +45,14 @@ app.use((req, res, next) => {
     console.error("Failed to initialize viral recipe scheduler:", error);
   }
 
+  // Initialize Oura Ring auto-sync
+  try {
+    const { ouraAutoSync } = await import("./oura-auto-sync");
+    console.log('🔄 Oura Ring auto-sync service initialized');
+  } catch (error) {
+    console.error("Failed to initialize Oura auto-sync:", error);
+  }
+
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
