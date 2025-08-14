@@ -25,6 +25,7 @@ const ingredientTranslations: Record<string, string> = {
   'egg': 'ei',
   'tofu': 'tofu',
   'tempeh': 'tempeh',
+  'fermented': 'gefermenteerd',
   'lentils': 'linzen',
   'chickpeas': 'kikkererwten',
   'black beans': 'zwarte bonen',
