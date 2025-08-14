@@ -6,7 +6,7 @@ This full-stack meal planning application helps users generate personalized week
 ## User Preferences
 Preferred communication style: Simple, everyday language.
 Breakfast scheduling preference: Easy, quick breakfasts during weekdays (≤10 min prep), elaborate breakfasts like pancakes on weekends (≥15 min prep).
-Translation continuity plan: Continue AI-enhanced Dutch translation process when OpenAI subscription renews next month. System caches translations to minimize future API costs. Latest additions: "hemp" → "hennep", "beans" → "bonen", "speedy" → "snelle".
+Translation continuity plan: Continue AI-enhanced Dutch translation process when OpenAI subscription renews next month. System caches translations to minimize future API costs. Latest additions: "hemp" → "hennep", "beans" → "bonen", "speedy" → "snelle", "protein-packed" → "eiwitrijke".
 Enhanced unit conversion system: Intelligently converts liquids (milk, oils) to milliliters and dry ingredients to grams.
 
 ## System Architecture

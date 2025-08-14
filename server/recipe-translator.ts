@@ -166,6 +166,8 @@ const ingredientTranslations: Record<string, string> = {
   'frozen': 'bevroren',
   'can': 'blik',
   'protein': 'proteïne',
+  'proteine-packed': 'eiwitrijke',
+  'protein-packed': 'eiwitrijke',
   'organic': 'biologisch',
   'raw': 'rauw',
   'cooked': 'gekookt',
