@@ -1,4 +1,5 @@
 import { getCurrentSeasonalGuidance, adaptRecipeForSeason, getCurrentAyurvedicSeason } from './ayurveda-seasonal';
+import { selectProteinOptimizedMeals } from './smart-protein-selection';
 
 export interface NutritionInfo {
   protein: number;
@@ -3512,7 +3513,10 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
 
 export function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' | 'lunch' | 'dinner', dietaryTags: string[] = []): MealOption[] {
   const categoryMeals = getEnhancedMealsByCategory(category);
-  let filteredMeals = filterEnhancedMealsByDietaryTags(categoryMeals, dietaryTags);
+  
+  // Remove "high-protein" from dietary filtering and handle it with smart protein selection instead
+  const filteringTags = dietaryTags.filter(tag => tag !== 'high-protein');
+  let filteredMeals = filterEnhancedMealsByDietaryTags(categoryMeals, filteringTags);
   
   
   // Apply seasonal adaptations for ayurvedic meals
@@ -3580,6 +3584,12 @@ export function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' | 'lunc
     // If even critical fallback fails, log error and return empty array to prevent inappropriate meals
     console.error(`CRITICAL: No ${category} meals found that respect dietary restrictions. This should not happen.`);
     return [];
+  }
+  
+  // Apply smart protein prioritization if "high-protein" was in original dietary tags
+  if (dietaryTags.includes('high-protein')) {
+    console.log(`🥩 Applying smart protein prioritization to ${filteredMeals.length} ${category} meals`);
+    filteredMeals = selectProteinOptimizedMeals(filteredMeals, filteredMeals.length, true);
   }
   
   return filteredMeals;
