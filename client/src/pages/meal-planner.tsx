@@ -848,15 +848,15 @@ export default function MealPlanner() {
         </div>
 
         {/* Multi-Plan Management */}
-        {mealPlans && mealPlans.length > 1 && (
+        {mealPlans && mealPlans.length > 0 && (
           <div className="card-clean mb-6">
             <div className="p-4">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center">
                   <History className="h-6 w-6 text-foreground mr-3" />
                   <div>
-                    <h2 className="text-xl font-semibold text-foreground">{t.savedMealPlans || 'Saved Meal Plans'}</h2>
-                    <p className="text-sm text-muted-foreground">{t.manageMultiplePlans || 'Manage current week and next week plans'}</p>
+                    <h2 className="text-xl font-semibold text-foreground">{t.savedMealPlans || 'Meal Plans'}</h2>
+                    <p className="text-sm text-muted-foreground">{t.manageMultiplePlans || 'Select and manage your meal plans'}</p>
                   </div>
                 </div>
                 <Badge variant="outline" className="text-xs">
