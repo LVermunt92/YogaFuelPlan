@@ -2579,6 +2579,10 @@ function cleanIngredientName(ingredient: string): string {
   if (cleaned === 'cinnamon to taste' || cleaned === 'stevia to taste') {
     cleaned = cleaned.replace(' to taste', '');
   }
+  // Consolidate all salt variations into "salt"
+  if (cleaned.includes('salt') || cleaned === 'sea salt' || cleaned === 'kosher salt' || cleaned === 'table salt' || cleaned === 'himalayan salt' || cleaned === 'rock salt') {
+    cleaned = 'salt';
+  }
   
   // Handle compound ingredients
   if (cleaned.includes(' and ')) {
@@ -2599,6 +2603,11 @@ function cleanIngredientName(ingredient: string): string {
     'avocado': 'avocado',
     'olive oil': 'olive oil',
     'salt': 'salt',
+    'sea salt': 'salt',
+    'kosher salt': 'salt',
+    'table salt': 'salt',
+    'himalayan salt': 'salt',
+    'rock salt': 'salt',
     'pepper': 'pepper',
     'quinoa': 'quinoa',
     'wild mushrooms': 'mushrooms',
@@ -2616,7 +2625,6 @@ function cleanIngredientName(ingredient: string): string {
     'banana': 'banana',
     'lemon': 'lemon',
     'lemons': 'lemon',
-    'banana': 'banana',
     'bananas': 'banana',
     'sliced banana': 'banana',
     'd banana': 'banana',
