@@ -19,7 +19,10 @@ import {
   type InsertMealHistory,
   type MealFavorite,
   type InsertMealFavorite,
-  type MealFavoriteUpdate
+  type MealFavoriteUpdate,
+  passwordResetCodes,
+  type PasswordResetCode,
+  type InsertPasswordResetCode,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, gte, lte, desc } from "drizzle-orm";
@@ -31,6 +34,9 @@ export interface IStorage {
   createUser(user: InsertUser): Promise<User>;
   authenticateUser(username: string, password: string): Promise<User | null>;
   updateUserPassword(userId: number, newPassword: string): Promise<void>;
+  createPasswordResetCode(userId: number, resetCode: string): Promise<void>;
+  verifyPasswordResetCode(userId: number, resetCode: string): Promise<boolean>;
+  deletePasswordResetCode(userId: number): Promise<void>;
   updateUserProfile(userId: number, profileData: UpdateUserProfile): Promise<User>;
   createMealPlan(mealPlan: InsertMealPlan): Promise<MealPlan>;
   getMealPlans(userId?: number): Promise<MealPlan[]>;
@@ -57,9 +63,11 @@ export class MemStorage implements IStorage {
   private users: Map<number, User>;
   private mealPlans: Map<number, MealPlan>;
   private meals: Map<number, Meal>;
+  private passwordResetCodes: PasswordResetCode[] = [];
   private currentUserId: number;
   private currentMealPlanId: number;
   private currentMealId: number;
+  private currentResetCodeId: number;
 
   constructor() {
     this.users = new Map();
@@ -68,6 +76,7 @@ export class MemStorage implements IStorage {
     this.currentUserId = 1;
     this.currentMealPlanId = 1;
     this.currentMealId = 1;
+    this.currentResetCodeId = 1;
 
     // Create default user with enhanced profile
     const defaultUser: User = {
@@ -178,6 +187,46 @@ export class MemStorage implements IStorage {
       password: hashedPassword,
       updatedAt: new Date(),
     });
+  }
+
+  async createPasswordResetCode(userId: number, resetCode: string): Promise<void> {
+    // Delete any existing reset codes for this user
+    this.passwordResetCodes = this.passwordResetCodes.filter(code => code.userId !== userId);
+    
+    // Create new reset code (expires in 15 minutes)
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+    const id = this.currentResetCodeId++;
+    
+    this.passwordResetCodes.push({
+      id,
+      userId,
+      resetCode,
+      expiresAt,
+      createdAt: new Date(),
+    });
+  }
+
+  async verifyPasswordResetCode(userId: number, resetCode: string): Promise<boolean> {
+    const codeRecord = this.passwordResetCodes.find(
+      code => code.userId === userId && code.resetCode === resetCode
+    );
+    
+    if (!codeRecord) {
+      return false;
+    }
+    
+    // Check if code has expired
+    if (new Date() > codeRecord.expiresAt) {
+      // Remove expired code
+      this.passwordResetCodes = this.passwordResetCodes.filter(code => code.id !== codeRecord.id);
+      return false;
+    }
+    
+    return true;
+  }
+
+  async deletePasswordResetCode(userId: number): Promise<void> {
+    this.passwordResetCodes = this.passwordResetCodes.filter(code => code.userId !== userId);
   }
 
   async createMealPlan(insertMealPlan: InsertMealPlan): Promise<MealPlan> {
@@ -456,6 +505,49 @@ export class DatabaseStorage implements IStorage {
         updatedAt: new Date(),
       })
       .where(eq(users.id, userId));
+  }
+
+  async createPasswordResetCode(userId: number, resetCode: string): Promise<void> {
+    // Delete any existing reset codes for this user
+    await db.delete(passwordResetCodes).where(eq(passwordResetCodes.userId, userId));
+    
+    // Create new reset code (expires in 15 minutes)
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+    
+    await db.insert(passwordResetCodes).values({
+      userId,
+      resetCode,
+      expiresAt,
+    });
+  }
+
+  async verifyPasswordResetCode(userId: number, resetCode: string): Promise<boolean> {
+    const [codeRecord] = await db
+      .select()
+      .from(passwordResetCodes)
+      .where(
+        and(
+          eq(passwordResetCodes.userId, userId),
+          eq(passwordResetCodes.resetCode, resetCode)
+        )
+      );
+    
+    if (!codeRecord) {
+      return false;
+    }
+    
+    // Check if code has expired
+    if (new Date() > codeRecord.expiresAt) {
+      // Remove expired code
+      await db.delete(passwordResetCodes).where(eq(passwordResetCodes.id, codeRecord.id));
+      return false;
+    }
+    
+    return true;
+  }
+
+  async deletePasswordResetCode(userId: number): Promise<void> {
+    await db.delete(passwordResetCodes).where(eq(passwordResetCodes.userId, userId));
   }
 
   async updateUserProfile(userId: number, profileData: UpdateUserProfile): Promise<User> {

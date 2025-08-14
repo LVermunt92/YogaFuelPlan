@@ -63,26 +63,74 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/auth/reset-password", async (req, res) => {
+  app.post("/api/auth/request-reset", async (req, res) => {
     try {
-      const { username, newPassword } = z.object({
+      const { username } = z.object({
         username: z.string(),
+      }).parse(req.body);
+      
+      const user = await storage.getUserByUsername(username);
+      
+      if (!user) {
+        // Don't reveal if username exists for security
+        return res.json({
+          message: "If the username exists and has an email, a reset code will be sent.",
+        });
+      }
+
+      if (!user.email) {
+        return res.status(400).json({ 
+          message: "This account doesn't have an email address. Please contact support or create a new account." 
+        });
+      }
+
+      // Generate 6-digit reset code
+      const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+      await storage.createPasswordResetCode(user.id, resetCode);
+      
+      // In a real app, you'd send this via email
+      // For development, we'll log it to console
+      console.log(`🔐 Password reset code for ${username}: ${resetCode}`);
+      
+      res.json({
+        message: "Reset code has been sent to your email address.",
+        // In development, include the code in response
+        ...(process.env.NODE_ENV === 'development' && { resetCode }),
+      });
+    } catch (error) {
+      console.error("Password reset request error:", error);
+      res.status(400).json({ message: "Password reset request failed" });
+    }
+  });
+
+  app.post("/api/auth/verify-reset", async (req, res) => {
+    try {
+      const { username, resetCode, newPassword } = z.object({
+        username: z.string(),
+        resetCode: z.string().length(6, "Reset code must be 6 digits"),
         newPassword: z.string().min(6, "Password must be at least 6 characters"),
       }).parse(req.body);
       
       const user = await storage.getUserByUsername(username);
       
       if (!user) {
-        return res.status(404).json({ message: "Username not found" });
+        return res.status(404).json({ message: "Invalid reset code or username" });
+      }
+
+      const isValidCode = await storage.verifyPasswordResetCode(user.id, resetCode);
+      
+      if (!isValidCode) {
+        return res.status(400).json({ message: "Invalid or expired reset code" });
       }
 
       await storage.updateUserPassword(user.id, newPassword);
+      await storage.deletePasswordResetCode(user.id);
       
       res.json({
         message: "Password reset successful. You can now log in with your new password.",
       });
     } catch (error) {
-      console.error("Password reset error:", error);
+      console.error("Password reset verification error:", error);
       res.status(400).json({ message: "Password reset failed" });
     }
   });

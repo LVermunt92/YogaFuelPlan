@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean, timestamp, real, date, unique } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, real, date, unique, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -254,6 +254,22 @@ export type InsertMealHistory = z.infer<typeof insertMealHistorySchema>;
 export type MealFavorite = typeof mealFavorites.$inferSelect;
 export type InsertMealFavorite = z.infer<typeof insertMealFavoriteSchema>;
 export type MealFavoriteUpdate = z.infer<typeof mealFavoriteUpdateSchema>;
+
+export const passwordResetCodes = pgTable("password_reset_codes", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull().references(() => users.id),
+  resetCode: varchar("reset_code", { length: 6 }).notNull(),
+  expiresAt: timestamp("expires_at").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertPasswordResetCodeSchema = createInsertSchema(passwordResetCodes).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type PasswordResetCode = typeof passwordResetCodes.$inferSelect;
+export type InsertPasswordResetCode = z.infer<typeof insertPasswordResetCodeSchema>;
 
 export interface MealPlanWithMeals extends MealPlan {
   meals: Meal[];
