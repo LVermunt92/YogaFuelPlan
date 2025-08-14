@@ -153,6 +153,7 @@ const ingredientTranslations: Record<string, string> = {
   'chia seeds': 'chiazaad',
   'flax seeds': 'lijnzaad',
   'flaxseed': 'lijnzaad',
+  'hemp': 'hennep',
   'hemp seeds': 'hennepzaad',
   'sunflower seeds': 'zonnebloempitten',
   'pumpkin seeds': 'pompoenpitten',
