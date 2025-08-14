@@ -9,6 +9,7 @@ Breakfast scheduling preference: Easy, quick breakfasts during weekdays (≤10 m
 Translation continuity plan: Continue AI-enhanced Dutch translation process when OpenAI subscription renews next month. System caches translations to minimize future API costs. Latest additions: "hemp" → "hennep", "beans" → "bonen", "speedy" → "snelle", "protein-packed" → "eiwitrijke", "with" → "met", "green" → "groene", "baking powder" → "bakpoeder", "cinnamon" → "kaneel", "soy sauce" → "sojasaus". Fixed compound ingredient translations (amandelmelk, kokosmelk). Dutch-friendly terms preserved: "overnight oats", "smoothie", "quinoa", "tofu", "tempeh", "pasta", "pizza", "buddha bowl", "wrap" - these remain untranslated as they're commonly used in Dutch.
 Enhanced unit conversion system: Intelligently converts liquids (milk, oils) to milliliters and dry ingredients to grams.
 Smart seasonal fruit specification: Automatically replaces vague "seasonal fruit" entries with specific Netherlands-appropriate fruits based on current season (spring: strawberries, summer: mixed berries, autumn: apples, winter: citrus fruit) for clearer shopping lists.
+Enhanced recipe indulgence: AI-generated recipes now include healthy but satisfying sauces or toppings made from whole foods (roasted pepper sauces, tahini dressings, herb oils, nut creams, vegetable salsas) to make meals feel more indulgent while maintaining nutritional value.
 
 ## System Architecture
 

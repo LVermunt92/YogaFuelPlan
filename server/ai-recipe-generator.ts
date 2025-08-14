@@ -34,6 +34,7 @@ RECIPE REQUIREMENTS:
 - Provide detailed cooking instructions
 - Include practical tips
 - Calculate realistic European pricing
+- IMPORTANT: Include a sauce or topping that makes the dish feel more indulgent or satisfying while remaining healthy and made from whole foods (examples: roasted pepper sauce with tomato paste and nuts, tahini-based dressings, herb-infused oils, nut-based creams, or vegetable-based salsas)
 
 RESPONSE FORMAT:
 Return a JSON object matching this exact structure:
