@@ -270,12 +270,18 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
     
     // Determine which meals to generate for this day
     let mealsToGenerate: ('breakfast' | 'lunch' | 'dinner')[] = [];
-    if (day === 7) {
-      // Day 7: Saturday - include eating out option for weekend
+    if (day === 1) {
+      // Day 1: Sunday evening - only dinner (start of meal plan)
+      mealsToGenerate = ['dinner'];
+      console.log(`🌅 Day ${day} (Sunday evening): ONLY dinner`);
+    } else if (day === 7) {
+      // Day 7: Saturday - eating out options
       mealsToGenerate = ['breakfast', 'lunch', 'dinner'];
+      console.log(`🌅 Day ${day} (Saturday): all meals`);
     } else {
-      // Days 1-6: Sunday through Friday - full meal planning
+      // Days 2-6: Monday through Friday - full meal planning
       mealsToGenerate = ['breakfast', 'lunch', 'dinner'];
+      console.log(`🌅 Day ${day}: all meals`);
     }
 
     mealsToGenerate.forEach(mealCategory => {
@@ -334,7 +340,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
       let selectedMeal: MealOption;
       
       if (day === 1 && mealCategory === 'dinner') {
-        // Day 1: Sunday dinner - FIRST cooking moment
+        // Day 1: Sunday dinner - FIRST cooking moment (only meal on Sunday)
         selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals);
         sundayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
@@ -646,6 +652,11 @@ async function generateMealPrepPlan(
   // Days with meals are the remaining days
   daysWithMeals.push(...allDays.filter(day => !daysToSkip.includes(day)));
   
+  // ALWAYS include Day 1 for Sunday dinner (the first cooking moment)
+  if (!daysWithMeals.includes(1)) {
+    daysWithMeals.unshift(1); // Add Day 1 at the beginning
+  }
+  
   console.log(`Meal prep plan: ${cookingDaysPerWeek} cooking days, ${eatingDaysAtHome} eating days = ${totalMealsNeeded} meals`);
   console.log(`Days with meals: ${daysWithMeals.join(', ')}, Days skipped: ${daysToSkip.join(', ')}`);
   
@@ -710,7 +721,8 @@ async function generateMealPrepPlan(
   console.log(`🥞 Weekend breakfasts (≥15min): ${weekendBreakfasts.map(b => `${b.name} (${b.nutrition.prepTime}min)`).join(' | ')}`);
   
   // Assign breakfasts to each day with variety tracking
-  for (let day = 1; day <= 7; day++) {
+  // Start from Day 2 because Day 1 = Sunday evening (dinner only)
+  for (let day = 2; day <= 7; day++) {
     const isWeekend = day === 6 || day === 7; // Saturday or Sunday
     
     if (isWeekend && weekendBreakfasts.length > 0) {
@@ -749,37 +761,39 @@ async function generateMealPrepPlan(
   console.log(`✓ Breakfast pool: ${breakfastPool.map(b => b.name).join(' | ')}`);
   
   for (let day = 1; day <= 7; day++) {
-    // BREAKFAST: Always include for every day with smart weekday/weekend scheduling
-    const selectedBreakfast = breakfastPool[day - 1];
-    const isWeekend = day === 6 || day === 7; // Saturday or Sunday
-    
-    console.log(`Day ${day} (${isWeekend ? 'weekend' : 'weekday'}) breakfast: ${selectedBreakfast.name} (prep: ${selectedBreakfast.nutrition.prepTime}min)`);
-    
-    if (selectedBreakfast) {
-      const householdSize = user?.householdSize || 1;
-      let adjustedPortion = adjustMealPortion(selectedBreakfast.portion, caloricAdjustment);
-      let adjustedProtein = Math.round(selectedBreakfast.nutrition.protein * caloricAdjustment);
+    // BREAKFAST: Skip Day 1 (Sunday evening only has dinner), start from Day 2
+    if (day !== 1) {
+      const selectedBreakfast = breakfastPool[day - 2]; // Adjust index since breakfastPool starts from day 2
+      const isWeekend = day === 6 || day === 7; // Saturday or Sunday
       
-      // Apply household size multiplier
-      if (householdSize > 1) {
-        adjustedPortion = adjustMealPortion(selectedBreakfast.portion, caloricAdjustment * householdSize);
-        adjustedProtein = Math.round(selectedBreakfast.nutrition.protein * caloricAdjustment * householdSize);
+      console.log(`Day ${day} (${isWeekend ? 'weekend' : 'weekday'}) breakfast: ${selectedBreakfast.name} (prep: ${selectedBreakfast.nutrition.prepTime}min)`);
+      
+      if (selectedBreakfast) {
+        const householdSize = user?.householdSize || 1;
+        let adjustedPortion = adjustMealPortion(selectedBreakfast.portion, caloricAdjustment);
+        let adjustedProtein = Math.round(selectedBreakfast.nutrition.protein * caloricAdjustment);
+        
+        // Apply household size multiplier
+        if (householdSize > 1) {
+          adjustedPortion = adjustMealPortion(selectedBreakfast.portion, caloricAdjustment * householdSize);
+          adjustedProtein = Math.round(selectedBreakfast.nutrition.protein * caloricAdjustment * householdSize);
+        }
+        
+        // Create descriptive meal name
+        const mealDescription = selectedBreakfast.name;
+        
+        meals.push({
+          mealPlanId: 0,
+          day,
+          mealType: 'breakfast',
+          foodDescription: mealDescription,
+          portion: adjustedPortion,
+          protein: adjustedProtein,
+          prepTime: selectedBreakfast.nutrition.prepTime,
+        });
+        
+        totalWeeklyProtein += adjustedProtein;
       }
-      
-      // Create descriptive meal name
-      const mealDescription = selectedBreakfast.name;
-      
-      meals.push({
-        mealPlanId: 0,
-        day,
-        mealType: 'breakfast',
-        foodDescription: mealDescription,
-        portion: adjustedPortion,
-        protein: adjustedProtein,
-        prepTime: selectedBreakfast.nutrition.prepTime,
-      });
-      
-      totalWeeklyProtein += adjustedProtein;
     }
     
     // LUNCH & DINNER: Use Sunday night cooking pattern
@@ -810,8 +824,9 @@ async function generateMealPrepPlan(
         // Day 6: Friday lunch - leftover from Thursday dinner
         lunchMeal = thursdayDinnerMeal;
         isLunchLeftover = true;
-      } else {
-        // Fresh lunch (Day 1, 7, or when no previous dinner) - use unique meals
+      } else if (day !== 1) {
+        // Fresh lunch (Day 7, or when no previous dinner) - use unique meals
+        // Skip Day 1 (Sunday evening has no lunch)
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayLunchOptions : lunchOptions;
