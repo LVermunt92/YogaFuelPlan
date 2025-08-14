@@ -375,6 +375,33 @@ export default function MealPlanner() {
     },
   });
 
+  // Delete meal plan mutation
+  const deleteMutation = useMutation({
+    mutationFn: async (mealPlanId: number) => {
+      const response = await apiRequest('DELETE', `/api/meal-plans/${mealPlanId}`);
+      return response.json();
+    },
+    onSuccess: (data, deletedPlanId) => {
+      queryClient.invalidateQueries({ queryKey: ['/api/meal-plans'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/meal-plans', authUser?.id] });
+      // If the deleted plan was selected, clear the selection
+      if (selectedMealPlan === deletedPlanId) {
+        setSelectedMealPlan(null);
+      }
+      toast({
+        title: t.mealPlanDeleted || "Meal Plan Deleted",
+        description: t.mealPlanDeletedSuccessfully || "The meal plan has been deleted successfully.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: t.deleteFailed || "Delete Failed",
+        description: error.message || t.failedToDeleteMealPlan || "Failed to delete the meal plan. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
   // Save meal plan mutation
   const saveMealPlanMutation = useMutation({
     mutationFn: async ({ mealPlanId, label }: { mealPlanId: number; label: string }) => {
@@ -402,28 +429,7 @@ export default function MealPlanner() {
     },
   });
 
-  // Delete meal plan mutation
-  const deleteMealPlanMutation = useMutation({
-    mutationFn: async (mealPlanId: number) => {
-      const response = await apiRequest('DELETE', `/api/meal-plans/${mealPlanId}?userId=${authUser?.id}`);
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/meal-plans'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/meal-plans', authUser?.id] });
-      toast({
-        title: t.planDeleted || "Plan Deleted",
-        description: t.mealPlanDeletedSuccessfully || "Meal plan deleted successfully",
-      });
-    },
-    onError: () => {
-      toast({
-        title: t.error || "Error",
-        description: t.failedToDeletePlan || "Failed to delete meal plan",
-        variant: "destructive",
-      });
-    },
-  });
+
 
   // Mutations for meal plan management  
   const createBackupPlanMutation = useMutation({
@@ -868,15 +874,17 @@ export default function MealPlanner() {
                 {mealPlans.map((plan, index) => (
                   <div 
                     key={plan.id} 
-                    className={`p-4 border rounded-lg cursor-pointer transition-colors ${
+                    className={`p-4 border rounded-lg transition-colors ${
                       selectedMealPlan === plan.id 
                         ? 'border-primary bg-primary/5' 
                         : 'border-border hover:border-primary/50'
                     }`}
-                    onClick={() => setSelectedMealPlan(plan.id)}
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-medium text-foreground">
+                      <h4 
+                        className="font-medium text-foreground cursor-pointer hover:text-primary"
+                        onClick={() => setSelectedMealPlan(plan.id)}
+                      >
                         {plan.planName || `Meal Plan ${index + 1}`}
                       </h4>
                       <div className="flex items-center gap-2">
@@ -890,21 +898,24 @@ export default function MealPlanner() {
                             {t.current || 'Current'}
                           </Button>
                         )}
-                        {plan.id !== selectedMealPlan && (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              if (confirm(t.deletePlanConfirm || 'Are you sure you want to delete this meal plan?')) {
-                                deleteMealPlanMutation.mutate(plan.id);
-                              }
-                            }}
-                            className="h-6 w-6 p-0 hover:bg-destructive/10 hover:text-destructive"
-                          >
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (confirm(t.deletePlanConfirm || 'Are you sure you want to delete this meal plan?')) {
+                              deleteMutation.mutate(plan.id);
+                            }
+                          }}
+                          disabled={deleteMutation.isPending}
+                          className="h-6 w-6 p-0 hover:bg-destructive/10 hover:text-destructive"
+                        >
+                          {deleteMutation.isPending ? (
+                            <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-destructive" />
+                          ) : (
                             <X className="h-3 w-3" />
-                          </Button>
-                        )}
+                          )}
+                        </Button>
                       </div>
                     </div>
                     <p className="text-sm text-muted-foreground mb-2">
