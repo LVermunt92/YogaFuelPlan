@@ -151,6 +151,9 @@ export const translations = {
     planDeleted: "Plan deleted", 
     mealPlanDeletedSuccessfully: "Meal plan deleted successfully",
     failedToDeletePlan: "Failed to delete plan",
+    mealPlanDeleted: "Meal Plan Deleted",
+    deleteFailed: "Delete Failed",
+    failedToDeleteMealPlan: "Failed to delete meal plan",
     
     // Activity and Time
     highActivityWeek: "High activity week",
@@ -237,6 +240,14 @@ export const translations = {
     generateUpcomingWeek: "Generate meal plan for upcoming week",
     generateThisWeek: "Generate This Week",
     generateNextWeek: "Generate Next Week",
+    
+    // Activity Tracking
+    yourActivityLevel: "Your activity level is",
+    steps: "steps",
+    currentlyInPhase: "Currently in",
+    phase: "phase",
+    latestActivityInsight: "Latest activity insight from",
+    activityScore: "Activity Score",
     
     // Colors  
     green: "Green",
@@ -533,6 +544,11 @@ export const translations = {
     generateUpcomingWeek: "Maaltijdplan genereren voor volgende week",
     generateThisWeek: "Genereer Deze Week",
     generateNextWeek: "Genereer Volgende Week",
+    
+    // Plan Management Dutch
+    mealPlanDeleted: "Maaltijdplan Verwijderd",
+    deleteFailed: "Verwijderen Mislukt",
+    failedToDeleteMealPlan: "Kon maaltijdplan niet verwijderen",
     
     // Colors
     green: "Groene",

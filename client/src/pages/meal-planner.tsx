@@ -15,31 +15,13 @@ import { Separator } from "@/components/ui/separator";
 import { useTranslations, translateDietaryTags, translateDietaryTag } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Textarea } from "@/components/ui/textarea";
+import type { User, MealPlan as MealPlanType, Meal as MealType } from "@shared/schema";
 
 
 
 
-interface MealPlan {
-  id: number;
-  weekStart: string;
-  activityLevel: string;
-  totalProtein: number;
-  notionSynced: boolean;
-  createdAt: string;
-}
-
-interface Meal {
-  id: number;
-  day: number;
-  mealType: string;
-  foodDescription: string;
-  portion: string;
-  protein: number;
-  prepTime: number;
-}
-
-interface MealPlanWithMeals extends MealPlan {
-  meals: Meal[];
+interface MealPlanWithMeals extends MealPlanType {
+  meals: MealType[];
 }
 
 interface ShoppingListItem {
@@ -133,7 +115,7 @@ export default function MealPlanner() {
   const { user: authUser } = useAuth();
   
   // Fetch user profile for dietary preferences
-  const { data: userProfile, isLoading: profileLoading } = useQuery({
+  const { data: userProfile, isLoading: profileLoading } = useQuery<User>({
     queryKey: ['/api/users', authUser?.id, 'profile'],
     enabled: !!authUser?.id,
     staleTime: 0, // Always fetch fresh data
@@ -150,7 +132,7 @@ export default function MealPlanner() {
   const [savePlanLabel, setSavePlanLabel] = useState("");
 
   // Fetch meal plans for current user
-  const { data: mealPlans = [], isLoading: loadingPlans } = useQuery<MealPlan[]>({
+  const { data: mealPlans = [], isLoading: loadingPlans } = useQuery<MealPlanType[]>({
     queryKey: ['/api/meal-plans', authUser?.id],
     queryFn: async () => {
       const response = await apiRequest('GET', `/api/meal-plans?userId=${authUser?.id}`);
@@ -302,7 +284,7 @@ export default function MealPlanner() {
         return;
       }
       // Delete existing plan first
-      await apiRequest('DELETE', `/api/meal-plans/${existingPlan.id}?userId=${authUser.id}`);
+      await apiRequest('DELETE', `/api/meal-plans/${existingPlan.id}?userId=${authUser?.id}`);
     }
     
     // Generate new plan

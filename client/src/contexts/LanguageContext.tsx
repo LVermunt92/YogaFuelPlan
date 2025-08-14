@@ -38,7 +38,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   // Set language from user profile or localStorage
   useEffect(() => {
-    if (userProfile?.language) {
+    if (userProfile && 'language' in userProfile && userProfile.language) {
       setLanguage(userProfile.language as Language);
       localStorage.setItem('preferred_language', userProfile.language);
     } else {
