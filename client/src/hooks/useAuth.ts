@@ -29,6 +29,8 @@ export function useAuth() {
     setUser(userData);
     localStorage.setItem('userId', userData.id.toString());
     localStorage.setItem('username', userData.username);
+    // Force a re-render by updating isLoading
+    setIsLoading(false);
   };
 
   const logout = () => {

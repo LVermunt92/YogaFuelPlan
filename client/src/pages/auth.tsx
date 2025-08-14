@@ -45,10 +45,8 @@ export default function Auth() {
         title: "Welcome back!",
         description: `Logged in as ${data.user.username}`,
       });
-      // Navigate to homepage after successful login
-      setTimeout(() => {
-        navigate('/');
-      }, 500);
+      // Navigate to homepage immediately after successful login
+      navigate('/');
     },
     onError: (error) => {
       toast({
@@ -70,10 +68,8 @@ export default function Auth() {
         title: "Account Created!",
         description: `Welcome to the meal planner, ${data.user.username}!`,
       });
-      // Navigate to homepage after successful registration
-      setTimeout(() => {
-        navigate('/');
-      }, 500);
+      // Navigate to homepage immediately after successful registration
+      navigate('/');
     },
     onError: (error) => {
       toast({
