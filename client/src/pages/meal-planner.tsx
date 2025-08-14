@@ -144,6 +144,7 @@ export default function MealPlanner() {
   // Additional state for multi-plan management
   const [showPlanManagement, setShowPlanManagement] = useState(false);
   const [selectedBackupPlan, setSelectedBackupPlan] = useState<number | null>(null);
+  const [savePlanLabel, setSavePlanLabel] = useState("");
 
   // Fetch meal plans for current user
   const { data: mealPlans = [], isLoading: loadingPlans } = useQuery<MealPlan[]>({
@@ -356,6 +357,56 @@ export default function MealPlanner() {
       toast({
         title: "Sync Failed",
         description: error.message || "Failed to sync to Notion. Please check your integration.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Save meal plan mutation
+  const saveMealPlanMutation = useMutation({
+    mutationFn: async ({ mealPlanId, label }: { mealPlanId: number; label: string }) => {
+      const response = await apiRequest('POST', '/api/meal-plans/save', {
+        mealPlanId,
+        label,
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/meal-plans'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/meal-plans', authUser?.id] });
+      setSavePlanLabel("");
+      toast({
+        title: t.planSaved || "Plan Saved",
+        description: t.mealPlanSavedSuccessfully || "Meal plan saved successfully",
+      });
+    },
+    onError: () => {
+      toast({
+        title: t.error || "Error",
+        description: t.failedToSavePlan || "Failed to save meal plan",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Delete meal plan mutation
+  const deleteMealPlanMutation = useMutation({
+    mutationFn: async (mealPlanId: number) => {
+      const response = await apiRequest('DELETE', `/api/meal-plans/${mealPlanId}?userId=${authUser?.id}`);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/meal-plans'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/meal-plans', authUser?.id] });
+      toast({
+        title: t.planDeleted || "Plan Deleted",
+        description: t.mealPlanDeletedSuccessfully || "Meal plan deleted successfully",
+      });
+    },
+    onError: () => {
+      toast({
+        title: t.error || "Error",
+        description: t.failedToDeletePlan || "Failed to delete meal plan",
         variant: "destructive",
       });
     },
@@ -777,6 +828,126 @@ export default function MealPlanner() {
             )}
           </div>
         </div>
+
+        {/* Multi-Plan Management */}
+        {mealPlans && mealPlans.length > 1 && (
+          <div className="card-clean mb-6">
+            <div className="p-4">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center">
+                  <History className="h-6 w-6 text-foreground mr-3" />
+                  <div>
+                    <h2 className="text-xl font-semibold text-foreground">{t.savedMealPlans || 'Saved Meal Plans'}</h2>
+                    <p className="text-sm text-muted-foreground">{t.manageMultiplePlans || 'Manage current week and next week plans'}</p>
+                  </div>
+                </div>
+                <Badge variant="outline" className="text-xs">
+                  {mealPlans.length} Plan{mealPlans.length > 1 ? 's' : ''}
+                </Badge>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {mealPlans.map((plan, index) => (
+                  <div 
+                    key={plan.id} 
+                    className={`p-4 border rounded-lg cursor-pointer transition-colors ${
+                      selectedMealPlan === plan.id 
+                        ? 'border-primary bg-primary/5' 
+                        : 'border-border hover:border-primary/50'
+                    }`}
+                    onClick={() => setSelectedMealPlan(plan.id)}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-medium text-foreground">
+                        {plan.planName || `Meal Plan ${index + 1}`}
+                      </h4>
+                      <div className="flex items-center gap-2">
+                        {plan.id === latestMealPlan?.id && (
+                          <Badge variant="default" className="text-xs">
+                            {t.current || 'Current'}
+                          </Badge>
+                        )}
+                        {plan.id !== selectedMealPlan && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (confirm(t.deletePlanConfirm || 'Are you sure you want to delete this meal plan?')) {
+                                deleteMealPlanMutation.mutate(plan.id);
+                              }
+                            }}
+                            className="h-6 w-6 p-0 hover:bg-destructive/10 hover:text-destructive"
+                          >
+                            <X className="h-3 w-3" />
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      {t.weekOf || 'Week of'} {plan.weekStart}
+                    </p>
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <span>{plan.totalProtein.toFixed(1)}g {t.proteinDaily || 'protein/day'}</span>
+                      <span>{formatDate(plan.createdAt)}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              {latestMealPlan && (
+                <div className="mt-4 pt-4 border-t border-border">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" className="w-full">
+                        <Plus className="mr-2 h-4 w-4" />
+                        {t.savePlanCopy || 'Save Plan as Copy'}
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>{t.saveMealPlan || 'Save Meal Plan'}</DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4">
+                        <div>
+                          <Label htmlFor="planLabel">{t.planLabel || 'Plan Label'}</Label>
+                          <Input
+                            id="planLabel"
+                            value={savePlanLabel}
+                            onChange={(e) => setSavePlanLabel(e.target.value)}
+                            placeholder={t.planLabelPlaceholder || 'e.g., Next Week, Backup Plan'}
+                          />
+                        </div>
+                        <Button
+                          onClick={() => {
+                            saveMealPlanMutation.mutate({
+                              mealPlanId: latestMealPlan.id,
+                              label: savePlanLabel || `${t.savedPlan || 'Saved Plan'} - ${new Date().toLocaleDateString()}`
+                            });
+                          }}
+                          disabled={saveMealPlanMutation.isPending}
+                          className="w-full"
+                        >
+                          {saveMealPlanMutation.isPending ? (
+                            <>
+                              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                              {t.saving || 'Saving...'}
+                            </>
+                          ) : (
+                            <>
+                              <Plus className="mr-2 h-4 w-4" />
+                              {t.savePlan || 'Save Plan'}
+                            </>
+                          )}
+                        </Button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Weekend Grocery Management */}
         {weekendGroceryData && (weekendGroceryData.currentWeekPlans?.length > 0 || weekendGroceryData.nextWeekPlans?.length > 0) && (

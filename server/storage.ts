@@ -36,6 +36,7 @@ export interface IStorage {
   getMealPlanWithMeals(id: number): Promise<MealPlanWithMeals | undefined>;
   createMeals(mealPlanId: number, meals: InsertMeal[]): Promise<Meal[]>;
   updateMealPlanSyncStatus(id: number, synced: boolean): Promise<void>;
+  deleteMealPlan(id: number): Promise<boolean>;
   createOuraData(data: InsertOuraData): Promise<OuraData>;
   getOuraData(userId: number, startDate: string, endDate?: string): Promise<OuraData[]>;
   getLatestOuraData(userId: number): Promise<OuraData | undefined>;
@@ -156,6 +157,10 @@ export class MemStorage implements IStorage {
 
   async createMealPlan(insertMealPlan: InsertMealPlan): Promise<MealPlan> {
     const id = this.currentMealPlanId++;
+    
+    // Auto-cleanup: Keep only the latest 3 meal plans per user to manage memory
+    await this.cleanupOldMealPlans(insertMealPlan.userId || 1);
+    
     const mealPlan: MealPlan = {
       ...insertMealPlan,
       id,
@@ -165,6 +170,49 @@ export class MemStorage implements IStorage {
     };
     this.mealPlans.set(id, mealPlan);
     return mealPlan;
+  }
+
+  // Auto-cleanup: Remove oldest meal plans, keeping only latest 3 per user
+  private async cleanupOldMealPlans(userId: number): Promise<void> {
+    const userMealPlans = Array.from(this.mealPlans.values())
+      .filter(plan => plan.userId === userId)
+      .sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime());
+    
+    // If user has 3 or more meal plans, remove the oldest ones
+    if (userMealPlans.length >= 3) {
+      const plansToRemove = userMealPlans.slice(2); // Keep latest 2, remove rest
+      
+      for (const planToRemove of plansToRemove) {
+        // Remove associated meals first
+        const mealsToRemove = Array.from(this.meals.entries())
+          .filter(([_, meal]) => meal.mealPlanId === planToRemove.id)
+          .map(([mealId, _]) => mealId);
+        
+        mealsToRemove.forEach(mealId => this.meals.delete(mealId));
+        
+        // Remove the meal plan
+        this.mealPlans.delete(planToRemove.id);
+        console.log(`🗑️ Cleaned up old meal plan ID ${planToRemove.id} for user ${userId}`);
+      }
+    }
+  }
+
+  async deleteMealPlan(id: number): Promise<boolean> {
+    // Remove associated meals first
+    const mealsToRemove = Array.from(this.meals.entries())
+      .filter(([_, meal]) => meal.mealPlanId === id)
+      .map(([mealId, _]) => mealId);
+    
+    mealsToRemove.forEach(mealId => this.meals.delete(mealId));
+    
+    // Remove the meal plan
+    const deleted = this.mealPlans.delete(id);
+    
+    if (deleted) {
+      console.log(`🗑️ Deleted meal plan ID ${id}`);
+    }
+    
+    return deleted;
   }
 
   async getMealPlans(userId?: number): Promise<MealPlan[]> {

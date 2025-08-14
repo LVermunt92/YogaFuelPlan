@@ -135,6 +135,82 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Save meal plan with label (for current week, next week, etc.)
+  app.post("/api/meal-plans/save", async (req, res) => {
+    try {
+      const { mealPlanId, label } = req.body;
+      
+      if (!mealPlanId) {
+        return res.status(400).json({ message: "Meal plan ID is required" });
+      }
+
+      // Get the existing meal plan
+      const mealPlan = await storage.getMealPlanWithMeals(mealPlanId);
+      if (!mealPlan) {
+        return res.status(404).json({ message: "Meal plan not found" });
+      }
+
+      // Create a copy with the new label
+      const savedMealPlan = await storage.createMealPlan({
+        userId: mealPlan.userId,
+        weekStart: mealPlan.weekStart,
+        activityLevel: mealPlan.activityLevel,
+        totalProtein: mealPlan.totalProtein,
+        notionSynced: false,
+        planName: label || `Saved plan - ${new Date().toLocaleDateString()}`,
+      });
+
+      // Copy all the meals
+      const savedMeals = await storage.createMeals(savedMealPlan.id, 
+        mealPlan.meals.map(meal => ({
+          day: meal.day,
+          mealType: meal.mealType,
+          foodDescription: meal.foodDescription,
+          portion: meal.portion,
+          protein: meal.protein,
+          calories: meal.calories,
+          carbohydrates: meal.carbohydrates,
+          fats: meal.fats,
+          fiber: meal.fiber,
+          sugar: meal.sugar,
+          sodium: meal.sodium,
+          prepTime: meal.prepTime,
+        }))
+      );
+
+      res.json({
+        message: "Meal plan saved successfully",
+        mealPlan: savedMealPlan,
+        meals: savedMeals,
+      });
+    } catch (error) {
+      console.error("Error saving meal plan:", error);
+      res.status(500).json({ message: "Failed to save meal plan" });
+    }
+  });
+
+  // Delete specific meal plan
+  app.delete("/api/meal-plans/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const userId = req.query.userId ? parseInt(req.query.userId as string) : 2;
+      
+      // Verify meal plan belongs to user before deletion
+      const mealPlan = await storage.getMealPlanWithMeals(id);
+      if (!mealPlan || mealPlan.userId !== userId) {
+        return res.status(404).json({ message: "Meal plan not found" });
+      }
+
+      // Delete the meal plan (meals will be cleaned up automatically by the storage layer)
+      await storage.deleteMealPlan(id);
+      
+      res.json({ message: "Meal plan deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting meal plan:", error);
+      res.status(500).json({ message: "Failed to delete meal plan" });
+    }
+  });
+
   // Get specific meal plan with meals
   app.get("/api/meal-plans/:id", async (req, res) => {
     try {
