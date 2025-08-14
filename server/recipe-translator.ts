@@ -138,6 +138,7 @@ const ingredientTranslations: Record<string, string> = {
   'nuts': 'noten',
   'seeds': 'zaden',
   'almonds': 'amandelen',
+  'almond butter': 'amandelpasta',
   'walnuts': 'walnoten',
   'cashews': 'cashewnoten',
   'cashew cream': 'cashewcrème',
