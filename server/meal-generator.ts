@@ -128,14 +128,20 @@ function incorporateLeftoverIngredients(meal: MealOption, ingredientsToUseUp: st
 }
 
 /**
- * Check if two meal names are too similar (e.g., both "Marry Me" recipes)
+ * Check if two meal names are too similar or conflict with each other
  */
 function areMealsSimilar(meal1: string, meal2: string): boolean {
   const name1 = meal1.toLowerCase();
   const name2 = meal2.toLowerCase();
   
-  // Check for "Marry Me" recipes - only allow one per meal plan
-  if (name1.includes('marry me') && name2.includes('marry me')) {
+  // Check for former "Marry Me" recipes - only allow one per meal plan
+  // These were renamed to avoid confusion
+  const formerMarryMeRecipes = [
+    'creamy mushroom pasta with herbs',
+    'rich coconut chickpea curry'
+  ];
+  
+  if (formerMarryMeRecipes.includes(name1) && formerMarryMeRecipes.includes(name2)) {
     return true;
   }
   
