@@ -105,8 +105,53 @@ function getIngredientDensity(ingredient: string): number {
 // Check if ingredient is primarily liquid
 function isLiquid(ingredient: string): boolean {
   const liquidKeywords = [
-    'milk', 'water', 'broth', 'stock', 'juice', 'wine', 'vinegar', 
-    'cream', 'yogurt', 'oil', 'sauce', 'syrup', 'honey', 'agave'
+    // Milk and dairy liquids
+    'milk', 'almond milk', 'soy milk', 'oat milk', 'coconut milk', 'rice milk',
+    'cashew milk', 'hemp milk', 'buttermilk', 'heavy cream', 'light cream',
+    'half and half', 'whipping cream', 'sour cream', 'yogurt drink', 'kefir',
+    
+    // Water and basic liquids
+    'water', 'sparkling water', 'coconut water', 'ice water',
+    
+    // Broths and stocks
+    'broth', 'stock', 'chicken broth', 'vegetable broth', 'beef broth',
+    'bone broth', 'fish stock', 'mushroom broth', 'miso broth', 'dashi',
+    
+    // Juices
+    'juice', 'lemon juice', 'lime juice', 'orange juice', 'apple juice',
+    'cranberry juice', 'tomato juice', 'vegetable juice', 'grapefruit juice',
+    'pineapple juice', 'grape juice', 'pomegranate juice',
+    
+    // Alcoholic beverages
+    'wine', 'white wine', 'red wine', 'cooking wine', 'sake', 'mirin',
+    'beer', 'rum', 'vodka', 'brandy', 'whiskey',
+    
+    // Vinegars
+    'vinegar', 'apple cider vinegar', 'white vinegar', 'balsamic vinegar',
+    'rice vinegar', 'red wine vinegar', 'champagne vinegar', 'sherry vinegar',
+    
+    // Oils
+    'oil', 'olive oil', 'vegetable oil', 'coconut oil', 'avocado oil',
+    'sesame oil', 'canola oil', 'sunflower oil', 'grapeseed oil',
+    'melted butter', 'ghee',
+    
+    // Sauces and condiments
+    'sauce', 'soy sauce', 'tamari', 'fish sauce', 'worcestershire sauce',
+    'hot sauce', 'sriracha', 'teriyaki sauce', 'hoisin sauce',
+    
+    // Syrups and sweeteners
+    'syrup', 'maple syrup', 'corn syrup', 'agave syrup', 'honey',
+    'molasses', 'brown rice syrup', 'date syrup',
+    
+    // Extracts
+    'extract', 'vanilla extract', 'almond extract', 'lemon extract',
+    'rum extract', 'orange extract', 'peppermint extract',
+    
+    // Beverages
+    'coffee', 'tea', 'espresso', 'cold brew', 'kombucha', 'smoothie',
+    
+    // Other liquids
+    'liquid smoke', 'rose water', 'orange blossom water'
   ];
   
   const normalized = ingredient.toLowerCase();
