@@ -37,6 +37,10 @@ export function useAuth() {
     setUser(null);
     localStorage.removeItem('userId');
     localStorage.removeItem('username');
+    // Clear any cached meal plan data
+    localStorage.removeItem('selectedMealPlan');
+    // Force a page refresh to ensure complete logout
+    window.location.href = '/';
   };
 
   return {
