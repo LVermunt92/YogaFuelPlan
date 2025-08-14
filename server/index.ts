@@ -37,6 +37,14 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  // Initialize viral recipe auto-updater
+  try {
+    const { initializeViralRecipeScheduler } = await import("./viral-cron");
+    initializeViralRecipeScheduler();
+  } catch (error) {
+    console.error("Failed to initialize viral recipe scheduler:", error);
+  }
+
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {

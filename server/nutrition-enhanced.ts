@@ -1,4 +1,5 @@
 import { getCurrentSeasonalGuidance, adaptRecipeForSeason, getCurrentAyurvedicSeason } from './ayurveda-seasonal';
+import { getCurrentViralRecipes } from './viral-recipe-updater';
 
 export interface NutritionInfo {
   protein: number;
@@ -2107,9 +2108,17 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   }
 ];
 
+// Function to get complete meal database including current viral recipes
+export function getCompleteEnhancedMealDatabase(): MealOption[] {
+  const viralRecipes = getCurrentViralRecipes();
+  console.log(`🔥 Adding ${viralRecipes.length} current viral recipes to database`);
+  return [...ENHANCED_MEAL_DATABASE, ...viralRecipes];
+}
+
 // Function to get meals from enhanced database filtered by dietary requirements
 export function getEnhancedMealsByCategory(category: 'breakfast' | 'lunch' | 'dinner'): MealOption[] {
-  return ENHANCED_MEAL_DATABASE.filter(meal => meal.category === category);
+  const completeDatabase = getCompleteEnhancedMealDatabase();
+  return completeDatabase.filter(meal => meal.category === category);
 }
 
 export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTags: string[]): MealOption[] {

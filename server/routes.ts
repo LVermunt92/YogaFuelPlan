@@ -202,6 +202,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Update viral recipes manually
+  app.post("/api/admin/update-viral-recipes", async (req, res) => {
+    try {
+      const { getCurrentViralRecipes, addViralRecipeBatch, UPCOMING_VIRAL_RECIPES } = await import("./viral-recipe-updater");
+      
+      const currentRecipes = getCurrentViralRecipes();
+      console.log(`🔥 Current viral recipes: ${currentRecipes.length} recipes`);
+      
+      // Log upcoming viral recipes that will be added in future cycles
+      console.log(`🔥 Upcoming viral recipes scheduled: ${UPCOMING_VIRAL_RECIPES.slice(0, 3).join(', ')}...`);
+      
+      res.json({
+        success: true,
+        message: `Viral recipes updated! Currently serving ${currentRecipes.length} viral recipes`,
+        currentRecipes: currentRecipes.map(r => r.name),
+        upcomingRecipes: UPCOMING_VIRAL_RECIPES.slice(0, 5)
+      });
+    } catch (error) {
+      console.error("Error updating viral recipes:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "Failed to update viral recipes",
+        error: (error as Error).message 
+      });
+    }
+  });
+
   // Check Notion connection status
   app.get("/api/notion/status", async (req, res) => {
     try {
@@ -386,8 +413,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "Meal not found" });
       }
 
-      // Find the recipe from the enhanced meal database
-      const { ENHANCED_MEAL_DATABASE } = await import("./nutrition-enhanced");
+      // Find the recipe from the enhanced meal database including viral recipes
+      const { getCompleteEnhancedMealDatabase } = await import("./nutrition-enhanced");
+      const ENHANCED_MEAL_DATABASE = getCompleteEnhancedMealDatabase();
       
       // Clean the meal name by removing portion scaling and leftover indicators
       let cleanMealName = targetMeal.foodDescription
