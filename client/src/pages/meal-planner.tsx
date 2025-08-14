@@ -881,9 +881,14 @@ export default function MealPlanner() {
                       </h4>
                       <div className="flex items-center gap-2">
                         {plan.id === latestMealPlan?.id && (
-                          <Badge variant="default" className="text-xs">
+                          <Button
+                            variant="default"
+                            size="sm"
+                            className="h-6 px-2 text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90"
+                            disabled
+                          >
                             {t.current || 'Current'}
-                          </Badge>
+                          </Button>
                         )}
                         {plan.id !== selectedMealPlan && (
                           <Button
