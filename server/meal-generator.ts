@@ -128,7 +128,7 @@ function incorporateLeftoverIngredients(meal: MealOption, ingredientsToUseUp: st
 }
 
 /**
- * Select an unused meal from available options, ensuring variety
+ * Select an unused meal from available options, ensuring intelligent variety
  */
 function selectUnusedMeal(availableMeals: MealOption[], usedMeals: Set<string>): MealOption {
   if (availableMeals.length === 0) {
@@ -139,19 +139,20 @@ function selectUnusedMeal(availableMeals: MealOption[], usedMeals: Set<string>):
   const unusedMeals = availableMeals.filter(meal => !usedMeals.has(meal.name));
   
   if (unusedMeals.length > 0) {
-    // Select a random unused meal for variety
-    const selectedMeal = unusedMeals[Math.floor(Math.random() * unusedMeals.length)];
+    // Use intelligent variety selection instead of pure random
+    const selectedMeals = selectMealsWithBetterVariety(unusedMeals, 1, Array.from(usedMeals));
+    const selectedMeal = selectedMeals[0] || unusedMeals[0];
     console.log(`📋 Selected unused meal: ${selectedMeal.name} (${unusedMeals.length} unused options available)`);
     return selectedMeal;
   }
   
-  // If all meals have been used, reset and select a new one
-  // Only reset if we have more than 1 meal option
+  // If all meals have been used, reset and select with better variety
   if (availableMeals.length > 1) {
     console.log('⚠️ All meals used, resetting for continued variety');
     usedMeals.clear();
-    // Select the first unused meal after reset to ensure variety
-    const selectedMeal = availableMeals[0];
+    // Use intelligent selection after reset
+    const selectedMeals = selectMealsWithBetterVariety(availableMeals, 1);
+    const selectedMeal = selectedMeals[0] || availableMeals[0];
     console.log(`📋 Reset and selected: ${selectedMeal.name}`);
     return selectedMeal;
   } else {
