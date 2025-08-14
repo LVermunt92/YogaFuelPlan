@@ -186,6 +186,7 @@ const ingredientTranslations: Record<string, string> = {
   // Kitchen and pantry terms
   'pantry items': 'voorraadkast',
   'pantry': 'voorraadkast',
+  'other': 'overig',
   
   // Common recipe phrases
   'heat oil': 'verhit olie',
