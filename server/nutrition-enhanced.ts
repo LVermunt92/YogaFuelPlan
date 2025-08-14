@@ -3576,6 +3576,25 @@ export function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' | 'lunc
       const criticalFilteredMeals = filterEnhancedMealsByDietaryTags(categoryMeals, criticalUserTags);
       if (criticalFilteredMeals.length > 0) {
         console.log(`Fallback: Found ${criticalFilteredMeals.length} ${category} meals respecting critical dietary restrictions: ${criticalUserTags.join(', ')}`);
+        
+        // Additional safety check: Verify no non-vegetarian meals for vegetarian users
+        if (criticalUserTags.includes('vegetarian')) {
+          const safetyFilteredMeals = criticalFilteredMeals.filter(meal => {
+            const containsFish = meal.name.toLowerCase().includes('cod') || 
+                               meal.name.toLowerCase().includes('salmon') || 
+                               meal.name.toLowerCase().includes('tuna') || 
+                               meal.name.toLowerCase().includes('fish') ||
+                               meal.tags.includes('pescatarian') ||
+                               meal.tags.includes('non-vegetarian');
+            if (containsFish) {
+              console.error(`🚨 CRITICAL SAFETY BLOCK: Prevented ${meal.name} from being served to vegetarian user (contains fish/meat)`);
+              return false;
+            }
+            return true;
+          });
+          return safetyFilteredMeals;
+        }
+        
         return criticalFilteredMeals;
       }
     }
