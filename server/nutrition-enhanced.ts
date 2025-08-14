@@ -2331,6 +2331,160 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       ],
       notes: "French-inspired viral recipe where roasted vegetables create indulgent cream sauce, topped with protein-rich burrata"
     }
+  },
+
+  // Dairy-free/lactose-free and vegetarian versions of viral recipes
+  {
+    name: "Herb-infused vegetable lasagna with avocado oil drizzle (Plant-Based)",
+    portion: "1 generous serving (250g)",
+    nutrition: {
+      protein: 22,
+      calories: 420,
+      carbohydrates: 38,
+      fats: 18,
+      fiber: 8,
+      sugar: 8,
+      sodium: 480,
+      potassium: 620,
+      calcium: 180,
+      iron: 3.8,
+      vitaminC: 18,
+      prepTime: 45,
+      costEuros: 6.20,
+      proteinPerEuro: 3.5
+    },
+    category: "dinner",
+    tags: ["viral", "social-media", "vegetarian", "lactose-free", "dairy-free", "high-protein", "comfort-food", "instagram-inspired"],
+    ingredients: [
+      "lasagna sheets", "vegetable stock", "cashew cream", "nutritional yeast", 
+      "firm tofu", "mushrooms", "broccoli", "spinach", "zucchini",
+      "avocado oil", "garlic", "Italian herbs", "olive oil", "plain flour", "salt", "pepper"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["mushrooms", "broccoli", "spinach", "zucchini"],
+      benefits: ["Rich in vitamin K", "Supports immune system", "High in antioxidants", "Plant protein"]
+    },
+    recipe: {
+      instructions: [
+        "Press and crumble tofu, season with nutritional yeast and herbs",
+        "Sauté onion, garlic, and mushrooms in olive oil until fragrant", 
+        "Add flour, then vegetable stock and cashew cream to create dairy-free sauce",
+        "Blanch broccoli and spinach until bright green and tender-crisp",
+        "Layer lasagna: sauce, tofu, vegetables, repeat with dairy-free layers",
+        "Cover and bake at 180°C for 25 minutes until bubbly",
+        "Drizzle with herb-infused avocado oil before serving"
+      ],
+      tips: [
+        "Cashew cream creates rich texture without dairy", 
+        "Make herb oil by warming avocado oil with fresh thyme and rosemary",
+        "Press tofu well to remove moisture for better texture"
+      ],
+      notes: "Plant-based version of viral Instagram lasagna with dairy-free cashew cream and herb oil drizzle"
+    }
+  },
+
+  {
+    name: "Lentil and basil pesto lasagna with cashew cream sauce (Dairy-Free)",
+    portion: "1 serving (280g)",
+    nutrition: {
+      protein: 28,
+      calories: 445,
+      carbohydrates: 42,
+      fats: 18,
+      fiber: 12,
+      sugar: 6,
+      sodium: 520,
+      potassium: 680,
+      calcium: 120,
+      iron: 5.2,
+      vitaminC: 15,
+      prepTime: 40,
+      costEuros: 5.50,
+      proteinPerEuro: 5.1
+    },
+    category: "dinner", 
+    tags: ["viral", "social-media", "vegetarian", "lactose-free", "dairy-free", "high-protein", "italian-inspired", "instagram-inspired"],
+    ingredients: [
+      "cooked green lentils", "brown onion", "dairy-free basil pesto", "broccoli", "spinach",
+      "cashew cream", "unsweetened plant milk", "garlic cloves", "lasagna sheets", "nutritional yeast", "salt"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2.5,
+      vegetables: ["broccoli", "spinach", "onion"],
+      benefits: ["High in folate", "Rich in iron", "Supports eye health", "Plant-based protein"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 180°C and prepare baking dish",
+        "Cook onions until translucent, add cooked lentils and warm through",
+        "Add dairy-free pesto and cook for 5 minutes until well combined",
+        "Steam broccoli and spinach until tender",
+        "Blend cashew cream, plant milk, garlic, nutritional yeast and salt for creamy sauce",
+        "Layer: pesto lentils, vegetables, cashew cream sauce, repeat",
+        "Cover with foil and bake 15 minutes, remove foil and bake 5-10 minutes",
+        "Let rest before serving for perfect slice consistency"
+      ],
+      tips: [
+        "Cashew cream sauce is protein-rich dairy-free alternative",
+        "Lentils provide complete protein when combined with grains",
+        "Fresh basil pesto adds indulgent flavor with healthy fats"
+      ],
+      notes: "Dairy-free version of viral Instagram lasagna with protein-packed lentils and cashew cream sauce"
+    }
+  },
+
+  {
+    name: "Pasta with roasted zucchini cream and cashew cheese topping (Dairy-Free)",
+    portion: "200g pasta + toppings",
+    nutrition: {
+      protein: 18,
+      calories: 480,
+      carbohydrates: 62,
+      fats: 16,
+      fiber: 9,
+      sugar: 12,
+      sodium: 380,
+      potassium: 680,
+      calcium: 80,
+      iron: 3.5,
+      vitaminC: 25,
+      prepTime: 35,
+      costEuros: 5.20,
+      proteinPerEuro: 3.5
+    },
+    category: "dinner",
+    tags: ["viral", "social-media", "vegetarian", "lactose-free", "dairy-free", "italian-inspired", "instagram-inspired", "creamy"],
+    ingredients: [
+      "pasta", "zucchini", "cashew cheese", "nutritional yeast", "garlic cloves",
+      "olive oil", "pine nuts", "fresh basil", "salt", "pepper", "lemon juice"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["zucchini"],
+      benefits: ["High in potassium", "Low in calories", "Rich in vitamin C"]
+    },
+    recipe: {
+      instructions: [
+        "Cook pasta until al dente and reserve 1 cup pasta water",
+        "Roast sliced zucchini with olive oil until golden and caramelized",
+        "Blend roasted zucchini with garlic, olive oil and basil for creamy sauce",
+        "Heat pan on medium, add zucchini cream with pasta water to thin",
+        "Toss cooked pasta with zucchini cream sauce until well coated",
+        "Serve in bowls topped with cashew cheese and toasted pine nuts",
+        "Finish with fresh basil leaves, nutritional yeast, and cracked black pepper"
+      ],
+      tips: [
+        "Roasting zucchini concentrates flavors for naturally creamy sauce",
+        "Cashew cheese adds protein and creaminess without dairy",
+        "Toast pine nuts for added crunch and healthy fats",
+        "Nutritional yeast adds cheesy umami flavor"
+      ],
+      notes: "Dairy-free version of viral recipe with cashew cheese providing protein and indulgent creaminess"
+    }
   }
 ];
 
