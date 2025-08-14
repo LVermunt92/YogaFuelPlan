@@ -1575,7 +1575,7 @@ export default function MealPlanner() {
                         <div>
                           <p className="text-sm font-medium text-green-700 mb-1">{t.vegetables}:</p>
                           <div className="flex flex-wrap gap-1">
-                            {recipeData.vegetableContent.vegetables.map((veg, index) => (
+                            {recipeData?.vegetableContent?.vegetables?.map((veg, index) => (
                               <Badge key={index} variant="secondary" className="bg-green-100 text-green-800 text-xs">
                                 {veg}
                               </Badge>
@@ -1584,11 +1584,11 @@ export default function MealPlanner() {
                         </div>
                       )}
                     </div>
-                    {recipeData.vegetableContent.benefits.length > 0 && (
+                    {recipeData?.vegetableContent?.benefits?.length > 0 && (
                       <div>
                         <p className="text-sm font-medium text-green-700 mb-1">{t.healthBenefits}:</p>
                         <ul className="space-y-1">
-                          {recipeData.vegetableContent.benefits.map((benefit, index) => (
+                          {recipeData?.vegetableContent?.benefits?.map((benefit, index) => (
                             <li key={index} className="flex gap-2 text-sm text-green-600">
                               <span className="text-green-500">•</span>
                               {benefit}
@@ -1608,12 +1608,12 @@ export default function MealPlanner() {
                   {t.ingredients}
                 </h4>
                 <div className="grid grid-cols-2 gap-2">
-                  {recipeData.ingredients.map((ingredient, index) => (
+                  {recipeData?.ingredients?.map((ingredient, index) => (
                     <div key={index} className="flex items-center gap-2 text-sm text-slate-700">
                       <div className="w-2 h-2 bg-emerald-500 rounded-full flex-shrink-0" />
                       {ingredient}
                     </div>
-                  ))}
+                  )) || <p className="text-sm text-slate-500">No ingredients available</p>}
                 </div>
               </div>
 
@@ -1626,25 +1626,25 @@ export default function MealPlanner() {
                   {t.instructions}
                 </h4>
                 <ol className="space-y-3">
-                  {recipeData.instructions.map((instruction, index) => (
+                  {recipeData?.instructions?.map((instruction, index) => (
                     <li key={index} className="flex gap-3">
                       <span className="flex-shrink-0 w-6 h-6 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-sm font-medium">
                         {index + 1}
                       </span>
                       <p className="text-slate-700 leading-relaxed">{instruction}</p>
                     </li>
-                  ))}
+                  )) || <p className="text-sm text-slate-500">No instructions available</p>}
                 </ol>
               </div>
 
               {/* Tips */}
-              {recipeData.tips && recipeData.tips.length > 0 && (
+              {recipeData?.tips && recipeData.tips.length > 0 && (
                 <>
                   <Separator />
                   <div>
                     <h4 className="font-semibold text-slate-900 mb-3">💡 {t.tips}</h4>
                     <ul className="space-y-2">
-                      {recipeData.tips.map((tip, index) => (
+                      {recipeData?.tips?.map((tip, index) => (
                         <li key={index} className="flex gap-2 text-sm text-slate-600">
                           <span className="text-emerald-500">•</span>
                           {tip}

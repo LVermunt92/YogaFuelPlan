@@ -503,6 +503,67 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     }
   },
   {
+    name: "Simple protein bowl",
+    portion: "1 large bowl (300g)",
+    nutrition: { 
+      protein: 25, 
+      prepTime: 15, 
+      calories: 420,
+      carbohydrates: 45,
+      fats: 18,
+      fiber: 12,
+      sugar: 8,
+      sodium: 320,
+      potassium: 650,
+      calcium: 120,
+      iron: 6.2,
+      vitaminC: 25,
+      costEuros: 4.20, 
+      proteinPerEuro: 6.0 
+    },
+    category: "lunch",
+    tags: ["vegetarian", "gluten-free", "high-protein", "quick", "meal-prep"],
+    ingredients: [
+      "1 cup cooked quinoa",
+      "½ cup black beans (cooked)",
+      "½ avocado (sliced)",
+      "¼ cup hemp seeds",
+      "1 cup fresh spinach",
+      "½ cup cherry tomatoes (halved)",
+      "¼ cup red onion (diced)",
+      "2 tbsp tahini",
+      "1 tbsp lemon juice",
+      "1 tsp olive oil",
+      "Salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2.5,
+      vegetables: ["spinach", "tomatoes", "onion"],
+      benefits: ["High in plant protein", "Rich in healthy fats", "Complete amino acid profile"]
+    },
+    recipe: {
+      instructions: [
+        "Cook quinoa according to package directions and let cool slightly",
+        "Rinse and drain black beans if using canned",
+        "Wash and dry spinach leaves thoroughly",
+        "Halve cherry tomatoes and dice red onion",
+        "Slice avocado just before serving",
+        "In a bowl, layer quinoa as the base",
+        "Top with fresh spinach, black beans, and vegetables",
+        "Add sliced avocado and sprinkle hemp seeds on top",
+        "Whisk tahini with lemon juice and olive oil for dressing",
+        "Drizzle dressing over bowl and season with salt and pepper"
+      ],
+      tips: [
+        "Prepare quinoa and beans in advance for quick assembly",
+        "Add avocado just before eating to prevent browning",
+        "Double the recipe to meal prep for tomorrow's lunch"
+      ],
+      notes: "Perfect balance of plant proteins, healthy fats, and complex carbohydrates"
+    }
+  },
+  {
     name: "Wild-caught salmon with roasted root vegetables",
     portion: "150g salmon + 200g vegetables",
     nutrition: { 

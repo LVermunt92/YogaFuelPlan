@@ -764,7 +764,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
           
           const mealType = targetMeal.mealType as 'breakfast' | 'lunch' | 'dinner';
           
-          const aiRecipe = await generateRecipeWithAI(cleanMealName, dietaryTags, mealType);
+          const aiRecipe = await generateRecipeWithAI({
+            category: mealType,
+            dietaryTags: dietaryTags,
+            targetProtein: 25, // Default protein target
+            prepTimeLimit: 30,
+            excludeIngredients: [],
+            cuisine: undefined,
+            season: undefined
+          });
           
           // Translate AI-generated recipe if Dutch is requested (with AI enhancement when available)
           const translatedAIRecipe = await translateRecipeEnhanced({
