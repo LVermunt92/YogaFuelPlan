@@ -496,8 +496,9 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
             allSelectedMealNames.add(selectedMeal.name);
             console.log(`Day ${day} (weekend) breakfast: ${selectedMeal.name} (prep: ${selectedMeal.nutrition.prepTime}min)`);
           } else {
-            selectedMeal = selectUnusedMeal(availableMeals, usedBreakfastMeals);
+            selectedMeal = selectUnusedMeal(availableMeals, usedBreakfastMeals, allSelectedMealNames);
             usedBreakfastMeals.add(selectedMeal.name);
+            allSelectedMealNames.add(selectedMeal.name);
           }
         } else {
           // Weekday breakfasts: quick and easy options (lower prep time)
@@ -510,22 +511,25 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
           );
           
           if (weekdayBreakfasts.length > 0) {
-            selectedMeal = selectUnusedMeal(weekdayBreakfasts, usedBreakfastMeals);
+            selectedMeal = selectUnusedMeal(weekdayBreakfasts, usedBreakfastMeals, allSelectedMealNames);
             usedBreakfastMeals.add(selectedMeal.name);
+            allSelectedMealNames.add(selectedMeal.name);
             console.log(`Day ${day} (weekday) breakfast: ${selectedMeal.name} (prep: ${selectedMeal.nutrition.prepTime}min)`);
           } else {
-            selectedMeal = selectUnusedMeal(availableMeals, usedBreakfastMeals);
+            selectedMeal = selectUnusedMeal(availableMeals, usedBreakfastMeals, allSelectedMealNames);
             usedBreakfastMeals.add(selectedMeal.name);
+            allSelectedMealNames.add(selectedMeal.name);
           }
         }
       } else {
         // Fresh lunch/dinner for other days - use variety tracking
-        selectedMeal = selectUnusedMeal(availableMeals, mealCategory === 'lunch' ? usedLunchMeals : usedDinnerMeals);
+        selectedMeal = selectUnusedMeal(availableMeals, mealCategory === 'lunch' ? usedLunchMeals : usedDinnerMeals, allSelectedMealNames);
         if (mealCategory === 'lunch') {
           usedLunchMeals.add(selectedMeal.name);
         } else {
           usedDinnerMeals.add(selectedMeal.name);
         }
+        allSelectedMealNames.add(selectedMeal.name);
       }
 
       // Adjust portion based on caloric goals and household size
@@ -663,6 +667,8 @@ async function generateMealPrepPlan(
   const usedBreakfastMeals: Set<string> = new Set();
   const usedLunchMeals: Set<string> = new Set();
   const usedDinnerMeals: Set<string> = new Set();
+  // Initialize global variety tracking for similar recipe filtering
+  const allSelectedMealNames = new Set<string>();
   
   const cookingDaysPerWeek = user?.cookingDaysPerWeek || 3;
   const eatingDaysAtHome = user?.eatingDaysAtHome || 6;
@@ -779,13 +785,15 @@ async function generateMealPrepPlan(
     
     if (isWeekend && weekendBreakfasts.length > 0) {
       // Weekend: use elaborate breakfasts with variety
-      const selectedBreakfast = selectUnusedMeal(weekendBreakfasts, usedBreakfastMeals);
+      const selectedBreakfast = selectUnusedMeal(weekendBreakfasts, usedBreakfastMeals, allSelectedMealNames);
       usedBreakfastMeals.add(selectedBreakfast.name);
+      allSelectedMealNames.add(selectedBreakfast.name);
       breakfastPool.push(selectedBreakfast);
     } else if (!isWeekend && weekdayBreakfasts.length > 0) {
       // Weekday: use quick breakfasts with variety
-      const selectedBreakfast = selectUnusedMeal(weekdayBreakfasts, usedBreakfastMeals);
+      const selectedBreakfast = selectUnusedMeal(weekdayBreakfasts, usedBreakfastMeals, allSelectedMealNames);
       usedBreakfastMeals.add(selectedBreakfast.name);
+      allSelectedMealNames.add(selectedBreakfast.name);
       breakfastPool.push(selectedBreakfast);
     } else {
       // Fallback: try to use appropriate category if possible
@@ -793,18 +801,21 @@ async function generateMealPrepPlan(
       
       if (isWeekend && weekendBreakfasts.length === 0 && weekdayBreakfasts.length > 0) {
         // Weekend but no weekend options - use weekday as fallback
-        const selectedBreakfast = selectUnusedMeal(weekdayBreakfasts, usedBreakfastMeals);
+        const selectedBreakfast = selectUnusedMeal(weekdayBreakfasts, usedBreakfastMeals, allSelectedMealNames);
         usedBreakfastMeals.add(selectedBreakfast.name);
+        allSelectedMealNames.add(selectedBreakfast.name);
         breakfastPool.push(selectedBreakfast);
       } else if (!isWeekend && weekdayBreakfasts.length === 0 && weekendBreakfasts.length > 0) {
         // Weekday but no weekday options - use weekend as fallback  
-        const selectedBreakfast = selectUnusedMeal(weekendBreakfasts, usedBreakfastMeals);
+        const selectedBreakfast = selectUnusedMeal(weekendBreakfasts, usedBreakfastMeals, allSelectedMealNames);
         usedBreakfastMeals.add(selectedBreakfast.name);
+        allSelectedMealNames.add(selectedBreakfast.name);
         breakfastPool.push(selectedBreakfast);
       } else {
         // General fallback
-        const selectedBreakfast = selectUnusedMeal(breakfastOptions, usedBreakfastMeals);
+        const selectedBreakfast = selectUnusedMeal(breakfastOptions, usedBreakfastMeals, allSelectedMealNames);
         usedBreakfastMeals.add(selectedBreakfast.name);
+        allSelectedMealNames.add(selectedBreakfast.name);
         breakfastPool.push(selectedBreakfast);
       }
     }
@@ -882,8 +893,9 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayLunchOptions : lunchOptions;
-        lunchMeal = selectUnusedMeal(mealOptions, usedLunchMeals);
+        lunchMeal = selectUnusedMeal(mealOptions, usedLunchMeals, allSelectedMealNames);
         usedLunchMeals.add(lunchMeal.name);
+        allSelectedMealNames.add(lunchMeal.name);
       }
       
       if (lunchMeal) {
