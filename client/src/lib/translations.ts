@@ -102,8 +102,7 @@ export const translations = {
     lunch: "Lunch",
     dinner: "Dinner",
     
-    // Portion sizes
-    portion: "Portion",
+    // Portion sizes  
     portions: "Portions",
     servings: "Servings",
     
@@ -135,7 +134,7 @@ export const translations = {
     notConnectedPleaseConfigureSecrets: "Please configure NOTION_INTEGRATION_SECRET and NOTION_PAGE_URL environment variables.",
     medium: "Medium",
     moderate: "Moderate",
-    createPersonalizedMealPlan: "Create a personalised 7-day meal plan with precise protein tracking based on your dietary preferences.",
+    createPersonalizedMealPlan: "Creates a meal plan based on your selected activity level and dietary preferences",
     yourDietaryPreferences: "Your Dietary Preferences",
     mealPlansFilteredBased: "Meal plans will be filtered based on these preferences. Update them in your profile.",
     activity: "Activity",
@@ -357,7 +356,7 @@ export const translations = {
     notConnectedPleaseConfigureSecrets: "Configureer alstublieft NOTION_INTEGRATION_SECRET en NOTION_PAGE_URL omgevingsvariabelen.",
     medium: "Gemiddeld",
     moderate: "Gematigd",
-    createPersonalizedMealPlan: "Maak een gepersonaliseerd 7-daags maaltijdplan met nauwkeurige eiwitregistratie gebaseerd op je voedingsvoorkeuren.",
+    createPersonalizedMealPlan: "Maakt een maaltijdplan gebaseerd op je geselecteerde activiteitsniveau en voedingsvoorkeuren",
     yourDietaryPreferences: "Je Voedingsvoorkeuren",
     mealPlansFilteredBased: "Maaltijdplannen worden gefilterd op basis van deze voorkeuren. Werk ze bij in je profiel.",
     activity: "Activiteit",

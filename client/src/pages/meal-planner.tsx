@@ -1044,8 +1044,10 @@ export default function MealPlanner() {
                   
                   <p className="text-xs text-muted-foreground">
                     {latestOuraData && ouraStatus?.connected 
-                      ? `Will automatically use your ${latestOuraData.activityLevel} activity level from Oura Ring data`
-                      : 'Creates a meal plan based on your selected activity level and dietary preferences'
+                      ? (language === 'nl' 
+                          ? `Gebruikt automatisch je ${latestOuraData.activityLevel === 'high' ? 'hoge' : 'lage'} activiteitsniveau van Oura Ring data`
+                          : `Will automatically use your ${latestOuraData.activityLevel} activity level from Oura Ring data`)
+                      : t.createPersonalizedMealPlan
                     }
                   </p>
                   
