@@ -1,7 +1,7 @@
 # Meal Planner Application
 
 ## Overview
-This full-stack meal planning application helps users generate personalized weekly meal plans based on activity levels and dietary preferences, including vegetarian, gluten-free, and lactose-free options. It integrates with Notion for meal plan synchronization. The project aims to provide a comprehensive and adaptable solution for healthy meal planning.
+This full-stack meal planning application helps users generate personalized weekly meal plans based on activity levels and dietary preferences. It integrates with Notion for meal plan synchronization and aims to provide a comprehensive, adaptable solution for healthy meal planning with a focus on user experience and nutritional optimization.
 
 ## User Preferences
 Preferred communication style: Simple, everyday language.
@@ -12,6 +12,7 @@ Smart seasonal fruit specification: Automatically replaces vague "seasonal fruit
 Fixed meal plan variety bug: Completely resolved recipe repetition issue including duplicate "Eating out" entries. System now ensures each recipe is cooked fresh only once and appears as leftover only once, with intelligent prevention of duplicate "Eating out" meals. Meal generation now provides perfect weekly variety with proper Sunday-Saturday structure. Added 6 new quick vegetarian high-protein recipes (≤30min prep) to expand weekday variety pool and eliminate excessive "Marry Me" recipe repetitions. Variety improved from 3-4 to 5-7 unique recipes per meal type for vegetarian high-protein users.
 Smart protein prioritization system: Replaced strict "high-protein" tag filtering with intelligent protein enhancement system. Instead of limiting recipes to only those tagged "high-protein", system now works with ALL recipes and automatically enhances lower-protein meals with smart additions (hemp hearts, tahini, nutritional yeast, etc.). This dramatically improves variety while maintaining excellent protein content (average 22.1g per meal). Users get 5-7 unique recipes per meal type instead of 2-3 with old filtering.
 Fixed protein average calculation: Corrected meal plan protein calculation to divide by actual days with meals instead of always dividing by 7 days. System now shows realistic protein averages per day that reflect user's actual eating patterns. Previously showed artificially low averages for users who eat out frequently.
+Fixed protein target display issue: Resolved confusing "average" protein label for high activity users. Interface now correctly shows "High Protein Target" with achievement percentage (e.g., "Target: 130g (50% achieved)") for high activity levels, replacing misleading "average" terminology. High activity users see clear progress toward their 130g daily protein target.
 Fixed profile update system: Resolved critical issue where users couldn't save dietary preference changes by switching from MemStorage to DatabaseStorage implementation. Users can now successfully update their dietary tags (vegetarian, gluten-free, lactose-free, etc.) and generate meal plans with their new preferences.
 Removed "high-protein" dietary tag: Eliminated "high-protein" from dietary tag options since protein targets are automatically handled based on activity level. System now focuses on true dietary restrictions (vegetarian, gluten-free) and preferences (ayurvedic, mediterranean) rather than nutritional targets. Protein optimization happens automatically through smart enhancement system regardless of tags selected.
 Fixed meal plan deletion: Added missing `deleteMealPlan` method to DatabaseStorage implementation. Users can now successfully delete meal plan versions. System properly removes both the meal plan and all associated meals from the database to maintain data integrity.
@@ -26,51 +27,39 @@ Unified Recipe Database: Consolidated three separate recipe databases (base, vir
 Balanced Recipe Variety Management: Completely resolved repetitive "Marry Me" recipe issue by implementing comprehensive global similarity filtering across all meal selection workflows. System now prevents any similar recipes from appearing multiple times per meal plan through enhanced variety tracking that spans breakfast, lunch, and dinner selections. Enhanced reset logic ensures global similarity filtering applies even when meal pools are reset, permanently blocking duplicate "Marry Me" recipes (both Mushroom Pasta and Chickpea Curry variants). All recipe names cleaned of viral promotional brackets - transformed "Viral Cottage Cheese Bowl (Social Media Trend)" to "Cottage Cheese Bowl" and similar clean naming. Viral recipes maintain relevance through automated updates but receive equal treatment in selection algorithms, ensuring natural variety distribution without artificial prioritization.
 Improved Meal Plan Interface: Enhanced user experience by showing meal plan selector even with single plan (previously hidden causing confusion), improved current plan button styling with proper selected appearance, and fixed date display issues by cleaning old test data with incorrect future dates.
 
-## Recipe Management Workflow
-**IMPORTANT: All new recipes must be added to the unified database in `server/nutrition-enhanced.ts` only. Never create separate recipe databases or files.**
-- Single source of truth: `ENHANCED_MEAL_DATABASE` in `server/nutrition-enhanced.ts`
-- All recipe additions go directly to this unified database
-- No separate viral, additional, or category-specific databases
-- System automatically handles variety distribution and dietary filtering
-- Recipe database is initialized once at startup for optimal performance
-- Previous separate database files (viral-recipe-updater.ts, recipe-expansion.ts, viral-cron.ts) have been deleted and consolidated
-
 ## System Architecture
 
 ### Authentication & Multi-User Support
-- **User Authentication**: Complete login/registration system with secure password hashing
-- **Secure Password Reset**: Two-step email verification with 6-digit codes (15-minute expiration)
-- **Multi-User Support**: Each user gets unique ID and isolated data (profiles, meal plans, settings)
-- **Data Isolation**: Users cannot see or access other users' data
-- **Route Protection**: Logged-out users only see login screen - complete protection of all authenticated pages
-- **Development Mode**: Password reset codes shown in console/frontend for testing without email service
+- **User Authentication**: Login/registration system with secure password hashing.
+- **Secure Password Reset**: Two-step email verification with 6-digit codes (15-minute expiration).
+- **Multi-User Support**: Each user has unique ID and isolated data.
+- **Route Protection**: Logged-out users only see login screen.
 
 ### UI/UX Decisions
-- **Design System**: shadcn/ui built on Radix UI primitives
-- **Styling**: Tailwind CSS with CSS variables for theming
+- **Design System**: shadcn/ui built on Radix UI primitives.
+- **Styling**: Tailwind CSS with CSS variables for theming.
 
 ### Technical Implementations
 - **Frontend**: React 18 with TypeScript, Wouter for routing, TanStack React Query for server state.
 - **Backend**: Express.js with TypeScript, RESTful API.
-- **Database**: PostgreSQL with Drizzle ORM for type-safe operations, managed via Neon serverless.
+- **Database**: PostgreSQL with Drizzle ORM, managed via Neon serverless.
 - **Session Management**: Express sessions with PostgreSQL store.
 - **Build Tools**: Vite for frontend, esbuild for backend.
 - **Meal Generation**: Calculates protein targets based on user activity, selects meals from a pre-defined nutrition database, generates 7-day plans with variety, and creates shopping lists.
-- **Universal Meal Prep Engine**: Adapts to user cooking schedules, supporting batch cooking, proper meal distribution, intelligent dietary fallbacks, and consistent behavior across profiles.
-- **Recipe System**: All meals include detailed cooking instructions, tips, and nutritional information. Recipes are alcohol-free.
+- **Universal Meal Prep Engine**: Adapts to user cooking schedules, supporting batch cooking, proper meal distribution, intelligent dietary fallbacks.
+- **Recipe System**: All meals include detailed cooking instructions, tips, and nutritional information; recipes are alcohol-free.
 - **Smart Time Constraints**: Weekday meals (Mon-Fri) are limited to ≤30 minutes prep time; weekends have no time restrictions.
-- **Ayurvedic Integration**: Supports Ayurvedic dietary tags, including seasonal adaptation based on a 6-season calendar (adapted for European seasons) that filters warming recipes in summer and provides cooling alternatives.
-- **Meal Plan Persistence**: Meal plans persist across browser sessions with automatic loading of current week or latest plan. Enhanced login flow redirects users to homepage after authentication.
-- **Automated Viral Recipe Updates**: System automatically adds new trending recipes every 2 weeks on Sundays at 3 AM to keep content fresh and current. Includes viral TikTok recipes, social media food trends, and popular dishes with "viral" and "social-media" dietary tags.
-- **Automatic Oura Ring Sync**: Daily automated synchronization of Oura Ring health data at 8:00 AM Europe/Amsterdam timezone. Eliminates need for manual sync button with smart duplicate prevention and error handling.
-- **Enhanced Multi-Plan Weekend Grocery System**: Users can maintain both current week (for remaining cooking) and next week plans (for grocery shopping) simultaneously. Features separate sections for current week plan continuation and next week grocery planning with clear visual distinctions and alternating capabilities.
-- **Albert Heijn Shopping List Integration**: Complete integration with Dutch supermarket Albert Heijn for shopping list generation, export in multiple formats (text, CSV, JSON), ingredient mapping to Dutch terms, store-optimized route planning, and deep linking to AH mobile app.
-- **Complete Dutch Recipe Translation System**: Comprehensive translation service that converts recipe names, ingredients, and cooking instructions from English to Dutch when Dutch language is selected. Includes over 200 ingredient and cooking term translations, pattern-based recipe name conversion, proper capitalization, and integration with all recipe endpoints including AI-generated content. AI-enhanced translation integrated with intelligent fallback to pattern-based system when quota exceeded.
-- **Consolidated Shopping List Workflow**: Single-flow shopping list generation with integrated export options (copy, CSV download, Albert Heijn app deep linking) within the shopping list interface, eliminating separate buttons for better UX.
+- **Ayurvedic Integration**: Supports Ayurvedic dietary tags, including seasonal adaptation based on a 6-season calendar (adapted for European seasons).
+- **Meal Plan Persistence**: Meal plans persist across browser sessions with automatic loading.
+- **Automated Viral Recipe Updates**: System automatically adds new trending recipes every 2 weeks on Sundays at 3 AM.
+- **Automatic Oura Ring Sync**: Daily automated synchronization of Oura Ring health data at 8:00 AM Europe/Amsterdam timezone.
+- **Enhanced Multi-Plan Weekend Grocery System**: Users can maintain both current week and next week plans simultaneously.
+- **Complete Dutch Recipe Translation System**: Comprehensive translation service for recipe names, ingredients, and cooking instructions from English to Dutch, including AI-enhanced translation.
+- **Consolidated Shopping List Workflow**: Single-flow shopping list generation with integrated export options (copy, CSV download, Albert Heijn app deep linking).
 
 ### System Design Choices
-- **Data Flow**: User input drives meal generation, which is stored in PostgreSQL, displayed via React Query, and can be synced to Notion.
-- **Database Schema**: Includes comprehensive user profiles, weekly meal plans, individual meals with nutrition/recipe info, meal history, favorite meals, and Oura data for personalized planning.
+- **Data Flow**: User input drives meal generation, stored in PostgreSQL, displayed via React Query, and can be synced to Notion.
+- **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, favorite meals, and Oura data.
 
 ## External Dependencies
 

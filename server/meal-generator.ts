@@ -11,6 +11,7 @@ import {
 import { ensureRecipeVariety, selectMealsWithBetterVariety } from "./recipe-variety-manager";
 import { calculateProteinTarget } from "./nutrition";
 import { getCurrentAyurvedicSeason } from "./ayurveda-seasonal";
+import { selectProteinOptimizedMeals } from "./smart-protein-selection";
 
 export interface GeneratedMealPlan {
   mealPlan: InsertMealPlan;
@@ -394,6 +395,20 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         return; // Skip this meal instead of using inappropriate fallback
       }
 
+      // Apply smart protein optimization for high activity levels
+      const shouldOptimizeProtein = request.activityLevel === 'high';
+      console.log(`🔍 Checking protein optimization: activityLevel=${request.activityLevel}, shouldOptimize=${shouldOptimizeProtein}, mealCategory=${mealCategory}`);
+      if (shouldOptimizeProtein) {
+        const originalCount = availableMeals.length;
+        const originalAvgProtein = availableMeals.reduce((sum, m) => sum + m.nutrition.protein, 0) / availableMeals.length;
+        console.log(`🥩 Before optimization: ${originalCount} ${mealCategory} meals, avg ${originalAvgProtein.toFixed(1)}g protein`);
+        
+        availableMeals = selectProteinOptimizedMeals(availableMeals, availableMeals.length, true);
+        
+        const enhancedAvgProtein = availableMeals.reduce((sum, m) => sum + m.nutrition.protein, 0) / availableMeals.length;
+        console.log(`🥩 After optimization: ${availableMeals.length} ${mealCategory} meals, avg ${enhancedAvgProtein.toFixed(1)}g protein`);
+      }
+
       // Implement Sunday night cooking pattern logic
       let isLeftover = false;
       let selectedMeal: MealOption;
@@ -605,16 +620,16 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   }
 
   // Calculate actual days with meals for proper protein average
-  const totalMealsGenerated = meals.length;
-  const averageProteinPerDay = totalMealsGenerated > 0 ? totalWeeklyProtein / totalMealsGenerated : 0;
+  const daysWithMeals = new Set(meals.map(meal => meal.day)).size;
+  const averageProteinPerDay = daysWithMeals > 0 ? totalWeeklyProtein / daysWithMeals : 0;
   
-  console.log(`🥩 Protein calculation: ${totalWeeklyProtein}g total / ${totalMealsGenerated} meals = ${averageProteinPerDay.toFixed(1)}g per meal`);
+  console.log(`🥩 Protein calculation: ${totalWeeklyProtein}g total / ${daysWithMeals} days = ${averageProteinPerDay.toFixed(1)}g per day (target: ${targetProtein}g)`);
 
   const mealPlan: InsertMealPlan = {
     userId: request.userId || 1,
     weekStart: request.weekStart,
     activityLevel: request.activityLevel,
-    totalProtein: Math.round(averageProteinPerDay), // Average protein per meal
+    totalProtein: Math.round(averageProteinPerDay), // Average protein per day
     notionSynced: false,
   };
 
@@ -703,6 +718,24 @@ async function generateMealPrepPlan(
   
   console.log(`Weekday time filter: ${lunchOptions.length} → ${weekdayLunchOptions.length} lunch meals (≤30min)`);
   console.log(`Weekday time filter: ${dinnerOptions.length} → ${weekdayDinnerOptions.length} dinner meals (≤30min)`);
+  
+  // Apply smart protein optimization for high activity levels
+  if (request.activityLevel === 'high') {
+    const originalLunchAvg = lunchOptions.reduce((sum, m) => sum + m.nutrition.protein, 0) / lunchOptions.length;
+    const originalDinnerAvg = dinnerOptions.reduce((sum, m) => sum + m.nutrition.protein, 0) / dinnerOptions.length;
+    
+    lunchOptions = selectProteinOptimizedMeals(lunchOptions, lunchOptions.length, true);
+    dinnerOptions = selectProteinOptimizedMeals(dinnerOptions, dinnerOptions.length, true);
+    weekdayLunchOptions = selectProteinOptimizedMeals(weekdayLunchOptions, weekdayLunchOptions.length, true);
+    weekdayDinnerOptions = selectProteinOptimizedMeals(weekdayDinnerOptions, weekdayDinnerOptions.length, true);
+    
+    const enhancedLunchAvg = lunchOptions.reduce((sum, m) => sum + m.nutrition.protein, 0) / lunchOptions.length;
+    const enhancedDinnerAvg = dinnerOptions.reduce((sum, m) => sum + m.nutrition.protein, 0) / dinnerOptions.length;
+    
+    console.log(`🥩 High activity protein optimization applied:`);
+    console.log(`🥩 Lunch: ${originalLunchAvg.toFixed(1)}g → ${enhancedLunchAvg.toFixed(1)}g avg protein per meal`);
+    console.log(`🥩 Dinner: ${originalDinnerAvg.toFixed(1)}g → ${enhancedDinnerAvg.toFixed(1)}g avg protein per meal`);
+  }
   
   // Initialize meal variety tracking for meal prep mode
   const usedBreakfastMeals: Set<string> = new Set();

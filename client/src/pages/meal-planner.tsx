@@ -713,12 +713,17 @@ export default function MealPlanner() {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 text-sm">
               <div>
-                <div className="text-muted-foreground mb-2">{t.yourProteinTarget}</div>
+                <div className="text-muted-foreground mb-2">
+                  {latestMealPlan.activityLevel === 'high' ? 'High Protein Target' : 'Daily Protein'}
+                </div>
                 <div className="text-lg font-semibold text-foreground">
                   {latestMealPlan.totalProtein.toFixed(1)}g {t.daily}
                 </div>
                 <div className="text-xs text-muted-foreground mt-1">
-                  {latestMealPlan.activityLevel === 'high' ? t.highActivityWeek : t.moderateActivityWeek}
+                  {latestMealPlan.activityLevel === 'high' ? 
+                    `Target: 130g (${((latestMealPlan.totalProtein / 130) * 100).toFixed(0)}% achieved)` : 
+                    t.moderateActivityWeek
+                  }
                 </div>
               </div>
               <div>
