@@ -1,5 +1,6 @@
 // Recipe Translation Service for Dutch Language Support
 // Translates recipe names, ingredients, and instructions from English to Dutch
+import { convertIngredientsToMetric, convertInstructionsToMetric } from './unit-converter';
 
 export interface TranslatedRecipe {
   name: string;
@@ -340,22 +341,28 @@ function translateRecipeName(name: string): string {
 
 export function translateRecipe(recipe: any, language: 'en' | 'nl'): TranslatedRecipe {
   if (language === 'en') {
+    // Still convert to metric even for English
     return {
       name: recipe.name,
-      ingredients: recipe.ingredients || [],
-      instructions: recipe.instructions || [],
-      tips: recipe.tips || [],
-      notes: recipe.notes || []
+      ingredients: convertIngredientsToMetric(recipe.ingredients || []),
+      instructions: convertInstructionsToMetric(recipe.instructions || []),
+      tips: convertInstructionsToMetric(recipe.tips || []),
+      notes: convertInstructionsToMetric(recipe.notes || [])
     };
   }
   
-  // Translate to Dutch
+  // For Dutch: translate AND convert to metric
+  const translatedIngredients = (recipe.ingredients || []).map(translateIngredient);
+  const translatedInstructions = (recipe.instructions || []).map(translateInstruction);
+  const translatedTips = (recipe.tips || []).map(translateInstruction);
+  const translatedNotes = (recipe.notes || []).map(translateInstruction);
+  
   return {
     name: translateRecipeName(recipe.name),
-    ingredients: (recipe.ingredients || []).map(translateIngredient),
-    instructions: (recipe.instructions || []).map(translateInstruction),
-    tips: (recipe.tips || []).map(translateInstruction),
-    notes: (recipe.notes || []).map(translateInstruction)
+    ingredients: convertIngredientsToMetric(translatedIngredients),
+    instructions: convertInstructionsToMetric(translatedInstructions),
+    tips: convertInstructionsToMetric(translatedTips),
+    notes: convertInstructionsToMetric(translatedNotes)
   };
 }
 
