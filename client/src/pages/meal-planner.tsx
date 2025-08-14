@@ -1369,7 +1369,7 @@ export default function MealPlanner() {
               ) : (
                 <div className="text-center py-12">
                   <Activity className="mx-auto h-12 w-12 mb-4 text-muted-foreground" />
-                  <p className="text-muted-foreground">No meal plan available. Generate your first meal plan to get started!</p>
+                  <p className="text-muted-foreground">{t.noMealPlanAvailable}</p>
                 </div>
               )}
               
@@ -1377,18 +1377,18 @@ export default function MealPlanner() {
                 <div className="px-6 py-4 bg-muted/30 border-t border-border mt-6">
                   <div className="flex justify-between items-center">
                     <div className="text-sm text-muted-foreground">
-                      Weekly Average: <span className="font-medium text-foreground">
-                        {currentMealPlan.totalProtein.toFixed(1)}g protein/day
+                      {t.weeklyAverage}: <span className="font-medium text-foreground">
+                        {currentMealPlan.totalProtein.toFixed(1)}g {t.proteinPerDay}
                       </span>
                     </div>
                     <div className="flex space-x-2">
                       <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
                         <Download className="mr-1 h-4 w-4" />
-                        Export
+                        {t.exportButton}
                       </Button>
                       <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
                         <Share className="mr-1 h-4 w-4" />
-                        Share
+                        {t.shareButton}
                       </Button>
                     </div>
                   </div>
@@ -1408,9 +1408,9 @@ export default function MealPlanner() {
                 <Calendar className="text-foreground h-8 w-8" />
               </div>
               <div className="ml-4">
-                <div className="text-sm font-medium text-muted-foreground">Last Sync</div>
+                <div className="text-sm font-medium text-muted-foreground">{t.lastSync}</div>
                 <div className="text-lg font-semibold text-foreground">
-                  {latestMealPlan?.notionSynced ? "Synced" : "Not synced"}
+                  {latestMealPlan?.notionSynced ? t.syncedStatus : t.notSyncedStatus}
                 </div>
               </div>
             </div>
@@ -1422,8 +1422,8 @@ export default function MealPlanner() {
                 <Target className="text-foreground h-8 w-8" />
               </div>
               <div className="ml-4">
-                <div className="text-sm font-medium text-muted-foreground">Protein Goal</div>
-                <div className="text-lg font-semibold text-foreground">On Track</div>
+                <div className="text-sm font-medium text-muted-foreground">{t.proteinGoal}</div>
+                <div className="text-lg font-semibold text-foreground">{t.onTrack}</div>
               </div>
             </div>
           </div>
@@ -1434,8 +1434,8 @@ export default function MealPlanner() {
                 <Clock className="text-foreground h-8 w-8" />
               </div>
               <div className="ml-4">
-                <div className="text-sm font-medium text-muted-foreground">Prep Time</div>
-                <div className="text-lg font-semibold text-foreground">{"< 30 min/meal"}</div>
+                <div className="text-sm font-medium text-muted-foreground">{t.prepTime}</div>
+                <div className="text-lg font-semibold text-foreground">{t.under30MinPerMeal}</div>
               </div>
             </div>
           </div>
@@ -1444,7 +1444,7 @@ export default function MealPlanner() {
         {/* Notion Integration - Bottom Section */}
         <div className="card-clean mt-16">
           <div className="mb-6">
-            <h2 className="text-lg font-semibold text-foreground">Notion Integration</h2>
+            <h2 className="text-lg font-semibold text-foreground">{t.notionIntegration}</h2>
           </div>
           <div className="space-y-6">
             <div>
@@ -1470,12 +1470,12 @@ export default function MealPlanner() {
               {syncMutation.isPending ? (
                 <>
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground mr-2" />
-                  Syncing...
+                  {t.syncing}...
                 </>
               ) : (
                 <>
                   <Upload className="mr-2 h-4 w-4" />
-                  Sync to Notion
+                  {t.syncToNotion}
                 </>
               )}
             </Button>

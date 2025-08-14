@@ -128,8 +128,6 @@ export const translations = {
     generationFailed: "Generation Failed",
     failedToGenerateMealPlan: "Failed to generate meal plan. Please try again.",
     yourWeeklyMealPlanCreated: "Your weekly meal plan has been created successfully!",
-    syncToNotion: "Sync to Notion",
-    syncing: "Syncing...",
     integrationStatus: "Integration Status",
     notConnectedPleaseConfigureSecrets: "Please configure NOTION_INTEGRATION_SECRET and NOTION_PAGE_URL environment variables.",
     medium: "Medium",
@@ -145,6 +143,22 @@ export const translations = {
     saveProfile: "Save Profile",
     profileUpdated: "Profile updated successfully!",
     errorUpdating: "Error updating profile",
+    
+    // Additional translations
+    noMealPlanAvailable: "No meal plan available. Generate your first meal plan to get started!",
+    weeklyAverage: "Weekly Average",
+    proteinPerDay: "protein/day",
+    exportButton: "Export",
+    shareButton: "Share",
+    lastSync: "Last Sync",
+    syncedStatus: "Synced",
+    notSyncedStatus: "Not synced",
+    proteinGoal: "Protein Goal",
+    onTrack: "On Track",
+    under30MinPerMeal: "< 30 min/meal",
+    notionIntegration: "Notion Integration",
+    syncToNotion: "Sync to Notion",
+    syncing: "Syncing",
   },
   
   nl: {
@@ -350,8 +364,6 @@ export const translations = {
     generationFailed: "Generatie Mislukt",
     failedToGenerateMealPlan: "Kon maaltijdplan niet genereren. Probeer het opnieuw.",
     yourWeeklyMealPlanCreated: "Je wekelijkse maaltijdplan is succesvol aangemaakt!",
-    syncToNotion: "Synchroniseren naar Notion",
-    syncing: "Synchroniseren...",
     integrationStatus: "Integratie Status",
     notConnectedPleaseConfigureSecrets: "Configureer alstublieft NOTION_INTEGRATION_SECRET en NOTION_PAGE_URL omgevingsvariabelen.",
     medium: "Gemiddeld",
@@ -367,6 +379,22 @@ export const translations = {
     saveProfile: "Profiel Opslaan",
     profileUpdated: "Profiel succesvol bijgewerkt!",
     errorUpdating: "Fout bij het bijwerken van profiel",
+    
+    // Additional translations
+    noMealPlanAvailable: "Geen maaltijdplan beschikbaar. Genereer je eerste maaltijdplan om te beginnen!",
+    weeklyAverage: "Wekelijks Gemiddelde",
+    proteinPerDay: "eiwit/dag",
+    exportButton: "Exporteren",
+    shareButton: "Delen",
+    lastSync: "Laatste Sync",
+    syncedStatus: "Gesynchroniseerd",
+    notSyncedStatus: "Niet gesynchroniseerd",
+    proteinGoal: "Eiwit Doelstelling",
+    onTrack: "Op Schema",
+    under30MinPerMeal: "< 30 min/maaltijd",
+    notionIntegration: "Notion Integratie",
+    syncToNotion: "Synchroniseren naar Notion",
+    syncing: "Synchroniseren",
   }
 };
 
