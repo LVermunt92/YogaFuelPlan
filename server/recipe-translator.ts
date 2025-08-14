@@ -65,6 +65,8 @@ const ingredientTranslations: Record<string, string> = {
   'garlic': 'knoflook',
   'tomato': 'tomaat',
   'tomatoes': 'tomaten',
+  'sun-dried tomato': 'zongedroogde tomaat',
+  'sun-dried tomatoes': 'zongedroogde tomaten',
   'carrot': 'wortel',
   'carrots': 'wortels',
   'broccoli': 'broccoli',
