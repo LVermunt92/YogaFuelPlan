@@ -556,19 +556,18 @@ export default function MealPlanner() {
     if (!currentMealPlan?.meals) return [];
     
     // Filter meals based on 8-day Sunday night cooking pattern
-    const allDayMeals = currentMealPlan.meals.filter(meal => meal.day === day);
-    
-    // Day 1: Sunday dinner only
-    if (day === 1) {
-      return allDayMeals.filter(meal => meal.mealType === 'dinner');
+    // Day 8: All Sunday meals (breakfast, lunch, dinner)
+    if (day === 8) {
+      const sundayMeals = currentMealPlan.meals.filter(meal => meal.day === 1 || meal.day === 8);
+      return sundayMeals;
     }
-    // Day 8: Sunday breakfast only
-    else if (day === 8) {
-      return allDayMeals.filter(meal => meal.mealType === 'breakfast');
+    // Days 2-7: All meals for that day (breakfast, lunch, dinner)
+    else if (day >= 2 && day <= 7) {
+      return currentMealPlan.meals.filter(meal => meal.day === day);
     }
-    // Days 2-7: All meals (breakfast, lunch, dinner)
+    // Day 1: Skip (Sunday meals are shown on day 8)
     else {
-      return allDayMeals;
+      return [];
     }
   };
 
@@ -1249,13 +1248,11 @@ export default function MealPlanner() {
                     <table className="w-full min-w-[600px]">
                       <thead className="border-b border-border">
                         <tr>
-                          <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.meal}</th>
-                          <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.food}</th>
-                          <th className="px-3 sm:px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.prep}</th>
+                          <th colSpan={3} className="px-3 sm:px-6 py-4 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.weeklyMealPlan || 'Weekly Meal Plan'}</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-border">
-                        {[1, 2, 3, 4, 5, 6, 7, 8].map(day => {
+                        {[2, 3, 4, 5, 6, 7, 8].map(day => {
                           const dayMeals = getDayMeals(day);
                           const dayTotal = calculateDayTotal(day);
                           
@@ -1266,13 +1263,13 @@ export default function MealPlanner() {
                                 <td className="px-3 sm:px-6 py-3 text-sm font-semibold text-foreground">
                                   <div className="flex items-center justify-between">
                                     <div>
-                                      {day === 1 ? t.sunday : 
-                                       day === 2 ? t.monday : 
+                                      {day === 2 ? t.monday : 
                                        day === 3 ? t.tuesday : 
                                        day === 4 ? t.wednesday : 
                                        day === 5 ? t.thursday : 
                                        day === 6 ? t.friday : 
-                                       day === 7 ? t.saturday : t.sunday}
+                                       day === 7 ? t.saturday : 
+                                       day === 8 ? t.sunday : t.sunday}
                                     </div>
                                     <div className="text-xs text-muted-foreground">
                                       {dayTotal.toFixed(1)}g protein
