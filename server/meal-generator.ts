@@ -131,18 +131,27 @@ function incorporateLeftoverIngredients(meal: MealOption, ingredientsToUseUp: st
  * Select an unused meal from available options, ensuring variety
  */
 function selectUnusedMeal(availableMeals: MealOption[], usedMeals: Set<string>): MealOption {
+  if (availableMeals.length === 0) {
+    throw new Error('No available meals to select from');
+  }
+  
   // First try to find a meal that hasn't been used yet
   const unusedMeals = availableMeals.filter(meal => !usedMeals.has(meal.name));
   
   if (unusedMeals.length > 0) {
     // Select a random unused meal for variety
-    return unusedMeals[Math.floor(Math.random() * unusedMeals.length)];
+    const selectedMeal = unusedMeals[Math.floor(Math.random() * unusedMeals.length)];
+    console.log(`📋 Selected unused meal: ${selectedMeal.name} (${unusedMeals.length} unused options available)`);
+    return selectedMeal;
   }
   
-  // If all meals have been used, reset and start over (should rarely happen)
-  console.log('All meals used, resetting for continued variety');
+  // If all meals have been used, select least recently used
+  // For now, just reset and continue with any meal
+  console.log('⚠️ All meals used, resetting for continued variety');
   usedMeals.clear();
-  return availableMeals[Math.floor(Math.random() * availableMeals.length)];
+  const selectedMeal = availableMeals[Math.floor(Math.random() * availableMeals.length)];
+  console.log(`📋 Reset and selected: ${selectedMeal.name}`);
+  return selectedMeal;
 }
 
 /**

@@ -112,7 +112,11 @@ export default function MealPlanner() {
     // Week starts on Sunday for Sunday night cooking pattern
     const nextSunday = new Date();
     const daysUntilSunday = (7 - nextSunday.getDay()) % 7;
-    nextSunday.setDate(nextSunday.getDate() + daysUntilSunday);
+    if (daysUntilSunday === 0 && nextSunday.getHours() < 18) {
+      // If it's Sunday before 6 PM, use today as the start
+    } else {
+      nextSunday.setDate(nextSunday.getDate() + daysUntilSunday);
+    }
     return nextSunday.toISOString().split('T')[0];
   });
   const [selectedMealPlan, setSelectedMealPlan] = useState<number | null>(() => {

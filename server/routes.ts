@@ -7,6 +7,7 @@ import { notion, createDatabaseIfNotExists, findDatabaseByTitle } from "./notion
 import { generateEnhancedShoppingList } from "./nutrition-enhanced";
 import { OuraService } from "./oura";
 import { updateUserProfileSchema, authRegisterSchema, authLoginSchema } from "@shared/schema";
+import { z } from "zod";
 import { albertHeijnService, type ShoppingListExport } from "./albert-heijn";
 import { translateRecipe, translateMealPlan, translateShoppingList } from './recipe-translator';
 import { translateRecipeEnhanced, getTranslationStatus } from './ai-enhanced-translator';
@@ -682,11 +683,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Auto-generate weekly meal plan (for Sunday automation)
   app.post("/api/meal-plans/auto-generate", async (req, res) => {
     try {
-      // Get next Monday's date
-      const nextMonday = new Date();
-      const daysUntilMonday = (8 - nextMonday.getDay()) % 7 || 7;
-      nextMonday.setDate(nextMonday.getDate() + daysUntilMonday);
-      const weekStart = nextMonday.toISOString().split('T')[0];
+      // Calculate next Sunday for Sunday night cooking pattern
+      const nextSunday = new Date();
+      const daysUntilSunday = (7 - nextSunday.getDay()) % 7;
+      if (daysUntilSunday === 0 && nextSunday.getHours() < 18) {
+        // If it's Sunday before 6 PM, use today as the start
+        // Otherwise use next Sunday
+      } else {
+        nextSunday.setDate(nextSunday.getDate() + daysUntilSunday);
+      }
+      const weekStart = nextSunday.toISOString().split('T')[0];
       
       // Use high activity level by default (130g protein)
       const request = {
