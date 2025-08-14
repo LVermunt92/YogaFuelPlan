@@ -15,6 +15,12 @@ Terminology standardization: Updated all references from "snap peas" to "sugar s
 
 ## System Architecture
 
+### Authentication & Multi-User Support
+- **User Authentication**: Complete login/registration system with secure password hashing
+- **Multi-User Support**: Each user gets unique ID and isolated data (profiles, meal plans, settings)
+- **Data Isolation**: Users cannot see or access other users' data
+- **Routing**: Unauthenticated users automatically redirected to login/registration page
+
 ### UI/UX Decisions
 - **Design System**: shadcn/ui built on Radix UI primitives
 - **Styling**: Tailwind CSS with CSS variables for theming
