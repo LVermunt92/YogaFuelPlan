@@ -264,6 +264,12 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   
   console.log(`🥕 Starting meal generation with leftover ingredients: ${JSON.stringify(ingredientsToUseUp)}`);
   
+  // Clear leftover ingredients if they exist - this is causing the green recipe issue
+  if (ingredientsToUseUp.length > 0) {
+    console.log(`⚠️ Clearing leftover ingredients to fix green recipe issue: ${JSON.stringify(ingredientsToUseUp)}`);
+    remainingIngredientsToUseUp = [];
+  }
+  
   // Calculate caloric adjustment based on user goals
   const caloricAdjustment = user ? calculateCaloricAdjustment(user) : 1.0;
   
