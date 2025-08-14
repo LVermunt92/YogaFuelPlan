@@ -172,11 +172,19 @@ function selectUnusedMeal(
   
   // If we have a global tracker, also filter out similar recipes across all categories
   if (allSelectedMeals && allSelectedMeals.size > 0) {
+    const beforeFilter = unusedMeals.length;
     unusedMeals = unusedMeals.filter(candidateMeal => {
-      return !Array.from(allSelectedMeals).some(selectedMeal => 
+      const isSimilar = Array.from(allSelectedMeals).some(selectedMeal => 
         areMealsSimilar(candidateMeal.name, selectedMeal)
       );
+      if (isSimilar) {
+        console.log(`🚫 Global filter blocked: ${candidateMeal.name} (similar to existing meals)`);
+      }
+      return !isSimilar;
     });
+    if (beforeFilter !== unusedMeals.length) {
+      console.log(`🔍 Global filter: ${beforeFilter} → ${unusedMeals.length} meals after similarity filtering`);
+    }
   }
   
   if (unusedMeals.length > 0) {
@@ -191,10 +199,27 @@ function selectUnusedMeal(
   if (availableMeals.length > 1) {
     console.log('⚠️ All meals used, resetting for continued variety');
     usedMeals.clear();
+    
+    // Apply global similarity filtering even after reset
+    let resetCandidates = availableMeals;
+    if (allSelectedMeals && allSelectedMeals.size > 0) {
+      resetCandidates = availableMeals.filter(candidateMeal => {
+        return !Array.from(allSelectedMeals).some(selectedMeal => 
+          areMealsSimilar(candidateMeal.name, selectedMeal)
+        );
+      });
+      
+      // If global filtering removed all options, fallback to all available
+      if (resetCandidates.length === 0) {
+        console.log('⚠️ Global filtering removed all options, using fallback selection');
+        resetCandidates = availableMeals;
+      }
+    }
+    
     // Use intelligent selection after reset
-    const selectedMeals = selectMealsWithBetterVariety(availableMeals, 1);
-    const selectedMeal = selectedMeals[0] || availableMeals[0];
-    console.log(`📋 Reset and selected: ${selectedMeal.name}`);
+    const selectedMeals = selectMealsWithBetterVariety(resetCandidates, 1);
+    const selectedMeal = selectedMeals[0] || resetCandidates[0];
+    console.log(`📋 Reset and selected: ${selectedMeal.name} (from ${resetCandidates.length} filtered options)`);
     return selectedMeal;
   } else {
     // Only one meal available, use it
