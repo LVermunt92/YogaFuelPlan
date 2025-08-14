@@ -3152,6 +3152,322 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       ],
       notes: "Weekend-worthy pancakes that don't compromise on nutrition"
     }
+  },
+
+  // Quick Vegetarian High-Protein Lunch/Dinner Options for Weekday Variety
+  {
+    name: "Quick tofu and vegetable stir-fry with quinoa",
+    portion: "1.5 cups stir-fry with quinoa",
+    nutrition: { 
+      protein: 24, 
+      prepTime: 18, 
+      calories: 380,
+      carbohydrates: 35,
+      fats: 16,
+      fiber: 8,
+      sugar: 6,
+      sodium: 420,
+      costEuros: 3.20, 
+      proteinPerEuro: 7.5 
+    },
+    category: "lunch",
+    tags: ["vegetarian", "vegan", "gluten-free", "high-protein", "quick", "asian-inspired"],
+    ingredients: [
+      "150g firm tofu (cubed)",
+      "½ cup cooked quinoa",
+      "1 bell pepper (sliced)",
+      "100g broccoli florets",
+      "1 carrot (julienned)",
+      "2 tbsp soy sauce",
+      "1 tbsp sesame oil",
+      "1 tsp fresh ginger (grated)",
+      "2 cloves garlic (minced)",
+      "1 tsp sesame seeds"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["bell pepper", "broccoli", "carrot"],
+      benefits: ["High in antioxidants", "Rich in vitamin C", "Supports immune system"]
+    },
+    recipe: {
+      instructions: [
+        "Cook quinoa according to package instructions",
+        "Heat sesame oil in large pan over medium-high heat",
+        "Add tofu cubes and cook until golden, about 4 minutes",
+        "Add garlic and ginger, stir for 30 seconds",
+        "Add vegetables and stir-fry for 5-6 minutes until tender-crisp",
+        "Stir in soy sauce and sesame seeds",
+        "Serve over quinoa"
+      ],
+      tips: [
+        "Press tofu beforehand for better texture",
+        "Keep vegetables crisp for optimal nutrition"
+      ]
+    }
+  },
+
+  {
+    name: "Mediterranean white bean and spinach bowl",
+    portion: "1.5 cups bean bowl",
+    nutrition: { 
+      protein: 22, 
+      prepTime: 15, 
+      calories: 340,
+      carbohydrates: 38,
+      fats: 12,
+      fiber: 14,
+      sugar: 4,
+      sodium: 380,
+      costEuros: 2.80, 
+      proteinPerEuro: 7.9 
+    },
+    category: "lunch",
+    tags: ["vegetarian", "vegan", "gluten-free", "high-protein", "quick", "mediterranean"],
+    ingredients: [
+      "1 can (400g) white beans (drained)",
+      "200g fresh spinach",
+      "1 large tomato (diced)",
+      "½ cucumber (diced)",
+      "2 tbsp olive oil",
+      "2 tbsp lemon juice",
+      "2 cloves garlic (minced)",
+      "¼ cup fresh herbs (parsley, basil)",
+      "2 tbsp pine nuts",
+      "Salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2.5,
+      vegetables: ["spinach", "tomato", "cucumber"],
+      benefits: ["High in iron", "Rich in folate", "Supports heart health"]
+    },
+    recipe: {
+      instructions: [
+        "Heat 1 tbsp olive oil in large pan",
+        "Add garlic and cook for 30 seconds",
+        "Add spinach and cook until wilted, about 2 minutes",
+        "Add white beans and heat through",
+        "Remove from heat, add tomato and cucumber",
+        "Drizzle with remaining olive oil and lemon juice",
+        "Top with fresh herbs and pine nuts"
+      ],
+      tips: [
+        "Can be served warm or cold",
+        "Add feta cheese for extra protein if not vegan"
+      ]
+    }
+  },
+
+  {
+    name: "Quick chickpea and sweet potato curry",
+    portion: "1.5 cups curry",
+    nutrition: { 
+      protein: 20, 
+      prepTime: 25, 
+      calories: 420,
+      carbohydrates: 58,
+      fats: 14,
+      fiber: 16,
+      sugar: 12,
+      sodium: 350,
+      costEuros: 2.60, 
+      proteinPerEuro: 7.7 
+    },
+    category: "dinner",
+    tags: ["vegetarian", "vegan", "gluten-free", "high-protein", "quick", "indian-inspired"],
+    ingredients: [
+      "1 can (400g) chickpeas (drained)",
+      "1 medium sweet potato (cubed)",
+      "1 can (400ml) coconut milk",
+      "1 onion (diced)",
+      "2 cloves garlic (minced)",
+      "1 tsp fresh ginger (grated)",
+      "1 tsp curry powder",
+      "½ tsp turmeric",
+      "½ tsp cumin",
+      "1 tbsp coconut oil",
+      "Fresh cilantro for garnish"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1.5,
+      vegetables: ["sweet potato", "onion"],
+      benefits: ["High in beta-carotene", "Rich in fiber", "Supports immune system"]
+    },
+    recipe: {
+      instructions: [
+        "Heat coconut oil in large pot over medium heat",
+        "Add onion and cook until soft, about 5 minutes",
+        "Add garlic, ginger, and spices; cook for 1 minute",
+        "Add sweet potato and cook for 5 minutes",
+        "Add chickpeas and coconut milk",
+        "Simmer for 12-15 minutes until sweet potato is tender",
+        "Garnish with fresh cilantro"
+      ],
+      tips: [
+        "Serve with brown rice or quinoa",
+        "Adjust spices to taste preference"
+      ]
+    }
+  },
+
+  {
+    name: "Protein-packed lentil and vegetable soup",
+    portion: "1.5 cups soup",
+    nutrition: { 
+      protein: 18, 
+      prepTime: 22, 
+      calories: 320,
+      carbohydrates: 42,
+      fats: 8,
+      fiber: 18,
+      sugar: 8,
+      sodium: 420,
+      costEuros: 2.20, 
+      proteinPerEuro: 8.2 
+    },
+    category: "lunch",
+    tags: ["vegetarian", "vegan", "gluten-free", "high-protein", "quick", "comfort-food"],
+    ingredients: [
+      "1 cup red lentils",
+      "1 carrot (diced)",
+      "1 celery stalk (diced)",
+      "1 onion (diced)",
+      "2 cloves garlic (minced)",
+      "1 can (400g) diced tomatoes",
+      "3 cups vegetable broth",
+      "1 tsp cumin",
+      "½ tsp paprika",
+      "1 tbsp olive oil",
+      "Fresh parsley for garnish"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["carrot", "celery", "onion", "tomatoes"],
+      benefits: ["High in fiber", "Rich in folate", "Supports digestive health"]
+    },
+    recipe: {
+      instructions: [
+        "Heat olive oil in large pot over medium heat",
+        "Add onion, carrot, and celery; cook for 5 minutes",
+        "Add garlic and spices; cook for 1 minute",
+        "Add lentils, tomatoes, and vegetable broth",
+        "Bring to boil, then reduce heat and simmer for 15 minutes",
+        "Stir occasionally until lentils are tender",
+        "Garnish with fresh parsley"
+      ],
+      tips: [
+        "Red lentils cook quickly and don't need soaking",
+        "Add extra broth if too thick"
+      ]
+    }
+  },
+
+  {
+    name: "Quick tempeh and vegetable noodle bowl",
+    portion: "1 large bowl (350g)",
+    nutrition: { 
+      protein: 26, 
+      prepTime: 20, 
+      calories: 450,
+      carbohydrates: 45,
+      fats: 18,
+      fiber: 8,
+      sugar: 8,
+      sodium: 480,
+      costEuros: 4.20, 
+      proteinPerEuro: 6.2 
+    },
+    category: "dinner",
+    tags: ["vegetarian", "vegan", "high-protein", "quick", "asian-inspired"],
+    ingredients: [
+      "150g tempeh (sliced)",
+      "100g rice noodles",
+      "1 red bell pepper (sliced)",
+      "100g snap peas",
+      "1 carrot (julienned)",
+      "2 tbsp soy sauce",
+      "1 tbsp rice vinegar",
+      "1 tsp sesame oil",
+      "1 tsp fresh ginger (grated)",
+      "2 green onions (chopped)",
+      "1 tbsp peanuts (crushed)"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["bell pepper", "snap peas", "carrot"],
+      benefits: ["High in antioxidants", "Rich in vitamin A", "Supports eye health"]
+    },
+    recipe: {
+      instructions: [
+        "Cook rice noodles according to package instructions",
+        "Heat oil in large pan over medium-high heat",
+        "Add tempeh slices and cook until golden, about 4 minutes per side",
+        "Add vegetables and stir-fry for 5 minutes",
+        "Mix soy sauce, rice vinegar, sesame oil, and ginger",
+        "Toss noodles with vegetables and sauce",
+        "Top with tempeh, green onions, and crushed peanuts"
+      ],
+      tips: [
+        "Steam tempeh briefly before cooking for better texture",
+        "Keep vegetables crisp for best nutrition"
+      ]
+    }
+  },
+
+  {
+    name: "Mediterranean quinoa and chickpea stuffed peppers",
+    portion: "2 stuffed pepper halves",
+    nutrition: { 
+      protein: 19, 
+      prepTime: 28, 
+      calories: 390,
+      carbohydrates: 52,
+      fats: 14,
+      fiber: 12,
+      sugar: 10,
+      sodium: 380,
+      costEuros: 3.40, 
+      proteinPerEuro: 5.6 
+    },
+    category: "dinner",
+    tags: ["vegetarian", "vegan", "gluten-free", "high-protein", "mediterranean"],
+    ingredients: [
+      "2 large bell peppers (halved and seeded)",
+      "½ cup cooked quinoa",
+      "½ can chickpeas (drained)",
+      "1 tomato (diced)",
+      "¼ cup olives (chopped)",
+      "2 tbsp pine nuts",
+      "2 cloves garlic (minced)",
+      "2 tbsp olive oil",
+      "1 tbsp lemon juice",
+      "Fresh herbs (parsley, basil)"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["bell peppers", "tomato"],
+      benefits: ["High in vitamin C", "Rich in antioxidants", "Supports immune system"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 200°C",
+        "Mix quinoa, chickpeas, tomato, olives, and pine nuts",
+        "Add garlic, olive oil, lemon juice, and herbs",
+        "Stuff pepper halves with mixture",
+        "Place in baking dish with little water at bottom",
+        "Cover with foil and bake for 25 minutes",
+        "Remove foil and bake 5 more minutes"
+      ],
+      tips: [
+        "Choose peppers that can stand upright",
+        "Can be made ahead and reheated"
+      ]
+    }
   }
 ];
 
