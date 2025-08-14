@@ -222,6 +222,13 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   // Use regular 8-day Sunday cooking pattern for other cases
   console.log('Using 8-day Sunday cooking pattern');
 
+  // Pre-load all meal options for fast generation (cache to avoid repeated database queries)
+  console.log('🚀 Pre-loading meal options for fast generation');
+  const breakfastOptions = getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags);
+  const lunchOptions = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
+  const dinnerOptions = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
+  console.log(`📊 Cached options: ${breakfastOptions.length} breakfast, ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
+
   // Track used meals to ensure variety in cooking moments
   const usedBreakfastMeals: Set<string> = new Set();
   const usedLunchMeals: Set<string> = new Set();
@@ -251,7 +258,10 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
     }
 
     mealsToGenerate.forEach(mealCategory => {
-      let availableMeals = getEnhancedMealsForCategoryAndDiet(mealCategory, dietaryTags);
+      // Get cached meals for this category (much faster than repeated database queries)
+      let availableMeals = mealCategory === 'breakfast' ? [...breakfastOptions] : 
+                          mealCategory === 'lunch' ? [...lunchOptions] : 
+                          [...dinnerOptions];
       
       // Apply summer filtering for ALL ayurvedic meals - regardless of user's dietary selection
       // All ayurvedic recipes should follow seasonal guidelines during grishma season
@@ -489,16 +499,10 @@ async function generateMealPrepPlan(
   let lunchOptions: MealOption[] = [];
   let dinnerOptions: MealOption[] = [];
   
-  try {
-    // Use enhanced variety management to ensure enough recipes
-    lunchOptions = await ensureRecipeVariety('lunch', dietaryTags, 22);
-    dinnerOptions = await ensureRecipeVariety('dinner', dietaryTags, 25);
-  } catch (error) {
-    console.warn('⚠️ AI recipe generation failed, using available recipes:', error);
-    // Fallback to standard method
-    lunchOptions = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
-    dinnerOptions = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
-  }
+  // Use existing recipe database directly (much faster than AI generation)
+  console.log('🚀 Using existing recipe database for fast meal generation');
+  lunchOptions = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
+  dinnerOptions = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
   
   // Apply summer filtering for ALL ayurvedic meals - regardless of user's dietary selection
   // All ayurvedic recipes should follow seasonal guidelines during grishma season
