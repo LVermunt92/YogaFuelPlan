@@ -3501,7 +3501,7 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
       if (!criticalSatisfied) return false;
     }
     
-    // For preference tags (high-protein, ayurvedic, etc.), be more flexible
+    // For preference tags (ayurvedic, etc.), be more flexible
     const preferenceTags = dietaryTags.filter(tag => !criticalTags.includes(tag));
     if (preferenceTags.length === 0) return true; // Only critical tags were specified
     
@@ -3514,9 +3514,8 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
 export function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' | 'lunch' | 'dinner', dietaryTags: string[] = []): MealOption[] {
   const categoryMeals = getEnhancedMealsByCategory(category);
   
-  // Remove "high-protein" from dietary filtering and handle it with smart protein selection instead
-  const filteringTags = dietaryTags.filter(tag => tag !== 'high-protein');
-  let filteredMeals = filterEnhancedMealsByDietaryTags(categoryMeals, filteringTags);
+  // Filter meals by dietary tags (protein targets handled automatically by activity level)
+  let filteredMeals = filterEnhancedMealsByDietaryTags(categoryMeals, dietaryTags);
   
   
   // Apply seasonal adaptations for ayurvedic meals
@@ -3586,11 +3585,8 @@ export function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' | 'lunc
     return [];
   }
   
-  // Apply smart protein prioritization if "high-protein" was in original dietary tags
-  if (dietaryTags.includes('high-protein')) {
-    console.log(`🥩 Applying smart protein prioritization to ${filteredMeals.length} ${category} meals`);
-    filteredMeals = selectProteinOptimizedMeals(filteredMeals, filteredMeals.length, true);
-  }
+  // Protein optimization is now handled automatically based on activity level targets
+  // No special "high-protein" tag filtering needed
   
   return filteredMeals;
 }

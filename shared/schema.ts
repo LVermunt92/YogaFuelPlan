@@ -184,7 +184,6 @@ export const DIETARY_TAGS = [
   "paleo",
   "mediterranean",
   "anti-inflammatory",
-  "high-protein",
   "low-sodium",
   "sugar-free",
   "whole30",
