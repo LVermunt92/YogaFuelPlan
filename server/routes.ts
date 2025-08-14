@@ -1444,6 +1444,51 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   }
 
+  // Test endpoint for recipe unit conversion workflow
+  app.get('/api/test/conversions', async (req, res) => {
+    try {
+      const { applyConversionWorkflow, validateConversions, getCurrentSeason } = await import('./unit-converter');
+      
+      // Test recipe with various US units
+      const testRecipe = {
+        name: "Test Recipe for Unit Conversion",
+        ingredients: [
+          "2 cups flour",
+          "1 cup milk", 
+          "3 tbsp olive oil",
+          "1 tsp vanilla",
+          "1 lb chicken breast",
+          "2 cups seasonal fruit",
+          "1 cup chopped vegetables",
+          "350°F oven temperature",
+          "½ cup nuts",
+          "4 fl oz water"
+        ]
+      };
+      
+      console.log('🧪 Testing unit conversion workflow...');
+      const converted = applyConversionWorkflow(testRecipe);
+      const validation = validateConversions(converted.ingredients);
+      const currentSeason = getCurrentSeason();
+      
+      res.json({
+        original: testRecipe,
+        converted: converted,
+        validation: validation,
+        currentSeason: currentSeason,
+        conversionsApplied: {
+          hasMetricUnits: validation.hasMetricUnits,
+          hasSpecificFruits: validation.hasSpecificFruits,
+          unconvertedCount: validation.unconvertedItems.length
+        },
+        message: 'Unit conversion test completed successfully'
+      });
+    } catch (error) {
+      console.error('Unit conversion test error:', error);
+      res.status(500).json({ message: 'Unit conversion test failed', error: error.message });
+    }
+  });
+
   // Meal History endpoints
   app.post("/api/meal-history", async (req, res) => {
     try {

@@ -1,272 +1,211 @@
-// Unit conversion system for recipe ingredients
-// Converts imperial measurements (cups, tbsp, tsp) to metric (grams, ml)
+// Enhanced Unit Conversion System for Recipe Ingredients
+// Automatically converts US measurements to metric for European users
 
-interface ConversionRule {
+export interface ConversionRule {
   pattern: RegExp;
-  convert: (amount: number, ingredient?: string) => string;
+  convert: (amount: number, unit: string) => { amount: number; unit: string };
+  category: 'liquid' | 'dry' | 'weight' | 'temperature';
 }
 
-// Density-based conversions for common ingredients (grams per cup)
-const ingredientDensities: Record<string, number> = {
-  // Flour and grains
-  'flour': 120,
-  'all-purpose flour': 120,
-  'whole wheat flour': 130,
-  'bread flour': 125,
-  'cake flour': 115,
-  'rice': 185,
-  'brown rice': 195,
-  'quinoa': 170,
-  'oats': 80,
-  'rolled oats': 80,
-  'oat flour': 100,
-  'almond flour': 100,
-  'coconut flour': 60,
-  
-  // Sugars and sweeteners
-  'sugar': 200,
-  'brown sugar': 220,
-  'powdered sugar': 120,
-  'honey': 340,
-  'maple syrup': 320,
-  'agave': 330,
-  
-  // Nuts and seeds
-  'almonds': 140,
-  'walnuts': 120,
-  'pecans': 110,
-  'cashews': 135,
-  'peanuts': 150,
-  'sunflower seeds': 140,
-  'pumpkin seeds': 130,
-  'chia seeds': 160,
-  'flax seeds': 170,
-  'sesame seeds': 150,
-  
-  // Dairy and proteins
-  'milk': 240, // ml
-  'yogurt': 245,
-  'cream': 240,
-  'butter': 227,
-  'cheese': 110,
-  'parmesan': 100,
-  'cottage cheese': 225,
-  
-  // Vegetables (chopped)
-  'onion': 160,
-  'carrots': 130,
-  'celery': 120,
-  'bell pepper': 150,
-  'tomatoes': 180,
-  'spinach': 30,
-  'kale': 65,
-  'broccoli': 90,
-  'cauliflower': 100,
-  'mushrooms': 70,
-  
-  // Beans and legumes (cooked)
-  'black beans': 180,
-  'kidney beans': 185,
-  'chickpeas': 160,
-  'lentils': 200,
-  'white beans': 180,
-  
-  // Oils and liquids
-  'oil': 220,
-  'olive oil': 220,
-  'coconut oil': 220,
-  'water': 240, // ml
-  'broth': 240, // ml
-  'stock': 240, // ml
-  
-  // Default for unknown ingredients
-  'default': 140
-};
+// Comprehensive conversion rules for recipe ingredients
+export const CONVERSION_RULES: ConversionRule[] = [
+  // Liquid conversions - prioritize milliliters for European users
+  {
+    pattern: /(\d+(?:\.\d+)?)\s*cups?\s+(milk|almond milk|coconut milk|oat milk|soy milk|plant milk)/i,
+    convert: (amount, unit) => ({ amount: Math.round(amount * 240), unit: 'ml' }),
+    category: 'liquid'
+  },
+  {
+    pattern: /(\d+(?:\.\d+)?)\s*cups?\s+(oil|olive oil|coconut oil|avocado oil|vegetable oil)/i,
+    convert: (amount, unit) => ({ amount: Math.round(amount * 240), unit: 'ml' }),
+    category: 'liquid'
+  },
+  {
+    pattern: /(\d+(?:\.\d+)?)\s*cups?\s+(water|stock|broth|juice)/i,
+    convert: (amount, unit) => ({ amount: Math.round(amount * 240), unit: 'ml' }),
+    category: 'liquid'
+  },
+  {
+    pattern: /(\d+(?:\.\d+)?)\s*fl\.?\s*oz\.?\s+(.*)/i,
+    convert: (amount, unit) => ({ amount: Math.round(amount * 30), unit: 'ml' }),
+    category: 'liquid'
+  },
 
-// Get density for ingredient (case-insensitive, partial matching)
-function getIngredientDensity(ingredient: string): number {
-  const normalized = ingredient.toLowerCase();
-  
-  // Direct match
-  if (ingredientDensities[normalized]) {
-    return ingredientDensities[normalized];
-  }
-  
-  // Partial match
-  for (const [key, density] of Object.entries(ingredientDensities)) {
-    if (normalized.includes(key) || key.includes(normalized)) {
-      return density;
-    }
-  }
-  
-  return ingredientDensities.default;
-}
+  // Dry ingredient conversions - prioritize grams for accuracy
+  {
+    pattern: /(\d+(?:\.\d+)?)\s*cups?\s+(flour|oats|quinoa|rice|pasta|lentils|chickpeas)/i,
+    convert: (amount, unit) => ({ amount: Math.round(amount * 120), unit: 'g' }),
+    category: 'dry'
+  },
+  {
+    pattern: /(\d+(?:\.\d+)?)\s*cups?\s+(sugar|coconut sugar|brown sugar)/i,
+    convert: (amount, unit) => ({ amount: Math.round(amount * 200), unit: 'g' }),
+    category: 'dry'
+  },
+  {
+    pattern: /(\d+(?:\.\d+)?)\s*cups?\s+(nuts|almonds|walnuts|pecans|cashews)/i,
+    convert: (amount, unit) => ({ amount: Math.round(amount * 140), unit: 'g' }),
+    category: 'dry'
+  },
+  {
+    pattern: /(\d+(?:\.\d+)?)\s*cups?\s+(chopped|diced|sliced)\s+(vegetables?|tomatoes?|onions?|carrots?)/i,
+    convert: (amount, unit) => ({ amount: Math.round(amount * 150), unit: 'g' }),
+    category: 'dry'
+  },
 
-// Check if ingredient is primarily liquid
-function isLiquid(ingredient: string): boolean {
-  const liquidKeywords = [
-    // Milk and dairy liquids
-    'milk', 'almond milk', 'soy milk', 'oat milk', 'coconut milk', 'rice milk',
-    'cashew milk', 'hemp milk', 'buttermilk', 'heavy cream', 'light cream',
-    'half and half', 'whipping cream', 'sour cream', 'yogurt drink', 'kefir',
-    
-    // Water and basic liquids
-    'water', 'sparkling water', 'coconut water', 'ice water',
-    
-    // Broths and stocks
-    'broth', 'stock', 'chicken broth', 'vegetable broth', 'beef broth',
-    'bone broth', 'fish stock', 'mushroom broth', 'miso broth', 'dashi',
-    
-    // Juices
-    'juice', 'lemon juice', 'lime juice', 'orange juice', 'apple juice',
-    'cranberry juice', 'tomato juice', 'vegetable juice', 'grapefruit juice',
-    'pineapple juice', 'grape juice', 'pomegranate juice',
-    
-    // Alcoholic beverages
-    'wine', 'white wine', 'red wine', 'cooking wine', 'sake', 'mirin',
-    'beer', 'rum', 'vodka', 'brandy', 'whiskey',
-    
-    // Vinegars
-    'vinegar', 'apple cider vinegar', 'white vinegar', 'balsamic vinegar',
-    'rice vinegar', 'red wine vinegar', 'champagne vinegar', 'sherry vinegar',
-    
-    // Oils
-    'oil', 'olive oil', 'vegetable oil', 'coconut oil', 'avocado oil',
-    'sesame oil', 'canola oil', 'sunflower oil', 'grapeseed oil',
-    'melted butter', 'ghee',
-    
-    // Sauces and condiments
-    'sauce', 'soy sauce', 'tamari', 'fish sauce', 'worcestershire sauce',
-    'hot sauce', 'sriracha', 'teriyaki sauce', 'hoisin sauce',
-    
-    // Syrups and sweeteners
-    'syrup', 'maple syrup', 'corn syrup', 'agave syrup', 'honey',
-    'molasses', 'brown rice syrup', 'date syrup',
-    
-    // Extracts
-    'extract', 'vanilla extract', 'almond extract', 'lemon extract',
-    'rum extract', 'orange extract', 'peppermint extract',
-    
-    // Beverages
-    'coffee', 'tea', 'espresso', 'cold brew', 'kombucha', 'smoothie',
-    
-    // Other liquids
-    'liquid smoke', 'rose water', 'orange blossom water'
-  ];
-  
-  const normalized = ingredient.toLowerCase();
-  return liquidKeywords.some(keyword => normalized.includes(keyword));
-}
+  // Tablespoon and teaspoon conversions
+  {
+    pattern: /(\d+(?:\.\d+)?)\s*tbsp\.?\s+(.*)/i,
+    convert: (amount, unit) => ({ amount: Math.round(amount * 15), unit: 'ml' }),
+    category: 'liquid'
+  },
+  {
+    pattern: /(\d+(?:\.\d+)?)\s*tsp\.?\s+(.*)/i,
+    convert: (amount, unit) => ({ amount: Math.round(amount * 5), unit: 'ml' }),
+    category: 'liquid'
+  },
 
-// Conversion rules
-const conversionRules: ConversionRule[] = [
-  // Cups to grams/ml
+  // Weight conversions
   {
-    pattern: /(\d+(?:\.\d+)?)\s*cups?\s+(.+)/gi,
-    convert: (amount: number, ingredient: string = '') => {
-      if (isLiquid(ingredient)) {
-        return `${Math.round(amount * 240)} ml ${ingredient}`;
-      } else {
-        const density = getIngredientDensity(ingredient);
-        return `${Math.round(amount * density)} g ${ingredient}`;
-      }
-    }
+    pattern: /(\d+(?:\.\d+)?)\s*lbs?\s+(.*)/i,
+    convert: (amount, unit) => ({ amount: Math.round(amount * 454), unit: 'g' }),
+    category: 'weight'
   },
-  
-  // Tablespoons to grams/ml
   {
-    pattern: /(\d+(?:\.\d+)?)\s*(?:tbsp|tablespoons?)\s+(.+)/gi,
-    convert: (amount: number, ingredient: string = '') => {
-      if (isLiquid(ingredient)) {
-        return `${Math.round(amount * 15)} ml ${ingredient}`;
-      } else {
-        const density = getIngredientDensity(ingredient);
-        return `${Math.round(amount * density / 16)} g ${ingredient}`;
-      }
-    }
+    pattern: /(\d+(?:\.\d+)?)\s*oz\.?\s+(.*)/i,
+    convert: (amount, unit) => ({ amount: Math.round(amount * 28), unit: 'g' }),
+    category: 'weight'
   },
-  
-  // Teaspoons to grams/ml
+
+  // Temperature conversions
   {
-    pattern: /(\d+(?:\.\d+)?)\s*(?:tsp|teaspoons?)\s+(.+)/gi,
-    convert: (amount: number, ingredient: string = '') => {
-      if (isLiquid(ingredient)) {
-        return `${Math.round(amount * 5)} ml ${ingredient}`;
-      } else {
-        const density = getIngredientDensity(ingredient);
-        return `${Math.round(amount * density / 48)} g ${ingredient}`;
-      }
-    }
-  },
-  
-  // Ounces to grams
-  {
-    pattern: /(\d+(?:\.\d+)?)\s*oz\s+(.+)/gi,
-    convert: (amount: number, ingredient: string = '') => {
-      return `${Math.round(amount * 28.35)} g ${ingredient}`;
-    }
-  },
-  
-  // Pounds to grams
-  {
-    pattern: /(\d+(?:\.\d+)?)\s*lbs?\s+(.+)/gi,
-    convert: (amount: number, ingredient: string = '') => {
-      return `${Math.round(amount * 453.592)} g ${ingredient}`;
-    }
-  },
-  
-  // Fluid ounces to ml
-  {
-    pattern: /(\d+(?:\.\d+)?)\s*fl\s*oz\s+(.+)/gi,
-    convert: (amount: number, ingredient: string = '') => {
-      return `${Math.round(amount * 29.5735)} ml ${ingredient}`;
-    }
-  },
-  
-  // Pints to ml
-  {
-    pattern: /(\d+(?:\.\d+)?)\s*pints?\s+(.+)/gi,
-    convert: (amount: number, ingredient: string = '') => {
-      return `${Math.round(amount * 473.176)} ml ${ingredient}`;
-    }
-  },
-  
-  // Quarts to ml
-  {
-    pattern: /(\d+(?:\.\d+)?)\s*quarts?\s+(.+)/gi,
-    convert: (amount: number, ingredient: string = '') => {
-      return `${Math.round(amount * 946.353)} ml ${ingredient}`;
-    }
+    pattern: /(\d+(?:\.\d+)?)\s*°?F/i,
+    convert: (amount, unit) => ({ amount: Math.round((amount - 32) * 5/9), unit: '°C' }),
+    category: 'temperature'
   }
 ];
 
-// Convert all imperial measurements in a text to metric
-export function convertToMetric(text: string): string {
-  let converted = text;
-  
-  for (const rule of conversionRules) {
-    converted = converted.replace(rule.pattern, (match, amountStr, ingredient) => {
-      const amount = parseFloat(amountStr);
-      if (isNaN(amount)) return match;
+// Seasonal fruit specification system
+export const SEASONAL_FRUIT_REPLACEMENTS = {
+  spring: ['strawberries', 'rhubarb', 'early apples'],
+  summer: ['mixed berries', 'peaches', 'plums', 'cherries'],
+  autumn: ['apples', 'pears', 'late berries'],
+  winter: ['citrus fruits', 'stored apples', 'dried fruits']
+};
+
+export function getCurrentSeason(): 'spring' | 'summer' | 'autumn' | 'winter' {
+  const month = new Date().getMonth() + 1; // 1-12
+  if (month >= 3 && month <= 5) return 'spring';
+  if (month >= 6 && month <= 8) return 'summer';
+  if (month >= 9 && month <= 11) return 'autumn';
+  return 'winter';
+}
+
+export function convertIngredientUnits(ingredient: string): string {
+  let convertedIngredient = ingredient;
+
+  // Apply all conversion rules
+  for (const rule of CONVERSION_RULES) {
+    const match = convertedIngredient.match(rule.pattern);
+    if (match) {
+      const amount = parseFloat(match[1]);
+      const restOfIngredient = match[2] || '';
+      const converted = rule.convert(amount, restOfIngredient);
       
-      try {
-        return rule.convert(amount, ingredient);
-      } catch (error) {
-        console.error('Conversion error:', error);
-        return match;
-      }
-    });
+      // Replace the matched portion with converted values
+      convertedIngredient = convertedIngredient.replace(
+        rule.pattern,
+        `${converted.amount}${converted.unit} ${restOfIngredient}`.trim()
+      );
+      
+      console.log(`🔄 Unit conversion: "${ingredient}" → "${convertedIngredient}"`);
+      break; // Apply only the first matching rule
+    }
   }
+
+  return convertedIngredient;
+}
+
+export function specifySeasonalFruit(ingredient: string): string {
+  const currentSeason = getCurrentSeason();
+  const seasonalFruits = SEASONAL_FRUIT_REPLACEMENTS[currentSeason];
   
-  return converted;
+  // Replace vague "seasonal fruit" with specific Netherlands-appropriate fruits
+  const seasonalPatterns = [
+    /seasonal fruits?/i,
+    /fresh fruits?/i,
+    /mixed fruits?/i,
+    /fruit of choice/i
+  ];
+
+  for (const pattern of seasonalPatterns) {
+    if (pattern.test(ingredient)) {
+      const specificFruit = seasonalFruits[Math.floor(Math.random() * seasonalFruits.length)];
+      const converted = ingredient.replace(pattern, specificFruit);
+      console.log(`🍎 Seasonal fruit specification: "${ingredient}" → "${converted}" (${currentSeason} season)`);
+      return converted;
+    }
+  }
+
+  return ingredient;
 }
 
-// Convert measurements in recipe ingredients list
-export function convertIngredientsToMetric(ingredients: string[]): string[] {
-  return ingredients.map(ingredient => convertToMetric(ingredient));
+export function processRecipeIngredients(ingredients: string[]): string[] {
+  return ingredients.map(ingredient => {
+    // Step 1: Convert units to metric
+    let processed = convertIngredientUnits(ingredient);
+    
+    // Step 2: Specify seasonal fruits
+    processed = specifySeasonalFruit(processed);
+    
+    return processed;
+  });
 }
 
-// Convert measurements in recipe instructions
-export function convertInstructionsToMetric(instructions: string[]): string[] {
-  return instructions.map(instruction => convertToMetric(instruction));
+// Main conversion workflow for new recipes
+export function applyConversionWorkflow(recipe: {
+  name: string;
+  ingredients: string[];
+  [key: string]: any;
+}): typeof recipe {
+  console.log(`🔧 Applying conversion workflow to recipe: ${recipe.name}`);
+  
+  return {
+    ...recipe,
+    ingredients: processRecipeIngredients(recipe.ingredients)
+  };
+}
+
+// Validation function to check if conversions were applied
+export function validateConversions(ingredients: string[]): {
+  hasMetricUnits: boolean;
+  hasSpecificFruits: boolean;
+  unconvertedItems: string[];
+} {
+  const unconvertedItems: string[] = [];
+  let hasMetricUnits = false;
+  let hasSpecificFruits = true;
+
+  for (const ingredient of ingredients) {
+    // Check for unconverted US units
+    if (/\d+\s*(cups?|tbsp|tsp|fl\.?\s*oz|lbs?|°F)/i.test(ingredient)) {
+      unconvertedItems.push(ingredient);
+    }
+    
+    // Check for metric units
+    if (/\d+\s*(ml|g|kg|°C)/i.test(ingredient)) {
+      hasMetricUnits = true;
+    }
+    
+    // Check for vague seasonal fruit references
+    if (/seasonal fruits?|fresh fruits?|mixed fruits?|fruit of choice/i.test(ingredient)) {
+      hasSpecificFruits = false;
+    }
+  }
+
+  return {
+    hasMetricUnits,
+    hasSpecificFruits,
+    unconvertedItems
+  };
 }

@@ -1,4 +1,5 @@
 import { MealOption } from './nutrition-enhanced';
+import { applyConversionWorkflow, validateConversions } from './unit-converter';
 
 // Track when viral recipes were last updated
 export interface ViralRecipeUpdate {
@@ -223,7 +224,7 @@ export const VIRAL_RECIPE_BATCHES: { [version: number]: MealOption[] } = {
   ]
 };
 
-// Function to get current viral recipes based on date
+// Function to get current viral recipes based on date with unit conversion applied
 export function getCurrentViralRecipes(): MealOption[] {
   const currentDate = new Date();
   const startDate = new Date('2025-08-14'); // When we started tracking
@@ -236,7 +237,22 @@ export function getCurrentViralRecipes(): MealOption[] {
   
   console.log(`🔥 Viral recipes: Using batch ${currentBatch} (${weeksElapsed} cycles since start)`);
   
-  return VIRAL_RECIPE_BATCHES[currentBatch] || VIRAL_RECIPE_BATCHES[1];
+  const rawRecipes = VIRAL_RECIPE_BATCHES[currentBatch] || VIRAL_RECIPE_BATCHES[1];
+  
+  // Apply conversion workflow to all viral recipes
+  const convertedRecipes = rawRecipes.map(recipe => {
+    const converted = applyConversionWorkflow(recipe);
+    const validation = validateConversions(converted.ingredients);
+    
+    if (validation.unconvertedItems.length > 0) {
+      console.log(`⚠️ Unconverted items in ${recipe.name}:`, validation.unconvertedItems);
+    }
+    
+    return converted;
+  });
+  
+  console.log(`🔧 Applied conversion workflow to ${convertedRecipes.length} viral recipes`);
+  return convertedRecipes;
 }
 
 // Function to check if viral recipes need updating
@@ -246,10 +262,29 @@ export function shouldUpdateViralRecipes(lastUpdate: Date): boolean {
   return daysSinceUpdate >= 14; // Update every 2 weeks
 }
 
-// Function to add new viral recipe batch
+// Function to add new viral recipe batch with automatic conversion workflow
 export function addViralRecipeBatch(version: number, recipes: MealOption[]): void {
-  VIRAL_RECIPE_BATCHES[version] = recipes;
-  console.log(`🔥 Added viral recipe batch ${version} with ${recipes.length} recipes`);
+  // Apply conversion workflow to new recipes before adding them
+  const convertedRecipes = recipes.map(recipe => {
+    const converted = applyConversionWorkflow(recipe);
+    const validation = validateConversions(converted.ingredients);
+    
+    console.log(`🔧 Converting recipe: ${recipe.name}`);
+    if (validation.hasMetricUnits) {
+      console.log(`✅ Recipe has metric units: ${recipe.name}`);
+    }
+    if (!validation.hasSpecificFruits) {
+      console.log(`🍎 Recipe needs seasonal fruit specification: ${recipe.name}`);
+    }
+    if (validation.unconvertedItems.length > 0) {
+      console.log(`⚠️ Unconverted items in ${recipe.name}:`, validation.unconvertedItems);
+    }
+    
+    return converted;
+  });
+  
+  VIRAL_RECIPE_BATCHES[version] = convertedRecipes;
+  console.log(`🔥 Added viral recipe batch ${version} with ${convertedRecipes.length} converted recipes`);
 }
 
 // Simulate upcoming viral recipes (to be added in future batches)

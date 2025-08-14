@@ -1,6 +1,6 @@
 // Recipe Translation Service for Dutch Language Support
 // Translates recipe names, ingredients, and instructions from English to Dutch
-import { convertIngredientsToMetric, convertInstructionsToMetric } from './unit-converter';
+import { processRecipeIngredients, convertIngredientUnits } from './unit-converter';
 
 export interface TranslatedRecipe {
   name: string;
@@ -560,10 +560,10 @@ export function translateRecipe(recipe: any, language: 'en' | 'nl'): TranslatedR
     // Still convert to metric even for English
     return {
       name: recipe.name,
-      ingredients: convertIngredientsToMetric(recipe.ingredients || []),
-      instructions: convertInstructionsToMetric(recipe.instructions || []),
-      tips: convertInstructionsToMetric(recipe.tips || []),
-      notes: convertInstructionsToMetric(recipe.notes || [])
+      ingredients: processRecipeIngredients(recipe.ingredients || []),
+      instructions: recipe.instructions || [],
+      tips: recipe.tips || [],
+      notes: recipe.notes || []
     };
   }
   
@@ -575,10 +575,10 @@ export function translateRecipe(recipe: any, language: 'en' | 'nl'): TranslatedR
   
   return {
     name: translateRecipeName(recipe.name),
-    ingredients: convertIngredientsToMetric(translatedIngredients),
-    instructions: convertInstructionsToMetric(translatedInstructions),
-    tips: convertInstructionsToMetric(translatedTips),
-    notes: convertInstructionsToMetric(translatedNotes)
+    ingredients: processRecipeIngredients(translatedIngredients),
+    instructions: translatedInstructions,
+    tips: translatedTips,
+    notes: translatedNotes
   };
 }
 
