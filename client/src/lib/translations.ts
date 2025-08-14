@@ -17,6 +17,7 @@ export const translations = {
     syncStatus: "Sync Status",
     synced: "Synced",
     notSynced: "Not Synced",
+    ouraSync: "Oura Sync",
     
     // Recipe Modal
     recipe: "Recipe",
@@ -180,6 +181,7 @@ export const translations = {
     syncStatus: "Synchronisatie Status",
     synced: "Gesynchroniseerd",
     notSynced: "Niet Gesynchroniseerd",
+    ouraSync: "Oura Synchronisatie",
     
     // Recipe Modal
     recipe: "Recept",

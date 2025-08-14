@@ -1573,13 +1573,18 @@ export default function MealPlanner() {
           <div className="card-clean">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <Calendar className="text-foreground h-8 w-8" />
+                <Activity className="text-foreground h-8 w-8" />
               </div>
               <div className="ml-4">
-                <div className="text-sm font-medium text-muted-foreground">{t.lastSync}</div>
+                <div className="text-sm font-medium text-muted-foreground">{t.ouraSync || 'Oura Sync'}</div>
                 <div className="text-lg font-semibold text-foreground">
-                  {latestMealPlan?.notionSynced ? t.syncedStatus : t.notSyncedStatus}
+                  {ouraStatus?.connected && latestOuraData ? t.syncedStatus : t.notSyncedStatus}
                 </div>
+                {latestOuraData && (
+                  <div className="text-xs text-muted-foreground mt-1">
+                    {new Date(latestOuraData.syncedAt).toLocaleDateString()}
+                  </div>
+                )}
               </div>
             </div>
           </div>
