@@ -9,6 +9,7 @@ import { OuraService } from "./oura";
 import { updateUserProfileSchema, authRegisterSchema, authLoginSchema } from "@shared/schema";
 import { albertHeijnService, type ShoppingListExport } from "./albert-heijn";
 import { translateRecipe, translateMealPlan, translateShoppingList } from './recipe-translator';
+import { translateRecipeEnhanced, getTranslationStatus } from './ai-enhanced-translator';
 import cron from 'node-cron';
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -147,14 +148,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Translate meal names and types if Dutch is requested
       if (language === 'nl' && mealPlan.meals) {
-        const translatedMeals = mealPlan.meals.map(meal => {
-          const translatedRecipe = translateRecipe({
+        const translatedMeals = await Promise.all(mealPlan.meals.map(async meal => {
+          const translatedRecipe = await translateRecipeEnhanced({
             name: meal.foodDescription,
             ingredients: [],
             instructions: [],
             tips: [],
             notes: []
-          }, language);
+          }, language).catch(() => {
+            // Fallback to pattern-based translation if AI fails
+            return translateRecipe({
+              name: meal.foodDescription,
+              ingredients: [],
+              instructions: [],
+              tips: [],
+              notes: []
+            }, language);
+          });
           
           return {
             ...meal,
@@ -163,7 +173,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                      meal.mealType === 'lunch' ? 'lunch' : 
                      meal.mealType === 'dinner' ? 'diner' : meal.mealType
           };
-        });
+        }));
         
         res.json({
           ...mealPlan,
@@ -745,14 +755,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
           
           const aiRecipe = await generateRecipeWithAI(cleanMealName, dietaryTags, mealType);
           
-          // Translate AI-generated recipe if Dutch is requested
-          const translatedAIRecipe = translateRecipe({
+          // Translate AI-generated recipe if Dutch is requested (with AI enhancement when available)
+          const translatedAIRecipe = await translateRecipeEnhanced({
             name: aiRecipe.name,
             ingredients: aiRecipe.ingredients || [],
             instructions: aiRecipe.instructions || [],
             tips: aiRecipe.tips || [],
             notes: aiRecipe.notes ? [aiRecipe.notes] : []
-          }, language);
+          }, language).catch(() => {
+            // Fallback to pattern-based translation if AI fails
+            return translateRecipe({
+              name: aiRecipe.name,
+              ingredients: aiRecipe.ingredients || [],
+              instructions: aiRecipe.instructions || [],
+              tips: aiRecipe.tips || [],
+              notes: aiRecipe.notes ? [aiRecipe.notes] : []
+            }, language);
+          });
           
           return res.json({
             ...aiRecipe,
@@ -789,14 +808,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
           
           const enhancedRecipe = await enhanceExistingRecipe(mealOption, dietaryTags);
           
-          // Translate AI-enhanced recipe if Dutch is requested
-          const translatedEnhancedRecipe = translateRecipe({
+          // Translate AI-enhanced recipe if Dutch is requested (with AI enhancement when available)
+          const translatedEnhancedRecipe = await translateRecipeEnhanced({
             name: enhancedRecipe.name,
             ingredients: enhancedRecipe.ingredients || [],
             instructions: enhancedRecipe.instructions || [],
             tips: enhancedRecipe.tips || [],
             notes: enhancedRecipe.notes ? [enhancedRecipe.notes] : []
-          }, language);
+          }, language).catch(() => {
+            // Fallback to pattern-based translation if AI fails
+            return translateRecipe({
+              name: enhancedRecipe.name,
+              ingredients: enhancedRecipe.ingredients || [],
+              instructions: enhancedRecipe.instructions || [],
+              tips: enhancedRecipe.tips || [],
+              notes: enhancedRecipe.notes ? [enhancedRecipe.notes] : []
+            }, language);
+          });
           
           return res.json({
             ...enhancedRecipe,
@@ -865,14 +893,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
         incorporationNote = ` This recipe has been adapted to include ${incorporatedIngredients.join(', ')} from your leftover ingredients.`;
       }
 
-      // Translate recipe content based on language preference
-      const translatedRecipe = translateRecipe({
+      // Translate recipe content based on language preference (with AI enhancement when available)
+      const translatedRecipe = await translateRecipeEnhanced({
         name: mealOption.name,
         ingredients: finalIngredients,
         instructions: finalInstructions,
         tips: mealOption.recipe?.tips || [],
         notes: [(mealOption.recipe?.notes || "") + incorporationNote]
-      }, language);
+      }, language).catch(() => {
+        // Fallback to pattern-based translation if AI fails
+        return translateRecipe({
+          name: mealOption.name,
+          ingredients: finalIngredients,
+          instructions: finalInstructions,
+          tips: mealOption.recipe?.tips || [],
+          notes: [(mealOption.recipe?.notes || "") + incorporationNote]
+        }, language);
+      });
 
       res.json({
         name: translatedRecipe.name,
