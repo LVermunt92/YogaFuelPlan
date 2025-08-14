@@ -2488,18 +2488,35 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   }
 ];
 
-// Function to get complete meal database including current viral recipes and expanded recipes
-export function getCompleteEnhancedMealDatabase(): MealOption[] {
-  const viralRecipes = getCurrentViralRecipes();
-  const additionalRecipes = getAllAdditionalRecipes();
-  console.log(`🔥 Adding ${viralRecipes.length} viral recipes and ${additionalRecipes.length} additional recipes to database`);
-  return [...ENHANCED_MEAL_DATABASE, ...viralRecipes, ...additionalRecipes];
+// Initialize unified database - this will be populated at startup
+let UNIFIED_MEAL_DATABASE: MealOption[] = [];
+
+// Initialize the unified database with all recipes
+export function initializeUnifiedDatabase(): MealOption[] {
+  if (UNIFIED_MEAL_DATABASE.length === 0) {
+    const viralRecipes = getCurrentViralRecipes();
+    const additionalRecipes = getAllAdditionalRecipes();
+    
+    UNIFIED_MEAL_DATABASE = [...ENHANCED_MEAL_DATABASE, ...viralRecipes, ...additionalRecipes];
+    
+    console.log(`📊 Unified meal database initialized: ${ENHANCED_MEAL_DATABASE.length} base + ${viralRecipes.length} viral + ${additionalRecipes.length} additional = ${UNIFIED_MEAL_DATABASE.length} total recipes`);
+  }
+  
+  return UNIFIED_MEAL_DATABASE;
 }
 
-// Function to get meals from enhanced database filtered by dietary requirements
+// Function to get complete unified meal database
+export function getCompleteEnhancedMealDatabase(): MealOption[] {
+  return initializeUnifiedDatabase();
+}
+
+// Function to get meals from unified database filtered by dietary requirements
 export function getEnhancedMealsByCategory(category: 'breakfast' | 'lunch' | 'dinner'): MealOption[] {
-  const completeDatabase = getCompleteEnhancedMealDatabase();
-  return completeDatabase.filter(meal => meal.category === category);
+  const unifiedDatabase = getCompleteEnhancedMealDatabase();
+  const categoryMeals = unifiedDatabase.filter(meal => meal.category === category);
+  
+  console.log(`📋 ${category.charAt(0).toUpperCase() + category.slice(1)} recipes available: ${categoryMeals.length}`);
+  return categoryMeals;
 }
 
 export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTags: string[]): MealOption[] {

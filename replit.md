@@ -15,6 +15,7 @@ Enhanced recipe indulgence: AI-generated recipes now include healthy but satisfy
 Smart AI recipe generation: Intelligent hybrid system that uses existing recipe database first for speed, only generates new AI recipes when insufficient variety exists for specific dietary combinations (less than 15 recipes), ensuring optimal performance while maintaining variety.
 Instagram-inspired viral recipes: Added three viral social media recipes with healthy indulgent toppings - herb-infused chicken lasagna with avocado oil drizzle, chicken and basil pesto lasagna with cottage cheese sauce, and pasta with roasted zucchini cream and burrata topping.
 Terminology standardization: Updated all references from "snap peas" to "sugar snaps" across recipes, ingredient lists, and Dutch translations for consistency and user preference.
+Unified Recipe Database: Consolidated three separate recipe databases (base, viral, additional) into single unified system for better consistency, easier management, and improved variety distribution. Total database now contains 66+ recipes with all viral and additional recipes seamlessly integrated.
 
 ## System Architecture
 
