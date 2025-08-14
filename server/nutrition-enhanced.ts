@@ -1138,7 +1138,18 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   {
     name: "Herb-marinated chicken breast with roasted vegetables and pine nuts",
     portion: "150g chicken + vegetables",
-    nutrition: { protein: 36, prepTime: 30, costEuros: 6.80, proteinPerEuro: 5.3 },
+    nutrition: { 
+      protein: 36, 
+      calories: 420, 
+      carbohydrates: 15, 
+      fats: 18, 
+      fiber: 8, 
+      sugar: 4, 
+      sodium: 320,
+      prepTime: 30, 
+      costEuros: 6.80, 
+      proteinPerEuro: 5.3 
+    },
     category: "lunch",
     tags: ["non-vegetarian", "gluten-free", "dairy-free", "paleo", "high-protein"],
     ingredients: ["free-range chicken breast", "mixed vegetables", "fresh rosemary", "fresh thyme", "fresh sage", "garlic", "olive oil", "lemon", "toasted pine nuts", "sea salt", "black pepper"],
@@ -2737,6 +2748,24 @@ function cleanIngredientName(ingredient: string): string {
   // Consolidate all egg variations into "eggs"
   if (cleaned.includes('egg') && !cleaned.includes('eggplant')) {
     cleaned = 'eggs';
+  }
+  // Replace vague "seasonal fruit" with specific Netherlands seasonal fruits
+  if (cleaned.includes('seasonal fruit') || cleaned === 'seasonal fruit') {
+    // Use current date to determine season and appropriate fruits for Netherlands
+    const currentMonth = new Date().getMonth() + 1; // 1-12
+    if (currentMonth >= 3 && currentMonth <= 5) {
+      // Spring: March-May
+      cleaned = 'strawberries';
+    } else if (currentMonth >= 6 && currentMonth <= 8) {
+      // Summer: June-August
+      cleaned = 'mixed berries';
+    } else if (currentMonth >= 9 && currentMonth <= 11) {
+      // Autumn: September-November
+      cleaned = 'apples';
+    } else {
+      // Winter: December-February
+      cleaned = 'citrus fruit';
+    }
   }
   
   // Handle compound ingredients
