@@ -12,7 +12,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Calendar, Clock, Target, Upload, Eye, Download, Share, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages, Copy, ExternalLink } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { useTranslations } from "@/lib/translations";
+import { useTranslations, translateDietaryTags } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -650,7 +650,7 @@ export default function MealPlanner() {
                   {userProfile?.meatFishMealsPerWeek ? `${userProfile.meatFishMealsPerWeek} ${t.meatFishMeals}` : t.plantBasedNutrition}
                 </div>
                 <div className="text-xs text-muted-foreground mt-1">
-                  {userProfile?.dietaryTags?.join(', ') || t.vegetarianGlutenLactoseFree}
+                  {userProfile?.dietaryTags ? translateDietaryTags(userProfile.dietaryTags, language).join(', ') : t.vegetarianGlutenLactoseFree}
                 </div>
               </div>
             </div>

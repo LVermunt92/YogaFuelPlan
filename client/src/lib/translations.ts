@@ -398,6 +398,60 @@ export const translations = {
   }
 };
 
+// Dietary tag translations
+export const dietaryTagTranslations = {
+  en: {
+    "vegetarian": "Vegetarian",
+    "vegan": "Vegan", 
+    "gluten-free": "Gluten-free",
+    "lactose-free": "Lactose-free",
+    "dairy-free": "Dairy-free",
+    "nut-free": "Nut-free",
+    "soy-free": "Soy-free",
+    "low-carb": "Low-carb",
+    "keto": "Keto",
+    "paleo": "Paleo",
+    "mediterranean": "Mediterranean",
+    "anti-inflammatory": "Anti-inflammatory",
+    "high-protein": "High-protein",
+    "low-sodium": "Low-sodium",
+    "sugar-free": "Sugar-free",
+    "whole30": "Whole30",
+    "raw": "Raw",
+    "pescatarian": "Pescatarian",
+    "ayurvedic": "Ayurvedic"
+  },
+  nl: {
+    "vegetarian": "Vegetarisch",
+    "vegan": "Veganistisch", 
+    "gluten-free": "Glutenvrij",
+    "lactose-free": "Lactosevrij",
+    "dairy-free": "Zuivelvrij",
+    "nut-free": "Notenvrij",
+    "soy-free": "Sojavrij",
+    "low-carb": "Koolhydraatarm",
+    "keto": "Keto",
+    "paleo": "Paleo",
+    "mediterranean": "Mediterraan",
+    "anti-inflammatory": "Anti-inflammatoir",
+    "high-protein": "Eiwitrijk",
+    "low-sodium": "Zoutarm",
+    "sugar-free": "Suikervrij",
+    "whole30": "Whole30",
+    "raw": "Rauw",
+    "pescatarian": "Pescatarisch",
+    "ayurvedic": "Ayurvedisch"
+  }
+};
+
+export function translateDietaryTag(tag: string, language: Language): string {
+  return dietaryTagTranslations[language][tag as keyof typeof dietaryTagTranslations.en] || tag;
+}
+
+export function translateDietaryTags(tags: string[], language: Language): string[] {
+  return tags.map(tag => translateDietaryTag(tag, language));
+}
+
 export type Language = keyof typeof translations;
 export type TranslationKey = keyof typeof translations.en;
 

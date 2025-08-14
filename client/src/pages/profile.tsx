@@ -11,6 +11,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
 import { User, Save, UserCircle } from "lucide-react";
+import { useTranslations, translateDietaryTag } from "@/lib/translations";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // Available dietary tags for user selection
 const DIETARY_TAGS = [
@@ -62,6 +64,8 @@ export default function Profile() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { user: authUser } = useAuth();
+  const { language } = useLanguage();
+  const t = useTranslations(language);
 
   // Fetch user profile for the authenticated user
   const { data: user, isLoading } = useQuery<UserProfile>({
@@ -554,7 +558,7 @@ export default function Profile() {
                       }
                     `}
                   >
-                    {tag.replace(/-/g, ' ')}
+                    {translateDietaryTag(tag, language)}
                   </button>
                 );
               })}
@@ -580,7 +584,7 @@ export default function Profile() {
                       key={tag} 
                       className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
                     >
-                      {tag.replace(/-/g, ' ')}
+                      {translateDietaryTag(tag, language)}
                     </span>
                   ))}
                 </div>
