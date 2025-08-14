@@ -37,13 +37,8 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  // Initialize viral recipe auto-updater
-  try {
-    const { initializeViralRecipeScheduler } = await import("./viral-cron");
-    initializeViralRecipeScheduler();
-  } catch (error) {
-    console.error("Failed to initialize viral recipe scheduler:", error);
-  }
+  // Viral recipes are now permanently integrated into the unified database
+  console.log('🔥 Viral recipes integrated into unified database - no separate scheduler needed');
 
   // Initialize Oura Ring auto-sync
   try {

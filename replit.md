@@ -24,6 +24,7 @@ Unified Recipe Database: Consolidated three separate recipe databases (base, vir
 - No separate viral, additional, or category-specific databases
 - System automatically handles variety distribution and dietary filtering
 - Recipe database is initialized once at startup for optimal performance
+- Previous separate database files (viral-recipe-updater.ts, recipe-expansion.ts, viral-cron.ts) have been deleted and consolidated
 
 ## System Architecture
 
