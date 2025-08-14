@@ -607,6 +607,22 @@ export class DatabaseStorage implements IStorage {
       .where(eq(mealPlans.id, id));
   }
 
+  async deleteMealPlan(id: number): Promise<boolean> {
+    try {
+      // First delete associated meals
+      await db.delete(meals).where(eq(meals.mealPlanId, id));
+      
+      // Then delete the meal plan
+      const result = await db.delete(mealPlans).where(eq(mealPlans.id, id));
+      
+      console.log(`🗑️ Deleted meal plan ID ${id} and its meals`);
+      return true;
+    } catch (error) {
+      console.error(`Failed to delete meal plan ${id}:`, error);
+      return false;
+    }
+  }
+
   // Get meal plans by type (current, next, saved, backup)
   async getMealPlansByType(userId: number, planType: string): Promise<MealPlan[]> {
     return await db.select().from(mealPlans)
