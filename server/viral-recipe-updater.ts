@@ -221,6 +221,267 @@ export const VIRAL_RECIPE_BATCHES: { [version: number]: MealOption[] } = {
         notes: "This cottage cheese hack went viral for being an incredible protein-packed bread substitute"
       }
     }
+  ],
+  2: [
+    // New batch - September 2025 - Adding major variety
+    {
+      name: "Viral Cloud Bread (Social Media Phenomenon)",
+      portion: "2 pieces",
+      nutrition: { 
+        protein: 12, 
+        prepTime: 35, 
+        calories: 160,
+        carbohydrates: 4,
+        fats: 11,
+        fiber: 1,
+        sugar: 2,
+        sodium: 220,
+        costEuros: 1.80, 
+        proteinPerEuro: 6.7 
+      },
+      category: "breakfast",
+      tags: ["viral", "social-media", "vegetarian", "gluten-free", "low-carb", "keto-friendly"],
+      ingredients: [
+        "3 egg whites",
+        "2 tbsp cream cheese",
+        "1 tbsp honey",
+        "½ tsp vanilla extract",
+        "Pinch of salt"
+      ],
+      wholeFoodLevel: "moderate",
+      vegetableContent: {
+        servings: 0,
+        vegetables: [],
+        benefits: ["Viral for fluffy texture", "Zero carb bread alternative", "Perfect for food photography"]
+      },
+      recipe: {
+        instructions: [
+          "Separate eggs and ensure bowl is completely clean",
+          "Whip egg whites until stiff peaks form (crucial for viral texture)",
+          "In separate bowl, mix cream cheese, honey, vanilla until smooth",
+          "Gently fold cream cheese mixture into egg whites",
+          "Spoon onto parchment-lined baking sheet in cloud shapes",
+          "Bake at 150°C for 30 minutes until golden",
+          "Cool completely before handling - they're very delicate"
+        ],
+        tips: [
+          "Any fat will prevent egg whites from whipping properly",
+          "Don't overmix or clouds will deflate",
+          "Viral because they look like actual clouds"
+        ],
+        notes: "This bread went viral for looking like fluffy clouds and being nearly carb-free"
+      }
+    },
+    {
+      name: "Viral Baked Oats (TikTok Breakfast Trend)",
+      portion: "1 ramekin",
+      nutrition: { 
+        protein: 16, 
+        prepTime: 20, 
+        calories: 290,
+        carbohydrates: 38,
+        fats: 8,
+        fiber: 6,
+        sugar: 12,
+        sodium: 180,
+        costEuros: 2.20, 
+        proteinPerEuro: 7.3 
+      },
+      category: "breakfast",
+      tags: ["viral", "social-media", "vegetarian", "gluten-free", "high-protein"],
+      ingredients: [
+        "½ cup rolled oats",
+        "1 scoop vanilla protein powder", 
+        "½ mashed banana",
+        "¼ cup almond milk",
+        "1 tbsp almond butter",
+        "1 tsp cinnamon",
+        "¼ cup blueberries",
+        "1 tbsp maple syrup"
+      ],
+      wholeFoodLevel: "high",
+      vegetableContent: {
+        servings: 1,
+        vegetables: ["banana", "blueberries"],
+        benefits: ["Viral for cake-like texture", "High protein breakfast", "Instagram-worthy presentation"]
+      },
+      recipe: {
+        instructions: [
+          "Preheat oven to 180°C",
+          "Mash banana in oven-safe ramekin",
+          "Mix in oats, protein powder, cinnamon",
+          "Add almond milk and almond butter, stir well",
+          "Fold in half the blueberries",
+          "Bake for 15-18 minutes until set and golden",
+          "Top with remaining blueberries and maple syrup drizzle",
+          "Serve warm directly from ramekin"
+        ],
+        tips: [
+          "Use frozen blueberries to prevent them from sinking",
+          "Add extra liquid if mixture seems too thick",
+          "Viral because it tastes like cake for breakfast"
+        ],
+        notes: "This became viral for transforming healthy oats into dessert-like breakfast"
+      }
+    },
+    {
+      name: "Viral Nature's Cereal (Health Trend Bowl)",
+      portion: "1 large bowl",
+      nutrition: { 
+        protein: 8, 
+        prepTime: 5, 
+        calories: 180,
+        carbohydrates: 28,
+        fats: 6,
+        fiber: 8,
+        sugar: 22,
+        sodium: 15,
+        costEuros: 3.80, 
+        proteinPerEuro: 2.1 
+      },
+      category: "breakfast",
+      tags: ["viral", "social-media", "vegan", "gluten-free", "refreshing", "quick"],
+      ingredients: [
+        "1 cup fresh blueberries",
+        "½ cup fresh strawberries (sliced)",
+        "¼ cup fresh blackberries",
+        "2 tbsp pomegranate seeds",
+        "1 cup coconut water",
+        "Ice cubes",
+        "Fresh mint leaves"
+      ],
+      wholeFoodLevel: "high",
+      vegetableContent: {
+        servings: 3,
+        vegetables: ["blueberries", "strawberries", "blackberries"],
+        benefits: ["Viral for natural sweetness", "Antioxidant powerhouse", "Hydrating and refreshing"]
+      },
+      recipe: {
+        instructions: [
+          "Add ice cubes to large bowl",
+          "Pour coconut water over ice",
+          "Add blueberries and let them float",
+          "Arrange sliced strawberries artistically",
+          "Scatter blackberries and pomegranate seeds",
+          "Garnish with fresh mint leaves",
+          "Eat with a spoon like cereal",
+          "Add more coconut water as needed"
+        ],
+        tips: [
+          "Use frozen berries for extra chill factor",
+          "Make it photogenic by arranging colors",
+          "Viral for being nature's candy in a bowl"
+        ],
+        notes: "This trend went viral as the healthiest 'cereal' alternative using only fresh fruit"
+      }
+    },
+    {
+      name: "Viral Pasta Chips (Crunchy Social Media Hit)",
+      portion: "1 serving (100g)",
+      nutrition: { 
+        protein: 14, 
+        prepTime: 15, 
+        calories: 320,
+        carbohydrates: 45,
+        fats: 10,
+        fiber: 3,
+        sugar: 2,
+        sodium: 380,
+        costEuros: 2.40, 
+        proteinPerEuro: 5.8 
+      },
+      category: "lunch",
+      tags: ["viral", "social-media", "vegetarian", "crispy", "snack-like"],
+      ingredients: [
+        "2 cups cooked pasta (any shape)",
+        "2 tbsp olive oil",
+        "2 tbsp parmesan cheese",
+        "1 tsp garlic powder",
+        "1 tsp paprika",
+        "½ tsp oregano",
+        "Salt and pepper",
+        "Marinara sauce for dipping"
+      ],
+      wholeFoodLevel: "moderate",
+      vegetableContent: {
+        servings: 1,
+        vegetables: ["tomatoes in sauce"],
+        benefits: ["Viral for unexpected crunch", "Carb snack revolution", "Perfect for sharing"]
+      },
+      recipe: {
+        instructions: [
+          "Cook pasta until al dente, drain completely",
+          "Preheat oven to 200°C",
+          "Toss warm pasta with olive oil until coated",
+          "Add parmesan, garlic powder, paprika, oregano",
+          "Season with salt and pepper",
+          "Spread on baking sheet in single layer",
+          "Bake 10-12 minutes until golden and crispy",
+          "Serve immediately with marinara for dipping"
+        ],
+        tips: [
+          "Make sure pasta is completely dry before baking",
+          "Don't overcrowd the baking sheet",
+          "Viral because it transforms pasta into chips"
+        ],
+        notes: "This trend went viral for turning leftover pasta into addictive crispy snacks"
+      }
+    },
+    {
+      name: "Viral Salmon Rice Bowl (TikTok Sensation)",
+      portion: "1 bowl",
+      nutrition: { 
+        protein: 28, 
+        prepTime: 15, 
+        calories: 420,
+        carbohydrates: 35,
+        fats: 18,
+        fiber: 4,
+        sugar: 8,
+        sodium: 450,
+        costEuros: 6.20, 
+        proteinPerEuro: 4.5 
+      },
+      category: "dinner",
+      tags: ["viral", "social-media", "gluten-free", "high-protein", "omega-3"],
+      ingredients: [
+        "150g salmon fillet",
+        "1 cup cooked sushi rice",
+        "½ avocado (sliced)",
+        "¼ cup cucumber (diced)",
+        "2 tbsp soy sauce",
+        "1 tbsp mayo",
+        "1 tsp sriracha",
+        "1 tsp sesame oil",
+        "Sesame seeds",
+        "Nori sheets (cut into strips)"
+      ],
+      wholeFoodLevel: "high",
+      vegetableContent: {
+        servings: 1,
+        vegetables: ["avocado", "cucumber"],
+        benefits: ["Viral for umami flavor combo", "Restaurant-quality at home", "Perfect macro balance"]
+      },
+      recipe: {
+        instructions: [
+          "Season salmon with salt and pepper",
+          "Pan-sear salmon 3-4 minutes each side until flaky",
+          "Flake salmon into bite-sized pieces",
+          "Mix soy sauce, mayo, sriracha for viral sauce",
+          "Place warm rice in bowl as base",
+          "Top with flaked salmon and avocado slices",
+          "Add diced cucumber for crunch",
+          "Drizzle with sauce and sesame oil",
+          "Garnish with sesame seeds and nori strips"
+        ],
+        tips: [
+          "Don't overcook salmon - it should be tender",
+          "Make extra sauce - it's addictive",
+          "Viral for restaurant-quality results at home"
+        ],
+        notes: "This bowl went viral for combining all the best Japanese flavors in one satisfying meal"
+      }
+    }
   ]
 };
 
@@ -231,16 +492,20 @@ export function getCurrentViralRecipes(): MealOption[] {
   const daysSinceStart = Math.floor((currentDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
   const weeksElapsed = Math.floor(daysSinceStart / 14); // Every 2 weeks
   
-  // Determine which batch to use (cycle through available batches)
+  // USE ALL AVAILABLE BATCHES for maximum variety instead of cycling
   const availableBatches = Object.keys(VIRAL_RECIPE_BATCHES).length;
-  const currentBatch = (weeksElapsed % availableBatches) + 1;
+  console.log(`🔥 Viral recipes: Using ALL ${availableBatches} batches for maximum variety (${weeksElapsed} cycles since start)`);
   
-  console.log(`🔥 Viral recipes: Using batch ${currentBatch} (${weeksElapsed} cycles since start)`);
-  
-  const rawRecipes = VIRAL_RECIPE_BATCHES[currentBatch] || VIRAL_RECIPE_BATCHES[1];
+  // Combine all viral recipe batches for better variety
+  const allViralRecipes: MealOption[] = [];
+  for (let i = 1; i <= availableBatches; i++) {
+    if (VIRAL_RECIPE_BATCHES[i]) {
+      allViralRecipes.push(...VIRAL_RECIPE_BATCHES[i]);
+    }
+  }
   
   // Apply conversion workflow to all viral recipes
-  const convertedRecipes = rawRecipes.map(recipe => {
+  const convertedRecipes = allViralRecipes.map(recipe => {
     const converted = applyConversionWorkflow(recipe);
     const validation = validateConversions(converted.ingredients);
     
@@ -252,6 +517,7 @@ export function getCurrentViralRecipes(): MealOption[] {
   });
   
   console.log(`🔧 Applied conversion workflow to ${convertedRecipes.length} viral recipes`);
+  console.log(`🔥 Currently serving ${convertedRecipes.length} viral recipes in meal database`);
   return convertedRecipes;
 }
 
@@ -290,13 +556,13 @@ export function addViralRecipeBatch(version: number, recipes: MealOption[]): voi
 // Simulate upcoming viral recipes (to be added in future batches)
 export const UPCOMING_VIRAL_RECIPES = [
   "Viral Protein Pancake Cereal (TikTok trend)",
-  "Viral Cloud Eggs (Instagram famous)",
-  "Viral Pasta Chips (Social media hit)",
-  "Viral Salmon Rice Bowl (TikTok sensation)",
-  "Viral Baked Oats (Breakfast trend)",
-  "Viral Nature's Cereal (Health trend)",
+  "Viral Cloud Eggs (Instagram famous)", 
   "Viral Whipped Coffee Bowl (Social craze)",
-  "Viral Stuffed Dates (Healthy dessert trend)"
+  "Viral Stuffed Dates (Healthy dessert trend)",
+  "Viral Cheese Board Pasta (Social hit)",
+  "Viral Pesto Eggs (Breakfast trend)",
+  "Viral Feta Pasta (TikTok famous)",
+  "Viral Green Goddess Salad (Instagram trend)"
 ];
 
 export default {
