@@ -10,12 +10,12 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Calendar, Clock, Target, Upload, Eye, Download, Share, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages } from "lucide-react";
+import { Calendar, Clock, Target, Upload, Eye, Download, Share, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages, Copy, ExternalLink } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useTranslations } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Textarea } from "@/components/ui/textarea";
-import { AlbertHeijnIntegration } from "@/components/albert-heijn-integration";
+
 
 
 
@@ -1107,6 +1107,79 @@ export default function MealPlanner() {
                               </div>
                             </div>
                           ))}
+                          
+                          {/* Export Options */}
+                          <div className="border-t border-slate-200 pt-6 mt-6">
+                            <h3 className="font-semibold text-slate-900 mb-4">
+                              {language === 'nl' ? 'Exporteer Boodschappenlijst' : 'Export Shopping List'}
+                            </h3>
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                              <Button
+                                onClick={() => {
+                                  const text = shoppingListData.categories.map(category => 
+                                    `${category}:\n${shoppingListData.shoppingList
+                                      .filter(item => item.category === category)
+                                      .map(item => `- ${item.ingredient} (${item.totalAmount})`)
+                                      .join('\n')}`
+                                  ).join('\n\n');
+                                  navigator.clipboard.writeText(text);
+                                }}
+                                variant="outline"
+                                size="sm"
+                                className="w-full"
+                              >
+                                <Copy className="mr-2 h-4 w-4" />
+                                {language === 'nl' ? 'Kopiëren' : 'Copy'}
+                              </Button>
+                              
+                              <Button
+                                onClick={() => {
+                                  const csv = [
+                                    'Category,Ingredient,Amount',
+                                    ...shoppingListData.shoppingList.map(item => 
+                                      `"${item.category}","${item.ingredient}","${item.totalAmount}"`
+                                    )
+                                  ].join('\n');
+                                  const blob = new Blob([csv], { type: 'text/csv' });
+                                  const url = URL.createObjectURL(blob);
+                                  const a = document.createElement('a');
+                                  a.href = url;
+                                  a.download = `shopping-list-${formatWeekRange(shoppingListData.weekStart).replace(/ /g, '-')}.csv`;
+                                  a.click();
+                                  URL.revokeObjectURL(url);
+                                }}
+                                variant="outline"
+                                size="sm"
+                                className="w-full"
+                              >
+                                <Download className="mr-2 h-4 w-4" />
+                                CSV
+                              </Button>
+                              
+                              <Button
+                                onClick={() => {
+                                  // Create Albert Heijn deep link
+                                  const ahUrl = `ah://list?items=${encodeURIComponent(
+                                    shoppingListData.shoppingList
+                                      .map(item => `${item.ingredient} ${item.totalAmount}`)
+                                      .join(',')
+                                  )}`;
+                                  window.open(ahUrl, '_blank');
+                                }}
+                                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                                size="sm"
+                              >
+                                <ExternalLink className="mr-2 h-4 w-4" />
+                                Albert Heijn
+                              </Button>
+                            </div>
+                            <p className="text-xs text-slate-500 mt-2 text-center">
+                              {language === 'nl' 
+                                ? 'Albert Heijn knop opent de AH app met je boodschappenlijst'
+                                : 'Albert Heijn button opens AH app with your shopping list'
+                              }
+                            </p>
+                          </div>
                         </div>
                       ) : (
                         <p className="text-center text-slate-500 py-8">
@@ -1323,15 +1396,7 @@ export default function MealPlanner() {
           </div>
         </div>
 
-        {/* Albert Heijn Shopping Integration */}
-        {currentMealPlan?.meals && (
-          <div className="mt-8">
-            <AlbertHeijnIntegration 
-              ingredients={currentMealPlan.meals.map(meal => meal.foodDescription)}
-              mealPlanId={currentMealPlan.id}
-            />
-          </div>
-        )}
+
 
         {/* Status Panel */}
         <div className="mt-8 sm:mt-12 lg:mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">

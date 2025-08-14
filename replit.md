@@ -29,6 +29,7 @@ Breakfast scheduling preference: Easy, quick breakfasts during weekdays (≤10 m
 - **Enhanced Multi-Plan Weekend Grocery System**: Users can maintain both current week (for remaining cooking) and next week plans (for grocery shopping) simultaneously. Features separate sections for current week plan continuation and next week grocery planning with clear visual distinctions and alternating capabilities.
 - **Albert Heijn Shopping List Integration**: Complete integration with Dutch supermarket Albert Heijn for shopping list generation, export in multiple formats (text, CSV, JSON), ingredient mapping to Dutch terms, store-optimized route planning, and deep linking to AH mobile app.
 - **Complete Dutch Recipe Translation System**: Comprehensive translation service that converts recipe names, ingredients, and cooking instructions from English to Dutch when Dutch language is selected. Includes over 200 ingredient and cooking term translations, pattern-based recipe name conversion, and integration with all recipe endpoints including AI-generated content.
+- **Consolidated Shopping List Workflow**: Single-flow shopping list generation with integrated export options (copy, CSV download, Albert Heijn app deep linking) within the shopping list interface, eliminating separate buttons for better UX.
 
 ### System Design Choices
 - **Data Flow**: User input drives meal generation, which is stored in PostgreSQL, displayed via React Query, and can be synced to Notion.
