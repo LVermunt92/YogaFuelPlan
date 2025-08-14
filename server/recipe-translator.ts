@@ -622,6 +622,19 @@ export function translateMealPlan(mealPlan: any, language: 'en' | 'nl'): any {
 }
 
 // Translate shopping list items
+// Category translations for shopping lists
+const categoryTranslations: Record<string, string> = {
+  'Proteins': 'Eiwitten',
+  'Grains & Starches': 'Granen & Zetmeel',
+  'Nuts & Seeds': 'Noten & Zaden',
+  'Vegetables': 'Groenten',
+  'Fruits': 'Fruit',
+  'Dairy Alternatives': 'Zuivelalternatieven', 
+  'Fresh Herbs': 'Verse Kruiden',
+  'Pantry Items': 'Voorraadkast',
+  'Other': 'Overig'
+};
+
 export function translateShoppingList(shoppingList: any, language: 'en' | 'nl'): any {
   if (language === 'en') {
     return shoppingList;
@@ -632,7 +645,8 @@ export function translateShoppingList(shoppingList: any, language: 'en' | 'nl'):
   if (translatedList.items) {
     translatedList.items = translatedList.items.map((item: any) => ({
       ...item,
-      ingredient: translateIngredient(item.ingredient)
+      ingredient: translateIngredient(item.ingredient),
+      category: categoryTranslations[item.category] || item.category
     }));
   }
   
