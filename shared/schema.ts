@@ -196,7 +196,7 @@ export const DIETARY_TAGS = [
 ] as const;
 
 export const mealPlanRequestSchema = z.object({
-  activityLevel: z.enum(["high", "low"]),
+  activityLevel: z.enum(["high", "low", "moderate"]),
   weekStart: z.string(),
   userId: z.number().optional(),
   dietaryTags: z.array(z.enum(DIETARY_TAGS)).optional(),

@@ -2366,9 +2366,9 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
     const preferenceTags = dietaryTags.filter(tag => !criticalTags.includes(tag));
     if (preferenceTags.length === 0) return true; // Only critical tags were specified
     
-    // At least 50% of preference tags should match (allows for some variety)
+    // Be flexible with preference tags - if ANY preference tag matches, include the meal
     const matchingPreferenceTags = preferenceTags.filter(tag => meal.tags.includes(tag));
-    return matchingPreferenceTags.length >= Math.ceil(preferenceTags.length * 0.5);
+    return matchingPreferenceTags.length > 0;
   });
 }
 
