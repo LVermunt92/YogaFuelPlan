@@ -2223,7 +2223,7 @@ export interface ShoppingListItem {
   unit: string;
 }
 
-export function generateEnhancedShoppingList(meals: { foodDescription: string }[]): ShoppingListItem[] {
+export function generateEnhancedShoppingList(meals: { foodDescription: string }[], language: string = 'en'): ShoppingListItem[] {
   const ingredientAmounts = new Map<string, { totalAmount: number; unit: string; count: number }>();
   
   // Parse actual recipe amounts from meal instructions
@@ -2365,10 +2365,10 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     const category = ingredientCategories[ingredient] || 'Other';
     
     // Convert amounts to grams using the formatAmount function
-    const displayAmount = formatAmount(amounts.totalAmount, amounts.unit);
+    const displayAmount = formatAmountWithLanguage(amounts.totalAmount, amounts.unit, language);
     
     // Determine final unit after conversion
-    const finalUnit = amounts.unit === 'pieces' || amounts.unit === 'cloves' ? amounts.unit : 'g';
+    const finalUnit = amounts.unit;
     
     shoppingList.push({
       ingredient,
@@ -2412,11 +2412,44 @@ function parseEnhancedRecipeIngredients(instructions: string[], ingredientAmount
   });
 }
 
+// Helper function to format amounts with Dutch translation
+function formatAmountWithLanguage(amount: number, unit: string, language: string = 'en'): string {
+  if (unit === 'ml') {
+    if (amount >= 1000) {
+      return `${(amount / 1000).toFixed(1)} L`;
+    }
+    return `${amount} ml`;
+  }
+  
+  if (unit === 'g') {
+    if (amount >= 1000) {
+      return `${(amount / 1000).toFixed(1)} kg`;
+    }
+    return `${amount} g`;
+  }
+  
+  if (unit === 'pieces') {
+    if (language === 'nl') {
+      return amount === 1 ? `${amount} stuk` : `${amount} stuks`;
+    }
+    return amount === 1 ? `${amount} piece` : `${amount} pieces`;
+  }
+  
+  if (unit === 'cloves') {
+    if (language === 'nl') {
+      return amount === 1 ? `${amount} teen` : `${amount} tenen`;
+    }
+    return amount === 1 ? `${amount} clove` : `${amount} cloves`;
+  }
+  
+  return `${amount} ${unit}`;
+}
+
 function getDefaultPortion(ingredient: string): { amount: number; unit: string } {
   // Default portions for common ingredients in grams (when no recipe amounts are found)
   const defaults: Record<string, { amount: number; unit: string }> = {
-    'almond milk': { amount: 240, unit: 'g' }, // 1 cup = 240g
-    'coconut milk': { amount: 240, unit: 'g' }, // 1 cup = 240g
+    'almond milk': { amount: 240, unit: 'ml' }, // 1 cup = 240ml
+    'coconut milk': { amount: 240, unit: 'ml' }, // 1 cup = 240ml
     'chia seeds': { amount: 20, unit: 'g' }, // 2 tbsp = ~20g
     'hemp hearts': { amount: 20, unit: 'g' }, // 2 tbsp = ~20g
     'hemp seeds': { amount: 20, unit: 'g' },
@@ -2430,8 +2463,8 @@ function getDefaultPortion(ingredient: string): { amount: number; unit: string }
     'mushrooms': { amount: 70, unit: 'g' }, // 1 cup sliced = ~70g
     'onions': { amount: 1, unit: 'piece' }, // 1 medium onion
     'garlic': { amount: 2, unit: 'cloves' }, // 2 cloves
-    'olive oil': { amount: 30, unit: 'g' }, // 2 tbsp = ~30g
-    'coconut oil': { amount: 15, unit: 'g' }, // 1 tbsp = ~15g
+    'olive oil': { amount: 30, unit: 'ml' }, // 2 tbsp = ~30ml
+    'coconut oil': { amount: 15, unit: 'ml' }, // 1 tbsp = ~15ml
     'eggs': { amount: 2, unit: 'pieces' }, // 2 large eggs
     'nutritional yeast': { amount: 15, unit: 'g' }, // 2 tbsp = ~15g
     'coconut yogurt': { amount: 120, unit: 'g' }, // 0.5 cup = ~120g
@@ -2443,7 +2476,7 @@ function getDefaultPortion(ingredient: string): { amount: number; unit: string }
     'cashew cream': { amount: 60, unit: 'g' }, // 1/4 cup = ~60g
     'sun-dried tomatoes': { amount: 30, unit: 'g' }, // 2 tbsp = ~30g
     'pasta': { amount: 100, unit: 'g' }, // 1 serving dry pasta
-    'vegetable broth': { amount: 240, unit: 'g' }, // 1 cup = 240g
+    'vegetable broth': { amount: 240, unit: 'ml' }, // 1 cup = 240ml
     'mixed nuts': { amount: 30, unit: 'g' }, // 2 tbsp = ~30g
     'maple syrup': { amount: 20, unit: 'g' }, // 1 tbsp = ~20g
     'vanilla extract': { amount: 5, unit: 'g' }, // 1 tsp = ~5g

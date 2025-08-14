@@ -961,7 +961,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "Meal plan not found" });
       }
 
-      let shoppingList = generateEnhancedShoppingList(mealPlan.meals);
+      let shoppingList = generateEnhancedShoppingList(mealPlan.meals, language);
       
       // Translate shopping list items if Dutch is requested
       const translatedShoppingList = translateShoppingList({

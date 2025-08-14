@@ -795,7 +795,7 @@ export interface ShoppingListItem {
   unit: string;
 }
 
-export function generateShoppingList(meals: { foodDescription: string }[]): ShoppingListItem[] {
+export function generateShoppingList(meals: { foodDescription: string }[], language: string = 'en'): ShoppingListItem[] {
   const ingredientAmounts = new Map<string, { totalAmount: number; unit: string; count: number }>();
   
   // Parse actual recipe amounts from meal instructions
@@ -1130,9 +1130,7 @@ export function generateShoppingList(meals: { foodDescription: string }[]): Shop
   ingredientAmounts.forEach((amounts, ingredient) => {
     const category = ingredientCategories[ingredient] || 'Other';
     
-    const displayAmount = amounts.unit === 'pieces' ? 
-      `${amounts.totalAmount} ${amounts.unit}` : 
-      formatAmount(amounts.totalAmount, amounts.unit);
+    const displayAmount = formatAmount(amounts.totalAmount, amounts.unit, language);
     
     shoppingList.push({
       ingredient,
@@ -1152,8 +1150,8 @@ export function generateShoppingList(meals: { foodDescription: string }[]): Shop
   });
 }
 
-// Helper function to format amounts nicely
-function formatAmount(amount: number, unit: string): string {
+// Helper function to format amounts nicely with optional Dutch translation
+function formatAmount(amount: number, unit: string, language: string = 'en'): string {
   if (unit === 'ml') {
     if (amount >= 1000) {
       return `${(amount / 1000).toFixed(1)} L`;
@@ -1166,6 +1164,13 @@ function formatAmount(amount: number, unit: string): string {
       return `${(amount / 1000).toFixed(1)} kg`;
     }
     return `${amount} g`;
+  }
+  
+  if (unit === 'pieces') {
+    if (language === 'nl') {
+      return amount === 1 ? `${amount} stuk` : `${amount} stuks`;
+    }
+    return amount === 1 ? `${amount} piece` : `${amount} pieces`;
   }
   
   return `${amount} ${unit}`;
