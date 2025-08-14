@@ -2515,7 +2515,9 @@ function cleanIngredientName(ingredient: string): string {
   cleaned = cleaned.replace(/\s+/g, ' ').trim();
   
   // Handle specific problematic cases to ensure proper consolidation
-  if (cleaned.includes('lemon') || cleaned === 'lemon') {
+  if (cleaned.includes('lemon juice') || cleaned === 'lemon juice') {
+    cleaned = 'lemon'; // Convert lemon juice to whole lemon for shopping
+  } else if (cleaned.includes('lemon') || cleaned === 'lemon') {
     cleaned = 'lemon';
   }
   if (cleaned.includes('banana') || cleaned === 'd banana' || cleaned === 'sliced banana') {
