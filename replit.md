@@ -6,6 +6,7 @@ This full-stack meal planning application helps users generate personalized week
 ## User Preferences
 Preferred communication style: Simple, everyday language.
 Breakfast scheduling preference: Easy, quick breakfasts during weekdays (≤10 min prep), elaborate breakfasts like pancakes on weekends (≥15 min prep).
+Translation continuity plan: Continue AI-enhanced Dutch translation process when OpenAI subscription renews next month. System caches translations to minimize future API costs.
 
 ## System Architecture
 
@@ -28,7 +29,7 @@ Breakfast scheduling preference: Easy, quick breakfasts during weekdays (≤10 m
 - **Automated Viral Recipe Updates**: System automatically adds new trending recipes every 2 weeks on Sundays at 3 AM to keep content fresh and current. Includes viral TikTok recipes, social media food trends, and popular dishes with "viral" and "social-media" dietary tags.
 - **Enhanced Multi-Plan Weekend Grocery System**: Users can maintain both current week (for remaining cooking) and next week plans (for grocery shopping) simultaneously. Features separate sections for current week plan continuation and next week grocery planning with clear visual distinctions and alternating capabilities.
 - **Albert Heijn Shopping List Integration**: Complete integration with Dutch supermarket Albert Heijn for shopping list generation, export in multiple formats (text, CSV, JSON), ingredient mapping to Dutch terms, store-optimized route planning, and deep linking to AH mobile app.
-- **Complete Dutch Recipe Translation System**: Comprehensive translation service that converts recipe names, ingredients, and cooking instructions from English to Dutch when Dutch language is selected. Includes over 200 ingredient and cooking term translations, pattern-based recipe name conversion, and integration with all recipe endpoints including AI-generated content.
+- **Complete Dutch Recipe Translation System**: Comprehensive translation service that converts recipe names, ingredients, and cooking instructions from English to Dutch when Dutch language is selected. Includes over 200 ingredient and cooking term translations, pattern-based recipe name conversion, proper capitalization, and integration with all recipe endpoints including AI-generated content. AI-enhanced translation integrated with intelligent fallback to pattern-based system when quota exceeded.
 - **Consolidated Shopping List Workflow**: Single-flow shopping list generation with integrated export options (copy, CSV download, Albert Heijn app deep linking) within the shopping list interface, eliminating separate buttons for better UX.
 
 ### System Design Choices
