@@ -2179,6 +2179,158 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       ],
       notes: 'Traditional Ayurvedic cooling soup using barley water, which is naturally cooling and purifying. Perfect for very hot days.'
     }
+  },
+
+  // Instagram-inspired recipes with healthy indulgent sauces
+  {
+    name: "Herb-infused chicken lasagna with avocado oil drizzle",
+    portion: "1 generous serving (250g)",
+    nutrition: {
+      protein: 42,
+      calories: 485,
+      carbohydrates: 35,
+      fats: 22,
+      fiber: 6,
+      sugar: 8,
+      sodium: 620,
+      potassium: 580,
+      calcium: 250,
+      iron: 3.2,
+      vitaminC: 15,
+      prepTime: 45,
+      costEuros: 7.20,
+      proteinPerEuro: 5.8
+    },
+    category: "dinner",
+    tags: ["viral", "social-media", "high-protein", "comfort-food", "instagram-inspired"],
+    ingredients: [
+      "lasagna sheets", "chicken stock", "cottage cheese", "light cream cheese", 
+      "mozzarella", "parmesan", "chicken breast", "mushrooms", "broccoli", 
+      "avocado oil", "garlic", "Italian herbs", "butter", "plain flour", "salt", "pepper"
+    ],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["mushrooms", "broccoli"],
+      benefits: ["Rich in vitamin K", "Supports immune system", "High in antioxidants"]
+    },
+    recipe: {
+      instructions: [
+        "Slice chicken breast in half and pan-fry both sides (5-6 mins) until golden",
+        "Shred chicken and set aside to cool",
+        "Sauté onion, garlic, and mushrooms in butter until fragrant", 
+        "Add flour, then chicken stock and cheeses to create creamy sauce",
+        "Blanch broccoli until bright green and tender-crisp",
+        "Layer lasagna: sauce, chicken, cheese, broccoli, repeat",
+        "Top with mozzarella and grill for 3-5 minutes until bubbly",
+        "Drizzle with herb-infused avocado oil before serving"
+      ],
+      tips: [
+        "The avocado oil drizzle adds richness without heavy cream", 
+        "Make herb oil by warming avocado oil with fresh thyme and rosemary"
+      ],
+      notes: "Instagram viral comfort food elevated with healthy avocado oil drizzle that adds indulgent flavor"
+    }
+  },
+
+  {
+    name: "Chicken and basil pesto lasagna with creamy cottage cheese sauce",
+    portion: "1 serving (280g)",
+    nutrition: {
+      protein: 38,
+      calories: 465,
+      carbohydrates: 32,
+      fats: 24,
+      fiber: 4,
+      sugar: 6,
+      sodium: 580,
+      potassium: 520,
+      calcium: 280,
+      iron: 2.8,
+      vitaminC: 12,
+      prepTime: 40,
+      costEuros: 6.50,
+      proteinPerEuro: 5.8
+    },
+    category: "dinner", 
+    tags: ["viral", "social-media", "high-protein", "italian-inspired", "instagram-inspired"],
+    ingredients: [
+      "chicken breast mince", "brown onion", "basil pesto", "broccoli", "spinach",
+      "cottage cheese", "skim milk", "garlic cloves", "lasagna sheets", "mozzarella", "salt"
+    ],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 2.5,
+      vegetables: ["broccoli", "spinach", "onion"],
+      benefits: ["High in folate", "Rich in iron", "Supports eye health"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 180°C and prepare baking dish",
+        "Cook onions until translucent, add chicken mince and brown",
+        "Add pesto and cook until chicken is broken down (5 minutes)",
+        "Steam broccoli and spinach until tender",
+        "Blend cottage cheese, skim milk, garlic and salt for creamy white sauce",
+        "Layer: pesto chicken, vegetables, cottage cheese sauce, repeat",
+        "Cover with foil and bake 15 minutes, remove foil and bake 5-10 minutes",
+        "Let rest before serving for perfect slice consistency"
+      ],
+      tips: [
+        "Cottage cheese sauce is protein-rich alternative to heavy cream",
+        "Fresh basil pesto adds indulgent flavor while providing antioxidants"
+      ],
+      notes: "Viral Instagram recipe featuring protein-packed cottage cheese sauce that tastes indulgent but stays healthy"
+    }
+  },
+
+  {
+    name: "Pasta with roasted zucchini cream and burrata topping",
+    portion: "200g pasta + toppings",
+    nutrition: {
+      protein: 28,
+      calories: 520,
+      carbohydrates: 58,
+      fats: 18,
+      fiber: 8,
+      sugar: 12,
+      sodium: 420,
+      potassium: 680,
+      calcium: 320,
+      iron: 3.5,
+      vitaminC: 25,
+      prepTime: 35,
+      costEuros: 5.80,
+      proteinPerEuro: 4.8
+    },
+    category: "dinner",
+    tags: ["viral", "social-media", "vegetarian", "italian-inspired", "instagram-inspired", "creamy"],
+    ingredients: [
+      "pasta", "zucchini", "burrata cheese", "mozzarella", "garlic cloves",
+      "olive oil", "pine nuts", "fresh basil", "salt", "pepper"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["zucchini"],
+      benefits: ["High in potassium", "Low in calories", "Rich in vitamin C"]
+    },
+    recipe: {
+      instructions: [
+        "Cook pasta until al dente and reserve 1 cup pasta water",
+        "Roast sliced zucchini with olive oil until golden and caramelized",
+        "Blend roasted zucchini with garlic, olive oil and basil for creamy sauce",
+        "Heat pan on medium, add zucchini cream with pasta water to thin",
+        "Toss cooked pasta with zucchini cream sauce until well coated",
+        "Serve in bowls topped with torn burrata and toasted pine nuts",
+        "Finish with fresh basil leaves and cracked black pepper"
+      ],
+      tips: [
+        "Roasting zucchini concentrates flavors for naturally creamy sauce",
+        "Burrata adds luxurious creaminess without heavy cream",
+        "Toast pine nuts for added crunch and healthy fats"
+      ],
+      notes: "French-inspired viral recipe where roasted vegetables create indulgent cream sauce, topped with protein-rich burrata"
+    }
   }
 ];
 
