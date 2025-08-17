@@ -258,6 +258,7 @@ class AlbertHeijnService {
       'carrots': 'wortelen (3 stuks)',
       'apples': 'appels',
       'bananas': 'bananen',
+      'kiwi': 'kiwi (4 stuks)',
       'rice': 'rijst',
       'pasta': 'pasta',
       'olive oil': 'olijfolie',

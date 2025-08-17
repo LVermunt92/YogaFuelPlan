@@ -122,6 +122,7 @@ const ingredientTranslations: Record<string, string> = {
   'lime': 'limoen',
   'mango': 'mango',
   'pineapple': 'ananas',
+  'kiwi': 'kiwi',
   
   // Herbs & Spices
   'salt': 'zout',

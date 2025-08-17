@@ -4282,6 +4282,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'mixed berries': 'Fruits',
     'blueberries': 'Fruits',
     'fresh fruit': 'Fruits',
+    'kiwi': 'Fruits',
     
     // Dairy & Cheese
     'cheese': 'Dairy & Cheese',
@@ -4308,15 +4309,23 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     
     // Fresh Herbs
     'fresh herbs': 'Fresh Herbs',
+    'fresh parsley': 'Fresh Herbs',
     'parsley': 'Fresh Herbs',
     'cilantro': 'Fresh Herbs',
     'fresh cilantro': 'Fresh Herbs',
+    'fresh basil': 'Fresh Herbs',
     'basil': 'Fresh Herbs',
+    'fresh oregano': 'Fresh Herbs',
     'oregano': 'Fresh Herbs',
+    'fresh thyme': 'Fresh Herbs',
     'thyme': 'Fresh Herbs',
+    'fresh rosemary': 'Fresh Herbs',
     'rosemary': 'Fresh Herbs',
+    'fresh mint': 'Fresh Herbs',
     'mint': 'Fresh Herbs',
+    'fresh dill': 'Fresh Herbs',
     'dill': 'Fresh Herbs',
+    'fresh chives': 'Fresh Herbs',
     'chives': 'Fresh Herbs',
     
     // Pantry Items
@@ -4445,6 +4454,13 @@ function formatAmountWithLanguage(amount: number, unit: string, language: string
     return amount === 1 ? `${amount} clove` : `${amount} cloves`;
   }
   
+  if (unit === 'bunch') {
+    if (language === 'nl') {
+      return amount === 1 ? `${amount} bosje` : `${amount} bosjes`;
+    }
+    return amount === 1 ? `${amount} bunch` : `${amount} bunches`;
+  }
+  
   return `${amount} ${unit}`;
 }
 
@@ -4486,8 +4502,18 @@ function getDefaultPortion(ingredient: string): { amount: number; unit: string }
     'cinnamon': { amount: 2, unit: 'g' }, // 1 tsp = ~2g
     'salt': { amount: 5, unit: 'g' }, // 1 tsp = ~5g
     'pepper': { amount: 2, unit: 'g' }, // 1/2 tsp = ~2g
-    'fresh herbs': { amount: 10, unit: 'g' }, // 2 tbsp chopped = ~10g
-    'carrots': { amount: 3, unit: 'pieces' } // 3 medium carrots
+    'fresh herbs': { amount: 1, unit: 'bunch' }, // 1 bunch fresh herbs
+    'fresh parsley': { amount: 1, unit: 'bunch' }, // 1 bunch fresh parsley
+    'fresh basil': { amount: 1, unit: 'bunch' }, // 1 bunch fresh basil
+    'fresh cilantro': { amount: 1, unit: 'bunch' }, // 1 bunch fresh cilantro
+    'fresh oregano': { amount: 1, unit: 'bunch' }, // 1 bunch fresh oregano
+    'fresh thyme': { amount: 1, unit: 'bunch' }, // 1 bunch fresh thyme
+    'fresh rosemary': { amount: 1, unit: 'bunch' }, // 1 bunch fresh rosemary
+    'fresh mint': { amount: 1, unit: 'bunch' }, // 1 bunch fresh mint
+    'fresh dill': { amount: 1, unit: 'bunch' }, // 1 bunch fresh dill
+    'fresh chives': { amount: 1, unit: 'bunch' }, // 1 bunch fresh chives
+    'carrots': { amount: 3, unit: 'pieces' }, // 3 medium carrots
+    'kiwi': { amount: 4, unit: 'pieces' } // 4 kiwi fruits
   };
   
   return defaults[ingredient] || { amount: 50, unit: 'g' };
@@ -4509,6 +4535,13 @@ function cleanIngredientName(ingredient: string): string {
   // Remove leading numbers and fractions that might still be there  
   cleaned = cleaned.replace(/^[\d\/½¼¾⅓⅔⅛⅜⅝⅞]+\s*/, '');
   
+  // Specify fresh herbs instead of generic "fresh herbs"
+  // Convert generic "fresh herbs" to specific herb types for better shopping guidance
+  if (cleaned.includes('fresh herbs') || cleaned === 'fresh herbs') {
+    // Default to parsley as the most commonly used fresh herb
+    cleaned = 'fresh parsley';
+  }
+  
   // Consolidate herbs that have different names but are essentially the same for shopping
   // This prevents duplicate listings in shopping list (e.g., both "cilantro" and "coriander" appearing)
   if (cleaned.includes('fresh cilantro') || cleaned.includes('cilantro') || cleaned.includes('fresh coriander') || cleaned.includes('coriander')) {
@@ -4518,6 +4551,32 @@ function cleanIngredientName(ingredient: string): string {
     } else {
       cleaned = 'fresh cilantro'; // Consolidate all fresh forms to cilantro
     }
+  }
+  
+  // Handle other specific fresh herbs
+  if (cleaned.includes('basil') && !cleaned.includes('dried')) {
+    cleaned = 'fresh basil';
+  }
+  if (cleaned.includes('parsley') && !cleaned.includes('dried')) {
+    cleaned = 'fresh parsley';
+  }
+  if (cleaned.includes('oregano') && !cleaned.includes('dried')) {
+    cleaned = 'fresh oregano';
+  }
+  if (cleaned.includes('thyme') && !cleaned.includes('dried')) {
+    cleaned = 'fresh thyme';
+  }
+  if (cleaned.includes('rosemary') && !cleaned.includes('dried')) {
+    cleaned = 'fresh rosemary';
+  }
+  if (cleaned.includes('mint') && !cleaned.includes('dried')) {
+    cleaned = 'fresh mint';
+  }
+  if (cleaned.includes('dill') && !cleaned.includes('dried')) {
+    cleaned = 'fresh dill';
+  }
+  if (cleaned.includes('chives') && !cleaned.includes('dried')) {
+    cleaned = 'fresh chives';
   }
   
   // Handle specific cheese types

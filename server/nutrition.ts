@@ -887,10 +887,32 @@ export function generateShoppingList(meals: { foodDescription: string }[], langu
     'avocado': 'Fruits',
     'lemon': 'Fruits',
     'frozen berries': 'Fruits',
+    'kiwi': 'Fruits',
     
     // Dairy Alternatives
     'almond milk': 'Dairy Alternatives',
     'coconut milk': 'Dairy Alternatives',
+    
+    // Fresh Herbs
+    'fresh herbs': 'Fresh Herbs',
+    'fresh parsley': 'Fresh Herbs',
+    'parsley': 'Fresh Herbs',
+    'cilantro': 'Fresh Herbs',
+    'fresh cilantro': 'Fresh Herbs',
+    'fresh basil': 'Fresh Herbs',
+    'basil': 'Fresh Herbs',
+    'fresh oregano': 'Fresh Herbs',
+    'oregano': 'Fresh Herbs',
+    'fresh thyme': 'Fresh Herbs',
+    'thyme': 'Fresh Herbs',
+    'fresh rosemary': 'Fresh Herbs',
+    'rosemary': 'Fresh Herbs',
+    'fresh mint': 'Fresh Herbs',
+    'mint': 'Fresh Herbs',
+    'fresh dill': 'Fresh Herbs',
+    'dill': 'Fresh Herbs',
+    'fresh chives': 'Fresh Herbs',
+    'chives': 'Fresh Herbs',
     
     // Pantry Items
     'olive oil': 'Pantry Items',
@@ -1096,10 +1118,23 @@ export function generateShoppingList(meals: { foodDescription: string }[], langu
     'avocado': { amount: 4, unit: 'pieces' },
     'lemon': { amount: 4, unit: 'pieces' },
     'frozen berries': { amount: 500, unit: 'g' },
+    'kiwi': { amount: 4, unit: 'pieces' },
     
     // Dairy Alternatives
     'almond milk': { amount: 2000, unit: 'ml' },
     'coconut milk': { amount: 400, unit: 'ml' },
+    
+    // Fresh Herbs
+    'fresh herbs': { amount: 1, unit: 'bunch' },
+    'fresh parsley': { amount: 1, unit: 'bunch' },
+    'fresh basil': { amount: 1, unit: 'bunch' },
+    'fresh cilantro': { amount: 1, unit: 'bunch' },
+    'fresh oregano': { amount: 1, unit: 'bunch' },
+    'fresh thyme': { amount: 1, unit: 'bunch' },
+    'fresh rosemary': { amount: 1, unit: 'bunch' },
+    'fresh mint': { amount: 1, unit: 'bunch' },
+    'fresh dill': { amount: 1, unit: 'bunch' },
+    'fresh chives': { amount: 1, unit: 'bunch' },
     
     // Pantry Items
     'olive oil': { amount: 500, unit: 'ml' },
