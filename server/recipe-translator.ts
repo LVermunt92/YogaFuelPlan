@@ -78,6 +78,8 @@ const ingredientTranslations: Record<string, string> = {
   'vegetables': 'groenten',
   'onion': 'ui',
   'onions': 'uien',
+  'green onion': 'lente ui',
+  'green onions': 'lente ui',
   'garlic': 'knoflook',
   'tomato': 'tomaat',
   'tomatoes': 'tomaten',
