@@ -3469,6 +3469,552 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         "Can be made ahead and reheated"
       ]
     }
+  },
+
+  // === KETOGENIC + GLUTEN-FREE RECIPES COLLECTION ===
+  
+  // Breakfast Options
+  {
+    name: "Keto avocado and bacon egg cups",
+    portion: "2 egg cups",
+    nutrition: { 
+      protein: 24, 
+      prepTime: 20, 
+      calories: 420,
+      carbohydrates: 4,
+      fats: 36,
+      fiber: 6,
+      sugar: 2,
+      sodium: 380,
+      costEuros: 3.20, 
+      proteinPerEuro: 7.5 
+    },
+    category: "breakfast",
+    tags: ["keto", "gluten-free", "high-protein", "low-carb"],
+    ingredients: [
+      "2 large avocados (halved, pitted)",
+      "4 eggs",
+      "4 strips bacon (chopped)",
+      "2 tbsp heavy cream",
+      "1 tbsp chives (chopped)",
+      "Salt and pepper to taste",
+      "1 tbsp olive oil"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["avocado", "chives"],
+      benefits: ["High healthy fats", "Complete protein", "Fiber rich"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 200°C",
+        "Scoop out some avocado flesh to create deeper wells",
+        "Brush avocado halves with olive oil, season with salt",
+        "Cook bacon until crispy, set aside",
+        "Crack one egg into each avocado half",
+        "Drizzle with heavy cream, add bacon pieces",
+        "Bake 12-15 minutes until eggs are set to preference",
+        "Garnish with chives and serve immediately"
+      ],
+      tips: [
+        "Choose ripe but firm avocados for best structure",
+        "Pre-cook bacon for crispier texture"
+      ],
+      notes: "Perfect keto breakfast combining healthy fats with high-quality protein"
+    }
+  },
+
+  {
+    name: "Coconut flour keto pancakes",
+    portion: "4 small pancakes",
+    nutrition: { 
+      protein: 18, 
+      prepTime: 15, 
+      calories: 280,
+      carbohydrates: 8,
+      fats: 22,
+      fiber: 6,
+      sugar: 3,
+      sodium: 290,
+      costEuros: 2.80, 
+      proteinPerEuro: 6.4 
+    },
+    category: "breakfast",
+    tags: ["keto", "gluten-free", "vegetarian", "low-carb"],
+    ingredients: [
+      "¼ cup coconut flour",
+      "4 eggs",
+      "¼ cup almond milk",
+      "2 tbsp cream cheese (softened)",
+      "1 tsp vanilla extract",
+      "½ tsp baking powder",
+      "2 tbsp erythritol",
+      "Pinch of salt",
+      "2 tbsp coconut oil for cooking"
+    ],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 0,
+      vegetables: [],
+      benefits: ["Grain-free", "High fiber", "Sustained energy"]
+    },
+    recipe: {
+      instructions: [
+        "Mix coconut flour, baking powder, erythritol, and salt",
+        "Blend eggs, cream cheese, almond milk, and vanilla until smooth",
+        "Combine wet and dry ingredients, let rest 5 minutes",
+        "Heat coconut oil in non-stick pan over medium-low heat",
+        "Pour small amounts of batter for 3-inch pancakes",
+        "Cook 3 minutes per side until golden brown",
+        "Serve with sugar-free syrup or berries"
+      ],
+      tips: [
+        "Coconut flour absorbs liquid quickly - don't add more flour",
+        "Keep heat low to prevent burning"
+      ],
+      notes: "Fluffy keto pancakes that taste like the real thing without the carbs"
+    }
+  },
+
+  {
+    name: "Keto chia pudding with berries",
+    portion: "1 large serving",
+    nutrition: { 
+      protein: 12, 
+      prepTime: 5, 
+      calories: 320,
+      carbohydrates: 9,
+      fats: 28,
+      fiber: 12,
+      sugar: 4,
+      sodium: 180,
+      costEuros: 2.60, 
+      proteinPerEuro: 4.6 
+    },
+    category: "breakfast",
+    tags: ["keto", "gluten-free", "vegetarian", "vegan", "low-carb", "overnight"],
+    ingredients: [
+      "3 tbsp chia seeds",
+      "200ml coconut milk (full-fat)",
+      "1 tbsp almond butter",
+      "1 tsp vanilla extract",
+      "1 tbsp erythritol",
+      "¼ cup mixed berries",
+      "1 tbsp unsweetened coconut flakes"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 0.5,
+      vegetables: ["berries"],
+      benefits: ["Omega-3 rich", "High fiber", "Antioxidants"]
+    },
+    recipe: {
+      instructions: [
+        "Mix chia seeds with coconut milk in bowl",
+        "Add almond butter, vanilla, and erythritol",
+        "Whisk well to prevent clumping",
+        "Refrigerate overnight or minimum 4 hours",
+        "Stir before serving, adjust thickness with more milk if needed",
+        "Top with berries and coconut flakes"
+      ],
+      tips: [
+        "Make multiple servings at once for the week",
+        "Stir after 30 minutes to prevent seed clumping"
+      ],
+      notes: "Make-ahead keto breakfast loaded with healthy fats and fiber"
+    }
+  },
+
+  // Lunch Options
+  {
+    name: "Keto Caesar salad with grilled chicken",
+    portion: "1 large salad",
+    nutrition: { 
+      protein: 32, 
+      prepTime: 25, 
+      calories: 520,
+      carbohydrates: 8,
+      fats: 42,
+      fiber: 4,
+      sugar: 4,
+      sodium: 680,
+      costEuros: 4.80, 
+      proteinPerEuro: 6.7 
+    },
+    category: "lunch",
+    tags: ["keto", "gluten-free", "high-protein", "low-carb"],
+    ingredients: [
+      "150g chicken breast",
+      "4 cups romaine lettuce (chopped)",
+      "¼ cup parmesan cheese (grated)",
+      "3 tbsp olive oil",
+      "2 tbsp mayonnaise",
+      "1 clove garlic (minced)",
+      "1 tbsp lemon juice",
+      "1 tsp Dijon mustard",
+      "2 anchovies (optional)",
+      "Salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["romaine lettuce"],
+      benefits: ["High in vitamin K", "Hydrating", "Crunchy texture"]
+    },
+    recipe: {
+      instructions: [
+        "Season chicken breast with salt, pepper, and olive oil",
+        "Grill chicken 6-7 minutes per side until cooked through",
+        "Let rest 5 minutes, then slice",
+        "For dressing: whisk mayo, garlic, lemon juice, mustard",
+        "Add minced anchovies if using, whisk until smooth",
+        "Toss romaine with dressing until well coated",
+        "Top with sliced chicken and parmesan cheese",
+        "Serve immediately"
+      ],
+      tips: [
+        "Don't overdress - add dressing gradually",
+        "Use freshly grated parmesan for best flavor"
+      ],
+      notes: "Classic Caesar flavors with high protein and minimal carbs"
+    }
+  },
+
+  {
+    name: "Keto zucchini boats with ground beef",
+    portion: "2 stuffed zucchini halves",
+    nutrition: { 
+      protein: 28, 
+      prepTime: 35, 
+      calories: 450,
+      carbohydrates: 10,
+      fats: 32,
+      fiber: 4,
+      sugar: 6,
+      sodium: 520,
+      costEuros: 3.60, 
+      proteinPerEuro: 7.8 
+    },
+    category: "lunch",
+    tags: ["keto", "gluten-free", "high-protein", "low-carb"],
+    ingredients: [
+      "2 medium zucchini (halved lengthwise)",
+      "200g ground beef (80/20)",
+      "½ onion (diced)",
+      "2 cloves garlic (minced)",
+      "¼ cup mozzarella cheese (shredded)",
+      "2 tbsp tomato paste",
+      "1 tbsp olive oil",
+      "1 tsp Italian seasoning",
+      "Salt and pepper to taste",
+      "Fresh basil for garnish"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["zucchini", "onion"],
+      benefits: ["High water content", "Vitamin C", "Potassium rich"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 190°C",
+        "Scoop out zucchini flesh, leaving ½ inch border",
+        "Brush zucchini boats with olive oil, season with salt",
+        "Sauté onion and garlic until soft",
+        "Add ground beef, cook until browned",
+        "Stir in tomato paste and Italian seasoning",
+        "Fill zucchini boats with meat mixture",
+        "Top with mozzarella cheese",
+        "Bake 25-30 minutes until zucchini is tender",
+        "Garnish with fresh basil"
+      ],
+      tips: [
+        "Save scooped zucchini flesh for other recipes",
+        "Don't overfill boats to prevent spillage"
+      ],
+      notes: "Satisfying keto meal that feels like comfort food without the carbs"
+    }
+  },
+
+  {
+    name: "Keto salmon and avocado salad",
+    portion: "1 large salad",
+    nutrition: { 
+      protein: 30, 
+      prepTime: 20, 
+      calories: 480,
+      carbohydrates: 12,
+      fats: 36,
+      fiber: 8,
+      sugar: 4,
+      sodium: 420,
+      costEuros: 5.20, 
+      proteinPerEuro: 5.8 
+    },
+    category: "lunch",
+    tags: ["keto", "gluten-free", "high-protein", "omega-3", "low-carb"],
+    ingredients: [
+      "150g salmon fillet",
+      "1 large avocado (sliced)",
+      "3 cups mixed greens",
+      "½ cucumber (sliced)",
+      "¼ red onion (thinly sliced)",
+      "2 tbsp olive oil",
+      "1 tbsp lemon juice",
+      "1 tsp Dijon mustard",
+      "2 tbsp capers",
+      "Salt and pepper to taste",
+      "Fresh dill for garnish"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["mixed greens", "cucumber", "red onion"],
+      benefits: ["Omega-3 fatty acids", "Heart healthy", "Anti-inflammatory"]
+    },
+    recipe: {
+      instructions: [
+        "Season salmon with salt, pepper, and olive oil",
+        "Pan-sear salmon 4-5 minutes per side until cooked through",
+        "Let cool, then flake into large pieces",
+        "Whisk together olive oil, lemon juice, and mustard for dressing",
+        "Arrange mixed greens on plate",
+        "Top with avocado slices, cucumber, and red onion",
+        "Add flaked salmon and capers",
+        "Drizzle with dressing and garnish with dill"
+      ],
+      tips: [
+        "Don't overcook salmon - it should flake easily",
+        "Add avocado just before serving to prevent browning"
+      ],
+      notes: "Restaurant-quality salad loaded with healthy fats and premium protein"
+    }
+  },
+
+  // Dinner Options
+  {
+    name: "Keto beef and broccoli stir-fry",
+    portion: "1.5 cups",
+    nutrition: { 
+      protein: 35, 
+      prepTime: 25, 
+      calories: 520,
+      carbohydrates: 8,
+      fats: 38,
+      fiber: 4,
+      sugar: 4,
+      sodium: 580,
+      costEuros: 4.20, 
+      proteinPerEuro: 8.3 
+    },
+    category: "dinner",
+    tags: ["keto", "gluten-free", "high-protein", "low-carb", "quick"],
+    ingredients: [
+      "200g beef sirloin (sliced thin)",
+      "3 cups broccoli florets",
+      "2 tbsp coconut oil",
+      "3 cloves garlic (minced)",
+      "1 tbsp fresh ginger (grated)",
+      "3 tbsp gluten-free soy sauce",
+      "1 tbsp sesame oil",
+      "1 tsp erythritol",
+      "1 tbsp rice vinegar",
+      "2 green onions (sliced)",
+      "1 tbsp sesame seeds"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["broccoli", "green onions"],
+      benefits: ["High in vitamin C", "Cruciferous vegetables", "Anti-inflammatory"]
+    },
+    recipe: {
+      instructions: [
+        "Heat coconut oil in large wok over high heat",
+        "Stir-fry beef slices 2-3 minutes until browned",
+        "Remove beef, set aside",
+        "Add broccoli to wok, stir-fry 3-4 minutes until crisp-tender",
+        "Add garlic and ginger, cook 30 seconds",
+        "Return beef to wok",
+        "Mix soy sauce, sesame oil, erythritol, and vinegar",
+        "Pour sauce over beef and broccoli, toss to coat",
+        "Garnish with green onions and sesame seeds"
+      ],
+      tips: [
+        "Keep heat high for proper stir-fry texture",
+        "Don't overcook broccoli - it should stay bright green"
+      ],
+      notes: "Classic takeout flavors made keto-friendly and gluten-free"
+    }
+  },
+
+  {
+    name: "Keto stuffed bell peppers",
+    portion: "2 stuffed peppers",
+    nutrition: { 
+      protein: 26, 
+      prepTime: 40, 
+      calories: 420,
+      carbohydrates: 12,
+      fats: 28,
+      fiber: 6,
+      sugar: 8,
+      sodium: 480,
+      costEuros: 3.80, 
+      proteinPerEuro: 6.8 
+    },
+    category: "dinner",
+    tags: ["keto", "gluten-free", "high-protein", "low-carb"],
+    ingredients: [
+      "2 large bell peppers (tops cut, seeds removed)",
+      "200g ground turkey",
+      "½ cup cauliflower rice",
+      "¼ cup onion (diced)",
+      "2 cloves garlic (minced)",
+      "¼ cup cheddar cheese (shredded)",
+      "2 tbsp tomato paste",
+      "1 tbsp olive oil",
+      "1 tsp paprika",
+      "½ tsp cumin",
+      "Salt and pepper to taste",
+      "Fresh parsley for garnish"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["bell peppers", "cauliflower", "onion"],
+      benefits: ["High vitamin C", "Antioxidants", "Fiber rich"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 180°C",
+        "Blanch bell peppers in boiling water 3 minutes, drain",
+        "Heat olive oil, sauté onion and garlic until soft",
+        "Add ground turkey, cook until browned",
+        "Stir in cauliflower rice, tomato paste, paprika, cumin",
+        "Cook 5 minutes, season with salt and pepper",
+        "Stuff peppers with turkey mixture",
+        "Top with cheddar cheese",
+        "Bake 25-30 minutes until peppers are tender",
+        "Garnish with fresh parsley"
+      ],
+      tips: [
+        "Choose peppers that stand upright for easier stuffing",
+        "Make cauliflower rice by pulsing florets in food processor"
+      ],
+      notes: "Comfort food made keto with cauliflower rice instead of grains"
+    }
+  },
+
+  {
+    name: "Keto lemon herb chicken thighs",
+    portion: "2 chicken thighs",
+    nutrition: { 
+      protein: 34, 
+      prepTime: 35, 
+      calories: 540,
+      carbohydrates: 4,
+      fats: 42,
+      fiber: 1,
+      sugar: 2,
+      sodium: 420,
+      costEuros: 3.40, 
+      proteinPerEuro: 10.0 
+    },
+    category: "dinner",
+    tags: ["keto", "gluten-free", "high-protein", "low-carb"],
+    ingredients: [
+      "4 chicken thighs (bone-in, skin-on)",
+      "2 lemons (juiced and zested)",
+      "3 tbsp olive oil",
+      "4 cloves garlic (minced)",
+      "2 tbsp fresh rosemary (chopped)",
+      "2 tbsp fresh thyme",
+      "1 tsp paprika",
+      "Salt and pepper to taste",
+      "2 cups green beans",
+      "1 tbsp butter"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["green beans"],
+      benefits: ["Vitamin K", "Fiber", "Low calorie"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 200°C",
+        "Mix olive oil, lemon juice, zest, garlic, herbs, paprika",
+        "Season chicken thighs with salt and pepper",
+        "Marinate chicken in herb mixture 15 minutes",
+        "Place chicken skin-side up in baking dish with marinade",
+        "Roast 25-30 minutes until skin is golden and crispy",
+        "Meanwhile, sauté green beans with butter until tender-crisp",
+        "Rest chicken 5 minutes before serving",
+        "Serve with pan juices and green beans"
+      ],
+      tips: [
+        "Don't flip chicken - keep skin side up for crispiness",
+        "Use meat thermometer - internal temp should reach 74°C"
+      ],
+      notes: "Juicy, flavorful chicken with crispy skin and minimal carbs"
+    }
+  },
+
+  {
+    name: "Keto cauliflower mac and cheese",
+    portion: "1 large serving",
+    nutrition: { 
+      protein: 18, 
+      prepTime: 30, 
+      calories: 380,
+      carbohydrates: 8,
+      fats: 32,
+      fiber: 4,
+      sugar: 4,
+      sodium: 520,
+      costEuros: 2.80, 
+      proteinPerEuro: 6.4 
+    },
+    category: "dinner",
+    tags: ["keto", "gluten-free", "vegetarian", "low-carb", "comfort-food"],
+    ingredients: [
+      "1 large head cauliflower (cut into florets)",
+      "1 cup sharp cheddar cheese (shredded)",
+      "¼ cup cream cheese",
+      "¼ cup heavy cream",
+      "2 tbsp butter",
+      "1 tsp garlic powder",
+      "½ tsp paprika",
+      "¼ tsp mustard powder",
+      "Salt and pepper to taste",
+      "2 tbsp chives (chopped)"
+    ],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["cauliflower", "chives"],
+      benefits: ["High vitamin C", "Cruciferous benefits", "Lower carb alternative"]
+    },
+    recipe: {
+      instructions: [
+        "Steam cauliflower florets until very tender, 12-15 minutes",
+        "Drain well and pat dry with paper towels",
+        "In saucepan, melt butter over medium heat",
+        "Add cream cheese and heavy cream, whisk until smooth",
+        "Add garlic powder, paprika, mustard powder",
+        "Gradually add cheddar cheese, whisking until melted",
+        "Add cooked cauliflower to cheese sauce",
+        "Gently fold together, season with salt and pepper",
+        "Garnish with chives and serve hot"
+      ],
+      tips: [
+        "Make sure cauliflower is very well drained to prevent watery sauce",
+        "Don't overheat cheese sauce to prevent breaking"
+      ],
+      notes: "All the comfort of mac and cheese with a fraction of the carbs"
+    }
   }
 ];
 
