@@ -4486,7 +4486,8 @@ function getDefaultPortion(ingredient: string): { amount: number; unit: string }
     'cinnamon': { amount: 2, unit: 'g' }, // 1 tsp = ~2g
     'salt': { amount: 5, unit: 'g' }, // 1 tsp = ~5g
     'pepper': { amount: 2, unit: 'g' }, // 1/2 tsp = ~2g
-    'fresh herbs': { amount: 10, unit: 'g' } // 2 tbsp chopped = ~10g
+    'fresh herbs': { amount: 10, unit: 'g' }, // 2 tbsp chopped = ~10g
+    'carrots': { amount: 3, unit: 'pieces' } // 3 medium carrots
   };
   
   return defaults[ingredient] || { amount: 50, unit: 'g' };

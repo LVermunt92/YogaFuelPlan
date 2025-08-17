@@ -1072,7 +1072,7 @@ export function generateShoppingList(meals: { foodDescription: string }[], langu
     'red onion': { amount: 500, unit: 'g' },
     'garlic': { amount: 100, unit: 'g' },
     'ginger': { amount: 100, unit: 'g' },
-    'carrots': { amount: 500, unit: 'g' },
+    'carrots': { amount: 3, unit: 'pieces' },
     'celery': { amount: 500, unit: 'g' },
     'cucumber': { amount: 400, unit: 'g' },
     'cherry tomatoes': { amount: 500, unit: 'g' },

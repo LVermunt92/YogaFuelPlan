@@ -255,7 +255,7 @@ class AlbertHeijnService {
       'tomatoes': 'tomaten',
       'onions': 'uien',
       'potatoes': 'aardappelen',
-      'carrots': 'wortelen',
+      'carrots': 'wortelen (3 stuks)',
       'apples': 'appels',
       'bananas': 'bananen',
       'rice': 'rijst',
