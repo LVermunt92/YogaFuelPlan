@@ -4472,7 +4472,7 @@ function getDefaultPortion(ingredient: string): { amount: number; unit: string }
     'nutritional yeast': { amount: 15, unit: 'g' }, // 2 tbsp = ~15g
     'coconut yogurt': { amount: 120, unit: 'g' }, // 0.5 cup = ~120g
     'cherry tomatoes': { amount: 150, unit: 'g' }, // 1 cup = ~150g
-    'bell peppers': { amount: 120, unit: 'g' }, // 1 medium pepper
+    'bell peppers': { amount: 2, unit: 'pieces' }, // 2 medium peppers
     'zucchini': { amount: 200, unit: 'g' }, // 1 medium zucchini
     'brussels sprouts': { amount: 150, unit: 'g' }, // 1 cup = ~150g
     'sweet potato': { amount: 200, unit: 'g' }, // 1 medium sweet potato

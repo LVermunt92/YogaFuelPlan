@@ -1067,7 +1067,7 @@ export function generateShoppingList(meals: { foodDescription: string }[], langu
     // Vegetables
     'fresh spinach': { amount: 300, unit: 'g' },
     'spinach': { amount: 300, unit: 'g' },
-    'bell peppers': { amount: 200, unit: 'g' },
+    'bell peppers': { amount: 2, unit: 'pieces' },
     'onions': { amount: 1000, unit: 'g' },
     'red onion': { amount: 500, unit: 'g' },
     'garlic': { amount: 100, unit: 'g' },
