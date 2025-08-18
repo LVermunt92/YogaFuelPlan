@@ -1448,10 +1448,10 @@ export default function MealPlanner() {
                     <table className="w-full min-w-[600px]">
                       <thead className="border-b border-border">
                         <tr>
-                          <th colSpan={3} className="px-3 sm:px-6 py-4 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider">{t.weeklyMealPlan || 'Weekly Meal Plan'}</th>
+                          <th colSpan={3} className="px-3 sm:px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">{t.weeklyMealPlan || 'Weekly Meal Plan'}</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-border">
+                      <tbody>
                         {[1, 2, 3, 4, 5, 6, 7].map(day => {
                           const dayMeals = getDayMeals(day);
                           const dayTotal = calculateDayTotal(day);
@@ -1469,7 +1469,7 @@ export default function MealPlanner() {
                                    day === 6 ? t.friday : 
                                    day === 7 ? t.saturday : t.sunday}
                                 </td>
-                                <td className="px-3 sm:px-6 py-3 text-xs text-muted-foreground font-medium">
+                                <td className="px-3 sm:px-6 py-3 text-xs text-gray-500 font-medium">
                                   {dayTotal.toFixed(1)}g protein
                                 </td>
                                 <td className="px-3 sm:px-6 py-3"></td>
@@ -1482,7 +1482,7 @@ export default function MealPlanner() {
                                 
                                 return (
                                   <tr key={meal.id} className="hover:bg-muted/50">
-                                    <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-muted-foreground capitalize pl-8">
+                                    <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500 capitalize pl-8">
                                       {meal.mealType}
                                     </td>
                                     <td className={`px-3 sm:px-6 py-4 text-sm text-foreground relative ${
