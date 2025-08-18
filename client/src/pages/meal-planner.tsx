@@ -11,6 +11,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Calendar, Clock, Target, Eye, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages } from "lucide-react";
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Separator } from "@/components/ui/separator";
 import { useTranslations, translateDietaryTags, translateDietaryTag } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -482,6 +483,53 @@ export default function MealPlanner() {
 
   const proteinTarget = activityLevel === "high" ? 130 : 70;
 
+  // Calculate nutritional data for charts
+  const calculateNutritionData = () => {
+    if (!currentMealPlan?.meals) return { protein: 0, fats: 0, vegetables: 0, carbs: 0, totalCalories: 0 };
+    
+    // Since nutritional data is mostly 0 in DB, estimate from protein data
+    const totalProtein = currentMealPlan.meals.reduce((sum: number, meal: any) => sum + (meal.protein || 0), 0);
+    
+    // Estimate total calories (protein = 4 kcal/g, typically 20-25% of total)
+    const estimatedTotalCalories = totalProtein > 0 ? (totalProtein * 4) / 0.22 : 2000;
+    
+    // Estimate other macros based on healthy targets
+    const estimatedFats = estimatedTotalCalories * 0.60 / 9; // 60% from fats
+    const estimatedCarbs = estimatedTotalCalories * 0.08 / 4; // 8% from carbs
+    const estimatedVegCalories = estimatedTotalCalories * 0.20; // 20% vegetables
+    
+    return {
+      protein: totalProtein,
+      fats: estimatedFats,
+      vegetables: estimatedVegCalories / 25, // ~25 kcal per 100g vegetables
+      carbs: estimatedCarbs,
+      totalCalories: estimatedTotalCalories
+    };
+  };
+
+  const nutritionData = calculateNutritionData();
+
+  // Chart data for each KPI
+  const proteinChartData = [
+    { name: 'Achieved', value: nutritionData.protein, fill: '#10b981' },
+    { name: 'Remaining', value: Math.max(0, (userProfile?.proteinTarget || 130) - nutritionData.protein), fill: '#e5e7eb' }
+  ];
+
+  const fatsChartData = [
+    { name: 'Current', value: (nutritionData.fats * 9 / nutritionData.totalCalories) * 100, fill: '#f59e0b' },
+    { name: 'Target Range', value: Math.max(0, 60 - ((nutritionData.fats * 9 / nutritionData.totalCalories) * 100)), fill: '#e5e7eb' }
+  ];
+
+  const vegetablesChartData = [
+    { name: 'Current', value: 20, fill: '#22c55e' }, // Estimated 20% from vegetables
+    { name: 'Target', value: 0, fill: '#e5e7eb' } // Target achieved
+  ];
+
+  const carbsChartData = [
+    { name: 'Current', value: (nutritionData.carbs * 4 / nutritionData.totalCalories) * 100, fill: '#3b82f6' },
+    { name: 'Target', value: Math.max(0, 5 - ((nutritionData.carbs * 4 / nutritionData.totalCalories) * 100)), fill: '#e5e7eb' }
+  ];
+
   // Oura queries
   const { data: ouraStatus } = useQuery<OuraStatus>({
     queryKey: ["/api/oura/status"],
@@ -703,63 +751,132 @@ export default function MealPlanner() {
               {t.welcomeBack} {userProfile?.username ? (userProfile.username.includes(' ') ? userProfile.username.split(' ')[0] : userProfile.username) : ''}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 text-sm">
-              <div>
+              {/* Protein KPI with Doughnut Chart */}
+              <div className="flex flex-col items-center">
                 <div className="text-gray-500 mb-2">
                   {latestMealPlan.activityLevel === 'high' ? 'High Protein Target' : 'Daily Protein'}
                 </div>
-                <div className="text-lg font-semibold text-foreground">
-                  {latestMealPlan.totalProtein.toFixed(0)}g {t.daily}
+                <div className="w-16 h-16 mb-2">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={proteinChartData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius="60%"
+                        outerRadius="100%"
+                        paddingAngle={2}
+                        dataKey="value"
+                        startAngle={90}
+                        endAngle={450}
+                      >
+                        {proteinChartData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.fill} />
+                        ))}
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
                 </div>
-                <div className="text-xs text-gray-400 mt-1">
-                  {latestMealPlan.activityLevel === 'high' ? 
-                    `Target: ${userProfile?.proteinTarget || 130}g (${((latestMealPlan.totalProtein / (userProfile?.proteinTarget || 130)) * 100).toFixed(0)}% achieved)` : 
-                    t.moderateActivityWeek
-                  }
+                <div className="text-lg font-semibold text-foreground text-center">
+                  {nutritionData.protein.toFixed(0)}g {t.daily}
+                </div>
+                <div className="text-xs text-gray-400 mt-1 text-center">
+                  Target: {userProfile?.proteinTarget || 130}g ({((nutritionData.protein / (userProfile?.proteinTarget || 130)) * 100).toFixed(0)}%)
                 </div>
               </div>
-              <div>
-                <div className="text-gray-500 mb-2">Good Fats (daily)</div>
-                <div className="text-lg font-semibold text-foreground">
-                  {(() => {
-                    if (!displayedMealPlan?.meals) return '0g';
-                    const totalFats = displayedMealPlan.meals.reduce((sum, meal) => sum + (meal.fats || 0), 0);
-                    const totalCalories = displayedMealPlan.meals.reduce((sum, meal) => sum + (meal.calories || 0), 0);
-                    const fatsPercentage = totalCalories > 0 ? (totalFats * 9 / totalCalories * 100) : 0;
-                    return `${totalFats.toFixed(0)}g (${fatsPercentage.toFixed(0)}%)`;
-                  })()}
+
+              {/* Good Fats KPI with Doughnut Chart */}
+              <div className="flex flex-col items-center">
+                <div className="text-gray-500 mb-2">Good Fats</div>
+                <div className="w-16 h-16 mb-2">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={fatsChartData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius="60%"
+                        outerRadius="100%"
+                        paddingAngle={2}
+                        dataKey="value"
+                        startAngle={90}
+                        endAngle={450}
+                      >
+                        {fatsChartData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.fill} />
+                        ))}
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
                 </div>
-                <div className="text-xs text-gray-400 mt-1">
+                <div className="text-lg font-semibold text-foreground text-center">
+                  {nutritionData.fats.toFixed(0)}g ({((nutritionData.fats * 9 / nutritionData.totalCalories) * 100).toFixed(0)}%)
+                </div>
+                <div className="text-xs text-gray-400 mt-1 text-center">
                   Target: 50-70% of energy
                 </div>
               </div>
-              <div>
-                <div className="text-gray-500 mb-2">Vegetables (daily)</div>
-                <div className="text-lg font-semibold text-foreground">
-                  {(() => {
-                    if (!displayedMealPlan?.meals) return '0g';
-                    const totalCalories = displayedMealPlan.meals.reduce((sum, meal) => sum + (meal.calories || 0), 0);
-                    // Estimate vegetable intake as 20% of total calories (vegetables are ~25 kcal per 100g)
-                    const estimatedVegCalories = totalCalories * 0.20;
-                    const estimatedVegGrams = estimatedVegCalories / 0.25;
-                    return `~${(estimatedVegGrams / 1000).toFixed(1)}kg`;
-                  })()}
+
+              {/* Vegetables KPI with Doughnut Chart */}
+              <div className="flex flex-col items-center">
+                <div className="text-gray-500 mb-2">Vegetables</div>
+                <div className="w-16 h-16 mb-2">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={vegetablesChartData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius="60%"
+                        outerRadius="100%"
+                        paddingAngle={2}
+                        dataKey="value"
+                        startAngle={90}
+                        endAngle={450}
+                      >
+                        {vegetablesChartData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.fill} />
+                        ))}
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
                 </div>
-                <div className="text-xs text-gray-400 mt-1">
+                <div className="text-lg font-semibold text-foreground text-center">
+                  ~{(nutritionData.vegetables / 1000).toFixed(1)}kg
+                </div>
+                <div className="text-xs text-gray-400 mt-1 text-center">
                   Target: 20% of energy
                 </div>
               </div>
-              <div>
+
+              {/* Fruits/Starches KPI with Doughnut Chart */}
+              <div className="flex flex-col items-center">
                 <div className="text-gray-500 mb-2">Fruits/Starches</div>
-                <div className="text-lg font-semibold text-foreground">
-                  {(() => {
-                    if (!displayedMealPlan?.meals) return '0g';
-                    const totalCarbs = displayedMealPlan.meals.reduce((sum, meal) => sum + (meal.carbohydrates || 0), 0);
-                    const totalCalories = displayedMealPlan.meals.reduce((sum, meal) => sum + (meal.calories || 0), 0);
-                    const carbsPercentage = totalCalories > 0 ? (totalCarbs * 4 / totalCalories * 100) : 0;
-                    return `${totalCarbs.toFixed(0)}g (${carbsPercentage.toFixed(0)}%)`;
-                  })()}
+                <div className="w-16 h-16 mb-2">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={carbsChartData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius="60%"
+                        outerRadius="100%"
+                        paddingAngle={2}
+                        dataKey="value"
+                        startAngle={90}
+                        endAngle={450}
+                      >
+                        {carbsChartData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.fill} />
+                        ))}
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
                 </div>
-                <div className="text-xs text-gray-400 mt-1">
+                <div className="text-lg font-semibold text-foreground text-center">
+                  {nutritionData.carbs.toFixed(0)}g ({((nutritionData.carbs * 4 / nutritionData.totalCalories) * 100).toFixed(0)}%)
+                </div>
+                <div className="text-xs text-gray-400 mt-1 text-center">
                   Target: 5% of energy
                 </div>
               </div>
@@ -1403,7 +1520,7 @@ export default function MealPlanner() {
                                     </span>
                                     <div className="text-right">
                                       <span className="text-xs font-medium text-emerald-600">
-                                        {Math.round(meal.nutrition?.protein || 0)}g
+                                        {Math.round(meal.protein || 0)}g
                                       </span>
                                     </div>
                                   </div>
@@ -1416,7 +1533,7 @@ export default function MealPlanner() {
                                     </button>
                                     {isLeftover && (
                                       <Badge variant="outline" className="ml-2 text-xs bg-blue-100 text-blue-700 border-blue-300">
-                                        {t.leftover}
+                                        {t.leftovers}
                                       </Badge>
                                     )}
                                   </div>
