@@ -152,8 +152,10 @@ export default function Profile() {
       return response.json();
     },
     onSuccess: (updatedData) => {
-      // Update the form data with the saved values to prevent reset
-      if (updatedData) {
+      // Update the query cache directly instead of invalidating to prevent form reset
+      if (updatedData && authUser?.id) {
+        queryClient.setQueryData(['/api/users', authUser.id, 'profile'], updatedData);
+        
         const dynamicProteinTarget = calculateProteinTarget(updatedData.age, updatedData.activityLevel);
         
         setFormData({
@@ -179,7 +181,6 @@ export default function Profile() {
         });
       }
       
-      queryClient.invalidateQueries({ queryKey: ['/api/users', authUser?.id, 'profile'] });
       toast({
         title: "Profile Updated",
         description: "Your personal information has been saved successfully.",
