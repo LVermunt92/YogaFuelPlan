@@ -7,6 +7,8 @@ export const users = pgTable("users", {
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
   email: text("email"),
+  firstName: text("first_name"),
+  lastName: text("last_name"),
   weight: integer("weight").default(60), // kg
   goalWeight: integer("goal_weight"), // target weight in kg
   height: integer("height"), // cm
@@ -147,6 +149,10 @@ export const authLoginSchema = z.object({
 });
 
 export const updateUserProfileSchema = createInsertSchema(users).pick({
+  username: true,
+  email: true,
+  firstName: true,
+  lastName: true,
   weight: true,
   goalWeight: true,
   height: true,
