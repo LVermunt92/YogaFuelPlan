@@ -103,7 +103,7 @@ function Navigation() {
 
       {/* Mobile menu */}
       {isMenuOpen && (
-        <div className="sm:hidden border-t border-gray-200 bg-background" style={{ backgroundColor: 'var(--background)' }}>
+        <div className="topbar sm:hidden border-t border-gray-200">
           <div className="pt-2 pb-3 space-y-1">
             {navItems.map((item) => {
               const Icon = item.icon;
