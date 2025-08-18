@@ -985,7 +985,7 @@ export default function MealPlanner() {
                   <ShoppingCart className="h-6 w-6 text-foreground mr-3" />
                   <div>
                     <h2 className="text-xl font-semibold text-foreground">Weekend Grocery Planning</h2>
-                    <p className="text-sm text-muted-foreground">Manage both current week cooking and next week shopping</p>
+                    <p className="text-sm text-gray-500">Manage both current week cooking and next week shopping</p>
                   </div>
                 </div>
                 <Badge variant="outline" className="text-xs">
@@ -1033,10 +1033,10 @@ export default function MealPlanner() {
                                 {plan.planType || 'current'}
                               </Badge>
                             </div>
-                            <p className="text-sm text-muted-foreground mb-2">
+                            <p className="text-sm text-gray-500 mb-2">
                               Week of {plan.weekStart}
                             </p>
-                            <span className="text-xs text-muted-foreground">
+                            <span className="text-xs text-gray-400">
                               {plan.totalProtein}g protein/day
                             </span>
                           </div>
@@ -1071,10 +1071,10 @@ export default function MealPlanner() {
                                 {plan.planType || 'next'}
                               </Badge>
                             </div>
-                            <p className="text-sm text-muted-foreground mb-2">
+                            <p className="text-sm text-gray-500 mb-2">
                               Week of {plan.weekStart}
                             </p>
-                            <span className="text-xs text-muted-foreground">
+                            <span className="text-xs text-gray-400">
                               {plan.totalProtein}g protein/day
                             </span>
                           </div>
@@ -1132,7 +1132,7 @@ export default function MealPlanner() {
                 <h2 className="text-xl font-semibold text-foreground mb-2">
                   {t.generateMealPlan}
                 </h2>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-500">
                   {t.createPersonalizedMealPlan}
                 </p>
               </div>
@@ -1150,7 +1150,7 @@ export default function MealPlanner() {
                       <SelectItem value="next">{t.nextWeek}</SelectItem>
                     </SelectContent>
                   </Select>
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="text-xs text-gray-400 mt-1">
                     {selectedWeekType === "current" ? t.generateCurrentWeek : t.generateUpcomingWeek}
                   </p>
                 </div>
@@ -1164,7 +1164,7 @@ export default function MealPlanner() {
                   <Label className="text-sm font-medium text-foreground mb-2 block">
                     {t.ingredientsToUseUp}
                   </Label>
-                  <p className="text-xs text-muted-foreground mb-3">
+                  <p className="text-xs text-gray-400 mb-3">
                     {language === 'nl' 
                       ? 'Voeg ingrediënten toe die je deze week wilt opmaken. Deze worden verwerkt in nieuwe recepten.' 
                       : 'Add ingredients you want to use up this week. These will be incorporated into fresh recipes.'
@@ -1204,7 +1204,7 @@ export default function MealPlanner() {
                               disabled={updateProfileMutation.isPending}
                               variant="ghost"
                               size="sm"
-                              className="h-6 w-6 p-0 text-muted-foreground hover:text-destructive"
+                              className="h-6 w-6 p-0 text-gray-400 hover:text-destructive"
                             >
                               <X className="h-3 w-3" />
                             </Button>
@@ -1400,7 +1400,7 @@ export default function MealPlanner() {
                     {t.weeklyMealPlan}
                   </h2>
                   <div className="flex items-center space-x-3">
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-sm text-gray-500">
                       {t.weekOf} <span className="text-foreground font-medium">{displayedMealPlan ? formatWeekRange(displayedMealPlan.weekStart) : t.noPlan}</span>
                     </div>
                     {displayedMealPlan?.notionSynced && (
@@ -1427,19 +1427,19 @@ export default function MealPlanner() {
                     <div className="flex flex-wrap gap-4 text-xs">
                       <div className="flex items-center gap-2">
                         <div className="w-3 h-3 bg-emerald-100 border-2 border-emerald-500 rounded"></div>
-                        <span className="text-muted-foreground">{t.freshCookingDay}</span>
+                        <span className="text-gray-500">{t.freshCookingDay}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-3 h-3 bg-blue-100 border-2 border-blue-500 rounded"></div>
-                        <span className="text-muted-foreground">{t.reheatLeftover}</span>
+                        <span className="text-gray-500">{t.reheatLeftover}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-3 h-3 bg-gray-100 border-2 border-gray-400 rounded"></div>
-                        <span className="text-muted-foreground">{t.eatingOut}</span>
+                        <span className="text-gray-500">{t.eatingOut}</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <span className="text-orange-600 text-sm">🥕</span>
-                        <span className="text-muted-foreground">{language === 'nl' ? 'Ingrediënt gebruikt' : 'Ingredient used up'}</span>
+                        <span className="text-gray-500">{language === 'nl' ? 'Ingrediënt gebruikt' : 'Ingredient used up'}</span>
                       </div>
                     </div>
                   </div>
@@ -1544,21 +1544,21 @@ export default function MealPlanner() {
                 </>
               ) : (
                 <div className="text-center py-12">
-                  <Activity className="mx-auto h-12 w-12 mb-4 text-muted-foreground" />
-                  <p className="text-muted-foreground">{t.noMealPlanAvailable}</p>
+                  <Activity className="mx-auto h-12 w-12 mb-4 text-gray-400" />
+                  <p className="text-gray-500">{t.noMealPlanAvailable}</p>
                 </div>
               )}
               
               {currentMealPlan?.meals && (
                 <div className="px-6 py-4 bg-muted/30 border-t border-border mt-6">
                   <div className="flex justify-between items-center">
-                    <div className="text-sm text-muted-foreground">
+                    <div className="text-sm text-gray-500">
                       {t.weeklyAverage}: <span className="font-medium text-foreground">
                         {currentMealPlan.totalProtein.toFixed(0)}g {t.proteinPerDay}
                       </span>
                     </div>
                     <div className="flex space-x-2">
-                      <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+                      <Button variant="ghost" size="sm" className="text-gray-400 hover:text-foreground">
                         <Download className="mr-1 h-4 w-4" />
                         {t.exportButton}
                       </Button>
@@ -1584,12 +1584,12 @@ export default function MealPlanner() {
                 <Activity className="text-foreground h-8 w-8" />
               </div>
               <div className="ml-4">
-                <div className="text-sm font-medium text-muted-foreground">{t.ouraSync || 'Oura Sync'}</div>
+                <div className="text-sm font-medium text-gray-500">{t.ouraSync || 'Oura Sync'}</div>
                 <div className="text-lg font-semibold text-foreground">
                   {ouraStatus?.connected && latestOuraData ? t.syncedStatus : t.notSyncedStatus}
                 </div>
                 {latestOuraData && (
-                  <div className="text-xs text-muted-foreground mt-1">
+                  <div className="text-xs text-gray-400 mt-1">
                     {new Date(latestOuraData.syncedAt).toLocaleDateString()}
                   </div>
                 )}
@@ -1603,7 +1603,7 @@ export default function MealPlanner() {
                 <Target className="text-foreground h-8 w-8" />
               </div>
               <div className="ml-4">
-                <div className="text-sm font-medium text-muted-foreground">{t.proteinGoal}</div>
+                <div className="text-sm font-medium text-gray-500">{t.proteinGoal}</div>
                 <div className="text-lg font-semibold text-foreground">{t.onTrack}</div>
               </div>
             </div>
@@ -1615,7 +1615,7 @@ export default function MealPlanner() {
                 <Clock className="text-foreground h-8 w-8" />
               </div>
               <div className="ml-4">
-                <div className="text-sm font-medium text-muted-foreground">{t.prepTime}</div>
+                <div className="text-sm font-medium text-gray-500">{t.prepTime}</div>
                 <div className="text-lg font-semibold text-foreground">{t.under30MinPerMeal}</div>
               </div>
             </div>
@@ -1632,12 +1632,12 @@ export default function MealPlanner() {
               <Label className="text-sm font-medium text-foreground mb-2 block">{t.integrationStatus}</Label>
               <div className="flex items-center">
                 <div className={`w-3 h-3 rounded-full mr-2 ${(notionStatus as any)?.connected ? 'bg-foreground' : 'bg-muted-foreground'}`} />
-                <span className={`text-sm ${(notionStatus as any)?.connected ? 'text-foreground' : 'text-muted-foreground'}`}>
+                <span className={`text-sm ${(notionStatus as any)?.connected ? 'text-foreground' : 'text-gray-500'}`}>
                   {(notionStatus as any)?.connected ? t.connected : t.notConnected}
                 </span>
               </div>
               {!(notionStatus as any)?.connected && (
-                <p className="text-xs text-muted-foreground mt-2">
+                <p className="text-xs text-gray-400 mt-2">
                   {t.notConnectedPleaseConfigureSecrets}
                 </p>
               )}
