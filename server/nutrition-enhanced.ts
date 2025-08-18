@@ -4235,51 +4235,9 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     }
   });
 
-  // Categorize ingredients
+  // Categorize ingredients following supermarket layout order
   const ingredientCategories: Record<string, string> = {
-    // Proteins
-    'extra firm tofu': 'Proteins',
-    'tempeh': 'Proteins',
-    'red lentils': 'Proteins',
-    'green lentils': 'Proteins',
-    'lentils': 'Proteins',
-    'chickpeas': 'Proteins',
-    'black beans': 'Proteins',
-    'white beans': 'Proteins',
-    'kidney beans': 'Proteins',
-    'mung beans': 'Proteins',
-    'edamame': 'Proteins',
-    'pea protein powder': 'Proteins',
-    'vanilla protein powder': 'Proteins',
-    'plant protein powder': 'Proteins',
-    'hummus': 'Proteins',
-    'eggs': 'Proteins',
-    
-    // Grains & Starches
-    'quinoa': 'Grains & Starches',
-    'brown rice': 'Grains & Starches',
-    'rolled oats': 'Grains & Starches',
-    'gluten-free oats': 'Grains & Starches',
-    'gluten-free pasta': 'Grains & Starches',
-    'gluten-free tortilla': 'Grains & Starches',
-    'chickpea flour': 'Grains & Starches',
-    'coconut flour': 'Grains & Starches',
-    'sweet potato': 'Grains & Starches',
-    'gluten-free granola': 'Grains & Starches',
-    
-    // Nuts & Seeds
-    'almond butter': 'Nuts & Seeds',
-    'tahini': 'Nuts & Seeds',
-    'chia seeds': 'Nuts & Seeds',
-    'hemp hearts': 'Nuts & Seeds',
-    'hemp seeds': 'Nuts & Seeds',
-    'flax seeds': 'Nuts & Seeds',
-    'mixed nuts': 'Nuts & Seeds',
-    'almonds': 'Nuts & Seeds',
-    'walnuts': 'Nuts & Seeds',
-    'sunflower seeds': 'Nuts & Seeds',
-    
-    // Vegetables
+    // Vegetables (Fresh Produce section 1)
     'fresh spinach': 'Vegetables',
     'spinach': 'Vegetables',
     'bell peppers': 'Vegetables',
@@ -4307,7 +4265,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'portobello mushrooms': 'Vegetables',
     'sprouts': 'Vegetables',
     
-    // Fruits
+    // Fruits (Fresh Produce section 2)
     'banana': 'Fruits',
     'avocado': 'Fruits',
     'lemon': 'Fruits',
@@ -4317,30 +4275,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'fresh fruit': 'Fruits',
     'kiwi': 'Fruits',
     
-    // Dairy & Cheese
-    'cheese': 'Dairy & Cheese',
-    'feta cheese': 'Dairy & Cheese',
-    'goat cheese': 'Dairy & Cheese',
-    'mozzarella': 'Dairy & Cheese',
-    'parmesan': 'Dairy & Cheese',
-    'cheddar': 'Dairy & Cheese',
-    'cottage cheese': 'Dairy & Cheese',
-    'cream cheese': 'Dairy & Cheese',
-    'ricotta': 'Dairy & Cheese',
-    'greek yogurt': 'Dairy & Cheese',
-    'yogurt': 'Dairy & Cheese',
-    'milk': 'Dairy & Cheese',
-    'butter': 'Dairy & Cheese',
-    'sour cream': 'Dairy & Cheese',
-    'heavy cream': 'Dairy & Cheese',
-    
-    // Dairy Alternatives
-    'almond milk': 'Dairy Alternatives',
-    'coconut milk': 'Dairy Alternatives',
-    'coconut yogurt': 'Dairy Alternatives',
-    'fermented kefir': 'Dairy Alternatives',
-    
-    // Fresh Herbs
+    // Fresh Herbs (Fresh Department)
     'fresh herbs': 'Fresh Herbs',
     'fresh parsley': 'Fresh Herbs',
     'parsley': 'Fresh Herbs',
@@ -4361,39 +4296,100 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'fresh chives': 'Fresh Herbs',
     'chives': 'Fresh Herbs',
     
-    // Pantry Items
-    'olive oil': 'Pantry Items',
-    'coconut oil': 'Pantry Items',
-    'sesame oil': 'Pantry Items',
-    'balsamic vinegar': 'Pantry Items',
-    'soy sauce': 'Pantry Items',
-    'nutritional yeast': 'Pantry Items',
-    'vanilla extract': 'Pantry Items',
-    'maple syrup': 'Pantry Items',
-    'baking powder': 'Pantry Items',
-    'salt': 'Pantry Items',
-    'pepper': 'Pantry Items',
-    'black pepper': 'Pantry Items',
-    'cinnamon': 'Pantry Items',
-    'stevia': 'Pantry Items',
-    'chili powder': 'Pantry Items',
-    'fennel powder': 'Pantry Items',
-    'garlic powder': 'Pantry Items',
-    'onion powder': 'Pantry Items',
-    'paprika': 'Pantry Items',
-    'cumin': 'Pantry Items',
-    'ground coriander': 'Pantry Items',
-    'turmeric': 'Pantry Items',
-    'curry powder': 'Pantry Items',
-    'garam masala': 'Pantry Items',
-    'smoked paprika': 'Pantry Items',
-    'cayenne pepper': 'Pantry Items',
-    'red pepper flakes': 'Pantry Items',
-    'chili flakes': 'Pantry Items',
-    'dried oregano': 'Pantry Items',
-    'dried basil': 'Pantry Items',
-    'dried thyme': 'Pantry Items',
-    'bay leaves': 'Pantry Items'
+    // Dairy & Cheese (Fresh Department)
+    'cheese': 'Dairy & Cheese',
+    'feta cheese': 'Dairy & Cheese',
+    'goat cheese': 'Dairy & Cheese',
+    'mozzarella': 'Dairy & Cheese',
+    'parmesan': 'Dairy & Cheese',
+    'cheddar': 'Dairy & Cheese',
+    'cottage cheese': 'Dairy & Cheese',
+    'cream cheese': 'Dairy & Cheese',
+    'ricotta': 'Dairy & Cheese',
+    'greek yogurt': 'Dairy & Cheese',
+    'yogurt': 'Dairy & Cheese',
+    'milk': 'Dairy & Cheese',
+    'butter': 'Dairy & Cheese',
+    'sour cream': 'Dairy & Cheese',
+    'heavy cream': 'Dairy & Cheese',
+    
+    // Plant-Based Alternatives (Fresh Department)
+    'extra firm tofu': 'Plant-Based Alternatives',
+    'tempeh': 'Plant-Based Alternatives',
+    'almond milk': 'Plant-Based Alternatives',
+    'coconut milk': 'Plant-Based Alternatives',
+    'coconut yogurt': 'Plant-Based Alternatives',
+    'fermented kefir': 'Plant-Based Alternatives',
+    'hummus': 'Plant-Based Alternatives',
+    
+    // Eggs (Dairy & Eggs section)
+    'eggs': 'Dairy & Eggs',
+    
+    // Pantry & Dry Goods (includes grains, legumes, nuts, canned goods, spices, oils)
+    'quinoa': 'Pantry & Dry Goods',
+    'brown rice': 'Pantry & Dry Goods',
+    'rolled oats': 'Pantry & Dry Goods',
+    'gluten-free oats': 'Pantry & Dry Goods',
+    'gluten-free pasta': 'Pantry & Dry Goods',
+    'gluten-free tortilla': 'Pantry & Dry Goods',
+    'chickpea flour': 'Pantry & Dry Goods',
+    'coconut flour': 'Pantry & Dry Goods',
+    'sweet potato': 'Pantry & Dry Goods',
+    'gluten-free granola': 'Pantry & Dry Goods',
+    'red lentils': 'Pantry & Dry Goods',
+    'green lentils': 'Pantry & Dry Goods',
+    'lentils': 'Pantry & Dry Goods',
+    'chickpeas': 'Pantry & Dry Goods',
+    'black beans': 'Pantry & Dry Goods',
+    'white beans': 'Pantry & Dry Goods',
+    'kidney beans': 'Pantry & Dry Goods',
+    'mung beans': 'Pantry & Dry Goods',
+    'edamame': 'Pantry & Dry Goods',
+    'pea protein powder': 'Pantry & Dry Goods',
+    'vanilla protein powder': 'Pantry & Dry Goods',
+    'plant protein powder': 'Pantry & Dry Goods',
+    'almond butter': 'Pantry & Dry Goods',
+    'tahini': 'Pantry & Dry Goods',
+    'chia seeds': 'Pantry & Dry Goods',
+    'hemp hearts': 'Pantry & Dry Goods',
+    'hemp seeds': 'Pantry & Dry Goods',
+    'flax seeds': 'Pantry & Dry Goods',
+    'mixed nuts': 'Pantry & Dry Goods',
+    'almonds': 'Pantry & Dry Goods',
+    'walnuts': 'Pantry & Dry Goods',
+    'sunflower seeds': 'Pantry & Dry Goods',
+    'olive oil': 'Pantry & Dry Goods',
+    'coconut oil': 'Pantry & Dry Goods',
+    'sesame oil': 'Pantry & Dry Goods',
+    'balsamic vinegar': 'Pantry & Dry Goods',
+    'soy sauce': 'Pantry & Dry Goods',
+    'nutritional yeast': 'Pantry & Dry Goods',
+    'vanilla extract': 'Pantry & Dry Goods',
+    'maple syrup': 'Pantry & Dry Goods',
+    'baking powder': 'Pantry & Dry Goods',
+    'salt': 'Pantry & Dry Goods',
+    'pepper': 'Pantry & Dry Goods',
+    'black pepper': 'Pantry & Dry Goods',
+    'cinnamon': 'Pantry & Dry Goods',
+    'stevia': 'Pantry & Dry Goods',
+    'chili powder': 'Pantry & Dry Goods',
+    'fennel powder': 'Pantry & Dry Goods',
+    'garlic powder': 'Pantry & Dry Goods',
+    'onion powder': 'Pantry & Dry Goods',
+    'paprika': 'Pantry & Dry Goods',
+    'cumin': 'Pantry & Dry Goods',
+    'ground coriander': 'Pantry & Dry Goods',
+    'turmeric': 'Pantry & Dry Goods',
+    'curry powder': 'Pantry & Dry Goods',
+    'garam masala': 'Pantry & Dry Goods',
+    'smoked paprika': 'Pantry & Dry Goods',
+    'cayenne pepper': 'Pantry & Dry Goods',
+    'red pepper flakes': 'Pantry & Dry Goods',
+    'chili flakes': 'Pantry & Dry Goods',
+    'dried oregano': 'Pantry & Dry Goods',
+    'dried basil': 'Pantry & Dry Goods',
+    'dried thyme': 'Pantry & Dry Goods',
+    'bay leaves': 'Pantry & Dry Goods'
   };
 
   // Create shopping list with categories and converted amounts
@@ -4427,10 +4423,29 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     });
   });
 
-  // Sort by category and then by ingredient name
+  // Define supermarket shopping order
+  const categoryOrder = [
+    'Vegetables',
+    'Fruits', 
+    'Fresh Herbs',
+    'Dairy & Cheese',
+    'Plant-Based Alternatives',
+    'Dairy & Eggs',
+    'Pantry & Dry Goods',
+    'Other'
+  ];
+
+  // Sort by supermarket category order and then by ingredient name
   return shoppingList.sort((a, b) => {
     if (a.category !== b.category) {
-      return a.category.localeCompare(b.category);
+      const aIndex = categoryOrder.indexOf(a.category);
+      const bIndex = categoryOrder.indexOf(b.category);
+      
+      // If category not in order list, put it at end
+      const aOrder = aIndex === -1 ? categoryOrder.length : aIndex;
+      const bOrder = bIndex === -1 ? categoryOrder.length : bIndex;
+      
+      return aOrder - bOrder;
     }
     return a.ingredient.localeCompare(b.ingredient);
   });

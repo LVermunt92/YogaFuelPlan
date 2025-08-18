@@ -32,46 +32,47 @@ Improved fresh herbs specification: Enhanced ingredient system to show specific 
 Comprehensive Ingredient Specification System: Implemented complete system to eliminate all generic ingredient terms across recipes. Created ingredient-specifier.ts with comprehensive mappings for vegetables (mixed vegetables → bell peppers, zucchini, carrots), fruits (seasonal fruit → season-appropriate options), herbs (fresh herbs → fresh parsley), and all other categories. System automatically updates all 76 recipes on server startup, runs validation checks, and provides API endpoints for manual updates. All recipes now have 100% specific ingredients, eliminating vague terms like "mixed vegetables", "fresh herbs", "seasonal fruit" from both recipe displays and shopping lists. New recipes are automatically processed to ensure specificity.
 Fixed Critical Leftover Ingredients Bug: Discovered and resolved major issue where user-added leftover ingredients were being intentionally cleared during meal generation, completely bypassing the ingredient incorporation functionality. Removed the clearing logic and added proper leftover ingredient incorporation to the main meal generation path (not just meal prep mode). System now properly uses ALL user-added ingredients during cooking moments, displays which ingredients were incorporated in meal descriptions (e.g., "Wild mushroom quinoa (incorporating leftover spinach, bell peppers, quinoa)"), and removes used ingredients to prevent duplicates. Users can now successfully add multiple ingredients through the UI and see them all properly incorporated into their meal plans.
 Fixed Shopping List Capitalization: Resolved issue where shopping list ingredient names in English appeared in lowercase. Added proper capitalization logic to ensure all ingredient names start with capital letters for better readability and professional presentation (e.g., "Almond milk" instead of "almond milk", "Bell peppers" instead of "bell peppers").
+Supermarket-Ordered Shopping Categories: Completely reorganized shopping list categories to follow logical supermarket visit flow. Updated category mappings and sorting logic to present groceries in optimal shopping order: Vegetables (fresh produce) → Fruits (fresh produce) → Fresh Herbs (fresh department) → Dairy & Cheese/Plant-Based Alternatives (fresh department) → Dairy & Eggs → Pantry & Dry Goods (grains, legumes, spices, oils). This eliminates inefficient back-and-forth movement through the store and provides a natural shopping workflow that matches how supermarkets are typically organized.
 
 ## System Architecture
 
 ### Authentication & Multi-User Support
-- **User Authentication**: Login/registration system with secure password hashing and secure password reset (two-step email verification).
-- **Multi-User Support**: Each user has a unique ID and isolated data.
-- **Route Protection**: Logged-out users only see the login screen.
+- User Authentication: Login/registration system with secure password hashing and secure password reset (two-step email verification).
+- Multi-User Support: Each user has a unique ID and isolated data.
+- Route Protection: Logged-out users only see the login screen.
 
 ### UI/UX Decisions
-- **Design System**: shadcn/ui built on Radix UI primitives.
-- **Styling**: Tailwind CSS with CSS variables for theming.
+- Design System: shadcn/ui built on Radix UI primitives.
+- Styling: Tailwind CSS with CSS variables for theming.
 
 ### Technical Implementations
-- **Frontend**: React 18 with TypeScript, Wouter for routing, TanStack React Query for server state.
-- **Backend**: Express.js with TypeScript, RESTful API.
-- **Database**: PostgreSQL with Drizzle ORM, managed via Neon serverless.
-- **Session Management**: Express sessions with PostgreSQL store.
-- **Build Tools**: Vite for frontend, esbuild for backend.
-- **Meal Generation**: Calculates protein targets based on user activity, selects meals from a pre-defined nutrition database, generates 7-day plans with variety, and creates shopping lists.
-- **Universal Meal Prep Engine**: Adapts to user cooking schedules, supporting batch cooking, proper meal distribution, intelligent dietary fallbacks.
-- **Recipe System**: All meals include detailed cooking instructions, tips, and nutritional information; recipes are alcohol-free.
-- **Smart Time Constraints**: Weekday meals (Mon-Fri) are limited to ≤30 minutes prep time; weekends have no time restrictions.
-- **Ayurvedic Integration**: Supports Ayurvedic dietary tags, including seasonal adaptation based on a 6-season calendar (adapted for European seasons).
-- **Meal Plan Persistence**: Meal plans persist across browser sessions with automatic loading.
-- **Automated Viral Recipe Updates**: System automatically adds new trending recipes every 2 weeks.
-- **Automatic Oura Ring Sync**: Daily automated synchronization of Oura Ring health data.
-- **Enhanced Multi-Plan Weekend Grocery System**: Users can maintain both current week and next week plans simultaneously.
-- **Complete Dutch Recipe Translation System**: Comprehensive translation service for recipe names, ingredients, and cooking instructions from English to Dutch, including AI-enhanced translation.
-- **Consolidated Shopping List Workflow**: Single-flow shopping list generation with integrated export options (copy, CSV download, Albert Heijn app deep linking).
+- Frontend: React 18 with TypeScript, Wouter for routing, TanStack React Query for server state.
+- Backend: Express.js with TypeScript, RESTful API.
+- Database: PostgreSQL with Drizzle ORM.
+- Session Management: Express sessions with PostgreSQL store.
+- Build Tools: Vite for frontend, esbuild for backend.
+- Meal Generation: Calculates protein targets based on user activity, selects meals from a pre-defined nutrition database, generates 7-day plans with variety, and creates shopping lists.
+- Universal Meal Prep Engine: Adapts to user cooking schedules, supporting batch cooking, proper meal distribution, intelligent dietary fallbacks.
+- Recipe System: All meals include detailed cooking instructions, tips, and nutritional information; recipes are alcohol-free.
+- Smart Time Constraints: Weekday meals (Mon-Fri) are limited to ≤30 minutes prep time; weekends have no time restrictions.
+- Ayurvedic Integration: Supports Ayurvedic dietary tags, including seasonal adaptation based on a 6-season calendar (adapted for European seasons).
+- Meal Plan Persistence: Meal plans persist across browser sessions with automatic loading.
+- Automated Viral Recipe Updates: System automatically adds new trending recipes every 2 weeks.
+- Automatic Oura Ring Sync: Daily automated synchronization of Oura Ring health data.
+- Enhanced Multi-Plan Weekend Grocery System: Users can maintain both current week and next week plans simultaneously.
+- Complete Dutch Recipe Translation System: Comprehensive translation service for recipe names, ingredients, and cooking instructions from English to Dutch, including AI-enhanced translation.
+- Consolidated Shopping List Workflow: Single-flow shopping list generation with integrated export options (copy, CSV download, Albert Heijn app deep linking).
 
 ### System Design Choices
-- **Data Flow**: User input drives meal generation, stored in PostgreSQL, displayed via React Query, and can be synced to Notion.
-- **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, favorite meals, and Oura data.
-- **Unified Recipe Database**: Consolidated three separate recipe databases (base, viral, additional) into a single unified system for better consistency, easier management, and improved variety distribution.
+- Data Flow: User input drives meal generation, stored in PostgreSQL, displayed via React Query, and can be synced to Notion.
+- Database Schema: Comprehensive user profiles, weekly meal plans, individual meals, meal history, favorite meals, and Oura data.
+- Unified Recipe Database: Consolidated three separate recipe databases (base, viral, additional) into a single unified system for better consistency, easier management, and improved variety distribution.
 
 ## External Dependencies
 
-- **@neondatabase/serverless**: PostgreSQL database connection.
-- **@notionhq/client**: Notion API integration for meal plan synchronization.
-- **drizzle-orm**: ORM for database interactions.
-- **@tanstack/react-query**: Server state management.
-- **@radix-ui/***: Headless UI components.
-- **tailwindcss**: Utility-first CSS framework.
+- @neondatabase/serverless
+- @notionhq/client
+- drizzle-orm
+- @tanstack/react-query
+- @radix-ui/***
+- tailwindcss
