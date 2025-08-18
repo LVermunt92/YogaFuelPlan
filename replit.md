@@ -70,4 +70,3 @@ Removed export and share functionality: Eliminated all export and share buttons 
 - @tanstack/react-query (for server state management)
 - @radix-ui (for UI primitives)
 - tailwindcss (for styling)
-```
