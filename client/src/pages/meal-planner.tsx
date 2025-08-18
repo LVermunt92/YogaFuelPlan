@@ -754,13 +754,13 @@ export default function MealPlanner() {
             <h2 className="text-2xl font-bold text-foreground mb-4">
               {t.welcomeBack} {userProfile?.username ? (userProfile.username.includes(' ') ? userProfile.username.split(' ')[0] : userProfile.username) : ''}
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 text-sm max-w-2xl mx-auto">
               {/* Protein KPI with Doughnut Chart */}
-              <div className="flex flex-col items-center">
-                <div className="text-gray-500 mb-2">
+              <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-4 rounded-lg border border-border">
+                <div className="text-gray-500 mb-3 text-center">
                   {latestMealPlan.activityLevel === 'high' ? 'High Protein Target' : 'Daily Protein'}
                 </div>
-                <div className="w-16 h-16 mb-2">
+                <div className="w-20 h-20 mb-3">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
@@ -790,9 +790,9 @@ export default function MealPlanner() {
               </div>
 
               {/* Good Fats KPI with Doughnut Chart */}
-              <div className="flex flex-col items-center">
-                <div className="text-gray-500 mb-2">Good Fats</div>
-                <div className="w-16 h-16 mb-2">
+              <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-4 rounded-lg border border-border">
+                <div className="text-gray-500 mb-3 text-center">Good Fats</div>
+                <div className="w-20 h-20 mb-3">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
@@ -822,9 +822,9 @@ export default function MealPlanner() {
               </div>
 
               {/* Vegetables KPI with Doughnut Chart */}
-              <div className="flex flex-col items-center">
-                <div className="text-gray-500 mb-2">Vegetables</div>
-                <div className="w-16 h-16 mb-2">
+              <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-4 rounded-lg border border-border">
+                <div className="text-gray-500 mb-3 text-center">Vegetables</div>
+                <div className="w-20 h-20 mb-3">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
@@ -854,9 +854,9 @@ export default function MealPlanner() {
               </div>
 
               {/* Fruits/Starches KPI with Doughnut Chart */}
-              <div className="flex flex-col items-center">
-                <div className="text-gray-500 mb-2">Fruits/Starches</div>
-                <div className="w-16 h-16 mb-2">
+              <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-4 rounded-lg border border-border">
+                <div className="text-gray-500 mb-3 text-center">Fruits/Starches</div>
+                <div className="w-20 h-20 mb-3">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
