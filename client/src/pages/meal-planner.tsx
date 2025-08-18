@@ -1459,7 +1459,7 @@ export default function MealPlanner() {
                           return (
                             <React.Fragment key={day}>
                               {/* Day Header Row */}
-                              <tr className="bg-muted/20 border-b-2 border-border">
+                              <tr className="bg-muted/20 border-t-2 border-b-2 border-border">
                                 <td className="px-3 sm:px-6 py-3 text-sm font-semibold text-foreground">
                                   {day === 1 ? t.sunday : 
                                    day === 2 ? t.monday : 
@@ -1481,7 +1481,7 @@ export default function MealPlanner() {
                                 const isFreshCooking = !isLeftover && !isEatingOut;
                                 
                                 return (
-                                  <tr key={meal.id} className="hover:bg-muted/50">
+                                  <tr key={meal.id} className="hover:bg-muted/50 border-none">
                                     <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500 capitalize pl-8">
                                       {meal.mealType}
                                     </td>
