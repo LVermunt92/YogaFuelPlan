@@ -795,7 +795,7 @@ export default function MealPlanner() {
             <div className="flex items-center justify-between mb-6">
             <div className="flex items-center">
               <Activity className="h-6 w-6 text-foreground mr-4" />
-              <h2 className="text-xl font-semibold text-foreground">{t.healthActivityTracking}</h2>
+              <h2 className="text-xl font-semibold text-foreground mb-2">{t.healthActivityTracking}</h2>
             </div>
             <Badge variant={ouraStatus?.connected ? "default" : "secondary"}>
               {ouraStatus?.connected ? t.connected : t.notConnected}
@@ -860,11 +860,11 @@ export default function MealPlanner() {
         {mealPlans && mealPlans.length > 0 && (
           <div className="card-clean mb-6">
             <div className="p-4">
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center">
                   <History className="h-6 w-6 text-foreground mr-3" />
                   <div>
-                    <h2 className="text-xl font-semibold text-foreground">{t.savedMealPlans || 'Meal Plans'}</h2>
+                    <h2 className="text-xl font-semibold text-foreground mb-2">{t.savedMealPlans || 'Meal Plans'}</h2>
                     <p className="text-sm text-gray-500">{t.manageMultiplePlans || 'Select and manage your meal plans'}</p>
                   </div>
                 </div>
@@ -980,11 +980,11 @@ export default function MealPlanner() {
         {weekendGroceryData && (weekendGroceryData.currentWeekPlans?.length > 0 || weekendGroceryData.nextWeekPlans?.length > 0) && (
           <div className="card-clean mb-6">
             <div className="p-4">
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center">
                   <ShoppingCart className="h-6 w-6 text-foreground mr-3" />
                   <div>
-                    <h2 className="text-xl font-semibold text-foreground">Weekend Grocery Planning</h2>
+                    <h2 className="text-xl font-semibold text-foreground mb-2">Weekend Grocery Planning</h2>
                     <p className="text-sm text-gray-500">Manage both current week cooking and next week shopping</p>
                   </div>
                 </div>
@@ -1128,7 +1128,7 @@ export default function MealPlanner() {
           {/* Generation Panel */}
           <div className="lg:col-span-1">
             <div className="card-clean mb-6">
-              <div className="p-4 mb-4">
+              <div className="p-4 mb-6">
                 <h2 className="text-xl font-semibold text-foreground mb-2">
                   {t.generateMealPlan}
                 </h2>
@@ -1394,8 +1394,8 @@ export default function MealPlanner() {
           {/* Meal Plan Display */}
           <div className="lg:col-span-2">
             <div className="card-clean">
-              <div className="mb-8">
-                <div className="flex justify-between items-center">
+              <div className="mb-6">
+                <div className="flex justify-between items-center mb-2">
                   <h2 className="text-xl font-semibold text-foreground">
                     {t.weeklyMealPlan}
                   </h2>
@@ -1625,7 +1625,7 @@ export default function MealPlanner() {
         {/* Notion Integration - Bottom Section */}
         <div className="card-clean mt-16">
           <div className="mb-6">
-            <h2 className="text-lg font-semibold text-foreground">{t.notionIntegration}</h2>
+            <h2 className="text-lg font-semibold text-foreground mb-2">{t.notionIntegration}</h2>
           </div>
           <div className="space-y-6">
             <div>
