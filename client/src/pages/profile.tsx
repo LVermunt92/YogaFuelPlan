@@ -111,9 +111,12 @@ export default function Profile() {
     }
   };
 
-  // Update form data when user data loads
+  // Track if form has been initialized to prevent reset after saves
+  const [isFormInitialized, setIsFormInitialized] = React.useState(false);
+
+  // Update form data when user data loads (only on initial load)
   React.useEffect(() => {
-    if (user) {
+    if (user && !isFormInitialized) {
       const dynamicProteinTarget = calculateProteinTarget(user.age, user.activityLevel);
       
       setFormData({
@@ -137,8 +140,9 @@ export default function Profile() {
         eatingDaysAtHome: user.eatingDaysAtHome?.toString() || '7',
         meatFishMealsPerWeek: user.meatFishMealsPerWeek?.toString() || '0'
       });
+      setIsFormInitialized(true);
     }
-  }, [user]);
+  }, [user, isFormInitialized]);
 
   // Update profile mutation
   const updateProfileMutation = useMutation({
@@ -147,7 +151,34 @@ export default function Profile() {
       const response = await apiRequest('PATCH', `/api/users/${authUser.id}/profile`, data);
       return response.json();
     },
-    onSuccess: () => {
+    onSuccess: (updatedData) => {
+      // Update the form data with the saved values to prevent reset
+      if (updatedData) {
+        const dynamicProteinTarget = calculateProteinTarget(updatedData.age, updatedData.activityLevel);
+        
+        setFormData({
+          username: updatedData.username || '',
+          email: updatedData.email || '',
+          firstName: updatedData.firstName || '',
+          lastName: updatedData.lastName || '',
+          gender: updatedData.gender || '',
+          weight: updatedData.weight?.toString() || '',
+          goalWeight: updatedData.goalWeight?.toString() || '',
+          height: updatedData.height?.toString() || '',
+          age: updatedData.age?.toString() || '',
+          waistline: updatedData.waistline?.toString() || '',
+          goalWaistline: updatedData.goalWaistline?.toString() || '',
+          targetDate: updatedData.targetDate || '',
+          activityLevel: updatedData.activityLevel || 'moderate',
+          proteinTarget: dynamicProteinTarget.toString(),
+          dietaryTags: updatedData.dietaryTags || [],
+          householdSize: updatedData.householdSize?.toString() || '1',
+          cookingDaysPerWeek: updatedData.cookingDaysPerWeek?.toString() || '7',
+          eatingDaysAtHome: updatedData.eatingDaysAtHome?.toString() || '7',
+          meatFishMealsPerWeek: updatedData.meatFishMealsPerWeek?.toString() || '0'
+        });
+      }
+      
       queryClient.invalidateQueries({ queryKey: ['/api/users', authUser?.id, 'profile'] });
       toast({
         title: "Profile Updated",
