@@ -735,7 +735,7 @@ export default function MealPlanner() {
                   {latestMealPlan.activityLevel === 'high' ? 'High Protein Target' : 'Daily Protein'}
                 </div>
                 <div className="text-lg font-semibold text-foreground">
-                  {latestMealPlan.totalProtein.toFixed(1)}g {t.daily}
+                  {latestMealPlan.totalProtein.toFixed(0)}g {t.daily}
                 </div>
                 <div className="text-xs text-gray-400 mt-1">
                   {latestMealPlan.activityLevel === 'high' ? 
@@ -915,7 +915,7 @@ export default function MealPlanner() {
                       {t.weekOf || 'Week of'} {plan.weekStart}
                     </p>
                     <div className="flex items-center justify-between text-xs text-gray-400">
-                      <span>{plan.totalProtein.toFixed(1)}g {t.proteinDaily || 'protein/day'}</span>
+                      <span>{plan.totalProtein.toFixed(0)}g {t.proteinDaily || 'protein/day'}</span>
                       <span>{formatDate(plan.createdAt?.toString() || '')}</span>
                     </div>
                   </div>
@@ -1470,7 +1470,7 @@ export default function MealPlanner() {
                                    day === 7 ? t.saturday : t.sunday}
                                 </td>
                                 <td className="px-3 sm:px-6 py-3 text-xs text-gray-500 font-medium">
-                                  {dayTotal.toFixed(1)}g protein
+                                  {dayTotal.toFixed(0)}g protein
                                 </td>
                                 <td className="px-3 sm:px-6 py-3"></td>
                               </tr>
@@ -1554,7 +1554,7 @@ export default function MealPlanner() {
                   <div className="flex justify-between items-center">
                     <div className="text-sm text-muted-foreground">
                       {t.weeklyAverage}: <span className="font-medium text-foreground">
-                        {currentMealPlan.totalProtein.toFixed(1)}g {t.proteinPerDay}
+                        {currentMealPlan.totalProtein.toFixed(0)}g {t.proteinPerDay}
                       </span>
                     </div>
                     <div className="flex space-x-2">
