@@ -844,27 +844,7 @@ export default function MealPlanner() {
                   </div>
                 )}
 
-                <Button
-                  onClick={() => {
-                    const yesterday = new Date();
-                    yesterday.setDate(yesterday.getDate() - 1);
-                    syncOuraMutation.mutate(yesterday.toISOString().split('T')[0]);
-                  }}
-                  disabled={syncOuraMutation.isPending}
-                  className="btn-outline w-full"
-                >
-                  {syncOuraMutation.isPending ? (
-                    <>
-                      <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-foreground mr-2" />
-                      Syncing...
-                    </>
-                  ) : (
-                    <>
-                      <Upload className="mr-2 h-3 w-3" />
-                      Sync Yesterday's Data
-                    </>
-                  )}
-                </Button>
+
                 
                 {latestOuraData && (
                   <div className="text-xs text-slate-600">
@@ -1168,18 +1148,7 @@ export default function MealPlanner() {
                 </p>
               </div>
               <div className="space-y-4">
-                <div>
-                  <Label className="text-sm font-medium text-foreground mb-2 block">{t.activityLevel}</Label>
-                  <Select value={activityLevel} onValueChange={(value: "high" | "low") => setActivityLevel(value)}>
-                    <SelectTrigger className="input-clean w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="high">{t.high} {t.activity} (130g protein)</SelectItem>
-                      <SelectItem value="low">{t.low} {t.activity} (70g protein)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+
                 
                 <div>
                   <Label className="text-sm font-medium text-foreground mb-2 block">{t.weekSelection}</Label>
@@ -1197,21 +1166,7 @@ export default function MealPlanner() {
                   </p>
                 </div>
 
-                {userProfile?.dietaryTags && userProfile.dietaryTags.length > 0 && (
-                  <div>
-                    <Label className="text-sm font-medium text-foreground mb-3 block">{t.yourDietaryPreferences}</Label>
-                    <div className="flex flex-wrap gap-2">
-                      {userProfile.dietaryTags.map((tag) => (
-                        <Badge key={tag} variant="secondary" className="text-xs">
-                          {translateDietaryTag(tag, language)}
-                        </Badge>
-                      ))}
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-2">
-                      {t.mealPlansFilteredBased}
-                    </p>
-                  </div>
-                )}
+
 
 
 
