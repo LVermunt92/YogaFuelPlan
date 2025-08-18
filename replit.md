@@ -1,7 +1,7 @@
 # Meal Planner Application
 
 ## Overview
-This full-stack meal planning application generates personalized weekly meal plans based on user activity levels and dietary preferences. It integrates with Notion for meal plan synchronization. The project aims to provide a comprehensive, adaptable solution for healthy meal planning, focusing on user experience and nutritional optimization, with the vision of effortlessly managing user nutrition for improved health and well-being.
+This full-stack meal planning application generates personalized weekly meal plans based on user activity levels and dietary preferences. It integrates with Notion for synchronization, providing a comprehensive, adaptable solution for healthy meal planning. The project focuses on user experience and nutritional optimization to effortlessly manage user nutrition for improved health and well-being, aiming to provide a solution for healthy meal planning with a focus on user experience and nutritional optimization.
 
 ## User Preferences
 Preferred communication style: Simple, everyday language.
@@ -34,6 +34,8 @@ Fixed Critical Leftover Ingredients Bug: Discovered and resolved major issue whe
 Fixed Shopping List Capitalization: Resolved issue where shopping list ingredient names in English appeared in lowercase. Added proper capitalization logic to ensure all ingredient names start with capital letters for better readability and professional presentation (e.g., "Almond milk" instead of "almond milk", "Bell peppers" instead of "bell peppers").
 Supermarket-Ordered Shopping Categories: Completely reorganized shopping list categories to follow logical supermarket visit flow. Updated category mappings and sorting logic to present groceries in optimal shopping order: Vegetables (fresh produce) → Fruits (fresh produce) → Fresh Herbs (fresh department) → Dairy & Cheese/Plant-Based Alternatives (fresh department) → Dairy & Eggs → Pantry & Dry Goods (grains, legumes, spices, oils). This eliminates inefficient back-and-forth movement through the store and provides a natural shopping workflow that matches how supermarkets are typically organized. Fixed ingredient categorization to properly place tofu under Plant-Based Alternatives, and lime/mango under Fruits instead of "Other". Shopping list now shows proper capitalization with 7 well-organized categories following supermarket layout.
 Enhanced Ingredient Separation System: Modified ingredient specification system to create separate ingredient entries for mixed berries instead of comma-separated lists. Updated ingredient specifier to generate separate recipe ingredients for blueberries and strawberries when processing "mixed berries" or "fresh berries", ensuring both recipe displays and shopping lists show individual ingredient lines for better clarity and shopping convenience.
+Advanced Shopping List Category System: Completely restructured shopping categories into 8 distinct sections following logical supermarket flow: Vegetables (now appearing first) → Fruits → Fresh Herbs → Dairy & Cheese → Plant-Based Alternatives → Dairy & Eggs → Pantry Essentials (oils, sauces, sweeteners) → Dry Goods (grains, nuts, spices) → Other (relegated to bottom). Sweet potato properly reclassified from pantry to vegetables category. This detailed categorization eliminates confusion and provides optimal grocery shopping workflow.
+Comprehensive Lemon Standardization System: Implemented universal lemon measurement system where all lemon-related ingredients (lemon juice, fresh lemon juice, lemon zest, lemon, lemons) are automatically converted to "pieces of lemon" throughout recipes and shopping lists. This provides consistent, practical shopping guidance that eliminates confusion about lemon quantities and measurements. System applies to all 76 recipes automatically during ingredient processing.
 
 ## System Architecture
 
@@ -52,14 +54,12 @@ Enhanced Ingredient Separation System: Modified ingredient specification system 
 - Database: PostgreSQL with Drizzle ORM.
 - Session Management: Express sessions with PostgreSQL store.
 - Build Tools: Vite for frontend, esbuild for backend.
-- Meal Generation: Calculates protein targets based on user activity, selects meals from a pre-defined nutrition database, generates 7-day plans with variety, and creates shopping lists.
+- Meal Generation: Calculates protein targets based on user activity, selects meals from a pre-defined nutrition database, generates 7-day plans with variety, and creates shopping lists. All meals include detailed cooking instructions, tips, and nutritional information; recipes are alcohol-free.
 - Universal Meal Prep Engine: Adapts to user cooking schedules, supporting batch cooking, proper meal distribution, intelligent dietary fallbacks.
-- Recipe System: All meals include detailed cooking instructions, tips, and nutritional information; recipes are alcohol-free.
 - Smart Time Constraints: Weekday meals (Mon-Fri) are limited to ≤30 minutes prep time; weekends have no time restrictions.
 - Ayurvedic Integration: Supports Ayurvedic dietary tags, including seasonal adaptation based on a 6-season calendar (adapted for European seasons).
 - Meal Plan Persistence: Meal plans persist across browser sessions with automatic loading.
 - Automated Viral Recipe Updates: System automatically adds new trending recipes every 2 weeks.
-- Automatic Oura Ring Sync: Daily automated synchronization of Oura Ring health data.
 - Enhanced Multi-Plan Weekend Grocery System: Users can maintain both current week and next week plans simultaneously.
 - Complete Dutch Recipe Translation System: Comprehensive translation service for recipe names, ingredients, and cooking instructions from English to Dutch, including AI-enhanced translation.
 - Consolidated Shopping List Workflow: Single-flow shopping list generation with integrated export options (copy, CSV download, Albert Heijn app deep linking).
@@ -70,10 +70,10 @@ Enhanced Ingredient Separation System: Modified ingredient specification system 
 - Unified Recipe Database: Consolidated three separate recipe databases (base, viral, additional) into a single unified system for better consistency, easier management, and improved variety distribution.
 
 ## External Dependencies
-
 - @neondatabase/serverless
 - @notionhq/client
 - drizzle-orm
 - @tanstack/react-query
 - @radix-ui/***
 - tailwindcss
+```

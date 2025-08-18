@@ -29,6 +29,13 @@ export const INGREDIENT_SPECIFICATIONS: IngredientSpecification[] = [
   { generic: 'citrus fruit', specific: ['lemon', 'lime', 'orange'], category: 'fruits' },
   { generic: 'fruit', specific: ['apple', 'banana', 'berries'], category: 'fruits' },
 
+  // Lemon standardization - all lemon items become "pieces of lemon"
+  { generic: 'lemon juice', specific: ['pieces of lemon'], category: 'fruits' },
+  { generic: 'fresh lemon juice', specific: ['pieces of lemon'], category: 'fruits' },
+  { generic: 'lemon zest', specific: ['pieces of lemon'], category: 'fruits' },
+  { generic: 'lemon', specific: ['pieces of lemon'], category: 'fruits' },
+  { generic: 'lemons', specific: ['pieces of lemon'], category: 'fruits' },
+
   // Fresh Herbs
   { generic: 'fresh herbs', specific: ['fresh parsley', 'fresh basil', 'fresh cilantro'], category: 'herbs' },
   { generic: 'mixed herbs', specific: ['fresh parsley', 'fresh thyme', 'fresh oregano'], category: 'herbs' },
