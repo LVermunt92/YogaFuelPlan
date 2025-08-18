@@ -1649,57 +1649,7 @@ export default function MealPlanner() {
 
 
 
-        {/* Status Panel */}
-        <div className="mt-8 sm:mt-12 lg:mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          <div className="card-clean">
-            <div className="p-4">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <Activity className="text-foreground h-8 w-8" />
-                </div>
-                <div className="ml-4">
-                  <div className="text-sm font-medium text-gray-500">{t.ouraSync || 'Oura Sync'}</div>
-                  <div className="text-lg font-semibold text-foreground">
-                    {ouraStatus?.connected && latestOuraData ? t.syncedStatus : t.notSyncedStatus}
-                  </div>
-                  {latestOuraData && (
-                    <div className="text-xs text-gray-400 mt-1">
-                      {new Date(latestOuraData.syncedAt).toLocaleDateString()}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <div className="card-clean">
-            <div className="p-4">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <Target className="text-foreground h-8 w-8" />
-                </div>
-                <div className="ml-4">
-                  <div className="text-sm font-medium text-gray-500">{t.proteinGoal}</div>
-                  <div className="text-lg font-semibold text-foreground">{t.onTrack}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="card-clean">
-            <div className="p-4">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <Clock className="text-foreground h-8 w-8" />
-                </div>
-                <div className="ml-4">
-                  <div className="text-sm font-medium text-gray-500">{t.prepTime}</div>
-                  <div className="text-lg font-semibold text-foreground">{t.under30MinPerMeal}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
         
         {/* Notion Integration - Bottom Section */}
         <div className="card-clean mt-16">
