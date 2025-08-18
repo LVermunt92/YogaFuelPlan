@@ -336,7 +336,18 @@ export default function Profile() {
                   className="input-clean"
                 />
               </div>
-              
+            </div>
+          </div>
+
+          {/* Health & Fitness */}
+          <div className="card-clean">
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-foreground mb-2">
+                {t.healthFitness}
+              </h2>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               <div>
                 <Label htmlFor="gender" className="text-sm font-medium text-foreground mb-2 block">
                   Gender
@@ -355,18 +366,7 @@ export default function Profile() {
                   </SelectContent>
                 </Select>
               </div>
-            </div>
-          </div>
 
-          {/* Health & Fitness */}
-          <div className="card-clean">
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-foreground mb-2">
-                {t.healthFitness}
-              </h2>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               <div>
                 <Label htmlFor="age" className="text-sm font-medium text-foreground mb-2 block">
                   Age (years)
