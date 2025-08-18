@@ -206,13 +206,18 @@ function Router() {
 
   // If authenticated, show full app with navigation
   return (
-    <div className="min-h-screen bg-[#fefdf9]">
+    <div className="min-h-screen bg-[#fefdf9] flex flex-col">
       <Navigation />
-      <Switch>
-        <Route path="/" component={MealPlanner} />
-        <Route path="/profile" component={Profile} />
-        <Route component={NotFound} />
-      </Switch>
+      <div className="flex-1">
+        <Switch>
+          <Route path="/" component={MealPlanner} />
+          <Route path="/profile" component={Profile} />
+          <Route component={NotFound} />
+        </Switch>
+      </div>
+      <footer className="py-4 text-center text-xs text-gray-400 border-t border-gray-200">
+        © {new Date().getFullYear()} Meal Planner. All rights reserved.
+      </footer>
     </div>
   );
 }
