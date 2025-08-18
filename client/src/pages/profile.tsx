@@ -199,7 +199,7 @@ export default function Profile() {
           <h1 className="text-3xl font-light text-foreground mb-2" style={{ fontFamily: 'Times New Roman, serif', letterSpacing: '0.05em' }}>
             {t.personalInformation}
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-gray-500">
             {t.manageProfileSettings}
           </p>
         </div>
@@ -327,7 +327,7 @@ export default function Profile() {
                     <span className="text-lg font-medium">
                       {(parseFloat(formData.weight) / Math.pow(parseFloat(formData.height) / 100, 2)).toFixed(1)}
                     </span>
-                    <span className="text-sm text-muted-foreground ml-2">
+                    <span className="text-sm text-gray-500 ml-2">
                       {(() => {
                         const bmi = parseFloat(formData.weight) / Math.pow(parseFloat(formData.height) / 100, 2);
                         if (bmi < 18.5) return t.underweight;
@@ -381,7 +381,7 @@ export default function Profile() {
               <h2 className="text-xl font-semibold text-foreground mb-2">
                 {t.healthGoals}
               </h2>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-gray-500">
                 {t.healthGoalsHelp}
               </p>
             </div>
@@ -434,7 +434,7 @@ export default function Profile() {
             {/* Goal Timeline Display */}
             {formData.targetDate && (
               <div className="mt-4 p-3 bg-muted rounded-md">
-                <span className="text-sm text-muted-foreground">
+                <span className="text-sm text-gray-500">
                   {t.timeline}: {Math.max(0, Math.ceil((new Date(formData.targetDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24 * 7)))} {t.weeksToReachGoals}
                 </span>
               </div>
@@ -447,7 +447,7 @@ export default function Profile() {
               <h2 className="text-xl font-semibold text-foreground mb-2">
                 {t.mealPlanningPreferences}
               </h2>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-gray-500">
                 {t.cookingHabitsHelp}
               </p>
             </div>
@@ -467,7 +467,7 @@ export default function Profile() {
                   className="input-clean"
                   placeholder="1"
                 />
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-gray-400 mt-1">
                   {t.peopleYouCookFor}
                 </p>
               </div>
@@ -486,7 +486,7 @@ export default function Profile() {
                   className="input-clean"
                   placeholder="7"
                 />
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-gray-400 mt-1">
                   {t.cookingDaysHelp}
                 </p>
               </div>
@@ -505,7 +505,7 @@ export default function Profile() {
                   className="input-clean"
                   placeholder="7"
                 />
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-gray-400 mt-1">
                   {t.eatingDaysHelp}
                 </p>
               </div>
@@ -524,7 +524,7 @@ export default function Profile() {
                   className="input-clean"
                   placeholder="0"
                 />
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-gray-400 mt-1">
                   {t.meatFishMealsHelp}
                 </p>
               </div>
@@ -537,7 +537,7 @@ export default function Profile() {
               <h2 className="text-xl font-semibold text-foreground mb-2">
                 {t.dietaryPreferences}
               </h2>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-gray-500">
                 {t.tapToSelectDietaryPrefs}
               </p>
             </div>
