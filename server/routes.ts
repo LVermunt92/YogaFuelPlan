@@ -4,7 +4,7 @@ import { storage } from "./storage";
 import { generateWeeklyMealPlan, formatMealPlanForNotion } from "./meal-generator";
 import { mealPlanRequestSchema } from "@shared/schema";
 import { notion, createDatabaseIfNotExists, findDatabaseByTitle } from "./notion";
-import { generateEnhancedShoppingList } from "./nutrition-enhanced";
+import { generateEnhancedShoppingList, updateAllRecipesWithSpecificIngredients, validateAllRecipeIngredients } from "./nutrition-enhanced";
 import { OuraService } from "./oura";
 import { updateUserProfileSchema, authRegisterSchema, authLoginSchema } from "@shared/schema";
 import { z } from "zod";
@@ -1701,6 +1701,63 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to search products" });
     }
   });
+
+  // Recipe ingredient specification routes
+  app.post("/api/recipes/update-ingredients", async (req, res) => {
+    try {
+      console.log('🔄 Manual trigger: Updating all recipe ingredients to be specific...');
+      updateAllRecipesWithSpecificIngredients();
+      const validation = validateAllRecipeIngredients();
+      
+      res.json({
+        message: "Recipe ingredients updated successfully",
+        validation: {
+          totalRecipes: validation.totalRecipes,
+          validRecipes: validation.validRecipes,
+          issuesFound: validation.issuesFound.length,
+          remainingIssues: validation.issuesFound
+        }
+      });
+    } catch (error) {
+      console.error("Error updating recipe ingredients:", error);
+      res.status(500).json({ message: "Failed to update recipe ingredients" });
+    }
+  });
+
+  app.get("/api/recipes/validate-ingredients", async (req, res) => {
+    try {
+      const validation = validateAllRecipeIngredients();
+      
+      res.json({
+        message: "Recipe ingredient validation complete",
+        validation: {
+          totalRecipes: validation.totalRecipes,
+          validRecipes: validation.validRecipes,
+          issuesFound: validation.issuesFound.length,
+          remainingIssues: validation.issuesFound
+        }
+      });
+    } catch (error) {
+      console.error("Error validating recipe ingredients:", error);
+      res.status(500).json({ message: "Failed to validate recipe ingredients" });
+    }
+  });
+
+  // Run ingredient specification update on server startup
+  try {
+    console.log('🚀 Server startup: Running ingredient specification update...');
+    updateAllRecipesWithSpecificIngredients();
+    const validation = validateAllRecipeIngredients();
+    console.log(`📊 Ingredient validation: ${validation.validRecipes}/${validation.totalRecipes} recipes have specific ingredients`);
+    if (validation.issuesFound.length > 0) {
+      console.log('⚠️  Recipes still needing attention:');
+      validation.issuesFound.forEach(recipe => {
+        console.log(`   - ${recipe.recipeName}: ${recipe.issues.length} issues`);
+      });
+    }
+  } catch (error) {
+    console.error("Error running startup ingredient update:", error);
+  }
 
   const httpServer = createServer(app);
   return httpServer;

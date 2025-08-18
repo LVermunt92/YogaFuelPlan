@@ -1,5 +1,6 @@
 import { getCurrentSeasonalGuidance, adaptRecipeForSeason, getCurrentAyurvedicSeason } from './ayurveda-seasonal';
 import { selectProteinOptimizedMeals } from './smart-protein-selection';
+import { specifyIngredients, validateIngredientSpecificity, updateRecipeIngredients } from './ingredient-specifier';
 
 export interface NutritionInfo {
   protein: number;
@@ -64,8 +65,8 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     tags: ["vegetarian", "gluten-free", "dairy-free", "high-protein", "anti-inflammatory", "whole30", "ayurvedic"],
     ingredients: [
       "½ cup steel-cut oats",
-      "¼ cup mixed raw almonds and walnuts (chopped)",
-      "½ cup fresh mixed berries (blueberries, strawberries)",
+      "¼ cup raw almonds and walnuts (chopped)",
+      "½ cup fresh blueberries and strawberries",
       "1 tbsp ground flaxseed",
       "½ tsp cinnamon",
       "1 tsp raw honey (optional)",
@@ -119,7 +120,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       "3 large free-range eggs",
       "1 cup fresh spinach leaves",
       "¼ cup cherry tomatoes (halved)",
-      "2 tbsp fresh herbs (parsley, chives, chopped)",
+      "2 tbsp fresh parsley (chopped)",
       "¼ cup red bell pepper (diced)",
       "½ medium avocado (sliced)",
       "1 tsp extra virgin olive oil",
@@ -4432,6 +4433,75 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
   });
 }
 
+/**
+ * Bulk update all recipes in the database to make ingredients specific
+ * This function updates all existing recipes to replace generic ingredients with specific ones
+ */
+export function updateAllRecipesWithSpecificIngredients(): void {
+  console.log('🔄 Starting bulk recipe update to make ingredients specific...');
+  
+  let updatedCount = 0;
+  
+  // Update each recipe in the enhanced meal database
+  for (let i = 0; i < ENHANCED_MEAL_DATABASE.length; i++) {
+    const originalRecipe = ENHANCED_MEAL_DATABASE[i];
+    const validation = validateIngredientSpecificity(originalRecipe.ingredients);
+    
+    if (!validation.valid) {
+      console.log(`🎯 Updating recipe "${originalRecipe.name}" - Found generic ingredients:`);
+      validation.issues.forEach(issue => console.log(`   - ${issue}`));
+      
+      // Update ingredients to be specific
+      const specifiedIngredients = specifyIngredients(originalRecipe.ingredients);
+      ENHANCED_MEAL_DATABASE[i] = {
+        ...originalRecipe,
+        ingredients: specifiedIngredients
+      };
+      
+      console.log(`✅ Updated "${originalRecipe.name}" with specific ingredients`);
+      console.log(`   - Old: ${originalRecipe.ingredients.join(', ')}`);
+      console.log(`   - New: ${specifiedIngredients.join(', ')}`);
+      updatedCount++;
+    }
+  }
+  
+  console.log(`🎉 Bulk update complete! Updated ${updatedCount} recipes with specific ingredients.`);
+  
+  if (updatedCount === 0) {
+    console.log('✨ All recipes already have specific ingredients - no updates needed!');
+  }
+}
+
+/**
+ * Validate all recipes and report any remaining generic ingredients
+ */
+export function validateAllRecipeIngredients(): { 
+  totalRecipes: number; 
+  validRecipes: number; 
+  issuesFound: Array<{recipeName: string, issues: string[]}> 
+} {
+  const issuesFound: Array<{recipeName: string, issues: string[]}> = [];
+  let validRecipes = 0;
+  
+  ENHANCED_MEAL_DATABASE.forEach(recipe => {
+    const validation = validateIngredientSpecificity(recipe.ingredients);
+    if (validation.valid) {
+      validRecipes++;
+    } else {
+      issuesFound.push({
+        recipeName: recipe.name,
+        issues: validation.issues
+      });
+    }
+  });
+  
+  return {
+    totalRecipes: ENHANCED_MEAL_DATABASE.length,
+    validRecipes,
+    issuesFound
+  };
+}
+
 function parseEnhancedRecipeIngredients(instructions: string[], ingredientAmounts: Map<string, { totalAmount: number; unit: string; count: number }>) {
   instructions.forEach(instruction => {
     // Extract ingredients with amounts from recipe instructions
@@ -4579,12 +4649,9 @@ function cleanIngredientName(ingredient: string): string {
     cleaned = 'plant protein powder';
   }
   
-  // Specify fresh herbs instead of generic "fresh herbs"
-  // Convert generic "fresh herbs" to specific herb types for better shopping guidance
-  if (cleaned.includes('fresh herbs') || cleaned === 'fresh herbs') {
-    // Default to parsley as the most commonly used fresh herb
-    cleaned = 'fresh parsley';
-  }
+  // Apply comprehensive ingredient specification to replace generic terms
+  const specified = specifyIngredients([cleaned]);
+  cleaned = specified[0];
   
   // Consolidate herbs that have different names but are essentially the same for shopping
   // This prevents duplicate listings in shopping list (e.g., both "cilantro" and "coriander" appearing)
