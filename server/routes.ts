@@ -319,7 +319,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get specific meal plan with meals
   app.get("/api/meal-plans/:id", async (req, res) => {
     try {
-      const id = parseInt(req.params.id);
+      const idParam = req.params.id;
+      const id = !isNaN(parseInt(idParam)) ? parseInt(idParam) : 0;
+      
+      if (id === 0) {
+        return res.status(400).json({ message: "Invalid meal plan ID" });
+      }
+      
       const language = (req.query.language as 'en' | 'nl') || 'en';
       const mealPlan = await storage.getMealPlanWithMeals(id);
       
@@ -521,7 +527,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get active meal plans (for alternating between plans)
   app.get("/api/meal-plans/active", async (req, res) => {
     try {
-      const userId = req.query.userId ? parseInt(req.query.userId as string) : 2;
+      const userIdParam = req.query.userId as string;
+      const userId = userIdParam && !isNaN(parseInt(userIdParam)) ? parseInt(userIdParam) : 2;
       
       const activePlans = await storage.getActiveMealPlans(userId);
       res.json({
@@ -947,7 +954,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const { generateRecipeWithAI } = await import("./ai-recipe-generator");
           
           // Get user's dietary preferences for AI generation
-          const mealPlan = await storage.getMealPlanWithMeals(targetMeal.mealPlanId);
+          const mealPlan = targetMeal.mealPlanId ? await storage.getMealPlanWithMeals(targetMeal.mealPlanId) : null;
           const user = mealPlan ? await storage.getUser(mealPlan.userId) : null;
           const dietaryTags = user?.dietaryTags || [];
           
