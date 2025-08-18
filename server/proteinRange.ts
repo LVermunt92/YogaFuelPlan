@@ -3,7 +3,7 @@
  * Integrates with the meal planning app's protein targeting system
  */
 
-export type ActivityLevel = "light" | "moderate" | "athlete";
+export type ActivityLevel = "sedentary" | "light" | "moderate" | "high" | "athlete";
 export type Goal = "maintenance" | "muscle_gain" | "fat_loss";
 export type ProteinStrategy = "auto" | "bulletproof_moderate" | "sport_high";
 
@@ -50,6 +50,11 @@ export function proteinRangePerDay(
   } else {
     // Auto strategy - adaptive based on activity and age
     switch (activityLevel) {
+      case "sedentary":
+        baseMin = 0.8;
+        baseMax = 1.1;
+        activityMultiplier = 0.9;
+        break;
       case "light":
         baseMin = 1.0;
         baseMax = 1.3;
@@ -59,6 +64,11 @@ export function proteinRangePerDay(
         baseMin = 1.2;
         baseMax = 1.6;
         activityMultiplier = 1.1;
+        break;
+      case "high":
+        baseMin = 1.4;
+        baseMax = 1.8;
+        activityMultiplier = 1.15;
         break;
       case "athlete":
         baseMin = 1.6;
@@ -149,7 +159,15 @@ export function calculateProteinTarget(age: number | null, activityLevel: string
   const defaultWeight = 70; // Default weight assumption
   
   // Map app's activity levels to new system
-  const mappedActivity: ActivityLevel = activityLevel === "high" ? "moderate" : "light";
+  let mappedActivity: ActivityLevel;
+  switch (activityLevel) {
+    case "sedentary": mappedActivity = "sedentary"; break;
+    case "light": mappedActivity = "light"; break;
+    case "moderate": mappedActivity = "moderate"; break;
+    case "high": mappedActivity = "high"; break;
+    case "athlete": mappedActivity = "athlete"; break;
+    default: mappedActivity = activityLevel === "high" ? "moderate" : "light"; // backward compatibility
+  }
   
   // Use auto strategy with maintenance goal for general meal planning
   const result = proteinRangePerDay(defaultAge, defaultWeight, mappedActivity, "maintenance", "auto");
@@ -173,9 +191,16 @@ export function getDetailedProteinRecommendation(
   explanation: string;
   strategy: ProteinStrategy;
 } {
-  // Map activity level
-  const mappedActivity: ActivityLevel = 
-    activityLevel === "high" ? "moderate" : "light";
+  // Map activity level  
+  let mappedActivity: ActivityLevel;
+  switch (activityLevel) {
+    case "sedentary": mappedActivity = "sedentary"; break;
+    case "light": mappedActivity = "light"; break;
+    case "moderate": mappedActivity = "moderate"; break;
+    case "high": mappedActivity = "high"; break;
+    case "athlete": mappedActivity = "athlete"; break;
+    default: mappedActivity = activityLevel === "high" ? "moderate" : "light"; // backward compatibility
+  }
   
   // Determine goal based on user's dietary tags or default to maintenance
   let goal: Goal = "maintenance";

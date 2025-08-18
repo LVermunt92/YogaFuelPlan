@@ -16,7 +16,7 @@ export const users = pgTable("users", {
   waistline: real("waistline").default(75), // cm
   goalWaistline: real("goal_waistline"), // target waistline in cm
   targetDate: date("target_date"), // when to reach goals by
-  activityLevel: text("activity_level").default("high"), // high or low
+  activityLevel: text("activity_level").default("moderate"), // sedentary, light, moderate, high, athlete
   proteinTarget: integer("protein_target").default(130), // grams
   dietaryTags: text("dietary_tags").array().default([]),
   householdSize: integer("household_size").default(1),

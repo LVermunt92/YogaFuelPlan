@@ -126,7 +126,7 @@ export default function Profile() {
         waistline: user.waistline?.toString() || '',
         goalWaistline: user.goalWaistline?.toString() || '',
         targetDate: user.targetDate || '',
-        activityLevel: user.activityLevel || 'high',
+        activityLevel: user.activityLevel || 'moderate',
         proteinTarget: dynamicProteinTarget.toString(),
         dietaryTags: user.dietaryTags || [],
         householdSize: user.householdSize?.toString() || '1',
@@ -404,8 +404,11 @@ export default function Profile() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="high">{t.highActivity}</SelectItem>
-                    <SelectItem value="low">{t.lowActivity}</SelectItem>
+                    <SelectItem value="sedentary">Sedentary - little to no exercise, desk job</SelectItem>
+                    <SelectItem value="light">Light - light exercise 1–2 times per week, mostly inactive lifestyle</SelectItem>
+                    <SelectItem value="moderate">Moderate - exercise 3–4 times per week, generally active lifestyle</SelectItem>
+                    <SelectItem value="high">High - daily exercise or physically demanding job</SelectItem>
+                    <SelectItem value="athlete">Athlete - competitive or elite training, very high physical demand</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -424,7 +427,7 @@ export default function Profile() {
                     readOnly
                   />
                   <p className="text-xs text-gray-500">
-                    Auto-calculated: {formData.age && parseInt(formData.age) >= 35 ? "35+ years" : "Under 35"} + {formData.activityLevel === 'high' ? "Active" : "Inactive"} 
+                    Auto-calculated: {formData.age && parseInt(formData.age) >= 35 ? "35+ years" : "Under 35"} + {formData.activityLevel.charAt(0).toUpperCase() + formData.activityLevel.slice(1)} activity 
                     = {formData.proteinTarget}g protein/day
                   </p>
                 </div>
@@ -659,7 +662,7 @@ export default function Profile() {
               {updateProfileMutation.isPending ? (
                 <>
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground mr-2" />
-                  {language === 'dutch' ? 'Opslaan...' : 'Saving...'}
+                  {language === 'nl' ? 'Opslaan...' : 'Saving...'}
                 </>
               ) : (
                 <>
