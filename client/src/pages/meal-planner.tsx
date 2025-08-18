@@ -1665,7 +1665,7 @@ export default function MealPlanner() {
 
         {/* Recipe Dialog */}
         <Dialog open={!!selectedMealId} onOpenChange={() => setSelectedMealId(null)}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-background">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <ChefHat className="h-5 w-5 text-emerald-600" />
@@ -1676,11 +1676,11 @@ export default function MealPlanner() {
           {loadingRecipe ? (
             <div className="p-6">
               <div className="animate-pulse space-y-4">
-                <div className="h-6 bg-slate-200 rounded" />
-                <div className="h-4 bg-slate-200 rounded w-3/4" />
+                <div className="h-6 bg-gray-200 rounded" />
+                <div className="h-4 bg-gray-200 rounded w-3/4" />
                 <div className="space-y-2">
                   {[1, 2, 3, 4, 5].map(i => (
-                    <div key={i} className="h-4 bg-slate-200 rounded" />
+                    <div key={i} className="h-4 bg-gray-200 rounded" />
                   ))}
                 </div>
               </div>
