@@ -1630,11 +1630,85 @@ export default function MealPlanner() {
                       </span>
                     </div>
                     <div className="flex space-x-2">
-                      <Button variant="ghost" size="sm" className="text-gray-400 hover:text-foreground">
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="text-gray-400 hover:text-foreground"
+                        onClick={() => {
+                          if (!currentMealPlan) return;
+                          
+                          // Create meal plan text export
+                          const mealsByDay = currentMealPlan.meals.reduce((acc, meal) => {
+                            if (!acc[meal.dayOfWeek]) acc[meal.dayOfWeek] = [];
+                            acc[meal.dayOfWeek].push(meal);
+                            return acc;
+                          }, {} as Record<number, any[]>);
+
+                          const exportText = [
+                            `Meal Plan - Week of ${formatWeekRange(currentMealPlan.weekStart)}`,
+                            `Generated: ${new Date().toLocaleDateString()}`,
+                            `Total Weekly Protein: ${currentMealPlan.totalProtein.toFixed(0)}g`,
+                            '',
+                            ...Object.keys(mealsByDay)
+                              .sort((a, b) => Number(a) - Number(b))
+                              .map(day => {
+                                const dayNum = Number(day);
+                                const dayName = dayNum === 1 ? 'Sunday' : 
+                                               dayNum === 2 ? 'Monday' : 
+                                               dayNum === 3 ? 'Tuesday' : 
+                                               dayNum === 4 ? 'Wednesday' : 
+                                               dayNum === 5 ? 'Thursday' : 
+                                               dayNum === 6 ? 'Friday' : 'Saturday';
+                                
+                                const dayMeals = mealsByDay[day];
+                                const dayProtein = dayMeals.reduce((sum, meal) => sum + (meal.nutrition?.protein || 0), 0);
+                                
+                                return [
+                                  `${dayName} (${dayProtein.toFixed(0)}g protein):`,
+                                  ...dayMeals.map(meal => 
+                                    `  ${meal.mealType}: ${meal.foodDescription} (${Math.round(meal.nutrition?.protein || 0)}g protein)`
+                                  ),
+                                  ''
+                                ].join('\n');
+                              })
+                          ].join('\n');
+                          
+                          // Copy to clipboard
+                          navigator.clipboard.writeText(exportText).then(() => {
+                            toast({
+                              title: "Meal Plan Exported",
+                              description: "Meal plan copied to clipboard",
+                            });
+                          });
+                        }}
+                      >
                         <Download className="mr-1 h-4 w-4" />
                         {t.exportButton}
                       </Button>
-                      <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="text-primary hover:text-primary/80"
+                        onClick={() => {
+                          if (!currentMealPlan) return;
+                          
+                          const shareText = `Check out my weekly meal plan! Week of ${formatWeekRange(currentMealPlan.weekStart)} - ${currentMealPlan.totalProtein.toFixed(0)}g protein total. Generated with my meal planning app.`;
+                          
+                          if (navigator.share) {
+                            navigator.share({
+                              title: 'My Meal Plan',
+                              text: shareText,
+                            });
+                          } else {
+                            navigator.clipboard.writeText(shareText).then(() => {
+                              toast({
+                                title: "Ready to Share",
+                                description: "Share text copied to clipboard",
+                              });
+                            });
+                          }
+                        }}
+                      >
                         <Share className="mr-1 h-4 w-4" />
                         {t.shareButton}
                       </Button>
