@@ -481,53 +481,57 @@ export default function MealPlanner() {
     },
   });
 
-  const proteinTarget = activityLevel === "high" ? 130 : 70;
-
   // Calculate nutritional data for charts
   const calculateNutritionData = () => {
     if (!currentMealPlan?.meals) return { protein: 0, fats: 0, vegetables: 0, carbs: 0, totalCalories: 0 };
     
-    // Since nutritional data is mostly 0 in DB, estimate from protein data
-    const totalProtein = currentMealPlan.meals.reduce((sum: number, meal: any) => sum + (meal.protein || 0), 0);
+    // Use actual protein data from meals (divide by 7 to get daily average)
+    const totalProteinWeek = currentMealPlan.meals.reduce((sum: number, meal: any) => sum + (meal.protein || 0), 0);
+    const dailyProtein = totalProteinWeek / 7; // Convert weekly total to daily average
     
-    // Estimate total calories (protein = 4 kcal/g, typically 20-25% of total)
-    const estimatedTotalCalories = totalProtein > 0 ? (totalProtein * 4) / 0.22 : 2000;
+    // Estimate daily calories based on realistic protein intake (protein should be ~20-25% of total calories)
+    const estimatedDailyCalories = dailyProtein > 0 ? (dailyProtein * 4) / 0.22 : 2000;
     
-    // Estimate other macros based on healthy targets
-    const estimatedFats = estimatedTotalCalories * 0.60 / 9; // 60% from fats
-    const estimatedCarbs = estimatedTotalCalories * 0.08 / 4; // 8% from carbs
-    const estimatedVegCalories = estimatedTotalCalories * 0.20; // 20% vegetables
+    // Estimate other macros based on healthy targets (daily amounts)
+    const estimatedDailyFats = estimatedDailyCalories * 0.60 / 9; // 60% from fats
+    const estimatedDailyCarbs = estimatedDailyCalories * 0.08 / 4; // 8% from carbs
+    const estimatedVegCalories = estimatedDailyCalories * 0.20; // 20% vegetables
+    const estimatedVegGrams = estimatedVegCalories / 0.25; // ~25 kcal per 100g vegetables
     
     return {
-      protein: totalProtein,
-      fats: estimatedFats,
-      vegetables: estimatedVegCalories / 25, // ~25 kcal per 100g vegetables
-      carbs: estimatedCarbs,
-      totalCalories: estimatedTotalCalories
+      protein: dailyProtein,
+      fats: estimatedDailyFats,
+      vegetables: estimatedVegGrams,
+      carbs: estimatedDailyCarbs,
+      totalCalories: estimatedDailyCalories
     };
   };
 
   const nutritionData = calculateNutritionData();
 
   // Chart data for each KPI
+  const proteinTarget = userProfile?.proteinTarget || 130;
   const proteinChartData = [
     { name: 'Achieved', value: nutritionData.protein, fill: '#10b981' },
-    { name: 'Remaining', value: Math.max(0, (userProfile?.proteinTarget || 130) - nutritionData.protein), fill: '#e5e7eb' }
+    { name: 'Remaining', value: Math.max(0, proteinTarget - nutritionData.protein), fill: '#e5e7eb' }
   ];
 
+  const fatsPercentage = (nutritionData.fats * 9 / nutritionData.totalCalories) * 100;
   const fatsChartData = [
-    { name: 'Current', value: (nutritionData.fats * 9 / nutritionData.totalCalories) * 100, fill: '#f59e0b' },
-    { name: 'Target Range', value: Math.max(0, 60 - ((nutritionData.fats * 9 / nutritionData.totalCalories) * 100)), fill: '#e5e7eb' }
+    { name: 'Current', value: fatsPercentage, fill: '#f59e0b' },
+    { name: 'Target Gap', value: Math.max(0, 60 - fatsPercentage), fill: '#e5e7eb' }
   ];
 
+  const vegetablesTarget = 500; // 500g daily target
   const vegetablesChartData = [
-    { name: 'Current', value: 20, fill: '#22c55e' }, // Estimated 20% from vegetables
-    { name: 'Target', value: 0, fill: '#e5e7eb' } // Target achieved
+    { name: 'Current', value: nutritionData.vegetables, fill: '#22c55e' },
+    { name: 'Remaining', value: Math.max(0, vegetablesTarget - nutritionData.vegetables), fill: '#e5e7eb' }
   ];
 
+  const carbsPercentage = (nutritionData.carbs * 4 / nutritionData.totalCalories) * 100;
   const carbsChartData = [
-    { name: 'Current', value: (nutritionData.carbs * 4 / nutritionData.totalCalories) * 100, fill: '#3b82f6' },
-    { name: 'Target', value: Math.max(0, 5 - ((nutritionData.carbs * 4 / nutritionData.totalCalories) * 100)), fill: '#e5e7eb' }
+    { name: 'Current', value: carbsPercentage, fill: '#3b82f6' },
+    { name: 'Target Gap', value: Math.max(0, 8 - carbsPercentage), fill: '#e5e7eb' } // 8% target for low-carb approach
   ];
 
   // Oura queries
@@ -781,7 +785,7 @@ export default function MealPlanner() {
                   {nutritionData.protein.toFixed(0)}g {t.daily}
                 </div>
                 <div className="text-xs text-gray-400 mt-1 text-center">
-                  Target: {userProfile?.proteinTarget || 130}g ({((nutritionData.protein / (userProfile?.proteinTarget || 130)) * 100).toFixed(0)}%)
+                  Target: {proteinTarget}g ({((nutritionData.protein / proteinTarget) * 100).toFixed(0)}%)
                 </div>
               </div>
 
@@ -842,10 +846,10 @@ export default function MealPlanner() {
                   </ResponsiveContainer>
                 </div>
                 <div className="text-lg font-semibold text-foreground text-center">
-                  ~{(nutritionData.vegetables / 1000).toFixed(1)}kg
+                  {nutritionData.vegetables.toFixed(0)}g
                 </div>
                 <div className="text-xs text-gray-400 mt-1 text-center">
-                  Target: 20% of energy
+                  Target: ~500g daily
                 </div>
               </div>
 
