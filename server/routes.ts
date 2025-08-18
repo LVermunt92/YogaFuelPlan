@@ -1141,6 +1141,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.patch('/api/users/:id/profile', handleProfileUpdate);
   app.put('/api/users/:id/profile', handleProfileUpdate);
 
+  // Protein calculation endpoint using advanced system
+  app.post("/api/protein/calculate", async (req, res) => {
+    try {
+      const { age, weightKg, activityLevel, goal, strategy } = req.body;
+      
+      const { proteinRangePerDay, getDetailedProteinRecommendation } = await import("./proteinRange");
+      
+      if (age && weightKg) {
+        // Use advanced calculation
+        const result = proteinRangePerDay(age, weightKg, activityLevel || "moderate", goal || "maintenance", strategy || "auto");
+        res.json({
+          success: true,
+          result,
+          method: "advanced_calculation"
+        });
+      } else {
+        // Fallback for missing data
+        const fallback = getDetailedProteinRecommendation(
+          age || 30, 
+          weightKg || 70, 
+          activityLevel || "high", 
+          []
+        );
+        res.json({
+          success: true,
+          result: fallback,
+          method: "fallback_calculation"
+        });
+      }
+    } catch (error) {
+      console.error("Error calculating protein:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "Failed to calculate protein requirements",
+        error: error.message 
+      });
+    }
+  });
+
   // Oura Ring Integration Endpoints
   
   // Test Oura connection
