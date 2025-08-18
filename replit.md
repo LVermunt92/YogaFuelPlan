@@ -58,7 +58,7 @@ Removed export and share functionality: Eliminated all export and share buttons 
     - **Automated Viral Recipe Updates**: System automatically adds new trending recipes.
     - **Enhanced Multi-Plan Weekend Grocery System**: Users can maintain both current week and next week plans simultaneously.
     - **Complete Dutch Recipe Translation System**: Comprehensive translation service for recipe names, ingredients, and cooking instructions from English to Dutch, including AI-enhanced translation.
-    - **Consolidated Shopping List Workflow**: Single-flow shopping list generation with integrated export options (copy, CSV download, Albert Heijn app deep linking).
+    - **Consolidated Shopping List Workflow**: Single-flow shopping list generation.
 - **System Design Choices**:
     - **Data Flow**: User input drives meal generation, stored in PostgreSQL, displayed via React Query.
     - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, and favorite meals.
@@ -70,4 +70,3 @@ Removed export and share functionality: Eliminated all export and share buttons 
 - @tanstack/react-query (for server state management)
 - @radix-ui (for UI primitives)
 - tailwindcss (for styling)
-```
