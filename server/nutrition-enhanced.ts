@@ -4407,6 +4407,9 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
       finalIngredient = 'vegan egg substitute (flax eggs or aquafaba)';
     }
     
+    // Capitalize first letter of ingredient name for display
+    finalIngredient = finalIngredient.charAt(0).toUpperCase() + finalIngredient.slice(1);
+    
     const category = ingredientCategories[ingredient] || 'Other';
     
     // Convert amounts to grams using the formatAmount function
