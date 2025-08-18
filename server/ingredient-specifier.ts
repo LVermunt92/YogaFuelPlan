@@ -72,9 +72,11 @@ export function getCurrentSeason(): keyof typeof SEASONAL_FRUITS {
  */
 export function specifyIngredients(ingredients: string[]): string[] {
   const currentSeason = getCurrentSeason();
+  const result: string[] = [];
   
-  return ingredients.map(ingredient => {
+  ingredients.forEach(ingredient => {
     let processed = ingredient.toLowerCase().trim();
+    let foundMatch = false;
     
     // Find matching specification
     for (const spec of INGREDIENT_SPECIFICATIONS) {
@@ -90,18 +92,34 @@ export function specifyIngredients(ingredients: string[]): string[] {
         
         // Select appropriate specific ingredient(s)
         const selected = selectSpecificIngredients(specificIngredients, spec.category);
-        const replacement = selected.join(', ');
         
-        // Replace the generic term while preserving quantities and formatting
-        const result = ingredient.replace(new RegExp(spec.generic, 'gi'), replacement);
+        // For fruits like berries, create separate ingredient entries
+        if (spec.category === 'fruits' && selected.length > 1) {
+          selected.forEach(specificIngredient => {
+            // Replace the generic term while preserving quantities and formatting
+            const newIngredient = ingredient.replace(new RegExp(spec.generic, 'gi'), specificIngredient);
+            result.push(newIngredient);
+          });
+          console.log(`🎯 Ingredient specification: "${ingredient}" → separate entries: ${selected.join(', ')}`);
+        } else {
+          // For other categories, join with comma (existing behavior)
+          const replacement = selected.join(', ');
+          const newIngredient = ingredient.replace(new RegExp(spec.generic, 'gi'), replacement);
+          result.push(newIngredient);
+          console.log(`🎯 Ingredient specification: "${ingredient}" → "${newIngredient}"`);
+        }
         
-        console.log(`🎯 Ingredient specification: "${ingredient}" → "${result}"`);
-        return result;
+        foundMatch = true;
+        break;
       }
     }
     
-    return ingredient;
+    if (!foundMatch) {
+      result.push(ingredient);
+    }
   });
+  
+  return result;
 }
 
 /**

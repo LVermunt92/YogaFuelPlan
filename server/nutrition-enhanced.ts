@@ -4269,9 +4269,13 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'banana': 'Fruits',
     'avocado': 'Fruits',
     'lemon': 'Fruits',
+    'lime': 'Fruits',
+    'mango': 'Fruits',
     'frozen berries': 'Fruits',
     'mixed berries': 'Fruits',
     'blueberries': 'Fruits',
+    'strawberries': 'Fruits',
+    'blueberries, strawberries': 'Fruits',
     'fresh fruit': 'Fruits',
     'kiwi': 'Fruits',
     
@@ -4316,11 +4320,12 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     // Plant-Based Alternatives (Fresh Department)
     'extra firm tofu': 'Plant-Based Alternatives',
     'tempeh': 'Plant-Based Alternatives',
+    'tofu': 'Plant-Based Alternatives',
+    'hummus': 'Plant-Based Alternatives',
     'almond milk': 'Plant-Based Alternatives',
     'coconut milk': 'Plant-Based Alternatives',
     'coconut yogurt': 'Plant-Based Alternatives',
     'fermented kefir': 'Plant-Based Alternatives',
-    'hummus': 'Plant-Based Alternatives',
     
     // Eggs (Dairy & Eggs section)
     'eggs': 'Dairy & Eggs',
@@ -4403,24 +4408,49 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
       finalIngredient = 'vegan egg substitute (flax eggs or aquafaba)';
     }
     
-    // Capitalize first letter of ingredient name for display
-    finalIngredient = finalIngredient.charAt(0).toUpperCase() + finalIngredient.slice(1);
-    
-    const category = ingredientCategories[ingredient] || 'Other';
-    
-    // Convert amounts to grams using the formatAmount function
-    const displayAmount = formatAmountWithLanguage(amounts.totalAmount, amounts.unit, language);
-    
-    // Determine final unit after conversion
-    const finalUnit = amounts.unit;
-    
-    shoppingList.push({
-      ingredient: finalIngredient,
-      category,
-      count: amounts.count,
-      totalAmount: displayAmount,
-      unit: finalUnit
-    });
+    // Split comma-separated ingredients into separate items
+    if (finalIngredient.includes(',')) {
+      const separateIngredients = finalIngredient.split(',').map(item => item.trim());
+      
+      separateIngredients.forEach(separateIngredient => {
+        // Capitalize first letter of ingredient name for display
+        const capitalizedIngredient = separateIngredient.charAt(0).toUpperCase() + separateIngredient.slice(1);
+        
+        // Try to get category for the specific ingredient, fallback to original, then fallback to 'Fruits' for berries
+        const category = ingredientCategories[separateIngredient.toLowerCase()] || ingredientCategories[ingredient] || 'Fruits';
+        
+        // Convert amounts to grams using the formatAmount function (split proportionally)
+        const proportionalAmount = amounts.totalAmount / separateIngredients.length;
+        const displayAmount = formatAmountWithLanguage(proportionalAmount, amounts.unit, language);
+        
+        shoppingList.push({
+          ingredient: capitalizedIngredient,
+          category,
+          count: amounts.count,
+          totalAmount: displayAmount,
+          unit: amounts.unit
+        });
+      });
+    } else {
+      // Capitalize first letter of ingredient name for display
+      finalIngredient = finalIngredient.charAt(0).toUpperCase() + finalIngredient.slice(1);
+      
+      const category = ingredientCategories[ingredient] || 'Other';
+      
+      // Convert amounts to grams using the formatAmount function
+      const displayAmount = formatAmountWithLanguage(amounts.totalAmount, amounts.unit, language);
+      
+      // Determine final unit after conversion
+      const finalUnit = amounts.unit;
+      
+      shoppingList.push({
+        ingredient: finalIngredient,
+        category,
+        count: amounts.count,
+        totalAmount: displayAmount,
+        unit: finalUnit
+      });
+    }
   });
 
   // Define supermarket shopping order
