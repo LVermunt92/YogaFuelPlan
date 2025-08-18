@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Calendar, Clock, Target, Eye, Download, Share, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages, Copy, ExternalLink } from "lucide-react";
+import { Calendar, Clock, Target, Eye, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useTranslations, translateDietaryTags, translateDietaryTag } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -1276,79 +1276,6 @@ export default function MealPlanner() {
                               </div>
                             </div>
                           ))}
-                          
-                          {/* Export Options */}
-                          <div className="border-t border-border pt-6 mt-6">
-                            <h3 className="font-semibold text-foreground mb-4">
-                              {language === 'nl' ? 'Exporteer Boodschappenlijst' : 'Export Shopping List'}
-                            </h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                              <Button
-                                onClick={() => {
-                                  const text = shoppingListData?.categories?.map(category => 
-                                    `${category}:\n${shoppingListData?.shoppingList
-                                      ?.filter(item => item.category === category)
-                                      ?.map(item => `- ${item.ingredient} (${item.totalAmount})`)
-                                      ?.join('\n') || ''}`
-                                  )?.join('\n\n') || '';
-                                  navigator.clipboard.writeText(text);
-                                }}
-                                variant="outline"
-                                size="sm"
-                                className="w-full"
-                              >
-                                <Copy className="mr-2 h-4 w-4" />
-                                {language === 'nl' ? 'Kopiëren' : 'Copy'}
-                              </Button>
-                              
-                              <Button
-                                onClick={() => {
-                                  const csv = [
-                                    'Category,Ingredient,Amount',
-                                    ...(shoppingListData?.shoppingList || []).map(item => 
-                                      `"${item.category}","${item.ingredient}","${item.totalAmount}"`
-                                    )
-                                  ].join('\n');
-                                  const blob = new Blob([csv], { type: 'text/csv' });
-                                  const url = URL.createObjectURL(blob);
-                                  const a = document.createElement('a');
-                                  a.href = url;
-                                  a.download = `shopping-list-${formatWeekRange(shoppingListData?.weekStart || '').replace(/ /g, '-')}.csv`;
-                                  a.click();
-                                  URL.revokeObjectURL(url);
-                                }}
-                                variant="outline"
-                                size="sm"
-                                className="w-full"
-                              >
-                                <Download className="mr-2 h-4 w-4" />
-                                CSV
-                              </Button>
-                              
-                              <Button
-                                onClick={() => {
-                                  // Create Albert Heijn deep link
-                                  const ahUrl = `ah://list?items=${encodeURIComponent(
-                                    (shoppingListData?.shoppingList || [])
-                                      .map(item => `${item.ingredient} ${item.totalAmount}`)
-                                      .join(',')
-                                  )}`;
-                                  window.open(ahUrl, '_blank');
-                                }}
-                                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-                                size="sm"
-                              >
-                                <ExternalLink className="mr-2 h-4 w-4" />
-                                Albert Heijn
-                              </Button>
-                            </div>
-                            <p className="text-xs text-gray-400 mt-2 text-center">
-                              {language === 'nl' 
-                                ? 'Albert Heijn knop opent de AH app met je boodschappenlijst'
-                                : 'Albert Heijn button opens AH app with your shopping list'
-                              }
-                            </p>
-                          </div>
                         </div>
                       ) : (
                         <p className="text-center text-gray-500 py-8">
@@ -1597,90 +1524,7 @@ export default function MealPlanner() {
                         {currentMealPlan.totalProtein.toFixed(0)}g {t.proteinPerDay}
                       </span>
                     </div>
-                    <div className="flex space-x-2">
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="text-gray-400 hover:text-foreground"
-                        onClick={() => {
-                          if (!currentMealPlan) return;
-                          
-                          // Create meal plan text export
-                          const mealsByDay = currentMealPlan.meals.reduce((acc, meal) => {
-                            if (!acc[meal.dayOfWeek]) acc[meal.dayOfWeek] = [];
-                            acc[meal.dayOfWeek].push(meal);
-                            return acc;
-                          }, {} as Record<number, any[]>);
 
-                          const exportText = [
-                            `Meal Plan - Week of ${formatWeekRange(currentMealPlan.weekStart)}`,
-                            `Generated: ${new Date().toLocaleDateString()}`,
-                            `Total Weekly Protein: ${currentMealPlan.totalProtein.toFixed(0)}g`,
-                            '',
-                            ...Object.keys(mealsByDay)
-                              .sort((a, b) => Number(a) - Number(b))
-                              .map(day => {
-                                const dayNum = Number(day);
-                                const dayName = dayNum === 1 ? 'Sunday' : 
-                                               dayNum === 2 ? 'Monday' : 
-                                               dayNum === 3 ? 'Tuesday' : 
-                                               dayNum === 4 ? 'Wednesday' : 
-                                               dayNum === 5 ? 'Thursday' : 
-                                               dayNum === 6 ? 'Friday' : 'Saturday';
-                                
-                                const dayMeals = mealsByDay[day];
-                                const dayProtein = dayMeals.reduce((sum, meal) => sum + (meal.nutrition?.protein || 0), 0);
-                                
-                                return [
-                                  `${dayName} (${dayProtein.toFixed(0)}g protein):`,
-                                  ...dayMeals.map(meal => 
-                                    `  ${meal.mealType}: ${meal.foodDescription} (${Math.round(meal.nutrition?.protein || 0)}g protein)`
-                                  ),
-                                  ''
-                                ].join('\n');
-                              })
-                          ].join('\n');
-                          
-                          // Copy to clipboard
-                          navigator.clipboard.writeText(exportText).then(() => {
-                            toast({
-                              title: "Meal Plan Exported",
-                              description: "Meal plan copied to clipboard",
-                            });
-                          });
-                        }}
-                      >
-                        <Download className="mr-1 h-4 w-4" />
-                        {t.exportButton}
-                      </Button>
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="text-primary hover:text-primary/80"
-                        onClick={() => {
-                          if (!currentMealPlan) return;
-                          
-                          const shareText = `Check out my weekly meal plan! Week of ${formatWeekRange(currentMealPlan.weekStart)} - ${currentMealPlan.totalProtein.toFixed(0)}g protein total. Generated with my meal planning app.`;
-                          
-                          if (navigator.share) {
-                            navigator.share({
-                              title: 'My Meal Plan',
-                              text: shareText,
-                            });
-                          } else {
-                            navigator.clipboard.writeText(shareText).then(() => {
-                              toast({
-                                title: "Ready to Share",
-                                description: "Share text copied to clipboard",
-                              });
-                            });
-                          }
-                        }}
-                      >
-                        <Share className="mr-1 h-4 w-4" />
-                        {t.shareButton}
-                      </Button>
-                    </div>
                   </div>
                 </div>
               )}
