@@ -97,17 +97,33 @@ export default function Profile() {
     meatFishMealsPerWeek: '0'
   });
 
-  // Calculate dynamic protein target based on age and activity level
-  const calculateProteinTarget = (age: number | null, activityLevel: string) => {
-    if (!age) return 70; // Default fallback
+  // Calculate dynamic protein target based on age, gender, and activity level
+  const calculateProteinTarget = (age: number | null, activityLevel: string, gender?: string) => {
+    if (!age) return 100; // Default fallback based on 20% of 2000 kcal
     
-    const isHighProteinAge = age >= 35; // 35+ years need higher protein
-    const isActive = activityLevel === 'high';
+    // Gender-specific age thresholds for higher protein needs
+    const needsHigherProtein = gender === 'female' ? age >= 45 : age >= 50;
     
-    if (isHighProteinAge) {
-      return isActive ? 100 : 70; // Active: 100g, Inactive: 70g
+    if (needsHigherProtein) {
+      // Above age threshold: Higher protein for muscle preservation
+      switch (activityLevel) {
+        case 'athlete': return 140;
+        case 'high': return 130;
+        case 'moderate': return 110;
+        case 'light': return 100;
+        case 'sedentary': return 90;
+        default: return 110;
+      }
     } else {
-      return isActive ? 70 : 50; // Under 35: Active: 70g, Inactive: 50g  
+      // Below age threshold: Base ~20% of energy intake (100g for 2000 kcal)
+      switch (activityLevel) {
+        case 'athlete': return 120;
+        case 'high': return 110; 
+        case 'moderate': return 100;
+        case 'light': return 95;
+        case 'sedentary': return 85;
+        default: return 100;
+      }
     }
   };
 
@@ -117,7 +133,7 @@ export default function Profile() {
   // Update form data when user data loads (only on initial load)
   React.useEffect(() => {
     if (user && !isFormInitialized) {
-      const dynamicProteinTarget = calculateProteinTarget(user.age, user.activityLevel);
+      const dynamicProteinTarget = calculateProteinTarget(user.age, user.activityLevel, user.gender);
       
       setFormData({
         username: user.username || '',
@@ -156,7 +172,7 @@ export default function Profile() {
       if (updatedData && authUser?.id) {
         queryClient.setQueryData(['/api/users', authUser.id, 'profile'], updatedData);
         
-        const dynamicProteinTarget = calculateProteinTarget(updatedData.age, updatedData.activityLevel);
+        const dynamicProteinTarget = calculateProteinTarget(updatedData.age, updatedData.activityLevel, updatedData.gender);
         
         setFormData({
           username: updatedData.username || '',
@@ -195,14 +211,15 @@ export default function Profile() {
     },
   });
 
-  // Handle activity level or age change to update protein target
+  // Handle activity level, age, or gender change to update protein target
   const handleActivityOrAgeChange = (field: string, value: string) => {
     const updatedFormData = { ...formData, [field]: value };
     
-    if (field === 'activityLevel' || field === 'age') {
+    if (field === 'activityLevel' || field === 'age' || field === 'gender') {
       const age = field === 'age' ? parseInt(value) || null : parseInt(formData.age) || null;
       const activityLevel = field === 'activityLevel' ? value : formData.activityLevel;
-      const newProteinTarget = calculateProteinTarget(age, activityLevel);
+      const gender = field === 'gender' ? value : formData.gender;
+      const newProteinTarget = calculateProteinTarget(age, activityLevel, gender);
       
       updatedFormData.proteinTarget = newProteinTarget.toString();
     }
@@ -354,7 +371,7 @@ export default function Profile() {
                 </Label>
                 <Select
                   value={formData.gender}
-                  onValueChange={(value) => setFormData(prev => ({ ...prev, gender: value }))}
+                  onValueChange={(value) => handleActivityOrAgeChange('gender', value)}
                 >
                   <SelectTrigger className="input-clean">
                     <SelectValue placeholder="Select gender" />

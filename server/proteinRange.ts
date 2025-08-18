@@ -50,41 +50,69 @@ export function proteinRangePerDay(
     baseMin = 1.6;
     baseMax = 2.0;
   } else {
-    // Auto strategy - adaptive based on activity and age
-    switch (activityLevel) {
-      case "sedentary":
-        baseMin = 0.8;
-        baseMax = 1.1;
-        activityMultiplier = 0.9;
-        break;
-      case "light":
-        baseMin = 1.0;
-        baseMax = 1.3;
-        activityMultiplier = 1.0;
-        break;
-      case "moderate":
-        baseMin = 1.2;
-        baseMax = 1.6;
-        activityMultiplier = 1.1;
-        break;
-      case "high":
-        baseMin = 1.4;
-        baseMax = 1.8;
-        activityMultiplier = 1.15;
-        break;
-      case "athlete":
-        baseMin = 1.6;
-        baseMax = 2.0;
-        activityMultiplier = 1.2;
-        break;
-    }
-
-    // Age adjustment for muscle preservation (45+ for women, 50+ for men)
+    // Auto strategy - adaptive based on activity, age, and gender
     const ageThreshold = gender === "female" ? 45 : 50;
+    
     if (age >= ageThreshold) {
-      baseMin = Math.max(baseMin, 1.2); // Minimum 1.2g/kg for older adults
-      baseMax = Math.min(baseMax * 1.1, 2.2); // Cap at 2.2g/kg
+      // Above age threshold: Higher protein for muscle preservation
       ageAdjusted = true;
+      switch (activityLevel) {
+        case "sedentary":
+          baseMin = 1.2;
+          baseMax = 1.5;
+          activityMultiplier = 0.95;
+          break;
+        case "light":
+          baseMin = 1.4;
+          baseMax = 1.7;
+          activityMultiplier = 1.0;
+          break;
+        case "moderate":
+          baseMin = 1.5;
+          baseMax = 1.9;
+          activityMultiplier = 1.1;
+          break;
+        case "high":
+          baseMin = 1.7;
+          baseMax = 2.1;
+          activityMultiplier = 1.15;
+          break;
+        case "athlete":
+          baseMin = 1.9;
+          baseMax = 2.2;
+          activityMultiplier = 1.2;
+          break;
+      }
+    } else {
+      // Below age threshold: Base ~20% of energy intake approach
+      // For 2000 kcal = 100g protein = ~1.4-1.7g/kg for average 60-70kg person
+      switch (activityLevel) {
+        case "sedentary":
+          baseMin = 1.2;
+          baseMax = 1.5;
+          activityMultiplier = 0.9;
+          break;
+        case "light":
+          baseMin = 1.3;
+          baseMax = 1.6;
+          activityMultiplier = 1.0;
+          break;
+        case "moderate":
+          baseMin = 1.4;
+          baseMax = 1.7;
+          activityMultiplier = 1.1;
+          break;
+        case "high":
+          baseMin = 1.5;
+          baseMax = 1.8;
+          activityMultiplier = 1.15;
+          break;
+        case "athlete":
+          baseMin = 1.7;
+          baseMax = 2.0;
+          activityMultiplier = 1.2;
+          break;
+      }
     }
   }
 
