@@ -10,6 +10,7 @@ export const users = pgTable("users", {
   weight: integer("weight").default(60), // kg
   goalWeight: integer("goal_weight"), // target weight in kg
   height: integer("height"), // cm
+  age: integer("age"), // years
   waistline: real("waistline").default(75), // cm
   goalWaistline: real("goal_waistline"), // target waistline in cm
   targetDate: date("target_date"), // when to reach goals by
@@ -123,6 +124,8 @@ export const insertUserSchema = createInsertSchema(users).pick({
   email: true,
   weight: true,
   goalWeight: true,
+  height: true,
+  age: true,
   waistline: true,
   goalWaistline: true,
   activityLevel: true,
@@ -147,6 +150,7 @@ export const updateUserProfileSchema = createInsertSchema(users).pick({
   weight: true,
   goalWeight: true,
   height: true,
+  age: true,
   waistline: true,
   goalWaistline: true,
   targetDate: true,

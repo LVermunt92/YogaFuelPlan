@@ -46,6 +46,7 @@ interface UserProfile {
   weight: number | null;
   goalWeight: number | null;
   height: number | null;
+  age: number | null;
   waistline: number | null;
   goalWaistline: number | null;
   targetDate: string | null;
@@ -81,6 +82,7 @@ export default function Profile() {
     weight: '',
     goalWeight: '',
     height: '',
+    age: '',
     waistline: '',
     goalWaistline: '',
     targetDate: '',
@@ -93,9 +95,25 @@ export default function Profile() {
     meatFishMealsPerWeek: '0'
   });
 
+  // Calculate dynamic protein target based on age and activity level
+  const calculateProteinTarget = (age: number | null, activityLevel: string) => {
+    if (!age) return 70; // Default fallback
+    
+    const isHighProteinAge = age >= 35; // 35+ years need higher protein
+    const isActive = activityLevel === 'high';
+    
+    if (isHighProteinAge) {
+      return isActive ? 100 : 70; // Active: 100g, Inactive: 70g
+    } else {
+      return isActive ? 70 : 50; // Under 35: Active: 70g, Inactive: 50g  
+    }
+  };
+
   // Update form data when user data loads
   React.useEffect(() => {
     if (user) {
+      const dynamicProteinTarget = calculateProteinTarget(user.age, user.activityLevel);
+      
       setFormData({
         username: user.username || '',
         email: user.email || '',
@@ -104,11 +122,12 @@ export default function Profile() {
         weight: user.weight?.toString() || '',
         goalWeight: user.goalWeight?.toString() || '',
         height: user.height?.toString() || '',
+        age: user.age?.toString() || '',
         waistline: user.waistline?.toString() || '',
         goalWaistline: user.goalWaistline?.toString() || '',
         targetDate: user.targetDate || '',
         activityLevel: user.activityLevel || 'high',
-        proteinTarget: user.proteinTarget?.toString() || '',
+        proteinTarget: dynamicProteinTarget.toString(),
         dietaryTags: user.dietaryTags || [],
         householdSize: user.householdSize?.toString() || '1',
         cookingDaysPerWeek: user.cookingDaysPerWeek?.toString() || '7',
@@ -141,6 +160,21 @@ export default function Profile() {
     },
   });
 
+  // Handle activity level or age change to update protein target
+  const handleActivityOrAgeChange = (field: string, value: string) => {
+    const updatedFormData = { ...formData, [field]: value };
+    
+    if (field === 'activityLevel' || field === 'age') {
+      const age = field === 'age' ? parseInt(value) || null : parseInt(formData.age) || null;
+      const activityLevel = field === 'activityLevel' ? value : formData.activityLevel;
+      const newProteinTarget = calculateProteinTarget(age, activityLevel);
+      
+      updatedFormData.proteinTarget = newProteinTarget.toString();
+    }
+    
+    setFormData(updatedFormData);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -151,6 +185,8 @@ export default function Profile() {
       lastName: formData.lastName || null,
       weight: formData.weight ? parseFloat(formData.weight) : null,
       goalWeight: formData.goalWeight ? parseFloat(formData.goalWeight) : null,
+      height: formData.height ? parseFloat(formData.height) : null,
+      age: formData.age ? parseInt(formData.age) : null,
       waistline: formData.waistline ? parseFloat(formData.waistline) : null,
       goalWaistline: formData.goalWaistline ? parseFloat(formData.goalWaistline) : null,
       activityLevel: formData.activityLevel,
@@ -277,6 +313,20 @@ export default function Profile() {
             
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               <div>
+                <Label htmlFor="age" className="text-sm font-medium text-foreground mb-2 block">
+                  Age (years)
+                </Label>
+                <Input
+                  id="age"
+                  type="number"
+                  value={formData.age}
+                  onChange={(e) => handleActivityOrAgeChange('age', e.target.value)}
+                  className="input-clean"
+                  placeholder="35"
+                />
+              </div>
+
+              <div>
                 <Label htmlFor="weight" className="text-sm font-medium text-foreground mb-2 block">
                   {t.weight}
                 </Label>
@@ -348,7 +398,7 @@ export default function Profile() {
                 </Label>
                 <Select
                   value={formData.activityLevel}
-                  onValueChange={(value) => setFormData(prev => ({ ...prev, activityLevel: value }))}
+                  onValueChange={(value) => handleActivityOrAgeChange('activityLevel', value)}
                 >
                   <SelectTrigger className="input-clean">
                     <SelectValue />
@@ -364,13 +414,20 @@ export default function Profile() {
                 <Label htmlFor="proteinTarget" className="text-sm font-medium text-foreground mb-2 block">
                   {t.dailyProteinTarget}
                 </Label>
-                <Input
-                  id="proteinTarget"
-                  type="number"
-                  value={formData.proteinTarget}
-                  onChange={(e) => setFormData(prev => ({ ...prev, proteinTarget: e.target.value }))}
-                  className="input-clean"
-                />
+                <div className="space-y-2">
+                  <Input
+                    id="proteinTarget"
+                    type="number"
+                    value={formData.proteinTarget}
+                    onChange={(e) => setFormData(prev => ({ ...prev, proteinTarget: e.target.value }))}
+                    className="input-clean"
+                    readOnly
+                  />
+                  <p className="text-xs text-gray-500">
+                    Auto-calculated: {formData.age && parseInt(formData.age) >= 35 ? "35+ years" : "Under 35"} + {formData.activityLevel === 'high' ? "Active" : "Inactive"} 
+                    = {formData.proteinTarget}g protein/day
+                  </p>
+                </div>
               </div>
             </div>
           </div>

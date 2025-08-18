@@ -1,0 +1,85 @@
+// proteinRange.ts
+
+export type Activity = "sedentary" | "light" | "moderate" | "high" | "athlete";
+export type Goal = "fat_loss" | "maintenance" | "muscle_gain";
+export type Paradigm = "auto" | "bulletproof_moderate" | "geriatrics_longevity" | "sport_high";
+
+type Range = [number, number];
+
+function roundTo5(n: number): number {
+  return Math.round(n / 5) * 5;
+}
+
+function clampRange(range: Range, min: number, max: number): Range {
+  const low = Math.max(min, Math.min(range[0], max));
+  const high = Math.max(low, Math.min(range[1], max));
+  return [low, high];
+}
+
+/**
+ * Compute base g/kg range based on paradigm, age, and activity (for 'auto').
+ * Goal can bias internal selection, but output remains the full range.
+ */
+function baseGPerKgRange(
+  age: number,
+  activity: Activity,
+  paradigm: Paradigm
+): Range {
+  if (paradigm === "bulletproof_moderate") return [0.8, 1.2];
+  if (paradigm === "geriatrics_longevity") return [1.2, 1.6];
+  if (paradigm === "sport_high") return [1.6, 2.2];
+
+  // auto
+  const isOlder = age >= 50;
+  if (!isOlder) {
+    if (activity === "sedentary" || activity === "light") return [1.0, 1.2];
+    if (activity === "moderate") return [1.2, 1.6];
+    // high or athlete
+    return [1.6, 2.0];
+  } else {
+    if (activity === "athlete") return [1.6, 2.0];
+    // default for ≥50y
+    return [1.2, 1.6];
+  }
+}
+
+/**
+ * Public API: returns only the daily protein range in grams (rounded to 5 g).
+ * Caps upper bound at 2.2 g/kg × weight.
+ */
+export function proteinRangePerDay(
+  age: number,
+  weight_kg: number,
+  activity_level: Activity,
+  goal: Goal,
+  diet_paradigm: Paradigm
+): { protein_range_g_per_day: [number, number] } {
+  if (!Number.isFinite(age) || age <= 0) throw new Error("Invalid age");
+  if (!Number.isFinite(weight_kg) || weight_kg <= 0) throw new Error("Invalid weight_kg");
+
+  // 1) Base g/kg range
+  let gPerKg = baseGPerKgRange(age, activity_level, diet_paradigm);
+
+  // 2) Optional internal bias by goal (range output remains full range)
+  // We keep the *range* but allow a slight emphasis by nudging the low end up for fat_loss/muscle_gain
+  // without exceeding the original high or the 2.2 cap later.
+  if (goal === "fat_loss" || goal === "muscle_gain") {
+    const width = gPerKg[1] - gPerKg[0];
+    const nudge = Math.min(0.1, width * 0.25); // small, conservative nudge
+    gPerKg = [Math.min(gPerKg[0] + nudge, gPerKg[1]), gPerKg[1]];
+  }
+
+  // 3) Convert to grams/day
+  let lowG = gPerKg[0] * weight_kg;
+  let highG = gPerKg[1] * weight_kg;
+
+  // 4) Cap upper bound at 2.2 g/kg
+  const hardCap = 2.2 * weight_kg;
+  [lowG, highG] = clampRange([lowG, highG], 0, hardCap);
+
+  // 5) Round to nearest 5 g
+  lowG = roundTo5(lowG);
+  highG = roundTo5(highG);
+
+  return { protein_range_g_per_day: [lowG, highG] };
+}

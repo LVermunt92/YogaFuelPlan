@@ -108,6 +108,7 @@ export class MemStorage implements IStorage {
       firstName: "L",
       lastName: "Vermunt",
       height: 175,
+      age: 35,
       weight: 70,
       goalWeight: 65,
       waistline: 85,
@@ -115,11 +116,13 @@ export class MemStorage implements IStorage {
       targetDate: "2025-12-31",
       activityLevel: "high",
       proteinTarget: 120,
-      dietaryTags: ["vegetarian", "high-protein"],
+      dietaryTags: ["vegetarian"],
       householdSize: 2,
       cookingDaysPerWeek: 5,
       eatingDaysAtHome: 6,
       meatFishMealsPerWeek: 0,
+      language: "en",
+      leftovers: [],
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -146,16 +149,24 @@ export class MemStorage implements IStorage {
       username: insertUser.username,
       password: insertUser.password,
       email: insertUser.email || null,
+      firstName: null,
+      lastName: null,
       weight: insertUser.weight || 60,
       goalWeight: insertUser.goalWeight || null,
+      height: insertUser.height || null,
+      age: insertUser.age || null,
       waistline: insertUser.waistline || 75,
       goalWaistline: insertUser.goalWaistline || null,
+      targetDate: null,
       activityLevel: insertUser.activityLevel || "high",
       proteinTarget: insertUser.proteinTarget || 130,
       dietaryTags: insertUser.dietaryTags || [],
       householdSize: 1,
       cookingDaysPerWeek: 7,
       eatingDaysAtHome: 7,
+      meatFishMealsPerWeek: 0,
+      language: insertUser.language || 'en',
+      leftovers: [],
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -230,6 +241,22 @@ export class MemStorage implements IStorage {
     this.passwordResetCodes = this.passwordResetCodes.filter(code => code.userId !== userId);
   }
 
+  async updateUserProfile(userId: number, profileData: UpdateUserProfile): Promise<User> {
+    const user = this.users.get(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    
+    const updatedUser: User = {
+      ...user,
+      ...profileData,
+      updatedAt: new Date(),
+    };
+    
+    this.users.set(userId, updatedUser);
+    return updatedUser;
+  }
+
   async createMealPlan(insertMealPlan: InsertMealPlan): Promise<MealPlan> {
     const id = this.currentMealPlanId++;
     
@@ -247,30 +274,7 @@ export class MemStorage implements IStorage {
     return mealPlan;
   }
 
-  // Auto-cleanup: Remove oldest meal plans, keeping only latest 3 per user
-  private async cleanupOldMealPlans(userId: number): Promise<void> {
-    const userMealPlans = Array.from(this.mealPlans.values())
-      .filter(plan => plan.userId === userId)
-      .sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime());
-    
-    // If user has 3 or more meal plans, remove the oldest ones
-    if (userMealPlans.length >= 3) {
-      const plansToRemove = userMealPlans.slice(2); // Keep latest 2, remove rest
-      
-      for (const planToRemove of plansToRemove) {
-        // Remove associated meals first
-        const mealsToRemove = Array.from(this.meals.entries())
-          .filter(([_, meal]) => meal.mealPlanId === planToRemove.id)
-          .map(([mealId, _]) => mealId);
-        
-        mealsToRemove.forEach(mealId => this.meals.delete(mealId));
-        
-        // Remove the meal plan
-        this.mealPlans.delete(planToRemove.id);
-        console.log(`🗑️ Cleaned up old meal plan ID ${planToRemove.id} for user ${userId}`);
-      }
-    }
-  }
+
 
   async deleteMealPlan(id: number): Promise<boolean> {
     // Remove associated meals first
@@ -523,6 +527,23 @@ export class DatabaseStorage implements IStorage {
         updatedAt: new Date(),
       })
       .where(eq(users.id, userId));
+  }
+
+  async updateUserProfile(userId: number, profileData: UpdateUserProfile): Promise<User> {
+    const [user] = await db
+      .update(users)
+      .set({
+        ...profileData,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    
+    if (!user) {
+      throw new Error("User not found");
+    }
+    
+    return user;
   }
 
   async createPasswordResetCode(userId: number, resetCode: string): Promise<void> {
