@@ -69,3 +69,4 @@ UI Cleanup Implementation: Streamlined meal planner interface by removing redund
 - @tanstack/react-query
 - @radix-ui
 - tailwindcss
+```
