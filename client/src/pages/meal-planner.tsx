@@ -524,11 +524,15 @@ export default function MealPlanner() {
     { name: 'Remaining', value: Math.max(0, fatsTarget - fatsAchieved), fill: '#e5e7eb' }
   ];
 
-  // Calculate vegetables target as remainder of energy intake
+  // Calculate vegetables target as remainder of energy intake (excluding vegetables from total first)
   const proteinCalories = nutritionData.protein * 4;
-  const fatsCalories = nutritionData.fats * 9;
+  const fatsCalories = nutritionData.fats * 9; 
   const carbsCalories = nutritionData.carbs * 4;
-  const remainingCalories = Math.max(0, nutritionData.totalCalories - proteinCalories - fatsCalories - carbsCalories);
+  const macroCalories = proteinCalories + fatsCalories + carbsCalories;
+  
+  // Target total calories should be higher to accommodate vegetables
+  const targetTotalCalories = macroCalories / 0.80; // Macros are 80%, vegetables fill remaining 20%
+  const remainingCalories = targetTotalCalories - macroCalories;
   const vegetablesTarget = remainingCalories / 0.25; // ~25 kcal per 100g vegetables (0.25 kcal/g)
   
   const vegetablesAchieved = Math.min(nutritionData.vegetables, vegetablesTarget);
