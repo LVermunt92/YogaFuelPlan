@@ -1,210 +1,161 @@
-/* Using system font stack like madebysem.nl for authentic Dutch design */
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ===== Base tokens (Sem-achtig, minimal) ===== */
 @layer base {
   :root {
-    /* Single unified background color for everything */
-    --background: hsl(35, 15%, 96%);
-    --foreground: hsl(0, 0%, 15%);
-    --muted: hsl(35, 15%, 96%);
-    --muted-foreground: hsl(0, 0%, 50%);
-    --popover: hsl(35, 15%, 96%);
-    --popover-foreground: hsl(0, 0%, 15%);
-    --card: hsl(35, 15%, 96%);
-    --card-foreground: hsl(0, 0%, 15%);
-    --border: transparent;
-    --input: hsl(35, 15%, 96%);
-    --primary: hsl(0, 0%, 15%);
-    --primary-foreground: hsl(35, 15%, 96%);
-    --secondary: hsl(35, 15%, 96%);
-    --secondary-foreground: hsl(0, 0%, 18%);
-    --accent: hsl(35, 15%, 96%);
-    --accent-foreground: hsl(0, 0%, 15%);
-    --destructive: hsl(0, 65%, 51%);
-    --destructive-foreground: hsl(35, 15%, 96%);
-    --ring: hsl(0, 0%, 15%);
-    --radius: 0.25rem;
+    /* HSL triples (GEEN hsl() hier) */
+    --background: 35 15% 96%;       /* #F7F5F2 */
+    --foreground: 222 47% 11%;      /* inky/donker */
+    --muted: 35 15% 96%;
+    --muted-foreground: 215 16% 47%;/* #6B7280 */
+    --popover: 35 15% 96%;
+    --popover-foreground: 222 47% 11%;
+    --card: 0 0% 100%;              /* wit voor kaarten */
+    --card-foreground: 222 47% 11%;
+    --border: 35 12% 88%;           /* #E7E4DF */
+    --input: 35 12% 88%;
+    --primary: 222 47% 11%;         /* zwart/donker als primair */
+    --primary-foreground: 35 15% 96%;
+    --secondary: 35 15% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --accent: 162 54% 27%;          /* #1F6D5E */
+    --accent-foreground: 35 15% 96%;
+    --destructive: 0 65% 51%;
+    --destructive-foreground: 35 15% 96%;
+    --ring: 222 47% 11%;
+    --radius: 0.25rem;              /* strakke hoeken */
   }
 
   .dark {
-    --background: hsl(0, 0%, 12%);
-    --foreground: hsl(30, 5%, 92%);
-    --muted: hsl(0, 0%, 12%);
-    --muted-foreground: hsl(0, 0%, 65%);
-    --popover: hsl(0, 0%, 12%);
-    --popover-foreground: hsl(30, 5%, 92%);
-    --card: hsl(0, 0%, 12%);
-    --card-foreground: hsl(30, 5%, 92%);
-    --border: transparent;
-    --input: hsl(0, 0%, 12%);
-    --primary: hsl(30, 5%, 92%);
-    --primary-foreground: hsl(0, 0%, 12%);
-    --secondary: hsl(0, 0%, 12%);
-    --secondary-foreground: hsl(30, 5%, 92%);
-    --accent: hsl(0, 0%, 12%);
-    --accent-foreground: hsl(30, 5%, 92%);
-    --destructive: hsl(0, 62.8%, 30.6%);
-    --destructive-foreground: hsl(30, 5%, 92%);
-    --ring: hsl(30, 5%, 92%);
+    --background: 0 0% 12%;
+    --foreground: 30 5% 92%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 65%;
+    --popover: 0 0% 12%;
+    --popover-foreground: 30 5% 92%;
+    --card: 0 0% 12%;
+    --card-foreground: 30 5% 92%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --primary: 30 5% 92%;
+    --primary-foreground: 0 0% 12%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 30 5% 92%;
+    --accent: 162 54% 33%;
+    --accent-foreground: 0 0% 12%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 30 5% 92%;
+    --ring: 30 5% 92%;
     --radius: 0.25rem;
   }
-}
 
-@layer base {
-  * {
-    @apply border-border;
-  }
+  * { @apply border-border; }
 
   body {
     @apply bg-background text-foreground;
-    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
     font-weight: 400;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* Prevent horizontal scrolling on mobile */
     overflow-x: hidden;
   }
 
-  /* Responsive container with proper padding */
-  .responsive-container {
-    @apply px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto;
+  /* Koppen: serif, strak kerning; één consistent blok */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: .005em;
+  }
+  h1 { font-size: 1.5rem; }
+  h2 { font-size: 1.25rem; }
+  h3 { font-size: 1.125rem; }
+
+  @media (min-width: 640px){
+    h1 { font-size: 1.875rem; }
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.25rem; }
   }
 
-  /* Mobile-first responsive text sizes */
-  .text-responsive-lg {
-    @apply text-lg sm:text-xl lg:text-2xl;
-  }
-  
-  .text-responsive-xl {
-    @apply text-xl sm:text-2xl lg:text-3xl;
-  }
+  .responsive-container { @apply px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto; }
+  .text-responsive-lg { @apply text-lg sm:text-xl lg:text-2xl; }
+  .text-responsive-xl { @apply text-xl sm:text-2xl lg:text-3xl; }
 
-  /* Touch-friendly buttons for mobile */
-  .btn-touch {
-    @apply min-h-[44px] min-w-[44px] px-4 py-2;
-  }
-
-  /* Mobile-friendly card spacing */
-  .card-clean {
-    @apply bg-card border border-border rounded-lg shadow-sm;
-  }
-
-  /* Responsive tables for mobile */
-  .table-responsive {
-    @apply overflow-x-auto;
-  }
-
-  /* Mobile-optimized form inputs */
-  .input-mobile {
-    @apply min-h-[44px] text-base;
-  }
-
-  /* Safe area insets for iOS devices */
+  /* Safe area (iOS) */
   @supports (padding: max(0px)) {
     body {
       padding-left: max(0px, env(safe-area-inset-left));
       padding-right: max(0px, env(safe-area-inset-right));
     }
   }
-
-  /* Headers use serif font like madebysem.nl - light weight with generous letter spacing */
-  h1, h2, h3, h4, h5, h6 {
-    font-family: "Times New Roman", Times, serif;
-    font-weight: 300;
-    letter-spacing: 0.05em;
-    line-height: 1.4;
-  }
-
-  h1 {
-    font-weight: 200;
-    letter-spacing: 0.08em;
-  }
-
-  h2 {
-    font-weight: 300;
-    letter-spacing: 0.06em;
-  }
-
-  h3 {
-    font-weight: 300;
-    letter-spacing: 0.04em;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    font-weight: 600;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-  }
-  
-  h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-  }
-  
-  h2 {
-    font-size: 2rem;
-    font-weight: 600;
-  }
-  
-  h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-  }
 }
 
+/* ===== Components (minimal editorial) ===== */
 @layer components {
-  /* madebysem.nl inspired button styles - clean and minimal */
+  /* Buttons */
+  .btn-touch { @apply min-h-[44px] min-w-[44px] px-4 py-2; }
+
   .btn-minimal {
-    @apply inline-flex items-center justify-center whitespace-nowrap text-sm font-medium;
-    @apply bg-primary text-primary-foreground;
-    @apply px-8 py-3 border-0 rounded-sm;
-    @apply transition-all duration-200 ease-in-out;
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring;
-    @apply disabled:pointer-events-none disabled:opacity-50;
+    @apply inline-flex items-center justify-center whitespace-nowrap text-sm font-medium
+           px-6 py-3 rounded-sm bg-primary text-primary-foreground
+           transition-colors duration-200
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background
+           disabled:pointer-events-none disabled:opacity-50;
+  }
+  .btn-minimal:hover { background-color: hsl(var(--primary) / 0.9); }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center whitespace-nowrap text-sm font-medium
+           px-6 py-3 rounded-sm border bg-transparent text-foreground
+           transition-colors duration-200
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background
+           disabled:pointer-events-none disabled:opacity-50 hover:bg-muted;
   }
 
-  .btn-minimal:hover {
-    background-color: hsl(var(--primary) / 0.9);
+  /* Cards, inputs, tables */
+  .card-clean   { @apply bg-card border rounded-sm shadow-none; }
+  .input-clean  { @apply bg-background border rounded-sm px-4 py-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition; }
+  .table-responsive { @apply overflow-x-auto; }
+
+  /* Sticky topbar met subtiele blur */
+  .topbar { @apply sticky top-0 z-50 border-b bg-background/90 backdrop-blur; }
+
+  /* ===== Progress (token-based) ===== */
+  .progress {
+    @apply relative w-full overflow-hidden rounded-full;
+    height: 12px;                           /* md */
+    background-color: hsl(var(--border) / 0.6);
   }
-  
-  .btn-outline {
-    @apply inline-flex items-center justify-center whitespace-nowrap text-sm font-medium;
-    @apply bg-transparent text-foreground border border-border;
-    @apply px-8 py-3 rounded-sm;
-    @apply transition-all duration-200 ease-in-out;
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring;
-    @apply disabled:pointer-events-none disabled:opacity-50;
-    @apply hover:bg-accent;
+  .progress__bar {
+    @apply h-full rounded-full;
+    background-color: hsl(var(--accent));
+    width: calc(var(--value, 0) * 1%);      /* 0–100 */
+    transform-origin: left;
+    transition: width 200ms ease;
   }
-  
-  /* Minimalist card styling */
-  .card-clean {
-    @apply bg-card border border-border;
-    @apply rounded-sm shadow-none;
+  /* Maten */
+  .progress[data-size='sm'] { height: 8px; }
+  .progress[data-size='lg'] { height: 14px; }
+  /* Intent (optioneel) */
+  .progress[data-intent='ok']   .progress__bar { background-color: hsl(var(--accent)); }
+  .progress[data-intent='warn'] .progress__bar { background-color: hsl(38 92% 50%); }  /* amber */
+  .progress[data-intent='bad']  .progress__bar { background-color: hsl(0 84% 60%); }   /* rood */
+  /* Indeterminate (scan) */
+  .progress[data-state='indeterminate'] .progress__bar {
+    width: 40%;
+    animation: progress-scan 1.2s ease-in-out infinite;
   }
-  
-  /* Clean input styling */
-  .input-clean {
-    @apply bg-background border border-border;
-    @apply rounded-sm px-4 py-3;
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring;
-    @apply transition-all duration-200 ease-in-out;
+  @keyframes progress-scan {
+    0%   { transform: translateX(-100%); }
+    50%  { transform: translateX(-20%); }
+    100% { transform: translateX(100%); }
   }
-  
-  /* Typography utilities */
-  .text-large {
-    font-size: 1.125rem;
-    line-height: 1.5;
-  }
-  
-  .text-hero {
-    font-size: 3rem;
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .progress__bar { transition: none; }
+    .progress[data-state='indeterminate'] .progress__bar { animation: none; }
   }
 }

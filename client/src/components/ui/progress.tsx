@@ -1,28 +1,58 @@
-"use client"
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
-import * as React from "react"
-import * as ProgressPrimitive from "@radix-ui/react-progress"
+export type ProgressProps = {
+  /** huidige waarde (bijv. 61) */
+  value?: number;
+  /** doel (bijv. 130) – wordt omgerekend naar % */
+  max?: number;
+  /** aria-label voor screenreaders */
+  label?: string;
+  /** hoogtevariant */
+  size?: "sm" | "md" | "lg";
+  /** kleurintentie; 'auto' kiest op basis van percentage */
+  intent?: "auto" | "ok" | "warn" | "bad";
+  /** indeterminate = lopende taak zonder bekende progress */
+  indeterminate?: boolean;
+} & React.HTMLAttributes<HTMLDivElement>;
 
-import { cn } from "@/lib/utils"
+export function Progress({
+  value = 0,
+  max = 100,
+  label = "Voortgang",
+  size = "md",
+  intent = "auto",
+  indeterminate = false,
+  className,
+  ...props
+}: ProgressProps) {
+  const clamped = Math.max(0, Math.min(value, max));
+  const pct = (clamped / max) * 100;
 
-const Progress = React.forwardRef<
-  React.ElementRef<typeof ProgressPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>
->(({ className, value, ...props }, ref) => (
-  <ProgressPrimitive.Root
-    ref={ref}
-    className={cn(
-      "relative h-4 w-full overflow-hidden rounded-full bg-secondary",
-      className
-    )}
-    {...props}
-  >
-    <ProgressPrimitive.Indicator
-      className="h-full w-full flex-1 bg-primary transition-all"
-      style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
-    />
-  </ProgressPrimitive.Root>
-))
-Progress.displayName = ProgressPrimitive.Root.displayName
+  const computedIntent =
+    intent !== "auto" ? intent : pct < 50 ? "bad" : pct < 80 ? "warn" : "ok";
 
-export { Progress }
+  const ariaValueNow = indeterminate ? undefined : Math.round(pct);
+  const ariaValueText = indeterminate ? undefined : `${Math.round(clamped)} van ${Math.round(max)}`;
+
+  return (
+    <div
+      className={cn("progress", className)}
+      data-size={size}
+      data-intent={computedIntent}
+      data-state={indeterminate ? "indeterminate" : undefined}
+      role="progressbar"
+      aria-label={label}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={ariaValueNow}
+      aria-valuetext={ariaValueText}
+      {...props}
+    >
+      <div
+        className="progress__bar"
+        style={{ ["--value" as any]: String(pct) }}
+      />
+    </div>
+  );
+}
