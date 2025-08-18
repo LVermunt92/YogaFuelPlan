@@ -1274,7 +1274,7 @@ export default function MealPlanner() {
                       ) : shoppingListData ? (
                         <div className="space-y-6">
                           <div className="flex justify-between items-center">
-                            <span className="text-sm text-slate-600">
+                            <span className="text-sm text-gray-500">
                               {t.weekOf} {formatWeekRange(shoppingListData.weekStart)}
                             </span>
                             <Badge variant="secondary">
@@ -1284,15 +1284,15 @@ export default function MealPlanner() {
                           
                           {shoppingListData.categories?.map(category => (
                             <div key={category} className="space-y-2">
-                              <h3 className="font-semibold text-slate-900 border-b border-slate-200 pb-1">
+                              <h3 className="font-semibold text-foreground border-b border-border pb-1">
                                 {category}
                               </h3>
                               <div className="grid grid-cols-1 gap-2">
                                 {shoppingListData.shoppingList
                                   ?.filter(item => item.category === category)
                                   ?.map((item, index) => (
-                                    <div key={index} className="flex justify-between items-center py-2 px-2 hover:bg-slate-50 rounded">
-                                      <span className="text-sm text-slate-900 flex-1">{item.ingredient}</span>
+                                    <div key={index} className="flex justify-between items-center py-2 px-2 hover:bg-gray-50 rounded">
+                                      <span className="text-sm text-foreground flex-1">{item.ingredient}</span>
                                       <div className="flex items-center">
                                         <Badge variant="secondary" className="text-xs font-medium">
                                           {item.count > 1 ? `${item.totalAmount} (${item.count}x)` : item.totalAmount}
@@ -1305,8 +1305,8 @@ export default function MealPlanner() {
                           ))}
                           
                           {/* Export Options */}
-                          <div className="border-t border-slate-200 pt-6 mt-6">
-                            <h3 className="font-semibold text-slate-900 mb-4">
+                          <div className="border-t border-border pt-6 mt-6">
+                            <h3 className="font-semibold text-foreground mb-4">
                               {language === 'nl' ? 'Exporteer Boodschappenlijst' : 'Export Shopping List'}
                             </h3>
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -1369,7 +1369,7 @@ export default function MealPlanner() {
                                 Albert Heijn
                               </Button>
                             </div>
-                            <p className="text-xs text-slate-500 mt-2 text-center">
+                            <p className="text-xs text-gray-400 mt-2 text-center">
                               {language === 'nl' 
                                 ? 'Albert Heijn knop opent de AH app met je boodschappenlijst'
                                 : 'Albert Heijn button opens AH app with your shopping list'
@@ -1378,7 +1378,7 @@ export default function MealPlanner() {
                           </div>
                         </div>
                       ) : (
-                        <p className="text-center text-slate-500 py-8">
+                        <p className="text-center text-gray-500 py-8">
                           {t.selectMealPlanForShoppingList}
                         </p>
                       )}
@@ -1688,43 +1688,43 @@ export default function MealPlanner() {
           ) : recipeData ? (
             <div className="space-y-6">
               {/* Meal Info */}
-              <div className="bg-slate-50 rounded-lg p-4">
-                <h3 className="font-semibold text-lg text-slate-900 mb-2">
+              <div className="bg-gray-50 rounded-lg p-4">
+                <h3 className="font-semibold text-lg text-foreground mb-2">
                   {recipeData.name}
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 text-sm">
                   <div>
-                    <span className="text-slate-600">{t.portion}:</span>
+                    <span className="text-gray-500">{t.portion}:</span>
                     <p className="font-medium">{recipeData.portion}</p>
                   </div>
                   <div>
-                    <span className="text-slate-600">{t.protein}:</span>
+                    <span className="text-gray-500">{t.protein}:</span>
                     <p className="font-medium text-emerald-600">{recipeData.nutrition?.protein}g</p>
                   </div>
                   <div>
-                    <span className="text-slate-600">{t.prepTime}:</span>
+                    <span className="text-gray-500">{t.prepTime}:</span>
                     <p className="font-medium flex items-center gap-1">
                       <Timer className="w-3 h-3" />
                       {recipeData.prepTime} {t.min}
                     </p>
                   </div>
                   <div>
-                    <span className="text-slate-600">{t.calories}:</span>
+                    <span className="text-gray-500">{t.calories}:</span>
                     <p className="font-medium text-orange-600">{recipeData.nutrition?.calories}</p>
                   </div>
                   <div>
-                    <span className="text-slate-600">{t.carbs}:</span>
+                    <span className="text-gray-500">{t.carbs}:</span>
                     <p className="font-medium text-blue-600">{recipeData.nutrition?.carbohydrates}g</p>
                   </div>
                   {recipeData.nutrition?.costEuros && (
                     <div>
-                      <span className="text-slate-600">{t.cost}:</span>
+                      <span className="text-gray-500">{t.cost}:</span>
                       <p className="font-medium text-purple-600">€{recipeData.nutrition.costEuros.toFixed(2)}</p>
                     </div>
                   )}
                   {recipeData.nutrition?.proteinPerEuro && (
                     <div>
-                      <span className="text-slate-600">{t.proteinPerEuro}:</span>
+                      <span className="text-gray-500">{t.proteinPerEuro}:</span>
                       <p className="font-medium text-indigo-600">{recipeData.nutrition.proteinPerEuro.toFixed(1)}g/€</p>
                     </div>
                   )}
@@ -1787,17 +1787,17 @@ export default function MealPlanner() {
 
               {/* Ingredients */}
               <div>
-                <h4 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
                   <ShoppingCart className="w-4 h-4" />
                   {t.ingredients}
                 </h4>
                 <div className="grid grid-cols-2 gap-2">
                   {recipeData?.ingredients?.map((ingredient, index) => (
-                    <div key={index} className="flex items-center gap-2 text-sm text-slate-700">
+                    <div key={index} className="flex items-center gap-2 text-sm text-gray-500">
                       <div className="w-2 h-2 bg-emerald-500 rounded-full flex-shrink-0" />
                       {ingredient}
                     </div>
-                  )) || <p className="text-sm text-slate-500">No ingredients available</p>}
+                  )) || <p className="text-sm text-gray-400">No ingredients available</p>}
                 </div>
               </div>
 
@@ -1805,7 +1805,7 @@ export default function MealPlanner() {
 
               {/* Instructions */}
               <div>
-                <h4 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
                   <BookOpen className="w-4 h-4" />
                   {t.instructions}
                 </h4>
@@ -1815,9 +1815,9 @@ export default function MealPlanner() {
                       <span className="flex-shrink-0 w-6 h-6 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-sm font-medium">
                         {index + 1}
                       </span>
-                      <p className="text-slate-700 leading-relaxed">{instruction}</p>
+                      <p className="text-gray-500 leading-relaxed">{instruction}</p>
                     </li>
-                  )) || <p className="text-sm text-slate-500">No instructions available</p>}
+                  )) || <p className="text-sm text-gray-400">No instructions available</p>}
                 </ol>
               </div>
 
@@ -1826,10 +1826,10 @@ export default function MealPlanner() {
                 <>
                   <Separator />
                   <div>
-                    <h4 className="font-semibold text-slate-900 mb-3">💡 {t.tips}</h4>
+                    <h4 className="font-semibold text-foreground mb-3">💡 {t.tips}</h4>
                     <ul className="space-y-2">
                       {recipeData?.tips?.map((tip, index) => (
-                        <li key={index} className="flex gap-2 text-sm text-slate-600">
+                        <li key={index} className="flex gap-2 text-sm text-gray-500">
                           <span className="text-emerald-500">•</span>
                           {tip}
                         </li>
@@ -1853,7 +1853,7 @@ export default function MealPlanner() {
               )}
             </div>
           ) : (
-            <div className="p-6 text-center text-slate-500">
+            <div className="p-6 text-center text-gray-500">
               <BookOpen className="mx-auto h-12 w-12 mb-4 opacity-50" />
               <p>{t.recipeNotAvailable}</p>
             </div>
