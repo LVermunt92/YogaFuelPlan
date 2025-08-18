@@ -4175,6 +4175,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
       .replace(/ \(leftover\)$/, '')
       .replace(/ \(2\.0x.*?\)$/, '')
       .replace(/ \- batch cook$/, '')
+      .replace(/ \(protein-enhanced\)$/, '') // Fix: Strip protein-enhanced suffix
       .trim();
     
     const mealOption = ENHANCED_MEAL_DATABASE.find(m => m.name === cleanMealName);
@@ -4199,6 +4200,37 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
           });
         }
       });
+    } else {
+      // Log missing meal recipes to help debug grocery list issues
+      console.warn(`⚠️ GROCERY LIST WARNING: Recipe not found for meal "${cleanMealName}" (original: "${meal.foodDescription}"). This meal's ingredients will be missing from shopping list!`);
+      
+      // Try fallback search with more flexible matching
+      const fallbackMeal = ENHANCED_MEAL_DATABASE.find(m => 
+        m.name.toLowerCase().includes(cleanMealName.split(' ').slice(0, 2).join(' ').toLowerCase()) ||
+        cleanMealName.toLowerCase().includes(m.name.split(' ').slice(0, 2).join(' ').toLowerCase())
+      );
+      
+      if (fallbackMeal) {
+        console.log(`🔄 FALLBACK: Found similar recipe "${fallbackMeal.name}" for "${cleanMealName}"`);
+        fallbackMeal.ingredients.forEach(ingredient => {
+          const cleanIngredient = cleanIngredientName(ingredient);
+          const existing = ingredientAmounts.get(cleanIngredient);
+          if (existing) {
+            existing.count += 1;
+            const defaultPortion = getDefaultPortion(cleanIngredient);
+            existing.totalAmount += defaultPortion.amount;
+          } else {
+            const defaultPortion = getDefaultPortion(cleanIngredient);
+            ingredientAmounts.set(cleanIngredient, { 
+              totalAmount: defaultPortion.amount, 
+              unit: defaultPortion.unit, 
+              count: 1 
+            });
+          }
+        });
+      } else {
+        console.error(`❌ CRITICAL: No fallback recipe found for "${cleanMealName}". User will be missing ingredients!`);
+      }
     }
   });
 
@@ -4530,10 +4562,22 @@ function cleanIngredientName(ingredient: string): string {
   let cleaned = ingredient.toLowerCase().trim();
   
   // Remove leading measurements and quantities (including fractions and numbers)
+  cleaned = cleaned.replace(/^[\d\/½¼¾⅓⅔⅛⅜⅝⅞]+\s*(cup|cups|tbsp|tsp|tablespoons?|teaspoons?|g|grams?|lb|lbs|pounds?|oz|ounces?|pieces?|slices?|cloves?|sprigs?|medium|large|small|ml)\s*of\s*/, '');
   cleaned = cleaned.replace(/^[\d\/½¼¾⅓⅔⅛⅜⅝⅞]+\s*(cup|cups|tbsp|tsp|tablespoons?|teaspoons?|g|grams?|lb|lbs|pounds?|oz|ounces?|pieces?|slices?|cloves?|sprigs?|medium|large|small|ml)\s*/, '');
   
   // Remove leading numbers and fractions that might still be there  
   cleaned = cleaned.replace(/^[\d\/½¼¾⅓⅔⅛⅜⅝⅞]+\s*/, '');
+  
+  // Fix common ingredient name corruption issues
+  if (cleaned.startsWith('reen onions') || cleaned === 'reen onions') {
+    cleaned = 'green onions';
+  }
+  if (cleaned.startsWith('s brown rice') || cleaned === 's brown rice' || cleaned.includes('s brown rice')) {
+    cleaned = 'brown rice';
+  }
+  if (cleaned.startsWith('scoop plant protein') || cleaned.includes('scoop plant protein')) {
+    cleaned = 'plant protein powder';
+  }
   
   // Specify fresh herbs instead of generic "fresh herbs"
   // Convert generic "fresh herbs" to specific herb types for better shopping guidance
