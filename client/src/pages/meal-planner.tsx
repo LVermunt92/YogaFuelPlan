@@ -720,18 +720,7 @@ export default function MealPlanner() {
     <div className="bg-background">
       {/* Main Content */}
       <main className="responsive-container py-4 sm:py-6 lg:py-8">
-        {/* Page Title */}
-        <div className="mb-6">
-          <h1 className="text-responsive-xl font-light text-foreground mb-2" style={{ fontFamily: 'Times New Roman, serif', letterSpacing: '0.05em' }}>
-            {t.mealPlanner}
-          </h1>
-          <p className="text-muted-foreground">
-            {t.personalisedNutrition}
-          </p>
-          <div className="text-sm text-muted-foreground mt-2">
-            {t.lastGenerated}: <span className="text-foreground font-medium">{latestMealPlan ? formatDate(latestMealPlan.createdAt?.toString() || '') : t.never}</span>
-          </div>
-        </div>
+
         
         {/* Welcome Message - Week Summary */}
         {latestMealPlan && (
