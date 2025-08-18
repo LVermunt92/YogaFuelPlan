@@ -4264,6 +4264,10 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'mushrooms': 'Vegetables',
     'portobello mushrooms': 'Vegetables',
     'sprouts': 'Vegetables',
+    'green onions': 'Vegetables',
+    'scallions': 'Vegetables',
+    'spring onions': 'Vegetables',
+    'sweet potato': 'Vegetables',
     
     // Fruits (Fresh Produce section 2)
     'banana': 'Fruits',
@@ -4418,7 +4422,8 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'plain flour': 'Baking & Cooking Basics',
     'rice vinegar': 'Pantry Essentials',
     'balsamic vinegar': 'Pantry Essentials',
-    'coriander': 'Pantry Essentials',
+    'coriander': 'Fresh Herbs',
+    'fresh coriander': 'Fresh Herbs',
     'fennel seeds': 'Pantry Essentials'
   };
 
@@ -4720,6 +4725,9 @@ function cleanIngredientName(ingredient: string): string {
     cleaned = 'green onions';
   }
   if (cleaned.startsWith('s brown rice') || cleaned === 's brown rice' || cleaned.includes('s brown rice')) {
+    cleaned = 'brown rice';
+  }
+  if (cleaned.startsWith(' brown rice') || cleaned.includes(' brown rice')) {
     cleaned = 'brown rice';
   }
   if (cleaned.startsWith('scoop plant protein') || cleaned.includes('scoop plant protein')) {

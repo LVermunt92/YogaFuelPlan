@@ -1,7 +1,7 @@
 # Meal Planner Application
 
 ## Overview
-This full-stack meal planning application generates personalized weekly meal plans based on user activity levels and dietary preferences. It integrates with Notion for synchronization, providing a comprehensive, adaptable solution for healthy meal planning. The project focuses on user experience and nutritional optimization to effortlessly manage user nutrition for improved health and well-being, with a vision to enhance healthy eating habits globally.
+This full-stack meal planning application generates personalized weekly meal plans based on user activity levels and dietary preferences. It integrates with Notion for synchronization, providing a comprehensive, adaptable solution for healthy meal planning. The project focuses on user experience and nutritional optimization to effortlessly manage user nutrition for improved health and well-being, with a vision to enhance healthy eating habits globally and address market potential for personalized nutrition solutions.
 
 ## User Preferences
 Preferred communication style: Simple, everyday language.
@@ -36,7 +36,7 @@ Supermarket-Ordered Shopping Categories: Completely reorganized shopping list ca
 Enhanced Ingredient Separation System: Modified ingredient specification system to create separate ingredient entries for mixed berries instead of comma-separated lists. Updated ingredient specifier to generate separate recipe ingredients for blueberries and strawberries when processing "mixed berries" or "fresh berries", ensuring both recipe displays and shopping lists show individual ingredient lines for better clarity and shopping convenience.
 Advanced Shopping List Category System: Completely restructured shopping categories into 8 distinct sections following logical supermarket flow: Vegetables (now appearing first) → Fruits → Fresh Herbs → Dairy & Cheese → Plant-Based Alternatives → Dairy & Eggs → Pantry Essentials (oils, sauces, sweeteners) → Dry Goods (grains, nuts, spices) → Other (relegated to bottom). Sweet potato properly reclassified from pantry to vegetables category. This detailed categorization eliminates confusion and provides optimal grocery shopping workflow.
 Comprehensive Lemon Standardization System: Implemented universal lemon measurement system where all lemon-related ingredients (lemon juice, fresh lemon juice, lemon zest, lemon, lemons) are automatically converted to "pieces of lemon" throughout recipes and shopping lists. This provides consistent, practical shopping guidance that eliminates confusion about lemon quantities and measurements. System applies to all 76 recipes automatically during ingredient processing.
-Detailed Dry Goods Separation System: Further separated the "Dry Goods" category into 4 specific subcategories following user's supermarket shopping preferences: "Grains, Pasta & Canned Goods" (rice, pasta, oats, beans, lentils), "Baking & Cooking Basics" (flours, baking powder, broth, tomato products), "Nuts, Seeds & Spreads" (nuts, seeds, nut butters, tahini), and "Other Dry Goods" (protein powders, specialty items). Reorganized "Pantry Essentials" to contain oils, sauces, spices, vinegars, and dried herbs (14 items), while "Baking & Cooking Basics" focuses on flours, baking ingredients, and basic cooking necessities (5 items). Final shopping list structure includes 11 categories with 60 total items optimally distributed for supermarket shopping workflow.
+Detailed Dry Goods Separation System: Further separated the "Dry Goods" category into 4 specific subcategories following user's supermarket shopping preferences: "Grains, Pasta & Canned Goods" (rice, pasta, oats, beans, lentils), "Baking & Cooking Basics" (flours, baking powder, broth, tomato products), "Nuts, Seeds & Spreads" (nuts, seeds, nut butters, tahini), and "Other Dry Goods" (protein powders, specialty items). Reorganized "Pantry Essentials" to contain oils, sauces, spices, vinegars, and dried herbs (14 items), while "Baking & Cooking Basics" focuses on flours, baking ingredients, and basic cooking necessities (5 items). Fixed ingredient categorization: coriander always treated as fresh herb, green onions properly categorized as vegetables, brown rice variations automatically consolidated. Category ordering ensures "Other" always appears at bottom. Final shopping list structure includes 11 categories with 60 total items optimally distributed for supermarket shopping workflow.
 
 ## System Architecture
 - **Authentication & Multi-User Support**: Secure login/registration, password reset, isolated user data, and route protection.
@@ -47,12 +47,12 @@ Detailed Dry Goods Separation System: Further separated the "Dry Goods" category
     - **Database**: PostgreSQL with Drizzle ORM.
     - **Session Management**: Express sessions with PostgreSQL store.
     - **Build Tools**: Vite for frontend, esbuild for backend.
-    - **Meal Generation**: Calculates protein targets based on user activity, selects meals from a pre-defined nutrition database, generates 7-day plans with variety, and creates shopping lists. All meals include detailed cooking instructions, tips, and nutritional information; recipes are alcohol-free.
+    - **Meal Generation**: Calculates protein targets, selects meals from a nutrition database, generates 7-day plans with variety, and creates shopping lists. Meals include instructions, tips, and nutritional information; recipes are alcohol-free.
     - **Universal Meal Prep Engine**: Adapts to user cooking schedules, supporting batch cooking, proper meal distribution, and intelligent dietary fallbacks.
     - **Smart Time Constraints**: Weekday meals (Mon-Fri) are limited to ≤30 minutes prep time; weekends have no time restrictions.
-    - **Ayurvedic Integration**: Supports Ayurvedic dietary tags, including seasonal adaptation based on a 6-season calendar (adapted for European seasons).
+    - **Ayurvedic Integration**: Supports Ayurvedic dietary tags and seasonal adaptation.
     - **Meal Plan Persistence**: Meal plans persist across browser sessions with automatic loading.
-    - **Automated Viral Recipe Updates**: System automatically adds new trending recipes every 2 weeks.
+    - **Automated Viral Recipe Updates**: System automatically adds new trending recipes.
     - **Enhanced Multi-Plan Weekend Grocery System**: Users can maintain both current week and next week plans simultaneously.
     - **Complete Dutch Recipe Translation System**: Comprehensive translation service for recipe names, ingredients, and cooking instructions from English to Dutch, including AI-enhanced translation.
     - **Consolidated Shopping List Workflow**: Single-flow shopping list generation with integrated export options (copy, CSV download, Albert Heijn app deep linking).
