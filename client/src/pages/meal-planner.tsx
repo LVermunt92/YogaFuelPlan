@@ -524,7 +524,13 @@ export default function MealPlanner() {
     { name: 'Remaining', value: Math.max(0, fatsTarget - fatsAchieved), fill: '#e5e7eb' }
   ];
 
-  const vegetablesTarget = 500; // 500g daily target
+  // Calculate vegetables target as remainder of energy intake
+  const proteinCalories = nutritionData.protein * 4;
+  const fatsCalories = nutritionData.fats * 9;
+  const carbsCalories = nutritionData.carbs * 4;
+  const remainingCalories = Math.max(0, nutritionData.totalCalories - proteinCalories - fatsCalories - carbsCalories);
+  const vegetablesTarget = remainingCalories / 0.25; // ~25 kcal per 100g vegetables (0.25 kcal/g)
+  
   const vegetablesAchieved = Math.min(nutritionData.vegetables, vegetablesTarget);
   const vegetablesChartData = [
     { name: 'Achieved', value: vegetablesAchieved, fill: '#22c55e' },
@@ -853,7 +859,7 @@ export default function MealPlanner() {
                   {nutritionData.vegetables.toFixed(0)}g
                 </div>
                 <div className="text-xs text-gray-400 mt-1 text-center">
-                  {((nutritionData.vegetables / vegetablesTarget) * 100).toFixed(0)}% of {vegetablesTarget}g
+                  {((nutritionData.vegetables / vegetablesTarget) * 100).toFixed(0)}% of {vegetablesTarget.toFixed(0)}g
                 </div>
               </div>
 
