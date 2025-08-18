@@ -729,7 +729,7 @@ export default function MealPlanner() {
             {t.personalisedNutrition}
           </p>
           <div className="text-sm text-muted-foreground mt-2">
-            {t.lastGenerated}: <span className="text-foreground font-medium">{latestMealPlan ? formatDate(latestMealPlan.createdAt) : t.never}</span>
+            {t.lastGenerated}: <span className="text-foreground font-medium">{latestMealPlan ? formatDate(latestMealPlan.createdAt?.toString() || '') : t.never}</span>
           </div>
         </div>
         
@@ -927,7 +927,7 @@ export default function MealPlanner() {
                     </p>
                     <div className="flex items-center justify-between text-xs text-muted-foreground">
                       <span>{plan.totalProtein.toFixed(1)}g {t.proteinDaily || 'protein/day'}</span>
-                      <span>{formatDate(plan.createdAt)}</span>
+                      <span>{formatDate(plan.createdAt?.toString() || '')}</span>
                     </div>
                   </div>
                 ))}
@@ -1642,12 +1642,12 @@ export default function MealPlanner() {
             <div>
               <Label className="text-sm font-medium text-foreground mb-2 block">{t.integrationStatus}</Label>
               <div className="flex items-center">
-                <div className={`w-3 h-3 rounded-full mr-2 ${notionStatus?.connected ? 'bg-foreground' : 'bg-muted-foreground'}`} />
-                <span className={`text-sm ${notionStatus?.connected ? 'text-foreground' : 'text-muted-foreground'}`}>
-                  {notionStatus?.connected ? t.connected : t.notConnected}
+                <div className={`w-3 h-3 rounded-full mr-2 ${(notionStatus as any)?.connected ? 'bg-foreground' : 'bg-muted-foreground'}`} />
+                <span className={`text-sm ${(notionStatus as any)?.connected ? 'text-foreground' : 'text-muted-foreground'}`}>
+                  {(notionStatus as any)?.connected ? t.connected : t.notConnected}
                 </span>
               </div>
-              {!notionStatus?.connected && (
+              {!(notionStatus as any)?.connected && (
                 <p className="text-xs text-muted-foreground mt-2">
                   {t.notConnectedPleaseConfigureSecrets}
                 </p>
@@ -1656,7 +1656,7 @@ export default function MealPlanner() {
             
             <Button 
               onClick={() => selectedMealPlan && syncMutation.mutate(selectedMealPlan)}
-              disabled={!selectedMealPlan || syncMutation.isPending || !notionStatus?.connected}
+              disabled={!selectedMealPlan || syncMutation.isPending || !(notionStatus as any)?.connected}
               className="btn-minimal w-full"
             >
               {syncMutation.isPending ? (

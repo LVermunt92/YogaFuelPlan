@@ -290,8 +290,10 @@ export const translations = {
     recipeDetails: "Recipe Details",
     vegetableContent: "Vegetable Content", 
     vegetables: "Vegetables",
-    healthBenefits: "Health Benefits",
+    healthBenefits: "Health Benefits", 
     recipeNotAvailable: "Recipe not available",
+    min: "min",
+
   },
   
   nl: {
@@ -603,13 +605,16 @@ export const translations = {
     planLabel: "Plan Label",
     planLabelPlaceholder: "bijv., Volgende Week, Backup Plan",
     savedPlan: "Plan Opslaan",
+    proteinDaily: "eiwit dagelijks",
     
     // Additional missing Dutch translations
-    recipeDetails: "Recept Details",
-    vegetableContent: "Groente Inhoud",
-    vegetables: "Groenten", 
-    healthBenefits: "Gezondheidsvoordelen",
-    recipeNotAvailable: "Recept niet beschikbaar",
+    mealPlanDeletedSuccessfully: "Maaltijdplan succesvol verwijderd",
+    planSaved: "Plan Opgeslagen", 
+    mealPlanSavedSuccessfully: "Maaltijdplan succesvol opgeslagen",
+    failedToSavePlan: "Kon plan niet opslaan",
+    saving: "Opslaan...",
+    savePlan: "Plan Opslaan",
+    portion: "Portie",
     
 
   }
