@@ -2,30 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ===== Base tokens (Sem-achtig, minimal) ===== */
+/* =========================
+   BASE TOKENS (Sem-achtig)
+   ========================= */
 @layer base {
   :root {
-    /* HSL triples (GEEN hsl() hier) */
-    --background: 35 15% 96%;       /* #F7F5F2 */
-    --foreground: 222 47% 11%;      /* inky/donker */
+    --background: 35 15% 96%;
+    --foreground: 222 47% 11%;
     --muted: 35 15% 96%;
-    --muted-foreground: 215 16% 47%;/* #6B7280 */
+    --muted-foreground: 215 16% 47%;
     --popover: 35 15% 96%;
     --popover-foreground: 222 47% 11%;
-    --card: 0 0% 100%;              /* wit voor kaarten */
+    --card: 0 0% 100%;
     --card-foreground: 222 47% 11%;
-    --border: 35 12% 88%;           /* #E7E4DF */
+    --border: 35 12% 88%;
     --input: 35 12% 88%;
-    --primary: 222 47% 11%;         /* zwart/donker als primair */
+    --primary: 222 47% 11%;
     --primary-foreground: 35 15% 96%;
     --secondary: 35 15% 96%;
     --secondary-foreground: 222 47% 11%;
-    --accent: 162 54% 27%;          /* #1F6D5E */
+    --accent: 162 54% 27%;
     --accent-foreground: 35 15% 96%;
     --destructive: 0 65% 51%;
     --destructive-foreground: 35 15% 96%;
     --ring: 222 47% 11%;
-    --radius: 0.25rem;              /* strakke hoeken */
+    --radius: 0.25rem;
   }
 
   .dark {
@@ -63,7 +64,7 @@
     overflow-x: hidden;
   }
 
-  /* Koppen: serif, strak kerning; één consistent blok */
+  /* Serif koppen */
   h1, h2, h3, h4, h5, h6 {
     font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
     font-weight: 600;
@@ -73,31 +74,28 @@
   h1 { font-size: 1.5rem; }
   h2 { font-size: 1.25rem; }
   h3 { font-size: 1.125rem; }
-
   @media (min-width: 640px){
     h1 { font-size: 1.875rem; }
     h2 { font-size: 1.5rem; }
     h3 { font-size: 1.25rem; }
   }
-
-  .responsive-container { @apply px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto; }
-  .text-responsive-lg { @apply text-lg sm:text-xl lg:text-2xl; }
-  .text-responsive-xl { @apply text-xl sm:text-2xl lg:text-3xl; }
-
-  /* Safe area (iOS) */
-  @supports (padding: max(0px)) {
-    body {
-      padding-left: max(0px, env(safe-area-inset-left));
-      padding-right: max(0px, env(safe-area-inset-right));
-    }
-  }
 }
 
-/* ===== Components (minimal editorial) ===== */
+/* =========================
+   COMPONENTS
+   ========================= */
 @layer components {
-  /* Buttons */
-  .btn-touch { @apply min-h-[44px] min-w-[44px] px-4 py-2; }
+  /* Topbar: opaque, geen blur (forceer override) */
+  .topbar {
+    background-color: hsl(var(--background)) !important;
+    border-bottom: 1px solid hsl(var(--border)) !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,.04) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
 
+  /* Buttons (minimal) */
+  .btn-touch { @apply min-h-[44px] min-w-[44px] px-4 py-2; }
   .btn-minimal {
     @apply inline-flex items-center justify-center whitespace-nowrap text-sm font-medium
            px-6 py-3 rounded-sm bg-primary text-primary-foreground
@@ -106,7 +104,6 @@
            disabled:pointer-events-none disabled:opacity-50;
   }
   .btn-minimal:hover { background-color: hsl(var(--primary) / 0.9); }
-
   .btn-outline {
     @apply inline-flex items-center justify-center whitespace-nowrap text-sm font-medium
            px-6 py-3 rounded-sm border bg-transparent text-foreground
@@ -115,47 +112,29 @@
            disabled:pointer-events-none disabled:opacity-50 hover:bg-muted;
   }
 
-  /* Cards, inputs, tables */
-  .card-clean   { @apply bg-card border rounded-sm shadow-none; }
-  .input-clean  { @apply bg-background border rounded-sm px-4 py-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition; }
-  .table-responsive { @apply overflow-x-auto; }
-
-  /* Sticky topbar met subtiele blur */
-  .topbar { @apply sticky top-0 z-50 border-b bg-background backdrop-blur; }
-
-  /* ===== Progress (token-based) ===== */
+  /* Progress */
   .progress {
     @apply relative w-full overflow-hidden rounded-full;
-    height: 12px;                           /* md */
+    height: 12px;
     background-color: hsl(var(--border) / 0.6);
   }
   .progress__bar {
     @apply h-full rounded-full;
     background-color: hsl(var(--accent));
-    width: calc(var(--value, 0) * 1%);      /* 0–100 */
+    width: calc(var(--value, 0) * 1%);
     transform-origin: left;
     transition: width 200ms ease;
   }
-  /* Maten */
   .progress[data-size='sm'] { height: 8px; }
   .progress[data-size='lg'] { height: 14px; }
-  /* Intent (optioneel) */
-  .progress[data-intent='ok']   .progress__bar { background-color: hsl(var(--accent)); }
-  .progress[data-intent='warn'] .progress__bar { background-color: hsl(38 92% 50%); }  /* amber */
-  .progress[data-intent='bad']  .progress__bar { background-color: hsl(0 84% 60%); }   /* rood */
-  /* Indeterminate (scan) */
-  .progress[data-state='indeterminate'] .progress__bar {
-    width: 40%;
-    animation: progress-scan 1.2s ease-in-out infinite;
-  }
-  @keyframes progress-scan {
-    0%   { transform: translateX(-100%); }
-    50%  { transform: translateX(-20%); }
-    100% { transform: translateX(100%); }
-  }
-  /* Reduced motion */
-  @media (prefers-reduced-motion: reduce) {
-    .progress__bar { transition: none; }
-    .progress[data-state='indeterminate'] .progress__bar { animation: none; }
+
+  /* Alleen het 2e blok in <main> krijgt een subtiele lijn */
+  main > :nth-child(2) {
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
   }
 }
+
+/* =========================
+   UTILITIES
+   ======
