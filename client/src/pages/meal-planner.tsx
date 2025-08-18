@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
+import { Link } from "wouter";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Calendar, Clock, Target, Eye, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
@@ -710,12 +711,12 @@ export default function MealPlanner() {
                 <div className="text-lg font-semibold text-foreground">
                   {latestMealPlan.totalProtein.toFixed(0)}g {t.daily}
                 </div>
-                <div className="text-xs text-gray-400 mt-1">
+                <Link href="/profile" className="text-xs text-gray-400 mt-1 hover:text-gray-300 hover:underline cursor-pointer inline-block">
                   {latestMealPlan.activityLevel === 'high' ? 
-                    `Target: 130g (${((latestMealPlan.totalProtein / 130) * 100).toFixed(0)}% achieved)` : 
+                    `Target: ${userProfile?.proteinTarget || 130}g (${((latestMealPlan.totalProtein / (userProfile?.proteinTarget || 130)) * 100).toFixed(0)}% achieved)` : 
                     t.moderateActivityWeek
                   }
-                </div>
+                </Link>
               </div>
               <div>
                 <div className="text-gray-500 mb-2">{t.mealPreparation}</div>
