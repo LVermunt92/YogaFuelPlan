@@ -772,7 +772,7 @@ export default function MealPlanner() {
               {/* Protein KPI with Doughnut Chart */}
               <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-3 rounded-lg border border-border">
                 <div className="text-gray-500 mb-2 text-center text-xs">
-                  {latestMealPlan.activityLevel === 'high' ? 'Protein Target' : 'Daily Protein'}
+                  Protein
                 </div>
                 <div className="w-16 h-16 mb-2">
                   <ResponsiveContainer width="100%" height="100%">
