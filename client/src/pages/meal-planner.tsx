@@ -1444,8 +1444,79 @@ export default function MealPlanner() {
                     </div>
                   </div>
 
-                  <div className="table-responsive">
-                    <table className="w-full min-w-[600px]">
+                  {/* Mobile view - Cards */}
+                  <div className="block md:hidden space-y-4">
+                    <h3 className="text-center text-xs font-medium text-gray-500 uppercase tracking-wider mb-4">
+                      {t.weeklyMealPlan || 'Weekly Meal Plan'}
+                    </h3>
+                    {[1, 2, 3, 4, 5, 6, 7].map(day => {
+                      const dayMeals = getDayMeals(day);
+                      const dayTotal = calculateDayTotal(day);
+                      
+                      return (
+                        <div key={day} className="bg-card border border-border rounded-lg p-4">
+                          <div className="flex justify-between items-center mb-3 pb-2 border-b border-border">
+                            <h4 className="font-semibold text-foreground">
+                              {day === 1 ? t.sunday : 
+                               day === 2 ? t.monday : 
+                               day === 3 ? t.tuesday : 
+                               day === 4 ? t.wednesday : 
+                               day === 5 ? t.thursday : 
+                               day === 6 ? t.friday : 
+                               day === 7 ? t.saturday : t.sunday}
+                            </h4>
+                            <span className="text-xs text-gray-500 font-medium">
+                              {dayTotal.toFixed(0)}g protein
+                            </span>
+                          </div>
+                          <div className="space-y-3">
+                            {dayMeals.map((meal) => {
+                              const isLeftover = meal.foodDescription.includes('(leftover)');
+                              const isEatingOut = meal.foodDescription.includes('Eating out');
+                              
+                              return (
+                                <div key={meal.id} className={`p-3 rounded-lg ${
+                                  isEatingOut 
+                                    ? 'bg-gray-50 border-l-4 border-l-gray-400' 
+                                    : isLeftover 
+                                      ? 'bg-blue-50 border-l-4 border-l-blue-500' 
+                                      : 'bg-emerald-50 border-l-4 border-l-emerald-500'
+                                }`}>
+                                  <div className="flex justify-between items-start mb-2">
+                                    <span className="text-sm text-gray-500 capitalize font-medium">
+                                      {meal.mealType}
+                                    </span>
+                                    <div className="text-right">
+                                      <span className="text-xs font-medium text-emerald-600">
+                                        {Math.round(meal.nutrition?.protein || 0)}g
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <div className="flex justify-between items-center">
+                                    <button
+                                      onClick={() => setSelectedMealId(meal.id)}
+                                      className="text-sm text-foreground hover:text-primary text-left flex-1"
+                                    >
+                                      {meal.foodDescription}
+                                    </button>
+                                    {isLeftover && (
+                                      <Badge variant="outline" className="ml-2 text-xs bg-blue-100 text-blue-700 border-blue-300">
+                                        {t.leftover}
+                                      </Badge>
+                                    )}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Desktop view - Table */}
+                  <div className="hidden md:block overflow-x-auto">
+                    <table className="w-full">
                       <thead className="border-b border-border">
                         <tr>
                           <th colSpan={3} className="px-3 sm:px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">{t.weeklyMealPlan || 'Weekly Meal Plan'}</th>
