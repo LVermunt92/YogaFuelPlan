@@ -377,9 +377,8 @@ export default function Profile() {
                     <SelectValue placeholder="Select gender" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="female">Female (45+ age threshold)</SelectItem>
-                    <SelectItem value="male">Male (50+ age threshold)</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
+                    <SelectItem value="female">Female</SelectItem>
+                    <SelectItem value="male">Male</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
