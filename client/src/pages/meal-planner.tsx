@@ -763,7 +763,7 @@ export default function MealPlanner() {
             <h2 className="text-2xl font-bold text-foreground mb-4">
               {t.welcomeBack} {userProfile?.username ? (userProfile.username.includes(' ') ? userProfile.username.split(' ')[0] : userProfile.username) : ''}
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm max-w-xl mx-auto">
+            <div className="grid grid-cols-2 gap-3 text-sm max-w-lg mx-auto">
               {/* Protein KPI with Doughnut Chart */}
               <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-3 rounded-lg border border-border">
                 <div className="relative w-20 h-20 mb-2">
