@@ -30,14 +30,14 @@ Fixed Recipe Instructions Issue: Resolved critical problem where meals with "(pr
 Enhanced grocery list display: Updated bell peppers, carrots, and kiwi to show as "pieces" instead of grams in shopping lists for clearer grocery shopping guidance. Bell peppers now display as "2 pieces", carrots as "3 pieces", and kiwi as "4 pieces" (stuks in Dutch) for more practical shopping experience.
 Improved fresh herbs specification: Enhanced ingredient system to show specific herb types instead of generic "fresh herbs". System now defaults to "fresh parsley" and properly categorizes all herb types (basil, cilantro, oregano, thyme, rosemary, mint, dill, chives) as "1 bunch" (bosje in Dutch) for clearer shopping guidance.
 Comprehensive Ingredient Specification System: Implemented complete system to eliminate all generic ingredient terms across recipes. Created ingredient-specifier.ts with comprehensive mappings for vegetables (mixed vegetables → bell peppers, zucchini, carrots), fruits (seasonal fruit → season-appropriate options), herbs (fresh herbs → fresh parsley), and all other categories. System automatically updates all 76 recipes on server startup, runs validation checks, and provides API endpoints for manual updates. All recipes now have 100% specific ingredients, eliminating vague terms like "mixed vegetables", "fresh herbs", "seasonal fruit" from both recipe displays and shopping lists. New recipes are automatically processed to ensure specificity.
+Fixed Critical Leftover Ingredients Bug: Discovered and resolved major issue where user-added leftover ingredients were being intentionally cleared during meal generation, completely bypassing the ingredient incorporation functionality. Removed the clearing logic and added proper leftover ingredient incorporation to the main meal generation path (not just meal prep mode). System now properly uses ALL user-added ingredients during cooking moments, displays which ingredients were incorporated in meal descriptions (e.g., "Wild mushroom quinoa (incorporating leftover spinach, bell peppers, quinoa)"), and removes used ingredients to prevent duplicates. Users can now successfully add multiple ingredients through the UI and see them all properly incorporated into their meal plans.
 
 ## System Architecture
 
 ### Authentication & Multi-User Support
-- **User Authentication**: Login/registration system with secure password hashing.
-- **Secure Password Reset**: Two-step email verification with 6-digit codes (15-minute expiration).
-- **Multi-User Support**: Each user has unique ID and isolated data.
-- **Route Protection**: Logged-out users only see login screen.
+- **User Authentication**: Login/registration system with secure password hashing and secure password reset (two-step email verification).
+- **Multi-User Support**: Each user has a unique ID and isolated data.
+- **Route Protection**: Logged-out users only see the login screen.
 
 ### UI/UX Decisions
 - **Design System**: shadcn/ui built on Radix UI primitives.
@@ -64,7 +64,7 @@ Comprehensive Ingredient Specification System: Implemented complete system to el
 ### System Design Choices
 - **Data Flow**: User input drives meal generation, stored in PostgreSQL, displayed via React Query, and can be synced to Notion.
 - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, favorite meals, and Oura data.
-- **Unified Recipe Database**: Consolidated three separate recipe databases (base, viral, additional) into single unified system for better consistency, easier management, and improved variety distribution. Total database now contains 61 recipes with all viral and additional recipes seamlessly integrated. All obsolete database files deleted and system fully streamlined.
+- **Unified Recipe Database**: Consolidated three separate recipe databases (base, viral, additional) into a single unified system for better consistency, easier management, and improved variety distribution.
 
 ## External Dependencies
 

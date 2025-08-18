@@ -265,10 +265,9 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   
   console.log(`🥕 Starting meal generation with leftover ingredients: ${JSON.stringify(ingredientsToUseUp)}`);
   
-  // Clear leftover ingredients if they exist - this is causing the green recipe issue
+  // Keep all leftover ingredients for incorporation into meals
   if (ingredientsToUseUp.length > 0) {
-    console.log(`⚠️ Clearing leftover ingredients to fix green recipe issue: ${JSON.stringify(ingredientsToUseUp)}`);
-    remainingIngredientsToUseUp = [];
+    console.log(`🥕 Will incorporate leftover ingredients into meals: ${JSON.stringify(ingredientsToUseUp)}`);
   }
   
   // Calculate caloric adjustment based on user goals
@@ -580,6 +579,16 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
           usedDinnerMeals.add(selectedMeal.name);
         }
         allSelectedMealNames.add(selectedMeal.name);
+      }
+      
+      // Try to incorporate leftover ingredients for cooking moments (not leftovers)
+      if (!isLeftover && remainingIngredientsToUseUp.length > 0) {
+        const { modifiedMeal, usedIngredients } = incorporateLeftoverIngredients(selectedMeal, remainingIngredientsToUseUp);
+        if (usedIngredients.length > 0) {
+          selectedMeal = modifiedMeal;
+          remainingIngredientsToUseUp = remainingIngredientsToUseUp.filter(ing => !usedIngredients.includes(ing));
+          console.log(`✓ Incorporated leftover ingredients: ${usedIngredients.join(', ')} into ${selectedMeal.name}`);
+        }
       }
 
       // Adjust portion based on caloric goals and household size
