@@ -854,7 +854,7 @@ export default function MealPlanner() {
                   </ResponsiveContainer>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <span className="text-sm font-semibold text-foreground">
-                      {nutritionData.vegetables.toFixed(0)}g
+                      150g
                     </span>
                   </div>
                 </div>
