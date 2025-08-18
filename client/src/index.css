@@ -121,7 +121,7 @@
   .table-responsive { @apply overflow-x-auto; }
 
   /* Sticky topbar met subtiele blur */
-  .topbar { @apply sticky top-0 z-50 border-b bg-background/90 backdrop-blur; }
+  .topbar { @apply sticky top-0 z-50 border-b bg-background backdrop-blur; }
 
   /* ===== Progress (token-based) ===== */
   .progress {

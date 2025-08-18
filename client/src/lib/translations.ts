@@ -271,6 +271,27 @@ export const translations = {
     plantBasedNutrition: "plant-based nutrition",
     vegetarianGlutenLactoseFree: "vegetarian, gluten & lactose-free",
     healthActivityTracking: "Health & Activity Tracking",
+    weekOf: "Week of",
+    proteinDaily: "protein daily",
+    saving: "Saving...",
+    savePlan: "Save Plan",
+    smartGeneratePlan: "Smart Generate Plan",
+    shoppingListHeader: "Shopping List for",
+    items: "items",
+    selectMealPlanForShoppingList: "Select a meal plan to generate shopping list",
+    weeklyMealPlan: "Weekly Meal Plan",
+    noPlan: "No meal plan available",
+    mealPrepGuide: "Meal Prep Guide",
+    freshCookingDay: "Fresh cooking day",
+    reheatLeftover: "Reheat leftover",
+    eatingOut: "Eating out",
+    
+    // Additional missing translations for meal planner
+    recipeDetails: "Recipe Details",
+    vegetableContent: "Vegetable Content", 
+    vegetables: "Vegetables",
+    healthBenefits: "Health Benefits",
+    recipeNotAvailable: "Recipe not available",
   },
   
   nl: {
@@ -583,12 +604,14 @@ export const translations = {
     planLabelPlaceholder: "bijv., Volgende Week, Backup Plan",
     savedPlan: "Plan Opslaan",
     
-    // Shopping List Dutch (only new keys)
-    proteinDaily: "eiwit/dag",
+    // Additional missing Dutch translations
+    recipeDetails: "Recept Details",
+    vegetableContent: "Groente Inhoud",
+    vegetables: "Groenten", 
+    healthBenefits: "Gezondheidsvoordelen",
+    recipeNotAvailable: "Recept niet beschikbaar",
     
-    // New missing keys
-    saving: "Opslaan",
-    savePlan: "Plan Opslaan",
+
   }
 };
 
