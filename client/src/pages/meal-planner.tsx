@@ -718,30 +718,49 @@ export default function MealPlanner() {
                 </div>
               </div>
               <div>
-                <div className="text-gray-500 mb-2">{t.mealPreparation}</div>
+                <div className="text-gray-500 mb-2">Good Fats (daily)</div>
                 <div className="text-lg font-semibold text-foreground">
-                  {t.under30Minutes}
+                  {(() => {
+                    if (!displayedMealPlan?.meals) return '0g';
+                    const totalFats = displayedMealPlan.meals.reduce((sum, meal) => sum + (meal.fats || 0), 0);
+                    const totalCalories = displayedMealPlan.meals.reduce((sum, meal) => sum + (meal.calories || 0), 0);
+                    const fatsPercentage = totalCalories > 0 ? (totalFats * 9 / totalCalories * 100) : 0;
+                    return `${totalFats.toFixed(0)}g (${fatsPercentage.toFixed(0)}%)`;
+                  })()}
                 </div>
                 <div className="text-xs text-gray-400 mt-1">
-                  {t.quickNutritiousRecipes}
+                  Target: 50-70% of energy
                 </div>
               </div>
               <div>
-                <div className="text-gray-500 mb-2">{t.cookingSchedule}</div>
+                <div className="text-gray-500 mb-2">Vegetables (daily)</div>
                 <div className="text-lg font-semibold text-foreground">
-                  {userProfile?.cookingDaysPerWeek || 7} {t.daysPerWeek}
+                  {(() => {
+                    if (!displayedMealPlan?.meals) return '0g';
+                    const totalCalories = displayedMealPlan.meals.reduce((sum, meal) => sum + (meal.calories || 0), 0);
+                    // Estimate vegetable intake as 20% of total calories (vegetables are ~25 kcal per 100g)
+                    const estimatedVegCalories = totalCalories * 0.20;
+                    const estimatedVegGrams = estimatedVegCalories / 0.25;
+                    return `~${(estimatedVegGrams / 1000).toFixed(1)}kg`;
+                  })()}
                 </div>
                 <div className="text-xs text-gray-400 mt-1">
-                  {t.eating} {userProfile?.eatingDaysAtHome || 7} {t.daysAtHome}
+                  Target: 20% of energy
                 </div>
               </div>
               <div>
-                <div className="text-gray-500 mb-2">{t.thisWeeksFocus}</div>
+                <div className="text-gray-500 mb-2">Fruits/Starches</div>
                 <div className="text-lg font-semibold text-foreground">
-                  {userProfile?.meatFishMealsPerWeek ? `${userProfile.meatFishMealsPerWeek} ${t.meatFishMeals}` : t.plantBasedNutrition}
+                  {(() => {
+                    if (!displayedMealPlan?.meals) return '0g';
+                    const totalCarbs = displayedMealPlan.meals.reduce((sum, meal) => sum + (meal.carbohydrates || 0), 0);
+                    const totalCalories = displayedMealPlan.meals.reduce((sum, meal) => sum + (meal.calories || 0), 0);
+                    const carbsPercentage = totalCalories > 0 ? (totalCarbs * 4 / totalCalories * 100) : 0;
+                    return `${totalCarbs.toFixed(0)}g (${carbsPercentage.toFixed(0)}%)`;
+                  })()}
                 </div>
                 <div className="text-xs text-gray-400 mt-1">
-                  {userProfile?.dietaryTags ? translateDietaryTags(userProfile.dietaryTags, language).join(', ') : t.vegetarianGlutenLactoseFree}
+                  Target: 5% of energy
                 </div>
               </div>
             </div>
