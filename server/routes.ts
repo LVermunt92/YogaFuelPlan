@@ -1165,12 +1165,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let shoppingList = generateEnhancedShoppingList(mealPlan.meals, language, dietaryTags);
       
       // Create proper structure for translation
+      // Define supermarket shopping order - must match nutrition-enhanced.ts
+      const categoryOrder = [
+        'Vegetables',
+        'Fresh Herbs', 
+        'Fruits',
+        'Protein',
+        'Plant-Based Alternatives',
+        'Dairy & Cheese',
+        'Dairy & Eggs',
+        'Pantry Essentials',
+        'Grains, Pasta & Canned Goods',
+        'Baking & Cooking Basics',
+        'Nuts, Seeds & Spreads',
+        'Other Dry Goods',
+        'Other'
+      ];
+      
+      // Get categories in the order they appear in the properly sorted shopping list
+      const categoriesInOrder = [];
+      const seenCategories = new Set();
+      
+      for (const item of shoppingList) {
+        if (!seenCategories.has(item.category)) {
+          categoriesInOrder.push(item.category);
+          seenCategories.add(item.category);
+        }
+      }
+      
       const shoppingListResponse = {
         mealPlanId: id,
         weekStart: mealPlan.weekStart,
         shoppingList: shoppingList,
         totalItems: shoppingList.length,
-        categories: Array.from(new Set(shoppingList.map(item => item.category))).sort()
+        categories: categoriesInOrder
       };
       
       // Translate shopping list if Dutch is requested
