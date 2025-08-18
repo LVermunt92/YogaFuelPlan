@@ -37,6 +37,7 @@ Enhanced Ingredient Separation System: Modified ingredient specification system 
 Advanced Shopping List Category System: Completely restructured shopping categories into 8 distinct sections following logical supermarket flow: Vegetables (now appearing first) → Fruits → Fresh Herbs → Dairy & Cheese → Plant-Based Alternatives → Dairy & Eggs → Pantry Essentials (oils, sauces, sweeteners) → Dry Goods (grains, nuts, spices) → Other (relegated to bottom). Sweet potato properly reclassified from pantry to vegetables category. This detailed categorization eliminates confusion and provides optimal grocery shopping workflow.
 Comprehensive Lemon Standardization System: Implemented universal lemon measurement system where all lemon-related ingredients (lemon juice, fresh lemon juice, lemon zest, lemon, lemons) are automatically converted to "pieces of lemon" throughout recipes and shopping lists. This provides consistent, practical shopping guidance that eliminates confusion about lemon quantities and measurements. System applies to all 76 recipes automatically during ingredient processing.
 Detailed Dry Goods Separation System: Further separated the "Dry Goods" category into 4 specific subcategories following user's supermarket shopping preferences: "Grains, Pasta & Canned Goods" (rice, pasta, oats, beans, lentils), "Baking & Cooking Basics" (flours, baking powder, broth, tomato products), "Nuts, Seeds & Spreads" (nuts, seeds, nut butters, tahini), and "Other Dry Goods" (protein powders, specialty items). Reorganized "Pantry Essentials" to contain oils, sauces, spices, vinegars, and dried herbs (14 items), while "Baking & Cooking Basics" focuses on flours, baking ingredients, and basic cooking necessities (5 items). Fixed ingredient categorization: coriander always treated as fresh herb, green onions properly categorized as vegetables, brown rice variations automatically consolidated. Category ordering ensures "Other" always appears at bottom. Final shopping list structure includes 11 categories with 60 total items optimally distributed for supermarket shopping workflow.
+Perfect Shopping List Organization: Completely restructured shopping categories to follow user's exact supermarket flow: Vegetables (first) → Fresh Herbs (second) → Fruits (third) → Protein (fourth, containing all meat and plant-based proteins like tofu, tempeh) → Plant-Based Alternatives (dairy alternatives only) → remaining categories. Enhanced lemon juice standardization system now applies to both recipes and shopping lists through dual implementation in ingredient-specifier.ts and nutrition-enhanced.ts, ensuring all lemon variations (lemon, lemon juice, lime juice, lemon zest) consistently display as "pieces of lemon" for practical shopping convenience.
 
 ## System Architecture
 - **Authentication & Multi-User Support**: Secure login/registration, password reset, isolated user data, and route protection.
@@ -62,9 +63,9 @@ Detailed Dry Goods Separation System: Further separated the "Dry Goods" category
     - **Unified Recipe Database**: Consolidated three separate recipe databases (base, viral, additional) into a single unified system.
 
 ## External Dependencies
-- @neondatabase/serverless (for PostgreSQL)
-- @notionhq/client (for Notion integration)
-- drizzle-orm (for database ORM)
-- @tanstack/react-query (for server state management)
-- @radix-ui/*** (for UI primitives)
-- tailwindcss (for styling)
+- @neondatabase/serverless
+- @notionhq/client
+- drizzle-orm
+- @tanstack/react-query
+- @radix-ui
+- tailwindcss

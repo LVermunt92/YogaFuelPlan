@@ -33,6 +33,8 @@ export const INGREDIENT_SPECIFICATIONS: IngredientSpecification[] = [
   { generic: 'lemon juice', specific: ['pieces of lemon'], category: 'fruits' },
   { generic: 'fresh lemon juice', specific: ['pieces of lemon'], category: 'fruits' },
   { generic: 'lemon zest', specific: ['pieces of lemon'], category: 'fruits' },
+  { generic: 'lime juice', specific: ['pieces of lemon'], category: 'fruits' },
+  { generic: 'fresh lime juice', specific: ['pieces of lemon'], category: 'fruits' },
   { generic: 'lemon', specific: ['pieces of lemon'], category: 'fruits' },
   { generic: 'lemons', specific: ['pieces of lemon'], category: 'fruits' },
 
@@ -82,12 +84,23 @@ export function specifyIngredients(ingredients: string[]): string[] {
   const result: string[] = [];
   
   ingredients.forEach(ingredient => {
-    let processed = ingredient.toLowerCase().trim();
+    const lowerIngredient = ingredient.toLowerCase().trim();
     let foundMatch = false;
+    
+    // Priority check for lemon juice variants - always convert to pieces of lemon
+    if (lowerIngredient.includes('lemon juice') || 
+        lowerIngredient.includes('lime juice') ||
+        lowerIngredient.includes('fresh lemon juice') ||
+        lowerIngredient.includes('fresh lime juice') ||
+        lowerIngredient.match(/\d+.*?(tbsp|tablespoons?|ml).*?(lemon|lime)/i)) {
+      result.push('pieces of lemon');
+      console.log(`🍋 Lemon standardization: "${ingredient}" → "pieces of lemon"`);
+      return; // Skip further processing
+    }
     
     // Find matching specification
     for (const spec of INGREDIENT_SPECIFICATIONS) {
-      if (processed.includes(spec.generic.toLowerCase())) {
+      if (lowerIngredient.includes(spec.generic.toLowerCase())) {
         let specificIngredients: string[];
         
         // Use seasonal preference for fruits

@@ -4237,6 +4237,16 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
 
   // Categorize ingredients following supermarket layout order
   const ingredientCategories: Record<string, string> = {
+    // Lemon standardization in categories - all lemon forms go to Fruits as "pieces of lemon"
+    'lemon': 'Fruits',
+    'lemons': 'Fruits', 
+    'lemon juice': 'Fruits',
+    'fresh lemon juice': 'Fruits',
+    'lime juice': 'Fruits',
+    'fresh lime juice': 'Fruits',
+    'lemon zest': 'Fruits',
+    'pieces of lemon': 'Fruits',
+    
     // Vegetables (Fresh Produce section 1)
     'fresh spinach': 'Vegetables',
     'spinach': 'Vegetables',
@@ -4322,10 +4332,30 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'sour cream': 'Dairy & Cheese',
     'heavy cream': 'Dairy & Cheese',
     
-    // Plant-Based Alternatives (Fresh Department)
-    'extra firm tofu': 'Plant-Based Alternatives',
-    'tempeh': 'Plant-Based Alternatives',
-    'tofu': 'Plant-Based Alternatives',
+    // Protein (Meat and Plant-Based Meat Alternatives)
+    'chicken': 'Protein',
+    'chicken breast': 'Protein',
+    'ground chicken': 'Protein',
+    'turkey': 'Protein',
+    'ground turkey': 'Protein',
+    'beef': 'Protein',
+    'ground beef': 'Protein',
+    'pork': 'Protein',
+    'fish': 'Protein',
+    'salmon': 'Protein',
+    'cod': 'Protein',
+    'tuna': 'Protein',
+    'tofu': 'Protein',
+    'extra firm tofu': 'Protein',
+    'firm tofu': 'Protein',
+    'tempeh': 'Protein',
+    'seitan': 'Protein',
+    'plant-based meat': 'Protein',
+    'vegan meat': 'Protein',
+    'beyond meat': 'Protein',
+    'impossible meat': 'Protein',
+    
+    // Plant-Based Alternatives (Dairy alternatives)
     'hummus': 'Plant-Based Alternatives',
     'almond milk': 'Plant-Based Alternatives',
     'coconut milk': 'Plant-Based Alternatives',
@@ -4344,7 +4374,6 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'gluten-free tortilla': 'Other Dry Goods',
     'chickpea flour': 'Baking & Cooking Basics',
     'coconut flour': 'Baking & Cooking Basics',
-    'sweet potato': 'Vegetables',
     'sweet potatoes': 'Vegetables',
     'gluten-free granola': 'Other Dry Goods',
     'red lentils': 'Grains, Pasta & Canned Goods',
@@ -4420,8 +4449,6 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'coconut flakes': 'Other Dry Goods',
     'spirulina': 'Other Dry Goods',
     'plain flour': 'Baking & Cooking Basics',
-    'rice vinegar': 'Pantry Essentials',
-    'balsamic vinegar': 'Pantry Essentials',
     'coriander': 'Fresh Herbs',
     'fresh coriander': 'Fresh Herbs',
     'fennel seeds': 'Pantry Essentials'
@@ -4486,10 +4513,11 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
   // Define supermarket shopping order
   const categoryOrder = [
     'Vegetables',
-    'Fruits', 
     'Fresh Herbs',
-    'Dairy & Cheese',
+    'Fruits',
+    'Protein',
     'Plant-Based Alternatives',
+    'Dairy & Cheese',
     'Dairy & Eggs',
     'Pantry Essentials',
     'Grains, Pasta & Canned Goods',
@@ -4732,6 +4760,18 @@ function cleanIngredientName(ingredient: string): string {
   }
   if (cleaned.startsWith('scoop plant protein') || cleaned.includes('scoop plant protein')) {
     cleaned = 'plant protein powder';
+  }
+  
+  // Lemon standardization - convert all lemon variants to "pieces of lemon"
+  if (cleaned === 'lemon' || cleaned === 'lemons' || cleaned.includes('lemon zest') || 
+      cleaned.includes('lemon juice') || cleaned.includes('lime juice')) {
+    cleaned = 'pieces of lemon';
+  }
+  
+  // Lemon standardization - convert all lemon variants to "pieces of lemon"
+  if (cleaned === 'lemon' || cleaned === 'lemons' || cleaned.includes('lemon zest') || 
+      cleaned.includes('lemon juice') || cleaned.includes('lime juice')) {
+    cleaned = 'pieces of lemon';
   }
   
   // Apply comprehensive ingredient specification to replace generic terms
