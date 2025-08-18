@@ -1,7 +1,7 @@
-## Overview
-This full-stack meal planning application generates personalized weekly meal plans based on user activity levels and dietary preferences. It provides a comprehensive, adaptable solution for healthy meal planning. The project's vision is to enhance healthy eating habits globally and address the market potential for personalized nutrition solutions by optimizing user experience and nutritional value.
+# Overview
+This full-stack meal planning application generates personalized weekly meal plans based on user activity levels and dietary preferences. Its purpose is to provide a comprehensive, adaptable solution for healthy meal planning, enhancing healthy eating habits globally and addressing the market potential for personalized nutrition solutions by optimizing user experience and nutritional value.
 
-## User Preferences
+# User Preferences
 Preferred communication style: Simple, everyday language.
 Breakfast scheduling preference: Easy, quick breakfasts during weekdays (≤10 min prep), elaborate breakfasts like pancakes on weekends (≥15 min prep).
 Translation continuity plan: Continue AI-enhanced Dutch translation process. System caches translations to minimize future API costs. Dutch-friendly terms preserved: "overnight oats", "smoothie", "quinoa", "tofu", "tempeh", "pasta", "pizza", "buddha bowl", "wrap".
@@ -41,7 +41,7 @@ UI Cleanup Implementation: Streamlined meal planner interface by removing redund
 Removed export and share functionality: Eliminated all export and share buttons from meal plans and shopping lists per user request. Removed Copy, CSV download, Albert Heijn integration buttons, and meal plan export/share buttons. Simplified interface by focusing on core meal planning functionality without external sharing features.
 Advanced Protein Range Calculator: Integrated comprehensive protein calculation system with multiple strategies (auto, bulletproof_moderate, sport_high), age-based adjustments (50+ years get higher protein for muscle preservation), activity level considerations (sedentary/light/moderate/high/athlete), goal-based optimization (maintenance/muscle_gain/fat_loss), and safety caps (2.2g/kg maximum). Updated activity dropdown with detailed descriptions: Sedentary (desk job), Light (1-2x/week exercise), Moderate (3-4x/week), High (daily exercise), Athlete (elite training). System includes full test suite and maintains backward compatibility. Database schema updated with firstName/lastName fields and new activity level options.
 
-## System Architecture
+# System Architecture
 - **Authentication & Multi-User Support**: Secure login/registration, password reset, isolated user data, and route protection.
 - **UI/UX Decisions**: Utilizes `shadcn/ui` built on `Radix UI` primitives with `Tailwind CSS` and CSS variables for theming.
 - **Technical Implementations**:
@@ -65,9 +65,10 @@ Advanced Protein Range Calculator: Integrated comprehensive protein calculation 
     - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, and favorite meals.
     - **Unified Recipe Database**: Consolidated three separate recipe databases (base, viral, additional) into a single unified system.
 
-## External Dependencies
+# External Dependencies
 - `@neondatabase/serverless` (for PostgreSQL)
 - `drizzle-orm` (for database ORM)
 - `@tanstack/react-query` (for server state management)
 - `@radix-ui` (for UI primitives)
 - `tailwindcss` (for styling)
+```
