@@ -6,6 +6,7 @@
 export type ActivityLevel = "sedentary" | "light" | "moderate" | "high" | "athlete";
 export type Goal = "maintenance" | "muscle_gain" | "fat_loss";
 export type ProteinStrategy = "auto" | "bulletproof_moderate" | "sport_high";
+export type Gender = "male" | "female" | "other";
 
 export interface ProteinRangeResult {
   protein_range_g_per_day: [number, number];
@@ -23,7 +24,8 @@ export function proteinRangePerDay(
   weightKg: number,
   activityLevel: ActivityLevel,
   goal: Goal,
-  strategy: ProteinStrategy = "auto"
+  strategy: ProteinStrategy = "auto",
+  gender?: Gender
 ): ProteinRangeResult {
   // Input validation
   if (age <= 0 || age > 120) {
@@ -77,9 +79,10 @@ export function proteinRangePerDay(
         break;
     }
 
-    // Age adjustment for 50+ years (increased protein needs for muscle preservation)
-    if (age >= 50) {
-      baseMin = Math.max(baseMin, 1.2); // Minimum 1.2g/kg for 50+
+    // Age adjustment for muscle preservation (45+ for women, 50+ for men)
+    const ageThreshold = gender === "female" ? 45 : 50;
+    if (age >= ageThreshold) {
+      baseMin = Math.max(baseMin, 1.2); // Minimum 1.2g/kg for older adults
       baseMax = Math.min(baseMax * 1.1, 2.2); // Cap at 2.2g/kg
       ageAdjusted = true;
     }
@@ -111,7 +114,7 @@ export function proteinRangePerDay(
     maxProtein = minProtein + 10;
   }
 
-  const explanation = generateExplanation(age, weightKg, activityLevel, goal, strategy, ageAdjusted);
+  const explanation = generateExplanation(age, weightKg, activityLevel, goal, strategy, ageAdjusted, gender);
 
   return {
     protein_range_g_per_day: [minProtein, maxProtein],
@@ -131,7 +134,8 @@ function generateExplanation(
   activityLevel: ActivityLevel,
   goal: Goal,
   strategy: ProteinStrategy,
-  ageAdjusted: boolean
+  ageAdjusted: boolean,
+  gender?: Gender
 ): string {
   const parts = [];
   
@@ -143,7 +147,8 @@ function generateExplanation(
   }
   
   if (ageAdjusted) {
-    parts.push(`age-adjusted for ${age}+ years (higher protein for muscle preservation)`);
+    const threshold = gender === "female" ? 45 : 50;
+    parts.push(`age-adjusted for ${threshold}+ years (higher protein for muscle preservation)`);
   }
   
   return parts.join(", ");
@@ -184,7 +189,8 @@ export function getDetailedProteinRecommendation(
   age: number,
   weight: number,
   activityLevel: string,
-  goals?: string[]
+  goals?: string[],
+  gender?: Gender
 ): {
   recommended: number;
   range: [number, number];
@@ -210,7 +216,7 @@ export function getDetailedProteinRecommendation(
     goal = "fat_loss";
   }
   
-  const result = proteinRangePerDay(age, weight, mappedActivity, goal, "auto");
+  const result = proteinRangePerDay(age, weight, mappedActivity, goal, "auto", gender);
   const [min, max] = result.protein_range_g_per_day;
   
   return {

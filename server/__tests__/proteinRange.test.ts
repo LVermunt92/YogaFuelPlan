@@ -43,13 +43,32 @@ describe("proteinRangePerDay", () => {
     expect(() => proteinRangePerDay(30, 0, "moderate", "maintenance", "auto")).toThrow();
   });
 
-  test("age adjustment for 50+ years increases protein requirements", () => {
-    const young = proteinRangePerDay(30, 60, "moderate", "maintenance", "auto");
-    const older = proteinRangePerDay(55, 60, "moderate", "maintenance", "auto");
+  test("age adjustment for men 50+ years increases protein requirements", () => {
+    const young = proteinRangePerDay(30, 60, "moderate", "maintenance", "auto", "male");
+    const older = proteinRangePerDay(55, 60, "moderate", "maintenance", "auto", "male");
     
     expect(older.protein_range_g_per_day[0]).toBeGreaterThanOrEqual(young.protein_range_g_per_day[0]);
     expect(older.age_adjusted).toBe(true);
     expect(young.age_adjusted).toBe(false);
+  });
+
+  test("age adjustment for women 45+ years increases protein requirements", () => {
+    const young = proteinRangePerDay(30, 60, "moderate", "maintenance", "auto", "female");
+    const older = proteinRangePerDay(47, 60, "moderate", "maintenance", "auto", "female");
+    
+    expect(older.protein_range_g_per_day[0]).toBeGreaterThanOrEqual(young.protein_range_g_per_day[0]);
+    expect(older.age_adjusted).toBe(true);
+    expect(young.age_adjusted).toBe(false);
+  });
+
+  test("no age adjustment for men under 50", () => {
+    const result = proteinRangePerDay(48, 60, "moderate", "maintenance", "auto", "male");
+    expect(result.age_adjusted).toBe(false);
+  });
+
+  test("no age adjustment for women under 45", () => {
+    const result = proteinRangePerDay(43, 60, "moderate", "maintenance", "auto", "female");
+    expect(result.age_adjusted).toBe(false);
   });
 });
 

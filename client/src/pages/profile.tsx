@@ -43,6 +43,7 @@ interface UserProfile {
   email: string | null;
   firstName: string | null;
   lastName: string | null;
+  gender: string | null;
   weight: number | null;
   goalWeight: number | null;
   height: number | null;
@@ -79,6 +80,7 @@ export default function Profile() {
     email: '',
     firstName: '',
     lastName: '',
+    gender: '',
     weight: '',
     goalWeight: '',
     height: '',
@@ -119,6 +121,7 @@ export default function Profile() {
         email: user.email || '',
         firstName: user.firstName || '',
         lastName: user.lastName || '',
+        gender: user.gender || '',
         weight: user.weight?.toString() || '',
         goalWeight: user.goalWeight?.toString() || '',
         height: user.height?.toString() || '',
@@ -183,6 +186,7 @@ export default function Profile() {
       email: formData.email || null,
       firstName: formData.firstName || null,
       lastName: formData.lastName || null,
+      gender: formData.gender || null,
       weight: formData.weight ? parseFloat(formData.weight) : null,
       goalWeight: formData.goalWeight ? parseFloat(formData.goalWeight) : null,
       height: formData.height ? parseFloat(formData.height) : null,
@@ -299,6 +303,25 @@ export default function Profile() {
                   onChange={(e) => setFormData(prev => ({ ...prev, lastName: e.target.value }))}
                   className="input-clean"
                 />
+              </div>
+              
+              <div>
+                <Label htmlFor="gender" className="text-sm font-medium text-foreground mb-2 block">
+                  Gender
+                </Label>
+                <Select
+                  value={formData.gender}
+                  onValueChange={(value) => setFormData(prev => ({ ...prev, gender: value }))}
+                >
+                  <SelectTrigger className="input-clean">
+                    <SelectValue placeholder="Select gender" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="female">Female (45+ age threshold)</SelectItem>
+                    <SelectItem value="male">Male (50+ age threshold)</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           </div>

@@ -9,6 +9,7 @@ export const users = pgTable("users", {
   email: text("email"),
   firstName: text("first_name"),
   lastName: text("last_name"),
+  gender: text("gender"), // male, female, other
   weight: integer("weight").default(60), // kg
   goalWeight: integer("goal_weight"), // target weight in kg
   height: integer("height"), // cm
@@ -153,6 +154,7 @@ export const updateUserProfileSchema = createInsertSchema(users).pick({
   email: true,
   firstName: true,
   lastName: true,
+  gender: true,
   weight: true,
   goalWeight: true,
   height: true,
