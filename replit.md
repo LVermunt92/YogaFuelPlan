@@ -72,3 +72,4 @@ Comprehensive Macronutrient Distribution Tracking: Added real-time tracking of m
 - `@tanstack/react-query` (for server state management)
 - `@radix-ui` (for UI primitives)
 - `tailwindcss` (for styling)
+```
