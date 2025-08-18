@@ -28,14 +28,12 @@ function Navigation() {
   ];
 
   return (
-    <nav className="bg-background border-b border-gray-200 sticky top-0 z-50">
+    <nav className="bg-background border-b border-gray-200 sticky top-0 z-50" style={{ backgroundColor: 'var(--background)' }}>
       <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
-              <h1 className="text-xl font-light text-foreground" style={{ fontFamily: 'Times New Roman, serif', letterSpacing: '0.05em' }}>
-                Meal Planner
-              </h1>
+              {/* Navigation logo/brand space - removed text */}
             </div>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
               {navItems.map((item) => {
@@ -105,7 +103,7 @@ function Navigation() {
 
       {/* Mobile menu */}
       {isMenuOpen && (
-        <div className="sm:hidden border-t border-gray-200 bg-background">
+        <div className="sm:hidden border-t border-gray-200 bg-background" style={{ backgroundColor: 'var(--background)' }}>
           <div className="pt-2 pb-3 space-y-1">
             {navItems.map((item) => {
               const Icon = item.icon;
