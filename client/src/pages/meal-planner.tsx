@@ -1653,10 +1653,11 @@ export default function MealPlanner() {
         
         {/* Notion Integration - Bottom Section */}
         <div className="card-clean mt-16">
-          <div className="mb-6">
-            <h2 className="text-lg font-semibold text-foreground mb-2">{t.notionIntegration}</h2>
-          </div>
-          <div className="space-y-6">
+          <div className="p-4 sm:p-6">
+            <div className="mb-6">
+              <h2 className="text-lg font-semibold text-foreground mb-2">{t.notionIntegration}</h2>
+            </div>
+            <div className="space-y-6">
             <div>
               <Label className="text-sm font-medium text-foreground mb-2 block">{t.integrationStatus}</Label>
               <div className="flex items-center">
@@ -1689,6 +1690,7 @@ export default function MealPlanner() {
                 </>
               )}
             </Button>
+            </div>
           </div>
         </div>
 
