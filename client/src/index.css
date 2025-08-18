@@ -128,8 +128,8 @@
   .progress[data-size='sm'] { height: 8px; }
   .progress[data-size='lg'] { height: 14px; }
 
-  /* Alleen het 2e blok in <main> krijgt een subtiele lijn */
-  main > :nth-child(2) {
+  /* Alleen het 1e blok in <main> krijgt een subtiele lijn */
+  main > :nth-child(1) {
     border: 1px solid hsl(var(--border));
     border-radius: var(--radius);
   }
