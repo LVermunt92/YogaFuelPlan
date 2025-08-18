@@ -71,4 +71,3 @@ Advanced Protein Range Calculator: Integrated comprehensive protein calculation 
 - `@tanstack/react-query` (for server state management)
 - `@radix-ui` (for UI primitives)
 - `tailwindcss` (for styling)
-```
