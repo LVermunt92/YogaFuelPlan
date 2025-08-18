@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Calendar, Clock, Target, Upload, Eye, Download, Share, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages, Copy, ExternalLink } from "lucide-react";
+import { Calendar, Clock, Target, Eye, Download, Share, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages, Copy, ExternalLink } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useTranslations, translateDietaryTags, translateDietaryTag } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -173,11 +173,7 @@ export default function MealPlanner() {
     enabled: !!selectedMealPlan,
   });
 
-  // Fetch Notion status
-  const { data: notionStatus } = useQuery({
-    queryKey: ['/api/notion/status'],
-    retry: false,
-  });
+
 
   // Fetch shopping list
   const { data: shoppingListData, isLoading: loadingShoppingList } = useQuery<ShoppingListResponse>({
@@ -339,7 +335,7 @@ export default function MealPlanner() {
       setSelectedMealPlan(data.mealPlan.id);
       toast({
         title: "Meal Plan Auto-Generated",
-        description: `Weekly meal plan created for next week${data.notionSynced ? ' and synced to Notion' : ''}!`,
+        description: "Weekly meal plan created for next week!",
       });
     },
     onError: (error) => {
@@ -379,30 +375,7 @@ export default function MealPlanner() {
     },
   });
 
-  // Sync to Notion mutation
-  const syncMutation = useMutation({
-    mutationFn: async (mealPlanId: number) => {
-      const response = await apiRequest('POST', `/api/meal-plans/${mealPlanId}/sync-notion`);
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/meal-plans'] });
-      if (selectedMealPlan) {
-        queryClient.invalidateQueries({ queryKey: ['/api/meal-plans', selectedMealPlan.toString()] });
-      }
-      toast({
-        title: "Synced to Notion",
-        description: "Meal plan successfully uploaded to your Notion database!",
-      });
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Sync Failed",
-        description: error.message || "Failed to sync to Notion. Please check your integration.",
-        variant: "destructive",
-      });
-    },
-  });
+
 
   // Delete meal plan mutation
   const deleteMutation = useMutation({
@@ -1404,12 +1377,7 @@ export default function MealPlanner() {
                     <div className="text-sm text-gray-500">
                       {t.weekOf} <span className="text-foreground font-medium">{displayedMealPlan ? formatWeekRange(displayedMealPlan.weekStart) : t.noPlan}</span>
                     </div>
-                    {displayedMealPlan?.notionSynced && (
-                      <Badge variant="secondary">
-                        <CheckCircle className="w-3 h-3 mr-1" />
-                        Synced
-                      </Badge>
-                    )}
+
                   </div>
                 </div>
               </div>
@@ -1725,48 +1693,7 @@ export default function MealPlanner() {
 
 
         
-        {/* Notion Integration - Bottom Section */}
-        <div className="card-clean mt-16">
-          <div className="p-4 sm:p-6">
-            <div className="mb-6">
-              <h2 className="text-lg font-semibold text-foreground mb-2">{t.notionIntegration}</h2>
-            </div>
-            <div className="space-y-6">
-            <div>
-              <Label className="text-sm font-medium text-foreground mb-2 block">{t.integrationStatus}</Label>
-              <div className="flex items-center">
-                <div className={`w-3 h-3 rounded-full mr-2 ${(notionStatus as any)?.connected ? 'bg-foreground' : 'bg-muted-foreground'}`} />
-                <span className={`text-sm ${(notionStatus as any)?.connected ? 'text-foreground' : 'text-gray-500'}`}>
-                  {(notionStatus as any)?.connected ? t.connected : t.notConnected}
-                </span>
-              </div>
-              {!(notionStatus as any)?.connected && (
-                <p className="text-xs text-gray-400 mt-2">
-                  {t.notConnectedPleaseConfigureSecrets}
-                </p>
-              )}
-            </div>
-            
-            <Button 
-              onClick={() => selectedMealPlan && syncMutation.mutate(selectedMealPlan)}
-              disabled={!selectedMealPlan || syncMutation.isPending || !(notionStatus as any)?.connected}
-              className="btn-minimal w-full"
-            >
-              {syncMutation.isPending ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground mr-2" />
-                  {t.syncing}...
-                </>
-              ) : (
-                <>
-                  <Upload className="mr-2 h-4 w-4" />
-                  {t.syncToNotion}
-                </>
-              )}
-            </Button>
-            </div>
-          </div>
-        </div>
+
 
         {/* Recipe Dialog */}
         <Dialog open={!!selectedMealId} onOpenChange={() => setSelectedMealId(null)}>

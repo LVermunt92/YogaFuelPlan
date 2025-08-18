@@ -25,6 +25,7 @@ Improved Meal Plan Interface: Enhanced user experience by showing meal plan sele
 Critical Dietary Restriction Bug Fix: Added additional safety filtering to prevent any recipes tagged as "pescatarian" or containing fish/meat ingredients from being served to vegetarian users. Implemented emergency cleanup that removed problematic meals from existing plans and added safeguards to prevent recurrence.
 Fixed Recipe Instructions Issue: Enhanced recipe lookup logic to strip "(protein-enhanced)" suffix during matching, ensuring all recipes display complete detailed instructions with proper ingredients, step-by-step cooking directions, tips, and nutritional information.
 Enhanced grocery list display: Updated bell peppers, carrots, and kiwi to show as "pieces" instead of grams in shopping lists for clearer grocery shopping guidance. Bell peppers now display as "2 pieces", carrots as "3 pieces", and kiwi as "4 pieces" (stuks in Dutch) for more practical shopping experience.
+Removed Notion integration: Completely removed all Notion synchronization functionality including UI components, backend routes, database schema fields, and dependencies. Simplified the application by removing unused external integration that was not being utilized.
 Improved fresh herbs specification: System now defaults to "fresh parsley" and properly categorizes all herb types (basil, cilantro, oregano, thyme, rosemary, mint, dill, chives) as "1 bunch" (bosje in Dutch) for clearer shopping guidance.
 Comprehensive Ingredient Specification System: Implemented complete system to eliminate all generic ingredient terms across recipes. Created ingredient-specifier.ts with comprehensive mappings for vegetables (mixed vegetables → bell peppers, zucchini, carrots), fruits (seasonal fruit → season-appropriate options), herbs (fresh herbs → fresh parsley), and all other categories. System automatically updates all 76 recipes on server startup, runs validation checks, and provides API endpoints for manual updates. All recipes now have 100% specific ingredients, eliminating vague terms like "mixed vegetables", "fresh herbs", "seasonal fruit" from both recipe displays and shopping lists. New recipes are automatically processed to ensure specificity.
 Fixed Critical Leftover Ingredients Bug: Removed the clearing logic and added proper leftover ingredient incorporation to the main meal generation path (not just meal prep mode). System now properly uses ALL user-added ingredients during cooking moments, displays which ingredients were incorporated in meal descriptions (e.g., "Wild mushroom quinoa (incorporating leftover spinach, bell peppers, quinoa)"), and removes used ingredients to prevent duplicates. Users can now successfully add multiple ingredients through the UI and see them all properly incorporated into their meal plans.
@@ -58,14 +59,14 @@ UI Cleanup Implementation: Streamlined meal planner interface by removing redund
     - **Complete Dutch Recipe Translation System**: Comprehensive translation service for recipe names, ingredients, and cooking instructions from English to Dutch, including AI-enhanced translation.
     - **Consolidated Shopping List Workflow**: Single-flow shopping list generation with integrated export options (copy, CSV download, Albert Heijn app deep linking).
 - **System Design Choices**:
-    - **Data Flow**: User input drives meal generation, stored in PostgreSQL, displayed via React Query, and can be synced to Notion.
+    - **Data Flow**: User input drives meal generation, stored in PostgreSQL, displayed via React Query.
     - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, and favorite meals.
     - **Unified Recipe Database**: Consolidated three separate recipe databases (base, viral, additional) into a single unified system.
 
 ## External Dependencies
-- @neondatabase/serverless
-- @notionhq/client
-- drizzle-orm
-- @tanstack/react-query
-- @radix-ui
-- tailwindcss
+- @neondatabase/serverless (for PostgreSQL)
+- drizzle-orm (for database ORM)
+- @tanstack/react-query (for server state management)
+- @radix-ui (for UI primitives)
+- tailwindcss (for styling)
+```

@@ -42,7 +42,7 @@ export interface IStorage {
   getMealPlans(userId?: number): Promise<MealPlan[]>;
   getMealPlanWithMeals(id: number): Promise<MealPlanWithMeals | undefined>;
   createMeals(mealPlanId: number, meals: InsertMeal[]): Promise<Meal[]>;
-  updateMealPlanSyncStatus(id: number, synced: boolean): Promise<void>;
+
   deleteMealPlan(id: number): Promise<boolean>;
   cleanupOldMealPlans(userId: number, keepCount?: number): Promise<number>;
   createOuraData(data: InsertOuraData): Promise<OuraData>;
@@ -241,7 +241,7 @@ export class MemStorage implements IStorage {
       id,
       createdAt: new Date(),
       userId: insertMealPlan.userId || 1,
-      notionSynced: insertMealPlan.notionSynced || false,
+
     };
     this.mealPlans.set(id, mealPlan);
     return mealPlan;
@@ -358,7 +358,6 @@ export class MemStorage implements IStorage {
       ...originalPlan,
       id: newPlanId,
       weekStart: newWeekStart,
-      notionSynced: false,
       createdAt: new Date(),
       ...(planName && { planName }),
       planType,
@@ -421,13 +420,7 @@ export class MemStorage implements IStorage {
     return createdMeals;
   }
 
-  async updateMealPlanSyncStatus(id: number, synced: boolean): Promise<void> {
-    const mealPlan = this.mealPlans.get(id);
-    if (mealPlan) {
-      mealPlan.notionSynced = synced;
-      this.mealPlans.set(id, mealPlan);
-    }
-  }
+
 
   // Oura data methods (MemStorage)
   async createOuraData(data: InsertOuraData): Promise<OuraData> {
@@ -625,12 +618,7 @@ export class DatabaseStorage implements IStorage {
       .returning();
   }
 
-  async updateMealPlanSyncStatus(id: number, synced: boolean): Promise<void> {
-    await db
-      .update(mealPlans)
-      .set({ notionSynced: synced })
-      .where(eq(mealPlans.id, id));
-  }
+
 
   async deleteMealPlan(id: number): Promise<boolean> {
     try {
@@ -710,7 +698,6 @@ export class DatabaseStorage implements IStorage {
       weekStart: newWeekStart,
       activityLevel: originalPlan.activityLevel,
       totalProtein: originalPlan.totalProtein,
-      notionSynced: false,
       planName: planName || `${planType} plan`,
       planType,
       isActive: planType === 'current' || planType === 'backup'

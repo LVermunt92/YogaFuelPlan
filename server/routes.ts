@@ -1,9 +1,9 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { generateWeeklyMealPlan, formatMealPlanForNotion } from "./meal-generator";
+import { generateWeeklyMealPlan } from "./meal-generator";
 import { mealPlanRequestSchema } from "@shared/schema";
-import { notion, createDatabaseIfNotExists, findDatabaseByTitle } from "./notion";
+
 import { generateEnhancedShoppingList, updateAllRecipesWithSpecificIngredients, validateAllRecipeIngredients } from "./nutrition-enhanced";
 import { OuraService } from "./oura";
 import { updateUserProfileSchema, authRegisterSchema, authLoginSchema } from "@shared/schema";
@@ -237,7 +237,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         weekStart: mealPlan.weekStart,
         activityLevel: mealPlan.activityLevel,
         totalProtein: mealPlan.totalProtein,
-        notionSynced: false,
+
         planName: label || `Saved plan - ${new Date().toLocaleDateString()}`,
       });
 
@@ -375,58 +375,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Sync meal plan to Notion
-  app.post("/api/meal-plans/:id/sync-notion", async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      const mealPlan = await storage.getMealPlanWithMeals(id);
-      
-      if (!mealPlan) {
-        return res.status(404).json({ message: "Meal plan not found" });
-      }
 
-      // Ensure meal plan database exists in Notion
-      const database = await createDatabaseIfNotExists("Meal Plans", {
-        Date: { date: {} },
-        Meal: {
-          select: {
-            options: [
-              { name: "Breakfast", color: "yellow" },
-              { name: "Lunch", color: "green" },
-              { name: "Dinner", color: "blue" }
-            ]
-          }
-        },
-        Food: { title: {} },
-        Portion: { rich_text: {} },
-        "Protein (g)": { number: {} }
-      });
-
-      // Format and upload meal plan data
-      const notionData = formatMealPlanForNotion(mealPlan, mealPlan.meals);
-      
-      for (const meal of notionData) {
-        await notion.pages.create({
-          parent: { database_id: database.id },
-          properties: {
-            Date: { date: { start: meal.Date } },
-            Meal: { select: { name: meal.Meal } },
-            Food: { title: [{ text: { content: meal.Food } }] },
-            Portion: { rich_text: [{ text: { content: meal.Portion } }] },
-            "Protein (g)": { number: meal["Protein (g)"] }
-          }
-        });
-      }
-
-      // Update sync status
-      await storage.updateMealPlanSyncStatus(id, true);
-      
-      res.json({ message: "Successfully synced to Notion", databaseId: database.id });
-    } catch (error) {
-      console.error("Error syncing to Notion:", error);
-      res.status(500).json({ message: "Failed to sync to Notion", error: (error as Error).message });
-    }
-  });
 
   // Update viral recipes manually
   app.post("/api/admin/update-viral-recipes", async (req, res) => {
@@ -702,24 +651,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Check Notion connection status
-  app.get("/api/notion/status", async (req, res) => {
-    try {
-      // Try to access the user info to verify connection
-      const user = await notion.users.me({});
-      res.json({ 
-        connected: true, 
-        user: user.name || "Connected",
-        message: "Notion integration is working"
-      });
-    } catch (error) {
-      console.error("Notion connection error:", error);
-      res.status(500).json({ 
-        connected: false, 
-        message: "Notion integration not configured or invalid credentials"
-      });
-    }
-  });
+
 
   // Auto-generate weekly meal plan (for Sunday automation)
   app.post("/api/meal-plans/auto-generate", async (req, res) => {
@@ -751,60 +683,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const savedMealPlan = await storage.createMealPlan(generated.mealPlan);
       const savedMeals = await storage.createMeals(savedMealPlan.id, generated.meals);
       
-      // Auto-sync to Notion if configured
-      let notionSynced = false;
-      let databaseId = null;
-      
-      try {
-        // Check if Notion is configured
-        await notion.users.me({});
-        
-        // Create database and sync
-        const database = await createDatabaseIfNotExists("Meal Plans", {
-          Date: { date: {} },
-          Meal: {
-            select: {
-              options: [
-                { name: "Breakfast", color: "yellow" },
-                { name: "Lunch", color: "green" },
-                { name: "Dinner", color: "blue" }
-              ]
-            }
-          },
-          Food: { title: {} },
-          Portion: { rich_text: {} },
-          "Protein (g)": { number: {} }
-        });
-
-        // Format and upload meal plan data
-        const notionData = formatMealPlanForNotion(savedMealPlan, savedMeals);
-        
-        for (const meal of notionData) {
-          await notion.pages.create({
-            parent: { database_id: database.id },
-            properties: {
-              Date: { date: { start: meal.Date } },
-              Meal: { select: { name: meal.Meal } },
-              Food: { title: [{ text: { content: meal.Food } }] },
-              Portion: { rich_text: [{ text: { content: meal.Portion } }] },
-              "Protein (g)": { number: meal["Protein (g)"] }
-            }
-          });
-        }
-
-        // Update sync status
-        await storage.updateMealPlanSyncStatus(savedMealPlan.id, true);
-        notionSynced = true;
-        databaseId = database.id;
-      } catch (notionError) {
-        console.log("Notion sync skipped - not configured:", (notionError as Error).message);
-      }
-      
       res.json({
         mealPlan: savedMealPlan,
         meals: savedMeals,
-        notionSynced,
-        databaseId,
         message: "Weekly meal plan generated successfully"
       });
     } catch (error) {
