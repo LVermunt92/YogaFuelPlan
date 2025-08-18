@@ -36,44 +36,35 @@ Supermarket-Ordered Shopping Categories: Completely reorganized shopping list ca
 Enhanced Ingredient Separation System: Modified ingredient specification system to create separate ingredient entries for mixed berries instead of comma-separated lists. Updated ingredient specifier to generate separate recipe ingredients for blueberries and strawberries when processing "mixed berries" or "fresh berries", ensuring both recipe displays and shopping lists show individual ingredient lines for better clarity and shopping convenience.
 Advanced Shopping List Category System: Completely restructured shopping categories into 8 distinct sections following logical supermarket flow: Vegetables (now appearing first) → Fruits → Fresh Herbs → Dairy & Cheese → Plant-Based Alternatives → Dairy & Eggs → Pantry Essentials (oils, sauces, sweeteners) → Dry Goods (grains, nuts, spices) → Other (relegated to bottom). Sweet potato properly reclassified from pantry to vegetables category. This detailed categorization eliminates confusion and provides optimal grocery shopping workflow.
 Comprehensive Lemon Standardization System: Implemented universal lemon measurement system where all lemon-related ingredients (lemon juice, fresh lemon juice, lemon zest, lemon, lemons) are automatically converted to "pieces of lemon" throughout recipes and shopping lists. This provides consistent, practical shopping guidance that eliminates confusion about lemon quantities and measurements. System applies to all 76 recipes automatically during ingredient processing.
-Detailed Dry Goods Separation System: Further separated the "Dry Goods" category into 4 specific subcategories following user's supermarket shopping preferences: "Grains, Pasta & Canned Goods" (rice, pasta, oats, beans, lentils, vegetable broth), "Baking & Cooking Basics" (flours, spices, salt, baking powder, vinegars), "Nuts, Seeds & Spreads" (nuts, seeds, nut butters, tahini), and "Other Dry Goods" (protein powders, specialty items). Final shopping list structure now includes 12 total categories with 26 dry goods items properly distributed across the 4 specialized categories for optimal grocery shopping workflow.
+Detailed Dry Goods Separation System: Further separated the "Dry Goods" category into 4 specific subcategories following user's supermarket shopping preferences: "Grains, Pasta & Canned Goods" (rice, pasta, oats, beans, lentils), "Baking & Cooking Basics" (flours, baking powder, broth, tomato products), "Nuts, Seeds & Spreads" (nuts, seeds, nut butters, tahini), and "Other Dry Goods" (protein powders, specialty items). Reorganized "Pantry Essentials" to contain oils, sauces, spices, vinegars, and dried herbs (14 items), while "Baking & Cooking Basics" focuses on flours, baking ingredients, and basic cooking necessities (5 items). Final shopping list structure includes 11 categories with 60 total items optimally distributed for supermarket shopping workflow.
 
 ## System Architecture
-
-### Authentication & Multi-User Support
-- User Authentication: Login/registration system with secure password hashing and secure password reset.
-- Multi-User Support: Each user has a unique ID and isolated data.
-- Route Protection: Logged-out users only see the login screen.
-
-### UI/UX Decisions
-- Design System: shadcn/ui built on Radix UI primitives.
-- Styling: Tailwind CSS with CSS variables for theming.
-
-### Technical Implementations
-- Frontend: React 18 with TypeScript, Wouter for routing, TanStack React Query for server state.
-- Backend: Express.js with TypeScript, RESTful API.
-- Database: PostgreSQL with Drizzle ORM.
-- Session Management: Express sessions with PostgreSQL store.
-- Build Tools: Vite for frontend, esbuild for backend.
-- Meal Generation: Calculates protein targets based on user activity, selects meals from a pre-defined nutrition database, generates 7-day plans with variety, and creates shopping lists. All meals include detailed cooking instructions, tips, and nutritional information; recipes are alcohol-free.
-- Universal Meal Prep Engine: Adapts to user cooking schedules, supporting batch cooking, proper meal distribution, intelligent dietary fallbacks.
-- Smart Time Constraints: Weekday meals (Mon-Fri) are limited to ≤30 minutes prep time; weekends have no time restrictions.
-- Ayurvedic Integration: Supports Ayurvedic dietary tags, including seasonal adaptation based on a 6-season calendar (adapted for European seasons).
-- Meal Plan Persistence: Meal plans persist across browser sessions with automatic loading.
-- Automated Viral Recipe Updates: System automatically adds new trending recipes every 2 weeks.
-- Enhanced Multi-Plan Weekend Grocery System: Users can maintain both current week and next week plans simultaneously.
-- Complete Dutch Recipe Translation System: Comprehensive translation service for recipe names, ingredients, and cooking instructions from English to Dutch, including AI-enhanced translation.
-- Consolidated Shopping List Workflow: Single-flow shopping list generation with integrated export options (copy, CSV download, Albert Heijn app deep linking).
-
-### System Design Choices
-- Data Flow: User input drives meal generation, stored in PostgreSQL, displayed via React Query, and can be synced to Notion.
-- Database Schema: Comprehensive user profiles, weekly meal plans, individual meals, meal history, favorite meals, and Oura data.
-- Unified Recipe Database: Consolidated three separate recipe databases (base, viral, additional) into a single unified system for better consistency, easier management, and improved variety distribution.
+- **Authentication & Multi-User Support**: Secure login/registration, password reset, isolated user data, and route protection.
+- **UI/UX Decisions**: Utilizes `shadcn/ui` built on `Radix UI` primitives with `Tailwind CSS` and CSS variables for theming.
+- **Technical Implementations**:
+    - **Frontend**: React 18, TypeScript, Wouter for routing, TanStack React Query for server state.
+    - **Backend**: Express.js with TypeScript, RESTful API.
+    - **Database**: PostgreSQL with Drizzle ORM.
+    - **Session Management**: Express sessions with PostgreSQL store.
+    - **Build Tools**: Vite for frontend, esbuild for backend.
+    - **Meal Generation**: Calculates protein targets based on user activity, selects meals from a pre-defined nutrition database, generates 7-day plans with variety, and creates shopping lists. All meals include detailed cooking instructions, tips, and nutritional information; recipes are alcohol-free.
+    - **Universal Meal Prep Engine**: Adapts to user cooking schedules, supporting batch cooking, proper meal distribution, and intelligent dietary fallbacks.
+    - **Smart Time Constraints**: Weekday meals (Mon-Fri) are limited to ≤30 minutes prep time; weekends have no time restrictions.
+    - **Ayurvedic Integration**: Supports Ayurvedic dietary tags, including seasonal adaptation based on a 6-season calendar (adapted for European seasons).
+    - **Meal Plan Persistence**: Meal plans persist across browser sessions with automatic loading.
+    - **Automated Viral Recipe Updates**: System automatically adds new trending recipes every 2 weeks.
+    - **Enhanced Multi-Plan Weekend Grocery System**: Users can maintain both current week and next week plans simultaneously.
+    - **Complete Dutch Recipe Translation System**: Comprehensive translation service for recipe names, ingredients, and cooking instructions from English to Dutch, including AI-enhanced translation.
+    - **Consolidated Shopping List Workflow**: Single-flow shopping list generation with integrated export options (copy, CSV download, Albert Heijn app deep linking).
+- **System Design Choices**:
+    - **Data Flow**: User input drives meal generation, stored in PostgreSQL, displayed via React Query, and can be synced to Notion.
+    - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, and favorite meals.
+    - **Unified Recipe Database**: Consolidated three separate recipe databases (base, viral, additional) into a single unified system.
 
 ## External Dependencies
-- @neondatabase/serverless
-- @notionhq/client
-- drizzle-orm
-- @tanstack/react-query
-- @radix-ui/***
-- tailwindcss
+- @neondatabase/serverless (for PostgreSQL)
+- @notionhq/client (for Notion integration)
+- drizzle-orm (for database ORM)
+- @tanstack/react-query (for server state management)
+- @radix-ui/*** (for UI primitives)
+- tailwindcss (for styling)
