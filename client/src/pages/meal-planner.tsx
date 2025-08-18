@@ -1255,7 +1255,7 @@ export default function MealPlanner() {
                     <DialogTrigger asChild>
                       <Button 
                         disabled={!selectedMealPlan}
-                        className="btn-outline w-full"
+                        className="btn-minimal btn-touch w-full"
                         onClick={() => setShowShoppingList(true)}
                       >
                         <ShoppingCart className="mr-2 h-4 w-4" />
