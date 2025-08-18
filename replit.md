@@ -76,4 +76,3 @@ Comprehensive Lemon Standardization System: Implemented universal lemon measurem
 - @tanstack/react-query
 - @radix-ui/***
 - tailwindcss
-```
