@@ -31,6 +31,16 @@ function Navigation() {
     <nav className="topbar bg-background border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
         <div className="flex justify-between h-16">
+          {/* Mobile menu button - moved to left */}
+          <div className="sm:hidden flex items-center">
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 mr-3"
+            >
+              <Menu className="h-6 w-6" />
+            </button>
+          </div>
+          
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
               {/* Navigation logo/brand space - removed text */}
@@ -89,14 +99,8 @@ function Navigation() {
             )}
           </div>
           
-          {/* Mobile menu button */}
+          {/* Right side content for mobile - empty for now */}
           <div className="sm:hidden flex items-center">
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100"
-            >
-              <Menu className="h-6 w-6" />
-            </button>
           </div>
         </div>
       </div>

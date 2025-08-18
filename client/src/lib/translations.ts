@@ -61,7 +61,7 @@ export const translations = {
     delete: "Delete",
     
     // Welcome and Summary
-    welcomeBack: "Welcome back to your week of",
+    welcomeBack: "Welcome,",
     yourProteinTarget: "Your protein target",
     daily: "daily",
     activityLevelSet: "Activity level set",
@@ -356,7 +356,7 @@ export const translations = {
     delete: "Verwijderen",
     
     // Welcome and Summary
-    welcomeBack: "Welkom terug bij je week van",
+    welcomeBack: "Welkom,",
     yourProteinTarget: "Je eiwitdoel",
     daily: "dagelijks",
     activityLevelSet: "Activiteitsniveau ingesteld",
