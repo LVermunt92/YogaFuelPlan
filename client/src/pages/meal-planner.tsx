@@ -731,13 +731,13 @@ export default function MealPlanner() {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 text-sm">
               <div>
-                <div className="text-muted-foreground mb-2">
+                <div className="text-gray-500 mb-2">
                   {latestMealPlan.activityLevel === 'high' ? 'High Protein Target' : 'Daily Protein'}
                 </div>
                 <div className="text-lg font-semibold text-foreground">
                   {latestMealPlan.totalProtein.toFixed(1)}g {t.daily}
                 </div>
-                <div className="text-xs text-muted-foreground mt-1">
+                <div className="text-xs text-gray-400 mt-1">
                   {latestMealPlan.activityLevel === 'high' ? 
                     `Target: 130g (${((latestMealPlan.totalProtein / 130) * 100).toFixed(0)}% achieved)` : 
                     t.moderateActivityWeek
@@ -745,36 +745,36 @@ export default function MealPlanner() {
                 </div>
               </div>
               <div>
-                <div className="text-muted-foreground mb-2">{t.mealPreparation}</div>
+                <div className="text-gray-500 mb-2">{t.mealPreparation}</div>
                 <div className="text-lg font-semibold text-foreground">
                   {t.under30Minutes}
                 </div>
-                <div className="text-xs text-muted-foreground mt-1">
+                <div className="text-xs text-gray-400 mt-1">
                   {t.quickNutritiousRecipes}
                 </div>
               </div>
               <div>
-                <div className="text-muted-foreground mb-2">{t.cookingSchedule}</div>
+                <div className="text-gray-500 mb-2">{t.cookingSchedule}</div>
                 <div className="text-lg font-semibold text-foreground">
                   {userProfile?.cookingDaysPerWeek || 7} {t.daysPerWeek}
                 </div>
-                <div className="text-xs text-muted-foreground mt-1">
+                <div className="text-xs text-gray-400 mt-1">
                   {t.eating} {userProfile?.eatingDaysAtHome || 7} {t.daysAtHome}
                 </div>
               </div>
               <div>
-                <div className="text-muted-foreground mb-2">{t.thisWeeksFocus}</div>
+                <div className="text-gray-500 mb-2">{t.thisWeeksFocus}</div>
                 <div className="text-lg font-semibold text-foreground">
                   {userProfile?.meatFishMealsPerWeek ? `${userProfile.meatFishMealsPerWeek} ${t.meatFishMeals}` : t.plantBasedNutrition}
                 </div>
-                <div className="text-xs text-muted-foreground mt-1">
+                <div className="text-xs text-gray-400 mt-1">
                   {userProfile?.dietaryTags ? translateDietaryTags(userProfile.dietaryTags, language).join(', ') : t.vegetarianGlutenLactoseFree}
                 </div>
               </div>
             </div>
             {latestOuraData && (
               <div className="mt-6 p-4 bg-muted/30 rounded-lg">
-                <div className="text-sm text-muted-foreground mb-2">
+                <div className="text-sm text-gray-500 mb-2">
                   {t.latestActivityInsight} {formatDate(latestOuraData.date)}
                 </div>
                 <div className="text-sm text-foreground">
@@ -807,25 +807,25 @@ export default function MealPlanner() {
                 {latestOuraData && (
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                     <div className="bg-card border border-border p-6">
-                      <div className="text-xs text-muted-foreground mb-2 font-medium">{t.activityScore}</div>
+                      <div className="text-xs text-gray-500 mb-2 font-medium">{t.activityScore}</div>
                       <div className="text-2xl font-bold text-foreground">
                         {latestOuraData.activityScore || 'N/A'}
                       </div>
                     </div>
                     <div className="bg-card border border-border p-6">
-                      <div className="text-xs text-muted-foreground mb-2 font-medium">{t.steps}</div>
+                      <div className="text-xs text-gray-500 mb-2 font-medium">{t.steps}</div>
                       <div className="text-2xl font-bold text-foreground">
                         {latestOuraData.steps?.toLocaleString() || 'N/A'}
                       </div>
                     </div>
                     <div className="bg-card border border-border p-6">
-                      <div className="text-xs text-muted-foreground mb-2 font-medium">Sleep Score</div>
+                      <div className="text-xs text-gray-500 mb-2 font-medium">Sleep Score</div>
                       <div className="text-2xl font-bold text-foreground">
                         {latestOuraData.sleepScore || 'N/A'}
                       </div>
                     </div>
                     <div className="bg-card border border-border p-6">
-                      <div className="text-xs text-muted-foreground mb-2 font-medium">Activity Level</div>
+                      <div className="text-xs text-gray-500 mb-2 font-medium">Activity Level</div>
                       <div className="text-lg font-bold text-foreground capitalize">
                         {latestOuraData.activityLevel}
                       </div>
@@ -836,7 +836,7 @@ export default function MealPlanner() {
 
                 
                 {latestOuraData && (
-                  <div className="text-xs text-slate-600">
+                  <div className="text-xs text-gray-500">
                     Last synced: {new Date(latestOuraData.syncedAt).toLocaleDateString()} at {new Date(latestOuraData.syncedAt).toLocaleTimeString()}
                   </div>
                 )}
@@ -865,7 +865,7 @@ export default function MealPlanner() {
                   <History className="h-6 w-6 text-foreground mr-3" />
                   <div>
                     <h2 className="text-xl font-semibold text-foreground">{t.savedMealPlans || 'Meal Plans'}</h2>
-                    <p className="text-sm text-muted-foreground">{t.manageMultiplePlans || 'Select and manage your meal plans'}</p>
+                    <p className="text-sm text-gray-500">{t.manageMultiplePlans || 'Select and manage your meal plans'}</p>
                   </div>
                 </div>
                 <Badge variant="outline" className="text-xs">
@@ -911,10 +911,10 @@ export default function MealPlanner() {
                         </Button>
                       </div>
                     </div>
-                    <p className="text-sm text-muted-foreground mb-2">
+                    <p className="text-sm text-gray-500 mb-2">
                       {t.weekOf || 'Week of'} {plan.weekStart}
                     </p>
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                    <div className="flex items-center justify-between text-xs text-gray-400">
                       <span>{plan.totalProtein.toFixed(1)}g {t.proteinDaily || 'protein/day'}</span>
                       <span>{formatDate(plan.createdAt?.toString() || '')}</span>
                     </div>
@@ -1241,7 +1241,7 @@ export default function MealPlanner() {
                     )}
                   </Button>
                   
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-gray-500">
                     {latestOuraData && ouraStatus?.connected 
                       ? (language === 'nl' 
                           ? `Gebruikt automatisch je ${latestOuraData.activityLevel === 'high' ? 'hoge' : 'lage'} activiteitsniveau van Oura Ring data`
