@@ -1142,7 +1142,7 @@ export default function MealPlanner() {
                 <div>
                   <Label className="text-sm font-medium text-foreground mb-2 block">{t.weekSelection}</Label>
                   <Select value={selectedWeekType} onValueChange={(value: "current" | "next") => setSelectedWeekType(value)}>
-                    <SelectTrigger className="input-clean w-full">
+                    <SelectTrigger className="input-clean w-full px-3 py-2">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
