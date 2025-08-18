@@ -700,7 +700,7 @@ export default function MealPlanner() {
           <div className="card-clean mb-6">
             <div className="p-4">
             <h2 className="text-2xl font-bold text-foreground mb-4">
-              {t.welcomeBack} {userProfile?.username}
+              {t.welcomeBack} {userProfile?.username ? (userProfile.username.includes(' ') ? userProfile.username.split(' ')[0] : userProfile.username) : ''}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 text-sm">
               <div>

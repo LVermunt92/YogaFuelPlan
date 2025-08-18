@@ -86,7 +86,7 @@ function Navigation() {
                 </div>
                 
                 <span className="text-sm text-muted-foreground">
-                  Welcome, {user.username}
+                  Welcome, {user.username.includes(' ') ? user.username.split(' ')[0] : user.username}
                 </span>
                 <button
                   onClick={logout}
@@ -163,7 +163,7 @@ function Navigation() {
             <div className="pt-2 pb-3 border-t border-gray-200">
               <div className="px-3 py-2">
                 <div className="text-sm text-gray-600 mb-2">
-                  Welcome, {user.username}
+                  Welcome, {user.username.includes(' ') ? user.username.split(' ')[0] : user.username}
                 </div>
                 <button
                   onClick={() => {
