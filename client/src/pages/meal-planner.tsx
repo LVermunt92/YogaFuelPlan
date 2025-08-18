@@ -764,17 +764,14 @@ export default function MealPlanner() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm max-w-xl mx-auto">
               {/* Protein KPI with Doughnut Chart */}
               <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-3 rounded-lg border border-border">
-                <div className="text-gray-500 mb-2 text-center text-xs">
-                  Protein
-                </div>
-                <div className="w-16 h-16 mb-2">
+                <div className="relative w-20 h-20 mb-2">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
                         data={proteinChartData}
                         cx="50%"
                         cy="50%"
-                        innerRadius="60%"
+                        innerRadius="65%"
                         outerRadius="100%"
                         paddingAngle={2}
                         dataKey="value"
@@ -787,26 +784,27 @@ export default function MealPlanner() {
                       </Pie>
                     </PieChart>
                   </ResponsiveContainer>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-sm font-semibold text-foreground">
+                      {nutritionData.protein.toFixed(0)}g
+                    </span>
+                  </div>
                 </div>
-                <div className="text-sm font-semibold text-foreground text-center">
-                  {nutritionData.protein.toFixed(0)}g
-                </div>
-                <div className="text-xs text-gray-400 mt-1 text-center">
-                  {((nutritionData.protein / proteinTarget) * 100).toFixed(0)}% of {proteinTarget}g
+                <div className="text-xs text-gray-500 text-center">
+                  Protein
                 </div>
               </div>
 
               {/* Good Fats KPI with Doughnut Chart */}
               <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-3 rounded-lg border border-border">
-                <div className="text-gray-500 mb-2 text-center text-xs">Good Fats</div>
-                <div className="w-16 h-16 mb-2">
+                <div className="relative w-20 h-20 mb-2">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
                         data={fatsChartData}
                         cx="50%"
                         cy="50%"
-                        innerRadius="60%"
+                        innerRadius="65%"
                         outerRadius="100%"
                         paddingAngle={2}
                         dataKey="value"
@@ -819,26 +817,27 @@ export default function MealPlanner() {
                       </Pie>
                     </PieChart>
                   </ResponsiveContainer>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-sm font-semibold text-foreground">
+                      {nutritionData.fats.toFixed(0)}g
+                    </span>
+                  </div>
                 </div>
-                <div className="text-sm font-semibold text-foreground text-center">
-                  {nutritionData.fats.toFixed(0)}g
-                </div>
-                <div className="text-xs text-gray-400 mt-1 text-center">
-                  {((nutritionData.fats / fatsTarget) * 100).toFixed(0)}% of {fatsTarget}g
+                <div className="text-xs text-gray-500 text-center">
+                  Good Fats
                 </div>
               </div>
 
               {/* Vegetables KPI with Doughnut Chart */}
               <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-3 rounded-lg border border-border">
-                <div className="text-gray-500 mb-2 text-center text-xs">Vegetables</div>
-                <div className="w-16 h-16 mb-2">
+                <div className="relative w-20 h-20 mb-2">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
                         data={vegetablesChartData}
                         cx="50%"
                         cy="50%"
-                        innerRadius="60%"
+                        innerRadius="65%"
                         outerRadius="100%"
                         paddingAngle={2}
                         dataKey="value"
@@ -851,26 +850,27 @@ export default function MealPlanner() {
                       </Pie>
                     </PieChart>
                   </ResponsiveContainer>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-sm font-semibold text-foreground">
+                      {nutritionData.vegetables.toFixed(0)}g
+                    </span>
+                  </div>
                 </div>
-                <div className="text-sm font-semibold text-foreground text-center">
-                  {nutritionData.vegetables.toFixed(0)}g
-                </div>
-                <div className="text-xs text-gray-400 mt-1 text-center">
-                  {((nutritionData.vegetables / vegetablesTarget) * 100).toFixed(0)}% of {vegetablesTarget.toFixed(0)}g
+                <div className="text-xs text-gray-500 text-center">
+                  Vegetables
                 </div>
               </div>
 
               {/* Fruits/Starches KPI with Doughnut Chart */}
               <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-3 rounded-lg border border-border">
-                <div className="text-gray-500 mb-2 text-center text-xs">Fruits/Starches</div>
-                <div className="w-16 h-16 mb-2">
+                <div className="relative w-20 h-20 mb-2">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
                         data={carbsChartData}
                         cx="50%"
                         cy="50%"
-                        innerRadius="60%"
+                        innerRadius="65%"
                         outerRadius="100%"
                         paddingAngle={2}
                         dataKey="value"
@@ -883,12 +883,14 @@ export default function MealPlanner() {
                       </Pie>
                     </PieChart>
                   </ResponsiveContainer>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-sm font-semibold text-foreground">
+                      {nutritionData.carbs.toFixed(0)}g
+                    </span>
+                  </div>
                 </div>
-                <div className="text-sm font-semibold text-foreground text-center">
-                  {nutritionData.carbs.toFixed(0)}g
-                </div>
-                <div className="text-xs text-gray-400 mt-1 text-center">
-                  {((nutritionData.carbs / carbsTarget) * 100).toFixed(0)}% of {carbsTarget}g
+                <div className="text-xs text-gray-500 text-center">
+                  Fruits/Starches
                 </div>
               </div>
             </div>
