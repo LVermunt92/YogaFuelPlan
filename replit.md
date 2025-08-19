@@ -8,7 +8,7 @@ Translation continuity plan: Continue AI-enhanced Dutch translation process. Sys
 Enhanced unit conversion system: Comprehensive automated workflow that intelligently converts liquids (milk, oils) to milliliters and dry ingredients to grams. System automatically applies to all new viral recipes and validates conversions with detailed logging.
 Smart seasonal fruit specification: Automatically replaces vague "seasonal fruit" entries with specific Netherlands-appropriate fruits based on current season (spring: strawberries, summer: mixed berries, autumn: apples, winter: citrus fruit) for clearer shopping lists.
 Smart protein prioritization system: Instead of limiting recipes to only those tagged "high-protein", system now works with ALL recipes and automatically enhances lower-protein meals with smart additions (hemp hearts, tahini, nutritional yeast, etc.). This dramatically improves variety while maintaining excellent protein content (average 22.1g per meal). Users get 5-7 unique recipes per meal type instead of 2-3 with old filtering.
-Fixed protein average calculation: Corrected meal plan protein calculation to divide by actual days with meals instead of always dividing by 7 days. System now shows realistic protein averages per day that reflect user's actual eating patterns.
+Fixed protein average calculation: Corrected meal plan protein calculation to divide by actual days with meals insteads of always dividing by 7 days. System now shows realistic protein averages per day that reflect user's actual eating patterns.
 Fixed protein target display issue: Interface now correctly shows "High Protein Target" with achievement percentage (e.g., "Target: 130g (50% achieved)") for high activity levels, replacing misleading "average" terminology. High activity users see clear progress toward their 130g daily protein target.
 Fixed meal plan date auto-increment issue: Replaced automatic date calculation with user-controlled "This Week" vs "Next Week" selection. System now prevents uncontrolled time progression and asks users to confirm overwriting existing plans rather than creating endless future plans. Users can generate maximum two plans (current + next week) with clear overwrite confirmation.
 Fixed profile update system: Users can now successfully update their dietary tags (vegetarian, gluten-free, lactose-free, etc.) and generate meal plans with their new preferences.
@@ -24,6 +24,7 @@ Balanced Recipe Variety Management: Implemented comprehensive global similarity 
 Improved Meal Plan Interface: Enhanced user experience by showing meal plan selector even with single plan (previously hidden causing confusion), improved current plan button styling with proper selected appearance, and fixed date display issues by cleaning old test data with incorrect future dates.
 Enhanced Recipe KPI Display: Added comprehensive nutritional KPI information to recipe details dialog, showing good fats (grams), vegetables (grams), and fruits/starches (grams) alongside existing nutritional data. This helps users understand how each recipe contributes to their macronutrient targets and daily KPI goals. Interface layout reorganized with saved meal plans positioned above weekly meal plan display for better logical flow.
 Refined Dietary Tag System: Removed "low-sodium", "sugar-free", "high-protein", and "anti-inflammatory" from user-selectable dietary tags in profile settings. These are now treated as recipe guidelines rather than user preferences, allowing the system to naturally incorporate these principles into all recipes without requiring explicit user selection. This simplifies the profile interface while maintaining the nutritional benefits across all meal plans.
+Personalized Welcome Text: Updated navigation welcome message to prioritize showing user's firstName from profile data, only falling back to username when firstName is not available. This creates a more personal experience by displaying "Welcome, Sarah" instead of "Welcome, sarah.jones" when firstName is present in user profile.
 Critical Dietary Restriction Bug Fix: Added additional safety filtering to prevent any recipes tagged as "pescatarian" or containing fish/meat ingredients from being served to vegetarian users. Implemented emergency cleanup that removed problematic meals from existing plans and added safeguards to prevent recurrence.
 Fixed Recipe Instructions Issue: Enhanced recipe lookup logic to strip "(protein-enhanced)" suffix during matching, ensuring all recipes display complete detailed instructions with proper ingredients, step-by-step cooking directions, tips, and nutritional information.
 Enhanced grocery list display: Updated bell peppers, carrots, and kiwi to show as "pieces" instead of grams in shopping lists for clearer grocery shopping guidance. Bell peppers now display as "2 pieces", carrots as "3 pieces", and kiwi as "4 pieces" (stuks in Dutch) for more practical shopping experience.
@@ -46,7 +47,7 @@ Comprehensive Macronutrient Distribution Tracking: Added real-time tracking of m
 
 # System Architecture
 - **Authentication & Multi-User Support**: Secure login/registration, password reset, isolated user data, and route protection.
-- **UI/UX Decisions**: Utilizes `shadcn/ui` built on `Radix UI` primitives with `Tailwind CSS` and CSS variables for theming.
+- **UI/UX Decisions**: Utilizes `shadcn/ui` built on `Radix UI` primitives with `Tailwind CSS` and CSS variables for theming. The UI is streamlined, removing redundant elements and focusing on core meal planning functionality.
 - **Technical Implementations**:
     - **Frontend**: React 18, TypeScript, Wouter for routing, TanStack React Query for server state.
     - **Backend**: Express.js with TypeScript, RESTful API.
@@ -54,15 +55,17 @@ Comprehensive Macronutrient Distribution Tracking: Added real-time tracking of m
     - **Session Management**: Express sessions with PostgreSQL store.
     - **Build Tools**: Vite for frontend, esbuild for backend.
 - **Feature Specifications**:
-    - **Meal Generation**: Calculates protein targets, selects meals from a nutrition database, generates 7-day plans with variety, and creates shopping lists. Meals include instructions, tips, and nutritional information; recipes are alcohol-free.
+    - **Meal Generation**: Calculates protein targets, selects meals from a nutrition database, generates 7-day plans with variety, and creates shopping lists. Meals include instructions, tips, and nutritional information; recipes are alcohol-free. Includes smart AI recipe generation and comprehensive ingredient specification.
     - **Universal Meal Prep Engine**: Adapts to user cooking schedules, supporting batch cooking, proper meal distribution, and intelligent dietary fallbacks.
     - **Smart Time Constraints**: Weekday meals (Mon-Fri) are limited to ≤30 minutes prep time; weekends have no time restrictions.
     - **Ayurvedic Integration**: Supports Ayurvedic dietary tags and seasonal adaptation.
-    - **Meal Plan Persistence**: Meal plans persist across browser sessions with automatic loading.
+    - **Meal Plan Persistence**: Meal plans persist across browser sessions with automatic loading and cleanup (max 3 plans).
     - **Automated Viral Recipe Updates**: System automatically adds new trending recipes.
     - **Simplified meal plan management**: Users rely on the saved meal plans system for managing multiple plans.
     - **Complete Dutch Recipe Translation System**: Comprehensive translation service for recipe names, ingredients, and cooking instructions from English to Dutch, including AI-enhanced translation.
-    - **Consolidated Shopping List Workflow**: Single-flow shopping list generation.
+    - **Consolidated Shopping List Workflow**: Single-flow shopping list generation with supermarket-ordered categories, detailed dry goods separation, and comprehensive lemon standardization.
+    - **Comprehensive Macronutrient Distribution Tracking**: Real-time tracking of macronutrient distribution (fats, vegetables, fruits/starches) in meal plans.
+    - **Advanced Protein Range Calculator**: Evidence-based protein calculation with gender-specific age thresholds and activity level considerations.
 - **System Design Choices**:
     - **Data Flow**: User input drives meal generation, stored in PostgreSQL, displayed via React Query.
     - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, and favorite meals.
@@ -74,4 +77,3 @@ Comprehensive Macronutrient Distribution Tracking: Added real-time tracking of m
 - `@tanstack/react-query` (for server state management)
 - `@radix-ui` (for UI primitives)
 - `tailwindcss` (for styling)
-```

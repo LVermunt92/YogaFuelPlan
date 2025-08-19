@@ -13,14 +13,33 @@ import React, { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTranslations } from "@/lib/translations";
 import { LanguageProvider, useLanguage } from "@/contexts/LanguageContext";
+import { useQuery } from "@tanstack/react-query";
 
 function Navigation() {
   const [location] = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, logout } = useAuth();
+  const { user: authUser, logout } = useAuth();
   const { language, changeLanguage, isChangingLanguage } = useLanguage();
 
   const t = useTranslations(language);
+
+  // Fetch user profile to get firstName
+  const { data: userProfile } = useQuery({
+    queryKey: [`/api/users/${authUser?.id}/profile`],
+    enabled: !!authUser?.id,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+
+  // Get display name - prioritize firstName, fallback to username
+  const getDisplayName = () => {
+    if (userProfile?.firstName) {
+      return userProfile.firstName;
+    }
+    if (authUser?.username) {
+      return authUser.username.includes(' ') ? authUser.username.split(' ')[0] : authUser.username;
+    }
+    return 'User';
+  };
 
   const navItems = [
     { path: "/", label: t.mealPlanner, icon: Utensils },
@@ -69,7 +88,7 @@ function Navigation() {
           
           {/* User info and controls */}
           <div className="hidden sm:flex sm:items-center sm:space-x-4">
-            {user && (
+            {authUser && (
               <>
                 {/* Language Selector */}
                 <div className="flex items-center space-x-2">
@@ -86,7 +105,7 @@ function Navigation() {
                 </div>
                 
                 <span className="text-sm text-muted-foreground">
-                  Welcome, {user.username.includes(' ') ? user.username.split(' ')[0] : user.username}
+                  Welcome, {getDisplayName()}
                 </span>
                 <button
                   onClick={logout}
@@ -133,7 +152,7 @@ function Navigation() {
           </div>
           
           {/* Mobile Language Selector */}
-          {user && (
+          {authUser && (
             <div className="pt-2 pb-3 border-t border-gray-200">
               <div className="px-3 py-2">
                 <div className="flex items-center justify-between">
@@ -143,7 +162,7 @@ function Navigation() {
                   </div>
                   <Select value={language} onValueChange={(value) => {
                     setIsMenuOpen(false);
-                    changeLanguage(value as Language);
+                    changeLanguage(value);
                   }} disabled={isChangingLanguage}>
                     <SelectTrigger className="w-[80px] h-8 text-sm">
                       <SelectValue />
@@ -159,11 +178,11 @@ function Navigation() {
           )}
           
           {/* Mobile user info */}
-          {user && (
+          {authUser && (
             <div className="pt-2 pb-3 border-t border-gray-200">
               <div className="px-3 py-2">
                 <div className="text-sm text-gray-600 mb-2">
-                  Welcome, {user.username.includes(' ') ? user.username.split(' ')[0] : user.username}
+                  Welcome, {getDisplayName()}
                 </div>
                 <button
                   onClick={() => {
