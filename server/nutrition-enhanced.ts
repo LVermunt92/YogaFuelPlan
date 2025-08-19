@@ -1,6 +1,7 @@
 import { getCurrentSeasonalGuidance, adaptRecipeForSeason, getCurrentAyurvedicSeason } from './ayurveda-seasonal';
 import { selectProteinOptimizedMeals } from './smart-protein-selection';
 import { specifyIngredients, validateIngredientSpecificity, updateRecipeIngredients } from './ingredient-specifier';
+import { standardizePortion } from './portion-standardizer';
 
 export interface NutritionInfo {
   protein: number;
@@ -44,7 +45,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   // Breakfast options - Whole Foods Focus
   {
     name: "Steel-cut oats with raw nuts, fresh berries, and ground flax",
-    portion: "1 bowl (250g)",
+    portion: "1 serving (bowl)",
     nutrition: { 
       protein: 18, 
       prepTime: 20, 
@@ -97,7 +98,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   },
   {
     name: "Fresh vegetable and herb scrambled eggs with avocado",
-    portion: "3 eggs + vegetables",
+    portion: "1 serving (3 eggs + vegetables)",
     nutrition: { 
       protein: 24, 
       prepTime: 15, 
@@ -151,7 +152,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   },
   {
     name: "Homemade chia pudding with fresh fruit and raw nuts",
-    portion: "1 large serving (200g)",
+    portion: "1 serving (large portion)",
     nutrition: { 
       protein: 16, 
       prepTime: 5, 
@@ -202,7 +203,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   // Additional gluten-free, lactose-free, vegetarian breakfast options
   {
     name: "Overnight gluten-free oats with almond milk and berries",
-    portion: "1 cup prepared oats",
+    portion: "1 serving (cup)",
     nutrition: {
       protein: 15,
       prepTime: 5,
@@ -250,7 +251,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   {
     name: "Quinoa breakfast bowl with coconut yogurt and nuts",
-    portion: "1 cup quinoa bowl",
+    portion: "1 serving (bowl)",
     nutrition: {
       protein: 18,
       prepTime: 15,
@@ -299,7 +300,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   {
     name: "Coconut flour pancakes with dairy-free protein powder",
-    portion: "3 medium pancakes",
+    portion: "1 serving (3 pancakes)",
     nutrition: {
       protein: 22,
       prepTime: 20,

@@ -515,14 +515,14 @@ export default function MealPlanner() {
   const proteinTarget = userProfile?.proteinTarget || 130;
   const proteinAchieved = Math.min(nutritionData.protein, proteinTarget);
   const proteinChartData = [
-    { name: 'Achieved', value: proteinAchieved, fill: '#10b981' },
+    { name: 'Achieved', value: proteinAchieved, fill: '#059669' }, // emerald-600
     { name: 'Remaining', value: Math.max(0, proteinTarget - proteinAchieved), fill: '#e5e7eb' }
   ];
 
   const fatsTarget = 150; // ~150g daily fats target (60% of 2000 kcal / 9 kcal/g)
   const fatsAchieved = Math.min(nutritionData.fats, fatsTarget);
   const fatsChartData = [
-    { name: 'Achieved', value: fatsAchieved, fill: '#f59e0b' },
+    { name: 'Achieved', value: fatsAchieved, fill: '#ca8a04' }, // yellow-600
     { name: 'Remaining', value: Math.max(0, fatsTarget - fatsAchieved), fill: '#e5e7eb' }
   ];
 
@@ -532,14 +532,14 @@ export default function MealPlanner() {
   
   const vegetablesAchieved = Math.min(nutritionData.vegetables, vegetablesTarget);
   const vegetablesChartData = [
-    { name: 'Achieved', value: vegetablesAchieved, fill: '#22c55e' },
+    { name: 'Achieved', value: vegetablesAchieved, fill: '#16a34a' }, // green-600
     { name: 'Remaining', value: Math.max(0, vegetablesTarget - vegetablesAchieved), fill: '#e5e7eb' }
   ];
 
   const carbsTarget = 40; // ~40g daily carbs target (8% of 2000 kcal / 4 kcal/g)
   const carbsAchieved = Math.min(nutritionData.carbs, carbsTarget);
   const carbsChartData = [
-    { name: 'Achieved', value: carbsAchieved, fill: '#3b82f6' },
+    { name: 'Achieved', value: carbsAchieved, fill: '#ea580c' }, // orange-600
     { name: 'Remaining', value: Math.max(0, carbsTarget - carbsAchieved), fill: '#e5e7eb' }
   ];
 
