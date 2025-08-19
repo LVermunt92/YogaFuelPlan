@@ -980,126 +980,6 @@ export default function MealPlanner() {
           </div>
         </div>
 
-        {/* Multi-Plan Management */}
-        {mealPlans && mealPlans.length > 0 && (
-          <div className="card-clean mb-6">
-            <div className="p-4">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center">
-                  <History className="h-6 w-6 text-foreground mr-3" />
-                  <div>
-                    <h2 className="text-xl font-semibold text-foreground mb-2">{t.savedMealPlans || 'Meal Plans'}</h2>
-                    <p className="text-sm text-gray-500">{t.manageMultiplePlans || 'Select and manage your meal plans'}</p>
-                  </div>
-                </div>
-                <Badge variant="outline" className="text-xs">
-                  {mealPlans.length} Plan{mealPlans.length > 1 ? 's' : ''}
-                </Badge>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {mealPlans.map((plan, index) => (
-                  <div 
-                    key={plan.id} 
-                    className={`p-4 border rounded-lg transition-colors ${
-                      selectedMealPlan === plan.id 
-                        ? 'border-primary bg-primary/5' 
-                        : 'border-border hover:border-primary/50'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 
-                        className="font-medium text-foreground cursor-pointer hover:text-primary"
-                        onClick={() => setSelectedMealPlan(plan.id)}
-                      >
-                        {plan.planName || `Meal Plan ${index + 1}`}
-                      </h4>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (confirm(t.deletePlanConfirm || 'Are you sure you want to delete this meal plan?')) {
-                              deleteMutation.mutate(plan.id);
-                            }
-                          }}
-                          disabled={deleteMutation.isPending}
-                          className="h-6 w-6 p-0 hover:bg-destructive/10 hover:text-destructive"
-                        >
-                          {deleteMutation.isPending ? (
-                            <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-destructive" />
-                          ) : (
-                            <X className="h-3 w-3" />
-                          )}
-                        </Button>
-                      </div>
-                    </div>
-                    <p className="text-sm text-gray-500 mb-2">
-                      {t.weekOf || 'Week of'} {plan.weekStart}
-                    </p>
-                    <div className="flex items-center justify-between text-xs text-gray-400">
-                      <span>{plan.totalProtein.toFixed(0)}g {t.proteinDaily || 'protein/day'}</span>
-                      <span>{formatDate(plan.createdAt?.toString() || '')}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              
-              {latestMealPlan && (
-                <div className="mt-4 pt-4 border-t border-border">
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button variant="outline" className="w-full">
-                        <Plus className="mr-2 h-4 w-4" />
-                        {t.savePlanCopy || 'Save Plan as Copy'}
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>{t.saveMealPlan || 'Save Meal Plan'}</DialogTitle>
-                      </DialogHeader>
-                      <div className="space-y-4">
-                        <div>
-                          <Label htmlFor="planLabel">{t.planLabel || 'Plan Label'}</Label>
-                          <Input
-                            id="planLabel"
-                            value={savePlanLabel}
-                            onChange={(e) => setSavePlanLabel(e.target.value)}
-                            placeholder={t.planLabelPlaceholder || 'e.g., Next Week, Backup Plan'}
-                          />
-                        </div>
-                        <Button
-                          onClick={() => {
-                            saveMealPlanMutation.mutate({
-                              mealPlanId: latestMealPlan.id,
-                              label: savePlanLabel || `${t.savedPlan || 'Saved Plan'} - ${new Date().toLocaleDateString()}`
-                            });
-                          }}
-                          disabled={saveMealPlanMutation.isPending}
-                          className="w-full"
-                        >
-                          {saveMealPlanMutation.isPending ? (
-                            <>
-                              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                              {t.saving || 'Saving...'}
-                            </>
-                          ) : (
-                            <>
-                              <Plus className="mr-2 h-4 w-4" />
-                              {t.savePlan || 'Save Plan'}
-                            </>
-                          )}
-                        </Button>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
 
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
@@ -1296,8 +1176,128 @@ export default function MealPlanner() {
 
           </div>
 
-          {/* Meal Plan Display */}
+          {/* Saved Meal Plans Section */}
           <div className="lg:col-span-2">
+            {mealPlans && mealPlans.length > 0 && (
+              <div className="card-clean mb-6">
+                <div className="p-4">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center">
+                      <History className="h-6 w-6 text-foreground mr-3" />
+                      <div>
+                        <h2 className="text-xl font-semibold text-foreground mb-2">{t.savedMealPlans || 'Saved Meal Plans'}</h2>
+                        <p className="text-sm text-gray-500">{t.manageMultiplePlans || 'Select and manage your meal plans'}</p>
+                      </div>
+                    </div>
+                    <Badge variant="outline" className="text-xs">
+                      {mealPlans.length} Plan{mealPlans.length > 1 ? 's' : ''}
+                    </Badge>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {mealPlans.map((plan, index) => (
+                      <div 
+                        key={plan.id} 
+                        className={`p-4 border rounded-lg transition-colors ${
+                          selectedMealPlan === plan.id 
+                            ? 'border-primary bg-primary/5' 
+                            : 'border-border hover:border-primary/50'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <h4 
+                            className="font-medium text-foreground cursor-pointer hover:text-primary"
+                            onClick={() => setSelectedMealPlan(plan.id)}
+                          >
+                            {plan.planName || `Meal Plan ${index + 1}`}
+                          </h4>
+                          <div className="flex items-center gap-2">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                if (confirm(t.deletePlanConfirm || 'Are you sure you want to delete this meal plan?')) {
+                                  deleteMutation.mutate(plan.id);
+                                }
+                              }}
+                              disabled={deleteMutation.isPending}
+                              className="h-6 w-6 p-0 hover:bg-destructive/10 hover:text-destructive"
+                            >
+                              {deleteMutation.isPending ? (
+                                <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-destructive" />
+                              ) : (
+                                <X className="h-3 w-3" />
+                              )}
+                            </Button>
+                          </div>
+                        </div>
+                        <p className="text-sm text-gray-500 mb-2">
+                          {t.weekOf || 'Week of'} {plan.weekStart}
+                        </p>
+                        <div className="flex items-center justify-between text-xs text-gray-400">
+                          <span>{plan.totalProtein.toFixed(0)}g {t.proteinDaily || 'protein/day'}</span>
+                          <span>{formatDate(plan.createdAt?.toString() || '')}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {latestMealPlan && (
+                    <div className="mt-4 pt-4 border-t border-border">
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button variant="outline" className="w-full">
+                            <Plus className="mr-2 h-4 w-4" />
+                            {t.savePlanCopy || 'Save Plan as Copy'}
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>{t.saveMealPlan || 'Save Meal Plan'}</DialogTitle>
+                          </DialogHeader>
+                          <div className="space-y-4">
+                            <div>
+                              <Label htmlFor="planLabel">{t.planLabel || 'Plan Label'}</Label>
+                              <Input
+                                id="planLabel"
+                                value={savePlanLabel}
+                                onChange={(e) => setSavePlanLabel(e.target.value)}
+                                placeholder={t.planLabelPlaceholder || 'e.g., Next Week, Backup Plan'}
+                              />
+                            </div>
+                            <Button
+                              onClick={() => {
+                                saveMealPlanMutation.mutate({
+                                  mealPlanId: latestMealPlan.id,
+                                  label: savePlanLabel || `${t.savedPlan || 'Saved Plan'} - ${new Date().toLocaleDateString()}`
+                                });
+                              }}
+                              disabled={saveMealPlanMutation.isPending}
+                              className="w-full"
+                            >
+                              {saveMealPlanMutation.isPending ? (
+                                <>
+                                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                                  {t.saving || 'Saving...'}
+                                </>
+                              ) : (
+                                <>
+                                  <Plus className="mr-2 h-4 w-4" />
+                                  {t.savePlan || 'Save Plan'}
+                                </>
+                              )}
+                            </Button>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Weekly Meal Plan Display */}
             <div className="card-clean">
               <div className="p-4 sm:p-6">
                 <div className="mb-6">
