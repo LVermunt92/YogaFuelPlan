@@ -27,10 +27,6 @@ const DIETARY_TAGS = [
   "keto",
   "paleo",
   "mediterranean",
-  "anti-inflammatory",
-  "high-protein",
-  "low-sodium",
-  "sugar-free",
   "whole30",
   "raw",
   "pescatarian",
@@ -133,7 +129,7 @@ export default function Profile() {
   // Update form data when user data loads (only on initial load)
   React.useEffect(() => {
     if (user && !isFormInitialized) {
-      const dynamicProteinTarget = calculateProteinTarget(user.age, user.activityLevel, user.gender);
+      const dynamicProteinTarget = calculateProteinTarget(user.age, user.activityLevel, user.gender || undefined);
       
       setFormData({
         username: user.username || '',
