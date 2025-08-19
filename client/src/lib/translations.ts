@@ -3,6 +3,7 @@ export const translations = {
     // Navigation
     mealPlanner: "Meal Planner",
     profile: "Profile",
+    about: "About",
     
     // Meal Planner
     generateMealPlan: "Generate Meal Plan",
@@ -272,6 +273,53 @@ export const translations = {
     vegetarianGlutenLactoseFree: "vegetarian, gluten & lactose-free",
     healthActivityTracking: "Health & Activity Tracking",
     weekOf: "Week of",
+    
+    // About Page
+    aboutMealPlanner: "About Our Meal Planner",
+    aboutSubtitle: "Discover the philosophy behind our personalized healthy lifestyle planner that adapts to your unique needs and goals.",
+    ourPhilosophy: "Our Philosophy",
+    philosophyStatement: "We believe that healthy eating should be personalized, intelligent, and seamlessly integrated into your real life. Our meal planner combines cutting-edge nutrition science with AI-powered adaptability to create meal plans that evolve with your lifestyle, activity levels, and health goals.",
+    corePrinciples: "Core Principles",
+    
+    // Philosophy Points
+    personalizedNutrition: "Personalized Nutrition",
+    personalizedNutritionDesc: "Every meal plan is tailored to your specific protein targets, activity levels, dietary restrictions, and health goals using evidence-based calculations.",
+    intelligentPlanning: "Intelligent Planning",
+    intelligentPlanningDesc: "Our AI analyzes your preferences, cooking habits, and lifestyle to generate diverse, practical meal plans that fit your schedule.",
+    adaptiveLifestyle: "Adaptive Lifestyle",
+    adaptiveLifestyleDesc: "Seamlessly integrates with your Oura Ring data to automatically adjust nutrition targets based on your real-time activity and recovery metrics.",
+    precisionTargeting: "Precision Targeting",
+    precisionTargetingDesc: "Advanced protein calculations based on age, gender, activity level, and goals ensure optimal nutrition for muscle maintenance and performance.",
+    sustainableEating: "Sustainable Eating",
+    sustainableEatingDesc: "Focus on whole foods, seasonal ingredients, and practical cooking methods that promote long-term healthy eating habits.",
+    realLifeIntegration: "Real-Life Integration",
+    realLifeIntegrationDesc: "Considers your household size, cooking frequency, and meal prep preferences to create realistic, achievable meal plans.",
+    
+    // How It Works
+    howItWorks: "How It Works",
+    step1Title: "Set Your Profile",
+    step1Desc: "Tell us about your goals, dietary preferences, activity level, and lifestyle.",
+    step2Title: "Connect Your Data",
+    step2Desc: "Optional Oura Ring integration for automatic activity and recovery tracking.",
+    step3Title: "Generate Your Plan",
+    step3Desc: "Our AI creates a personalized weekly meal plan with precise nutrition targeting.",
+    step4Title: "Cook & Adapt",
+    step4Desc: "Follow your plan and let our system adapt based on your feedback and data.",
+    
+    // Key Features
+    keyFeatures: "Key Features",
+    featureProteinTitle: "Advanced Protein Targeting",
+    featureProteinDesc: "Evidence-based protein calculations with gender-specific age thresholds and activity considerations.",
+    featureAiTitle: "AI-Powered Recipe Generation",
+    featureAiDesc: "Intelligent recipe creation that considers your preferences, restrictions, and nutritional needs.",
+    featureOuraTitle: "Oura Ring Integration",
+    featureOuraDesc: "Automatic activity level detection and nutrition adjustments based on your biometric data.",
+    featureMealPrepTitle: "Smart Meal Prep Engine",
+    featureMealPrepDesc: "Adapts to your cooking schedule with batch cooking optimization and leftover integration.",
+    featureDietaryTitle: "Comprehensive Dietary Support",
+    featureDietaryDesc: "Supports all major dietary restrictions and preferences with automatic filtering and alternatives.",
+    featureShoppingTitle: "Supermarket-Organized Lists",
+    featureShoppingDesc: "Shopping lists organized by supermarket flow with specific quantities and smart categorization.",
     proteinDaily: "protein daily",
     saving: "Saving...",
     savePlan: "Save Plan",
@@ -300,6 +348,7 @@ export const translations = {
     // Navigation
     mealPlanner: "Maaltijdplanner",
     profile: "Profiel",
+    about: "Over",
     
     // Meal Planner
     generateMealPlan: "Maaltijdplan Genereren",
@@ -616,6 +665,52 @@ export const translations = {
     savePlan: "Plan Opslaan",
     portion: "Portie",
     
+    // About Page (Dutch)
+    aboutMealPlanner: "Over Onze Maaltijdplanner",
+    aboutSubtitle: "Ontdek de filosofie achter onze gepersonaliseerde gezonde levensstijl planner die zich aanpast aan jouw unieke behoeften en doelen.",
+    ourPhilosophy: "Onze Filosofie",
+    philosophyStatement: "Wij geloven dat gezond eten gepersonaliseerd, intelligent en naadloos geïntegreerd moet zijn in je echte leven. Onze maaltijdplanner combineert geavanceerde voedingswetenschap met AI-aanpassing om maaltijdplannen te creëren die meegroeien met jouw levensstijl, activiteitsniveaus en gezondheidsdoelen.",
+    corePrinciples: "Kernprincipes",
+    
+    // Philosophy Points (Dutch)
+    personalizedNutrition: "Gepersonaliseerde Voeding",
+    personalizedNutritionDesc: "Elk maaltijdplan is afgestemd op jouw specifieke eiwitdoelen, activiteitsniveaus, dieetbeperkingen en gezondheidsdoelen met wetenschappelijk onderbouwde berekeningen.",
+    intelligentPlanning: "Intelligente Planning",
+    intelligentPlanningDesc: "Onze AI analyseert jouw voorkeuren, kookgewoonten en levensstijl om diverse, praktische maaltijdplannen te genereren die bij jouw schema passen.",
+    adaptiveLifestyle: "Adaptieve Levensstijl",
+    adaptiveLifestyleDesc: "Integreert naadloos met jouw Oura Ring data om automatisch voedingsdoelen aan te passen op basis van je real-time activiteit en herstelmetingen.",
+    precisionTargeting: "Precisie Targeting",
+    precisionTargetingDesc: "Geavanceerde eiwitberekeningen op basis van leeftijd, geslacht, activiteitsniveau en doelen zorgen voor optimale voeding voor spieronderhoud en prestaties.",
+    sustainableEating: "Duurzaam Eten",
+    sustainableEatingDesc: "Focus op hele voeding, seizoensgebonden ingrediënten en praktische kookmethoden die langdurige gezonde eetgewoonten bevorderen.",
+    realLifeIntegration: "Echte Leven Integratie",
+    realLifeIntegrationDesc: "Houdt rekening met jouw huishoudgrootte, kookfrequentie en meal prep voorkeuren om realistische, haalbare maaltijdplannen te maken.",
+    
+    // How It Works (Dutch)
+    howItWorks: "Hoe Het Werkt",
+    step1Title: "Stel Je Profiel In",
+    step1Desc: "Vertel ons over jouw doelen, dieetvoorkeuren, activiteitsniveau en levensstijl.",
+    step2Title: "Verbind Je Data",
+    step2Desc: "Optionele Oura Ring integratie voor automatische activiteit- en hersteltracking.",
+    step3Title: "Genereer Je Plan",
+    step3Desc: "Onze AI maakt een gepersonaliseerd weekelijks maaltijdplan met precieze voedingsdoelen.",
+    step4Title: "Kook & Pas Aan",
+    step4Desc: "Volg je plan en laat ons systeem aanpassen op basis van jouw feedback en data.",
+    
+    // Key Features (Dutch)
+    keyFeatures: "Hoofdkenmerken",
+    featureProteinTitle: "Geavanceerde Eiwit Targeting",
+    featureProteinDesc: "Wetenschappelijk onderbouwde eiwitberekeningen met geslachtsspecifieke leeftijdsdrempels en activiteitsoverwegingen.",
+    featureAiTitle: "AI-Aangedreven Receptgeneratie",
+    featureAiDesc: "Intelligente receptcreatie die rekening houdt met jouw voorkeuren, beperkingen en voedingsbehoeften.",
+    featureOuraTitle: "Oura Ring Integratie",
+    featureOuraDesc: "Automatische detectie van activiteitsniveau en voedingsaanpassingen op basis van jouw biometrische data.",
+    featureMealPrepTitle: "Slimme Meal Prep Engine",
+    featureMealPrepDesc: "Past zich aan aan jouw kookschema met batch cooking optimalisatie en restjes integratie.",
+    featureDietaryTitle: "Uitgebreide Dieetondersteuning",
+    featureDietaryDesc: "Ondersteunt alle belangrijke dieetbeperkingen en voorkeuren met automatische filtering en alternatieven.",
+    featureShoppingTitle: "Supermarkt-Georganiseerde Lijsten",
+    featureShoppingDesc: "Boodschappenlijsten georganiseerd volgens supermarkt indeling met specifieke hoeveelheden en slimme categorisering.",
 
   }
 };

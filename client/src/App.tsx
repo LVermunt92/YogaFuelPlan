@@ -5,9 +5,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import MealPlanner from "@/pages/meal-planner";
 import Profile from "@/pages/profile";
+import About from "@/pages/about";
 import Auth from "@/pages/auth";
 import NotFound from "@/pages/not-found";
-import { Utensils, User, Menu, LogOut, Languages } from "lucide-react";
+import { Utensils, User, Info, Menu, LogOut, Languages } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import React, { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -43,7 +44,8 @@ function Navigation() {
 
   const navItems = [
     { path: "/", label: t.mealPlanner, icon: Utensils },
-    { path: "/profile", label: t.profile, icon: User }
+    { path: "/profile", label: t.profile, icon: User },
+    { path: "/about", label: t.about, icon: Info }
   ];
 
   return (
@@ -235,6 +237,7 @@ function Router() {
         <Switch>
           <Route path="/" component={MealPlanner} />
           <Route path="/profile" component={Profile} />
+          <Route path="/about" component={About} />
           <Route component={NotFound} />
         </Switch>
       </div>
