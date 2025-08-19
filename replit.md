@@ -1,5 +1,5 @@
 # Overview
-This full-stack meal planning application generates personalized weekly meal plans based on user activity levels and dietary preferences. Its purpose is to provide a comprehensive, adaptable solution for healthy meal planning, enhancing healthy eating habits globally and addressing the market potential for personalized nutrition solutions by optimizing user experience and nutritional value. The project aims to provide a comprehensive and adaptable solution for healthy meal planning, enhancing healthy eating habits globally.
+This full-stack meal planning application generates personalized weekly meal plans based on user activity levels and dietary preferences. Its purpose is to provide a comprehensive, adaptable solution for healthy meal planning, enhancing healthy eating habits globally and addressing the market potential for personalized nutrition solutions by optimizing user experience and nutritional value.
 
 # User Preferences
 Preferred communication style: Simple, everyday language.
@@ -58,7 +58,7 @@ Comprehensive Macronutrient Distribution Tracking: Added real-time tracking of m
     - **Ayurvedic Integration**: Supports Ayurvedic dietary tags and seasonal adaptation.
     - **Meal Plan Persistence**: Meal plans persist across browser sessions with automatic loading.
     - **Automated Viral Recipe Updates**: System automatically adds new trending recipes.
-    - **Enhanced Multi-Plan Weekend Grocery System**: Users can maintain both current week and next week plans simultaneously.
+    - **Simplified meal plan management**: Removed redundant weekend grocery planning feature. Users now rely on the more effective saved meal plans system for managing multiple plans.
     - **Complete Dutch Recipe Translation System**: Comprehensive translation service for recipe names, ingredients, and cooking instructions from English to Dutch, including AI-enhanced translation.
     - **Consolidated Shopping List Workflow**: Single-flow shopping list generation.
 - **System Design Choices**:
@@ -72,4 +72,3 @@ Comprehensive Macronutrient Distribution Tracking: Added real-time tracking of m
 - `@tanstack/react-query` (for server state management)
 - `@radix-ui` (for UI primitives)
 - `tailwindcss` (for styling)
-```
