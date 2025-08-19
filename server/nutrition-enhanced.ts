@@ -45,7 +45,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   // Breakfast options - Whole Foods Focus
   {
     name: "Steel-cut oats with raw nuts, fresh berries, and ground flax",
-    portion: "1 serving (bowl)",
+    portion: "1 serving",
     nutrition: { 
       protein: 18, 
       prepTime: 20, 
@@ -98,7 +98,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   },
   {
     name: "Fresh vegetable and herb scrambled eggs with avocado",
-    portion: "1 serving (3 eggs + vegetables)",
+    portion: "1 serving",
     nutrition: { 
       protein: 24, 
       prepTime: 15, 
@@ -152,7 +152,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   },
   {
     name: "Homemade chia pudding with fresh fruit and raw nuts",
-    portion: "1 serving (large)",
+    portion: "1 serving",
     nutrition: { 
       protein: 16, 
       prepTime: 5, 
@@ -203,7 +203,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   // Additional gluten-free, lactose-free, vegetarian breakfast options
   {
     name: "Overnight gluten-free oats with almond milk and berries",
-    portion: "1 serving (cup)",
+    portion: "1 serving",
     nutrition: {
       protein: 15,
       prepTime: 5,
@@ -251,7 +251,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   {
     name: "Quinoa breakfast bowl with coconut yogurt and nuts",
-    portion: "1 serving (bowl)",
+    portion: "1 serving",
     nutrition: {
       protein: 18,
       prepTime: 15,
@@ -300,7 +300,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   {
     name: "Coconut flour pancakes with dairy-free protein powder",
-    portion: "1 serving (3 pancakes)",
+    portion: "1 serving",
     nutrition: {
       protein: 22,
       prepTime: 20,
@@ -350,7 +350,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   {
     name: "Green smoothie bowl with hemp hearts and coconut",
-    portion: "1 serving (large bowl)",
+    portion: "1 serving",
     nutrition: {
       protein: 16,
       prepTime: 10,
@@ -399,7 +399,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   {
     name: "Fermented kefir bowl with gluten-free granola and berries",
-    portion: "1 serving (large bowl)",
+    portion: "1 serving",
     nutrition: { 
       protein: 20, 
       prepTime: 5, 
@@ -453,7 +453,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   // Lunch options - Whole Foods Focus
   {
     name: "Protein-packed lentil and roasted root vegetable bowl",
-    portion: "2 servings (lentils + vegetables)",
+    portion: "2 servings",
     nutrition: { 
       protein: 24, 
       prepTime: 35, 
@@ -505,7 +505,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   },
   {
     name: "Simple protein bowl",
-    portion: "1 serving (large bowl)",
+    portion: "1 serving",
     nutrition: { 
       protein: 25, 
       prepTime: 15, 
@@ -618,7 +618,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   },
   {
     name: "Lentil and fresh vegetable curry with brown rice",
-    portion: "2 servings (curry + rice)",
+    portion: "2 servings",
     nutrition: { 
       protein: 22, 
       prepTime: 35, 
@@ -840,7 +840,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   },
   {
     name: "Wild mushroom and herb quinoa with roasted vegetables",
-    portion: "2 servings (quinoa + vegetables)",
+    portion: "2 servings",
     nutrition: { 
       protein: 18, 
       prepTime: 35, 
@@ -925,7 +925,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   // VIRAL SOCIAL MEDIA RECIPES - Trendy & Instagram-worthy meals
   {
     name: "Green Goddess Salad Bowl",
-    portion: "1 serving (large bowl)",
+    portion: "1 serving",
     nutrition: { 
       protein: 22, 
       prepTime: 15, 
@@ -968,7 +968,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   {
     name: "Cottage Cheese Bowl",
-    portion: "1 serving (bowl)",
+    portion: "1 serving",
     nutrition: { 
       protein: 34, 
       prepTime: 5, 
@@ -1053,7 +1053,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   {
     name: "Cucumber Salad",
-    portion: "1 serving (large)",
+    portion: "1 serving",
     nutrition: { 
       protein: 8, 
       prepTime: 10, 
@@ -1184,7 +1184,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   // Quick weekday dinner options for complex dietary restrictions
   {
     name: "Quick veggie stir-fry with rice noodles and tahini sauce",
-    portion: "2 servings (noodles + vegetables)",
+    portion: "2 servings",
     nutrition: { 
       protein: 18, 
       prepTime: 20, 
@@ -1241,7 +1241,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   {
     name: "Speedy chickpea curry with coconut milk and quinoa",
-    portion: "2 servings (curry + quinoa)",
+    portion: "2 servings",
     nutrition: { 
       protein: 22, 
       prepTime: 25, 
@@ -1298,7 +1298,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   {
     name: "Mediterranean quinoa bowl with roasted vegetables",
-    portion: "2 servings (quinoa bowl)",
+    portion: "2 servings",
     nutrition: { 
       protein: 16, 
       prepTime: 30, 
@@ -1355,7 +1355,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   {
     name: "Quick black bean and sweet potato hash",
-    portion: "2 servings (hash)",
+    portion: "2 servings",
     nutrition: { 
       protein: 20, 
       prepTime: 25, 
@@ -1411,7 +1411,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   {
     name: "Asian-style vegetable fried rice with tofu",
-    portion: "2 servings (fried rice)",
+    portion: "2 servings",
     nutrition: { 
       protein: 24, 
       prepTime: 20, 
@@ -1468,7 +1468,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   // Quick Ayurvedic lunch and dinner options
   {
     name: "Ayurvedic spiced lentil dal with cumin and turmeric",
-    portion: "2 servings (dal with rice)",
+    portion: "2 servings",
     nutrition: { 
       protein: 22, 
       prepTime: 25, 
@@ -1524,7 +1524,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   {
     name: "Quick Ayurvedic kitchari with mung beans and basmati rice",
-    portion: "2 servings (kitchari)",
+    portion: "2 servings",
     nutrition: { 
       protein: 18, 
       prepTime: 30, 
@@ -1580,7 +1580,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   {
     name: "Warm spiced quinoa bowl with roasted root vegetables",
-    portion: "2 servings (quinoa bowl)",
+    portion: "2 servings",
     nutrition: { 
       protein: 16, 
       prepTime: 28, 
@@ -1637,7 +1637,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   {
     name: "Quick Ayurvedic mung bean and vegetable curry",
-    portion: "2 servings (curry)",
+    portion: "2 servings",
     nutrition: { 
       protein: 20, 
       prepTime: 22, 
@@ -1860,7 +1860,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   {
     name: "Cooling mung bean and fresh vegetable curry with coconut milk",
-    portion: "2 servings (curry)",
+    portion: "2 servings",
     nutrition: { 
       protein: 20, 
       prepTime: 28, 
@@ -2024,7 +2024,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   // Fresh summer fruit and coconut quinoa bowl (ayurvedic cooling)
   {
     name: "Fresh summer fruit and coconut quinoa bowl",
-    portion: "1 serving (bowl)",
+    portion: "1 serving",
     nutrition: {
       protein: 16,
       prepTime: 18,
@@ -2078,7 +2078,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   // Cooling coconut and herb rice noodle soup (ayurvedic summer)
   {
     name: "Cooling coconut and herb rice noodle soup",
-    portion: "1 serving (large bowl)",
+    portion: "1 serving",
     nutrition: {
       protein: 10,
       prepTime: 22,
@@ -2132,7 +2132,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   // Cooling barley water and vegetable soup (ayurvedic summer)
   {
     name: "Cooling barley water and vegetable soup",
-    portion: "1 serving (large bowl)",
+    portion: "1 serving",
     nutrition: {
       protein: 8,
       prepTime: 25,
@@ -2491,7 +2491,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   // ============ VIRAL RECIPES - INTEGRATED INTO UNIFIED DATABASE ============
   {
     name: "Protein Ice Cream Bowl",
-    portion: "1 serving (large bowl)",
+    portion: "1 serving",
     nutrition: { 
       protein: 28, 
       prepTime: 5, 
@@ -2640,7 +2640,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   },
   {
     name: "Salmon Rice Bowl",
-    portion: "1 serving (bowl)",
+    portion: "1 serving",
     nutrition: { 
       protein: 28, 
       prepTime: 15, 
@@ -2911,7 +2911,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   },
   {
     name: "Nature's Cereal",
-    portion: "1 serving (bowl)",
+    portion: "1 serving",
     nutrition: { 
       protein: 8, 
       prepTime: 5, 
@@ -3009,7 +3009,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   // ============ MISSING ADDITIONAL RECIPES ============
   {
     name: "High-protein smoothie bowl with granola",
-    portion: "1 serving (large bowl)",
+    portion: "1 serving",
     nutrition: { 
       protein: 26, 
       prepTime: 8, 
@@ -3058,7 +3058,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   },
   {
     name: "Savory quinoa breakfast bowl",
-    portion: "1 serving (bowl)",
+    portion: "1 serving",
     nutrition: { 
       protein: 18, 
       prepTime: 20, 
@@ -3264,7 +3264,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   {
     name: "Quick chickpea and sweet potato curry",
-    portion: "2 servings (curry)",
+    portion: "2 servings",
     nutrition: { 
       protein: 20, 
       prepTime: 25, 
@@ -3370,7 +3370,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   {
     name: "Quick tempeh and vegetable noodle bowl",
-    portion: "1 serving (large bowl)",
+    portion: "1 serving",
     nutrition: { 
       protein: 26, 
       prepTime: 20, 
@@ -3581,7 +3581,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   {
     name: "Keto chia pudding with berries",
-    portion: "1 serving (large)",
+    portion: "1 serving",
     nutrition: { 
       protein: 12, 
       prepTime: 5, 
@@ -3966,7 +3966,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   {
     name: "Keto cauliflower mac and cheese",
-    portion: "1 serving (large)",
+    portion: "1 serving",
     nutrition: { 
       protein: 18, 
       prepTime: 30, 
