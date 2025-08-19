@@ -477,6 +477,7 @@ export const translations = {
     usingIngredientsToUseUp: "Gebruikt ingrediënten om op te maken",
     ingredientAdded: "Ingrediënt toegevoegd",
     servings: "Porties",
+    serving: "Portie",
     ingredientRemoved: "Ingrediënt verwijderd",
     failedToAddIngredient: "Kon ingrediënt niet toevoegen",
     failedToRemoveIngredient: "Kon ingrediënt niet verwijderen",
