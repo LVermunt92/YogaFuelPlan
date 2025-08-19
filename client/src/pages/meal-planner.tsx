@@ -1573,7 +1573,7 @@ export default function MealPlanner() {
                 <h3 className="font-semibold text-lg text-foreground mb-2">
                   {recipeData.name}
                 </h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 text-sm">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 text-sm">
                   <div>
                     <span className="text-gray-500">{t.portion}:</span>
                     <p className="font-medium">{recipeData.portion}</p>
@@ -1596,6 +1596,18 @@ export default function MealPlanner() {
                   <div>
                     <span className="text-gray-500">{t.carbs}:</span>
                     <p className="font-medium text-blue-600">{recipeData.nutrition?.carbohydrates}g</p>
+                  </div>
+                  <div>
+                    <span className="text-gray-500">Good Fats:</span>
+                    <p className="font-medium text-yellow-600">{recipeData.nutrition?.fats || 0}g</p>
+                  </div>
+                  <div>
+                    <span className="text-gray-500">Vegetables:</span>
+                    <p className="font-medium text-green-600">{Math.round((recipeData.nutrition?.vegetables || 0) * 1000)}g</p>
+                  </div>
+                  <div>
+                    <span className="text-gray-500">Fruits/Starches:</span>
+                    <p className="font-medium text-orange-600">{Math.round((recipeData.nutrition?.carbohydrates || 0) * 0.4)}g</p>
                   </div>
                   {recipeData.nutrition?.costEuros && (
                     <div>
