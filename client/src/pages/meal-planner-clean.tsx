@@ -442,38 +442,36 @@ export default function MealPlanner() {
                 <p className="text-xs text-gray-500">{Math.min(kpiData.fruitsStarches.percentage, 100)}%</p>
               </div>
 
-              {/* Add a fourth chart if protein data is available */}
-              {kpiData.protein && (
-                <div className="text-center">
-                  <div className="relative w-20 h-20 mx-auto mb-1">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={[
-                            { value: Math.min(kpiData.protein.percentage, 100), fill: "#8b5cf6" },
-                            { value: Math.max(100 - kpiData.protein.percentage, 0), fill: "#f3f4f6" }
-                          ]}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={20}
-                          outerRadius={35}
-                          startAngle={90}
-                          endAngle={450}
-                          dataKey="value"
-                        >
-                        </Pie>
-                      </PieChart>
-                    </ResponsiveContainer>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center">
-                        <div className="text-sm font-bold text-purple-600">{kpiData.protein.value}g</div>
-                      </div>
+              {/* Protein Chart */}
+              <div className="text-center">
+                <div className="relative w-20 h-20 mx-auto mb-1">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={[
+                          { value: Math.min(kpiData.protein?.percentage || 0, 100), fill: "#8b5cf6" },
+                          { value: Math.max(100 - (kpiData.protein?.percentage || 0), 0), fill: "#f3f4f6" }
+                        ]}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={20}
+                        outerRadius={35}
+                        startAngle={90}
+                        endAngle={450}
+                        dataKey="value"
+                      >
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="text-sm font-bold text-purple-600">{kpiData.protein?.value || 0}g</div>
                     </div>
                   </div>
-                  <h3 className="text-xs font-semibold text-purple-600">Protein</h3>
-                  <p className="text-xs text-gray-500">{Math.min(kpiData.protein.percentage, 100)}%</p>
                 </div>
-              )}
+                <h3 className="text-xs font-semibold text-purple-600">Protein</h3>
+                <p className="text-xs text-gray-500">{Math.min(kpiData.protein?.percentage || 0, 100)}%</p>
+              </div>
             </div>
           )}
 
