@@ -343,7 +343,7 @@ export default function MealPlanner() {
             <h1 className="text-3xl font-bold text-foreground mb-2">
               {t.welcomeBack} {userProfile?.firstName || userProfile?.username || ''}
             </h1>
-            <p className="text-lg text-gray-600">{t.personalizedMealPlanning}</p>
+            <p className="text-lg text-gray-600">{t.createPersonalizedMealPlan || 'Create personalized meal plans based on your activity level'}</p>
           </div>
 
           {/* Leftover Ingredients Management */}
@@ -505,7 +505,7 @@ export default function MealPlanner() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Target className="h-6 w-6" />
-                  {t.nutritionKPIs || 'Nutrition KPIs'}
+                  {t.weeklyNutrition || 'Weekly Nutrition'}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -616,7 +616,7 @@ export default function MealPlanner() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Activity className="h-6 w-6" />
-                  {t.activityTracker || 'Activity Tracker'}
+                  {t.recentActivity || 'Recent Activity'}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -712,7 +712,7 @@ export default function MealPlanner() {
                       </div>
                     ) : (
                       <p className="text-center py-8 text-gray-500">
-                        {t.noShoppingList || 'No shopping list available'}
+                        {t.selectMealPlanForShoppingList || 'Select a meal plan to generate shopping list'}
                       </p>
                     )}
                   </DialogContent>
@@ -823,11 +823,11 @@ export default function MealPlanner() {
 
         {/* Recipe Dialog */}
         <Dialog open={!!selectedMealId} onOpenChange={() => setSelectedMealId(null)}>
-          <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-2">
-                <ChefHat className="h-5 w-5" />
-                {t.recipeDetails}
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader className="pb-4">
+              <DialogTitle className="text-2xl font-bold text-foreground flex items-center gap-3">
+                <BookOpen className="h-6 w-6 text-emerald-600" />
+                {recipeData?.name || t.recipe}
               </DialogTitle>
             </DialogHeader>
             
@@ -843,50 +843,145 @@ export default function MealPlanner() {
               </div>
             ) : recipeData ? (
               <div className="space-y-6">
-                <div>
-                  <h2 className="text-xl font-bold mb-2">{recipeData.name}</h2>
-                  <div className="flex gap-4 text-sm text-gray-600">
-                    <span>Portion: {recipeData.portion}</span>
-                    <span>Prep Time: {recipeData.prepTime} min</span>
-                    <span>Protein: {recipeData.nutrition.protein}g</span>
+                {/* Recipe Header */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <Timer className="w-4 h-4 text-orange-600" />
+                    <div>
+                      <p className="text-xs text-gray-500">{t.prepTime}</p>
+                      <p className="font-medium">{recipeData.prepTime} {t.min}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Users className="w-4 h-4 text-blue-600" />
+                    <div>
+                      <p className="text-xs text-gray-500">{t.servings}</p>
+                      <p className="font-medium">{recipeData.portion}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Target className="w-4 h-4 text-emerald-600" />
+                    <div>
+                      <p className="text-xs text-gray-500">{t.protein}</p>
+                      <p className="font-medium">{Math.round(recipeData.nutrition.protein)}g</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Activity className="w-4 h-4 text-purple-600" />
+                    <div>
+                      <p className="text-xs text-gray-500">{t.calories}</p>
+                      <p className="font-medium">{Math.round(recipeData.nutrition.calories)}</p>
+                    </div>
                   </div>
                 </div>
 
-                {recipeData.ingredients && (
-                  <div>
-                    <h3 className="font-semibold mb-2">Ingredients:</h3>
-                    <ul className="list-disc list-inside space-y-1">
-                      {recipeData.ingredients.map((ingredient, index) => (
-                        <li key={index} className="text-sm">{ingredient}</li>
-                      ))}
-                    </ul>
+                {/* Recipe KPIs */}
+                {recipeData.nutrition && (
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-blue-50 rounded-lg">
+                    <div className="text-center">
+                      <p className="text-xs text-blue-600 font-medium">{t.goodFats || 'Good Fats'}</p>
+                      <p className="text-lg font-bold text-blue-800">{Math.round(recipeData.nutrition.fats || 0)}g</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-xs text-green-600 font-medium">{t.vegetables || 'Vegetables'}</p>
+                      <p className="text-lg font-bold text-green-800">{recipeData.vegetableContent?.servings || 0}</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-xs text-orange-600 font-medium">{t.fruitsStarches || 'Fruits/Starches'}</p>
+                      <p className="text-lg font-bold text-orange-800">{Math.round(recipeData.nutrition.carbohydrates || 0)}g</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-xs text-purple-600 font-medium">{t.fiber || 'Fiber'}</p>
+                      <p className="text-lg font-bold text-purple-800">{Math.round(recipeData.nutrition.fiber || 0)}g</p>
+                    </div>
                   </div>
                 )}
 
-                {recipeData.instructions && (
-                  <div>
-                    <h3 className="font-semibold mb-2">Instructions:</h3>
-                    <ol className="list-decimal list-inside space-y-2">
-                      {recipeData.instructions.map((instruction, index) => (
-                        <li key={index} className="text-sm">{instruction}</li>
-                      ))}
-                    </ol>
+                {/* Dietary Tags */}
+                {recipeData.tags && recipeData.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {recipeData.tags.map((tag, index) => (
+                      <Badge key={index} variant="secondary" className="text-xs">
+                        {language === 'nl' ? translateDietaryTag(tag, 'nl') : tag}
+                      </Badge>
+                    ))}
                   </div>
                 )}
 
-                {recipeData.tips && recipeData.tips.length > 0 && (
-                  <div>
-                    <h3 className="font-semibold mb-2">Tips:</h3>
-                    <ul className="list-disc list-inside space-y-1">
-                      {recipeData.tips.map((tip, index) => (
-                        <li key={index} className="text-sm text-gray-600">{tip}</li>
-                      ))}
-                    </ul>
+                <Separator />
+
+                {/* Ingredients */}
+                <div>
+                  <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                    <ShoppingCart className="w-4 h-4" />
+                    {t.ingredients}
+                  </h4>
+                  <div className="grid grid-cols-2 gap-2">
+                    {recipeData?.ingredients?.map((ingredient, index) => (
+                      <div key={index} className="flex items-center gap-2 text-sm text-gray-500">
+                        <div className="w-2 h-2 bg-emerald-500 rounded-full flex-shrink-0" />
+                        {ingredient}
+                      </div>
+                    )) || <p className="text-sm text-gray-400">No ingredients available</p>}
                   </div>
+                </div>
+
+                <Separator />
+
+                {/* Instructions */}
+                <div>
+                  <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                    <BookOpen className="w-4 h-4" />
+                    {t.instructions}
+                  </h4>
+                  <ol className="space-y-3">
+                    {recipeData?.instructions?.map((instruction, index) => (
+                      <li key={index} className="flex gap-3">
+                        <span className="flex-shrink-0 w-6 h-6 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-sm font-medium">
+                          {index + 1}
+                        </span>
+                        <p className="text-gray-500 leading-relaxed">{instruction}</p>
+                      </li>
+                    )) || <p className="text-sm text-gray-400">No instructions available</p>}
+                  </ol>
+                </div>
+
+                {/* Tips */}
+                {recipeData?.tips && recipeData.tips.length > 0 && (
+                  <>
+                    <Separator />
+                    <div>
+                      <h4 className="font-semibold text-foreground mb-3">💡 {t.tips}</h4>
+                      <ul className="space-y-2">
+                        {recipeData?.tips?.map((tip, index) => (
+                          <li key={index} className="flex gap-2 text-sm text-gray-500">
+                            <span className="text-emerald-500">•</span>
+                            {tip}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </>
+                )}
+
+                {/* Notes */}
+                {recipeData.notes && (
+                  <>
+                    <Separator />
+                    <div className="bg-blue-50 rounded-lg p-4">
+                      <h4 className="font-semibold text-blue-900 mb-2">📝 {t.notes}</h4>
+                      <p className="text-blue-800 text-sm leading-relaxed">
+                        {recipeData.notes}
+                      </p>
+                    </div>
+                  </>
                 )}
               </div>
             ) : (
-              <p>Recipe not available</p>
+              <div className="p-6 text-center text-gray-500">
+                <BookOpen className="mx-auto h-12 w-12 mb-4 opacity-50" />
+                <p>{t.recipeNotAvailable}</p>
+              </div>
             )}
           </DialogContent>
         </Dialog>
