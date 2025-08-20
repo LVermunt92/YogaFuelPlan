@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Calendar, Clock, Target, Eye, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages } from "lucide-react";
+import { Calendar, Clock, Target, Eye, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages, Users, Minus, Trash2 } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Separator } from "@/components/ui/separator";
 import { useTranslations, translateDietaryTags, translateDietaryTag } from "@/lib/translations";
@@ -339,12 +339,143 @@ export default function MealPlanner() {
         <div className="max-w-4xl mx-auto space-y-8">
           
           {/* Welcome Section */}
-          <div className="text-center">
+          <div className="text-center mb-6">
             <h1 className="text-3xl font-bold text-foreground mb-2">
               {t.welcomeBack} {userProfile?.firstName || userProfile?.username || ''}
             </h1>
             <p className="text-lg text-gray-600">{t.createPersonalizedMealPlan || 'Create personalized meal plans based on your activity level'}</p>
           </div>
+
+          {/* Compact Nutrition Charts at Top */}
+          {currentMealPlan && kpiData && (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 bg-gray-50 p-4 rounded-lg">
+              {/* Good Fats */}
+              <div className="text-center">
+                <div className="relative w-20 h-20 mx-auto mb-1">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={[
+                          { value: kpiData.goodFats.percentage, fill: "#f97316" },
+                          { value: 100 - kpiData.goodFats.percentage, fill: "#f3f4f6" }
+                        ]}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={20}
+                        outerRadius={35}
+                        startAngle={90}
+                        endAngle={450}
+                        dataKey="value"
+                      >
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="text-sm font-bold text-orange-600">{kpiData.goodFats.value}g</div>
+                    </div>
+                  </div>
+                </div>
+                <h3 className="text-xs font-semibold text-orange-600">Good Fats</h3>
+                <p className="text-xs text-gray-500">{kpiData.goodFats.percentage}%</p>
+              </div>
+
+              {/* Vegetables */}
+              <div className="text-center">
+                <div className="relative w-20 h-20 mx-auto mb-1">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={[
+                          { value: Math.min(kpiData.vegetables.percentage, 100), fill: "#10b981" },
+                          { value: Math.max(100 - kpiData.vegetables.percentage, 0), fill: "#f3f4f6" }
+                        ]}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={20}
+                        outerRadius={35}
+                        startAngle={90}
+                        endAngle={450}
+                        dataKey="value"
+                      >
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="text-sm font-bold text-emerald-600">{kpiData.vegetables.value}g</div>
+                    </div>
+                  </div>
+                </div>
+                <h3 className="text-xs font-semibold text-emerald-600">Vegetables</h3>
+                <p className="text-xs text-gray-500">{Math.min(kpiData.vegetables.percentage, 100)}%</p>
+              </div>
+
+              {/* Fruits & Starches */}
+              <div className="text-center">
+                <div className="relative w-20 h-20 mx-auto mb-1">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={[
+                          { value: Math.min(kpiData.fruitsStarches.percentage, 100), fill: "#3b82f6" },
+                          { value: Math.max(100 - kpiData.fruitsStarches.percentage, 0), fill: "#f3f4f6" }
+                        ]}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={20}
+                        outerRadius={35}
+                        startAngle={90}
+                        endAngle={450}
+                        dataKey="value"
+                      >
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="text-sm font-bold text-blue-600">{kpiData.fruitsStarches.value}g</div>
+                    </div>
+                  </div>
+                </div>
+                <h3 className="text-xs font-semibold text-blue-600">Fruits & Starches</h3>
+                <p className="text-xs text-gray-500">{Math.min(kpiData.fruitsStarches.percentage, 100)}%</p>
+              </div>
+
+              {/* Add a fourth chart if protein data is available */}
+              {kpiData.protein && (
+                <div className="text-center">
+                  <div className="relative w-20 h-20 mx-auto mb-1">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={[
+                            { value: Math.min(kpiData.protein.percentage, 100), fill: "#8b5cf6" },
+                            { value: Math.max(100 - kpiData.protein.percentage, 0), fill: "#f3f4f6" }
+                          ]}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={20}
+                          outerRadius={35}
+                          startAngle={90}
+                          endAngle={450}
+                          dataKey="value"
+                        >
+                        </Pie>
+                      </PieChart>
+                    </ResponsiveContainer>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="text-center">
+                        <div className="text-sm font-bold text-purple-600">{kpiData.protein.value}g</div>
+                      </div>
+                    </div>
+                  </div>
+                  <h3 className="text-xs font-semibold text-purple-600">Protein</h3>
+                  <p className="text-xs text-gray-500">{Math.min(kpiData.protein.percentage, 100)}%</p>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Leftover Ingredients Management */}
           <Card className="w-full">
@@ -494,117 +625,6 @@ export default function MealPlanner() {
                       <p className="text-sm text-gray-400">{plan.totalProtein.toFixed(0)}g protein/day</p>
                     </div>
                   ))}
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Nutrition KPIs */}
-          {currentMealPlan && kpiData && (
-            <Card className="w-full">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Target className="h-6 w-6" />
-                  {t.weeklyNutrition || 'Weekly Nutrition'}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {/* Good Fats */}
-                  <div className="text-center">
-                    <div className="relative w-32 h-32 mx-auto mb-2">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={[
-                              { value: kpiData.goodFats.percentage, fill: "#f97316" },
-                              { value: 100 - kpiData.goodFats.percentage, fill: "#f3f4f6" }
-                            ]}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={35}
-                            outerRadius={60}
-                            startAngle={90}
-                            endAngle={450}
-                            dataKey="value"
-                          >
-                          </Pie>
-                        </PieChart>
-                      </ResponsiveContainer>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-center">
-                          <div className="text-lg font-bold text-orange-600">{kpiData.goodFats.value}g</div>
-                          <div className="text-xs text-gray-500">{kpiData.goodFats.percentage}%</div>
-                        </div>
-                      </div>
-                    </div>
-                    <h3 className="font-semibold text-orange-600">Good Fats</h3>
-                    <p className="text-xs text-gray-500">{kpiData.goodFats.target}</p>
-                  </div>
-
-                  {/* Vegetables */}
-                  <div className="text-center">
-                    <div className="relative w-32 h-32 mx-auto mb-2">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={[
-                              { value: Math.min(kpiData.vegetables.percentage, 100), fill: "#10b981" },
-                              { value: Math.max(100 - kpiData.vegetables.percentage, 0), fill: "#f3f4f6" }
-                            ]}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={35}
-                            outerRadius={60}
-                            startAngle={90}
-                            endAngle={450}
-                            dataKey="value"
-                          >
-                          </Pie>
-                        </PieChart>
-                      </ResponsiveContainer>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-center">
-                          <div className="text-lg font-bold text-emerald-600">{kpiData.vegetables.value}g</div>
-                          <div className="text-xs text-gray-500">{Math.min(kpiData.vegetables.percentage, 100)}%</div>
-                        </div>
-                      </div>
-                    </div>
-                    <h3 className="font-semibold text-emerald-600">Vegetables</h3>
-                    <p className="text-xs text-gray-500">{kpiData.vegetables.target}</p>
-                  </div>
-
-                  {/* Fruits & Starches */}
-                  <div className="text-center">
-                    <div className="relative w-32 h-32 mx-auto mb-2">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={[
-                              { value: Math.min(kpiData.fruitsStarches.percentage, 100), fill: "#3b82f6" },
-                              { value: Math.max(100 - kpiData.fruitsStarches.percentage, 0), fill: "#f3f4f6" }
-                            ]}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={35}
-                            outerRadius={60}
-                            startAngle={90}
-                            endAngle={450}
-                            dataKey="value"
-                          >
-                          </Pie>
-                        </PieChart>
-                      </ResponsiveContainer>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-center">
-                          <div className="text-lg font-bold text-blue-600">{kpiData.fruitsStarches.value}g</div>
-                          <div className="text-xs text-gray-500">{Math.min(kpiData.fruitsStarches.percentage, 100)}%</div>
-                        </div>
-                      </div>
-                    </div>
-                    <h3 className="font-semibold text-blue-600">Fruits & Starches</h3>
-                    <p className="text-xs text-gray-500">{kpiData.fruitsStarches.target}</p>
-                  </div>
                 </div>
               </CardContent>
             </Card>
