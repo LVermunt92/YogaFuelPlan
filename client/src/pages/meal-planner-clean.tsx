@@ -519,67 +519,7 @@ export default function MealPlanner() {
             </Card>
           )}
 
-          <Card className="w-full">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <RefreshCw className="h-6 w-6" />
-                {t.ingredientsToUseUp || 'Ingredients to Use Up'}
-              </CardTitle>
-              <p className="text-sm text-gray-500">
-                {language === 'nl' 
-                  ? 'Voeg ingrediënten toe die je deze week wilt opmaken. Deze worden verwerkt in nieuwe recepten.' 
-                  : 'Add ingredients you want to use up this week. These will be incorporated into fresh recipes.'
-                }
-              </p>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex gap-2">
-                <Input
-                  type="text"
-                  value={newLeftover}
-                  onChange={(e) => setNewLeftover(e.target.value)}
-                  placeholder={language === 'nl' ? 'bijv. spinazie, champignons...' : 'e.g. spinach, mushrooms...'}
-                  className="flex-1"
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                      addLeftover();
-                    }
-                  }}
-                />
-                <Button
-                  onClick={addLeftover}
-                  disabled={!newLeftover.trim() || updateProfileMutation.isPending}
-                  className="btn-outline btn-touch"
-                  size="sm"
-                >
-                  <Plus className="h-4 w-4" />
-                </Button>
-              </div>
-
-              {userProfile?.leftovers && userProfile.leftovers.length > 0 && (
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium">Current ingredients:</Label>
-                  <div className="flex flex-wrap gap-2">
-                    {userProfile.leftovers.map((leftover, index) => (
-                      <Badge 
-                        key={index} 
-                        variant="secondary" 
-                        className="flex items-center gap-1"
-                      >
-                        {leftover}
-                        <X 
-                          className="h-3 w-3 cursor-pointer hover:text-red-500" 
-                          onClick={() => removeLeftover(index)}
-                        />
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* 5. Meal Plan Generation */}
+          {/* 4. Generate Meal Plan (Combined Section) */}
           <Card className="w-full">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -587,11 +527,12 @@ export default function MealPlanner() {
                 {t.generateMealPlan}
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6">
+              {/* Week Selection Subtitle */}
               <div>
-                <Label>{t.weekSelection}</Label>
+                <Label className="text-sm font-medium text-gray-700">{t.weekSelection}</Label>
                 <Select value={selectedWeekType} onValueChange={(value: "current" | "next") => setSelectedWeekType(value)}>
-                  <SelectTrigger>
+                  <SelectTrigger className="mt-1">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -599,6 +540,63 @@ export default function MealPlanner() {
                     <SelectItem value="next">{t.nextWeek}</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+
+              {/* Ingredients to Use Subtitle */}
+              <div className="space-y-3">
+                <Label className="text-sm font-medium text-gray-700">
+                  {t.ingredientsToUseUp || 'Ingredients to Use Up'}
+                </Label>
+                <p className="text-xs text-gray-500">
+                  {language === 'nl' 
+                    ? 'Voeg ingrediënten toe die je deze week wilt opmaken. Deze worden verwerkt in nieuwe recepten.' 
+                    : 'Add ingredients you want to use up this week. These will be incorporated into fresh recipes.'
+                  }
+                </p>
+                
+                <div className="flex gap-2">
+                  <Input
+                    type="text"
+                    value={newLeftover}
+                    onChange={(e) => setNewLeftover(e.target.value)}
+                    placeholder={language === 'nl' ? 'bijv. spinazie, champignons...' : 'e.g. spinach, mushrooms...'}
+                    className="flex-1"
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        addLeftover();
+                      }
+                    }}
+                  />
+                  <Button
+                    onClick={addLeftover}
+                    disabled={!newLeftover.trim() || updateProfileMutation.isPending}
+                    className="btn-outline btn-touch"
+                    size="sm"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+
+                {userProfile?.leftovers && userProfile.leftovers.length > 0 && (
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium">Current ingredients:</Label>
+                    <div className="flex flex-wrap gap-2">
+                      {userProfile.leftovers.map((leftover, index) => (
+                        <Badge 
+                          key={index} 
+                          variant="secondary" 
+                          className="flex items-center gap-1"
+                        >
+                          {leftover}
+                          <X 
+                            className="h-3 w-3 cursor-pointer hover:text-red-500" 
+                            onClick={() => removeLeftover(index)}
+                          />
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               <Button 
@@ -634,20 +632,23 @@ export default function MealPlanner() {
                   : (t.createPersonalizedMealPlan || 'Create personalized meal plan based on your activity level')
                 }
               </p>
+
+              {/* Grocery List Button */}
+              {currentMealPlan && (
+                <Button 
+                  onClick={() => setShowShoppingList(true)}
+                  className="btn-minimal btn-touch w-full"
+                >
+                  <ShoppingCart className="mr-2 h-4 w-4" />
+                  {t.generateShoppingList}
+                </Button>
+              )}
             </CardContent>
           </Card>
 
-          {/* 6. Grocery List Button */}
+          {/* Shopping List Dialog (moved outside) */}
           {currentMealPlan && (
-            <Card className="w-full">
-              <CardContent className="pt-6">
-                <Dialog open={showShoppingList} onOpenChange={setShowShoppingList}>
-                  <DialogTrigger asChild>
-                    <Button className="btn-minimal btn-touch w-full">
-                      <ShoppingCart className="mr-2 h-4 w-4" />
-                      {t.generateShoppingList}
-                    </Button>
-                  </DialogTrigger>
+            <Dialog open={showShoppingList} onOpenChange={setShowShoppingList}>
                   <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-white">
                     <DialogHeader>
                       <DialogTitle>{t.shoppingListHeader}</DialogTitle>
@@ -700,12 +701,10 @@ export default function MealPlanner() {
                       </p>
                     )}
                   </DialogContent>
-                </Dialog>
-              </CardContent>
-            </Card>
+            </Dialog>
           )}
 
-          {/* 7. Saved Meal Plans */}
+          {/* 5. Saved Meal Plans */}
           {mealPlans.length > 0 && (
             <Card className="w-full">
               <CardHeader>
@@ -739,7 +738,7 @@ export default function MealPlanner() {
             </Card>
           )}
 
-          {/* 8. Weekly Meal Plan Display */}
+          {/* 6. Weekly Meal Plan */}
           <Card className="w-full">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
