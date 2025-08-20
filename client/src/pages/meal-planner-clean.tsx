@@ -16,6 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import { useTranslations, translateDietaryTags, translateDietaryTag } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Textarea } from "@/components/ui/textarea";
+import { AlbertHeijnIntegration } from "@/components/albert-heijn-integration";
 import type { User, MealPlan as MealPlanType, Meal as MealType } from "@shared/schema";
 
 // Type alias for easier use
@@ -684,6 +685,14 @@ export default function MealPlanner() {
                             </div>
                           </div>
                         ))}
+                        
+                        {/* Albert Heijn Integration */}
+                        <div className="mt-6 pt-6 border-t border-border">
+                          <AlbertHeijnIntegration 
+                            ingredients={shoppingListData.shoppingList?.map(item => item.ingredient) || []}
+                            mealPlanId={shoppingListData.mealPlanId}
+                          />
+                        </div>
                       </div>
                     ) : (
                       <p className="text-center text-gray-500 py-8">
