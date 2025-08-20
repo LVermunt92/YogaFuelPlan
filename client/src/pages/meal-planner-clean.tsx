@@ -140,6 +140,22 @@ export default function MealPlanner() {
     enabled: !!selectedMealId,
   });
 
+  // Update profile mutation for leftovers
+  const updateProfileMutation = useMutation({
+    mutationFn: async (data: any) => {
+      if (!authUser?.id) throw new Error('User not authenticated');
+      const response = await apiRequest('PATCH', `/api/users/${authUser.id}/profile`, data);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/users', authUser?.id, 'profile'] });
+      toast({
+        title: t.success,
+        description: "Profile updated successfully",
+      });
+    },
+  });
+
   // Generate meal plan mutation
   const generateMutation = useMutation({
     mutationFn: async () => {
@@ -174,6 +190,28 @@ export default function MealPlanner() {
     return currentMealPlan.meals.filter(meal => meal.day === day);
   };
 
+  // Leftover ingredients management
+  const addLeftover = () => {
+    if (!newLeftover.trim() || !userProfile) return;
+    
+    const updatedLeftovers = [...(userProfile.leftovers || []), newLeftover.trim()];
+    updateProfileMutation.mutate({ leftovers: updatedLeftovers });
+    setNewLeftover("");
+  };
+
+  const removeLeftover = (index: number) => {
+    if (!userProfile) return;
+    
+    const updatedLeftovers = (userProfile.leftovers || []).filter((_, i) => i !== index);
+    updateProfileMutation.mutate({ leftovers: updatedLeftovers });
+  };
+
+  // Check if a meal contains leftover ingredients
+  const isLeftoverMeal = (meal: Meal) => {
+    return meal.foodDescription.toLowerCase().includes('leftover') || 
+           meal.foodDescription.toLowerCase().includes('incorporating');
+  };
+
   // Auto-select first meal plan
   useEffect(() => {
     if (!selectedMealPlan && mealPlans.length > 0) {
@@ -195,6 +233,66 @@ export default function MealPlanner() {
             </h1>
             <p className="text-lg text-gray-600">{t.personalizedMealPlanning}</p>
           </div>
+
+          {/* Leftover Ingredients Management */}
+          <Card className="w-full">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <RefreshCw className="h-6 w-6" />
+                {t.ingredientsToUseUp || 'Ingredients to Use Up'}
+              </CardTitle>
+              <p className="text-sm text-gray-500">
+                {language === 'nl' 
+                  ? 'Voeg ingrediënten toe die je deze week wilt opmaken. Deze worden verwerkt in nieuwe recepten.' 
+                  : 'Add ingredients you want to use up this week. These will be incorporated into fresh recipes.'
+                }
+              </p>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex gap-2">
+                <Input
+                  type="text"
+                  value={newLeftover}
+                  onChange={(e) => setNewLeftover(e.target.value)}
+                  placeholder={language === 'nl' ? 'bijv. spinazie, champignons...' : 'e.g. spinach, mushrooms...'}
+                  className="flex-1"
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      addLeftover();
+                    }
+                  }}
+                />
+                <Button
+                  onClick={addLeftover}
+                  disabled={!newLeftover.trim() || updateProfileMutation.isPending}
+                  size="sm"
+                >
+                  <Plus className="h-4 w-4" />
+                </Button>
+              </div>
+
+              {userProfile?.leftovers && userProfile.leftovers.length > 0 && (
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Current ingredients:</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {userProfile.leftovers.map((leftover, index) => (
+                      <Badge 
+                        key={index} 
+                        variant="secondary" 
+                        className="flex items-center gap-1"
+                      >
+                        {leftover}
+                        <X 
+                          className="h-3 w-3 cursor-pointer hover:text-red-500" 
+                          onClick={() => removeLeftover(index)}
+                        />
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
 
           {/* Meal Generation Section */}
           <Card className="w-full">
@@ -300,28 +398,40 @@ export default function MealPlanner() {
                       <div key={day} className="border rounded-lg p-4">
                         <h3 className="font-semibold text-lg mb-3">{dayNames[day - 1]}</h3>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          {dayMeals.map((meal, index) => (
-                            <div 
-                              key={index}
-                              className="p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors"
-                              onClick={() => setSelectedMealId(meal.id)}
-                            >
-                              <div className="flex items-center justify-between mb-2">
-                                <span className="text-sm font-medium capitalize text-primary">
-                                  {meal.mealType}
-                                </span>
-                                <Badge variant="secondary" className="text-xs">
-                                  {meal.protein}g protein
-                                </Badge>
+                          {dayMeals.map((meal, index) => {
+                            const isLeftover = isLeftoverMeal(meal);
+                            return (
+                              <div 
+                                key={index}
+                                className={`p-3 rounded-lg cursor-pointer transition-colors ${
+                                  isLeftover 
+                                    ? 'bg-green-50 hover:bg-green-100 border border-green-200' 
+                                    : 'bg-gray-50 hover:bg-gray-100'
+                                }`}
+                                onClick={() => setSelectedMealId(meal.id)}
+                              >
+                                <div className="flex items-center justify-between mb-2">
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-sm font-medium capitalize text-primary">
+                                      {meal.mealType}
+                                    </span>
+                                    {isLeftover && (
+                                      <RefreshCw className="h-3 w-3 text-green-600" />
+                                    )}
+                                  </div>
+                                  <Badge variant="secondary" className="text-xs">
+                                    {meal.protein}g protein
+                                  </Badge>
+                                </div>
+                                <p className="text-sm font-medium text-foreground mb-1">
+                                  {meal.foodDescription}
+                                </p>
+                                <p className="text-xs text-gray-500">
+                                  {meal.portion} • {meal.prepTime} min
+                                </p>
                               </div>
-                              <p className="text-sm font-medium text-foreground mb-1">
-                                {meal.foodDescription}
-                              </p>
-                              <p className="text-xs text-gray-500">
-                                {meal.portion} • {meal.prepTime} min
-                              </p>
-                            </div>
-                          ))}
+                            );
+                          })}
                         </div>
                       </div>
                     );

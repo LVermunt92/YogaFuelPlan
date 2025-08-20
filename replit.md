@@ -29,7 +29,7 @@ About Page Implementation: Created comprehensive About page explaining the meal 
 Critical Dietary Restriction Bug Fix: Added additional safety filtering to prevent any recipes tagged as "pescatarian" or containing fish/meat ingredients from being served to vegetarian users. Implemented emergency cleanup that removed problematic meals from existing plans and added safeguards to prevent recurrence.
 Fixed Recipe Instructions Issue: Enhanced recipe lookup logic to strip "(protein-enhanced)" suffix during matching, ensuring all recipes display complete detailed instructions with proper ingredients, step-by-step cooking directions, tips, and nutritional information.
 Enhanced grocery list display: Updated bell peppers, carrots, and kiwi to show as "pieces" instead of grams in shopping lists for clearer grocery shopping guidance. Bell peppers now display as "2 pieces", carrots as "3 pieces", and kiwi as "4 pieces" (stuks in Dutch) for more practical shopping experience.
-Improved fresh herbs specification: System now defaults to "fresh parsley" and properly categorizes all herb types (basil, cilantro, oregano, thyme, rosemary, mint, dill, chives) as "1 bunch" (bosje in Dutch) for clearer shopping guidance.
+Improved fresh herbs specification: System now defaults to "fresh parsley" and properly categorizes all herb types (basil, cilantro, oregano, thyme, rosemary, mint, dill, and chives) as "1 bunch" (bosje in Dutch) for clearer shopping guidance.
 Comprehensive Ingredient Specification System: Implemented complete system to eliminate all generic ingredient terms across recipes. Created ingredient-specifier.ts with comprehensive mappings for vegetables (mixed vegetables → bell peppers, zucchini, carrots), fruits (seasonal fruit → season-appropriate options), herbs (fresh herbs → fresh parsley), and all other categories. System automatically updates all 76 recipes on server startup, runs validation checks, and provides API endpoints for manual updates. All recipes now have 100% specific ingredients, eliminating vague terms like "mixed vegetables", "fresh herbs", "seasonal fruit" from both recipe displays and shopping lists. New recipes are automatically processed to ensure specificity.
 Fixed Critical Leftover Ingredients Bug: Removed the clearing logic and added proper leftover ingredient incorporation to the main meal generation path (not just meal prep mode). System now properly uses ALL user-added ingredients during cooking moments, displays which ingredients were incorporated in meal descriptions (e.g., "Wild mushroom quinoa (incorporating leftover spinach, bell peppers, quinoa)"), and removes used ingredients to prevent duplicates. Users can now successfully add multiple ingredients through the UI and see them all properly incorporated into their meal plans.
 Fixed Shopping List Capitalization: Added proper capitalization logic to ensure all ingredient names start with capital letters for better readability and professional presentation (e.g., "Almond milk" instead of "almond milk", "Bell peppers" instead of "bell peppers").
@@ -56,7 +56,7 @@ Comprehensive Admin Panel Implementation: Created full-featured admin interface 
     - **Build Tools**: Vite for frontend, esbuild for backend.
 - **Feature Specifications**:
     - **Authentication & Multi-User Support**: Secure login/registration, password reset, isolated user data, and route protection.
-    - **Meal Generation**: Calculates protein targets, selects meals from a nutrition database, generates 7-day plans with variety, and creates shopping lists. Meals include instructions, tips, and nutritional information; recipes are alcohol-free. Includes smart AI recipe generation and comprehensive ingredient specification.
+    - **Meal Generation**: Calculates protein targets, selects meals from a nutrition database, generates 7-day plans with variety, and creates shopping lists. Includes smart AI recipe generation and comprehensive ingredient specification, with recipes being alcohol-free.
     - **Universal Meal Prep Engine**: Adapts to user cooking schedules, supporting batch cooking, proper meal distribution, and intelligent dietary fallbacks.
     - **Smart Time Constraints**: Weekday meals (Mon-Fri) are limited to ≤30 minutes prep time; weekends have no time restrictions.
     - **Ayurvedic Integration**: Supports Ayurvedic dietary tags and seasonal adaptation.
@@ -74,8 +74,8 @@ Comprehensive Admin Panel Implementation: Created full-featured admin interface 
     - **Unified Recipe Database**: Consolidated three separate recipe databases (base, viral, additional) into a single unified system.
 
 # External Dependencies
-- `@neondatabase/serverless`
-- `drizzle-orm`
-- `@tanstack/react-query`
-- `@radix-ui`
-- `tailwindcss`
+- `@neondatabase/serverless` (PostgreSQL client)
+- `drizzle-orm` (ORM for PostgreSQL)
+- `@tanstack/react-query` (Frontend data fetching)
+- `@radix-ui` (UI primitives)
+- `tailwindcss` (CSS framework)
