@@ -338,7 +338,7 @@ export default function MealPlanner() {
         {/* Centered Content Container */}
         <div className="max-w-4xl mx-auto space-y-8">
           
-          {/* Welcome Section */}
+          {/* 1. Welcome Section */}
           <div className="text-center mb-6">
             <h1 className="text-3xl font-bold text-foreground mb-2">
               {t.welcomeBack} {userProfile?.firstName || userProfile?.username || ''}
@@ -346,7 +346,7 @@ export default function MealPlanner() {
             <p className="text-lg text-gray-600">{t.createPersonalizedMealPlan || 'Create personalized meal plans based on your activity level'}</p>
           </div>
 
-          {/* Compact Nutrition Charts at Top */}
+          {/* 2. Compact Nutrition Charts */}
           {currentMealPlan && kpiData && (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 bg-gray-50 p-4 rounded-lg">
               {/* Good Fats */}
@@ -477,7 +477,109 @@ export default function MealPlanner() {
             </div>
           )}
 
-          {/* Leftover Ingredients Management */}
+          {/* 3. Health Tracking (Oura Ring) */}
+          {ouraStatus?.connected && ouraData && ouraData.length > 0 && (
+            <Card className="w-full">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Activity className="h-6 w-6" />
+                  {t.recentActivity || 'Recent Activity'}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {ouraData.slice(0, 4).map((data, index) => (
+                    <div key={index} className="text-center p-3 bg-gray-50 rounded-lg">
+                      <div className="text-sm text-gray-500 mb-1">
+                        {new Date(data.date).toLocaleDateString('en-US', { weekday: 'short' })}
+                      </div>
+                      <div className="space-y-1">
+                        {data.steps && (
+                          <div className="text-xs">
+                            <span className="font-medium">{data.steps.toLocaleString()}</span>
+                            <span className="text-gray-500 ml-1">steps</span>
+                          </div>
+                        )}
+                        {data.activityScore && (
+                          <div className="text-xs">
+                            <span className="font-medium">{data.activityScore}</span>
+                            <span className="text-gray-500 ml-1">activity</span>
+                          </div>
+                        )}
+                        {data.sleepScore && (
+                          <div className="text-xs">
+                            <span className="font-medium">{data.sleepScore}</span>
+                            <span className="text-gray-500 ml-1">sleep</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* 4. Meal Plan Generation */}
+          <Card className="w-full">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <ChefHat className="h-6 w-6" />
+                {t.generateMealPlan}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label>{t.weekSelection}</Label>
+                <Select value={selectedWeekType} onValueChange={(value: "current" | "next") => setSelectedWeekType(value)}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="current">{t.thisWeek}</SelectItem>
+                    <SelectItem value="next">{t.nextWeek}</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <Button 
+                onClick={() => {
+                  // Use smart generation if Oura data is available, otherwise use manual settings
+                  if (latestOuraData && ouraStatus?.connected) {
+                    smartGenerateMutation.mutate();
+                  } else {
+                    generateMutation.mutate();
+                  }
+                }}
+                disabled={generateMutation.isPending || smartGenerateMutation.isPending}
+                className="w-full"
+                size="lg"
+              >
+                {(generateMutation.isPending || smartGenerateMutation.isPending) ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                    {t.generateMealPlan}...
+                  </>
+                ) : (
+                  <>
+                    <Activity className="mr-2 h-4 w-4" />
+                    {latestOuraData && ouraStatus?.connected ? (t.smartGeneratePlan || 'Smart Generate Plan') : (selectedWeekType === "current" ? (t.generateThisWeek || 'Generate This Week') : (t.generateNextWeek || 'Generate Next Week'))}
+                  </>
+                )}
+              </Button>
+              
+              <p className="text-xs text-gray-500">
+                {latestOuraData && ouraStatus?.connected 
+                  ? (language === 'nl' 
+                      ? `Gebruikt automatisch je ${latestOuraData.activityLevel === 'high' ? 'hoge' : 'lage'} activiteitsniveau van Oura Ring data`
+                      : `Will automatically use your ${latestOuraData.activityLevel} activity level from Oura Ring data`)
+                  : (t.createPersonalizedMealPlan || 'Create personalized meal plan based on your activity level')
+                }
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* 5. Ingredients to Use Up */}
           <Card className="w-full">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -537,66 +639,65 @@ export default function MealPlanner() {
             </CardContent>
           </Card>
 
-          {/* Meal Generation Section */}
-          <Card className="w-full">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Activity className="h-6 w-6" />
-                {t.generateMealPlan}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <Label>{t.weekSelection}</Label>
-                <Select value={selectedWeekType} onValueChange={(value: "current" | "next") => setSelectedWeekType(value)}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="current">{t.thisWeek}</SelectItem>
-                    <SelectItem value="next">{t.nextWeek}</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+          {/* 6. Grocery List Button */}
+          {currentMealPlan && (
+            <Card className="w-full">
+              <CardContent className="pt-6">
+                <Dialog open={showShoppingList} onOpenChange={setShowShoppingList}>
+                  <DialogTrigger asChild>
+                    <Button className="w-full" size="lg" variant="outline">
+                      <ShoppingCart className="mr-2 h-4 w-4" />
+                      {t.viewShoppingList || 'View Shopping List'}
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle className="flex items-center gap-2">
+                        <ShoppingCart className="h-5 w-5" />
+                        {t.shoppingList}
+                      </DialogTitle>
+                    </DialogHeader>
+                    
+                    {shoppingListData ? (
+                      <div className="space-y-4">
+                        <div className="text-sm text-gray-600">
+                          {t.totalItems}: {shoppingListData.totalItems}
+                        </div>
+                        
+                        {['Fruits & Vegetables', 'Proteins', 'Pantry Essentials', 'Dairy & Plant-Based', 'Grains & Starches', 'Nuts & Seeds', 'Herbs & Spices', 'Condiments & Oils'].map(category => (
+                          <div key={category} className="space-y-2">
+                            <h3 className="font-semibold text-foreground border-b pb-1">
+                              {category}
+                            </h3>
+                            <div className="grid grid-cols-1 gap-2">
+                              {shoppingListData.shoppingList
+                                ?.filter(item => item.category === category)
+                                ?.map((item, index) => (
+                                  <div key={index} className="flex justify-between items-center py-2 px-2 hover:bg-gray-50 rounded">
+                                    <span className="text-sm text-foreground flex-1">{item.ingredient}</span>
+                                    <div className="flex items-center">
+                                      <span className="text-sm text-gray-500 mr-2">
+                                        {item.totalAmount}
+                                      </span>
+                                    </div>
+                                  </div>
+                                ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-center py-8 text-gray-500">
+                        {t.selectMealPlanForShoppingList || 'Select a meal plan to generate shopping list'}
+                      </p>
+                    )}
+                  </DialogContent>
+                </Dialog>
+              </CardContent>
+            </Card>
+          )}
 
-              <Button 
-                onClick={() => {
-                  // Use smart generation if Oura data is available, otherwise use manual settings
-                  if (latestOuraData && ouraStatus?.connected) {
-                    smartGenerateMutation.mutate();
-                  } else {
-                    generateMutation.mutate();
-                  }
-                }}
-                disabled={generateMutation.isPending || smartGenerateMutation.isPending}
-                className="w-full"
-                size="lg"
-              >
-                {(generateMutation.isPending || smartGenerateMutation.isPending) ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                    {t.generateMealPlan}...
-                  </>
-                ) : (
-                  <>
-                    <Activity className="mr-2 h-4 w-4" />
-                    {latestOuraData && ouraStatus?.connected ? (t.smartGeneratePlan || 'Smart Generate Plan') : (selectedWeekType === "current" ? (t.generateThisWeek || 'Generate This Week') : (t.generateNextWeek || 'Generate Next Week'))}
-                  </>
-                )}
-              </Button>
-              
-              <p className="text-xs text-gray-500">
-                {latestOuraData && ouraStatus?.connected 
-                  ? (language === 'nl' 
-                      ? `Gebruikt automatisch je ${latestOuraData.activityLevel === 'high' ? 'hoge' : 'lage'} activiteitsniveau van Oura Ring data`
-                      : `Will automatically use your ${latestOuraData.activityLevel} activity level from Oura Ring data`)
-                  : (t.createPersonalizedMealPlan || 'Create personalized meal plan based on your activity level')
-                }
-              </p>
-            </CardContent>
-          </Card>
-
-          {/* Saved Meal Plans */}
+          {/* 7. Saved Meal Plans */}
           {mealPlans.length > 0 && (
             <Card className="w-full">
               <CardHeader>
@@ -630,118 +731,7 @@ export default function MealPlanner() {
             </Card>
           )}
 
-          {/* Activity Tracker */}
-          {ouraStatus?.connected && ouraData && ouraData.length > 0 && (
-            <Card className="w-full">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Activity className="h-6 w-6" />
-                  {t.recentActivity || 'Recent Activity'}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {ouraData.slice(0, 4).map((data, index) => (
-                    <div key={index} className="text-center p-3 bg-gray-50 rounded-lg">
-                      <div className="text-sm text-gray-500 mb-1">
-                        {new Date(data.date).toLocaleDateString('en-US', { weekday: 'short' })}
-                      </div>
-                      <div className="space-y-1">
-                        {data.steps && (
-                          <div className="text-xs">
-                            <span className="font-medium">{data.steps.toLocaleString()}</span>
-                            <span className="text-gray-500 ml-1">steps</span>
-                          </div>
-                        )}
-                        {data.activityScore && (
-                          <div className="text-xs">
-                            <span className="font-medium">{data.activityScore}</span>
-                            <span className="text-gray-500 ml-1">activity</span>
-                          </div>
-                        )}
-                        {data.sleepScore && (
-                          <div className="text-xs">
-                            <span className="font-medium">{data.sleepScore}</span>
-                            <span className="text-gray-500 ml-1">sleep</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Grocery List Button */}
-          {currentMealPlan && (
-            <Card className="w-full">
-              <CardContent className="pt-6">
-                <Dialog open={showShoppingList} onOpenChange={setShowShoppingList}>
-                  <DialogTrigger asChild>
-                    <Button 
-                      disabled={!selectedMealPlan}
-                      className="w-full"
-                      onClick={() => setShowShoppingList(true)}
-                    >
-                      <ShoppingCart className="mr-2 h-4 w-4" />
-                      {t.generateShoppingList || 'Generate Shopping List'}
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-                    <DialogHeader>
-                      <DialogTitle>{t.shoppingListHeader || 'Shopping List'}</DialogTitle>
-                    </DialogHeader>
-                    
-                    {loadingShoppingList ? (
-                      <div className="flex justify-center py-8">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-                      </div>
-                    ) : shoppingListData ? (
-                      <div className="space-y-6">
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-gray-500">
-                            {t.weekOf || 'Week of'} {formatWeekRange(shoppingListData.weekStart)}
-                          </span>
-                          <Badge variant="secondary">
-                            {shoppingListData.totalItems} {t.items || 'items'}
-                          </Badge>
-                        </div>
-                        
-                        {shoppingListData.categories?.map(category => (
-                          <div key={category} className="space-y-2">
-                            <h3 className="font-semibold text-foreground border-b border-border pb-1">
-                              {category}
-                            </h3>
-                            <div className="grid grid-cols-1 gap-2">
-                              {shoppingListData.shoppingList
-                                ?.filter(item => item.category === category)
-                                ?.map((item, index) => (
-                                  <div key={index} className="flex justify-between items-center py-2 px-2 hover:bg-gray-50 rounded">
-                                    <span className="text-sm text-foreground flex-1">{item.ingredient}</span>
-                                    <div className="flex items-center">
-                                      <span className="text-sm text-gray-500 mr-2">
-                                        {item.totalAmount}
-                                      </span>
-                                    </div>
-                                  </div>
-                                ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <p className="text-center py-8 text-gray-500">
-                        {t.selectMealPlanForShoppingList || 'Select a meal plan to generate shopping list'}
-                      </p>
-                    )}
-                  </DialogContent>
-                </Dialog>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Weekly Meal Plan Display */}
+          {/* 8. Weekly Meal Plan Display */}
           <Card className="w-full">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
