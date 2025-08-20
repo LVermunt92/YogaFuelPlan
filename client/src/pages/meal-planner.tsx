@@ -982,11 +982,11 @@ export default function MealPlanner() {
 
 
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
-          {/* Generation Panel */}
-          <div className="lg:col-span-1">
-            <div className="card-clean mb-6">
-              <div className="p-4 mb-6">
+        {/* Centered Content Container */}
+        <div className="max-w-4xl mx-auto space-y-8">
+          {/* Generation Panel - Full Width */}
+          <div className="card-clean">
+            <div className="p-6">
                 <h2 className="text-xl font-semibold text-foreground mb-2">
                   {t.generateMealPlan}
                 </h2>
@@ -1176,11 +1176,10 @@ export default function MealPlanner() {
 
           </div>
 
-          {/* Saved Meal Plans Section */}
-          <div className="lg:col-span-2">
-            {mealPlans && mealPlans.length > 0 && (
-              <div className="card-clean mb-6">
-                <div className="p-4">
+          {/* Saved Meal Plans Section - Full Width */}
+          {mealPlans && mealPlans.length > 0 && (
+            <div className="card-clean">
+              <div className="p-6">
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center">
                       <History className="h-6 w-6 text-foreground mr-3" />
@@ -1294,11 +1293,11 @@ export default function MealPlanner() {
                     </div>
                   )}
                 </div>
-              </div>
-            )}
+            </div>
+          )}
 
-            {/* Weekly Meal Plan Display */}
-            <div className="card-clean">
+          {/* Weekly Meal Plan Display - Full Width */}
+          <div className="card-clean">
               <div className="p-4 sm:p-6">
                 <div className="mb-6">
                   <div className="flex justify-between items-center mb-2">
@@ -1603,7 +1602,7 @@ export default function MealPlanner() {
                   </div>
                   <div>
                     <span className="text-gray-500">Vegetables:</span>
-                    <p className="font-medium text-green-600">{Math.round((recipeData.nutrition?.vegetables || 0) * 1000)}g</p>
+                    <p className="font-medium text-green-600">{Math.round((recipeData.vegetableContent?.servings || 0) * 100)}g</p>
                   </div>
                   <div>
                     <span className="text-gray-500">Fruits/Starches:</span>
