@@ -107,6 +107,14 @@ export default function MealPlanner() {
   const { language } = useLanguage();
   const t = useTranslations(language);
 
+  // Helper functions
+  const formatWeekRange = (weekStart: string) => {
+    const start = new Date(weekStart);
+    const end = new Date(start);
+    end.setDate(start.getDate() + 6);
+    return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}-${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+  };
+
   // Fetch user profile
   const { data: userProfile, isLoading: profileLoading } = useQuery<User>({
     queryKey: ['/api/users', authUser?.id, 'profile'],
@@ -145,7 +153,7 @@ export default function MealPlanner() {
   const { data: shoppingListData, isLoading: loadingShoppingList } = useQuery<ShoppingListResponse>({
     queryKey: ['/api/meal-plans', selectedMealPlan, 'shopping-list', language],
     queryFn: () => fetch(`/api/meal-plans/${selectedMealPlan}/shopping-list?language=${language}`).then(res => res.json()),
-    enabled: !!selectedMealPlan && showShoppingList,
+    enabled: !!selectedMealPlan,
   });
 
   // Fetch Oura data
@@ -233,14 +241,6 @@ export default function MealPlanner() {
       });
     },
   });
-
-  // Helper functions
-  const formatWeekRange = (weekStart: string) => {
-    const start = new Date(weekStart);
-    const end = new Date(start);
-    end.setDate(start.getDate() + 6);
-    return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}-${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
-  };
 
   const getDayMeals = (day: number) => {
     if (!currentMealPlan?.meals) return [];
@@ -645,39 +645,41 @@ export default function MealPlanner() {
                   <DialogTrigger asChild>
                     <Button className="btn-minimal btn-touch w-full">
                       <ShoppingCart className="mr-2 h-4 w-4" />
-                      {t.viewShoppingList || 'View Shopping List'}
+                      {t.generateShoppingList}
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-white">
                     <DialogHeader>
-                      <DialogTitle className="flex items-center gap-2">
-                        <ShoppingCart className="h-5 w-5" />
-                        {t.shoppingList}
-                      </DialogTitle>
+                      <DialogTitle>{t.shoppingListHeader}</DialogTitle>
                     </DialogHeader>
                     
-                    {shoppingListData ? (
-                      <div className="space-y-4">
-                        <div className="text-sm text-gray-600">
-                          {t.totalItems}: {shoppingListData.totalItems}
+                    {loadingShoppingList ? (
+                      <div className="flex justify-center py-8">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+                      </div>
+                    ) : shoppingListData ? (
+                      <div className="space-y-6">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-gray-500">
+                            {t.weekOf} {formatWeekRange(shoppingListData.weekStart)}
+                          </span>
+                          <Badge variant="secondary">
+                            {shoppingListData.totalItems} {t.items}
+                          </Badge>
                         </div>
                         
-                        {['Fruits & Vegetables', 'Proteins', 'Pantry Essentials', 'Dairy & Plant-Based', 'Grains & Starches', 'Nuts & Seeds', 'Herbs & Spices', 'Condiments & Oils'].map(category => (
+                        {shoppingListData.categories?.map(category => (
                           <div key={category} className="space-y-2">
-                            <h3 className="font-semibold text-foreground border-b pb-1">
+                            <h3 className="font-semibold text-foreground border-b border-border pb-1">
                               {category}
                             </h3>
                             <div className="grid grid-cols-1 gap-2">
                               {shoppingListData.shoppingList
                                 ?.filter(item => item.category === category)
                                 ?.map((item, index) => (
-                                  <div key={index} className="flex justify-between items-center py-2 px-2 hover:bg-gray-50 rounded">
-                                    <span className="text-sm text-foreground flex-1">{item.ingredient}</span>
-                                    <div className="flex items-center">
-                                      <span className="text-sm text-gray-500 mr-2">
-                                        {item.totalAmount}
-                                      </span>
-                                    </div>
+                                  <div key={index} className="flex justify-between items-center py-1">
+                                    <span className="text-sm text-foreground">{item.ingredient}</span>
+                                    <span className="text-sm text-gray-500">{item.totalAmount}</span>
                                   </div>
                                 ))}
                             </div>
@@ -685,8 +687,8 @@ export default function MealPlanner() {
                         ))}
                       </div>
                     ) : (
-                      <p className="text-center py-8 text-gray-500">
-                        {t.selectMealPlanForShoppingList || 'Select a meal plan to generate shopping list'}
+                      <p className="text-center text-gray-500 py-8">
+                        {t.selectMealPlanForShoppingList}
                       </p>
                     )}
                   </DialogContent>
