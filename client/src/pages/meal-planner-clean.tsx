@@ -852,70 +852,58 @@ export default function MealPlanner() {
               </div>
             ) : recipeData ? (
               <div className="space-y-6">
-                {/* Recipe Header */}
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 p-4 bg-gray-50 rounded-lg">
-                  <div className="flex items-center gap-2">
-                    <Timer className="w-4 h-4 text-orange-600" />
-                    <div>
-                      <p className="text-xs text-gray-500">{t.prepTime}</p>
-                      <p className="font-medium">{recipeData.prepTime} {t.min}</p>
-                    </div>
+                {/* Unified Recipe KPIs */}
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4 bg-gray-50 rounded-lg">
+                  {/* Basic Info */}
+                  <div className="text-center">
+                    <Timer className="w-5 h-5 text-orange-600 mx-auto mb-1" />
+                    <p className="text-xs text-gray-500 font-medium">{t.prepTime}</p>
+                    <p className="text-lg font-bold text-gray-800">{recipeData.prepTime} {t.min}</p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Users className="w-4 h-4 text-blue-600" />
-                    <div>
-                      <p className="text-xs text-gray-500">{t.servings}</p>
-                      <p className="font-medium">{recipeData.portion}</p>
-                    </div>
+                  <div className="text-center">
+                    <Users className="w-5 h-5 text-blue-600 mx-auto mb-1" />
+                    <p className="text-xs text-gray-500 font-medium">{t.servings}</p>
+                    <p className="text-lg font-bold text-gray-800">{recipeData.portion}</p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Target className="w-4 h-4 text-emerald-600" />
-                    <div>
-                      <p className="text-xs text-gray-500">{t.protein}</p>
-                      <p className="font-medium">{Math.round(recipeData.nutrition.protein)}g</p>
-                    </div>
+                  <div className="text-center">
+                    <Activity className="w-5 h-5 text-purple-600 mx-auto mb-1" />
+                    <p className="text-xs text-gray-500 font-medium">{t.calories}</p>
+                    <p className="text-lg font-bold text-gray-800">{Math.round(recipeData.nutrition.calories)}</p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Activity className="w-4 h-4 text-purple-600" />
-                    <div>
-                      <p className="text-xs text-gray-500">{t.calories}</p>
-                      <p className="font-medium">{Math.round(recipeData.nutrition.calories)}</p>
-                    </div>
+                  <div className="text-center">
+                    <Euro className="w-5 h-5 text-green-600 mx-auto mb-1" />
+                    <p className="text-xs text-gray-500 font-medium">{t.cost}</p>
+                    <p className="text-lg font-bold text-gray-800">€{recipeData.nutrition.costEuros?.toFixed(2) || '0.00'}</p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Euro className="w-4 h-4 text-green-600" />
-                    <div>
-                      <p className="text-xs text-gray-500">{t.cost}</p>
-                      <p className="font-medium">€{recipeData.nutrition.costEuros?.toFixed(2) || '0.00'}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <TrendingUp className="w-4 h-4 text-amber-600" />
-                    <div>
-                      <p className="text-xs text-gray-500">{t.proteinPerEuro}</p>
-                      <p className="font-medium">{recipeData.nutrition.proteinPerEuro?.toFixed(1) || '0.0'}g/€</p>
-                    </div>
+                  <div className="text-center">
+                    <TrendingUp className="w-5 h-5 text-amber-600 mx-auto mb-1" />
+                    <p className="text-xs text-gray-500 font-medium">{t.proteinPerEuro}</p>
+                    <p className="text-lg font-bold text-gray-800">{recipeData.nutrition.proteinPerEuro?.toFixed(1) || '0.0'}g/€</p>
                   </div>
                 </div>
 
-                {/* Recipe KPIs */}
+                {/* Nutrition KPIs */}
                 {recipeData.nutrition && (
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-blue-50 rounded-lg">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-gray-50 rounded-lg">
                     <div className="text-center">
-                      <p className="text-xs text-blue-600 font-medium">{t.goodFats || 'Good Fats'}</p>
-                      <p className="text-lg font-bold text-blue-800">{Math.round(recipeData.nutrition.fats || 0)}g</p>
+                      <Target className="w-5 h-5 text-emerald-600 mx-auto mb-1" />
+                      <p className="text-xs text-gray-500 font-medium">{t.protein}</p>
+                      <p className="text-lg font-bold text-gray-800">{Math.round(recipeData.nutrition.protein)}g</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-xs text-green-600 font-medium">{t.vegetables || 'Vegetables'}</p>
-                      <p className="text-lg font-bold text-green-800">{recipeData.vegetableContent?.servings || 0}</p>
+                      <div className="w-5 h-5 bg-orange-600 rounded-full mx-auto mb-1"></div>
+                      <p className="text-xs text-gray-500 font-medium">{t.goodFats || 'Good Fats'}</p>
+                      <p className="text-lg font-bold text-gray-800">{Math.round(recipeData.nutrition.fats || 0)}g</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-xs text-orange-600 font-medium">{t.fruitsStarches || 'Fruits/Starches'}</p>
-                      <p className="text-lg font-bold text-orange-800">{Math.round(recipeData.nutrition.carbohydrates || 0)}g</p>
+                      <div className="w-5 h-5 bg-green-600 rounded-full mx-auto mb-1"></div>
+                      <p className="text-xs text-gray-500 font-medium">{t.vegetables || 'Vegetables'}</p>
+                      <p className="text-lg font-bold text-gray-800">{recipeData.vegetableContent?.servings || 0}</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-xs text-purple-600 font-medium">{t.fiber || 'Fiber'}</p>
-                      <p className="text-lg font-bold text-purple-800">{Math.round(recipeData.nutrition.fiber || 0)}g</p>
+                      <div className="w-5 h-5 bg-blue-600 rounded-full mx-auto mb-1"></div>
+                      <p className="text-xs text-gray-500 font-medium">{t.fruitsStarches || 'Fruits/Starches'}</p>
+                      <p className="text-lg font-bold text-gray-800">{Math.round(recipeData.nutrition.carbohydrates || 0)}g</p>
                     </div>
                   </div>
                 )}
