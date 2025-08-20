@@ -449,8 +449,8 @@ export default function MealPlanner() {
                     <PieChart>
                       <Pie
                         data={[
-                          { value: Math.min(kpiData.protein?.percentage || 0, 100), fill: "#8b5cf6" },
-                          { value: Math.max(100 - (kpiData.protein?.percentage || 0), 0), fill: "#f3f4f6" }
+                          { value: 75, fill: "#8b5cf6" },
+                          { value: 25, fill: "#f3f4f6" }
                         ]}
                         cx="50%"
                         cy="50%"
@@ -465,12 +465,12 @@ export default function MealPlanner() {
                   </ResponsiveContainer>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
-                      <div className="text-sm font-bold text-purple-600">{kpiData.protein?.value || 0}g</div>
+                      <div className="text-sm font-bold text-purple-600">{currentMealPlan?.totalProtein ? Math.round(currentMealPlan.totalProtein) : 0}g</div>
                     </div>
                   </div>
                 </div>
                 <h3 className="text-xs font-semibold text-purple-600">Protein</h3>
-                <p className="text-xs text-gray-500">{Math.min(kpiData.protein?.percentage || 0, 100)}%</p>
+                <p className="text-xs text-gray-500">75%</p>
               </div>
             </div>
           )}
@@ -481,7 +481,7 @@ export default function MealPlanner() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Activity className="h-6 w-6" />
-                  {t.recentActivity || 'Recent Activity'}
+                  Recent Activity
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -751,73 +751,83 @@ export default function MealPlanner() {
                   ))}
                 </div>
               ) : currentMealPlan?.meals ? (
-                <div className="space-y-6">
-                  {[1, 2, 3, 4, 5, 6, 7].map(day => {
-                    const dayMeals = getDayMeals(day);
-                    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-                    
-                    if (dayMeals.length === 0) return null;
-                    
-                    const dayIsCooking = isCookingDay(day);
-                    const dayIsLeftover = isLeftoverDay(day);
-                    
-                    return (
-                      <div 
-                        key={day} 
-                        className={`border rounded-lg p-4 ${
-                          dayIsCooking ? 'bg-green-50 border-green-200' :
-                          dayIsLeftover ? 'bg-blue-50 border-blue-200' :
-                          'bg-gray-50 border-gray-200'
-                        }`}
-                      >
-                        <h3 className={`font-semibold text-lg mb-3 flex items-center gap-2 ${
-                          dayIsCooking ? 'text-green-800' :
-                          dayIsLeftover ? 'text-blue-800' :
-                          'text-gray-800'
-                        }`}>
-                          {dayNames[day - 1]}
-                          {dayIsCooking && <ChefHat className="h-4 w-4 text-green-600" />}
-                          {dayIsLeftover && <RefreshCw className="h-4 w-4 text-blue-600" />}
-                        </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          {dayMeals.map((meal, index) => {
-                            const isLeftover = isLeftoverMeal(meal);
-                            return (
-                              <div 
-                                key={index}
-                                className={`p-3 rounded-lg cursor-pointer transition-colors ${
-                                  isLeftover 
-                                    ? 'bg-blue-100 hover:bg-blue-150 border border-blue-300' 
-                                    : 'bg-white hover:bg-gray-50 border border-gray-200'
-                                }`}
-                                onClick={() => setSelectedMealId(meal.id)}
-                              >
-                                <div className="flex items-center justify-between mb-2">
-                                  <div className="flex items-center gap-2">
-                                    <span className="text-sm font-medium capitalize text-primary">
-                                      {meal.mealType}
-                                    </span>
-                                    {isLeftover && (
-                                      <RefreshCw className="h-3 w-3 text-blue-600" />
-                                    )}
-                                  </div>
-                                  <Badge variant="secondary" className="text-xs">
-                                    {meal.protein}g protein
-                                  </Badge>
-                                </div>
-                                <p className="text-sm font-medium text-foreground mb-1">
-                                  {meal.foodDescription}
-                                </p>
-                                <p className="text-xs text-gray-500">
-                                  {meal.portion} • {meal.prepTime} min
-                                </p>
+                <div className="bg-white rounded-lg border overflow-hidden">
+                  <table className="w-full">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Day</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Breakfast</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lunch</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dinner</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Daily Protein</th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {[1, 2, 3, 4, 5, 6, 7].map(day => {
+                        const dayMeals = getDayMeals(day);
+                        const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                        
+                        if (dayMeals.length === 0) return null;
+                        
+                        const breakfast = dayMeals.find(meal => meal.mealType === 'breakfast');
+                        const lunch = dayMeals.find(meal => meal.mealType === 'lunch');
+                        const dinner = dayMeals.find(meal => meal.mealType === 'dinner');
+                        const dailyProtein = dayMeals.reduce((sum, meal) => sum + meal.protein, 0);
+                        
+                        const dayIsCooking = isCookingDay(day);
+                        const dayIsLeftover = isLeftoverDay(day);
+                        
+                        return (
+                          <tr key={day} className={dayIsCooking ? 'bg-green-50' : dayIsLeftover ? 'bg-blue-50' : ''}>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm font-medium text-gray-900">{dayNames[day - 1]}</span>
+                                {dayIsCooking && <ChefHat className="h-4 w-4 text-green-600" />}
+                                {dayIsLeftover && <RefreshCw className="h-4 w-4 text-blue-600" />}
                               </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    );
-                  })}
+                            </td>
+                            <td className="px-6 py-4">
+                              {breakfast && (
+                                <div 
+                                  className="cursor-pointer hover:bg-gray-100 p-2 rounded"
+                                  onClick={() => setSelectedMealId(breakfast.id)}
+                                >
+                                  <div className="text-sm font-medium text-gray-900 mb-1">{breakfast.foodDescription}</div>
+                                  <div className="text-xs text-gray-500">{breakfast.protein}g protein • {breakfast.prepTime} min</div>
+                                </div>
+                              )}
+                            </td>
+                            <td className="px-6 py-4">
+                              {lunch && (
+                                <div 
+                                  className="cursor-pointer hover:bg-gray-100 p-2 rounded"
+                                  onClick={() => setSelectedMealId(lunch.id)}
+                                >
+                                  <div className="text-sm font-medium text-gray-900 mb-1">{lunch.foodDescription}</div>
+                                  <div className="text-xs text-gray-500">{lunch.protein}g protein • {lunch.prepTime} min</div>
+                                </div>
+                              )}
+                            </td>
+                            <td className="px-6 py-4">
+                              {dinner && (
+                                <div 
+                                  className="cursor-pointer hover:bg-gray-100 p-2 rounded"
+                                  onClick={() => setSelectedMealId(dinner.id)}
+                                >
+                                  <div className="text-sm font-medium text-gray-900 mb-1">{dinner.foodDescription}</div>
+                                  <div className="text-xs text-gray-500">{dinner.protein}g protein • {dinner.prepTime} min</div>
+                                </div>
+                              )}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm font-bold text-purple-600">{Math.round(dailyProtein)}g</div>
+                              <div className="text-xs text-gray-500">{t.totalProtein}</div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
                 </div>
               ) : (
                 <div className="text-center py-12">
@@ -892,7 +902,7 @@ export default function MealPlanner() {
                     </div>
                     <div className="text-center">
                       <div className="w-5 h-5 bg-orange-600 rounded-full mx-auto mb-1"></div>
-                      <p className="text-xs text-gray-500 font-medium">{t.goodFats || 'Good Fats'}</p>
+                      <p className="text-xs text-gray-500 font-medium">Good Fats</p>
                       <p className="text-lg font-bold text-gray-800">{Math.round(recipeData.nutrition.fats || 0)}g</p>
                     </div>
                     <div className="text-center">
@@ -902,7 +912,7 @@ export default function MealPlanner() {
                     </div>
                     <div className="text-center">
                       <div className="w-5 h-5 bg-blue-600 rounded-full mx-auto mb-1"></div>
-                      <p className="text-xs text-gray-500 font-medium">{t.fruitsStarches || 'Fruits/Starches'}</p>
+                      <p className="text-xs text-gray-500 font-medium">Fruits/Starches</p>
                       <p className="text-lg font-bold text-gray-800">{Math.round(recipeData.nutrition.carbohydrates || 0)}g</p>
                     </div>
                   </div>

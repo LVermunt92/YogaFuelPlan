@@ -39,6 +39,9 @@ export const translations = {
     sodium: "Sodium",
     cost: "Cost",
     proteinPerEuro: "Protein per Euro",
+    goodFats: "Good Fats",
+    vegetables: "Vegetables",
+    fruitsStarches: "Fruits/Starches",
     
     // Shopping List
     generateShoppingList: "Grocery List",
@@ -249,6 +252,7 @@ export const translations = {
     phase: "phase",
     latestActivityInsight: "Latest activity insight from",
     activityScore: "Activity Score",
+    recentActivity: "Recent Activity",
     
     // Colors  
     green: "Green",
@@ -336,8 +340,7 @@ export const translations = {
     
     // Additional missing translations for meal planner
     recipeDetails: "Recipe Details",
-    vegetableContent: "Vegetable Content", 
-    vegetables: "Vegetables",
+    vegetableContent: "Vegetable Content",
     healthBenefits: "Health Benefits", 
     recipeNotAvailable: "Recipe not available",
     min: "min",
