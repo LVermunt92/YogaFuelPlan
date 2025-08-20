@@ -6,9 +6,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import MealPlanner from "@/pages/meal-planner-clean";
 import Profile from "@/pages/profile";
 import About from "@/pages/about";
+import AdminPanel from "@/pages/admin";
 import Auth from "@/pages/auth";
 import NotFound from "@/pages/not-found";
-import { Utensils, User, Info, Menu, LogOut, Languages } from "lucide-react";
+import { Utensils, User, Info, Settings, Menu, LogOut, Languages } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import React, { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -25,7 +26,7 @@ function Navigation() {
   const t = useTranslations(language);
 
   // Fetch user profile to get firstName
-  const { data: userProfile } = useQuery({
+  const { data: userProfile } = useQuery<{ firstName?: string; username?: string }>({
     queryKey: [`/api/users/${authUser?.id}/profile`],
     enabled: !!authUser?.id,
     staleTime: 5 * 60 * 1000, // 5 minutes
@@ -42,10 +43,13 @@ function Navigation() {
     return 'User';
   };
 
+  const isAdmin = authUser?.username === 'admin' || authUser?.email?.includes('admin');
+  
   const navItems = [
     { path: "/", label: t.mealPlanner, icon: Utensils },
     { path: "/profile", label: t.profile, icon: User },
-    { path: "/about", label: t.about, icon: Info }
+    { path: "/about", label: t.about, icon: Info },
+    ...(isAdmin ? [{ path: "/admin", label: "Admin", icon: Settings }] : [])
   ];
 
   return (
@@ -162,7 +166,7 @@ function Navigation() {
                     <Languages className="h-5 w-5 text-gray-400 mr-3" />
                     <span className="text-base font-medium text-gray-600">Taal / Language</span>
                   </div>
-                  <Select value={language} onValueChange={(value) => {
+                  <Select value={language} onValueChange={(value: "en" | "nl") => {
                     setIsMenuOpen(false);
                     changeLanguage(value);
                   }} disabled={isChangingLanguage}>
@@ -238,6 +242,7 @@ function Router() {
           <Route path="/" component={MealPlanner} />
           <Route path="/profile" component={Profile} />
           <Route path="/about" component={About} />
+          <Route path="/admin" component={AdminPanel} />
           <Route component={NotFound} />
         </Switch>
       </div>

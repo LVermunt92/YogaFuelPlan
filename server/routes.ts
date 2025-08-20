@@ -11,6 +11,7 @@ import { z } from "zod";
 import { albertHeijnService, type ShoppingListExport } from "./albert-heijn";
 import { translateRecipe, translateMealPlan, translateShoppingList } from './recipe-translator';
 import { translateRecipeEnhanced, getTranslationStatus } from './ai-enhanced-translator';
+import { adminRouter } from './admin-routes';
 import cron from 'node-cron';
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -1714,6 +1715,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     console.error("Error running startup ingredient update:", error);
   }
 
+  // Admin routes
+  app.use('/api/admin', adminRouter);
+  
   const httpServer = createServer(app);
   return httpServer;
 }
