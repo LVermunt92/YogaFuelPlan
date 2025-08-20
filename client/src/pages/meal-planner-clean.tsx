@@ -162,6 +162,12 @@ export default function MealPlanner() {
     enabled: !!authUser?.id,
   });
 
+  // Fetch latest Oura data
+  const { data: latestOuraData } = useQuery<OuraData>({
+    queryKey: ["/api/oura/latest", authUser?.id],
+    enabled: ouraStatus?.connected === true && !!authUser?.id,
+  });
+
   // Update profile mutation for leftovers
   const updateProfileMutation = useMutation({
     mutationFn: async (data: any) => {
@@ -195,6 +201,35 @@ export default function MealPlanner() {
       toast({
         title: t.success,
         description: t.mealPlanGenerated,
+      });
+    },
+  });
+
+  // Smart generation mutation
+  const smartGenerateMutation = useMutation({
+    mutationFn: async () => {
+      if (!authUser?.id) throw new Error('User not authenticated');
+      const response = await apiRequest('POST', '/api/meal-plans/smart-generate', {
+        weekStart: new Date().toISOString().split('T')[0],
+        userId: authUser.id,
+      });
+      return response.json();
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['/api/meal-plans'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/meal-plans', authUser?.id] });
+      setSelectedMealPlan(data.mealPlan.id);
+      localStorage.setItem('selectedMealPlan', data.mealPlan.id.toString());
+      toast({
+        title: "Smart Meal Plan Generated",
+        description: `Generated with ${data.determinedActivityLevel} activity level based on ${data.ouraDataUsed ? 'your Oura data' : 'default settings'}`,
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Generation Failed",
+        description: "Failed to generate smart meal plan. Please try again.",
+        variant: "destructive",
       });
     },
   });
@@ -394,18 +429,39 @@ export default function MealPlanner() {
               </div>
 
               <Button 
-                onClick={() => generateMutation.mutate()}
-                disabled={generateMutation.isPending}
+                onClick={() => {
+                  // Use smart generation if Oura data is available, otherwise use manual settings
+                  if (latestOuraData && ouraStatus?.connected) {
+                    smartGenerateMutation.mutate();
+                  } else {
+                    generateMutation.mutate();
+                  }
+                }}
+                disabled={generateMutation.isPending || smartGenerateMutation.isPending}
                 className="w-full"
                 size="lg"
               >
-                {generateMutation.isPending ? (
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                {(generateMutation.isPending || smartGenerateMutation.isPending) ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                    {t.generateMealPlan}...
+                  </>
                 ) : (
-                  <Activity className="mr-2 h-4 w-4" />
+                  <>
+                    <Activity className="mr-2 h-4 w-4" />
+                    {latestOuraData && ouraStatus?.connected ? (t.smartGeneratePlan || 'Smart Generate Plan') : (selectedWeekType === "current" ? (t.generateThisWeek || 'Generate This Week') : (t.generateNextWeek || 'Generate Next Week'))}
+                  </>
                 )}
-                {generateMutation.isPending ? t.generating : t.generateMealPlan}
               </Button>
+              
+              <p className="text-xs text-gray-500">
+                {latestOuraData && ouraStatus?.connected 
+                  ? (language === 'nl' 
+                      ? `Gebruikt automatisch je ${latestOuraData.activityLevel === 'high' ? 'hoge' : 'lage'} activiteitsniveau van Oura Ring data`
+                      : `Will automatically use your ${latestOuraData.activityLevel} activity level from Oura Ring data`)
+                  : (t.createPersonalizedMealPlan || 'Create personalized meal plan based on your activity level')
+                }
+              </p>
             </CardContent>
           </Card>
 
