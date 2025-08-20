@@ -552,8 +552,7 @@ export default function MealPlanner() {
                   }
                 }}
                 disabled={generateMutation.isPending || smartGenerateMutation.isPending}
-                className="w-full"
-                size="lg"
+                className="btn-minimal btn-touch w-full"
               >
                 {(generateMutation.isPending || smartGenerateMutation.isPending) ? (
                   <>
@@ -610,6 +609,7 @@ export default function MealPlanner() {
                 <Button
                   onClick={addLeftover}
                   disabled={!newLeftover.trim() || updateProfileMutation.isPending}
+                  className="btn-outline btn-touch"
                   size="sm"
                 >
                   <Plus className="h-4 w-4" />
@@ -645,7 +645,7 @@ export default function MealPlanner() {
               <CardContent className="pt-6">
                 <Dialog open={showShoppingList} onOpenChange={setShowShoppingList}>
                   <DialogTrigger asChild>
-                    <Button className="w-full" size="lg" variant="outline">
+                    <Button className="btn-minimal btn-touch w-full">
                       <ShoppingCart className="mr-2 h-4 w-4" />
                       {t.viewShoppingList || 'View Shopping List'}
                     </Button>
