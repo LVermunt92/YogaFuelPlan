@@ -212,6 +212,19 @@ export default function MealPlanner() {
            meal.foodDescription.toLowerCase().includes('incorporating');
   };
 
+  // Check if a day is a cooking day (has fresh recipes)
+  const isCookingDay = (day: number) => {
+    const dayMeals = getDayMeals(day);
+    return dayMeals.some(meal => !isLeftoverMeal(meal));
+  };
+
+  // Check if a day is primarily leftover day
+  const isLeftoverDay = (day: number) => {
+    const dayMeals = getDayMeals(day);
+    const leftoverMeals = dayMeals.filter(meal => isLeftoverMeal(meal));
+    return leftoverMeals.length > 0 && leftoverMeals.length >= dayMeals.length / 2;
+  };
+
   // Auto-select first meal plan
   useEffect(() => {
     if (!selectedMealPlan && mealPlans.length > 0) {
@@ -394,9 +407,27 @@ export default function MealPlanner() {
                     
                     if (dayMeals.length === 0) return null;
                     
+                    const dayIsCooking = isCookingDay(day);
+                    const dayIsLeftover = isLeftoverDay(day);
+                    
                     return (
-                      <div key={day} className="border rounded-lg p-4">
-                        <h3 className="font-semibold text-lg mb-3">{dayNames[day - 1]}</h3>
+                      <div 
+                        key={day} 
+                        className={`border rounded-lg p-4 ${
+                          dayIsCooking ? 'bg-green-50 border-green-200' :
+                          dayIsLeftover ? 'bg-blue-50 border-blue-200' :
+                          'bg-gray-50 border-gray-200'
+                        }`}
+                      >
+                        <h3 className={`font-semibold text-lg mb-3 flex items-center gap-2 ${
+                          dayIsCooking ? 'text-green-800' :
+                          dayIsLeftover ? 'text-blue-800' :
+                          'text-gray-800'
+                        }`}>
+                          {dayNames[day - 1]}
+                          {dayIsCooking && <ChefHat className="h-4 w-4 text-green-600" />}
+                          {dayIsLeftover && <RefreshCw className="h-4 w-4 text-blue-600" />}
+                        </h3>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                           {dayMeals.map((meal, index) => {
                             const isLeftover = isLeftoverMeal(meal);
@@ -405,8 +436,8 @@ export default function MealPlanner() {
                                 key={index}
                                 className={`p-3 rounded-lg cursor-pointer transition-colors ${
                                   isLeftover 
-                                    ? 'bg-green-50 hover:bg-green-100 border border-green-200' 
-                                    : 'bg-gray-50 hover:bg-gray-100'
+                                    ? 'bg-blue-100 hover:bg-blue-150 border border-blue-300' 
+                                    : 'bg-white hover:bg-gray-50 border border-gray-200'
                                 }`}
                                 onClick={() => setSelectedMealId(meal.id)}
                               >
@@ -416,7 +447,7 @@ export default function MealPlanner() {
                                       {meal.mealType}
                                     </span>
                                     {isLeftover && (
-                                      <RefreshCw className="h-3 w-3 text-green-600" />
+                                      <RefreshCw className="h-3 w-3 text-blue-600" />
                                     )}
                                   </div>
                                   <Badge variant="secondary" className="text-xs">
