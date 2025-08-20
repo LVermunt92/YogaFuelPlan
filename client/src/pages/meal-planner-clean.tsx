@@ -518,65 +518,6 @@ export default function MealPlanner() {
             </Card>
           )}
 
-          {/* 4. Meal Plan Generation */}
-          <Card className="w-full">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <ChefHat className="h-6 w-6" />
-                {t.generateMealPlan}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <Label>{t.weekSelection}</Label>
-                <Select value={selectedWeekType} onValueChange={(value: "current" | "next") => setSelectedWeekType(value)}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="current">{t.thisWeek}</SelectItem>
-                    <SelectItem value="next">{t.nextWeek}</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <Button 
-                onClick={() => {
-                  // Use smart generation if Oura data is available, otherwise use manual settings
-                  if (latestOuraData && ouraStatus?.connected) {
-                    smartGenerateMutation.mutate();
-                  } else {
-                    generateMutation.mutate();
-                  }
-                }}
-                disabled={generateMutation.isPending || smartGenerateMutation.isPending}
-                className="btn-minimal btn-touch w-full"
-              >
-                {(generateMutation.isPending || smartGenerateMutation.isPending) ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                    {t.generateMealPlan}...
-                  </>
-                ) : (
-                  <>
-                    <Activity className="mr-2 h-4 w-4" />
-                    {latestOuraData && ouraStatus?.connected ? (t.smartGeneratePlan || 'Smart Generate Plan') : (selectedWeekType === "current" ? (t.generateThisWeek || 'Generate This Week') : (t.generateNextWeek || 'Generate Next Week'))}
-                  </>
-                )}
-              </Button>
-              
-              <p className="text-xs text-gray-500">
-                {latestOuraData && ouraStatus?.connected 
-                  ? (language === 'nl' 
-                      ? `Gebruikt automatisch je ${latestOuraData.activityLevel === 'high' ? 'hoge' : 'lage'} activiteitsniveau van Oura Ring data`
-                      : `Will automatically use your ${latestOuraData.activityLevel} activity level from Oura Ring data`)
-                  : (t.createPersonalizedMealPlan || 'Create personalized meal plan based on your activity level')
-                }
-              </p>
-            </CardContent>
-          </Card>
-
-          {/* 5. Ingredients to Use Up */}
           <Card className="w-full">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -634,6 +575,64 @@ export default function MealPlanner() {
                   </div>
                 </div>
               )}
+            </CardContent>
+          </Card>
+
+          {/* 5. Meal Plan Generation */}
+          <Card className="w-full">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <ChefHat className="h-6 w-6" />
+                {t.generateMealPlan}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label>{t.weekSelection}</Label>
+                <Select value={selectedWeekType} onValueChange={(value: "current" | "next") => setSelectedWeekType(value)}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="current">{t.thisWeek}</SelectItem>
+                    <SelectItem value="next">{t.nextWeek}</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <Button 
+                onClick={() => {
+                  // Use smart generation if Oura data is available, otherwise use manual settings
+                  if (latestOuraData && ouraStatus?.connected) {
+                    smartGenerateMutation.mutate();
+                  } else {
+                    generateMutation.mutate();
+                  }
+                }}
+                disabled={generateMutation.isPending || smartGenerateMutation.isPending}
+                className="btn-minimal btn-touch w-full"
+              >
+                {(generateMutation.isPending || smartGenerateMutation.isPending) ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                    {t.generateMealPlan}...
+                  </>
+                ) : (
+                  <>
+                    <Activity className="mr-2 h-4 w-4" />
+                    {latestOuraData && ouraStatus?.connected ? (t.smartGeneratePlan || 'Smart Generate Plan') : (selectedWeekType === "current" ? (t.generateThisWeek || 'Generate This Week') : (t.generateNextWeek || 'Generate Next Week'))}
+                  </>
+                )}
+              </Button>
+              
+              <p className="text-xs text-gray-500">
+                {latestOuraData && ouraStatus?.connected 
+                  ? (language === 'nl' 
+                      ? `Gebruikt automatisch je ${latestOuraData.activityLevel === 'high' ? 'hoge' : 'lage'} activiteitsniveau van Oura Ring data`
+                      : `Will automatically use your ${latestOuraData.activityLevel} activity level from Oura Ring data`)
+                  : (t.createPersonalizedMealPlan || 'Create personalized meal plan based on your activity level')
+                }
+              </p>
             </CardContent>
           </Card>
 
