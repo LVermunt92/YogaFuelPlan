@@ -87,7 +87,7 @@ export default function Profile() {
   });
 
   // Fetch nutrition targets
-  const { data: nutritionTargets } = useQuery<NutritionTargets>({
+  const { data: nutritionTargets, isLoading: nutritionLoading } = useQuery<NutritionTargets>({
     queryKey: ['/api/nutrition/targets', authUser?.id],
     enabled: !!authUser?.id && !!user,
   });
@@ -234,7 +234,7 @@ export default function Profile() {
     },
   });
 
-  // Handle activity level, age, or gender change to update protein target
+  // Handle activity level, age, gender, training type, or goal change to update protein target and refresh nutrition targets
   const handleActivityOrAgeChange = (field: string, value: string) => {
     const updatedFormData = { ...formData, [field]: value };
     
@@ -248,6 +248,11 @@ export default function Profile() {
     }
     
     setFormData(updatedFormData);
+    
+    // Invalidate nutrition targets to trigger recalculation when training type or goal changes
+    if (field === 'trainingType' || field === 'goal' || field === 'activityLevel') {
+      queryClient.invalidateQueries({ queryKey: ['/api/nutrition/targets', authUser?.id] });
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -266,6 +271,8 @@ export default function Profile() {
       waistline: formData.waistline ? parseFloat(formData.waistline) : null,
       goalWaistline: formData.goalWaistline ? parseFloat(formData.goalWaistline) : null,
       activityLevel: formData.activityLevel,
+      trainingType: formData.trainingType,
+      goal: formData.goal,
       proteinTarget: formData.proteinTarget ? parseInt(formData.proteinTarget) : null,
       dietaryTags: formData.dietaryTags,
       householdSize: formData.householdSize ? parseInt(formData.householdSize) : 1,
@@ -488,7 +495,7 @@ export default function Profile() {
               )}
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
               <div>
                 <Label htmlFor="activityLevel" className="text-sm font-medium text-foreground mb-2 block">
                   {t.defaultActivityLevel}
@@ -506,6 +513,47 @@ export default function Profile() {
                     <SelectItem value="moderate">Moderate - exercise 3–4 times per week, generally active lifestyle</SelectItem>
                     <SelectItem value="high">High - daily exercise or physically demanding job</SelectItem>
                     <SelectItem value="athlete">Athlete - competitive or elite training, very high physical demand</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Training Type */}
+              <div>
+                <Label htmlFor="trainingType" className="text-sm font-medium text-foreground mb-2 block">
+                  Training Type
+                </Label>
+                <Select
+                  value={formData.trainingType}
+                  onValueChange={(value) => handleActivityOrAgeChange('trainingType', value)}
+                >
+                  <SelectTrigger className="input-clean">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="mobility">Mobility - yoga, stretching, flexibility work</SelectItem>
+                    <SelectItem value="endurance">Endurance - running, cycling, swimming</SelectItem>
+                    <SelectItem value="strength">Strength - weightlifting, resistance training</SelectItem>
+                    <SelectItem value="mixed">Mixed - combination of different training types</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Goal */}
+              <div>
+                <Label htmlFor="goal" className="text-sm font-medium text-foreground mb-2 block">
+                  Goal
+                </Label>
+                <Select
+                  value={formData.goal}
+                  onValueChange={(value) => handleActivityOrAgeChange('goal', value)}
+                >
+                  <SelectTrigger className="input-clean">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="lose_fat">Lose Fat - caloric deficit for weight loss</SelectItem>
+                    <SelectItem value="maintain">Maintain - balance calories for current weight</SelectItem>
+                    <SelectItem value="bulk">Bulk - caloric surplus for muscle gain</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -530,6 +578,60 @@ export default function Profile() {
                 </div>
               </div>
             </div>
+
+            {/* Comprehensive Nutrition Targets */}
+            {nutritionTargets && !nutritionLoading && (
+              <div className="mt-6">
+                <h3 className="text-lg font-medium text-foreground mb-4">Comprehensive Nutrition Targets</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {/* Daily Calories */}
+                  <div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-lg">
+                    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{nutritionTargets.calories} kcal</div>
+                    <div className="text-sm text-blue-700 dark:text-blue-300">Daily Calories</div>
+                    <div className="text-xs text-gray-500 mt-1">Maintenance: {nutritionTargets.maintenanceCalories} kcal</div>
+                  </div>
+
+                  {/* Protein */}
+                  <div className="p-4 bg-green-50 dark:bg-green-950 rounded-lg">
+                    <div className="text-2xl font-bold text-green-600 dark:text-green-400">{nutritionTargets.protein}g</div>
+                    <div className="text-sm text-green-700 dark:text-green-300">Daily Protein</div>
+                    <div className="text-xs text-gray-500 mt-1">Factor: {nutritionTargets.proteinFactor}g/kg</div>
+                  </div>
+
+                  {/* Carbohydrates */}
+                  <div className="p-4 bg-orange-50 dark:bg-orange-950 rounded-lg">
+                    <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{nutritionTargets.carbohydrates}g</div>
+                    <div className="text-sm text-orange-700 dark:text-orange-300">Daily Carbs</div>
+                    <div className="text-xs text-gray-500 mt-1">Factor: {nutritionTargets.carbFactor}g/kg</div>
+                  </div>
+
+                  {/* Fats */}
+                  <div className="p-4 bg-purple-50 dark:bg-purple-950 rounded-lg">
+                    <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{nutritionTargets.fats}g</div>
+                    <div className="text-sm text-purple-700 dark:text-purple-300">Daily Fats</div>
+                    <div className="text-xs text-gray-500 mt-1">{nutritionTargets.fatPercentage}% of calories</div>
+                  </div>
+                </div>
+
+                {/* Additional Metrics */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                  <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Base Metabolic Rate (BMR)</div>
+                    <div className="text-lg font-bold text-gray-900 dark:text-gray-100">{nutritionTargets.bmr} kcal/day</div>
+                  </div>
+                  <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Physical Activity Level (PAL)</div>
+                    <div className="text-lg font-bold text-gray-900 dark:text-gray-100">{nutritionTargets.palValue}</div>
+                  </div>
+                </div>
+
+                <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-950 rounded-lg">
+                  <div className="text-sm text-blue-700 dark:text-blue-300">
+                    <strong>Training Configuration:</strong> {formData.activityLevel.charAt(0).toUpperCase() + formData.activityLevel.slice(1)} Activity + {formData.trainingType.charAt(0).toUpperCase() + formData.trainingType.slice(1)} Training + {formData.goal.charAt(0).toUpperCase() + formData.goal.slice(1)} Goal
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Health Goals */}
