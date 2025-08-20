@@ -46,7 +46,6 @@ Advanced Protein Range Calculator: Comprehensive protein calculation system with
 Comprehensive Macronutrient Distribution Tracking: Added real-time tracking of macronutrient distribution in meal plans displaying daily intake percentages. Shows good fats (grams and % of energy with 50-70% target), vegetables (estimated kg with 20% energy target), and fruits/starches (grams and % of energy with 5% target). Calculations use actual meal data (calories, fats, carbohydrates) to provide accurate energy distribution tracking for optimal nutrition balance.
 
 # System Architecture
-- **Authentication & Multi-User Support**: Secure login/registration, password reset, isolated user data, and route protection.
 - **UI/UX Decisions**: Utilizes `shadcn/ui` built on `Radix UI` primitives with `Tailwind CSS` and CSS variables for theming. The UI is streamlined, removing redundant elements and focusing on core meal planning functionality.
 - **Technical Implementations**:
     - **Frontend**: React 18, TypeScript, Wouter for routing, TanStack React Query for server state.
@@ -55,6 +54,7 @@ Comprehensive Macronutrient Distribution Tracking: Added real-time tracking of m
     - **Session Management**: Express sessions with PostgreSQL store.
     - **Build Tools**: Vite for frontend, esbuild for backend.
 - **Feature Specifications**:
+    - **Authentication & Multi-User Support**: Secure login/registration, password reset, isolated user data, and route protection.
     - **Meal Generation**: Calculates protein targets, selects meals from a nutrition database, generates 7-day plans with variety, and creates shopping lists. Meals include instructions, tips, and nutritional information; recipes are alcohol-free. Includes smart AI recipe generation and comprehensive ingredient specification.
     - **Universal Meal Prep Engine**: Adapts to user cooking schedules, supporting batch cooking, proper meal distribution, and intelligent dietary fallbacks.
     - **Smart Time Constraints**: Weekday meals (Mon-Fri) are limited to ≤30 minutes prep time; weekends have no time restrictions.
