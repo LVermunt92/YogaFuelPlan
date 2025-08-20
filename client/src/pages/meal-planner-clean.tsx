@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Calendar, Clock, Target, Eye, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages, Users, Minus, Trash2 } from "lucide-react";
+import { Calendar, Clock, Target, Eye, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages, Users, Minus, Trash2, Euro, TrendingUp } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Separator } from "@/components/ui/separator";
 import { useTranslations, translateDietaryTags, translateDietaryTag } from "@/lib/translations";
@@ -852,7 +852,7 @@ export default function MealPlanner() {
             ) : recipeData ? (
               <div className="space-y-6">
                 {/* Recipe Header */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-gray-50 rounded-lg">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 p-4 bg-gray-50 rounded-lg">
                   <div className="flex items-center gap-2">
                     <Timer className="w-4 h-4 text-orange-600" />
                     <div>
@@ -879,6 +879,20 @@ export default function MealPlanner() {
                     <div>
                       <p className="text-xs text-gray-500">{t.calories}</p>
                       <p className="font-medium">{Math.round(recipeData.nutrition.calories)}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Euro className="w-4 h-4 text-green-600" />
+                    <div>
+                      <p className="text-xs text-gray-500">{t.cost}</p>
+                      <p className="font-medium">€{recipeData.nutrition.costEuros?.toFixed(2) || '0.00'}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4 text-amber-600" />
+                    <div>
+                      <p className="text-xs text-gray-500">{t.proteinPerEuro}</p>
+                      <p className="font-medium">{recipeData.nutrition.proteinPerEuro?.toFixed(1) || '0.0'}g/€</p>
                     </div>
                   </div>
                 </div>

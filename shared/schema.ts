@@ -60,6 +60,8 @@ export const meals = pgTable("meals", {
   sugar: real("sugar").default(0), // grams
   sodium: real("sodium").default(0), // mg
   prepTime: integer("prep_time").default(30), // minutes
+  costEuros: real("cost_euros"), // cost in euros
+  proteinPerEuro: real("protein_per_euro"), // protein grams per euro
 });
 
 export const ouraData = pgTable("oura_data", {
