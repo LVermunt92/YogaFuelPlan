@@ -74,8 +74,8 @@ Comprehensive Admin Panel Implementation: Created full-featured admin interface 
     - **Unified Recipe Database**: Consolidated three separate recipe databases (base, viral, additional) into a single unified system.
 
 # External Dependencies
-- `@neondatabase/serverless` (for PostgreSQL)
-- `drizzle-orm` (for database ORM)
-- `@tanstack/react-query` (for server state management)
-- `@radix-ui` (for UI primitives)
-- `tailwindcss` (for styling)
+- `@neondatabase/serverless`
+- `drizzle-orm`
+- `@tanstack/react-query`
+- `@radix-ui`
+- `tailwindcss`

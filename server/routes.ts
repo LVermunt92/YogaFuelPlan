@@ -12,6 +12,7 @@ import { albertHeijnService, type ShoppingListExport } from "./albert-heijn";
 import { translateRecipe, translateMealPlan, translateShoppingList } from './recipe-translator';
 import { translateRecipeEnhanced, getTranslationStatus } from './ai-enhanced-translator';
 import { adminRouter } from './admin-routes';
+import { calculateNutritionTargets, type NutritionProfile } from './nutrition-calculator';
 import cron from 'node-cron';
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -1717,6 +1718,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Admin routes
   app.use('/api/admin', adminRouter);
+
+  // Nutrition calculation endpoint
+  app.get("/api/nutrition/targets/:userId", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const user = await storage.getUser(userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      // Create nutrition profile from user data
+      const profile: NutritionProfile = {
+        age: user.age || 30,
+        weight: user.weight || 70,
+        gender: (user.gender as 'male' | 'female' | 'other') || 'other',
+        activityLevel: (user.activityLevel as any) || 'moderate',
+        trainingType: (user.trainingType as any) || 'endurance',
+        goal: (user.goal as any) || 'maintain'
+      };
+
+      // Calculate comprehensive nutrition targets
+      const targets = calculateNutritionTargets(profile, user.height || undefined);
+      
+      res.json(targets);
+    } catch (error) {
+      console.error("Error calculating nutrition targets:", error);
+      res.status(500).json({ message: "Failed to calculate nutrition targets" });
+    }
+  });
   
   const httpServer = createServer(app);
   return httpServer;

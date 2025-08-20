@@ -48,6 +48,8 @@ interface UserProfile {
   goalWaistline: number | null;
   targetDate: string | null;
   activityLevel: string;
+  trainingType: string;
+  goal: string;
   proteinTarget: number;
   dietaryTags: string[];
   householdSize: number;
@@ -56,6 +58,19 @@ interface UserProfile {
   meatFishMealsPerWeek: number;
   createdAt: string;
   updatedAt: string;
+}
+
+interface NutritionTargets {
+  protein: number;
+  carbohydrates: number;
+  fats: number;
+  calories: number;
+  maintenanceCalories: number;
+  bmr: number;
+  proteinFactor: number;
+  palValue: number;
+  carbFactor: number;
+  fatPercentage: number;
 }
 
 export default function Profile() {
@@ -69,6 +84,12 @@ export default function Profile() {
   const { data: user, isLoading } = useQuery<UserProfile>({
     queryKey: ['/api/users', authUser?.id, 'profile'],
     enabled: !!authUser?.id,
+  });
+
+  // Fetch nutrition targets
+  const { data: nutritionTargets } = useQuery<NutritionTargets>({
+    queryKey: ['/api/nutrition/targets', authUser?.id],
+    enabled: !!authUser?.id && !!user,
   });
 
   const [formData, setFormData] = useState({
@@ -85,6 +106,8 @@ export default function Profile() {
     goalWaistline: '',
     targetDate: '',
     activityLevel: 'high',
+    trainingType: 'endurance',
+    goal: 'maintain',
     proteinTarget: '',
     dietaryTags: [] as string[],
     householdSize: '1',
@@ -145,6 +168,8 @@ export default function Profile() {
         goalWaistline: user.goalWaistline?.toString() || '',
         targetDate: user.targetDate || '',
         activityLevel: user.activityLevel || 'moderate',
+        trainingType: user.trainingType || 'endurance',
+        goal: user.goal || 'maintain',
         proteinTarget: dynamicProteinTarget.toString(),
         dietaryTags: user.dietaryTags || [],
         householdSize: user.householdSize?.toString() || '1',
@@ -184,6 +209,8 @@ export default function Profile() {
           goalWaistline: updatedData.goalWaistline?.toString() || '',
           targetDate: updatedData.targetDate || '',
           activityLevel: updatedData.activityLevel || 'moderate',
+          trainingType: updatedData.trainingType || 'endurance',
+          goal: updatedData.goal || 'maintain',
           proteinTarget: dynamicProteinTarget.toString(),
           dietaryTags: updatedData.dietaryTags || [],
           householdSize: updatedData.householdSize?.toString() || '1',
