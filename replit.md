@@ -3,6 +3,7 @@ This full-stack meal planning application generates personalized weekly meal pla
 
 # User Preferences
 Preferred communication style: Simple, everyday language.
+**CRITICAL DEVELOPMENT RULE**: Never remove existing functionality, features, or logic without explicit user permission. Always ask twice before removing anything. Only make additive changes unless specifically requested to remove features. Preserve all working functionality by default.
 Breakfast scheduling preference: Easy, quick breakfasts during weekdays (≤10 min prep), elaborate breakfasts like pancakes on weekends (≥15 min prep).
 Translation continuity plan: Continue AI-enhanced Dutch translation process.
 Enhanced unit conversion system: Comprehensive automated workflow that intelligently converts liquids (milk, oils) to milliliters and dry ingredients to grams.
