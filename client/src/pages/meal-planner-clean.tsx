@@ -140,6 +140,27 @@ export default function MealPlanner() {
     enabled: !!selectedMealId,
   });
 
+  // Fetch shopping list for current meal plan
+  const { data: shoppingListData, isLoading: loadingShoppingList } = useQuery<ShoppingListResponse>({
+    queryKey: ['/api/meal-plans', selectedMealPlan, 'shopping-list', language],
+    queryFn: () => fetch(`/api/meal-plans/${selectedMealPlan}/shopping-list?language=${language}`).then(res => res.json()),
+    enabled: !!selectedMealPlan,
+  });
+
+  // Fetch Oura data
+  const { data: ouraData } = useQuery<OuraData[]>({
+    queryKey: ['/api/oura', authUser?.id],
+    queryFn: () => fetch(`/api/oura/data?userId=${authUser?.id}&days=7`).then(res => res.json()),
+    enabled: !!authUser?.id,
+  });
+
+  // Fetch Oura status
+  const { data: ouraStatus } = useQuery<OuraStatus>({
+    queryKey: ['/api/oura/status', authUser?.id],
+    queryFn: () => fetch(`/api/oura/status?userId=${authUser?.id}`).then(res => res.json()),
+    enabled: !!authUser?.id,
+  });
+
   // Update profile mutation for leftovers
   const updateProfileMutation = useMutation({
     mutationFn: async (data: any) => {
@@ -224,6 +245,48 @@ export default function MealPlanner() {
     const leftoverMeals = dayMeals.filter(meal => isLeftoverMeal(meal));
     return leftoverMeals.length > 0 && leftoverMeals.length >= dayMeals.length / 2;
   };
+
+  // Calculate KPI values from current meal plan
+  const calculateKPIs = () => {
+    if (!currentMealPlan?.meals) return null;
+
+    const totalCalories = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.calories || 0), 0);
+    const totalFats = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fats || 0), 0);
+    const totalCarbs = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.carbohydrates || 0), 0);
+    const daysWithMeals = new Set(currentMealPlan.meals.map(meal => meal.day)).size;
+
+    const avgCaloriesPerDay = daysWithMeals > 0 ? totalCalories / daysWithMeals : 0;
+    const avgFatsPerDay = daysWithMeals > 0 ? totalFats / daysWithMeals : 0;
+    const avgCarbsPerDay = daysWithMeals > 0 ? totalCarbs / daysWithMeals : 0;
+
+    // Calculate percentages
+    const fatCalories = avgFatsPerDay * 9; // 9 calories per gram of fat
+    const carbCalories = avgCarbsPerDay * 4; // 4 calories per gram of carbs
+    
+    const fatPercentage = avgCaloriesPerDay > 0 ? (fatCalories / avgCaloriesPerDay) * 100 : 0;
+    const vegetableEstimate = avgFatsPerDay * 0.3; // Rough estimate based on recipes
+    const fruitStarchEstimate = avgCarbsPerDay * 0.8; // Rough estimate
+
+    return {
+      goodFats: {
+        value: Math.round(avgFatsPerDay),
+        percentage: Math.round(fatPercentage),
+        target: '50-70%'
+      },
+      vegetables: {
+        value: Math.round(vegetableEstimate),
+        percentage: Math.round((vegetableEstimate / 500) * 100), // Assuming 500g target
+        target: '20% of energy'
+      },
+      fruitsStarches: {
+        value: Math.round(fruitStarchEstimate),
+        percentage: Math.round((fruitStarchEstimate / 50) * 100), // Assuming 50g target
+        target: '5% of energy'
+      }
+    };
+  };
+
+  const kpiData = calculateKPIs();
 
   // Auto-select first meal plan
   useEffect(() => {
@@ -374,6 +437,197 @@ export default function MealPlanner() {
                       <p className="text-sm text-gray-400">{plan.totalProtein.toFixed(0)}g protein/day</p>
                     </div>
                   ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Nutrition KPIs */}
+          {currentMealPlan && kpiData && (
+            <Card className="w-full">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Target className="h-6 w-6" />
+                  {t.nutritionKPIs || 'Nutrition KPIs'}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* Good Fats */}
+                  <div className="text-center">
+                    <div className="relative w-32 h-32 mx-auto mb-2">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={[
+                              { value: kpiData.goodFats.percentage, fill: "#f97316" },
+                              { value: 100 - kpiData.goodFats.percentage, fill: "#f3f4f6" }
+                            ]}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={35}
+                            outerRadius={60}
+                            startAngle={90}
+                            endAngle={450}
+                            dataKey="value"
+                          >
+                          </Pie>
+                        </PieChart>
+                      </ResponsiveContainer>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-center">
+                          <div className="text-lg font-bold text-orange-600">{kpiData.goodFats.value}g</div>
+                          <div className="text-xs text-gray-500">{kpiData.goodFats.percentage}%</div>
+                        </div>
+                      </div>
+                    </div>
+                    <h3 className="font-semibold text-orange-600">Good Fats</h3>
+                    <p className="text-xs text-gray-500">{kpiData.goodFats.target}</p>
+                  </div>
+
+                  {/* Vegetables */}
+                  <div className="text-center">
+                    <div className="relative w-32 h-32 mx-auto mb-2">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={[
+                              { value: Math.min(kpiData.vegetables.percentage, 100), fill: "#10b981" },
+                              { value: Math.max(100 - kpiData.vegetables.percentage, 0), fill: "#f3f4f6" }
+                            ]}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={35}
+                            outerRadius={60}
+                            startAngle={90}
+                            endAngle={450}
+                            dataKey="value"
+                          >
+                          </Pie>
+                        </PieChart>
+                      </ResponsiveContainer>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-center">
+                          <div className="text-lg font-bold text-emerald-600">{kpiData.vegetables.value}g</div>
+                          <div className="text-xs text-gray-500">{Math.min(kpiData.vegetables.percentage, 100)}%</div>
+                        </div>
+                      </div>
+                    </div>
+                    <h3 className="font-semibold text-emerald-600">Vegetables</h3>
+                    <p className="text-xs text-gray-500">{kpiData.vegetables.target}</p>
+                  </div>
+
+                  {/* Fruits & Starches */}
+                  <div className="text-center">
+                    <div className="relative w-32 h-32 mx-auto mb-2">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={[
+                              { value: Math.min(kpiData.fruitsStarches.percentage, 100), fill: "#3b82f6" },
+                              { value: Math.max(100 - kpiData.fruitsStarches.percentage, 0), fill: "#f3f4f6" }
+                            ]}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={35}
+                            outerRadius={60}
+                            startAngle={90}
+                            endAngle={450}
+                            dataKey="value"
+                          >
+                          </Pie>
+                        </PieChart>
+                      </ResponsiveContainer>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-center">
+                          <div className="text-lg font-bold text-blue-600">{kpiData.fruitsStarches.value}g</div>
+                          <div className="text-xs text-gray-500">{Math.min(kpiData.fruitsStarches.percentage, 100)}%</div>
+                        </div>
+                      </div>
+                    </div>
+                    <h3 className="font-semibold text-blue-600">Fruits & Starches</h3>
+                    <p className="text-xs text-gray-500">{kpiData.fruitsStarches.target}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Activity Tracker */}
+          {ouraStatus?.connected && ouraData && ouraData.length > 0 && (
+            <Card className="w-full">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Activity className="h-6 w-6" />
+                  {t.activityTracker || 'Activity Tracker'}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {ouraData.slice(0, 4).map((data, index) => (
+                    <div key={index} className="text-center p-3 bg-gray-50 rounded-lg">
+                      <div className="text-sm text-gray-500 mb-1">
+                        {new Date(data.date).toLocaleDateString('en-US', { weekday: 'short' })}
+                      </div>
+                      <div className="space-y-1">
+                        {data.steps && (
+                          <div className="text-xs">
+                            <span className="font-medium">{data.steps.toLocaleString()}</span>
+                            <span className="text-gray-500 ml-1">steps</span>
+                          </div>
+                        )}
+                        {data.activityScore && (
+                          <div className="text-xs">
+                            <span className="font-medium">{data.activityScore}</span>
+                            <span className="text-gray-500 ml-1">activity</span>
+                          </div>
+                        )}
+                        {data.sleepScore && (
+                          <div className="text-xs">
+                            <span className="font-medium">{data.sleepScore}</span>
+                            <span className="text-gray-500 ml-1">sleep</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Shopping List */}
+          {currentMealPlan && shoppingListData && (
+            <Card className="w-full">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <ShoppingCart className="h-6 w-6" />
+                  {t.shoppingList || 'Shopping List'}
+                </CardTitle>
+                <p className="text-sm text-gray-500">
+                  {shoppingListData.totalItems} items for week of {formatWeekRange(shoppingListData.weekStart)}
+                </p>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {shoppingListData.categories.map((category) => {
+                    const categoryItems = shoppingListData.shoppingList.filter(item => item.category === category);
+                    if (categoryItems.length === 0) return null;
+                    
+                    return (
+                      <div key={category}>
+                        <h4 className="font-semibold text-sm text-gray-700 mb-2">{category}</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                          {categoryItems.map((item, index) => (
+                            <div key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded text-sm">
+                              <span className="font-medium">{item.ingredient}</span>
+                              <span className="text-gray-500">{item.totalAmount}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </CardContent>
             </Card>
