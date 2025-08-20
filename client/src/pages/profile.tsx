@@ -495,7 +495,7 @@ export default function Profile() {
               )}
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
               <div>
                 <Label htmlFor="activityLevel" className="text-sm font-medium text-foreground mb-2 block">
                   {t.defaultActivityLevel}
@@ -557,26 +557,6 @@ export default function Profile() {
                   </SelectContent>
                 </Select>
               </div>
-
-              <div>
-                <Label htmlFor="proteinTarget" className="text-sm font-medium text-foreground mb-2 block">
-                  {t.dailyProteinTarget}
-                </Label>
-                <div className="space-y-2">
-                  <Input
-                    id="proteinTarget"
-                    type="number"
-                    value={formData.proteinTarget}
-                    onChange={(e) => setFormData(prev => ({ ...prev, proteinTarget: e.target.value }))}
-                    className="input-clean"
-                    readOnly
-                  />
-                  <p className="text-xs text-gray-500">
-                    Auto-calculated: {formData.age && parseInt(formData.age) >= 35 ? "35+ years" : "Under 35"} + {formData.activityLevel.charAt(0).toUpperCase() + formData.activityLevel.slice(1)} activity 
-                    = {formData.proteinTarget}g protein/day
-                  </p>
-                </div>
-              </div>
             </div>
 
             {/* Comprehensive Nutrition Targets */}
@@ -585,30 +565,30 @@ export default function Profile() {
                 <h3 className="text-lg font-medium text-foreground mb-4">Comprehensive Nutrition Targets</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   {/* Daily Calories */}
-                  <div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-lg">
-                    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{nutritionTargets.calories} kcal</div>
-                    <div className="text-sm text-blue-700 dark:text-blue-300">Daily Calories</div>
+                  <div className="p-4 bg-orange-50 dark:bg-orange-950 rounded-lg">
+                    <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{nutritionTargets.calories} kcal</div>
+                    <div className="text-sm text-orange-700 dark:text-orange-300">Daily Calories</div>
                     <div className="text-xs text-gray-500 mt-1">Maintenance: {nutritionTargets.maintenanceCalories} kcal</div>
                   </div>
 
                   {/* Protein */}
-                  <div className="p-4 bg-green-50 dark:bg-green-950 rounded-lg">
-                    <div className="text-2xl font-bold text-green-600 dark:text-green-400">{nutritionTargets.protein}g</div>
-                    <div className="text-sm text-green-700 dark:text-green-300">Daily Protein</div>
+                  <div className="p-4 bg-emerald-50 dark:bg-emerald-950 rounded-lg">
+                    <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{nutritionTargets.protein}g</div>
+                    <div className="text-sm text-emerald-700 dark:text-emerald-300">Daily Protein</div>
                     <div className="text-xs text-gray-500 mt-1">Factor: {nutritionTargets.proteinFactor}g/kg</div>
                   </div>
 
                   {/* Carbohydrates */}
-                  <div className="p-4 bg-orange-50 dark:bg-orange-950 rounded-lg">
-                    <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{nutritionTargets.carbohydrates}g</div>
-                    <div className="text-sm text-orange-700 dark:text-orange-300">Daily Carbs</div>
+                  <div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-lg">
+                    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{nutritionTargets.carbohydrates}g</div>
+                    <div className="text-sm text-blue-700 dark:text-blue-300">Daily Carbs</div>
                     <div className="text-xs text-gray-500 mt-1">Factor: {nutritionTargets.carbFactor}g/kg</div>
                   </div>
 
                   {/* Fats */}
-                  <div className="p-4 bg-purple-50 dark:bg-purple-950 rounded-lg">
-                    <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{nutritionTargets.fats}g</div>
-                    <div className="text-sm text-purple-700 dark:text-purple-300">Daily Fats</div>
+                  <div className="p-4 bg-yellow-50 dark:bg-yellow-950 rounded-lg">
+                    <div className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{nutritionTargets.fats}g</div>
+                    <div className="text-sm text-yellow-700 dark:text-yellow-300">Daily Fats</div>
                     <div className="text-xs text-gray-500 mt-1">{nutritionTargets.fatPercentage}% of calories</div>
                   </div>
                 </div>
