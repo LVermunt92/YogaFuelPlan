@@ -650,7 +650,7 @@ export default function MealPlanner() {
                       {t.viewShoppingList || 'View Shopping List'}
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                  <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-white">
                     <DialogHeader>
                       <DialogTitle className="flex items-center gap-2">
                         <ShoppingCart className="h-5 w-5" />
@@ -833,7 +833,7 @@ export default function MealPlanner() {
 
         {/* Recipe Dialog */}
         <Dialog open={!!selectedMealId} onOpenChange={() => setSelectedMealId(null)}>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
             <DialogHeader className="pb-4">
               <DialogTitle className="text-2xl font-bold text-foreground flex items-center gap-3">
                 <BookOpen className="h-6 w-6 text-emerald-600" />
