@@ -165,6 +165,8 @@ export const updateUserProfileSchema = createInsertSchema(users).pick({
   goalWaistline: true,
   targetDate: true,
   activityLevel: true,
+  trainingType: true,
+  goal: true,
   proteinTarget: true,
   dietaryTags: true,
   householdSize: true,
