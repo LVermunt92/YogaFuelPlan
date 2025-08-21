@@ -4036,7 +4036,26 @@ export function getEnhancedMealsByCategory(category: 'breakfast' | 'lunch' | 'di
 }
 
 export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTags: string[]): MealOption[] {
-  if (dietaryTags.length === 0) return meals;
+  // For users with no dietary restrictions, prioritize non-vegetarian options
+  if (dietaryTags.length === 0) {
+    const nonVegetarianMeals = meals.filter(meal => 
+      meal.tags.includes('non-vegetarian') || meal.tags.includes('pescatarian')
+    );
+    const vegetarianMeals = meals.filter(meal => 
+      meal.tags.includes('vegetarian') && !meal.tags.includes('non-vegetarian') && !meal.tags.includes('pescatarian')
+    );
+    
+    // Return balanced mix: 70% meat/fish, 30% vegetarian for variety
+    const meatCount = Math.ceil(nonVegetarianMeals.length * 0.7);
+    const vegCount = Math.ceil(vegetarianMeals.length * 0.3);
+    
+    console.log(`🥩 Non-vegetarian user: Prioritizing ${meatCount} meat/fish recipes + ${vegCount} vegetarian recipes for variety`);
+    
+    return [
+      ...nonVegetarianMeals.slice(0, meatCount),
+      ...vegetarianMeals.slice(0, vegCount)
+    ];
+  }
   
   return meals.filter(meal => {
     // Handle critical dietary restrictions that must be enforced
