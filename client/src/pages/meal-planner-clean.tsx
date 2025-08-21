@@ -144,10 +144,21 @@ export default function MealPlanner() {
   });
 
   // Fetch recipe for selected meal
-  const { data: recipeData, isLoading: loadingRecipe } = useQuery<RecipeResponse>({
+  const { data: recipeData, isLoading: loadingRecipe, error: recipeError } = useQuery<RecipeResponse>({
     queryKey: ['/api/meals', selectedMealId, 'recipe', language],
-    queryFn: () => fetch(`/api/meals/${selectedMealId}/recipe?language=${language}`).then(res => res.json()),
+    queryFn: async () => {
+      console.log(`Fetching recipe for meal ID: ${selectedMealId}`);
+      const response = await fetch(`/api/meals/${selectedMealId}/recipe?language=${language}`);
+      if (!response.ok) {
+        console.error(`Recipe fetch failed: ${response.status} ${response.statusText}`);
+        throw new Error(`Failed to fetch recipe: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log('Recipe data received:', data);
+      return data;
+    },
     enabled: !!selectedMealId,
+    retry: 1,
   });
 
   // Fetch shopping list for current meal plan
@@ -970,6 +981,20 @@ export default function MealPlanner() {
                   ))}
                 </div>
               </div>
+            ) : recipeError ? (
+              <div className="p-6 text-center">
+                <div className="text-red-500 mb-2">⚠️ Recipe loading failed</div>
+                <div className="text-sm text-gray-600 mb-4">
+                  Unable to load recipe details. Error: {(recipeError as Error).message}
+                </div>
+                <Button 
+                  onClick={() => setSelectedMealId(null)}
+                  variant="outline"
+                  size="sm"
+                >
+                  Close
+                </Button>
+              </div>
             ) : recipeData ? (
               <div className="space-y-6">
                 {/* Comprehensive Recipe KPIs */}
@@ -1105,9 +1130,27 @@ export default function MealPlanner() {
                 )}
               </div>
             ) : (
-              <div className="p-6 text-center text-gray-500">
-                <BookOpen className="mx-auto h-12 w-12 mb-4 opacity-50" />
-                <p>{t.recipeNotAvailable}</p>
+              <div className="p-6 text-center">
+                {selectedMealId ? (
+                  <div>
+                    <div className="text-red-500 mb-4">⚠️ Recipe not found</div>
+                    <div className="text-sm text-gray-600 mb-4">
+                      This recipe isn't available in the database. Meal ID: {selectedMealId}
+                    </div>
+                    <Button 
+                      onClick={() => setSelectedMealId(null)}
+                      variant="outline"
+                      size="sm"
+                    >
+                      Close
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="text-gray-500">
+                    <BookOpen className="mx-auto h-12 w-12 mb-4 opacity-50" />
+                    <p>{t.recipeNotAvailable}</p>
+                  </div>
+                )}
               </div>
             )}
           </DialogContent>
