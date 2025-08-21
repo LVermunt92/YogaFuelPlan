@@ -813,19 +813,33 @@ export default function MealPlanner() {
                             // Sunday - only dinner
                             dinner && (
                               <div 
-                                className="cursor-pointer hover:bg-gray-50 p-3 border-l-4 border-gray-400 bg-gray-50 rounded-r-lg"
+                                className={`cursor-pointer hover:opacity-90 p-3 border-l-4 rounded-r-lg ${
+                                  dinner.foodDescription.includes('(leftover)') 
+                                    ? 'border-blue-400 bg-blue-50' 
+                                    : 'border-green-400 bg-green-50'
+                                }`}
                                 onClick={() => setSelectedMealId(dinner.id)}
                               >
                                 <div className="flex items-center gap-2 mb-1">
-                                  <div className="text-xs font-medium text-gray-700">DINNER</div>
+                                  <div className={`text-xs font-medium ${
+                                    dinner.foodDescription.includes('(leftover)') ? 'text-blue-700' : 'text-green-700'
+                                  }`}>
+                                    DINNER
+                                  </div>
                                   {dinner.foodDescription.includes('(leftover)') && (
                                     <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">
                                       <RefreshCw className="h-3 w-3" />
                                       Leftover
                                     </div>
                                   )}
+                                  {dinner.foodDescription.includes('incorporating leftover') && (
+                                    <div className="flex items-center gap-1 text-xs text-orange-600 bg-orange-100 px-1.5 py-0.5 rounded">
+                                      <Plus className="h-3 w-3" />
+                                      Added Ingredients
+                                    </div>
+                                  )}
                                 </div>
-                                <div className="text-sm font-medium text-gray-900 mb-1">{dinner.foodDescription.replace(' (leftover)', '')}</div>
+                                <div className="text-sm font-medium text-gray-900 mb-1">{dinner.foodDescription.replace(' (leftover)', '').replace(/\s*\(incorporating leftover.*?\)/g, '')}</div>
                                 <div className="text-sm text-gray-600">{dinner.protein}g protein • {dinner.prepTime} min</div>
                               </div>
                             )
@@ -834,57 +848,99 @@ export default function MealPlanner() {
                             <>
                               {breakfast && (
                                 <div 
-                                  className="cursor-pointer hover:bg-gray-50 p-3 border-l-4 border-gray-400 bg-gray-50 rounded-r-lg"
+                                  className={`cursor-pointer hover:opacity-90 p-3 border-l-4 rounded-r-lg ${
+                                    breakfast.foodDescription.includes('(leftover)') 
+                                      ? 'border-blue-400 bg-blue-50' 
+                                      : 'border-green-400 bg-green-50'
+                                  }`}
                                   onClick={() => setSelectedMealId(breakfast.id)}
                                 >
                                   <div className="flex items-center gap-2 mb-1">
-                                    <div className="text-xs font-medium text-gray-700">BREAKFAST</div>
+                                    <div className={`text-xs font-medium ${
+                                      breakfast.foodDescription.includes('(leftover)') ? 'text-blue-700' : 'text-green-700'
+                                    }`}>
+                                      BREAKFAST
+                                    </div>
                                     {breakfast.foodDescription.includes('(leftover)') && (
                                       <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">
                                         <RefreshCw className="h-3 w-3" />
                                         Leftover
                                       </div>
                                     )}
+                                    {breakfast.foodDescription.includes('incorporating leftover') && (
+                                      <div className="flex items-center gap-1 text-xs text-orange-600 bg-orange-100 px-1.5 py-0.5 rounded">
+                                        <Plus className="h-3 w-3" />
+                                        Added Ingredients
+                                      </div>
+                                    )}
                                   </div>
-                                  <div className="text-sm font-medium text-gray-900 mb-1">{breakfast.foodDescription.replace(' (leftover)', '')}</div>
+                                  <div className="text-sm font-medium text-gray-900 mb-1">{breakfast.foodDescription.replace(' (leftover)', '').replace(/\s*\(incorporating leftover.*?\)/g, '')}</div>
                                   <div className="text-sm text-gray-600">{breakfast.protein}g protein • {breakfast.prepTime} min</div>
                                 </div>
                               )}
                               
                               {lunch && (
                                 <div 
-                                  className="cursor-pointer hover:bg-gray-50 p-3 border-l-4 border-gray-400 bg-gray-50 rounded-r-lg"
+                                  className={`cursor-pointer hover:opacity-90 p-3 border-l-4 rounded-r-lg ${
+                                    lunch.foodDescription.includes('(leftover)') 
+                                      ? 'border-blue-400 bg-blue-50' 
+                                      : 'border-green-400 bg-green-50'
+                                  }`}
                                   onClick={() => setSelectedMealId(lunch.id)}
                                 >
                                   <div className="flex items-center gap-2 mb-1">
-                                    <div className="text-xs font-medium text-gray-700">LUNCH</div>
+                                    <div className={`text-xs font-medium ${
+                                      lunch.foodDescription.includes('(leftover)') ? 'text-blue-700' : 'text-green-700'
+                                    }`}>
+                                      LUNCH
+                                    </div>
                                     {lunch.foodDescription.includes('(leftover)') && (
                                       <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">
                                         <RefreshCw className="h-3 w-3" />
                                         Leftover
                                       </div>
                                     )}
+                                    {lunch.foodDescription.includes('incorporating leftover') && (
+                                      <div className="flex items-center gap-1 text-xs text-orange-600 bg-orange-100 px-1.5 py-0.5 rounded">
+                                        <Plus className="h-3 w-3" />
+                                        Added Ingredients
+                                      </div>
+                                    )}
                                   </div>
-                                  <div className="text-sm font-medium text-gray-900 mb-1">{lunch.foodDescription.replace(' (leftover)', '')}</div>
+                                  <div className="text-sm font-medium text-gray-900 mb-1">{lunch.foodDescription.replace(' (leftover)', '').replace(/\s*\(incorporating leftover.*?\)/g, '')}</div>
                                   <div className="text-sm text-gray-600">{lunch.protein}g protein • {lunch.prepTime} min</div>
                                 </div>
                               )}
                               
                               {dinner && (
                                 <div 
-                                  className="cursor-pointer hover:bg-gray-50 p-3 border-l-4 border-gray-400 bg-gray-50 rounded-r-lg"
+                                  className={`cursor-pointer hover:opacity-90 p-3 border-l-4 rounded-r-lg ${
+                                    dinner.foodDescription.includes('(leftover)') 
+                                      ? 'border-blue-400 bg-blue-50' 
+                                      : 'border-green-400 bg-green-50'
+                                  }`}
                                   onClick={() => setSelectedMealId(dinner.id)}
                                 >
                                   <div className="flex items-center gap-2 mb-1">
-                                    <div className="text-xs font-medium text-gray-700">DINNER</div>
+                                    <div className={`text-xs font-medium ${
+                                      dinner.foodDescription.includes('(leftover)') ? 'text-blue-700' : 'text-green-700'
+                                    }`}>
+                                      DINNER
+                                    </div>
                                     {dinner.foodDescription.includes('(leftover)') && (
                                       <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">
                                         <RefreshCw className="h-3 w-3" />
                                         Leftover
                                       </div>
                                     )}
+                                    {dinner.foodDescription.includes('incorporating leftover') && (
+                                      <div className="flex items-center gap-1 text-xs text-orange-600 bg-orange-100 px-1.5 py-0.5 rounded">
+                                        <Plus className="h-3 w-3" />
+                                        Added Ingredients
+                                      </div>
+                                    )}
                                   </div>
-                                  <div className="text-sm font-medium text-gray-900 mb-1">{dinner.foodDescription.replace(' (leftover)', '')}</div>
+                                  <div className="text-sm font-medium text-gray-900 mb-1">{dinner.foodDescription.replace(' (leftover)', '').replace(/\s*\(incorporating leftover.*?\)/g, '')}</div>
                                   <div className="text-sm text-gray-600">{dinner.protein}g protein • {dinner.prepTime} min</div>
                                 </div>
                               )}
