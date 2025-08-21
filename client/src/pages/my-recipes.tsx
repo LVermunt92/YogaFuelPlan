@@ -59,7 +59,6 @@ const recipeFormSchema = z.object({
   mealTypes: z.array(z.enum(["breakfast", "lunch", "dinner"])).min(1, "Select at least one meal type"),
   costEuros: z.number().min(0).optional(),
   tags: z.array(z.string()).default([]),
-  difficulty: z.enum(["easy", "medium", "hard"]).default("easy"),
   cuisine: z.string().optional(),
 });
 
@@ -133,7 +132,6 @@ export default function MyRecipes() {
       mealTypes: [],
       costEuros: 0,
       tags: [],
-      difficulty: 'easy',
       cuisine: '',
     },
   });
@@ -201,7 +199,6 @@ export default function MyRecipes() {
       mealTypes: recipe.mealTypes as ("breakfast" | "lunch" | "dinner")[],
       costEuros: recipe.costEuros || 0,
       tags: recipe.tags,
-      difficulty: recipe.difficulty as "easy" | "medium" | "hard",
       cuisine: recipe.cuisine || '',
     });
     setIsDialogOpen(true);
@@ -244,14 +241,7 @@ export default function MyRecipes() {
     form.setValue('tips', current.filter((_, i) => i !== index));
   };
 
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case 'easy': return 'text-green-600 bg-green-50';
-      case 'medium': return 'text-yellow-600 bg-yellow-50';
-      case 'hard': return 'text-red-600 bg-red-50';
-      default: return 'text-gray-600 bg-gray-50';
-    }
-  };
+
 
   if (isLoading) {
     return <div className="p-6">Loading your recipes...</div>;
@@ -339,28 +329,7 @@ export default function MyRecipes() {
                         )}
                       />
                       
-                      <FormField
-                        control={form.control}
-                        name="difficulty"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Difficulty</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select difficulty" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                <SelectItem value="easy">Easy</SelectItem>
-                                <SelectItem value="medium">Medium</SelectItem>
-                                <SelectItem value="hard">Hard</SelectItem>
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+
                     </div>
                     
                     {/* Categories and Tags */}
@@ -716,10 +685,6 @@ export default function MyRecipes() {
                 </div>
                 
                 <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <span className={`px-2 py-1 rounded-full text-xs ${getDifficultyColor(recipe.difficulty)}`}>
-                    {recipe.difficulty}
-                  </span>
-                  <span>•</span>
                   <span>{recipe.portion}</span>
                 </div>
               </CardHeader>

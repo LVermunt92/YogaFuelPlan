@@ -1844,6 +1844,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         ...nutritionAnalysis,
         portion: "1 serving", // Set default portion
         cookTime: 0, // Set default cookTime since we merged it into prepTime
+        difficulty: "easy", // Set default difficulty since we removed the field
         userId: req.session.userId
       };
       
