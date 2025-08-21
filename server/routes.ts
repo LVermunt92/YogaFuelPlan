@@ -13,6 +13,7 @@ import { translateRecipe, translateMealPlan, translateShoppingList } from './rec
 import { translateRecipeEnhanced, getTranslationStatus } from './ai-enhanced-translator';
 import { adminRouter } from './admin-routes';
 import { calculateNutritionTargets, type NutritionProfile } from './nutrition-calculator';
+import { analyzeRecipeNutrition } from './ai-nutrition-analyzer';
 import cron from 'node-cron';
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -1820,18 +1821,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Create new user recipe
+  // Create new user recipe with AI nutrition analysis
   app.post("/api/user-recipes", async (req, res) => {
     try {
       if (!req.session?.userId) {
         return res.status(401).json({ message: "Not authenticated" });
       }
       
+      const formData = req.body;
+      
+      // Generate nutrition data using AI
+      console.log('🤖 Analyzing recipe nutrition with AI...');
+      const nutritionAnalysis = await analyzeRecipeNutrition(
+        formData.ingredients,
+        formData.servings,
+        formData.portion
+      );
+      
+      // Combine form data with AI-generated nutrition
       const recipeData = {
-        ...req.body,
+        ...formData,
+        ...nutritionAnalysis,
         userId: req.session.userId
       };
       
+      console.log('✅ AI nutrition analysis complete:', nutritionAnalysis);
       const recipe = await storage.createUserRecipe(recipeData);
       res.status(201).json(recipe);
     } catch (error) {
@@ -1840,7 +1854,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Update user recipe
+  // Update user recipe with AI nutrition re-analysis
   app.patch("/api/user-recipes/:id", async (req, res) => {
     try {
       if (!req.session?.userId) {
@@ -1848,8 +1862,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       const id = parseInt(req.params.id);
-      const recipe = await storage.updateUserRecipe(id, req.session.userId, req.body);
-      res.json(recipe);
+      const updateData = req.body;
+      
+      // If ingredients or servings changed, regenerate nutrition
+      if (updateData.ingredients || updateData.servings || updateData.portion) {
+        console.log('🤖 Re-analyzing recipe nutrition with AI...');
+        const nutritionAnalysis = await analyzeRecipeNutrition(
+          updateData.ingredients,
+          updateData.servings || 1,
+          updateData.portion || "1 serving"
+        );
+        
+        // Include AI-generated nutrition in update
+        const dataWithNutrition = {
+          ...updateData,
+          ...nutritionAnalysis
+        };
+        
+        console.log('✅ AI nutrition re-analysis complete:', nutritionAnalysis);
+        const recipe = await storage.updateUserRecipe(id, req.session.userId, dataWithNutrition);
+        res.json(recipe);
+      } else {
+        // No ingredients change, just update other fields
+        const recipe = await storage.updateUserRecipe(id, req.session.userId, updateData);
+        res.json(recipe);
+      }
     } catch (error) {
       console.error("Error updating user recipe:", error);
       res.status(500).json({ message: "Failed to update recipe" });

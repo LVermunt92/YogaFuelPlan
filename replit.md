@@ -59,9 +59,10 @@ Improved New User Profile Experience: Enhanced profile form with intelligent new
 Consistent KPI Color Alignment: Standardized KPI color scheme across profile, meal planner, and recipe displays - emerald for protein, yellow for fats, green for vegetables, blue for fruits/starches, orange for calories, with neutral gray for secondary metrics.
 Clean Day Headers: Removed cooking and leftover icons from day headers in meal plan for cleaner appearance, keeping colored meal cards as the primary visual indicators.
 Improved Mobile Layout: Optimized mobile spacing with wider meal plan content, reduced horizontal padding, and better alignment of boxes across all screen sizes.
+AI-Powered Nutrition Analysis: Implemented comprehensive AI nutrition analysis system that automatically generates protein, calories, carbohydrates, fats, fiber, sugar, and sodium values from recipe ingredients list. Removed manual nutrition input fields from recipe forms - all nutrition data is now calculated intelligently using OpenAI GPT-4o model.
 
 # System Architecture
-- **UI/UX Decisions**: Utilizes `shadcn/ui` built on `Radix UI` primitives with `Tailwind CSS` and CSS variables for theming. The UI is streamlined, removing redundant elements and focusing on core meal planning functionality.
+- **UI/UX Decisions**: Utilizes `shadcn/ui` built on `Radix UI` primitives with `Tailwind CSS` and CSS variables for theming, focusing on a streamlined interface. Color schemes are standardized across the application (emerald, yellow, green, blue, orange for KPIs; gray for general UI; green/blue/orange for meal cards). Mobile layouts are optimized for responsiveness.
 - **Technical Implementations**:
     - **Frontend**: React 18, TypeScript, Wouter for routing, TanStack React Query for server state.
     - **Backend**: Express.js with TypeScript, RESTful API.
@@ -72,21 +73,21 @@ Improved Mobile Layout: Optimized mobile spacing with wider meal plan content, r
     - **Authentication & Multi-User Support**: Secure login/registration, password reset, isolated user data, and route protection.
     - **Meal Generation**: Calculates protein targets, selects meals from a nutrition database, generates 7-day plans with variety, and creates shopping lists. Includes smart AI recipe generation and comprehensive ingredient specification, with recipes being alcohol-free.
     - **Universal Meal Prep Engine**: Adapts to user cooking schedules, supporting batch cooking, proper meal distribution, and intelligent dietary fallbacks.
-    - **Smart Time Constraints**: Weekday meals (Mon-Fri) are limited to ≤30 minutes prep time; weekends have no time restrictions.
+    - **Time Constraints**: Weekday meals (Mon-Fri) are limited to ≤30 minutes prep time; weekends have no time restrictions.
     - **Ayurvedic Integration**: Supports Ayurvedic dietary tags and seasonal adaptation.
     - **Meal Plan Persistence**: Meal plans persist across browser sessions with automatic loading and cleanup (max 3 plans).
-    - **Automated Viral Recipe Updates**: System automatically adds new trending recipes.
-    - **Simplified meal plan management**: Users rely on the saved meal plans system for managing multiple plans.
-    - **Complete Dutch Recipe Translation System**: Comprehensive translation service for recipe names, ingredients, and cooking instructions from English to Dutch, including AI-enhanced translation.
+    - **Automated Recipe Updates**: System automatically adds new trending recipes.
+    - **Dutch Recipe Translation System**: Comprehensive translation service for recipe names, ingredients, and cooking instructions from English to Dutch, including AI-enhanced translation.
     - **Consolidated Shopping List Workflow**: Single-flow shopping list generation with supermarket-ordered categories, detailed dry goods separation, and comprehensive lemon standardization.
-    - **Comprehensive Macronutrient Distribution Tracking**: Real-time tracking of macronutrient distribution (fats, vegetables, fruits/starches) in meal plans.
+    - **Macronutrient Distribution Tracking**: Real-time tracking of macronutrient distribution (fats, vegetables, fruits/starches) in meal plans.
     - **Advanced Protein Range Calculator**: Evidence-based protein calculation with gender-specific age thresholds and activity level considerations.
-    - **Admin Panel System**: Complete administrative interface for managing nutrition calculation parameters, monitoring system statistics, and configuring all meal planning logic. Includes editable lookup tables for protein factors, PAL values, carbohydrate targets, and fat percentages with full audit trail.
-    - **User Recipe Management**: Complete custom recipe system allowing users to create, store, and manage personal recipes separate from the curated database. Includes full CRUD operations, nutrition tracking, meal type categorization, and soft-delete functionality.
+    - **Admin Panel**: Full-featured admin interface for managing nutrition calculation parameters, monitoring system statistics, and configuring meal planning logic, including editable lookup tables and audit trails.
+    - **User Recipe Management**: Complete custom recipe system allowing users to create, store, and manage personal recipes separate from the curated database, including CRUD operations, nutrition tracking, meal type categorization, and soft-delete.
+    - **AI-Powered Nutrition Analysis**: Automated generation of comprehensive nutritional values (protein, calories, carbohydrates, fats, fiber, sugar, sodium) directly from recipe ingredients using OpenAI GPT-4o model.
 - **System Design Choices**:
     - **Data Flow**: User input drives meal generation, stored in PostgreSQL, displayed via React Query.
     - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, favorite meals, and user-created custom recipes.
-    - **Unified Recipe Database**: Consolidated three separate recipe databases (base, viral, additional) into a single unified system.
+    - **Unified Recipe Database**: Consolidated all recipe databases into a single unified system.
 
 # External Dependencies
 - `@neondatabase/serverless` (PostgreSQL client)
@@ -94,3 +95,4 @@ Improved Mobile Layout: Optimized mobile spacing with wider meal plan content, r
 - `@tanstack/react-query` (Frontend data fetching)
 - `@radix-ui` (UI primitives)
 - `tailwindcss` (CSS framework)
+- `OpenAI GPT-4o` (for AI-powered nutrition analysis)
