@@ -4812,11 +4812,24 @@ function cleanIngredientName(ingredient: string): string {
   // This prevents duplicate listings in shopping list (e.g., both "cilantro" and "coriander" appearing)
   if (cleaned.includes('fresh cilantro') || cleaned.includes('cilantro') || cleaned.includes('fresh coriander') || cleaned.includes('coriander')) {
     // Check if it's ground/powder coriander (spice) vs fresh cilantro (herb)
-    if (cleaned.includes('ground') || cleaned.includes('powder')) {
+    if (cleaned.includes('ground') || cleaned.includes('powder') || cleaned.includes('seeds')) {
       cleaned = 'ground coriander';
     } else {
       cleaned = 'fresh cilantro'; // Consolidate all fresh forms to cilantro
     }
+  }
+  
+  // Additional specific consolidation for exact matches to prevent duplicates
+  if (cleaned === 'coriander' || cleaned === 'fresh coriander') {
+    cleaned = 'fresh cilantro';
+  }
+  if (cleaned === 'coriander seeds' || cleaned === 'ground coriander seeds') {
+    cleaned = 'ground coriander';
+  }
+  
+  // Debug log for cilantro/coriander consolidation
+  if (cleaned.includes('cilantro') || cleaned.includes('coriander')) {
+    console.log(`🌿 Herb consolidation: "${originalInput}" → "${cleaned}"`);
   }
   
   // Handle other specific fresh herbs
