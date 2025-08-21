@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Calendar, Clock, Target, Eye, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages, Users, Minus, Trash2, Euro, TrendingUp, Droplet, Apple, Leaf } from "lucide-react";
+import { Calendar, Clock, Target, Eye, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages, Users, Minus, Trash2, Euro, TrendingUp, Droplet, Apple, Leaf, Check } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Separator } from "@/components/ui/separator";
 import { useTranslations, translateDietaryTags, translateDietaryTag } from "@/lib/translations";
@@ -99,6 +99,7 @@ export default function MealPlanner() {
   const [selectedMealId, setSelectedMealId] = useState<number | null>(null);
   const [showShoppingList, setShowShoppingList] = useState(false);
   const [newLeftover, setNewLeftover] = useState("");
+  const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set());
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -115,6 +116,25 @@ export default function MealPlanner() {
     end.setDate(start.getDate() + 6);
     return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}-${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
   };
+
+  // Helper functions for shopping list
+  const toggleItemChecked = (itemKey: string) => {
+    setCheckedItems(prev => {
+      const newChecked = new Set(prev);
+      if (newChecked.has(itemKey)) {
+        newChecked.delete(itemKey);
+      } else {
+        newChecked.add(itemKey);
+      }
+      return newChecked;
+    });
+  };
+
+  const clearAllChecked = () => {
+    setCheckedItems(new Set());
+  };
+
+  const getItemKey = (ingredient: string, category: string) => `${category}-${ingredient}`;
 
   // Fetch user profile
   const { data: userProfile, isLoading: profileLoading } = useQuery<User>({
@@ -677,13 +697,25 @@ export default function MealPlanner() {
                       </div>
                     ) : shoppingListData ? (
                       <div className="space-y-3">
-                        <div className="flex flex-col gap-1">
-                          <span className="text-xs text-gray-500 truncate">
-                            {formatWeekRange(shoppingListData.weekStart)}
-                          </span>
-                          <Badge variant="secondary" className="self-start text-xs px-2 py-1">
-                            {shoppingListData.totalItems} items
-                          </Badge>
+                        <div className="flex justify-between items-start gap-2">
+                          <div className="flex flex-col gap-1">
+                            <span className="text-xs text-gray-500 truncate">
+                              {formatWeekRange(shoppingListData.weekStart)}
+                            </span>
+                            <Badge variant="secondary" className="self-start text-xs px-2 py-1">
+                              {shoppingListData.totalItems} items
+                            </Badge>
+                          </div>
+                          {checkedItems.size > 0 && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={clearAllChecked}
+                              className="text-xs"
+                            >
+                              Clear All
+                            </Button>
+                          )}
                         </div>
                         
                         {shoppingListData.categories?.map(category => (
@@ -694,14 +726,48 @@ export default function MealPlanner() {
                             <div className="space-y-1">
                               {shoppingListData.shoppingList
                                 ?.filter(item => item.category === category)
-                                ?.map((item, index) => (
-                                  <div key={index} className="py-2 px-2 bg-gray-50 rounded text-xs">
-                                    <div className="flex items-start gap-1 w-full">
-                                      <span className="text-foreground font-medium leading-tight break-words flex-grow">{item.ingredient}</span>
-                                      <span className="text-gray-500 font-medium text-xs ml-1 whitespace-nowrap">{item.totalAmount}</span>
+                                ?.map((item, index) => {
+                                  const itemKey = getItemKey(item.ingredient, category);
+                                  const isChecked = checkedItems.has(itemKey);
+                                  
+                                  return (
+                                    <div 
+                                      key={index} 
+                                      className={`py-2 px-2 rounded text-xs cursor-pointer transition-all duration-200 ${
+                                        isChecked 
+                                          ? 'bg-green-50 border border-green-200' 
+                                          : 'bg-gray-50 hover:bg-gray-100'
+                                      }`}
+                                      onClick={() => toggleItemChecked(itemKey)}
+                                    >
+                                      <div className="flex items-start gap-2 w-full">
+                                        <div className={`flex-shrink-0 w-4 h-4 rounded border-2 mt-0.5 flex items-center justify-center ${
+                                          isChecked 
+                                            ? 'bg-green-500 border-green-500' 
+                                            : 'border-gray-300'
+                                        }`}>
+                                          {isChecked && (
+                                            <Check className="w-3 h-3 text-white" />
+                                          )}
+                                        </div>
+                                        <span className={`font-medium leading-tight break-words flex-grow ${
+                                          isChecked 
+                                            ? 'text-green-700 line-through' 
+                                            : 'text-foreground'
+                                        }`}>
+                                          {item.ingredient}
+                                        </span>
+                                        <span className={`font-medium text-xs ml-1 whitespace-nowrap ${
+                                          isChecked 
+                                            ? 'text-green-600' 
+                                            : 'text-gray-500'
+                                        }`}>
+                                          {item.totalAmount}
+                                        </span>
+                                      </div>
                                     </div>
-                                  </div>
-                                ))}
+                                  );
+                                })}
                             </div>
                           </div>
                         ))}
