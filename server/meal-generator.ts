@@ -298,6 +298,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   // Check if we should use meal prep mode (cooking days < eating days)
   if (cookingDays.length < eatingDays.length) {
     console.log(`Using meal prep mode: ${cookingDays.length} cooking days for ${eatingDays.length} eating days`);
+    console.log(`🔍 CALLING MEAL PREP with user: ${user?.id}, use_only_my_recipes: ${user?.use_only_my_recipes}`);
     return await generateMealPrepPlan(request, user, caloricAdjustment);
   }
 
@@ -805,9 +806,9 @@ async function generateMealPrepPlan(
   let dinnerOptions: MealOption[] = [];
   
   // Check if user wants only their own recipes
-  const useOnlyMyRecipes = user?.use_only_my_recipes || false;
+  const useOnlyMyRecipes = user?.use_only_my_recipes === true;
   console.log(`🍽️ Recipe source preference: ${useOnlyMyRecipes ? 'User recipes only' : 'All recipes'}`);
-  console.log(`🔍 Debug: user?.use_only_my_recipes = ${user?.use_only_my_recipes}, useOnlyMyRecipes = ${useOnlyMyRecipes}`);
+  console.log(`🔍 Debug: user?.use_only_my_recipes = ${user?.use_only_my_recipes} (type: ${typeof user?.use_only_my_recipes}), useOnlyMyRecipes = ${useOnlyMyRecipes}`);
 
   if (useOnlyMyRecipes) {
     // Use user's custom recipes with smart fallback for meal prep
@@ -879,6 +880,7 @@ async function generateMealPrepPlan(
   } else {
     // Fast recipe selection: Use existing database only (AI generation disabled for speed)
     console.log('🚀 Fast recipe selection: using existing database only');
+    console.log(`🐛 DEBUG WHY NOT CUSTOM: useOnlyMyRecipes=${useOnlyMyRecipes}, user?.use_only_my_recipes=${user?.use_only_my_recipes}`);
     lunchOptions = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
     dinnerOptions = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
   }
