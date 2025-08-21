@@ -831,6 +831,76 @@ export default function Profile() {
             )}
           </div>
 
+          {/* Nutrition Targets */}
+          {nutritionTargets && (
+            <div className="card-clean">
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold text-foreground mb-2">
+                  {t.nutritionTargets || 'Nutrition Targets'}
+                </h2>
+                <p className="text-sm text-gray-500">
+                  Daily targets calculated based on your activity level, age, and physiology
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div className="p-4 bg-muted rounded-lg">
+                  <div className="text-sm font-medium text-foreground mb-1">Protein</div>
+                  <div className="text-2xl font-bold text-foreground">{Math.round(nutritionTargets.protein)}g</div>
+                  <div className="text-xs text-gray-500 mt-1">
+                    {formData.activityLevel === 'high' || formData.activityLevel === 'athlete' 
+                      ? 'High Protein Target' 
+                      : 'Standard Target'}
+                  </div>
+                </div>
+                
+                <div className="p-4 bg-muted rounded-lg">
+                  <div className="text-sm font-medium text-foreground mb-1">Carbohydrates</div>
+                  <div className="text-2xl font-bold text-foreground">{Math.round(nutritionTargets.carbohydrates)}g</div>
+                  <div className="text-xs text-gray-500 mt-1">
+                    {formData.trainingType === 'endurance' ? 'Endurance Focus' : 
+                     formData.trainingType === 'strength' ? 'Strength Focus' : 'General'}
+                  </div>
+                </div>
+                
+                <div className="p-4 bg-muted rounded-lg">
+                  <div className="text-sm font-medium text-foreground mb-1">Healthy Fats</div>
+                  <div className="text-2xl font-bold text-foreground">{Math.round(nutritionTargets.fats)}g</div>
+                  <div className="text-xs text-gray-500 mt-1">
+                    {Math.round(nutritionTargets.fatPercentage)}% of calories
+                  </div>
+                </div>
+                
+                <div className="p-4 bg-muted rounded-lg">
+                  <div className="text-sm font-medium text-foreground mb-1">Total Calories</div>
+                  <div className="text-2xl font-bold text-foreground">{Math.round(nutritionTargets.calories)}</div>
+                  <div className="text-xs text-gray-500 mt-1">
+                    {formData.goal === 'lose' ? 'Weight Loss' : 
+                     formData.goal === 'gain' ? 'Weight Gain' : 'Maintenance'}
+                  </div>
+                </div>
+              </div>
+              
+              <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <div className="text-sm font-medium text-blue-900 mb-2">Calculation Details</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-blue-800">
+                  <div>
+                    <span className="font-medium">BMR:</span> {Math.round(nutritionTargets.bmr)} calories
+                  </div>
+                  <div>
+                    <span className="font-medium">Maintenance:</span> {Math.round(nutritionTargets.maintenanceCalories)} calories
+                  </div>
+                  <div>
+                    <span className="font-medium">Activity Factor:</span> {nutritionTargets.palValue}
+                  </div>
+                  <div>
+                    <span className="font-medium">Protein Factor:</span> {nutritionTargets.proteinFactor}g/kg
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Save Button */}
           <div className="flex justify-end">
             <Button 

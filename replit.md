@@ -49,6 +49,8 @@ Comprehensive Admin Panel Implementation: Created full-featured admin interface 
 Non-Vegetarian User Priority System: Fixed meal selection bias where non-vegetarian users were getting mostly vegetarian meals - now properly prioritizes meat/fish recipes (70%) with vegetarian variety (30%) for users without dietary restrictions.
 Mobile-Optimized Meal Plan Display: Redesigned meal plan interface with responsive card layout for mobile devices, featuring larger text, better touch targets, and color-coded meal types for improved phone usability.
 User Recipe Management System: Implemented comprehensive custom recipe functionality allowing users to create, edit, and manage their personal recipe collections separate from the main curated database.
+Unified Meal Plan Color Scheme: Simplified meal plan interface from multiple meal-type colors (orange/blue/purple) to single unified gray color scheme while preserving blue leftover indicators.
+Nutrition Targets Display Restoration: Restored comprehensive nutrition targets section in profile page showing protein, carbohydrates, fats, and calories based on activity level calculations with detailed breakdown.
 
 # System Architecture
 - **UI/UX Decisions**: Utilizes `shadcn/ui` built on `Radix UI` primitives with `Tailwind CSS` and CSS variables for theming. The UI is streamlined, removing redundant elements and focusing on core meal planning functionality.
