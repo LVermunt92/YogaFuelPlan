@@ -155,7 +155,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: "Not authenticated" });
       }
       
-      const user = await storage.getUserById(req.session.userId);
+      const user = await storage.getUser(req.session.userId);
       if (!user) {
         // Session points to non-existent user, clear session
         req.session.destroy(() => {});
