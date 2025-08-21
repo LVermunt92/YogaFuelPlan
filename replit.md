@@ -14,6 +14,7 @@ Preferred communication style: Simple, everyday language.
 - **Meal Plan Date Validation**: System now restricts meal plan creation to current week (starts last Sunday) and next week (starts this Sunday) only
 - **Smart Lactose-Free Filtering**: Enhanced dietary filtering to be less restrictive for lactose-free requirement - now includes meals without dairy ingredients even if not explicitly tagged
 - **Comprehensive Metric Unit Conversion**: Converted all recipe measurements from imperial (cups, tablespoons, teaspoons) to metric units (grams, milliliters) throughout the database and AI recipe generation system
+- **Smart Vegetarian Filtering**: Implemented intelligent vegetarian filtering that includes naturally vegetarian recipes (like pancakes) even if not explicitly tagged, while excluding any recipes containing meat/fish ingredients
 
 # System Architecture
 - **UI/UX Decisions**: Utilizes `shadcn/ui` built on `Radix UI` primitives with `Tailwind CSS` and CSS variables for theming, focusing on a streamlined interface. Color schemes are standardized across the application (emerald, yellow, green, blue, orange for KPIs; gray for general UI; green/blue/orange for meal cards). Mobile layouts are optimized for responsiveness.

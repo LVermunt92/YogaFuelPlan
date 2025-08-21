@@ -4504,11 +4504,32 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
     const criticalTags = ['vegetarian', 'vegan', 'gluten-free', 'lactose-free', 'dairy-free'];
     const userCriticalTags = dietaryTags.filter(tag => criticalTags.includes(tag));
     
-    // IMPORTANT: Vegetarian/vegan users must EXCLUDE non-vegetarian meals
+    // SMART VEGETARIAN FILTERING: Include meals that either:
+    // 1. Are tagged as vegetarian/vegan, OR
+    // 2. Don't contain any meat/fish ingredients (naturally vegetarian - like pancakes)
     if (dietaryTags.includes('vegetarian') || dietaryTags.includes('vegan')) {
+      // Always exclude explicitly non-vegetarian tagged meals
       if (meal.tags.includes('non-vegetarian') || meal.tags.includes('pescatarian')) {
-        console.log(`🚫 Excluding non-vegetarian meal for vegetarian user: ${meal.name}`);
-        return false; // Exclude any non-vegetarian meals
+        console.log(`🚫 SMART VEGETARIAN: "${meal.name}" excluded - tagged as non-vegetarian`);
+        return false;
+      }
+      
+      // Check for meat/fish ingredients in meals not tagged as vegetarian
+      const meatIngredients = ['chicken', 'beef', 'pork', 'turkey', 'fish', 'salmon', 'tuna', 'cod', 'shrimp', 'meat', 'ground meat', 'bacon', 'ham', 'sausage', 'anchovy', 'prosciutto', 'lamb', 'duck', 'crab', 'lobster', 'ground turkey'];
+      const hasMeat = meal.ingredients.some(ingredient => 
+        meatIngredients.some(meat => ingredient.toLowerCase().includes(meat))
+      );
+      
+      // If meal contains meat ingredients, exclude it
+      if (hasMeat) {
+        const meatFound = meal.ingredients.filter(ing => meatIngredients.some(meat => ing.toLowerCase().includes(meat)));
+        console.log(`🚫 SMART VEGETARIAN: "${meal.name}" excluded - contains meat/fish: ${meatFound.join(', ')}`);
+        return false;
+      }
+      
+      // If meal doesn't contain meat and isn't tagged as vegetarian, include it (naturally vegetarian)
+      if (!meal.tags.includes('vegetarian') && !meal.tags.includes('vegan') && !hasMeat) {
+        console.log(`✅ SMART VEGETARIAN: "${meal.name}" included - no meat/fish found, naturally vegetarian`);
       }
     }
     
