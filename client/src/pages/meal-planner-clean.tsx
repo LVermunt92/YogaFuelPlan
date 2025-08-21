@@ -655,7 +655,7 @@ export default function MealPlanner() {
           {/* Shopping List Dialog (moved outside) */}
           {currentMealPlan && (
             <Dialog open={showShoppingList} onOpenChange={setShowShoppingList}>
-                  <DialogContent className="max-w-[95vw] sm:max-w-2xl max-h-[90vh] overflow-y-auto bg-white">
+                  <DialogContent className="max-w-[90vw] sm:max-w-lg max-h-[90vh] overflow-y-auto bg-white">
                     <DialogHeader>
                       <DialogTitle>{t.shoppingListHeader}</DialogTitle>
                     </DialogHeader>
@@ -666,12 +666,12 @@ export default function MealPlanner() {
                       </div>
                     ) : shoppingListData ? (
                       <div className="space-y-3">
-                        <div className="flex flex-col gap-2">
-                          <span className="text-xs text-gray-500">
-                            {t.weekOf} {formatWeekRange(shoppingListData.weekStart)}
+                        <div className="flex flex-col gap-1">
+                          <span className="text-xs text-gray-500 truncate">
+                            {formatWeekRange(shoppingListData.weekStart)}
                           </span>
-                          <Badge variant="secondary" className="self-start text-xs">
-                            {shoppingListData.totalItems} {t.items}
+                          <Badge variant="secondary" className="self-start text-xs px-2 py-1">
+                            {shoppingListData.totalItems} items
                           </Badge>
                         </div>
                         
@@ -684,9 +684,9 @@ export default function MealPlanner() {
                               {shoppingListData.shoppingList
                                 ?.filter(item => item.category === category)
                                 ?.map((item, index) => (
-                                  <div key={index} className="flex flex-col sm:flex-row sm:justify-between gap-1 py-2 px-2 bg-gray-50 rounded text-xs">
-                                    <span className="text-foreground font-medium break-words">{item.ingredient}</span>
-                                    <span className="text-gray-500 font-medium text-right sm:text-left shrink-0">{item.totalAmount}</span>
+                                  <div key={index} className="flex flex-col gap-1 py-2 px-2 bg-gray-50 rounded text-xs">
+                                    <span className="text-foreground font-medium break-words leading-tight">{item.ingredient}</span>
+                                    <span className="text-gray-500 font-medium text-xs">{item.totalAmount}</span>
                                   </div>
                                 ))}
                             </div>
