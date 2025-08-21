@@ -375,13 +375,14 @@ export default function MyRecipes() {
                                         <FormControl>
                                           <input
                                             type="checkbox"
-                                            checked={field.value?.includes(type)}
+                                            checked={field.value?.includes(type as "breakfast" | "lunch" | "dinner")}
                                             onChange={(checked) => {
+                                              const mealType = type as "breakfast" | "lunch" | "dinner";
                                               return checked.target.checked
-                                                ? field.onChange([...field.value, type])
+                                                ? field.onChange([...field.value, mealType])
                                                 : field.onChange(
                                                     field.value?.filter(
-                                                      (value) => value !== type
+                                                      (value) => value !== mealType
                                                     )
                                                   )
                                             }}

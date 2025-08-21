@@ -223,7 +223,8 @@ export default function Profile() {
           householdSize: updatedData.householdSize?.toString() || '1',
           cookingDaysPerWeek: updatedData.cookingDaysPerWeek?.toString() || '7',
           eatingDaysAtHome: updatedData.eatingDaysAtHome?.toString() || '7',
-          meatFishMealsPerWeek: updatedData.meatFishMealsPerWeek?.toString() || '0'
+          meatFishMealsPerWeek: updatedData.meatFishMealsPerWeek?.toString() || '0',
+          useOnlyMyRecipes: updatedData.useOnlyMyRecipes || false
         });
       }
       
@@ -590,7 +591,7 @@ export default function Profile() {
             <div className="card-clean">
               <div className="mb-6">
                 <h2 className="text-xl font-semibold text-foreground mb-2">
-                  {t.nutritionTargets || 'Nutrition Targets'}
+                  {'nutritionTargets' in t ? t.nutritionTargets : 'Nutrition Targets'}
                 </h2>
                 <p className="text-sm text-gray-500">
                   Daily targets calculated based on your activity level, age, and physiology
