@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
+import { getCurrentWeekSunday, formatWeekDisplay } from '../lib/date-utils';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Calendar, Clock, Target, Eye, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages, Users, Minus, Trash2, Euro, TrendingUp, Droplet, Apple, Leaf, Check } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
@@ -251,7 +252,7 @@ export default function MealPlanner() {
     mutationFn: async () => {
       if (!authUser?.id) throw new Error('User not authenticated');
       const response = await apiRequest('POST', '/api/meal-plans/smart-generate', {
-        weekStart: new Date().toISOString().split('T')[0],
+        weekStart: getCurrentWeekSunday(),
         userId: authUser.id,
       });
       return response.json();

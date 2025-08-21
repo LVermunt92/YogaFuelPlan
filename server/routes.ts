@@ -16,6 +16,7 @@ import { adminRouter } from './admin-routes';
 import { calculateNutritionTargets, type NutritionProfile } from './nutrition-calculator';
 import { analyzeRecipeNutrition } from './ai-nutrition-analyzer';
 import cron from 'node-cron';
+import { normalizeToSunday, getNextSunday, getCurrentWeekSunday } from './date-utils';
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
@@ -227,7 +228,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const request = {
         userId,
-        weekStart: weekStart || new Date().toISOString().split('T')[0],
+        weekStart: weekStart ? normalizeToSunday(weekStart) : getCurrentWeekSunday(),
         activityLevel: activityLevel || 'high',
         dietaryTags: dietaryTags || [],
         leftovers: leftovers || [],
@@ -791,7 +792,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const request = {
         userId,
-        weekStart: weekStart || new Date().toISOString().split('T')[0],
+        weekStart: weekStart ? normalizeToSunday(weekStart) : getCurrentWeekSunday(),
         activityLevel: activityLevel || user.activityLevel || 'high',
         dietaryTags: dietaryTags || user.dietaryTags || [],
         leftovers: user.leftovers || []
@@ -1525,11 +1526,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       try {
         console.log('Running weekly smart meal plan generation...');
         
-        // Get next Monday's date
-        const nextMonday = new Date();
-        const daysUntilMonday = (8 - nextMonday.getDay()) % 7 || 7;
-        nextMonday.setDate(nextMonday.getDate() + daysUntilMonday);
-        const weekStart = nextMonday.toISOString().split('T')[0];
+        // Get next Sunday's date (start of next week)
+        const weekStart = getNextSunday();
         
         // Get past week's Oura data to determine activity level
         const pastWeekStart = new Date();

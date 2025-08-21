@@ -13,6 +13,7 @@ import { calculateProteinTarget } from "./nutrition";
 import { getCurrentAyurvedicSeason } from "./ayurveda-seasonal";
 import { selectProteinOptimizedMeals } from "./smart-protein-selection";
 import { calculateMealFreshnessPriority, getRecommendedDayForMeal, logMealFreshnessAnalysis, sortMealsByFreshness } from "./ingredient-freshness";
+import { normalizeToSunday } from "./date-utils";
 
 export interface GeneratedMealPlan {
   mealPlan: InsertMealPlan;
@@ -257,6 +258,10 @@ function planCookingDays(user?: User): { cookingDays: number[], eatingDays: numb
 }
 
 export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): Promise<GeneratedMealPlan> {
+  // Normalize weekStart to Sunday for consistent week boundaries
+  const normalizedWeekStart = normalizeToSunday(request.weekStart);
+  console.log(`📅 Week normalized: ${request.weekStart} → ${normalizedWeekStart} (Sunday start)`);
+  
   const targetProtein = calculateProteinTarget(request.activityLevel);
   const meals: InsertMeal[] = [];
   let totalWeeklyProtein = 0;
@@ -735,7 +740,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
 
   const mealPlan: InsertMealPlan = {
     userId: request.userId || 1,
-    weekStart: request.weekStart,
+    weekStart: normalizedWeekStart,
     activityLevel: request.activityLevel,
     totalProtein: Math.round(averageProteinPerDay), // Average protein per day
     notionSynced: false,
@@ -753,6 +758,8 @@ async function generateMealPrepPlan(
   user: User | undefined, 
   caloricAdjustment: number
 ): Promise<GeneratedMealPlan> {
+  // Use the normalized week start from the calling function
+  const normalizedWeekStart = normalizeToSunday(request.weekStart);
   const meals: InsertMeal[] = [];
   let totalWeeklyProtein = 0;
   const dietaryTags = request.dietaryTags || [];
@@ -1371,7 +1378,7 @@ async function generateMealPrepPlan(
 
   const mealPlan: InsertMealPlan = {
     userId: request.userId || 1,
-    weekStart: request.weekStart,
+    weekStart: normalizedWeekStart,
     activityLevel: request.activityLevel,
     totalProtein: Math.round(averageProteinPerDay), // Average daily protein for days with meals
     notionSynced: false,
