@@ -767,7 +767,7 @@ export default function MealPlanner() {
               ) : currentMealPlan?.meals ? (
                 <div className="space-y-4">
                   {/* Mobile-friendly list layout */}
-                  <div className="block sm:hidden space-y-1">
+                  <div className="block sm:hidden space-y-2">
                     {[1, 2, 3, 4, 5, 6, 7].map(day => {
                       const dayMeals = getDayMeals(day);
                       const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -794,38 +794,55 @@ export default function MealPlanner() {
                             <span className="text-purple-600">{Math.round(dailyProtein)}g protein</span>
                           </div>
                           
-                          {/* Individual meal rows */}
-                          {breakfast && (
-                            <div 
-                              className="cursor-pointer hover:bg-gray-50 p-3 border-l-4 border-orange-400 bg-orange-25 rounded-r-lg"
-                              onClick={() => setSelectedMealId(breakfast.id)}
-                            >
-                              <div className="text-xs font-medium text-orange-700 mb-1">BREAKFAST</div>
-                              <div className="text-sm font-medium text-gray-900 mb-1">{breakfast.foodDescription}</div>
-                              <div className="text-sm text-gray-600">{breakfast.protein}g protein • {breakfast.prepTime} min</div>
-                            </div>
-                          )}
-                          
-                          {lunch && (
-                            <div 
-                              className="cursor-pointer hover:bg-gray-50 p-3 border-l-4 border-blue-400 bg-blue-25 rounded-r-lg"
-                              onClick={() => setSelectedMealId(lunch.id)}
-                            >
-                              <div className="text-xs font-medium text-blue-700 mb-1">LUNCH</div>
-                              <div className="text-sm font-medium text-gray-900 mb-1">{lunch.foodDescription}</div>
-                              <div className="text-sm text-gray-600">{lunch.protein}g protein • {lunch.prepTime} min</div>
-                            </div>
-                          )}
-                          
-                          {dinner && (
-                            <div 
-                              className="cursor-pointer hover:bg-gray-50 p-3 border-l-4 border-purple-400 bg-purple-25 rounded-r-lg"
-                              onClick={() => setSelectedMealId(dinner.id)}
-                            >
-                              <div className="text-xs font-medium text-purple-700 mb-1">DINNER</div>
-                              <div className="text-sm font-medium text-gray-900 mb-1">{dinner.foodDescription}</div>
-                              <div className="text-sm text-gray-600">{dinner.protein}g protein • {dinner.prepTime} min</div>
-                            </div>
+                          {/* Individual meal rows - Sunday only shows dinner, other days show all meals */}
+                          {day === 1 ? (
+                            // Sunday - only dinner
+                            dinner && (
+                              <div 
+                                className="cursor-pointer hover:bg-gray-50 p-3 border-l-4 border-purple-400 bg-purple-50 rounded-r-lg"
+                                onClick={() => setSelectedMealId(dinner.id)}
+                              >
+                                <div className="text-xs font-medium text-purple-700 mb-1">DINNER</div>
+                                <div className="text-sm font-medium text-gray-900 mb-1">{dinner.foodDescription}</div>
+                                <div className="text-sm text-gray-600">{dinner.protein}g protein • {dinner.prepTime} min</div>
+                              </div>
+                            )
+                          ) : (
+                            // Monday-Saturday - all meals
+                            <>
+                              {breakfast && (
+                                <div 
+                                  className="cursor-pointer hover:bg-gray-50 p-3 border-l-4 border-orange-400 bg-orange-50 rounded-r-lg"
+                                  onClick={() => setSelectedMealId(breakfast.id)}
+                                >
+                                  <div className="text-xs font-medium text-orange-700 mb-1">BREAKFAST</div>
+                                  <div className="text-sm font-medium text-gray-900 mb-1">{breakfast.foodDescription}</div>
+                                  <div className="text-sm text-gray-600">{breakfast.protein}g protein • {breakfast.prepTime} min</div>
+                                </div>
+                              )}
+                              
+                              {lunch && (
+                                <div 
+                                  className="cursor-pointer hover:bg-gray-50 p-3 border-l-4 border-blue-400 bg-blue-50 rounded-r-lg"
+                                  onClick={() => setSelectedMealId(lunch.id)}
+                                >
+                                  <div className="text-xs font-medium text-blue-700 mb-1">LUNCH</div>
+                                  <div className="text-sm font-medium text-gray-900 mb-1">{lunch.foodDescription}</div>
+                                  <div className="text-sm text-gray-600">{lunch.protein}g protein • {lunch.prepTime} min</div>
+                                </div>
+                              )}
+                              
+                              {dinner && (
+                                <div 
+                                  className="cursor-pointer hover:bg-gray-50 p-3 border-l-4 border-purple-400 bg-purple-50 rounded-r-lg"
+                                  onClick={() => setSelectedMealId(dinner.id)}
+                                >
+                                  <div className="text-xs font-medium text-purple-700 mb-1">DINNER</div>
+                                  <div className="text-sm font-medium text-gray-900 mb-1">{dinner.foodDescription}</div>
+                                  <div className="text-sm text-gray-600">{dinner.protein}g protein • {dinner.prepTime} min</div>
+                                </div>
+                              )}
+                            </>
                           )}
                         </div>
                       );
