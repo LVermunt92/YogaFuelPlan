@@ -765,17 +765,18 @@ export default function MealPlanner() {
                   ))}
                 </div>
               ) : currentMealPlan?.meals ? (
-                <div className="bg-white rounded-lg border overflow-hidden">
-                  <table className="w-full">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Day</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Breakfast</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lunch</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dinner</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Daily Protein</th>
-                      </tr>
-                    </thead>
+                <div className="w-full overflow-x-auto">
+                  <div className="bg-white rounded-lg border min-w-[800px]">
+                    <table className="w-full table-fixed">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          <th className="w-20 px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Day</th>
+                          <th className="w-60 px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Breakfast</th>
+                          <th className="w-60 px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lunch</th>
+                          <th className="w-60 px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dinner</th>
+                          <th className="w-24 px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Protein</th>
+                        </tr>
+                      </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                       {[1, 2, 3, 4, 5, 6, 7].map(day => {
                         const dayMeals = getDayMeals(day);
@@ -793,64 +794,57 @@ export default function MealPlanner() {
                         
                         return (
                           <tr key={day} className={dayIsCooking ? 'bg-green-50' : dayIsLeftover ? 'bg-blue-50' : ''}>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="flex items-center gap-2">
-                                <span className="text-sm font-medium text-gray-900">{dayNames[day - 1]}</span>
-                                {dayIsCooking && <ChefHat className="h-4 w-4 text-green-600" />}
-                                {dayIsLeftover && <RefreshCw className="h-4 w-4 text-blue-600" />}
+                            <td className="px-2 py-4">
+                              <div className="flex flex-col items-start gap-1">
+                                <span className="text-xs font-medium text-gray-900">{dayNames[day - 1].slice(0, 3)}</span>
+                                <div className="flex gap-1">
+                                  {dayIsCooking && <ChefHat className="h-3 w-3 text-green-600" />}
+                                  {dayIsLeftover && <RefreshCw className="h-3 w-3 text-blue-600" />}
+                                </div>
                               </div>
                             </td>
-                            <td className="px-6 py-4">
+                            <td className="px-2 py-4">
                               {breakfast && (
                                 <div 
-                                  className="cursor-pointer hover:bg-gray-100 p-2 rounded"
-                                  onClick={() => {
-                                    console.log('Breakfast clicked, setting selectedMealId to:', breakfast.id);
-                                    setSelectedMealId(breakfast.id);
-                                  }}
+                                  className="cursor-pointer hover:bg-gray-100 p-2 rounded border-l-2 border-orange-400"
+                                  onClick={() => setSelectedMealId(breakfast.id)}
                                 >
-                                  <div className="text-sm font-medium text-gray-900 mb-1">{breakfast.foodDescription}</div>
-                                  <div className="text-xs text-gray-500">{breakfast.protein}g protein • {breakfast.prepTime} min</div>
+                                  <div className="text-xs font-medium text-gray-900 mb-1 line-clamp-2">{breakfast.foodDescription}</div>
+                                  <div className="text-xs text-gray-500">{breakfast.protein}g • {breakfast.prepTime}min</div>
                                 </div>
                               )}
                             </td>
-                            <td className="px-6 py-4">
+                            <td className="px-2 py-4">
                               {lunch && (
                                 <div 
-                                  className="cursor-pointer hover:bg-gray-100 p-2 rounded"
-                                  onClick={() => {
-                                    console.log('Lunch clicked, setting selectedMealId to:', lunch.id);
-                                    setSelectedMealId(lunch.id);
-                                  }}
+                                  className="cursor-pointer hover:bg-gray-100 p-2 rounded border-l-2 border-blue-400"
+                                  onClick={() => setSelectedMealId(lunch.id)}
                                 >
-                                  <div className="text-sm font-medium text-gray-900 mb-1">{lunch.foodDescription}</div>
-                                  <div className="text-xs text-gray-500">{lunch.protein}g protein • {lunch.prepTime} min</div>
+                                  <div className="text-xs font-medium text-gray-900 mb-1 line-clamp-2">{lunch.foodDescription}</div>
+                                  <div className="text-xs text-gray-500">{lunch.protein}g • {lunch.prepTime}min</div>
                                 </div>
                               )}
                             </td>
-                            <td className="px-6 py-4">
+                            <td className="px-2 py-4">
                               {dinner && (
                                 <div 
-                                  className="cursor-pointer hover:bg-gray-100 p-2 rounded"
-                                  onClick={() => {
-                                    console.log('Dinner clicked, setting selectedMealId to:', dinner.id);
-                                    setSelectedMealId(dinner.id);
-                                  }}
+                                  className="cursor-pointer hover:bg-gray-100 p-2 rounded border-l-2 border-purple-400"
+                                  onClick={() => setSelectedMealId(dinner.id)}
                                 >
-                                  <div className="text-sm font-medium text-gray-900 mb-1">{dinner.foodDescription}</div>
-                                  <div className="text-xs text-gray-500">{dinner.protein}g protein • {dinner.prepTime} min</div>
+                                  <div className="text-xs font-medium text-gray-900 mb-1 line-clamp-2">{dinner.foodDescription}</div>
+                                  <div className="text-xs text-gray-500">{dinner.protein}g • {dinner.prepTime}min</div>
                                 </div>
                               )}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm font-bold text-purple-600">{Math.round(dailyProtein)}g</div>
-                              <div className="text-xs text-gray-500">{t.totalProtein}</div>
+                            <td className="px-2 py-4 text-center">
+                              <div className="text-xs font-bold text-purple-600">{Math.round(dailyProtein)}g</div>
                             </td>
                           </tr>
                         );
                       })}
                     </tbody>
-                  </table>
+                    </table>
+                  </div>
                 </div>
               ) : (
                 <div className="text-center py-12">
