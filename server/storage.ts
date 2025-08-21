@@ -5,6 +5,7 @@ import {
   ouraData,
   mealHistory,
   mealFavorites,
+  userRecipes,
   type User, 
   type InsertUser,
   type UpdateUserProfile, 
@@ -20,6 +21,9 @@ import {
   type MealFavorite,
   type InsertMealFavorite,
   type MealFavoriteUpdate,
+  type UserRecipe,
+  type InsertUserRecipe,
+  type UpdateUserRecipe,
   passwordResetCodes,
   type PasswordResetCode,
   type InsertPasswordResetCode,
@@ -58,6 +62,12 @@ export interface IStorage {
   getFavorites(userId: number): Promise<MealFavorite[]>;
   updateFavorite(userId: number, mealName: string, updates: MealFavoriteUpdate): Promise<MealFavorite>;
   isFavorite(userId: number, mealName: string): Promise<boolean>;
+  // User Recipe methods
+  createUserRecipe(data: InsertUserRecipe): Promise<UserRecipe>;
+  getUserRecipes(userId: number): Promise<UserRecipe[]>;
+  getUserRecipe(id: number, userId: number): Promise<UserRecipe | undefined>;
+  updateUserRecipe(id: number, userId: number, updates: UpdateUserRecipe): Promise<UserRecipe>;
+  deleteUserRecipe(id: number, userId: number): Promise<void>;
 }
 
 export class MemStorage implements IStorage {
@@ -892,6 +902,70 @@ export class DatabaseStorage implements IStorage {
       ))
       .limit(1);
     return !!favorite;
+  }
+
+  // User Recipe methods
+  async createUserRecipe(data: InsertUserRecipe): Promise<UserRecipe> {
+    const [recipe] = await db
+      .insert(userRecipes)
+      .values({
+        ...data,
+        updatedAt: new Date()
+      })
+      .returning();
+    return recipe;
+  }
+
+  async getUserRecipes(userId: number): Promise<UserRecipe[]> {
+    return await db
+      .select()
+      .from(userRecipes)
+      .where(and(
+        eq(userRecipes.userId, userId),
+        eq(userRecipes.isActive, true)
+      ))
+      .orderBy(desc(userRecipes.updatedAt));
+  }
+
+  async getUserRecipe(id: number, userId: number): Promise<UserRecipe | undefined> {
+    const [recipe] = await db
+      .select()
+      .from(userRecipes)
+      .where(and(
+        eq(userRecipes.id, id),
+        eq(userRecipes.userId, userId),
+        eq(userRecipes.isActive, true)
+      ));
+    return recipe || undefined;
+  }
+
+  async updateUserRecipe(id: number, userId: number, updates: UpdateUserRecipe): Promise<UserRecipe> {
+    const [recipe] = await db
+      .update(userRecipes)
+      .set({
+        ...updates,
+        updatedAt: new Date()
+      })
+      .where(and(
+        eq(userRecipes.id, id),
+        eq(userRecipes.userId, userId)
+      ))
+      .returning();
+    return recipe;
+  }
+
+  async deleteUserRecipe(id: number, userId: number): Promise<void> {
+    // Soft delete by setting isActive to false
+    await db
+      .update(userRecipes)
+      .set({
+        isActive: false,
+        updatedAt: new Date()
+      })
+      .where(and(
+        eq(userRecipes.id, id),
+        eq(userRecipes.userId, userId)
+      ));
   }
 }
 

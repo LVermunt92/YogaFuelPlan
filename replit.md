@@ -48,6 +48,7 @@ Comprehensive Macronutrient Distribution Tracking: Added real-time tracking of m
 Comprehensive Admin Panel Implementation: Created full-featured admin interface accessible to admin users.
 Non-Vegetarian User Priority System: Fixed meal selection bias where non-vegetarian users were getting mostly vegetarian meals - now properly prioritizes meat/fish recipes (70%) with vegetarian variety (30%) for users without dietary restrictions.
 Mobile-Optimized Meal Plan Display: Redesigned meal plan interface with responsive card layout for mobile devices, featuring larger text, better touch targets, and color-coded meal types for improved phone usability.
+User Recipe Management System: Implemented comprehensive custom recipe functionality allowing users to create, edit, and manage their personal recipe collections separate from the main curated database.
 
 # System Architecture
 - **UI/UX Decisions**: Utilizes `shadcn/ui` built on `Radix UI` primitives with `Tailwind CSS` and CSS variables for theming. The UI is streamlined, removing redundant elements and focusing on core meal planning functionality.
@@ -71,9 +72,10 @@ Mobile-Optimized Meal Plan Display: Redesigned meal plan interface with responsi
     - **Comprehensive Macronutrient Distribution Tracking**: Real-time tracking of macronutrient distribution (fats, vegetables, fruits/starches) in meal plans.
     - **Advanced Protein Range Calculator**: Evidence-based protein calculation with gender-specific age thresholds and activity level considerations.
     - **Admin Panel System**: Complete administrative interface for managing nutrition calculation parameters, monitoring system statistics, and configuring all meal planning logic. Includes editable lookup tables for protein factors, PAL values, carbohydrate targets, and fat percentages with full audit trail.
+    - **User Recipe Management**: Complete custom recipe system allowing users to create, store, and manage personal recipes separate from the curated database. Includes full CRUD operations, nutrition tracking, meal type categorization, and soft-delete functionality.
 - **System Design Choices**:
     - **Data Flow**: User input drives meal generation, stored in PostgreSQL, displayed via React Query.
-    - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, and favorite meals.
+    - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, favorite meals, and user-created custom recipes.
     - **Unified Recipe Database**: Consolidated three separate recipe databases (base, viral, additional) into a single unified system.
 
 # External Dependencies

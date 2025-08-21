@@ -125,6 +125,46 @@ export const mealFavorites = pgTable("meal_favorites", {
   uniqueUserMeal: unique().on(table.userId, table.mealName),
 }));
 
+// User-created custom recipes
+export const userRecipes = pgTable("user_recipes", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id, { onDelete: "cascade" }).notNull(),
+  name: text("name").notNull(),
+  portion: text("portion").notNull(),
+  ingredients: text("ingredients").array().notNull(), // array of ingredient strings
+  instructions: text("instructions").array().notNull(), // array of instruction steps
+  tips: text("tips").array().default([]), // optional cooking tips
+  notes: text("notes"), // user's personal notes
+  
+  // Nutrition information
+  protein: real("protein").notNull(), // grams
+  calories: real("calories").notNull(), // kcal
+  carbohydrates: real("carbohydrates").default(0), // grams
+  fats: real("fats").default(0), // grams
+  fiber: real("fiber").default(0), // grams
+  sugar: real("sugar").default(0), // grams
+  sodium: real("sodium").default(0), // mg
+  
+  // Meal info
+  prepTime: integer("prep_time").notNull(), // minutes
+  cookTime: integer("cook_time").default(0), // minutes
+  servings: integer("servings").default(1), // number of servings
+  mealTypes: text("meal_types").array().notNull(), // breakfast, lunch, dinner
+  costEuros: real("cost_euros"), // estimated cost in euros
+  
+  // Categorization
+  tags: text("tags").array().default([]), // dietary tags, cuisine types, etc.
+  difficulty: text("difficulty").default("easy"), // easy, medium, hard
+  cuisine: text("cuisine"), // Italian, Asian, Mediterranean, etc.
+  
+  // Metadata
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+  isActive: boolean("is_active").default(true), // soft delete functionality
+}, (table) => ({
+  uniqueUserRecipe: unique().on(table.userId, table.name),
+}));
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
@@ -268,6 +308,24 @@ export type InsertMealHistory = z.infer<typeof insertMealHistorySchema>;
 export type MealFavorite = typeof mealFavorites.$inferSelect;
 export type InsertMealFavorite = z.infer<typeof insertMealFavoriteSchema>;
 export type MealFavoriteUpdate = z.infer<typeof mealFavoriteUpdateSchema>;
+
+// User recipe schemas
+export const insertUserRecipeSchema = createInsertSchema(userRecipes).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const updateUserRecipeSchema = createInsertSchema(userRecipes).omit({
+  id: true,
+  userId: true,
+  createdAt: true,
+  updatedAt: true,
+}).partial();
+
+export type UserRecipe = typeof userRecipes.$inferSelect;
+export type InsertUserRecipe = z.infer<typeof insertUserRecipeSchema>;
+export type UpdateUserRecipe = z.infer<typeof updateUserRecipeSchema>;
 
 export const passwordResetCodes = pgTable("password_reset_codes", {
   id: serial("id").primaryKey(),

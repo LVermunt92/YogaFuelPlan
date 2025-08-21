@@ -1783,6 +1783,95 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Admin routes
   app.use('/api/admin', adminRouter);
 
+  // User Recipe routes
+  // Get all user recipes
+  app.get("/api/user-recipes", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+      
+      const recipes = await storage.getUserRecipes(req.session.userId);
+      res.json(recipes);
+    } catch (error) {
+      console.error("Error fetching user recipes:", error);
+      res.status(500).json({ message: "Failed to fetch recipes" });
+    }
+  });
+
+  // Get single user recipe
+  app.get("/api/user-recipes/:id", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+      
+      const id = parseInt(req.params.id);
+      const recipe = await storage.getUserRecipe(id, req.session.userId);
+      
+      if (!recipe) {
+        return res.status(404).json({ message: "Recipe not found" });
+      }
+      
+      res.json(recipe);
+    } catch (error) {
+      console.error("Error fetching user recipe:", error);
+      res.status(500).json({ message: "Failed to fetch recipe" });
+    }
+  });
+
+  // Create new user recipe
+  app.post("/api/user-recipes", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+      
+      const recipeData = {
+        ...req.body,
+        userId: req.session.userId
+      };
+      
+      const recipe = await storage.createUserRecipe(recipeData);
+      res.status(201).json(recipe);
+    } catch (error) {
+      console.error("Error creating user recipe:", error);
+      res.status(500).json({ message: "Failed to create recipe" });
+    }
+  });
+
+  // Update user recipe
+  app.patch("/api/user-recipes/:id", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+      
+      const id = parseInt(req.params.id);
+      const recipe = await storage.updateUserRecipe(id, req.session.userId, req.body);
+      res.json(recipe);
+    } catch (error) {
+      console.error("Error updating user recipe:", error);
+      res.status(500).json({ message: "Failed to update recipe" });
+    }
+  });
+
+  // Delete user recipe
+  app.delete("/api/user-recipes/:id", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+      
+      const id = parseInt(req.params.id);
+      await storage.deleteUserRecipe(id, req.session.userId);
+      res.status(204).send();
+    } catch (error) {
+      console.error("Error deleting user recipe:", error);
+      res.status(500).json({ message: "Failed to delete recipe" });
+    }
+  });
+
   // Nutrition calculation endpoint
   app.get("/api/nutrition/targets/:userId", async (req, res) => {
     try {

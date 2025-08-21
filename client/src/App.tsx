@@ -7,9 +7,10 @@ import MealPlanner from "@/pages/meal-planner-clean";
 import Profile from "@/pages/profile";
 import About from "@/pages/about";
 import AdminPanel from "@/pages/admin";
+import MyRecipes from "@/pages/my-recipes";
 import Auth from "@/pages/auth";
 import NotFound from "@/pages/not-found";
-import { Utensils, User, Info, Settings, Menu, LogOut, Languages } from "lucide-react";
+import { Utensils, User, Info, Settings, Menu, LogOut, Languages, ChefHat } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import React, { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -47,6 +48,7 @@ function Navigation() {
   
   const navItems = [
     { path: "/", label: t.mealPlanner, icon: Utensils },
+    { path: "/my-recipes", label: "My Recipes", icon: ChefHat },
     { path: "/profile", label: t.profile, icon: User },
     { path: "/about", label: t.about, icon: Info },
     ...(isAdmin ? [{ path: "/admin", label: "Admin", icon: Settings }] : [])
@@ -240,6 +242,7 @@ function Router() {
       <div className="flex-1">
         <Switch>
           <Route path="/" component={MealPlanner} />
+          <Route path="/my-recipes" component={MyRecipes} />
           <Route path="/profile" component={Profile} />
           <Route path="/about" component={About} />
           <Route path="/admin" component={AdminPanel} />
