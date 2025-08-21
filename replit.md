@@ -58,6 +58,7 @@ Recipe Source Toggle Layout Fix: Moved the "Use only my recipes" toggle from cra
 Improved New User Profile Experience: Enhanced profile form with intelligent new user detection, ensuring empty input fields for new users while preserving existing user data, added comprehensive placeholder text and descriptive labels for all input fields.
 Consistent KPI Color Alignment: Standardized KPI color scheme across profile, meal planner, and recipe displays - emerald for protein, yellow for fats, green for vegetables, blue for fruits/starches, orange for calories, with neutral gray for secondary metrics.
 Clean Day Headers: Removed cooking and leftover icons from day headers in meal plan for cleaner appearance, keeping colored meal cards as the primary visual indicators.
+Improved Mobile Layout: Optimized mobile spacing with wider meal plan content, reduced horizontal padding, and better alignment of boxes across all screen sizes.
 
 # System Architecture
 - **UI/UX Decisions**: Utilizes `shadcn/ui` built on `Radix UI` primitives with `Tailwind CSS` and CSS variables for theming. The UI is streamlined, removing redundant elements and focusing on core meal planning functionality.

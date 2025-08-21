@@ -350,9 +350,9 @@ export default function MealPlanner() {
 
   return (
     <div className="bg-background min-h-screen">
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-2 sm:px-4 py-8">
         {/* Centered Content Container */}
-        <div className="max-w-4xl mx-auto space-y-8">
+        <div className="max-w-6xl mx-auto space-y-8">
           
           {/* 1. Welcome Section */}
           <div className="text-center mb-6">
@@ -364,7 +364,7 @@ export default function MealPlanner() {
 
           {/* 2. Compact Nutrition Charts */}
           {currentMealPlan && kpiData && (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 bg-gray-50 p-4 rounded-lg">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6 bg-gray-50 p-3 sm:p-4 rounded-lg">
               {/* Protein Chart - First position */}
               <div className="text-center">
                 <div className="relative w-20 h-20 mx-auto mb-1">
@@ -538,13 +538,13 @@ export default function MealPlanner() {
 
           {/* 4. Generate Meal Plan (Combined Section) */}
           <Card className="w-full">
-            <CardHeader>
+            <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-2">
                 <ChefHat className="h-6 w-6" />
                 {t.generateMealPlan}
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-4 sm:space-y-6">
               {/* Week Selection Subtitle */}
               <div>
                 <Label className="text-sm font-medium text-gray-700">{t.weekSelection}</Label>
@@ -759,7 +759,7 @@ export default function MealPlanner() {
 
           {/* 6. Weekly Meal Plan */}
           <Card className="w-full">
-            <CardHeader>
+            <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-2">
                 <Utensils className="h-6 w-6" />
                 {t.weeklyMealPlan}
@@ -770,7 +770,7 @@ export default function MealPlanner() {
                 </p>
               )}
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-2 sm:px-6">
               {loadingCurrentPlan ? (
                 <div className="space-y-4">
                   {[1, 2, 3, 4, 5].map(i => (
