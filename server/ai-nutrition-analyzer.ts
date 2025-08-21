@@ -73,19 +73,98 @@ Be as accurate as possible based on standard nutritional data for the ingredient
     };
 
   } catch (error) {
-    console.error('AI nutrition analysis failed:', error);
+    console.error('AI nutrition analysis failed:', error.message);
     
-    // Fallback to reasonable defaults based on ingredients count and servings
-    const estimatedCalories = Math.max(200, ingredients.length * 50);
-    return {
-      protein: Math.round(estimatedCalories * 0.15 / 4), // 15% of calories from protein
-      calories: estimatedCalories,
-      carbohydrates: Math.round(estimatedCalories * 0.45 / 4), // 45% from carbs
-      fats: Math.round(estimatedCalories * 0.30 / 9), // 30% from fats
-      fiber: Math.min(15, Math.max(3, ingredients.length * 2)),
-      sugar: Math.round(estimatedCalories * 0.10 / 4), // 10% from sugar
-      sodium: Math.min(800, 300 + ingredients.length * 50),
-      costEuros: Math.max(1.5, Math.round((ingredients.length * 0.5 + 1) * 100) / 100), // Estimate €0.50 per ingredient + €1 base
-    };
+    // Smart fallback based on ingredient analysis
+    return estimateNutritionFromIngredients(ingredients, servings);
   }
+}
+
+/**
+ * Estimate nutrition values based on ingredient analysis when AI fails
+ */
+function estimateNutritionFromIngredients(ingredients: string[], servings: number): NutritionAnalysis {
+  let totalProtein = 0;
+  let totalCalories = 0;
+  let totalCarbs = 0;
+  let totalFats = 0;
+  let totalFiber = 0;
+  let totalSodium = 0;
+  let totalCost = 0;
+
+  ingredients.forEach(ingredient => {
+    const lowerIngredient = ingredient.toLowerCase();
+    
+    // Protein sources
+    if (lowerIngredient.includes('chicken')) {
+      totalProtein += 25; totalCalories += 150; totalFats += 3; totalCost += 2.5;
+    } else if (lowerIngredient.includes('beef') || lowerIngredient.includes('meat')) {
+      totalProtein += 22; totalCalories += 200; totalFats += 12; totalCost += 3.5;
+    } else if (lowerIngredient.includes('fish') || lowerIngredient.includes('salmon') || lowerIngredient.includes('tuna')) {
+      totalProtein += 20; totalCalories += 140; totalFats += 6; totalCost += 4.0;
+    } else if (lowerIngredient.includes('egg')) {
+      totalProtein += 6; totalCalories += 70; totalFats += 5; totalCost += 0.3;
+    } else if (lowerIngredient.includes('tofu') || lowerIngredient.includes('tempeh')) {
+      totalProtein += 8; totalCalories += 80; totalFats += 4; totalCost += 1.5;
+    } else if (lowerIngredient.includes('beans') || lowerIngredient.includes('lentils') || lowerIngredient.includes('chickpea')) {
+      totalProtein += 8; totalCalories += 120; totalCarbs += 20; totalFiber += 8; totalCost += 1.0;
+    }
+    
+    // Carbohydrate sources
+    else if (lowerIngredient.includes('rice') || lowerIngredient.includes('pasta') || lowerIngredient.includes('noodles')) {
+      totalCarbs += 25; totalCalories += 110; totalProtein += 2; totalCost += 0.5;
+    } else if (lowerIngredient.includes('potato') || lowerIngredient.includes('sweet potato')) {
+      totalCarbs += 20; totalCalories += 90; totalFiber += 3; totalCost += 0.8;
+    } else if (lowerIngredient.includes('bread') || lowerIngredient.includes('flour')) {
+      totalCarbs += 15; totalCalories += 80; totalProtein += 3; totalCost += 0.6;
+    }
+    
+    // Vegetables
+    else if (lowerIngredient.includes('tomato') || lowerIngredient.includes('pepper') || lowerIngredient.includes('onion')) {
+      totalCarbs += 5; totalCalories += 20; totalFiber += 2; totalCost += 0.5;
+    } else if (lowerIngredient.includes('spinach') || lowerIngredient.includes('kale') || lowerIngredient.includes('lettuce')) {
+      totalCarbs += 2; totalCalories += 10; totalFiber += 2; totalProtein += 1; totalCost += 1.0;
+    } else if (lowerIngredient.includes('carrot') || lowerIngredient.includes('celery')) {
+      totalCarbs += 6; totalCalories += 25; totalFiber += 2; totalCost += 0.4;
+    }
+    
+    // Fats and oils
+    else if (lowerIngredient.includes('oil') || lowerIngredient.includes('butter')) {
+      totalFats += 10; totalCalories += 90; totalCost += 0.3;
+    } else if (lowerIngredient.includes('avocado')) {
+      totalFats += 15; totalCalories += 160; totalFiber += 7; totalCost += 1.5;
+    } else if (lowerIngredient.includes('nuts') || lowerIngredient.includes('almond') || lowerIngredient.includes('walnut')) {
+      totalProtein += 6; totalFats += 14; totalCalories += 160; totalCost += 2.0;
+    }
+    
+    // Dairy
+    else if (lowerIngredient.includes('milk') || lowerIngredient.includes('yogurt')) {
+      totalProtein += 3; totalCalories += 60; totalCarbs += 5; totalCost += 0.8;
+    } else if (lowerIngredient.includes('cheese')) {
+      totalProtein += 7; totalFats += 9; totalCalories += 110; totalSodium += 200; totalCost += 1.5;
+    }
+    
+    // Default for unrecognized ingredients
+    else {
+      totalCalories += 30; totalCarbs += 5; totalCost += 0.5;
+    }
+  });
+
+  // Adjust for servings
+  const perServing = {
+    protein: Math.round(totalProtein / servings),
+    calories: Math.round(totalCalories / servings),
+    carbohydrates: Math.round(totalCarbs / servings),
+    fats: Math.round((totalFats / servings) * 10) / 10,
+    fiber: Math.round(totalFiber / servings),
+    sugar: Math.round((totalCarbs / servings) * 0.1), // Estimate 10% of carbs as sugar
+    sodium: Math.round((totalSodium + 200) / servings), // Add base sodium for seasoning
+    costEuros: Math.round((totalCost / servings) * 100) / 100,
+  };
+
+  console.log(`✅ Estimated nutrition fallback: ${perServing.protein}g protein, ${perServing.calories} calories, €${perServing.costEuros} per serving`);
+  
+  return perServing;
+  
+  return perServing;
 }
