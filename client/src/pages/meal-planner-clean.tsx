@@ -268,12 +268,25 @@ export default function MealPlanner() {
       return response.json();
     },
     onSuccess: (data) => {
-      setSelectedMealPlan(data.id);
-      localStorage.setItem('selectedMealPlan', data.id.toString());
+      const newMealPlanId = data.mealPlan?.id || data.id;
+      setSelectedMealPlan(newMealPlanId);
+      localStorage.setItem('selectedMealPlan', newMealPlanId.toString());
+      
+      // Invalidate all relevant queries to force refresh
       queryClient.invalidateQueries({ queryKey: ['/api/meal-plans'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/meal-plans', authUser?.id] });
+      queryClient.invalidateQueries({ queryKey: ['/api/meal-plans', newMealPlanId.toString(), language] });
+      
       toast({
         title: t.success,
-        description: t.mealPlanGenerated,
+        description: `${selectedWeekType === "current" ? "This week's" : "Next week's"} meal plan generated successfully!`,
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Generation Failed",
+        description: "Failed to generate meal plan. Please try again.",
+        variant: "destructive",
       });
     },
   });
