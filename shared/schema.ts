@@ -177,7 +177,7 @@ export const updateUserProfileSchema = createInsertSchema(users).pick({
   meatFishMealsPerWeek: true,
   language: true,
   leftovers: true,
-});
+}).partial();
 
 export const insertMealPlanSchema = createInsertSchema(mealPlans).omit({
   id: true,
