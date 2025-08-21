@@ -92,7 +92,7 @@ export default function MyRecipes() {
 
   // Update local state when profile data loads
   React.useEffect(() => {
-    if (userProfile?.useOnlyMyRecipes !== undefined) {
+    if (userProfile && 'useOnlyMyRecipes' in userProfile && userProfile.useOnlyMyRecipes !== undefined) {
       setUseOnlyMyRecipes(userProfile.useOnlyMyRecipes);
     }
   }, [userProfile]);
