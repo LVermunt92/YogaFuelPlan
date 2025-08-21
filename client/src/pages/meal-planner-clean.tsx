@@ -811,9 +811,11 @@ export default function MealPlanner() {
                             dinner && (
                               <div 
                                 className={`cursor-pointer hover:opacity-90 p-3 border-l-4 rounded-r-lg ${
-                                  dinner.foodDescription.includes('(leftover)') 
-                                    ? 'border-blue-400 bg-blue-50' 
-                                    : 'border-green-400 bg-green-50'
+                                  dinner.foodDescription === 'Eating out'
+                                    ? 'border-gray-400 bg-gray-50'
+                                    : dinner.foodDescription.includes('(leftover)') 
+                                      ? 'border-blue-400 bg-blue-50' 
+                                      : 'border-green-400 bg-green-50'
                                 }`}
                                 onClick={() => setSelectedMealId(dinner.id)}
                               >
@@ -846,15 +848,19 @@ export default function MealPlanner() {
                               {breakfast && (
                                 <div 
                                   className={`cursor-pointer hover:opacity-90 p-3 border-l-4 rounded-r-lg ${
-                                    breakfast.foodDescription.includes('(leftover)') 
-                                      ? 'border-blue-400 bg-blue-50' 
-                                      : 'border-green-400 bg-green-50'
+                                    breakfast.foodDescription === 'Eating out'
+                                      ? 'border-gray-400 bg-gray-50'
+                                      : breakfast.foodDescription.includes('(leftover)') 
+                                        ? 'border-blue-400 bg-blue-50' 
+                                        : 'border-green-400 bg-green-50'
                                   }`}
                                   onClick={() => setSelectedMealId(breakfast.id)}
                                 >
                                   <div className="flex items-center gap-2 mb-1">
                                     <div className={`text-xs font-medium ${
-                                      breakfast.foodDescription.includes('(leftover)') ? 'text-blue-700' : 'text-green-700'
+                                      breakfast.foodDescription === 'Eating out'
+                                        ? 'text-gray-700'
+                                        : breakfast.foodDescription.includes('(leftover)') ? 'text-blue-700' : 'text-green-700'
                                     }`}>
                                       BREAKFAST
                                     </div>
@@ -879,15 +885,19 @@ export default function MealPlanner() {
                               {lunch && (
                                 <div 
                                   className={`cursor-pointer hover:opacity-90 p-3 border-l-4 rounded-r-lg ${
-                                    lunch.foodDescription.includes('(leftover)') 
-                                      ? 'border-blue-400 bg-blue-50' 
-                                      : 'border-green-400 bg-green-50'
+                                    lunch.foodDescription === 'Eating out'
+                                      ? 'border-gray-400 bg-gray-50'
+                                      : lunch.foodDescription.includes('(leftover)') 
+                                        ? 'border-blue-400 bg-blue-50' 
+                                        : 'border-green-400 bg-green-50'
                                   }`}
                                   onClick={() => setSelectedMealId(lunch.id)}
                                 >
                                   <div className="flex items-center gap-2 mb-1">
                                     <div className={`text-xs font-medium ${
-                                      lunch.foodDescription.includes('(leftover)') ? 'text-blue-700' : 'text-green-700'
+                                      lunch.foodDescription === 'Eating out'
+                                        ? 'text-gray-700'
+                                        : lunch.foodDescription.includes('(leftover)') ? 'text-blue-700' : 'text-green-700'
                                     }`}>
                                       LUNCH
                                     </div>
@@ -912,15 +922,19 @@ export default function MealPlanner() {
                               {dinner && (
                                 <div 
                                   className={`cursor-pointer hover:opacity-90 p-3 border-l-4 rounded-r-lg ${
-                                    dinner.foodDescription.includes('(leftover)') 
-                                      ? 'border-blue-400 bg-blue-50' 
-                                      : 'border-green-400 bg-green-50'
+                                    dinner.foodDescription === 'Eating out'
+                                      ? 'border-gray-400 bg-gray-50'
+                                      : dinner.foodDescription.includes('(leftover)') 
+                                        ? 'border-blue-400 bg-blue-50' 
+                                        : 'border-green-400 bg-green-50'
                                   }`}
                                   onClick={() => setSelectedMealId(dinner.id)}
                                 >
                                   <div className="flex items-center gap-2 mb-1">
                                     <div className={`text-xs font-medium ${
-                                      dinner.foodDescription.includes('(leftover)') ? 'text-blue-700' : 'text-green-700'
+                                      dinner.foodDescription === 'Eating out'
+                                        ? 'text-gray-700'
+                                        : dinner.foodDescription.includes('(leftover)') ? 'text-blue-700' : 'text-green-700'
                                     }`}>
                                       DINNER
                                     </div>
@@ -987,7 +1001,9 @@ export default function MealPlanner() {
                                   <td className="px-2 py-4">
                                     {breakfast && (
                                       <div 
-                                        className="cursor-pointer hover:bg-gray-100 p-2 rounded border-l-2 border-orange-400"
+                                        className={`cursor-pointer hover:bg-gray-100 p-2 rounded border-l-2 ${
+                                          breakfast.foodDescription === 'Eating out' ? 'border-gray-400' : 'border-orange-400'
+                                        }`}
                                         onClick={() => setSelectedMealId(breakfast.id)}
                                       >
                                         <div className="text-xs font-medium text-gray-900 mb-1 line-clamp-2">{breakfast.foodDescription}</div>
@@ -998,7 +1014,9 @@ export default function MealPlanner() {
                                   <td className="px-2 py-4">
                                     {lunch && (
                                       <div 
-                                        className="cursor-pointer hover:bg-gray-100 p-2 rounded border-l-2 border-blue-400"
+                                        className={`cursor-pointer hover:bg-gray-100 p-2 rounded border-l-2 ${
+                                          lunch.foodDescription === 'Eating out' ? 'border-gray-400' : 'border-blue-400'
+                                        }`}
                                         onClick={() => setSelectedMealId(lunch.id)}
                                       >
                                         <div className="text-xs font-medium text-gray-900 mb-1 line-clamp-2">{lunch.foodDescription}</div>
@@ -1009,7 +1027,9 @@ export default function MealPlanner() {
                                   <td className="px-2 py-4">
                                     {dinner && (
                                       <div 
-                                        className="cursor-pointer hover:bg-gray-100 p-2 rounded border-l-2 border-purple-400"
+                                        className={`cursor-pointer hover:bg-gray-100 p-2 rounded border-l-2 ${
+                                          dinner.foodDescription === 'Eating out' ? 'border-gray-400' : 'border-purple-400'
+                                        }`}
                                         onClick={() => setSelectedMealId(dinner.id)}
                                       >
                                         <div className="text-xs font-medium text-gray-900 mb-1 line-clamp-2">{dinner.foodDescription}</div>
