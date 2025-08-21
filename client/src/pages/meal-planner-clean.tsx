@@ -688,7 +688,7 @@ export default function MealPlanner() {
           {/* Shopping List Dialog (moved outside) */}
           {currentMealPlan && (
             <Dialog open={showShoppingList} onOpenChange={setShowShoppingList}>
-                  <DialogContent className="max-w-[90vw] sm:max-w-lg max-h-[90vh] overflow-y-auto bg-white">
+                  <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
                     <DialogHeader>
                       <DialogTitle>{t.shoppingListHeader}</DialogTitle>
                     </DialogHeader>
@@ -698,13 +698,16 @@ export default function MealPlanner() {
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
                       </div>
                     ) : shoppingListData ? (
-                      <div className="space-y-3">
-                        <div className="flex justify-between items-start gap-2">
-                          <div className="flex flex-col gap-1">
-                            <span className="text-xs text-gray-500 truncate">
-                              {formatWeekRange(shoppingListData.weekStart)}
-                            </span>
-                            <Badge variant="secondary" className="self-start text-xs px-2 py-1">
+                      <div className="space-y-4">
+                        <div className="flex justify-between items-center gap-4 p-4 bg-gray-50 rounded-lg">
+                          <div className="flex items-center gap-4">
+                            <div>
+                              <h3 className="font-semibold text-gray-900">Shopping List</h3>
+                              <p className="text-sm text-gray-500">
+                                {formatWeekRange(shoppingListData.weekStart)}
+                              </p>
+                            </div>
+                            <Badge variant="secondary" className="text-sm px-3 py-1">
                               {shoppingListData.totalItems} items
                             </Badge>
                           </div>
@@ -713,20 +716,21 @@ export default function MealPlanner() {
                               variant="outline"
                               size="sm"
                               onClick={clearAllChecked}
-                              className="text-xs"
+                              className="text-sm"
                             >
                               Reset List
                             </Button>
                           )}
                         </div>
                         
-                        {shoppingListData.categories?.map(category => (
-                          <div key={category} className="space-y-2">
-                            <h3 className="font-semibold text-foreground border-b border-border pb-1 text-sm">
-                              {category}
-                            </h3>
-                            <div className="space-y-1">
-                              {shoppingListData.shoppingList
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          {shoppingListData.categories?.map(category => (
+                            <div key={category} className="space-y-3">
+                              <h3 className="font-semibold text-foreground border-b border-border pb-2 text-base">
+                                {category}
+                              </h3>
+                              <div className="space-y-2">
+                                {shoppingListData.shoppingList
                                 ?.filter(item => item.category === category)
                                 ?.map((item, index) => {
                                   const itemKey = getItemKey(item.ingredient, category);
@@ -761,9 +765,10 @@ export default function MealPlanner() {
                                     </div>
                                   );
                                 })}
+                              </div>
                             </div>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                         
                         {/* Albert Heijn Integration */}
                         <div className="mt-3 pt-3 border-t border-border">
