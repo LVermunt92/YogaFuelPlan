@@ -372,7 +372,7 @@ export default function MealPlanner() {
                     <PieChart>
                       <Pie
                         data={[
-                          { value: 75, fill: "#8b5cf6" },
+                          { value: 75, fill: "#10b981" },
                           { value: 25, fill: "#f3f4f6" }
                         ]}
                         cx="50%"
@@ -388,11 +388,11 @@ export default function MealPlanner() {
                   </ResponsiveContainer>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
-                      <div className="text-sm font-bold text-purple-600">{currentMealPlan?.totalProtein ? Math.round(currentMealPlan.totalProtein) : 0}g</div>
+                      <div className="text-sm font-bold text-emerald-600">{currentMealPlan?.totalProtein ? Math.round(currentMealPlan.totalProtein) : 0}g</div>
                     </div>
                   </div>
                 </div>
-                <h3 className="text-xs font-semibold text-purple-600">Protein</h3>
+                <h3 className="text-xs font-semibold text-emerald-600">Protein</h3>
                 <p className="text-xs text-gray-500">75%</p>
               </div>
 
@@ -403,7 +403,7 @@ export default function MealPlanner() {
                     <PieChart>
                       <Pie
                         data={[
-                          { value: kpiData.goodFats.percentage, fill: "#f97316" },
+                          { value: kpiData.goodFats.percentage, fill: "#eab308" },
                           { value: 100 - kpiData.goodFats.percentage, fill: "#f3f4f6" }
                         ]}
                         cx="50%"
@@ -419,11 +419,11 @@ export default function MealPlanner() {
                   </ResponsiveContainer>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
-                      <div className="text-sm font-bold text-orange-600">{kpiData.goodFats.value}g</div>
+                      <div className="text-sm font-bold text-yellow-600">{kpiData.goodFats.value}g</div>
                     </div>
                   </div>
                 </div>
-                <h3 className="text-xs font-semibold text-orange-600">Good Fats</h3>
+                <h3 className="text-xs font-semibold text-yellow-600">Good Fats</h3>
                 <p className="text-xs text-gray-500">{kpiData.goodFats.percentage}%</p>
               </div>
 
@@ -434,7 +434,7 @@ export default function MealPlanner() {
                     <PieChart>
                       <Pie
                         data={[
-                          { value: Math.min(kpiData.vegetables.percentage, 100), fill: "#10b981" },
+                          { value: Math.min(kpiData.vegetables.percentage, 100), fill: "#22c55e" },
                           { value: Math.max(100 - kpiData.vegetables.percentage, 0), fill: "#f3f4f6" }
                         ]}
                         cx="50%"
@@ -450,11 +450,11 @@ export default function MealPlanner() {
                   </ResponsiveContainer>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
-                      <div className="text-sm font-bold text-emerald-600">{kpiData.vegetables.value}g</div>
+                      <div className="text-sm font-bold text-green-600">{kpiData.vegetables.value}g</div>
                     </div>
                   </div>
                 </div>
-                <h3 className="text-xs font-semibold text-emerald-600">Vegetables</h3>
+                <h3 className="text-xs font-semibold text-green-600">Vegetables</h3>
                 <p className="text-xs text-gray-500">{Math.min(kpiData.vegetables.percentage, 100)}%</p>
               </div>
 
@@ -1090,27 +1090,27 @@ export default function MealPlanner() {
                 <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-2 p-3 bg-gray-50 rounded-lg">
                   {/* Basic Info */}
                   <div className="text-center">
-                    <Timer className="w-4 h-4 text-orange-600 mx-auto mb-0.5" />
+                    <Timer className="w-4 h-4 text-gray-600 mx-auto mb-0.5" />
                     <p className="text-xs text-gray-500 font-medium">{t.prepTime}</p>
                     <p className="text-sm font-bold text-gray-800">{recipeData.prepTime} {t.min}</p>
                   </div>
                   <div className="text-center">
-                    <Users className="w-4 h-4 text-blue-600 mx-auto mb-0.5" />
+                    <Users className="w-4 h-4 text-gray-600 mx-auto mb-0.5" />
                     <p className="text-xs text-gray-500 font-medium">{t.servings}</p>
                     <p className="text-sm font-bold text-gray-800">{recipeData.portion}</p>
                   </div>
                   <div className="text-center">
-                    <Activity className="w-4 h-4 text-purple-600 mx-auto mb-0.5" />
+                    <Activity className="w-4 h-4 text-orange-600 mx-auto mb-0.5" />
                     <p className="text-xs text-gray-500 font-medium">{t.calories}</p>
                     <p className="text-sm font-bold text-gray-800">{Math.round(recipeData.nutrition.calories)}</p>
                   </div>
                   <div className="text-center">
-                    <Euro className="w-4 h-4 text-green-600 mx-auto mb-0.5" />
+                    <Euro className="w-4 h-4 text-gray-600 mx-auto mb-0.5" />
                     <p className="text-xs text-gray-500 font-medium">{t.cost}</p>
                     <p className="text-sm font-bold text-gray-800">€{recipeData.nutrition.costEuros?.toFixed(2) || '0.00'}</p>
                   </div>
                   <div className="text-center">
-                    <TrendingUp className="w-4 h-4 text-amber-600 mx-auto mb-0.5" />
+                    <TrendingUp className="w-4 h-4 text-gray-600 mx-auto mb-0.5" />
                     <p className="text-xs text-gray-500 font-medium">{t.proteinPerEuro}</p>
                     <p className="text-sm font-bold text-gray-800">{recipeData.nutrition.proteinPerEuro?.toFixed(1) || '0.0'}g/€</p>
                   </div>
@@ -1122,12 +1122,12 @@ export default function MealPlanner() {
                     <p className="text-sm font-bold text-gray-800">{Math.round(recipeData.nutrition.protein)}g</p>
                   </div>
                   <div className="text-center">
-                    <Droplet className="w-4 h-4 text-orange-600 mx-auto mb-0.5" />
+                    <Droplet className="w-4 h-4 text-yellow-600 mx-auto mb-0.5" />
                     <p className="text-xs text-gray-500 font-medium">Good Fats</p>
                     <p className="text-sm font-bold text-gray-800">{Math.round(recipeData.nutrition.fats || 0)}g</p>
                   </div>
                   <div className="text-center">
-                    <Leaf className="w-4 h-4 text-green-600 mx-auto mb-0.5" />
+                    <Leaf className="w-4 h-4 text-blue-600 mx-auto mb-0.5" />
                     <p className="text-xs text-gray-500 font-medium">{t.vegetables || 'Vegetables'}</p>
                     <p className="text-sm font-bold text-gray-800">{Math.round((recipeData.vegetableContent?.servings || 0) * 80)}g</p>
                   </div>
