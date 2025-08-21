@@ -48,3 +48,24 @@ export function getNextSunday(): string {
 export function getCurrentWeekSunday(): string {
   return normalizeToSunday(new Date());
 }
+
+/**
+ * Validate if a week start date is within allowed range (current week or next week only)
+ * @param weekStart - The week start date to validate
+ * @returns true if the date is valid, false otherwise
+ */
+export function isValidWeekStart(weekStart: string): boolean {
+  const inputWeekStart = normalizeToSunday(weekStart);
+  const currentWeekSunday = getCurrentWeekSunday();
+  const nextWeekSunday = getNextSunday();
+  
+  return inputWeekStart === currentWeekSunday || inputWeekStart === nextWeekSunday;
+}
+
+/**
+ * Get the allowed week start dates (current week and next week)
+ * @returns Array of valid week start dates
+ */
+export function getAllowedWeekStarts(): string[] {
+  return [getCurrentWeekSunday(), getNextSunday()];
+}

@@ -16,7 +16,7 @@ import { adminRouter } from './admin-routes';
 import { calculateNutritionTargets, type NutritionProfile } from './nutrition-calculator';
 import { analyzeRecipeNutrition } from './ai-nutrition-analyzer';
 import cron from 'node-cron';
-import { normalizeToSunday, getNextSunday, getCurrentWeekSunday } from './date-utils';
+import { normalizeToSunday, getNextSunday, getCurrentWeekSunday, isValidWeekStart, getAllowedWeekStarts } from './date-utils';
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
@@ -226,9 +226,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "User ID is required" });
       }
 
+      const normalizedWeekStart = weekStart ? normalizeToSunday(weekStart) : getCurrentWeekSunday();
+      
+      // Validate that the week start is within allowed range (current week or next week only)
+      if (!isValidWeekStart(normalizedWeekStart)) {
+        const allowedWeeks = getAllowedWeekStarts();
+        return res.status(400).json({ 
+          message: `Week start must be current week (${allowedWeeks[0]}) or next week (${allowedWeeks[1]})`,
+          allowedWeekStarts: allowedWeeks 
+        });
+      }
+
       const request = {
         userId,
-        weekStart: weekStart ? normalizeToSunday(weekStart) : getCurrentWeekSunday(),
+        weekStart: normalizedWeekStart,
         activityLevel: activityLevel || 'high',
         dietaryTags: dietaryTags || [],
         leftovers: leftovers || [],

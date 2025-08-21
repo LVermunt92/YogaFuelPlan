@@ -797,6 +797,7 @@ async function generateMealPrepPlan(
   let remainingIngredientsToUseUp = [...ingredientsToUseUp];
   
   console.log(`🥕 Starting meal prep plan with leftover ingredients: ${JSON.stringify(ingredientsToUseUp)}`);
+  console.log(`👤 User object in meal prep: ${user ? 'present' : 'missing'}, user ID: ${user?.id}, use_only_my_recipes: ${user?.use_only_my_recipes}`);
   
   // Get meal options for lunch and dinner with dietary filters - ensure sufficient variety
   console.log(`🍽️ Ensuring recipe variety for dietary tags: [${dietaryTags.join(', ')}]`);

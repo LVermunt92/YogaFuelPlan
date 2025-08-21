@@ -6,10 +6,12 @@ Preferred communication style: Simple, everyday language.
 **CRITICAL DEVELOPMENT RULE**: Never remove existing functionality, features, or logic without explicit user permission. Always ask twice before removing anything. Only make additive changes unless specifically requested to remove features. Preserve all working functionality by default.
 
 ## Recent Fixes (August 21, 2025)
+- **Date Restriction Implementation**: Added validation to limit meal plan generation to current week and next week only, preventing future meal plans
 - **Custom Recipe Prioritization**: Fixed property mapping issue where `useOnlyMyRecipes` wasn't reading the correct database field `use_only_my_recipes`
 - **Vegetarian Dietary Filtering**: Enhanced dietary filtering to properly exclude non-vegetarian meals for vegetarian users in both curated and custom recipe systems
 - **User Recipe Dietary Logic**: Made user recipe filtering more permissive - assumes user's recipes match their dietary needs unless explicitly conflicting
 - **Shopping List Error Resolution**: Fixed `originalInput` undefined error in shopping list generation that was causing failures
+- **Meal Plan Date Validation**: System now restricts meal plan creation to current week (starts last Sunday) and next week (starts this Sunday) only
 
 # System Architecture
 - **UI/UX Decisions**: Utilizes `shadcn/ui` built on `Radix UI` primitives with `Tailwind CSS` and CSS variables for theming, focusing on a streamlined interface. Color schemes are standardized across the application (emerald, yellow, green, blue, orange for KPIs; gray for general UI; green/blue/orange for meal cards). Mobile layouts are optimized for responsiveness.
