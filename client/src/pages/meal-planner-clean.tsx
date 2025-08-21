@@ -186,6 +186,7 @@ export default function MealPlanner() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/users', authUser?.id, 'profile'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/nutrition/targets', authUser?.id] });
       toast({
         title: t.success,
         description: "Profile updated successfully",
