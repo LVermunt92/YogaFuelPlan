@@ -907,6 +907,19 @@ async function generateMealPrepPlan(
   console.log(`Weekday time filter: ${lunchOptions.length} → ${weekdayLunchOptions.length} lunch meals (≤30min)`);
   console.log(`Weekday time filter: ${dinnerOptions.length} → ${weekdayDinnerOptions.length} dinner meals (≤30min)`);
   
+  // Smart fallback: If no weekday dinner options, allow longer prep times for dinner
+  if (weekdayDinnerOptions.length === 0 && dinnerOptions.length > 0) {
+    // Allow up to 45 minutes for dinner on weekdays as fallback
+    weekdayDinnerOptions = dinnerOptions.filter(meal => meal.nutrition.prepTime <= 45);
+    console.log(`⚠️ No ≤30min dinner meals available. Fallback: allowing ≤45min (${weekdayDinnerOptions.length} meals)`);
+    
+    // If still no options, allow any dinner meal
+    if (weekdayDinnerOptions.length === 0) {
+      weekdayDinnerOptions = dinnerOptions;
+      console.log(`⚠️ No ≤45min dinner meals available. Using all dinner options (${weekdayDinnerOptions.length} meals)`);
+    }
+  }
+  
   // Apply smart protein optimization for high activity levels
   if (request.activityLevel === 'high') {
     const originalLunchAvg = lunchOptions.reduce((sum, m) => sum + m.nutrition.protein, 0) / lunchOptions.length;
