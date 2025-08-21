@@ -305,7 +305,7 @@ export default function MealPlanner() {
     const carbCalories = avgCarbsPerDay * 4; // 4 calories per gram of carbs
     
     const fatPercentage = avgCaloriesPerDay > 0 ? (fatCalories / avgCaloriesPerDay) * 100 : 25;
-    const vegetableEstimate = avgFatsPerDay * 0.8; // Higher estimate for vegetables
+    const vegetableEstimate = Math.max(300, avgCarbsPerDay * 1.2); // Realistic daily vegetable intake
     const fruitStarchEstimate = avgCarbsPerDay * 0.6; // Estimate for fruits/starches
 
     return {
@@ -354,6 +354,37 @@ export default function MealPlanner() {
           {/* 2. Compact Nutrition Charts */}
           {currentMealPlan && kpiData && (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 bg-gray-50 p-4 rounded-lg">
+              {/* Protein Chart - First position */}
+              <div className="text-center">
+                <div className="relative w-20 h-20 mx-auto mb-1">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={[
+                          { value: 75, fill: "#8b5cf6" },
+                          { value: 25, fill: "#f3f4f6" }
+                        ]}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={20}
+                        outerRadius={35}
+                        startAngle={90}
+                        endAngle={450}
+                        dataKey="value"
+                      >
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="text-sm font-bold text-purple-600">{currentMealPlan?.totalProtein ? Math.round(currentMealPlan.totalProtein) : 0}g</div>
+                    </div>
+                  </div>
+                </div>
+                <h3 className="text-xs font-semibold text-purple-600">Protein</h3>
+                <p className="text-xs text-gray-500">75%</p>
+              </div>
+
               {/* Good Fats */}
               <div className="text-center">
                 <div className="relative w-20 h-20 mx-auto mb-1">
@@ -447,36 +478,7 @@ export default function MealPlanner() {
                 <p className="text-xs text-gray-500">{Math.min(kpiData.fruitsStarches.percentage, 100)}%</p>
               </div>
 
-              {/* Protein Chart */}
-              <div className="text-center">
-                <div className="relative w-20 h-20 mx-auto mb-1">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={[
-                          { value: 75, fill: "#8b5cf6" },
-                          { value: 25, fill: "#f3f4f6" }
-                        ]}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={20}
-                        outerRadius={35}
-                        startAngle={90}
-                        endAngle={450}
-                        dataKey="value"
-                      >
-                      </Pie>
-                    </PieChart>
-                  </ResponsiveContainer>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="text-sm font-bold text-purple-600">{currentMealPlan?.totalProtein ? Math.round(currentMealPlan.totalProtein) : 0}g</div>
-                    </div>
-                  </div>
-                </div>
-                <h3 className="text-xs font-semibold text-purple-600">Protein</h3>
-                <p className="text-xs text-gray-500">75%</p>
-              </div>
+
             </div>
           )}
 
