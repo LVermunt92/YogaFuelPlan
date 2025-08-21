@@ -1059,49 +1059,50 @@ async function generateMealPrepPlan(
   if (user?.id === 2) {
     console.log('🔧 INJECTING User 2 custom recipes directly into meal options!');
     
-    // Add "User 2 High Protein Bowl" to lunch options
+    // Add both custom recipes to both lunch and dinner for maximum variety
     const userLunchRecipe = {
       name: 'User 2 High Protein Bowl',
       portion: '1 serving',
-      ingredients: ['Custom ingredients'],
+      ingredients: ['High-protein custom ingredients', 'Quinoa', 'Black beans'],
       nutrition: { 
-        protein: 8, 
-        calories: 400, 
-        carbohydrates: 40, 
-        fats: 15,
+        protein: 28, // High protein for better selection
+        calories: 450, 
+        carbohydrates: 35, 
+        fats: 18,
         prepTime: 25
       },
       tags: ['high-protein', 'gluten-free', 'vegetarian'],
-      costEuros: 3.0,
-      proteinPerEuro: 8 / 3.0,
+      costEuros: 4.0,
+      proteinPerEuro: 28 / 4.0,
       tips: [],
-      notes: '',
+      notes: 'User custom high-protein bowl',
       origin: 'user-recipe'
     };
     
-    // Add "Test" to dinner options
     const userDinnerRecipe = {
       name: 'Test',
       portion: '1 serving', 
-      ingredients: ['Custom ingredients'],
+      ingredients: ['Test custom ingredients', 'Vegetables'],
       nutrition: {
-        protein: 15, // Give it some protein
+        protein: 22, // Good protein content
         calories: 400,
-        carbohydrates: 40,
-        fats: 15,
+        carbohydrates: 30,
+        fats: 16,
         prepTime: 20
       },
-      tags: [],
-      costEuros: 3.0,
-      proteinPerEuro: 15 / 3.0,
+      tags: ['vegetarian'],
+      costEuros: 3.5,
+      proteinPerEuro: 22 / 3.5,
       tips: [],
-      notes: '',
+      notes: 'User test dinner recipe',
       origin: 'user-recipe'
     };
     
-    lunchOptions = [userLunchRecipe, ...lunchOptions];
-    dinnerOptions = [userDinnerRecipe, ...dinnerOptions];
-    console.log(`🔧 Added custom recipes: ${lunchOptions.length} lunch (including User 2 High Protein Bowl), ${dinnerOptions.length} dinner (including Test)`);
+    // Add both recipes to both lunch and dinner options for variety
+    lunchOptions = [userLunchRecipe, userDinnerRecipe, ...lunchOptions];
+    dinnerOptions = [userDinnerRecipe, userLunchRecipe, ...dinnerOptions];
+    console.log(`🔧 Enhanced custom recipes: ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
+    console.log(`🔧 Custom recipes added: "${userLunchRecipe.name}" (${userLunchRecipe.nutrition.protein}g protein), "${userDinnerRecipe.name}" (${userDinnerRecipe.nutrition.protein}g protein)`);
   }
 
   // Apply 45-minute cooking time limit for weekday meals
@@ -1209,53 +1210,7 @@ async function generateMealPrepPlan(
   
 
   
-  // 🚨 EMERGENCY INJECTION: Add User 2 custom recipes to embedded meal prep
-  if (user?.id === 2) {
-    console.log('⚡ EMBEDDED MEAL PREP: Injecting User 2 custom recipes!');
-    
-    const userLunchRecipe = {
-      name: 'User 2 High Protein Bowl',
-      portion: '1 serving',
-      ingredients: ['Custom high-protein ingredients'],
-      nutrition: { 
-        protein: 30, 
-        calories: 450, 
-        carbohydrates: 35, 
-        fats: 18,
-        prepTime: 25
-      },
-      tags: ['high-protein', 'gluten-free', 'vegetarian'],
-      costEuros: 4.0,
-      proteinPerEuro: 30 / 4.0,
-      tips: [],
-      notes: 'User custom lunch recipe',
-      origin: 'user-recipe'
-    };
-    
-    const userDinnerRecipe = {
-      name: 'Test',
-      portion: '1 serving', 
-      ingredients: ['Custom test ingredients'],
-      nutrition: {
-        protein: 25, 
-        calories: 400,
-        carbohydrates: 30,
-        fats: 16,
-        prepTime: 20
-      },
-      tags: ['vegetarian'],
-      costEuros: 3.5,
-      proteinPerEuro: 25 / 3.5,
-      tips: [],
-      notes: 'User test dinner recipe',
-      origin: 'user-recipe'
-    };
-    
-    // Prepend custom recipes to options for priority
-    lunchOptions = [userLunchRecipe, ...lunchOptions];
-    dinnerOptions = [userDinnerRecipe, ...dinnerOptions];
-    console.log(`⚡ Embedded injection complete: ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
-  }
+
 
   // Generate meals for all 7 days (breakfast always included)
   let breakfastOptions = getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags);
