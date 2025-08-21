@@ -809,8 +809,10 @@ async function generateMealPrepPlan(
   const useOnlyMyRecipes = user?.useOnlyMyRecipes === true;
   console.log(`🍽️ Recipe source preference: ${useOnlyMyRecipes ? 'User recipes only' : 'All recipes'}`);
   console.log(`🔍 Debug: user?.useOnlyMyRecipes = ${user?.useOnlyMyRecipes} (type: ${typeof user?.useOnlyMyRecipes}), useOnlyMyRecipes = ${useOnlyMyRecipes}`);
+  console.log(`🚨 CRITICAL DEBUG: About to check useOnlyMyRecipes=${useOnlyMyRecipes}`);
 
   if (useOnlyMyRecipes) {
+    console.log(`🎯 ENTERING CUSTOM RECIPE PATH!`);
     // Use user's custom recipes with smart fallback for meal prep
     console.log('🚀 Loading user recipes with smart fallback for meal prep');
     // Use imported storage
@@ -821,6 +823,17 @@ async function generateMealPrepPlan(
       tags: r.tags,
       protein: r.protein
     })));
+    
+    // Apply dietary filtering to user recipes
+    const filterUserRecipeByDiet = (recipe: any): boolean => {
+      if (dietaryTags.includes('vegetarian') || dietaryTags.includes('vegan')) {
+        if (recipe.tags.includes('non-vegetarian') || recipe.tags.includes('pescatarian')) {
+          console.log(`🚫 Excluding user recipe with conflicting dietary tag: ${recipe.name}`);
+          return false;
+        }
+      }
+      return true;
+    };
     
     // Convert user recipes to MealOption format
     const convertUserRecipeToMealOption = (recipe: any): MealOption => ({
@@ -839,16 +852,6 @@ async function generateMealPrepPlan(
     });
     
     // Get user recipes by meal type (more permissive filtering for user's own recipes)
-    const filterUserRecipeByDiet = (recipe: any): boolean => {
-      // For user's own recipes, assume they match their dietary preferences unless explicitly conflicting
-      if (dietaryTags.includes('vegetarian') || dietaryTags.includes('vegan')) {
-        if (recipe.tags.includes('non-vegetarian') || recipe.tags.includes('pescatarian')) {
-          console.log(`🚫 Excluding user recipe with conflicting dietary tag: ${recipe.name}`);
-          return false;
-        }
-      }
-      return true; // Include the recipe (assume user created it to match their dietary needs)
-    };
 
     const userLunchOptions = userRecipes
       .filter(recipe => 
@@ -884,30 +887,37 @@ async function generateMealPrepPlan(
     
     console.log(`📊 Final meal prep recipe counts with fallback: ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
   } else {
-    // Fast recipe selection: Use existing database only (AI generation disabled for speed)
-    console.log('🚀 Fast recipe selection: using existing database only');
-    console.log(`🐛 DEBUG WHY NOT CUSTOM: useOnlyMyRecipes=${useOnlyMyRecipes}, user?.useOnlyMyRecipes=${user?.useOnlyMyRecipes} (type: ${typeof user?.useOnlyMyRecipes})`);
+    // FORCED CUSTOM RECIPE MODE: Always load user recipes when use_only_my_recipes is true
+    console.log('🚀 Fast recipe selection: checking for custom recipes first');
+    console.log(`🐛 DEBUG: useOnlyMyRecipes=${useOnlyMyRecipes}, user?.useOnlyMyRecipes=${user?.useOnlyMyRecipes} (type: ${typeof user?.useOnlyMyRecipes})`);
     
-    // FORCE CUSTOM RECIPE TEST: Always try to load user recipes for debugging
-    if (user?.useOnlyMyRecipes) {
-      console.log('🔧 FORCING CUSTOM RECIPE LOADING FOR DEBUG');
+    // Always try to load user recipes if the setting is enabled
+    if (user?.useOnlyMyRecipes === true) {
+      console.log('🔧 CUSTOM RECIPE MODE ACTIVATED!');
       const userRecipes = await storage.getUserRecipes(user.id);
       console.log(`🔧 DEBUG: Found ${userRecipes.length} user recipes:`, userRecipes.map(r => `${r.name} (${r.mealTypes.join(', ')})`));
       
       if (userRecipes.length > 0) {
         console.log('🔧 SWITCHING TO CUSTOM RECIPES!');
         
-        // Convert user recipes to MealOption format
+        // Convert user recipes to MealOption format - simplified nutrition object
         const convertUserRecipeToMealOption = (recipe: any): MealOption => ({
           name: recipe.name,
           portion: recipe.portion || '1 serving',
           ingredients: recipe.ingredients,
-          instructions: recipe.instructions,
-          nutrition: recipe.nutrition || { protein: 15, calories: 400, carbohydrates: 40, fats: 15 },
+          nutrition: { 
+            protein: recipe.protein || 15, 
+            calories: recipe.calories || 400, 
+            carbohydrates: recipe.carbohydrates || 40, 
+            fats: recipe.fats || 15,
+            fiber: recipe.fiber || 5,
+            sugar: recipe.sugar || 10,
+            sodium: recipe.sodium || 300
+          },
           tags: recipe.tags || [],
           prepTime: recipe.prepTime || 30,
           costEuros: recipe.costEuros || 3.0,
-          proteinPerEuro: recipe.nutrition?.protein ? (recipe.nutrition.protein / (recipe.costEuros || 3.0)) : 5.0,
+          proteinPerEuro: (recipe.protein || 15) / (recipe.costEuros || 3.0),
           tips: recipe.tips || [],
           notes: recipe.notes || '',
           origin: 'user-recipe'
@@ -922,11 +932,13 @@ async function generateMealPrepPlan(
           .map(convertUserRecipeToMealOption);
         
         console.log(`🔧 Converted user recipes: ${userLunchOptions.length} lunch, ${userDinnerOptions.length} dinner`);
+        console.log(`🔧 Lunch recipes:`, userLunchOptions.map(r => r.name));
+        console.log(`🔧 Dinner recipes:`, userDinnerOptions.map(r => r.name));
         
-        if (userLunchOptions.length > 0) lunchOptions = userLunchOptions;
-        if (userDinnerOptions.length > 0) dinnerOptions = userDinnerOptions;
+        lunchOptions = userLunchOptions;
+        dinnerOptions = userDinnerOptions;
         
-        // Add fallback if not enough variety
+        // Add fallback if not enough variety for meal prep
         const minVarietyThreshold = 2;
         if (lunchOptions.length < minVarietyThreshold) {
           const curatedLunch = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
@@ -945,6 +957,7 @@ async function generateMealPrepPlan(
         dinnerOptions = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
       }
     } else {
+      console.log('🔧 Custom recipes disabled, using curated database');
       lunchOptions = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
       dinnerOptions = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
     }
