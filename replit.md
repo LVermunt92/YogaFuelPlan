@@ -53,6 +53,7 @@ Unified Meal Plan Color Scheme: Simplified meal plan interface from multiple mea
 Nutrition Targets Display Restoration: Restored comprehensive nutrition targets section in profile page showing protein, carbohydrates, fats, and calories based on activity level calculations with detailed breakdown.
 Recipe Source Preference System: Added user preference toggle in "My Recipes" page allowing users to choose between using only their custom recipes or mixing them with the curated database for meal plan generation.
 Enhanced Meal Plan Visual System: Restored colored meal cards with green for fresh meals and blue for leftovers, added orange ingredient indicators for meals with incorporated leftover ingredients, and removed colored day headers for cleaner appearance.
+Improved New User Profile Experience: Enhanced profile form with intelligent new user detection, ensuring empty input fields for new users while preserving existing user data, added comprehensive placeholder text and descriptive labels for all input fields.
 
 # System Architecture
 - **UI/UX Decisions**: Utilizes `shadcn/ui` built on `Radix UI` primitives with `Tailwind CSS` and CSS variables for theming. The UI is streamlined, removing redundant elements and focusing on core meal planning functionality.

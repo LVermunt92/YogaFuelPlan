@@ -156,28 +156,32 @@ export default function Profile() {
     if (user && !isFormInitialized) {
       const dynamicProteinTarget = calculateProteinTarget(user.age, user.activityLevel, user.gender || undefined);
       
+      // Check if this is a new user (has minimal profile data)
+      const isNewUser = !user.firstName && !user.lastName && !user.age && !user.weight && !user.height;
+      
       setFormData({
         username: user.username || '',
         email: user.email || '',
         firstName: user.firstName || '',
         lastName: user.lastName || '',
         gender: user.gender || '',
-        weight: user.weight?.toString() || '',
-        goalWeight: user.goalWeight?.toString() || '',
-        height: user.height?.toString() || '',
-        age: user.age?.toString() || '',
-        waistline: user.waistline?.toString() || '',
-        goalWaistline: user.goalWaistline?.toString() || '',
+        // For new users, show empty fields; for existing users, show their data
+        weight: isNewUser ? '' : (user.weight?.toString() || ''),
+        goalWeight: isNewUser ? '' : (user.goalWeight?.toString() || ''),
+        height: isNewUser ? '' : (user.height?.toString() || ''),
+        age: isNewUser ? '' : (user.age?.toString() || ''),
+        waistline: isNewUser ? '' : (user.waistline?.toString() || ''),
+        goalWaistline: isNewUser ? '' : (user.goalWaistline?.toString() || ''),
         targetDate: user.targetDate || '',
         activityLevel: user.activityLevel || 'moderate',
         trainingType: user.trainingType || 'endurance',
         goal: user.goal || 'maintain',
         proteinTarget: dynamicProteinTarget.toString(),
         dietaryTags: user.dietaryTags || [],
-        householdSize: user.householdSize?.toString() || '1',
-        cookingDaysPerWeek: user.cookingDaysPerWeek?.toString() || '7',
-        eatingDaysAtHome: user.eatingDaysAtHome?.toString() || '7',
-        meatFishMealsPerWeek: user.meatFishMealsPerWeek?.toString() || '0',
+        householdSize: isNewUser ? '1' : (user.householdSize?.toString() || '1'),
+        cookingDaysPerWeek: isNewUser ? '7' : (user.cookingDaysPerWeek?.toString() || '7'),
+        eatingDaysAtHome: isNewUser ? '7' : (user.eatingDaysAtHome?.toString() || '7'),
+        meatFishMealsPerWeek: isNewUser ? '0' : (user.meatFishMealsPerWeek?.toString() || '0'),
         useOnlyMyRecipes: user.useOnlyMyRecipes || false
       });
       setIsFormInitialized(true);
@@ -346,6 +350,7 @@ export default function Profile() {
                   value={formData.username}
                   onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
                   className="input-clean"
+                  placeholder="Enter your username"
                   required
                 />
               </div>
@@ -360,6 +365,7 @@ export default function Profile() {
                   value={formData.email}
                   onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                   className="input-clean"
+                  placeholder="your.email@example.com"
                 />
               </div>
 
@@ -372,6 +378,7 @@ export default function Profile() {
                   value={formData.firstName}
                   onChange={(e) => setFormData(prev => ({ ...prev, firstName: e.target.value }))}
                   className="input-clean"
+                  placeholder="Enter your first name"
                 />
               </div>
 
@@ -384,6 +391,7 @@ export default function Profile() {
                   value={formData.lastName}
                   onChange={(e) => setFormData(prev => ({ ...prev, lastName: e.target.value }))}
                   className="input-clean"
+                  placeholder="Enter your last name"
                 />
               </div>
             </div>
@@ -429,14 +437,17 @@ export default function Profile() {
                   value={formData.age}
                   onChange={(e) => handleActivityOrAgeChange('age', e.target.value)}
                   className="input-clean"
-                  placeholder="35"
+                  placeholder="Enter your age (e.g., 35)"
                 />
               </div>
 
               <div>
                 <Label htmlFor="weight" className="text-sm font-medium text-foreground mb-2 block">
-                  {t.weight}
+                  Current Weight (kg)
                 </Label>
+                <p className="text-xs text-muted-foreground mb-2">
+                  Your current weight in kilograms
+                </p>
                 <Input
                   id="weight"
                   type="number"
@@ -444,26 +455,34 @@ export default function Profile() {
                   value={formData.weight}
                   onChange={(e) => setFormData(prev => ({ ...prev, weight: e.target.value }))}
                   className="input-clean"
+                  placeholder="e.g., 70.5"
                 />
               </div>
 
               <div>
                 <Label htmlFor="height" className="text-sm font-medium text-foreground mb-2 block">
-                  {t.height}
+                  Height (cm)
                 </Label>
+                <p className="text-xs text-muted-foreground mb-2">
+                  Your height in centimeters
+                </p>
                 <Input
                   id="height"
                   type="number"
                   value={formData.height}
                   onChange={(e) => setFormData(prev => ({ ...prev, height: e.target.value }))}
                   className="input-clean"
+                  placeholder="e.g., 175"
                 />
               </div>
 
               <div>
                 <Label htmlFor="waistline" className="text-sm font-medium text-foreground mb-2 block">
-                  {t.waistline}
+                  Waist Circumference (cm)
                 </Label>
+                <p className="text-xs text-muted-foreground mb-2">
+                  Measure around your waist at the narrowest point
+                </p>
                 <Input
                   id="waistline"
                   type="number"
@@ -471,6 +490,7 @@ export default function Profile() {
                   value={formData.waistline}
                   onChange={(e) => setFormData(prev => ({ ...prev, waistline: e.target.value }))}
                   className="input-clean"
+                  placeholder="e.g., 85.0"
                 />
               </div>
 
@@ -646,8 +666,11 @@ export default function Profile() {
 
               <div>
                 <Label htmlFor="goalWaistline" className="text-sm font-medium text-foreground mb-2 block">
-                  {t.goalWaistline}
+                  Goal Waist Circumference (cm)
                 </Label>
+                <p className="text-xs text-muted-foreground mb-2">
+                  Your target waist measurement (optional)
+                </p>
                 <Input
                   id="goalWaistline"
                   type="number"
@@ -655,14 +678,17 @@ export default function Profile() {
                   value={formData.goalWaistline}
                   onChange={(e) => setFormData(prev => ({ ...prev, goalWaistline: e.target.value }))}
                   className="input-clean"
-                  placeholder="Optional target waistline"
+                  placeholder="e.g., 80.0"
                 />
               </div>
 
               <div>
                 <Label htmlFor="targetDate" className="text-sm font-medium text-foreground mb-2 block">
-                  {t.targetDate}
+                  Target Date
                 </Label>
+                <p className="text-xs text-muted-foreground mb-2">
+                  When you want to reach your goals (optional)
+                </p>
                 <Input
                   id="targetDate"
                   type="date"
