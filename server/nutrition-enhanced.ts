@@ -1,4 +1,5 @@
 import { getCurrentSeasonalGuidance, adaptRecipeForSeason, getCurrentAyurvedicSeason } from './ayurveda-seasonal';
+import { applyDietarySubstitutions } from './ingredient-substitution';
 import { selectProteinOptimizedMeals } from './smart-protein-selection';
 import { specifyIngredients, validateIngredientSpecificity, updateRecipeIngredients } from './ingredient-specifier';
 import { standardizePortion } from './portion-standardizer';
@@ -4576,6 +4577,12 @@ export function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' | 'lunc
   
   // Filter meals by dietary tags (protein targets handled automatically by activity level)
   let filteredMeals = filterEnhancedMealsByDietaryTags(categoryMeals, dietaryTags);
+  
+  // Apply smart ingredient substitutions for dietary restrictions
+  if (dietaryTags.some(tag => ['lactose-free', 'dairy-free', 'gluten-free'].includes(tag))) {
+    console.log(`🔄 Applying dietary substitutions for: ${dietaryTags.filter(tag => ['lactose-free', 'dairy-free', 'gluten-free'].includes(tag)).join(', ')}`);
+    filteredMeals = filteredMeals.map(meal => applyDietarySubstitutions(meal, dietaryTags));
+  }
   
   
   // Apply seasonal adaptations for ayurvedic meals

@@ -18,6 +18,7 @@ import { selectProteinOptimizedMealsForTarget, calculateUserProteinTarget } from
 import { calculateMealFreshnessPriority, getRecommendedDayForMeal, logMealFreshnessAnalysis, sortMealsByFreshness } from "./ingredient-freshness";
 import { normalizeToSunday } from "./date-utils";
 import { storage } from "./storage";
+import { applyDietarySubstitutions } from "./ingredient-substitution";
 
 export interface GeneratedMealPlan {
   mealPlan: InsertMealPlan;
