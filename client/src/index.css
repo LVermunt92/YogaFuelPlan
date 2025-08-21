@@ -94,6 +94,19 @@
     backdrop-filter: none !important;
   }
 
+  /* Responsive layout improvements */
+  .responsive-container {
+    @apply max-w-6xl mx-auto px-2 sm:px-4 lg:px-6 xl:px-8;
+  }
+  
+  .responsive-card {
+    @apply w-full lg:max-w-4xl lg:mx-auto;
+  }
+  
+  .responsive-grid-2 { @apply grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6; }
+  .responsive-grid-3 { @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6; }
+  .responsive-grid-4 { @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 lg:gap-4; }
+
   /* Buttons (minimal) */
   .btn-touch { @apply min-h-[44px] min-w-[44px] px-4 py-2; }
   .btn-minimal {

@@ -372,9 +372,9 @@ export default function MealPlanner() {
 
   return (
     <div className="bg-background min-h-screen">
-      <main className="container mx-auto px-2 sm:px-4 py-8">
+      <main className="responsive-container py-6 lg:py-8">
         {/* Centered Content Container */}
-        <div className="max-w-6xl mx-auto space-y-8">
+        <div className="max-w-6xl mx-auto space-y-6 lg:space-y-8">
           
           {/* 1. Welcome Section */}
           <div className="text-center mb-6">
@@ -386,7 +386,7 @@ export default function MealPlanner() {
 
           {/* 2. Compact Nutrition Charts */}
           {currentMealPlan && kpiData && (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6 bg-gray-50 p-3 sm:p-4 rounded-lg">
+            <div className="responsive-grid-4 mb-6 bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg">
               {/* Protein Chart - First position */}
               <div className="text-center">
                 <div className="relative w-20 h-20 mx-auto mb-1">
@@ -525,7 +525,7 @@ export default function MealPlanner() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 lg:gap-4">
                   {ouraData.slice(0, 4).map((data, index) => (
                     <div key={index} className="text-center p-3 bg-gray-50 rounded-lg">
                       <div className="text-sm text-gray-500 mb-1">
@@ -559,7 +559,7 @@ export default function MealPlanner() {
           )}
 
           {/* 4. Generate Meal Plan (Combined Section) */}
-          <Card className="w-full">
+          <Card className="w-full lg:max-w-4xl lg:mx-auto">
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-2">
                 <ChefHat className="h-6 w-6" />
@@ -789,7 +789,7 @@ export default function MealPlanner() {
 
           {/* 5. Saved Meal Plans */}
           {mealPlans.length > 0 && (
-            <Card className="w-full">
+            <Card className="w-full lg:max-w-5xl lg:mx-auto">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2">
                   <History className="h-6 w-6" />
@@ -835,7 +835,7 @@ export default function MealPlanner() {
           )}
 
           {/* 6. Weekly Meal Plan */}
-          <Card className="w-full">
+          <Card className="w-full lg:max-w-5xl lg:mx-auto">
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-2">
                 <Utensils className="h-6 w-6" />
