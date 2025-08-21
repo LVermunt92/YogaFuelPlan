@@ -582,59 +582,7 @@ export default function Profile() {
               </div>
             </div>
 
-            {/* Comprehensive Nutrition Targets */}
-            {nutritionTargets && !nutritionLoading && (
-              <div className="mt-6">
-                <h3 className="text-lg font-medium text-foreground mb-4">Comprehensive Nutrition Targets</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {/* Daily Calories */}
-                  <div className="p-4 bg-orange-50 dark:bg-orange-950 rounded-lg">
-                    <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{nutritionTargets.calories} kcal</div>
-                    <div className="text-sm text-orange-700 dark:text-orange-300">Daily Calories</div>
-                    <div className="text-xs text-gray-500 mt-1">Maintenance: {nutritionTargets.maintenanceCalories} kcal</div>
-                  </div>
 
-                  {/* Protein */}
-                  <div className="p-4 bg-emerald-50 dark:bg-emerald-950 rounded-lg">
-                    <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{nutritionTargets.protein}g</div>
-                    <div className="text-sm text-emerald-700 dark:text-emerald-300">Daily Protein</div>
-                    <div className="text-xs text-gray-500 mt-1">Factor: {nutritionTargets.proteinFactor}g/kg</div>
-                  </div>
-
-                  {/* Carbohydrates */}
-                  <div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-lg">
-                    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{nutritionTargets.carbohydrates}g</div>
-                    <div className="text-sm text-blue-700 dark:text-blue-300">Daily Carbs</div>
-                    <div className="text-xs text-gray-500 mt-1">Factor: {nutritionTargets.carbFactor}g/kg</div>
-                  </div>
-
-                  {/* Fats */}
-                  <div className="p-4 bg-yellow-50 dark:bg-yellow-950 rounded-lg">
-                    <div className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{nutritionTargets.fats}g</div>
-                    <div className="text-sm text-yellow-700 dark:text-yellow-300">Daily Fats</div>
-                    <div className="text-xs text-gray-500 mt-1">{nutritionTargets.fatPercentage}% of calories</div>
-                  </div>
-                </div>
-
-                {/* Additional Metrics */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                  <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                    <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Base Metabolic Rate (BMR)</div>
-                    <div className="text-lg font-bold text-gray-900 dark:text-gray-100">{nutritionTargets.bmr} kcal/day</div>
-                  </div>
-                  <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                    <div className="text-sm font-medium text-gray-700 dark:text-gray-300">Physical Activity Level (PAL)</div>
-                    <div className="text-lg font-bold text-gray-900 dark:text-gray-100">{nutritionTargets.palValue}</div>
-                  </div>
-                </div>
-
-                <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-950 rounded-lg">
-                  <div className="text-sm text-blue-700 dark:text-blue-300">
-                    <strong>Training Configuration:</strong> {formData.activityLevel.charAt(0).toUpperCase() + formData.activityLevel.slice(1)} Activity + {formData.trainingType.charAt(0).toUpperCase() + formData.trainingType.slice(1)} Training + {formData.goal.charAt(0).toUpperCase() + formData.goal.slice(1)} Goal
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
 
           {/* Health Goals */}
