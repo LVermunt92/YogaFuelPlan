@@ -362,7 +362,9 @@ export default function MealPlanner() {
 
   // Auto-select first meal plan
   useEffect(() => {
+    console.log('Meal plans effect:', { selectedMealPlan, mealPlansCount: mealPlans.length });
     if (!selectedMealPlan && mealPlans.length > 0) {
+      console.log('Auto-selecting first meal plan:', mealPlans[0].id);
       setSelectedMealPlan(mealPlans[0].id);
       localStorage.setItem('selectedMealPlan', mealPlans[0].id.toString());
     }
@@ -786,8 +788,11 @@ export default function MealPlanner() {
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2">
                   <History className="h-6 w-6" />
-                  {t.savedMealPlans || 'Saved Meal Plans'}
+                  {t.savedMealPlans || 'Saved Meal Plans'} ({mealPlans.length})
                 </CardTitle>
+                <p className="text-sm text-gray-500">
+                  Click on a meal plan to view its details
+                </p>
               </CardHeader>
               <CardContent className="pt-0">
                 <div className="space-y-2">
@@ -800,8 +805,11 @@ export default function MealPlanner() {
                           : 'border-border hover:border-primary/50'
                       }`}
                       onClick={() => {
+                        console.log('Selecting meal plan:', plan.id, plan.planName);
                         setSelectedMealPlan(plan.id);
                         localStorage.setItem('selectedMealPlan', plan.id.toString());
+                        // Force re-render by invalidating the meal plan query
+                        queryClient.invalidateQueries({ queryKey: ['/api/meal-plans', plan.id.toString(), language] });
                       }}
                     >
                       <div className="flex justify-between items-center">
