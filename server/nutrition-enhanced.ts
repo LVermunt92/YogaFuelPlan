@@ -4556,9 +4556,27 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
       
       // Check other critical tags (vegetarian, gluten-free, etc.)
       const otherCriticalTags = userCriticalTags.filter(tag => tag !== 'lactose-free');
-      const otherCriticalSatisfied = otherCriticalTags.every(tag => meal.tags.includes(tag));
       
-      if (!lactoseFreeSatisfied || !otherCriticalSatisfied) {
+      // Smart gluten-free filtering: include meals that don't contain gluten ingredients
+      let glutenFreeSatisfied = true;
+      if (dietaryTags.includes('gluten-free')) {
+        const hasGlutenIngredients = meal.ingredients && meal.ingredients.some(ingredient => 
+          ingredient.toLowerCase().includes('flour') && !ingredient.toLowerCase().includes('gluten-free') ||
+          ingredient.toLowerCase().includes('wheat') ||
+          ingredient.toLowerCase().includes('bread') && !ingredient.toLowerCase().includes('gluten-free') ||
+          ingredient.toLowerCase().includes('pasta') && !ingredient.toLowerCase().includes('gluten-free') ||
+          ingredient.toLowerCase().includes('soy sauce') && !ingredient.toLowerCase().includes('gluten-free')
+        );
+        
+        glutenFreeSatisfied = meal.tags.includes('gluten-free') || !hasGlutenIngredients;
+      }
+      
+      // Check other critical tags (but allow smart gluten-free logic)
+      const remainingCriticalTags = otherCriticalTags.filter(tag => tag !== 'gluten-free');
+      const otherCriticalSatisfied = remainingCriticalTags.every(tag => meal.tags.includes(tag));
+      
+      if (!lactoseFreeSatisfied || !glutenFreeSatisfied || !otherCriticalSatisfied) {
+        console.log(`🚫 "${meal.name}" excluded - lactose: ${lactoseFreeSatisfied}, gluten: ${glutenFreeSatisfied}, other: ${otherCriticalSatisfied}`);
         return false;
       }
     }
@@ -4576,8 +4594,16 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
 export function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' | 'lunch' | 'dinner', dietaryTags: string[] = []): MealOption[] {
   const categoryMeals = getEnhancedMealsByCategory(category);
   
+  console.log(`🔍 DEBUGGING CURATED: Starting with ${categoryMeals.length} total ${category} meals`);
+  console.log(`🔍 DEBUGGING CURATED: Filtering for dietary tags: [${dietaryTags.join(', ')}]`);
+  
   // Filter meals by dietary tags (protein targets handled automatically by activity level)
   let filteredMeals = filterEnhancedMealsByDietaryTags(categoryMeals, dietaryTags);
+  
+  console.log(`🔍 DEBUGGING CURATED: After dietary filtering: ${filteredMeals.length} ${category} meals`);
+  if (filteredMeals.length > 0) {
+    console.log(`🍽️ Sample ${category} recipes: ${filteredMeals.slice(0, 5).map(m => m.name).join(', ')}`);
+  }
   
   // Apply smart ingredient substitutions for dietary restrictions
   if (dietaryTags.some(tag => ['lactose-free', 'dairy-free', 'gluten-free'].includes(tag))) {

@@ -941,13 +941,15 @@ async function generateMealPrepPlan(
     if (lunchOptions.length < minVarietyThreshold) {
       console.log(`🔄 Smart fallback: Adding curated lunch recipes for meal prep (user has ${lunchOptions.length}, need ${minVarietyThreshold})`);
       const curatedLunch = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
-      lunchOptions = [...lunchOptions, ...curatedLunch.slice(0, minVarietyThreshold - lunchOptions.length)];
+      console.log(`🔄 Smart fallback: Found ${curatedLunch.length} curated lunch recipes`);
+      lunchOptions = [...lunchOptions, ...curatedLunch];
     }
     
     if (dinnerOptions.length < minVarietyThreshold) {
       console.log(`🔄 Smart fallback: Adding curated dinner recipes for meal prep (user has ${dinnerOptions.length}, need ${minVarietyThreshold})`);
       const curatedDinner = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
-      dinnerOptions = [...dinnerOptions, ...curatedDinner.slice(0, minVarietyThreshold - dinnerOptions.length)];
+      console.log(`🔄 Smart fallback: Found ${curatedDinner.length} curated dinner recipes`);
+      dinnerOptions = [...dinnerOptions, ...curatedDinner];
     }
     
     console.log(`📊 Final meal prep recipe counts with fallback: ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
