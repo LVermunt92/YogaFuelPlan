@@ -860,7 +860,7 @@ async function generateMealPrepPlan(
   // FORCE custom recipes for User 2 for debugging - ALWAYS use custom recipes for user 2
   const forceCustomRecipes = user?.id === 2;
   console.log(`🔧 Force custom recipes for user 2: ${forceCustomRecipes}`);
-  const finalUseOnlyMyRecipes = true; // ALWAYS use custom recipes for user 2
+  const finalUseOnlyMyRecipes = useOnlyMyRecipes; // Use user's preference, not forced
   console.log(`🔧 Final decision: ${finalUseOnlyMyRecipes ? 'FORCING CUSTOM RECIPES for User 2' : 'using curated recipes'}`);
   
   if (finalUseOnlyMyRecipes) {
