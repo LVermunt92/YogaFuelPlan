@@ -4503,6 +4503,14 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
     const criticalTags = ['vegetarian', 'vegan', 'gluten-free', 'lactose-free', 'dairy-free'];
     const userCriticalTags = dietaryTags.filter(tag => criticalTags.includes(tag));
     
+    // IMPORTANT: Vegetarian/vegan users must EXCLUDE non-vegetarian meals
+    if (dietaryTags.includes('vegetarian') || dietaryTags.includes('vegan')) {
+      if (meal.tags.includes('non-vegetarian') || meal.tags.includes('pescatarian')) {
+        console.log(`🚫 Excluding non-vegetarian meal for vegetarian user: ${meal.name}`);
+        return false; // Exclude any non-vegetarian meals
+      }
+    }
+    
     // All critical dietary tags must be satisfied
     if (userCriticalTags.length > 0) {
       const criticalSatisfied = userCriticalTags.every(tag => meal.tags.includes(tag));
