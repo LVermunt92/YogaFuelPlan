@@ -6,6 +6,8 @@ import {
 } from "@shared/schema";
 import { 
   getEnhancedMealsForCategoryAndDiet, 
+  getEnhancedMealsByCategory,
+  filterEnhancedMealsByDietaryTags,
   type MealOption 
 } from "./nutrition-enhanced";
 import { ensureRecipeVariety, selectMealsWithBetterVariety } from "./recipe-variety-manager";
@@ -14,6 +16,7 @@ import { getCurrentAyurvedicSeason } from "./ayurveda-seasonal";
 import { selectProteinOptimizedMeals } from "./smart-protein-selection";
 import { calculateMealFreshnessPriority, getRecommendedDayForMeal, logMealFreshnessAnalysis, sortMealsByFreshness } from "./ingredient-freshness";
 import { normalizeToSunday } from "./date-utils";
+import { storage } from "./storage";
 
 export interface GeneratedMealPlan {
   mealPlan: InsertMealPlan;
@@ -300,7 +303,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   if (useOnlyMyRecipes) {
     // Use user's custom recipes with smart fallback
     console.log('🚀 Loading user recipes with smart fallback');
-    const { storage } = require('./storage');
+    // Use imported storage
     const userRecipes = await storage.getUserRecipes(request.userId);
     
     // Convert user recipes to MealOption format
@@ -780,7 +783,7 @@ async function generateMealPrepPlan(
   if (useOnlyMyRecipes) {
     // Use user's custom recipes with smart fallback for meal prep
     console.log('🚀 Loading user recipes with smart fallback for meal prep');
-    const { storage } = require('./storage');
+    // Use imported storage
     const userRecipes = await storage.getUserRecipes(request.userId);
     
     // Convert user recipes to MealOption format
@@ -1000,7 +1003,7 @@ async function generateMealPrepPlan(
     const criticalTags = dietaryTags.filter(tag => ['vegetarian', 'vegan', 'kosher', 'halal'].includes(tag));
     
     // Directly get breakfast meals with only critical restrictions
-    const { getEnhancedMealsByCategory, filterEnhancedMealsByDietaryTags } = require('./nutrition-enhanced');
+    // Import already available at top of file
     const allBreakfasts = getEnhancedMealsByCategory('breakfast');
     const fallbackBreakfasts = filterEnhancedMealsByDietaryTags(allBreakfasts, criticalTags);
     
