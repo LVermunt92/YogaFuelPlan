@@ -41,7 +41,7 @@ interface UserRecipe {
   costEuros?: number;
   tags: string[];
   difficulty: string;
-  cuisine?: string;
+
   createdAt: string;
   updatedAt: string;
   isActive: boolean;
@@ -58,7 +58,6 @@ const recipeFormSchema = z.object({
   servings: z.number().min(1, "Servings must be at least 1"),
   mealTypes: z.array(z.enum(["breakfast", "lunch", "dinner"])).min(1, "Select at least one meal type"),
   tags: z.array(z.string()).default([]),
-  cuisine: z.string().optional(),
 });
 
 type RecipeFormData = z.infer<typeof recipeFormSchema>;
@@ -138,7 +137,6 @@ export default function MyRecipes() {
       servings: 1,
       mealTypes: [],
       tags: [],
-      cuisine: '',
     },
   });
 
@@ -212,7 +210,6 @@ export default function MyRecipes() {
       servings: recipe.servings,
       mealTypes: recipe.mealTypes as ("breakfast" | "lunch" | "dinner")[],
       tags: recipe.tags,
-      cuisine: recipe.cuisine || '',
     });
     setIsDialogOpen(true);
   };
@@ -394,19 +391,7 @@ export default function MyRecipes() {
                         )}
                       />
                       
-                      <FormField
-                        control={form.control}
-                        name="cuisine"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Cuisine (optional)</FormLabel>
-                            <FormControl>
-                              <Input placeholder="e.g., Italian, Asian, Mediterranean" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+
                       
 
                       
