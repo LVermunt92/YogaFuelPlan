@@ -801,9 +801,6 @@ export default function MealPlanner() {
                           <div className="flex justify-between items-center p-3 font-semibold text-base border rounded-lg bg-white border-gray-200">
                             <div className="flex items-center gap-2">
                               <span className="text-gray-900">{dayNames[day - 1]}</span>
-                              {dayMeals.some(meal => meal.foodDescription.includes('(leftover)')) && (
-                                <RefreshCw className="h-4 w-4 text-blue-600" />
-                              )}
                             </div>
                             <span className="text-gray-600">{Math.round(dailyProtein)}g protein</span>
                           </div>
@@ -985,10 +982,6 @@ export default function MealPlanner() {
                                   <td className="px-2 py-4">
                                     <div className="flex flex-col items-start gap-1">
                                       <span className="text-xs font-medium text-gray-900">{dayNames[day - 1].slice(0, 3)}</span>
-                                      <div className="flex gap-1">
-                                        {dayIsCooking && <ChefHat className="h-3 w-3 text-green-600" />}
-                                        {dayIsLeftover && <RefreshCw className="h-3 w-3 text-blue-600" />}
-                                      </div>
                                     </div>
                                   </td>
                                   <td className="px-2 py-4">
