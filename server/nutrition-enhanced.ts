@@ -4190,9 +4190,14 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
         const existing = ingredientAmounts.get(cleanIngredient);
         if (existing) {
           existing.count += 1;
-          // Add the default portion amount for each occurrence
+          // Smart aggregation: calculate reasonable weekly amount based on count
           const defaultPortion = getDefaultPortion(cleanIngredient);
-          existing.totalAmount += defaultPortion.amount;
+          // For weekly shopping, use reasonable multipliers based on ingredient type
+          let weeklyMultiplier = Math.min(existing.count, 3); // Max 3x for vegetables
+          if (cleanIngredient.includes('oil') || cleanIngredient.includes('spice') || cleanIngredient.includes('seasoning')) {
+            weeklyMultiplier = 1; // Pantry items don't multiply
+          }
+          existing.totalAmount = defaultPortion.amount * weeklyMultiplier;
         } else {
           const defaultPortion = getDefaultPortion(cleanIngredient);
           ingredientAmounts.set(cleanIngredient, { 
@@ -4219,8 +4224,14 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
           const existing = ingredientAmounts.get(cleanIngredient);
           if (existing) {
             existing.count += 1;
+            // Smart aggregation: calculate reasonable weekly amount based on count
             const defaultPortion = getDefaultPortion(cleanIngredient);
-            existing.totalAmount += defaultPortion.amount;
+            // For weekly shopping, use reasonable multipliers based on ingredient type
+            let weeklyMultiplier = Math.min(existing.count, 3); // Max 3x for vegetables
+            if (cleanIngredient.includes('oil') || cleanIngredient.includes('spice') || cleanIngredient.includes('seasoning')) {
+              weeklyMultiplier = 1; // Pantry items don't multiply
+            }
+            existing.totalAmount = defaultPortion.amount * weeklyMultiplier;
           } else {
             const defaultPortion = getDefaultPortion(cleanIngredient);
             ingredientAmounts.set(cleanIngredient, { 
