@@ -100,17 +100,27 @@ export default function MyRecipes() {
   // Mutation to update recipe preference  
   const updatePreferenceMutation = useMutation({
     mutationFn: (useOnlyMyRecipes: boolean) => 
-      apiRequest(`/api/users/${user?.id}/profile`, 'PATCH', { useOnlyMyRecipes }),
+      apiRequest('PATCH', `/api/users/${user?.id}/profile`, { useOnlyMyRecipes }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/users', user?.id, 'profile'] });
       toast({ 
         title: useOnlyMyRecipes 
-          ? "Now using only your recipes for meal plans" 
-          : "Now mixing your recipes with curated database"
+          ? "Now using only your recipes with smart fallback" 
+          : "Now mixing your recipes with curated database",
+        description: useOnlyMyRecipes 
+          ? "Your recipes will be prioritized, with curated options filling gaps"
+          : "All recipes will be used equally for meal plans"
       });
     },
-    onError: () => {
-      toast({ title: "Failed to update preference", variant: "destructive" });
+    onError: (error: any) => {
+      console.error('Preference update error:', error);
+      // Revert the local state change since the server update failed
+      setUseOnlyMyRecipes(!useOnlyMyRecipes);
+      toast({ 
+        title: "Failed to update preference", 
+        description: error?.message || "Please try again",
+        variant: "destructive" 
+      });
     },
   });
 
