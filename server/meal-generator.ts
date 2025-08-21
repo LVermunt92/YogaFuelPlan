@@ -949,6 +949,8 @@ async function generateMealPrepPlan(
     lunchOptions = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
     dinnerOptions = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
     
+    console.log(`🔍 DEBUGGING CURATED: Found ${lunchOptions.length} curated lunch, ${dinnerOptions.length} curated dinner meals for tags: ${dietaryTags.join(', ')}`);
+    
     // EMERGENCY INJECTION: Add User 2 custom recipes here!
     if (user?.id === 2) {
       console.log('🚨 MAIN FUNCTION EMERGENCY INJECTION: Adding User 2 custom recipes to curated meals!');
@@ -1059,6 +1061,11 @@ async function generateMealPrepPlan(
   if (user?.id === 2) {
     console.log('🔧 INJECTING User 2 custom recipes directly into meal options!');
     
+    // Debug: Check curated meal counts before injection
+    const curatedLunch = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
+    const curatedDinner = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
+    console.log(`🔍 DEBUGGING: Before injection - ${curatedLunch.length} curated lunch, ${curatedDinner.length} curated dinner for tags: ${dietaryTags.join(', ')}`);
+    
     // Add both custom recipes to both lunch and dinner for maximum variety
     const userLunchRecipe = {
       name: 'User 2 High Protein Bowl',
@@ -1103,6 +1110,8 @@ async function generateMealPrepPlan(
     dinnerOptions = [userDinnerRecipe, userLunchRecipe, ...dinnerOptions];
     console.log(`🔧 Enhanced custom recipes: ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
     console.log(`🔧 Custom recipes added: "${userLunchRecipe.name}" (${userLunchRecipe.nutrition.protein}g protein), "${userDinnerRecipe.name}" (${userDinnerRecipe.nutrition.protein}g protein)`);
+    console.log(`🔧 First 5 lunch options: ${lunchOptions.slice(0, 5).map(m => m.name).join(' | ')}`);
+    console.log(`🔧 First 5 dinner options: ${dinnerOptions.slice(0, 5).map(m => m.name).join(' | ')}`);
   }
 
   // Apply 45-minute cooking time limit for weekday meals

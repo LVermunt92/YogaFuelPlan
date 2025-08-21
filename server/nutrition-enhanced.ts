@@ -4511,10 +4511,32 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
       }
     }
     
-    // All critical dietary tags must be satisfied
+    // All critical dietary tags must be satisfied with smart lactose-free logic
     if (userCriticalTags.length > 0) {
-      const criticalSatisfied = userCriticalTags.every(tag => meal.tags.includes(tag));
-      if (!criticalSatisfied) return false;
+      // Smart lactose-free filtering: include meals that don't contain dairy ingredients
+      const hasDairyIngredients = meal.ingredients && meal.ingredients.some(ingredient => 
+        ingredient.toLowerCase().includes('milk') ||
+        ingredient.toLowerCase().includes('cheese') ||
+        ingredient.toLowerCase().includes('yogurt') ||
+        ingredient.toLowerCase().includes('cream') ||
+        ingredient.toLowerCase().includes('butter') ||
+        ingredient.toLowerCase().includes('dairy')
+      );
+      
+      // For lactose-free requirement, check if meal has lactose-free tag OR doesn't contain dairy
+      const lactoseFreeRequirement = dietaryTags.includes('lactose-free');
+      const lactoseFreeSatisfied = !lactoseFreeRequirement || 
+        meal.tags.includes('lactose-free') || 
+        meal.tags.includes('dairy-free') || 
+        !hasDairyIngredients;
+      
+      // Check other critical tags (vegetarian, gluten-free, etc.)
+      const otherCriticalTags = userCriticalTags.filter(tag => tag !== 'lactose-free');
+      const otherCriticalSatisfied = otherCriticalTags.every(tag => meal.tags.includes(tag));
+      
+      if (!lactoseFreeSatisfied || !otherCriticalSatisfied) {
+        return false;
+      }
     }
     
     // For preference tags (ayurvedic, etc.), be more flexible
