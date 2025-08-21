@@ -4294,7 +4294,6 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     // Fruits (Fresh Produce section 2)
     'banana': 'Fruits',
     'avocado': 'Fruits',
-    'lemon': 'Fruits',
     'pieces of lemon': 'Fruits',
     'lime': 'Fruits',
     'mango': 'Fruits',
@@ -4444,7 +4443,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'nutritional yeast': 'Pantry Essentials',
     'vanilla extract': 'Pantry Essentials',
     'maple syrup': 'Pantry Essentials',
-    'lime juice': 'Pantry Essentials',
+
     'tahini': 'Nuts, Seeds & Spreads',
     
     // Additional ingredients for the new categories
