@@ -713,7 +713,7 @@ export default function MealPlanner() {
                               onClick={clearAllChecked}
                               className="text-xs"
                             >
-                              Clear All
+                              Reset List
                             </Button>
                           )}
                         </div>
@@ -733,34 +733,25 @@ export default function MealPlanner() {
                                   return (
                                     <div 
                                       key={index} 
-                                      className={`py-2 px-2 rounded text-xs cursor-pointer transition-all duration-200 ${
+                                      className={`py-3 px-3 rounded cursor-pointer transition-all duration-200 ${
                                         isChecked 
-                                          ? 'bg-green-50 border border-green-200' 
-                                          : 'bg-gray-50 hover:bg-gray-100'
+                                          ? 'bg-green-100 border border-green-300' 
+                                          : 'bg-white border border-gray-200 hover:bg-gray-50 hover:border-gray-300'
                                       }`}
                                       onClick={() => toggleItemChecked(itemKey)}
                                     >
-                                      <div className="flex items-start gap-2 w-full">
-                                        <div className={`flex-shrink-0 w-4 h-4 rounded border-2 mt-0.5 flex items-center justify-center ${
+                                      <div className="flex items-center justify-between w-full">
+                                        <span className={`font-medium leading-tight break-words flex-grow text-sm ${
                                           isChecked 
-                                            ? 'bg-green-500 border-green-500' 
-                                            : 'border-gray-300'
-                                        }`}>
-                                          {isChecked && (
-                                            <Check className="w-3 h-3 text-white" />
-                                          )}
-                                        </div>
-                                        <span className={`font-medium leading-tight break-words flex-grow ${
-                                          isChecked 
-                                            ? 'text-green-700 line-through' 
-                                            : 'text-foreground'
+                                            ? 'text-green-700 line-through decoration-2' 
+                                            : 'text-gray-800'
                                         }`}>
                                           {item.ingredient}
                                         </span>
-                                        <span className={`font-medium text-xs ml-1 whitespace-nowrap ${
+                                        <span className={`font-semibold text-sm ml-3 whitespace-nowrap ${
                                           isChecked 
-                                            ? 'text-green-600' 
-                                            : 'text-gray-500'
+                                            ? 'text-green-600 line-through decoration-2' 
+                                            : 'text-gray-600'
                                         }`}>
                                           {item.totalAmount}
                                         </span>
