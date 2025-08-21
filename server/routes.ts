@@ -267,6 +267,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Delete meal plan
+  app.delete("/api/meal-plans/:id", async (req, res) => {
+    try {
+      const mealPlanId = parseInt(req.params.id);
+      const userId = req.query.userId ? parseInt(req.query.userId as string) : 2; // Default to user 2
+      
+      if (!mealPlanId) {
+        return res.status(400).json({ message: "Meal plan ID is required" });
+      }
+      
+      // Verify the meal plan belongs to the user before deleting
+      const mealPlan = await storage.getMealPlanWithMeals(mealPlanId);
+      if (!mealPlan || mealPlan.userId !== userId) {
+        return res.status(404).json({ message: "Meal plan not found or access denied" });
+      }
+      
+      const success = await storage.deleteMealPlan(mealPlanId);
+      
+      if (success) {
+        res.json({ message: "Meal plan deleted successfully" });
+      } else {
+        res.status(404).json({ message: "Meal plan not found" });
+      }
+    } catch (error) {
+      console.error("Error deleting meal plan:", error);
+      res.status(500).json({ message: "Failed to delete meal plan" });
+    }
+  });
+
   // Save meal plan with label (for current week, next week, etc.)
   app.post("/api/meal-plans/save", async (req, res) => {
     try {

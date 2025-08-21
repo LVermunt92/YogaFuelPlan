@@ -275,6 +275,48 @@ export default function MealPlanner() {
     },
   });
 
+  // Delete meal plan mutation
+  const deleteMealPlanMutation = useMutation({
+    mutationFn: (mealPlanId: number) => 
+      apiRequest('DELETE', `/api/meal-plans/${mealPlanId}?userId=${authUser?.id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/meal-plans'] });
+      toast({ 
+        title: "Meal plan deleted successfully",
+        description: "The meal plan has been removed from your saved plans"
+      });
+      
+      // If we deleted the currently selected meal plan, clear selection
+      if (selectedMealPlan && mealPlans.find(p => p.id === selectedMealPlan)) {
+        const remainingPlans = mealPlans.filter(p => p.id !== selectedMealPlan);
+        if (remainingPlans.length > 0) {
+          setSelectedMealPlan(remainingPlans[0].id);
+          localStorage.setItem('selectedMealPlan', remainingPlans[0].id.toString());
+        } else {
+          setSelectedMealPlan(null);
+          localStorage.removeItem('selectedMealPlan');
+        }
+      }
+    },
+    onError: (error: any) => {
+      console.error('Error deleting meal plan:', error);
+      toast({ 
+        title: "Failed to delete meal plan", 
+        description: error?.message || "Please try again",
+        variant: "destructive" 
+      });
+    },
+  });
+
+  // Handle meal plan deletion
+  const handleDeleteMealPlan = (mealPlanId: number, event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevent triggering the plan selection
+    
+    if (confirm("Are you sure you want to delete this meal plan? This action cannot be undone.")) {
+      deleteMealPlanMutation.mutate(mealPlanId);
+    }
+  };
+
   const getDayMeals = (day: number) => {
     if (!currentMealPlan?.meals) return [];
     return currentMealPlan.meals.filter(meal => meal.day === day);
@@ -822,9 +864,20 @@ export default function MealPlanner() {
                           <h4 className="font-medium">{plan.planName || `Meal Plan ${index + 1}`}</h4>
                           <p className="text-sm text-gray-500">{t.weekOf} {formatWeekRange(plan.weekStart)}</p>
                         </div>
-                        <div className="text-right">
-                          <p className="text-sm text-gray-400">{plan.totalProtein.toFixed(0)}g protein/day</p>
-                          <p className="text-xs text-gray-400">{plan.createdAt ? new Date(plan.createdAt).toLocaleDateString() : ''}</p>
+                        <div className="flex items-center gap-3">
+                          <div className="text-right">
+                            <p className="text-sm text-gray-400">{plan.totalProtein.toFixed(0)}g protein/day</p>
+                            <p className="text-xs text-gray-400">{plan.createdAt ? new Date(plan.createdAt).toLocaleDateString() : ''}</p>
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => handleDeleteMealPlan(plan.id, e)}
+                            disabled={deleteMealPlanMutation.isPending}
+                            className="text-gray-400 hover:text-red-500 h-8 w-8 p-0"
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
                         </div>
                       </div>
                     </div>

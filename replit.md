@@ -20,6 +20,7 @@ Preferred communication style: Simple, everyday language.
     - **Time Constraints**: Weekday meals (Mon-Fri) are limited to ≤30 minutes prep time; weekends have no time restrictions.
     - **Ayurvedic Integration**: Supports Ayurvedic dietary tags and seasonal adaptation.
     - **Meal Plan Persistence**: Meal plans persist across browser sessions with automatic loading and cleanup (max 3 plans).
+    - **Meal Plan Management**: Users can delete individual saved meal plans with confirmation dialog and automatic selection handling.
     - **Automated Recipe Updates**: System automatically adds new trending recipes.
     - **Dutch Recipe Translation System**: Comprehensive translation service for recipe names, ingredients, and cooking instructions from English to Dutch, including AI-enhanced translation.
     - **Consolidated Shopping List Workflow**: Single-flow shopping list generation with supermarket-ordered categories, detailed dry goods separation, and comprehensive lemon standardization.
