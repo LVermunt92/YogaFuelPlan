@@ -665,28 +665,28 @@ export default function MealPlanner() {
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
                       </div>
                     ) : shoppingListData ? (
-                      <div className="space-y-4 sm:space-y-6">
-                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-                          <span className="text-xs sm:text-sm text-gray-500">
+                      <div className="space-y-3">
+                        <div className="flex flex-col gap-2">
+                          <span className="text-xs text-gray-500">
                             {t.weekOf} {formatWeekRange(shoppingListData.weekStart)}
                           </span>
-                          <Badge variant="secondary" className="self-start sm:self-auto">
+                          <Badge variant="secondary" className="self-start text-xs">
                             {shoppingListData.totalItems} {t.items}
                           </Badge>
                         </div>
                         
                         {shoppingListData.categories?.map(category => (
-                          <div key={category} className="space-y-3">
-                            <h3 className="font-semibold text-foreground border-b border-border pb-2 text-sm sm:text-base">
+                          <div key={category} className="space-y-2">
+                            <h3 className="font-semibold text-foreground border-b border-border pb-1 text-sm">
                               {category}
                             </h3>
-                            <div className="space-y-2">
+                            <div className="space-y-1">
                               {shoppingListData.shoppingList
                                 ?.filter(item => item.category === category)
                                 ?.map((item, index) => (
-                                  <div key={index} className="flex justify-between items-start gap-4 py-2 px-3 bg-gray-50 rounded-lg">
-                                    <span className="text-xs sm:text-sm text-foreground font-medium flex-1 leading-relaxed">{item.ingredient}</span>
-                                    <span className="text-xs sm:text-sm text-gray-500 font-medium shrink-0">{item.totalAmount}</span>
+                                  <div key={index} className="flex flex-col sm:flex-row sm:justify-between gap-1 py-2 px-2 bg-gray-50 rounded text-xs">
+                                    <span className="text-foreground font-medium break-words">{item.ingredient}</span>
+                                    <span className="text-gray-500 font-medium text-right sm:text-left shrink-0">{item.totalAmount}</span>
                                   </div>
                                 ))}
                             </div>
@@ -694,7 +694,7 @@ export default function MealPlanner() {
                         ))}
                         
                         {/* Albert Heijn Integration */}
-                        <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-border">
+                        <div className="mt-3 pt-3 border-t border-border">
                           <AlbertHeijnIntegration 
                             ingredients={shoppingListData.shoppingList?.map(item => item.ingredient) || []}
                             mealPlanId={shoppingListData.mealPlanId}
