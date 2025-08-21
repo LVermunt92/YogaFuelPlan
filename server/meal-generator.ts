@@ -14,6 +14,7 @@ import { ensureRecipeVariety, selectMealsWithBetterVariety } from "./recipe-vari
 import { calculateProteinTarget } from "./nutrition";
 import { getCurrentAyurvedicSeason } from "./ayurveda-seasonal";
 import { selectProteinOptimizedMeals } from "./smart-protein-selection";
+import { selectProteinOptimizedMealsForTarget } from "./protein-target-optimizer";
 import { calculateMealFreshnessPriority, getRecommendedDayForMeal, logMealFreshnessAnalysis, sortMealsByFreshness } from "./ingredient-freshness";
 import { normalizeToSunday } from "./date-utils";
 import { storage } from "./storage";
@@ -265,7 +266,17 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   const normalizedWeekStart = normalizeToSunday(request.weekStart);
   console.log(`📅 Week normalized: ${request.weekStart} → ${normalizedWeekStart} (Sunday start)`);
   
-  const targetProtein = calculateProteinTarget(request.activityLevel);
+  // Calculate personalized protein target based on user profile
+  let dailyProteinTarget: number;
+  if (user) {
+    const { calculateUserProteinTarget } = require('./protein-target-optimizer');
+    dailyProteinTarget = calculateUserProteinTarget(user);
+    console.log(`🎯 Using personalized protein target: ${dailyProteinTarget}g/day (based on user profile)`);
+  } else {
+    dailyProteinTarget = calculateProteinTarget(request.activityLevel);
+    console.log(`🎯 Using activity-based protein target: ${dailyProteinTarget}g/day (fallback)`);
+  }
+  
   const meals: InsertMeal[] = [];
   let totalWeeklyProtein = 0;
   const dietaryTags = request.dietaryTags || [];
@@ -483,18 +494,24 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         return; // Skip this meal instead of using inappropriate fallback
       }
 
-      // Apply smart protein optimization for high activity levels
-      const shouldOptimizeProtein = request.activityLevel === 'high';
-      console.log(`🔍 Checking protein optimization: activityLevel=${request.activityLevel}, shouldOptimize=${shouldOptimizeProtein}, mealCategory=${mealCategory}`);
-      if (shouldOptimizeProtein) {
+      // Apply personalized protein optimization based on user's individual target
+      if (user) {
         const originalCount = availableMeals.length;
         const originalAvgProtein = availableMeals.reduce((sum, m) => sum + m.nutrition.protein, 0) / availableMeals.length;
-        console.log(`🥩 Before optimization: ${originalCount} ${mealCategory} meals, avg ${originalAvgProtein.toFixed(1)}g protein`);
+        console.log(`🎯 Before protein optimization: ${originalCount} ${mealCategory} meals, avg ${originalAvgProtein.toFixed(1)}g protein`);
         
-        availableMeals = selectProteinOptimizedMeals(availableMeals, availableMeals.length, true);
+        // Use user's personal protein target for optimization
+        availableMeals = selectProteinOptimizedMealsForTarget(availableMeals, mealCategory, user);
         
         const enhancedAvgProtein = availableMeals.reduce((sum, m) => sum + m.nutrition.protein, 0) / availableMeals.length;
-        console.log(`🥩 After optimization: ${availableMeals.length} ${mealCategory} meals, avg ${enhancedAvgProtein.toFixed(1)}g protein`);
+        console.log(`🎯 After protein optimization: ${availableMeals.length} ${mealCategory} meals, avg ${enhancedAvgProtein.toFixed(1)}g protein`);
+      } else {
+        // Fallback to activity-level based optimization if no user data
+        const shouldOptimizeProtein = request.activityLevel === 'high';
+        if (shouldOptimizeProtein) {
+          availableMeals = selectProteinOptimizedMeals(availableMeals, availableMeals.length, true);
+          console.log(`🥩 Applied fallback protein optimization for high activity level`);
+        }
       }
 
       // Implement Sunday night cooking pattern logic
@@ -739,7 +756,8 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   const daysWithMeals = new Set(meals.map(meal => meal.day)).size;
   const averageProteinPerDay = daysWithMeals > 0 ? totalWeeklyProtein / daysWithMeals : 0;
   
-  console.log(`🥩 Protein calculation: ${totalWeeklyProtein}g total / ${daysWithMeals} days = ${averageProteinPerDay.toFixed(1)}g per day (target: ${targetProtein}g)`);
+  console.log(`🎯 Protein optimization results: ${totalWeeklyProtein}g total / ${daysWithMeals} days = ${averageProteinPerDay.toFixed(1)}g per day`);
+  console.log(`🎯 Personal protein target: ${dailyProteinTarget}g/day | Achievement: ${((averageProteinPerDay / dailyProteinTarget) * 100).toFixed(1)}%`);
 
   const mealPlan: InsertMealPlan = {
     userId: request.userId || 1,

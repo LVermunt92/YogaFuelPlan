@@ -1,0 +1,250 @@
+import { type MealOption } from "./nutrition-enhanced";
+import { type User } from "@shared/schema";
+import { calculateNutritionTargets } from "./nutrition-calculator";
+
+/**
+ * Advanced Protein Target Optimization System
+ * Uses user's personal protein target to intelligently select high-protein meals
+ * and optimize daily protein intake to get as close as possible to their individual target
+ */
+
+interface ProteinAnalysis {
+  currentProtein: number;
+  targetProtein: number;
+  gap: number;
+  gapPercentage: number;
+  recommendation: 'increase' | 'maintain' | 'reduce';
+}
+
+interface OptimizedMealSelection {
+  meals: MealOption[];
+  totalProtein: number;
+  targetAchievement: number; // percentage of target achieved
+  optimizationNotes: string[];
+}
+
+/**
+ * Calculate user's personal protein target based on their profile
+ */
+function calculateUserProteinTarget(user: User): number {
+  if (!user.weight) {
+    console.log('⚠️ No weight data available, using default protein target of 80g');
+    return 80; // Default fallback
+  }
+
+  try {
+    const nutritionTargets = calculateNutritionTargets({
+      age: user.age || 30,
+      weight: user.weight,
+      gender: (user.gender as 'male' | 'female' | 'other') || 'male',
+      activityLevel: (user.activityLevel as 'sedentary' | 'light' | 'moderate' | 'high' | 'athlete') || 'moderate',
+      trainingType: (user.trainingType as 'mobility' | 'endurance' | 'strength' | 'mixed') || 'endurance',
+      goal: (user.goal as 'lose_fat' | 'maintain' | 'bulk') || 'maintain'
+    });
+
+    console.log(`🎯 Personal protein target calculated: ${nutritionTargets.protein}g (${nutritionTargets.proteinFactor}g/kg × ${user.weight}kg)`);
+    return nutritionTargets.protein;
+  } catch (error) {
+    console.error('Error calculating protein target, using fallback:', error);
+    // Fallback calculation: 1.6g/kg bodyweight (moderate activity)
+    const fallbackTarget = Math.round(user.weight * 1.6);
+    console.log(`🎯 Using fallback protein target: ${fallbackTarget}g`);
+    return fallbackTarget;
+  }
+}
+
+/**
+ * Analyze current protein intake vs target
+ */
+function analyzeProteinGap(currentProtein: number, targetProtein: number): ProteinAnalysis {
+  const gap = targetProtein - currentProtein;
+  const gapPercentage = (gap / targetProtein) * 100;
+  
+  let recommendation: 'increase' | 'maintain' | 'reduce';
+  if (gapPercentage > 10) {
+    recommendation = 'increase';
+  } else if (gapPercentage < -10) {
+    recommendation = 'reduce';
+  } else {
+    recommendation = 'maintain';
+  }
+
+  return {
+    currentProtein,
+    targetProtein,
+    gap,
+    gapPercentage,
+    recommendation
+  };
+}
+
+/**
+ * Score meals based on protein content and user's target
+ */
+function scoreProteinForTarget(meal: MealOption, targetDailyProtein: number): number {
+  const protein = meal.nutrition.protein;
+  const targetPerMeal = targetDailyProtein / 3; // Assume 3 meals per day
+  
+  // Score based on how well this meal contributes to daily target
+  let score = 0;
+  
+  // Base protein score (higher protein = higher score)
+  if (protein >= 35) score += 100; // Excellent protein (new high-protein meals)
+  else if (protein >= 28) score += 90; // Very high protein (new high-protein meals)
+  else if (protein >= 20) score += 70; // High protein
+  else if (protein >= 15) score += 50; // Good protein
+  else if (protein >= 10) score += 30; // Moderate protein
+  else score += 10; // Lower protein
+  
+  // Bonus for meals that help reach target per meal
+  const targetContribution = (protein / targetPerMeal) * 100;
+  if (targetContribution >= 80) score += 20; // Gets us close to target per meal
+  else if (targetContribution >= 60) score += 10; // Good contribution
+  
+  // Efficiency bonus (protein per calorie)
+  const proteinPerCalorie = protein / (meal.nutrition.calories || 400);
+  if (proteinPerCalorie > 0.08) score += 15; // Very efficient
+  else if (proteinPerCalorie > 0.06) score += 10; // Good efficiency
+  else if (proteinPerCalorie > 0.04) score += 5; // Moderate efficiency
+  
+  return score;
+}
+
+/**
+ * Select protein-optimized meals for a given category and target
+ */
+export function selectProteinOptimizedMealsForTarget(
+  availableMeals: MealOption[],
+  category: 'breakfast' | 'lunch' | 'dinner',
+  user: User,
+  targetDailyProtein?: number
+): MealOption[] {
+  const userProteinTarget = targetDailyProtein || calculateUserProteinTarget(user);
+  
+  console.log(`🥩 Protein optimization for ${category}: Target ${userProteinTarget}g daily`);
+  
+  // Filter meals for the category
+  const categoryMeals = availableMeals.filter(meal => meal.category === category);
+  
+  if (categoryMeals.length === 0) {
+    console.log(`⚠️ No meals available for category: ${category}`);
+    return [];
+  }
+  
+  // Score and sort meals by protein optimization
+  const scoredMeals = categoryMeals.map(meal => ({
+    meal,
+    score: scoreProteinForTarget(meal, userProteinTarget),
+    protein: meal.nutrition.protein
+  }));
+  
+  // Sort by score (highest first), then by protein content
+  scoredMeals.sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    return b.protein - a.protein;
+  });
+  
+  // Take top meals based on protein content tiers
+  const optimizedMeals = scoredMeals.slice(0, Math.min(8, scoredMeals.length)).map(item => item.meal);
+  
+  // Log protein optimization results
+  const avgProtein = optimizedMeals.reduce((sum, meal) => sum + meal.nutrition.protein, 0) / optimizedMeals.length;
+  const highProteinCount = optimizedMeals.filter(meal => meal.nutrition.protein >= 28).length;
+  const excellentProteinCount = optimizedMeals.filter(meal => meal.nutrition.protein >= 35).length;
+  
+  console.log(`🥩 ${category} protein optimization complete:`);
+  console.log(`   - Selected ${optimizedMeals.length} meals`);
+  console.log(`   - Average protein: ${avgProtein.toFixed(1)}g per meal`);
+  console.log(`   - High-protein meals (28g+): ${highProteinCount}`);
+  console.log(`   - Excellent protein meals (35g+): ${excellentProteinCount}`);
+  
+  return optimizedMeals;
+}
+
+/**
+ * Optimize a full day's meals to hit protein target
+ */
+export function optimizeDailyProteinIntake(
+  breakfastOptions: MealOption[],
+  lunchOptions: MealOption[],
+  dinnerOptions: MealOption[],
+  user: User
+): OptimizedMealSelection {
+  const targetProtein = calculateUserProteinTarget(user);
+  const targetPerMeal = targetProtein / 3;
+  
+  console.log(`🎯 Daily protein optimization: Target ${targetProtein}g (${targetPerMeal.toFixed(1)}g per meal)`);
+  
+  // Select highest protein options for each meal
+  const optimizedBreakfast = breakfastOptions
+    .sort((a, b) => scoreProteinForTarget(b, targetProtein) - scoreProteinForTarget(a, targetProtein))
+    .slice(0, 1)[0];
+    
+  const optimizedLunch = lunchOptions
+    .sort((a, b) => scoreProteinForTarget(b, targetProtein) - scoreProteinForTarget(a, targetProtein))
+    .slice(0, 1)[0];
+    
+  const optimizedDinner = dinnerOptions
+    .sort((a, b) => scoreProteinForTarget(b, targetProtein) - scoreProteinForTarget(a, targetProtein))
+    .slice(0, 1)[0];
+  
+  const selectedMeals = [optimizedBreakfast, optimizedLunch, optimizedDinner].filter(Boolean);
+  const totalProtein = selectedMeals.reduce((sum, meal) => sum + meal.nutrition.protein, 0);
+  const targetAchievement = (totalProtein / targetProtein) * 100;
+  
+  const optimizationNotes: string[] = [];
+  
+  if (targetAchievement >= 95) {
+    optimizationNotes.push(`✅ Excellent protein target achievement: ${targetAchievement.toFixed(1)}%`);
+  } else if (targetAchievement >= 85) {
+    optimizationNotes.push(`🎯 Good protein target achievement: ${targetAchievement.toFixed(1)}%`);
+  } else if (targetAchievement >= 70) {
+    optimizationNotes.push(`⚠️ Moderate protein achievement: ${targetAchievement.toFixed(1)}% - consider protein supplementation`);
+  } else {
+    optimizationNotes.push(`❌ Low protein achievement: ${targetAchievement.toFixed(1)}% - significant gap of ${(targetProtein - totalProtein).toFixed(1)}g`);
+  }
+  
+  // Add specific meal recommendations
+  selectedMeals.forEach(meal => {
+    if (meal.nutrition.protein >= 35) {
+      optimizationNotes.push(`💪 High-protein ${meal.category}: ${meal.name} (${meal.nutrition.protein}g)`);
+    }
+  });
+  
+  return {
+    meals: selectedMeals,
+    totalProtein,
+    targetAchievement,
+    optimizationNotes
+  };
+}
+
+/**
+ * Get protein-optimized meal suggestions based on current intake
+ */
+export function getProteinOptimizationSuggestions(
+  currentMeals: MealOption[],
+  availableMeals: MealOption[],
+  user: User
+): string[] {
+  const targetProtein = calculateUserProteinTarget(user);
+  const currentProtein = currentMeals.reduce((sum, meal) => sum + meal.nutrition.protein, 0);
+  const analysis = analyzeProteinGap(currentProtein, targetProtein);
+  
+  const suggestions: string[] = [];
+  
+  if (analysis.recommendation === 'increase') {
+    // Find high-protein alternatives
+    const highProteinMeals = availableMeals.filter(meal => meal.nutrition.protein >= 28);
+    
+    if (highProteinMeals.length > 0) {
+      suggestions.push(`Consider switching to high-protein options like: ${highProteinMeals.slice(0, 3).map(m => m.name).join(', ')}`);
+    }
+    
+    suggestions.push(`Add protein-rich snacks or supplements to bridge the ${Math.abs(analysis.gap).toFixed(1)}g gap`);
+  } else if (analysis.recommendation === 'maintain') {
+    suggestions.push('Current protein intake is well-balanced for your target');
+  }
+  
+  return suggestions;
+}
