@@ -141,7 +141,7 @@ export default function MyRecipes() {
       fiber: 0,
       sugar: 0,
       sodium: 0,
-      prepTime: 30,
+      prepTime: 10,
       cookTime: 0,
       servings: 1,
       mealTypes: [],
@@ -158,6 +158,7 @@ export default function MyRecipes() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/user-recipes'] });
       setIsDialogOpen(false);
+      setEditingRecipe(null);
       form.reset();
       toast({ title: "Recipe created successfully!" });
     },
@@ -281,361 +282,68 @@ export default function MyRecipes() {
 
   return (
     <div className="container mx-auto p-6 max-w-6xl">
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-3xl font-bold">My Recipes</h1>
-          <p className="text-gray-600">Create and manage your personal recipe collection</p>
+      <div className="mb-6">
+        <div className="flex justify-between items-center mb-4">
+          <div>
+            <h1 className="text-3xl font-bold">My Recipes</h1>
+            <p className="text-gray-600">Create and manage your personal recipe collection</p>
+          </div>
+          
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button onClick={openCreateDialog} className="flex items-center gap-2">
+                <Plus className="h-4 w-4" />
+                Add Recipe
+              </Button>
+            </DialogTrigger>
+          </Dialog>
         </div>
         
         {/* Recipe Source Preference */}
-        <div className="flex flex-col items-end gap-4">
-          <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg border">
-            <Settings className="h-4 w-4 text-gray-600" />
-            <div className="flex items-center space-x-2">
-              <Label htmlFor="recipe-source" className="text-sm font-medium">
-                Use only my recipes for meal plans
-              </Label>
-              <Switch
-                id="recipe-source"
-                checked={useOnlyMyRecipes}
-                onCheckedChange={handlePreferenceChange}
-              />
-            </div>
+        <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg border max-w-fit">
+          <Settings className="h-4 w-4 text-gray-600" />
+          <div className="flex items-center space-x-2">
+            <Label htmlFor="recipe-source" className="text-sm font-medium">
+              Use only my recipes for meal plans
+            </Label>
+            <Switch
+              id="recipe-source"
+              checked={useOnlyMyRecipes}
+              onCheckedChange={handlePreferenceChange}
+            />
           </div>
-          <p className="text-xs text-gray-500 max-w-xs text-right">
-            {useOnlyMyRecipes 
-              ? "Meal plans will only use your custom recipes" 
-              : "Meal plans will mix your recipes with our curated database"
-            }
-          </p>
         </div>
-        
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={openCreateDialog} className="flex items-center gap-2">
-              <Plus className="h-4 w-4" />
-              Add Recipe
-            </Button>
-          </DialogTrigger>
-          
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>
-                {editingRecipe ? 'Edit Recipe' : 'Create New Recipe'}
-              </DialogTitle>
-            </DialogHeader>
-            
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                {/* Basic Info */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Recipe Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Enter recipe name..." {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <FormField
-                    control={form.control}
-                    name="portion"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Portion Size</FormLabel>
-                        <FormControl>
-                          <Input placeholder="e.g., 1 bowl, 2 servings..." {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                {/* Ingredients */}
-                <FormField
-                  control={form.control}
-                  name="ingredients"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Ingredients</FormLabel>
-                      <div className="space-y-2">
-                        {field.value.map((ingredient, index) => (
-                          <div key={index} className="flex gap-2">
-                            <Input
-                              placeholder={`Ingredient ${index + 1}...`}
-                              value={ingredient}
-                              onChange={(e) => {
-                                const newIngredients = [...field.value];
-                                newIngredients[index] = e.target.value;
-                                field.onChange(newIngredients);
-                              }}
-                            />
-                            <Button
-                              type="button"
-                              variant="outline"
-                              onClick={() => removeIngredient(index)}
-                              disabled={field.value.length === 1}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        ))}
-                        <Button type="button" variant="outline" onClick={addIngredient}>
-                          <Plus className="h-4 w-4 mr-2" />
-                          Add Ingredient
-                        </Button>
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Instructions */}
-                <FormField
-                  control={form.control}
-                  name="instructions"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Instructions</FormLabel>
-                      <div className="space-y-2">
-                        {field.value.map((instruction, index) => (
-                          <div key={index} className="flex gap-2">
-                            <Textarea
-                              placeholder={`Step ${index + 1}...`}
-                              value={instruction}
-                              onChange={(e) => {
-                                const newInstructions = [...field.value];
-                                newInstructions[index] = e.target.value;
-                                field.onChange(newInstructions);
-                              }}
-                            />
-                            <Button
-                              type="button"
-                              variant="outline"
-                              onClick={() => removeInstruction(index)}
-                              disabled={field.value.length === 1}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        ))}
-                        <Button type="button" variant="outline" onClick={addInstruction}>
-                          <Plus className="h-4 w-4 mr-2" />
-                          Add Step
-                        </Button>
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Nutrition Info */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="protein"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Protein (g)</FormLabel>
-                        <FormControl>
-                          <Input type="number" {...field} onChange={e => field.onChange(+e.target.value)} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <FormField
-                    control={form.control}
-                    name="calories"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Calories</FormLabel>
-                        <FormControl>
-                          <Input type="number" {...field} onChange={e => field.onChange(+e.target.value)} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <FormField
-                    control={form.control}
-                    name="carbohydrates"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Carbs (g)</FormLabel>
-                        <FormControl>
-                          <Input type="number" {...field} onChange={e => field.onChange(+e.target.value)} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <FormField
-                    control={form.control}
-                    name="fats"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Fats (g)</FormLabel>
-                        <FormControl>
-                          <Input type="number" {...field} onChange={e => field.onChange(+e.target.value)} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                {/* Meal Info */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="prepTime"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Prep Time (min)</FormLabel>
-                        <FormControl>
-                          <Input type="number" {...field} onChange={e => field.onChange(+e.target.value)} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <FormField
-                    control={form.control}
-                    name="servings"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Servings</FormLabel>
-                        <FormControl>
-                          <Input type="number" {...field} onChange={e => field.onChange(+e.target.value)} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <FormField
-                    control={form.control}
-                    name="difficulty"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Difficulty</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select difficulty" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="easy">Easy</SelectItem>
-                            <SelectItem value="medium">Medium</SelectItem>
-                            <SelectItem value="hard">Hard</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                {/* Meal Types */}
-                <FormField
-                  control={form.control}
-                  name="mealTypes"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Meal Types</FormLabel>
-                      <div className="flex gap-4">
-                        {(['breakfast', 'lunch', 'dinner'] as const).map((mealType) => (
-                          <label key={mealType} className="flex items-center space-x-2">
-                            <input
-                              type="checkbox"
-                              checked={field.value.includes(mealType)}
-                              onChange={(e) => {
-                                if (e.target.checked) {
-                                  field.onChange([...field.value, mealType]);
-                                } else {
-                                  field.onChange(field.value.filter(type => type !== mealType));
-                                }
-                              }}
-                            />
-                            <span className="capitalize">{mealType}</span>
-                          </label>
-                        ))}
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Notes */}
-                <FormField
-                  control={form.control}
-                  name="notes"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Notes (Optional)</FormLabel>
-                      <FormControl>
-                        <Textarea placeholder="Any additional notes..." {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <div className="flex justify-end gap-2">
-                  <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
-                    Cancel
-                  </Button>
-                  <Button 
-                    type="submit" 
-                    disabled={createMutation.isPending || updateMutation.isPending}
-                  >
-                    {editingRecipe ? 'Update Recipe' : 'Create Recipe'}
-                  </Button>
-                </div>
-              </form>
-            </Form>
-          </DialogContent>
-        </Dialog>
+        <p className="text-xs text-gray-500 mt-2">
+          {useOnlyMyRecipes 
+            ? "Meal plans will only use your custom recipes" 
+            : "Meal plans will mix your recipes with our curated database"
+          }
+        </p>
       </div>
 
-      {/* Recipe Grid */}
       {recipes.length === 0 ? (
-        <Card className="text-center py-12">
-          <CardContent>
-            <ChefHat className="h-16 w-16 mx-auto text-gray-400 mb-4" />
-            <h3 className="text-xl font-semibold mb-2">No recipes yet</h3>
-            <p className="text-gray-600 mb-4">Start building your personal recipe collection</p>
-            <Button onClick={openCreateDialog}>
-              <Plus className="h-4 w-4 mr-2" />
-              Create Your First Recipe
-            </Button>
-          </CardContent>
-        </Card>
+        <div className="text-center py-12">
+          <ChefHat className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-gray-900 mb-2">No recipes yet</h3>
+          <p className="text-gray-500 mb-4">Create your first recipe to get started</p>
+          <Button onClick={openCreateDialog} className="flex items-center gap-2 mx-auto">
+            <Plus className="h-4 w-4" />
+            Add Your First Recipe
+          </Button>
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {recipes.map((recipe) => (
-            <Card key={recipe.id} className="hover:shadow-lg transition-shadow">
-              <CardHeader>
+            <Card key={recipe.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+              <CardHeader className="pb-3">
                 <div className="flex justify-between items-start">
-                  <CardTitle className="text-lg">{recipe.name}</CardTitle>
-                  <div className="flex gap-2">
+                  <CardTitle className="text-lg leading-tight">{recipe.name}</CardTitle>
+                  <div className="flex gap-1">
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => openEditDialog(recipe)}
+                      className="h-8 w-8 p-0"
                     >
                       <Edit className="h-4 w-4" />
                     </Button>
@@ -643,23 +351,19 @@ export default function MyRecipes() {
                       variant="ghost"
                       size="sm"
                       onClick={() => deleteMutation.mutate(recipe.id)}
+                      className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>
                 </div>
-                <div className="flex items-center gap-4 text-sm text-gray-600">
-                  <span className="flex items-center gap-1">
-                    <Clock className="h-4 w-4" />
-                    {recipe.prepTime}min
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Users className="h-4 w-4" />
-                    {recipe.servings}
-                  </span>
+                
+                <div className="flex items-center gap-2 text-sm text-gray-600">
                   <span className={`px-2 py-1 rounded-full text-xs ${getDifficultyColor(recipe.difficulty)}`}>
                     {recipe.difficulty}
                   </span>
+                  <span>•</span>
+                  <span>{recipe.portion}</span>
                 </div>
               </CardHeader>
               
@@ -682,8 +386,6 @@ export default function MyRecipes() {
                     </div>
                   </div>
                   
-                  <p className="text-gray-600 text-sm line-clamp-2">{recipe.portion}</p>
-                  
                   {recipe.notes && (
                     <p className="text-gray-500 text-xs italic line-clamp-2">{recipe.notes}</p>
                   )}
@@ -693,6 +395,8 @@ export default function MyRecipes() {
           ))}
         </div>
       )}
+
+      {/* Dialog is already handled above */}
     </div>
   );
 }

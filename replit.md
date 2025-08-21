@@ -53,6 +53,8 @@ Unified Meal Plan Color Scheme: Simplified meal plan interface from multiple mea
 Nutrition Targets Display Restoration: Restored comprehensive nutrition targets section in profile page showing protein, carbohydrates, fats, and calories based on activity level calculations with detailed breakdown.
 Recipe Source Preference System: Added user preference toggle in "My Recipes" page allowing users to choose between using only their custom recipes or mixing them with the curated database for meal plan generation.
 Enhanced Meal Plan Visual System: Restored colored meal cards with green for fresh meals and blue for leftovers, added orange ingredient indicators for meals with incorporated leftover ingredients, and removed colored day headers for cleaner appearance.
+Improved Profile Form for New Users: Enhanced profile form initialization to detect new users and show empty fields with helpful placeholder text and descriptions for all input fields including weight, height, age, and meal planning preferences.
+Recipe Source Toggle Layout Fix: Moved the "Use only my recipes" toggle from cramped header position to below the title in "My Recipes" page for better spacing and improved mobile experience.
 Improved New User Profile Experience: Enhanced profile form with intelligent new user detection, ensuring empty input fields for new users while preserving existing user data, added comprehensive placeholder text and descriptive labels for all input fields.
 
 # System Architecture
