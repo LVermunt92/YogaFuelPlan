@@ -10,6 +10,7 @@ export interface NutritionAnalysis {
   fiber: number;
   sugar: number;
   sodium: number;
+  costEuros: number;
 }
 
 export async function analyzeRecipeNutrition(
@@ -35,7 +36,8 @@ Respond with JSON in this exact format:
   "fats": number (grams per serving),
   "fiber": number (grams per serving),
   "sugar": number (grams per serving),
-  "sodium": number (milligrams per serving)
+  "sodium": number (milligrams per serving),
+  "costEuros": number (estimated cost in euros per serving, based on typical European grocery prices)
 }
 
 Be as accurate as possible based on standard nutritional data for the ingredients listed.`;
@@ -67,6 +69,7 @@ Be as accurate as possible based on standard nutritional data for the ingredient
       fiber: Math.max(0, Math.round(nutritionData.fiber || 0)),
       sugar: Math.max(0, Math.round(nutritionData.sugar || 0)),
       sodium: Math.max(0, Math.round(nutritionData.sodium || 0)),
+      costEuros: Math.max(0, Math.round((nutritionData.costEuros || 2.5) * 100) / 100), // Keep two decimals for cost, default €2.50
     };
 
   } catch (error) {
@@ -82,6 +85,7 @@ Be as accurate as possible based on standard nutritional data for the ingredient
       fiber: Math.min(15, Math.max(3, ingredients.length * 2)),
       sugar: Math.round(estimatedCalories * 0.10 / 4), // 10% from sugar
       sodium: Math.min(800, 300 + ingredients.length * 50),
+      costEuros: Math.max(1.5, Math.round((ingredients.length * 0.5 + 1) * 100) / 100), // Estimate €0.50 per ingredient + €1 base
     };
   }
 }

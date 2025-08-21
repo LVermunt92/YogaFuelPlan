@@ -57,7 +57,6 @@ const recipeFormSchema = z.object({
   prepTime: z.number().min(1, "Total time must be at least 1 minute"),
   servings: z.number().min(1, "Servings must be at least 1"),
   mealTypes: z.array(z.enum(["breakfast", "lunch", "dinner"])).min(1, "Select at least one meal type"),
-  costEuros: z.number().min(0).optional(),
   tags: z.array(z.string()).default([]),
   cuisine: z.string().optional(),
 });
@@ -130,7 +129,6 @@ export default function MyRecipes() {
       prepTime: 20,
       servings: 1,
       mealTypes: [],
-      costEuros: 0,
       tags: [],
       cuisine: '',
     },
@@ -197,7 +195,6 @@ export default function MyRecipes() {
       prepTime: recipe.prepTime + (recipe.cookTime || 0), // Combine prep + cook time
       servings: recipe.servings,
       mealTypes: recipe.mealTypes as ("breakfast" | "lunch" | "dinner")[],
-      costEuros: recipe.costEuros || 0,
       tags: recipe.tags,
       cuisine: recipe.cuisine || '',
     });
@@ -395,25 +392,7 @@ export default function MyRecipes() {
                         )}
                       />
                       
-                      <FormField
-                        control={form.control}
-                        name="costEuros"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Estimated Cost (€)</FormLabel>
-                            <FormControl>
-                              <Input 
-                                type="number" 
-                                step="0.01"
-                                placeholder="0.00"
-                                {...field} 
-                                onChange={(e) => field.onChange(Number(e.target.value))}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+
                       
                       <FormField
                         control={form.control}
