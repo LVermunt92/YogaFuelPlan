@@ -299,6 +299,13 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   if (cookingDays.length < eatingDays.length) {
     console.log(`Using meal prep mode: ${cookingDays.length} cooking days for ${eatingDays.length} eating days`);
     console.log(`🔍 CALLING MEAL PREP with user: ${user?.id}, useOnlyMyRecipes: ${user?.useOnlyMyRecipes}`);
+    
+    // Force custom recipe mode for User 2 for testing
+    if (user && user.id === 2) {
+      console.log(`🎯 FORCING useOnlyMyRecipes=true for User 2 testing`);
+      user.useOnlyMyRecipes = true;
+    }
+    
     return await generateMealPrepPlan(request, user, caloricAdjustment);
   }
 
