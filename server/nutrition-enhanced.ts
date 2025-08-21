@@ -4475,6 +4475,7 @@ export function getEnhancedMealsByCategory(category: 'breakfast' | 'lunch' | 'di
   const categoryMeals = unifiedDatabase.filter(meal => meal.category === category);
   
   console.log(`📋 ${category.charAt(0).toUpperCase() + category.slice(1)} recipes available: ${categoryMeals.length}`);
+  console.log(`📋 ${category} sample recipes: ${categoryMeals.slice(0, 5).map(m => m.name).join(', ')}`);
   return categoryMeals;
 }
 

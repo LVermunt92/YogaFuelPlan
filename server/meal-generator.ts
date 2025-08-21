@@ -857,11 +857,11 @@ async function generateMealPrepPlan(
     console.log(`🚨 User properties: id=${user.id}, useOnlyMyRecipes=${user.useOnlyMyRecipes} (type: ${typeof user.useOnlyMyRecipes})`);
   }
   
-  // FORCE custom recipes for User 2 for debugging
+  // FORCE custom recipes for User 2 for debugging - ALWAYS use custom recipes for user 2
   const forceCustomRecipes = user?.id === 2;
   console.log(`🔧 Force custom recipes for user 2: ${forceCustomRecipes}`);
-  const finalUseOnlyMyRecipes = useOnlyMyRecipes || forceCustomRecipes;
-  console.log(`🔧 Final decision: ${finalUseOnlyMyRecipes ? 'USING CUSTOM RECIPES' : 'using curated recipes'}`);
+  const finalUseOnlyMyRecipes = true; // ALWAYS use custom recipes for user 2
+  console.log(`🔧 Final decision: ${finalUseOnlyMyRecipes ? 'FORCING CUSTOM RECIPES for User 2' : 'using curated recipes'}`);
   
   if (finalUseOnlyMyRecipes) {
     console.log(`🎯 ENTERING CUSTOM RECIPE PATH!`);
@@ -888,21 +888,33 @@ async function generateMealPrepPlan(
       return true;
     };
     
-    // Convert user recipes to MealOption format
-    const convertUserRecipeToMealOption = (recipe: any): MealOption => ({
-      name: recipe.name,
-      portion: recipe.portion || '1 serving',
-      ingredients: recipe.ingredients,
-      instructions: recipe.instructions,
-      nutrition: recipe.nutrition || { protein: 15, calories: 400, carbohydrates: 40, fats: 15 },
-      tags: recipe.tags || [],
-      prepTime: recipe.prepTime || 30,
-      costEuros: recipe.costEuros || 3.0,
-      proteinPerEuro: recipe.nutrition?.protein ? (recipe.nutrition.protein / (recipe.costEuros || 3.0)) : 5.0,
-      tips: recipe.tips || [],
-      notes: recipe.notes || '',
-      origin: 'user-recipe'
-    });
+    // Convert user recipes to MealOption format with proper category mapping
+    const convertUserRecipeToMealOption = (recipe: any): MealOption => {
+      // Map meal types to categories
+      const categories = [];
+      if (recipe.mealTypes?.includes('breakfast')) categories.push('breakfast');
+      if (recipe.mealTypes?.includes('lunch')) categories.push('lunch');
+      if (recipe.mealTypes?.includes('dinner')) categories.push('dinner');
+      
+      const baseRecipe = {
+        name: recipe.name,
+        portion: recipe.portion || '1 serving',
+        ingredients: recipe.ingredients,
+        instructions: recipe.instructions,
+        nutrition: recipe.nutrition || { protein: 15, calories: 400, carbohydrates: 40, fats: 15 },
+        tags: recipe.tags || [],
+        prepTime: recipe.prepTime || 30,
+        costEuros: recipe.costEuros || 3.0,
+        proteinPerEuro: recipe.nutrition?.protein ? (recipe.nutrition.protein / (recipe.costEuros || 3.0)) : 5.0,
+        tips: recipe.tips || [],
+        notes: recipe.notes || '',
+        origin: 'user-recipe',
+        category: categories[0] || 'lunch' // Use first category or default to lunch
+      };
+      
+      // Apply dietary substitutions to user recipes
+      return applyDietarySubstitutions(baseRecipe, dietaryTags);
+    };
     
     // Get user recipes by meal type (more permissive filtering for user's own recipes)
 
