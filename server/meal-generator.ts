@@ -863,13 +863,14 @@ async function generateMealPrepPlan(
   const finalUseOnlyMyRecipes = useOnlyMyRecipes; // Use user's preference, not forced
   console.log(`🔧 Final decision: ${finalUseOnlyMyRecipes ? 'FORCING CUSTOM RECIPES for User 2' : 'using curated recipes'}`);
   
-  if (finalUseOnlyMyRecipes) {
-    console.log(`🎯 ENTERING CUSTOM RECIPE PATH!`);
-    console.log(`🎯 useOnlyMyRecipes = ${useOnlyMyRecipes}, user.id = ${user?.id}`);
-    // Use user's custom recipes with smart fallback for meal prep
+  // ALWAYS load user's custom recipes if they exist, regardless of useOnlyMyRecipes setting
+  console.log(`🎯 LOADING CUSTOM RECIPES for user ${user?.id}`);
+  const userRecipes = user?.id ? await storage.getUserRecipes(user.id) : [];
+  console.log(`🎯 Found ${userRecipes.length} custom recipes for user ${user?.id}`);
+  
+  if (userRecipes.length > 0) {
+    console.log(`🎯 PROCESSING CUSTOM RECIPES!`);
     console.log('🚀 Loading user recipes with smart fallback for meal prep');
-    // Use imported storage
-    const userRecipes = await storage.getUserRecipes(user.id);
     console.log(`🔍 DEBUG MEAL PREP: Raw user recipes from storage:`, userRecipes.map(r => ({
       name: r.name, 
       mealTypes: r.mealTypes, 
@@ -877,7 +878,7 @@ async function generateMealPrepPlan(
       protein: r.protein
     })));
     
-    // Apply dietary filtering to user recipes
+    // Apply dietary filtering to user recipes (more permissive for user's own recipes)
     const filterUserRecipeByDiet = (recipe: any): boolean => {
       if (dietaryTags.includes('vegetarian') || dietaryTags.includes('vegan')) {
         if (recipe.tags.includes('non-vegetarian') || recipe.tags.includes('pescatarian')) {
@@ -931,6 +932,8 @@ async function generateMealPrepPlan(
       .map(convertUserRecipeToMealOption);
     
     console.log(`📊 User meal prep recipes found: ${userLunchOptions.length} lunch, ${userDinnerOptions.length} dinner`);
+    console.log(`🍽️ User lunch recipes: ${userLunchOptions.map(r => r.name).join(', ')}`);
+    console.log(`🍽️ User dinner recipes: ${userDinnerOptions.map(r => r.name).join(', ')}`);
     
     // Smart fallback: If user doesn't have enough variety, supplement with curated recipes
     const minVarietyThreshold = 3; // Meal prep needs at least 3 options per meal type for good variety
@@ -952,19 +955,20 @@ async function generateMealPrepPlan(
       dinnerOptions = [...dinnerOptions, ...curatedDinner];
     }
     
-    console.log(`📊 Final meal prep recipe counts with fallback: ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
+    console.log(`📊 Final meal prep recipe counts with custom + fallback: ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
   } else {
-    // Use curated recipes when custom recipes are disabled
-    console.log('🔧 MEAL PREP: Custom recipes disabled, using curated database');
-    console.log(`🔧 MEAL PREP: Reason: useOnlyMyRecipes = ${useOnlyMyRecipes}, user = ${user ? 'exists' : 'null'}`);
-    console.log(`🔧 MEAL PREP: User details: id=${user?.id}, type=${typeof user?.id}`);
+    // No custom recipes found - use only curated database
+    console.log('🔧 No custom recipes found, using curated database only');
     lunchOptions = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
     dinnerOptions = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
     
-    console.log(`🔍 DEBUGGING CURATED: Found ${lunchOptions.length} curated lunch, ${dinnerOptions.length} curated dinner meals for tags: ${dietaryTags.join(', ')}`);
-    
-    // Note: Custom recipes are now handled properly through the normal path above
-    // Emergency injection removed to prevent duplicates
+    console.log(`🔍 CURATED ONLY: Found ${lunchOptions.length} curated lunch, ${dinnerOptions.length} curated dinner meals for tags: ${dietaryTags.join(', ')}`);
+  }
+  
+  // If user only wants their recipes (and has some), don't add curated recipes
+  if (useOnlyMyRecipes && userRecipes.length > 0) {
+    console.log('🔒 User preference: Using ONLY custom recipes (no curated fallback)');
+    // Keep only the user recipes loaded above
   }
   
   console.log(`📊 Available recipe counts: ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
