@@ -1835,13 +1835,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const nutritionAnalysis = await analyzeRecipeNutrition(
         formData.ingredients,
         formData.servings,
-        formData.portion
+        "1 serving" // Default portion since we removed the field
       );
       
       // Combine form data with AI-generated nutrition
       const recipeData = {
         ...formData,
         ...nutritionAnalysis,
+        portion: "1 serving", // Set default portion
+        cookTime: 0, // Set default cookTime since we merged it into prepTime
         userId: req.session.userId
       };
       
@@ -1865,12 +1867,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const updateData = req.body;
       
       // If ingredients or servings changed, regenerate nutrition
-      if (updateData.ingredients || updateData.servings || updateData.portion) {
+      if (updateData.ingredients || updateData.servings) {
         console.log('🤖 Re-analyzing recipe nutrition with AI...');
         const nutritionAnalysis = await analyzeRecipeNutrition(
           updateData.ingredients,
           updateData.servings || 1,
-          updateData.portion || "1 serving"
+          "1 serving" // Default portion since we removed the field
         );
         
         // Include AI-generated nutrition in update
