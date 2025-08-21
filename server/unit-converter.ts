@@ -33,7 +33,7 @@ export const CONVERSION_RULES: ConversionRule[] = [
 
   // Dry ingredient conversions - prioritize grams for accuracy
   {
-    pattern: /(\d+(?:\.\d+)?)\s*cups?\s+(flour|oats|quinoa|rice|pasta|lentils|chickpeas)/i,
+    pattern: /(\d+(?:\.\d+)?)\s*cups?\s+(flour|oats|quinoa|rice|pasta|lentils|chickpeas|steel-cut oats)/i,
     convert: (amount, unit) => ({ amount: Math.round(amount * 120), unit: 'g' }),
     category: 'dry'
   },
@@ -43,12 +43,32 @@ export const CONVERSION_RULES: ConversionRule[] = [
     category: 'dry'
   },
   {
-    pattern: /(\d+(?:\.\d+)?)\s*cups?\s+(nuts|almonds|walnuts|pecans|cashews)/i,
+    pattern: /(\d+(?:\.\d+)?)\s*cups?\s+(nuts|almonds|walnuts|pecans|cashews|raw almonds|mixed nuts)/i,
     convert: (amount, unit) => ({ amount: Math.round(amount * 140), unit: 'g' }),
     category: 'dry'
   },
   {
     pattern: /(\d+(?:\.\d+)?)\s*cups?\s+(chopped|diced|sliced)\s+(vegetables?|tomatoes?|onions?|carrots?)/i,
+    convert: (amount, unit) => ({ amount: Math.round(amount * 150), unit: 'g' }),
+    category: 'dry'
+  },
+  {
+    pattern: /(\d+(?:\.\d+)?)\s*cups?\s+(berries|blueberries|strawberries|mixed berries|fresh berries)/i,
+    convert: (amount, unit) => ({ amount: Math.round(amount * 140), unit: 'g' }),
+    category: 'dry'
+  },
+  {
+    pattern: /(\d+(?:\.\d+)?)\s*cups?\s+(spinach|baby spinach|lettuce|mixed greens|kale)/i,
+    convert: (amount, unit) => ({ amount: Math.round(amount * 60), unit: 'g' }),
+    category: 'dry'
+  },
+  {
+    pattern: /(\d+(?:\.\d+)?)\s*cups?\s+(cooked|raw)\s+(.*)/i,
+    convert: (amount, unit) => ({ amount: Math.round(amount * 150), unit: 'g' }),
+    category: 'dry'
+  },
+  {
+    pattern: /(\d+(?:\.\d+)?)\s*cups?\s+(.*)/i,
     convert: (amount, unit) => ({ amount: Math.round(amount * 150), unit: 'g' }),
     category: 'dry'
   },

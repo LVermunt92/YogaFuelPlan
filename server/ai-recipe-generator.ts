@@ -34,6 +34,7 @@ RECIPE REQUIREMENTS:
 - Provide detailed cooking instructions
 - Include practical tips
 - Calculate realistic European pricing
+- CRITICAL: Use ONLY metric measurements (grams for dry ingredients, milliliters for liquids, kilograms for large amounts). NEVER use cups, tablespoons, teaspoons, ounces, or pounds. Examples: "120g oats", "240ml milk", "15ml olive oil", "5ml vanilla", "2.5ml salt"
 - IMPORTANT: Include a sauce or topping that makes the dish feel more indulgent or satisfying while remaining healthy and made from whole foods (examples: roasted pepper sauce with tomato paste and nuts, tahini-based dressings, herb-infused oils, nut-based creams, or vegetable-based salsas)
 
 RESPONSE FORMAT:

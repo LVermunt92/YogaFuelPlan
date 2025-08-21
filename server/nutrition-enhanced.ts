@@ -2,6 +2,7 @@ import { getCurrentSeasonalGuidance, adaptRecipeForSeason, getCurrentAyurvedicSe
 import { selectProteinOptimizedMeals } from './smart-protein-selection';
 import { specifyIngredients, validateIngredientSpecificity, updateRecipeIngredients } from './ingredient-specifier';
 import { standardizePortion } from './portion-standardizer';
+import { convertAllRecipeUnits } from './bulk-unit-converter';
 
 export interface NutritionInfo {
   protein: number;
@@ -65,13 +66,13 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     category: "breakfast",
     tags: ["vegetarian", "gluten-free", "dairy-free", "high-protein", "anti-inflammatory", "whole30", "ayurvedic"],
     ingredients: [
-      "½ cup steel-cut oats",
-      "¼ cup raw almonds and walnuts (chopped)",
-      "½ cup fresh blueberries and strawberries",
-      "1 tbsp ground flaxseed",
-      "½ tsp cinnamon",
-      "1 tsp raw honey (optional)",
-      "1½ cups water for cooking"
+      "60g steel-cut oats",
+      "35g raw almonds and walnuts (chopped)",
+      "70g fresh blueberries and strawberries",
+      "15ml ground flaxseed",
+      "2.5ml cinnamon",
+      "5ml raw honey (optional)",
+      "360ml water for cooking"
     ],
     wholeFoodLevel: "high",
     vegetableContent: {
@@ -119,12 +120,12 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     tags: ["vegetarian", "gluten-free", "lactose-free", "keto", "paleo", "high-protein"],
     ingredients: [
       "3 large free-range eggs",
-      "1 cup fresh spinach leaves",
-      "¼ cup cherry tomatoes (halved)",
-      "2 tbsp fresh parsley (chopped)",
-      "¼ cup red bell pepper (diced)",
+      "60g fresh spinach leaves",
+      "40g cherry tomatoes (halved)",
+      "30ml fresh parsley (chopped)",
+      "40g red bell pepper (diced)",
       "½ medium avocado (sliced)",
-      "1 tsp extra virgin olive oil",
+      "5ml extra virgin olive oil",
       "Pinch of sea salt and black pepper"
     ],
     wholeFoodLevel: "high",
@@ -135,13 +136,13 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
-        "Heat 1 tsp olive oil in non-stick pan over medium heat",
-        "Add 1/4 cup diced bell pepper and cook 2 minutes",
-        "Add 1 cup fresh spinach and 1/4 cup halved cherry tomatoes",
+        "Heat 5ml olive oil in non-stick pan over medium heat",
+        "Add 40g diced bell pepper and cook 2 minutes",
+        "Add 60g fresh spinach and 40g halved cherry tomatoes",
         "Whisk 3 eggs with salt and pour into pan",
         "Gently scramble, stirring frequently for 3-4 minutes",
         "Remove from heat when still slightly creamy",
-        "Top with fresh herbs and serve with 1/2 sliced avocado"
+        "Top with fresh herbs and serve with 75g sliced avocado"
       ],
       tips: [
         "Use the freshest eggs possible for best flavour",

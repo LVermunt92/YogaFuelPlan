@@ -1815,6 +1815,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       console.log('🔄 Manual trigger: Updating all recipe ingredients to be specific...');
       updateAllRecipesWithSpecificIngredients();
+      
+      // Also convert all measurements to metric units
+      console.log('🔢 Converting all recipe measurements to metric units...');
+      const { convertAllRecipeUnits } = await import('./bulk-unit-converter');
+      const { ENHANCED_MEAL_DATABASE } = await import('./nutrition-enhanced');
+      const convertedRecipes = convertAllRecipeUnits(ENHANCED_MEAL_DATABASE);
+      ENHANCED_MEAL_DATABASE.splice(0, ENHANCED_MEAL_DATABASE.length, ...convertedRecipes);
+      console.log('✅ All recipe measurements converted to metric units');
       const validation = validateAllRecipeIngredients();
       
       res.json({
@@ -1855,6 +1863,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
   try {
     console.log('🚀 Server startup: Running ingredient specification update...');
     updateAllRecipesWithSpecificIngredients();
+    
+    // Also convert all measurements to metric units
+    console.log('🔢 Converting all recipe measurements to metric units...');
+    const { convertAllRecipeUnits } = await import('./bulk-unit-converter');
+    const { ENHANCED_MEAL_DATABASE } = await import('./nutrition-enhanced');
+    const convertedRecipes = convertAllRecipeUnits(ENHANCED_MEAL_DATABASE);
+    ENHANCED_MEAL_DATABASE.splice(0, ENHANCED_MEAL_DATABASE.length, ...convertedRecipes);
+    console.log('✅ All recipe measurements converted to metric units');
+    
     const validation = validateAllRecipeIngredients();
     console.log(`📊 Ingredient validation: ${validation.validRecipes}/${validation.totalRecipes} recipes have specific ingredients`);
     if (validation.issuesFound.length > 0) {
