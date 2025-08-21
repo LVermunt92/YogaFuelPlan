@@ -1024,8 +1024,8 @@ export default function MealPlanner() {
                   </Label>
                   <p className="text-xs text-gray-400 mb-3">
                     {language === 'nl' 
-                      ? 'Voeg ingrediënten toe die je deze week wilt opmaken. Deze worden verwerkt in nieuwe recepten.' 
-                      : 'Add ingredients you want to use up this week. These will be incorporated into fresh recipes.'
+                      ? 'Heb je ingrediënten in je koelkast die op moeten? Voeg ze hier toe en we zorgen dat ze worden gebruikt in de maaltijden van volgende week.' 
+                      : 'Got ingredients in your fridge that need to be used up? Add them here and we\'ll make sure they\'re included in next week\'s meals.'
                     }
                   </p>
                   <div className="space-y-2">

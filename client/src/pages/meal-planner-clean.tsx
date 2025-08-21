@@ -631,8 +631,8 @@ export default function MealPlanner() {
                 </Label>
                 <p className="text-xs text-gray-500">
                   {language === 'nl' 
-                    ? 'Voeg ingrediënten toe die je deze week wilt opmaken. Deze worden verwerkt in nieuwe recepten.' 
-                    : 'Add ingredients you want to use up this week. These will be incorporated into fresh recipes.'
+                    ? 'Heb je ingrediënten in je koelkast die op moeten? Voeg ze hier toe en we zorgen dat ze worden gebruikt in de maaltijden van volgende week.' 
+                    : 'Got ingredients in your fridge that need to be used up? Add them here and we\'ll make sure they\'re included in next week\'s meals.'
                   }
                 </p>
                 
@@ -641,7 +641,7 @@ export default function MealPlanner() {
                     type="text"
                     value={newLeftover}
                     onChange={(e) => setNewLeftover(e.target.value)}
-                    placeholder={language === 'nl' ? 'bijv. spinazie, champignons...' : 'e.g. spinach, mushrooms...'}
+                    placeholder={language === 'nl' ? 'bijv. restje spinazie, oude champignons...' : 'e.g. leftover spinach, aging mushrooms...'}
                     className="flex-1"
                     onKeyPress={(e) => {
                       if (e.key === 'Enter') {
@@ -661,7 +661,9 @@ export default function MealPlanner() {
 
                 {userProfile?.leftovers && userProfile.leftovers.length > 0 && (
                   <div className="space-y-2">
-                    <Label className="text-sm font-medium">Current ingredients:</Label>
+                    <Label className="text-sm font-medium">
+                      {language === 'nl' ? 'Ingrediënten om op te maken:' : 'Ingredients to use up:'}
+                    </Label>
                     <div className="flex flex-wrap gap-2">
                       {userProfile.leftovers.map((leftover, index) => (
                         <Badge 

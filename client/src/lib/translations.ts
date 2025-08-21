@@ -116,7 +116,7 @@ export const translations = {
     ingredientsToUseUp: "Ingredients to Use Up",
     leftovers: "Leftovers",
     addIngredient: "Add Ingredient",
-    ingredientPlaceholder: "e.g. chicken, rice, vegetables...",
+    ingredientPlaceholder: "e.g. leftover spinach, aging mushrooms...",
     removeIngredient: "Remove",
     ingredientAdded: "Ingredient added",
     ingredientRemoved: "Ingredient removed",
