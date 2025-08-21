@@ -25,7 +25,7 @@ Preferred communication style: Simple, everyday language.
     - **Authentication & Multi-User Support**: Secure login/registration, password reset, isolated user data, and route protection.
     - **Meal Generation**: Calculates protein targets, selects meals from a nutrition database, generates 7-day plans with variety, and creates shopping lists. Includes smart AI recipe generation and comprehensive ingredient specification, with recipes being alcohol-free.
     - **Universal Meal Prep Engine**: Adapts to user cooking schedules, supporting batch cooking, proper meal distribution, and intelligent dietary fallbacks.
-    - **Time Constraints**: Weekday meals (Mon-Fri) are limited to ≤30 minutes prep time; weekends have no time restrictions.
+    - **Time Constraints**: Weekday meals (Mon-Fri) are limited to ≤45 minutes prep time; weekends have no time restrictions.
     - **Ayurvedic Integration**: Supports Ayurvedic dietary tags and seasonal adaptation.
     - **Meal Plan Persistence**: Meal plans persist across browser sessions with automatic loading and cleanup (max 3 plans).
     - **Meal Plan Management**: Users can delete individual saved meal plans with confirmation dialog and automatic selection handling.

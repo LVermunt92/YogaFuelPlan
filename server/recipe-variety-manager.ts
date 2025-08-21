@@ -76,7 +76,7 @@ export async function ensureRecipeVariety(
       category,
       dietaryTags,
       targetProtein: targetProtein + (Math.random() * 10 - 5), // Vary protein slightly
-      prepTimeLimit: category === 'breakfast' ? 15 : 30,
+      prepTimeLimit: category === 'breakfast' ? 15 : 45,
       cuisine: getRandomCuisine(),
       season: getCurrentSeason()
     });

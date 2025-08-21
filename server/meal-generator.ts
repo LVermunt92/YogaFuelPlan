@@ -491,12 +491,12 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         }
       }
       
-      // Apply 30-minute cooking time limit for weekdays (Monday-Friday)
+      // Apply 45-minute cooking time limit for weekdays (Monday-Friday)
       const isWeekday = day >= 2 && day <= 6; // Days 2-6 are Monday-Friday (Day 1 = Sunday)
       if (isWeekday && (mealCategory === 'lunch' || mealCategory === 'dinner')) {
         const originalCount = availableMeals.length;
-        availableMeals = availableMeals.filter(meal => meal.nutrition.prepTime <= 30);
-        console.log(`Weekday time filter: ${originalCount} → ${availableMeals.length} ${mealCategory} meals (≤30min)`);
+        availableMeals = availableMeals.filter(meal => meal.nutrition.prepTime <= 45);
+        console.log(`Weekday time filter: ${originalCount} → ${availableMeals.length} ${mealCategory} meals (≤45min)`);
       }
       
       if (availableMeals.length === 0) {
@@ -1018,18 +1018,18 @@ async function generateMealPrepPlan(
     dinnerOptions = applySeasonalFilter(dinnerOptions, 'dinner');
   }
   
-  // Apply 30-minute cooking time limit for weekday meals
-  let weekdayLunchOptions = lunchOptions.filter(meal => meal.nutrition.prepTime <= 30);
-  let weekdayDinnerOptions = dinnerOptions.filter(meal => meal.nutrition.prepTime <= 30);
+  // Apply 45-minute cooking time limit for weekday meals
+  let weekdayLunchOptions = lunchOptions.filter(meal => meal.nutrition.prepTime <= 45);
+  let weekdayDinnerOptions = dinnerOptions.filter(meal => meal.nutrition.prepTime <= 45);
   
-  console.log(`Weekday time filter: ${lunchOptions.length} → ${weekdayLunchOptions.length} lunch meals (≤30min)`);
-  console.log(`Weekday time filter: ${dinnerOptions.length} → ${weekdayDinnerOptions.length} dinner meals (≤30min)`);
+  console.log(`Weekday time filter: ${lunchOptions.length} → ${weekdayLunchOptions.length} lunch meals (≤45min)`);
+  console.log(`Weekday time filter: ${dinnerOptions.length} → ${weekdayDinnerOptions.length} dinner meals (≤45min)`);
   
   // Smart fallback: If no weekday dinner options, allow longer prep times for dinner
   if (weekdayDinnerOptions.length === 0 && dinnerOptions.length > 0) {
     // Allow up to 45 minutes for dinner on weekdays as fallback
     weekdayDinnerOptions = dinnerOptions.filter(meal => meal.nutrition.prepTime <= 45);
-    console.log(`⚠️ No ≤30min dinner meals available. Fallback: allowing ≤45min (${weekdayDinnerOptions.length} meals)`);
+    console.log(`⚠️ No ≤45min dinner meals available. Fallback: allowing any prep time (${weekdayDinnerOptions.length} meals)`);
     
     // If still no options, allow any dinner meal
     if (weekdayDinnerOptions.length === 0) {
