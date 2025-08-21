@@ -142,7 +142,7 @@ export default function MyRecipes() {
 
   // Mutations
   const createMutation = useMutation({
-    mutationFn: (data: RecipeFormData) => apiRequest('/api/user-recipes', 'POST', data),
+    mutationFn: (data: RecipeFormData) => apiRequest('POST', '/api/user-recipes', data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/user-recipes'] });
       setIsDialogOpen(false);
@@ -162,7 +162,7 @@ export default function MyRecipes() {
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: number; data: RecipeFormData }) => 
-      apiRequest(`/api/user-recipes/${id}`, 'PATCH', data),
+      apiRequest('PATCH', `/api/user-recipes/${id}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/user-recipes'] });
       setIsDialogOpen(false);
@@ -176,7 +176,7 @@ export default function MyRecipes() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id: number) => apiRequest(`/api/user-recipes/${id}`, 'DELETE'),
+    mutationFn: (id: number) => apiRequest('DELETE', `/api/user-recipes/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/user-recipes'] });
       toast({ title: "Recipe deleted successfully!" });
