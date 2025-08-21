@@ -305,7 +305,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   console.log('Using 8-day Sunday cooking pattern');
 
   // Check if user wants only their own recipes
-  const useOnlyMyRecipes = user?.useOnlyMyRecipes || false;
+  const useOnlyMyRecipes = user?.use_only_my_recipes || false;
   console.log(`🍽️ Recipe source preference: ${useOnlyMyRecipes ? 'User recipes only' : 'All recipes'}`);
 
   let breakfastOptions, lunchOptions, dinnerOptions;
@@ -332,25 +332,35 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
       origin: 'user-recipe'
     });
     
-    // Get user recipes by meal type
+    // Get user recipes by meal type (more permissive filtering for user's own recipes)
+    const filterUserRecipeByDiet = (recipe: any): boolean => {
+      // For user's own recipes, assume they match their dietary preferences unless explicitly conflicting
+      // Only exclude if recipe has conflicting tags (e.g., "non-vegetarian" for vegetarian user)
+      if (dietaryTags.includes('vegetarian') || dietaryTags.includes('vegan')) {
+        if (recipe.tags.includes('non-vegetarian') || recipe.tags.includes('pescatarian')) {
+          console.log(`🚫 Excluding user recipe with conflicting dietary tag: ${recipe.name}`);
+          return false;
+        }
+      }
+      // Include the recipe (assume user created it to match their dietary needs)
+      return true;
+    };
+
     const userBreakfastOptions = userRecipes
       .filter(recipe => 
-        recipe.mealTypes.includes('breakfast') && 
-        (!dietaryTags.length || dietaryTags.some(tag => recipe.tags.includes(tag)))
+        recipe.mealTypes.includes('breakfast') && filterUserRecipeByDiet(recipe)
       )
       .map(convertUserRecipeToMealOption);
       
     const userLunchOptions = userRecipes
       .filter(recipe => 
-        recipe.mealTypes.includes('lunch') && 
-        (!dietaryTags.length || dietaryTags.some(tag => recipe.tags.includes(tag)))
+        recipe.mealTypes.includes('lunch') && filterUserRecipeByDiet(recipe)
       )
       .map(convertUserRecipeToMealOption);
       
     const userDinnerOptions = userRecipes
       .filter(recipe => 
-        recipe.mealTypes.includes('dinner') && 
-        (!dietaryTags.length || dietaryTags.some(tag => recipe.tags.includes(tag)))
+        recipe.mealTypes.includes('dinner') && filterUserRecipeByDiet(recipe)
       )
       .map(convertUserRecipeToMealOption);
     
@@ -794,7 +804,7 @@ async function generateMealPrepPlan(
   let dinnerOptions: MealOption[] = [];
   
   // Check if user wants only their own recipes
-  const useOnlyMyRecipes = user?.useOnlyMyRecipes || false;
+  const useOnlyMyRecipes = user?.use_only_my_recipes || false;
   console.log(`🍽️ Recipe source preference: ${useOnlyMyRecipes ? 'User recipes only' : 'All recipes'}`);
 
   if (useOnlyMyRecipes) {
@@ -819,18 +829,27 @@ async function generateMealPrepPlan(
       origin: 'user-recipe'
     });
     
-    // Get user recipes by meal type
+    // Get user recipes by meal type (more permissive filtering for user's own recipes)
+    const filterUserRecipeByDiet = (recipe: any): boolean => {
+      // For user's own recipes, assume they match their dietary preferences unless explicitly conflicting
+      if (dietaryTags.includes('vegetarian') || dietaryTags.includes('vegan')) {
+        if (recipe.tags.includes('non-vegetarian') || recipe.tags.includes('pescatarian')) {
+          console.log(`🚫 Excluding user recipe with conflicting dietary tag: ${recipe.name}`);
+          return false;
+        }
+      }
+      return true; // Include the recipe (assume user created it to match their dietary needs)
+    };
+
     const userLunchOptions = userRecipes
       .filter(recipe => 
-        recipe.mealTypes.includes('lunch') && 
-        (!dietaryTags.length || dietaryTags.some(tag => recipe.tags.includes(tag)))
+        recipe.mealTypes.includes('lunch') && filterUserRecipeByDiet(recipe)
       )
       .map(convertUserRecipeToMealOption);
       
     const userDinnerOptions = userRecipes
       .filter(recipe => 
-        recipe.mealTypes.includes('dinner') && 
-        (!dietaryTags.length || dietaryTags.some(tag => recipe.tags.includes(tag)))
+        recipe.mealTypes.includes('dinner') && filterUserRecipeByDiet(recipe)
       )
       .map(convertUserRecipeToMealOption);
     
