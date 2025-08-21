@@ -94,7 +94,7 @@ export default function MyRecipes() {
     }
   }, [userProfile]);
 
-  // Mutation to update recipe preference
+  // Mutation to update recipe preference  
   const updatePreferenceMutation = useMutation({
     mutationFn: (useOnlyMyRecipes: boolean) => 
       apiRequest(`/api/users/${user?.id}/profile`, 'PATCH', { useOnlyMyRecipes }),
@@ -113,6 +113,10 @@ export default function MyRecipes() {
 
   // Handle preference change
   const handlePreferenceChange = (checked: boolean) => {
+    if (!user?.id) {
+      console.error('No user ID found for preference update');
+      return;
+    }
     setUseOnlyMyRecipes(checked);
     updatePreferenceMutation.mutate(checked);
   };
@@ -270,11 +274,419 @@ export default function MyRecipes() {
           
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button onClick={openCreateDialog} className="flex items-center gap-2">
+              <Button 
+                onClick={openCreateDialog} 
+                className="flex items-center gap-2"
+                disabled={!user}
+              >
                 <Plus className="h-4 w-4" />
                 Add Recipe
               </Button>
             </DialogTrigger>
+            
+            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>{editingRecipe ? 'Edit Recipe' : 'Add New Recipe'}</DialogTitle>
+              </DialogHeader>
+              
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Basic Information */}
+                    <div className="space-y-4">
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Recipe Name</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Enter recipe name" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="portion"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Portion Size</FormLabel>
+                            <FormControl>
+                              <Input placeholder="e.g., 1 serving, 4 people" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <div className="grid grid-cols-2 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="prepTime"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Prep Time (min)</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  type="number" 
+                                  {...field} 
+                                  onChange={(e) => field.onChange(Number(e.target.value))}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <FormField
+                          control={form.control}
+                          name="cookTime"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Cook Time (min)</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  type="number" 
+                                  {...field} 
+                                  onChange={(e) => field.onChange(Number(e.target.value))}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      
+                      <FormField
+                        control={form.control}
+                        name="servings"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Servings</FormLabel>
+                            <FormControl>
+                              <Input 
+                                type="number" 
+                                {...field} 
+                                onChange={(e) => field.onChange(Number(e.target.value))}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="difficulty"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Difficulty</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select difficulty" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectItem value="easy">Easy</SelectItem>
+                                <SelectItem value="medium">Medium</SelectItem>
+                                <SelectItem value="hard">Hard</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    
+                    {/* Categories and Tags */}
+                    <div className="space-y-4">
+                      <FormField
+                        control={form.control}
+                        name="mealTypes"
+                        render={() => (
+                          <FormItem>
+                            <FormLabel>Meal Types</FormLabel>
+                            <div className="flex gap-4">
+                              {['breakfast', 'lunch', 'dinner'].map((type) => (
+                                <FormField
+                                  key={type}
+                                  control={form.control}
+                                  name="mealTypes"
+                                  render={({ field }) => {
+                                    return (
+                                      <FormItem
+                                        key={type}
+                                        className="flex flex-row items-start space-x-3 space-y-0"
+                                      >
+                                        <FormControl>
+                                          <input
+                                            type="checkbox"
+                                            checked={field.value?.includes(type)}
+                                            onChange={(checked) => {
+                                              return checked.target.checked
+                                                ? field.onChange([...field.value, type])
+                                                : field.onChange(
+                                                    field.value?.filter(
+                                                      (value) => value !== type
+                                                    )
+                                                  )
+                                            }}
+                                          />
+                                        </FormControl>
+                                        <FormLabel className="font-normal capitalize">
+                                          {type}
+                                        </FormLabel>
+                                      </FormItem>
+                                    )
+                                  }}
+                                />
+                              ))}
+                            </div>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="cuisine"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Cuisine (optional)</FormLabel>
+                            <FormControl>
+                              <Input placeholder="e.g., Italian, Asian, Mediterranean" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="costEuros"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Estimated Cost (€)</FormLabel>
+                            <FormControl>
+                              <Input 
+                                type="number" 
+                                step="0.01"
+                                placeholder="0.00"
+                                {...field} 
+                                onChange={(e) => field.onChange(Number(e.target.value))}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="notes"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Notes (optional)</FormLabel>
+                            <FormControl>
+                              <Textarea 
+                                placeholder="Any additional notes about this recipe..."
+                                {...field} 
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
+                  
+                  {/* AI Nutrition Notice */}
+                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <div className="flex items-start gap-2">
+                      <div className="text-blue-600 mt-0.5">🤖</div>
+                      <div>
+                        <h4 className="font-medium text-blue-900 text-sm">AI Nutrition Analysis</h4>
+                        <p className="text-blue-700 text-xs mt-1">
+                          Nutrition data (protein, calories, carbs, fats, etc.) will be automatically calculated from your ingredients list using AI. No manual entry needed!
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Ingredients */}
+                  <div>
+                    <FormLabel className="text-base font-medium">Ingredients</FormLabel>
+                    <div className="space-y-2 mt-2">
+                      {form.watch('ingredients').map((_, index) => (
+                        <div key={index} className="flex gap-2">
+                          <FormField
+                            control={form.control}
+                            name={`ingredients.${index}`}
+                            render={({ field }) => (
+                              <FormItem className="flex-1">
+                                <FormControl>
+                                  <Input 
+                                    placeholder="e.g., 200g chicken breast, 1 tbsp olive oil"
+                                    {...field} 
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => removeIngredient(index)}
+                            disabled={form.watch('ingredients').length <= 1}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ))}
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={addIngredient}
+                        className="mt-2"
+                      >
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Ingredient
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  {/* Instructions */}
+                  <div>
+                    <FormLabel className="text-base font-medium">Instructions</FormLabel>
+                    <div className="space-y-2 mt-2">
+                      {form.watch('instructions').map((_, index) => (
+                        <div key={index} className="flex gap-2">
+                          <div className="flex-shrink-0 w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-xs font-medium mt-1">
+                            {index + 1}
+                          </div>
+                          <FormField
+                            control={form.control}
+                            name={`instructions.${index}`}
+                            render={({ field }) => (
+                              <FormItem className="flex-1">
+                                <FormControl>
+                                  <Textarea 
+                                    placeholder="Describe this step..."
+                                    {...field} 
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => removeInstruction(index)}
+                            disabled={form.watch('instructions').length <= 1}
+                            className="mt-1"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ))}
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={addInstruction}
+                        className="mt-2"
+                      >
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Step
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  {/* Tips (optional) */}
+                  <div>
+                    <FormLabel className="text-base font-medium">Tips (optional)</FormLabel>
+                    <div className="space-y-2 mt-2">
+                      {form.watch('tips').map((_, index) => (
+                        <div key={index} className="flex gap-2">
+                          <FormField
+                            control={form.control}
+                            name={`tips.${index}`}
+                            render={({ field }) => (
+                              <FormItem className="flex-1">
+                                <FormControl>
+                                  <Input 
+                                    placeholder="Share a helpful tip..."
+                                    {...field} 
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => removeTip(index)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ))}
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={addTip}
+                        className="mt-2"
+                      >
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Tip
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  {/* Submit Buttons */}
+                  <div className="flex justify-end gap-3 pt-4">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => {
+                        setIsDialogOpen(false);
+                        setEditingRecipe(null);
+                        form.reset();
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      type="submit"
+                      disabled={createMutation.isPending || updateMutation.isPending}
+                    >
+                      {createMutation.isPending || updateMutation.isPending ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                          {editingRecipe ? 'Updating...' : 'Creating...'}
+                        </>
+                      ) : (
+                        <>
+                          {editingRecipe ? 'Update Recipe' : 'Create Recipe'}
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </form>
+              </Form>
+            </DialogContent>
           </Dialog>
         </div>
         
@@ -289,6 +701,7 @@ export default function MyRecipes() {
               id="recipe-source"
               checked={useOnlyMyRecipes}
               onCheckedChange={handlePreferenceChange}
+              disabled={updatePreferenceMutation.isPending || !user}
             />
           </div>
         </div>
@@ -305,7 +718,11 @@ export default function MyRecipes() {
           <ChefHat className="h-12 w-12 text-gray-400 mx-auto mb-4" />
           <h3 className="text-lg font-medium text-gray-900 mb-2">No recipes yet</h3>
           <p className="text-gray-500 mb-4">Create your first recipe to get started</p>
-          <Button onClick={openCreateDialog} className="flex items-center gap-2 mx-auto">
+          <Button 
+            onClick={openCreateDialog} 
+            className="flex items-center gap-2 mx-auto"
+            disabled={!user}
+          >
             <Plus className="h-4 w-4" />
             Add Your First Recipe
           </Button>
