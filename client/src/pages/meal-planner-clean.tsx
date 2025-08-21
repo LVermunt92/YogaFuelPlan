@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Calendar, Clock, Target, Eye, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages, Users, Minus, Trash2, Euro, TrendingUp } from "lucide-react";
+import { Calendar, Clock, Target, Eye, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages, Users, Minus, Trash2, Euro, TrendingUp, Droplet, Apple, Leaf } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Separator } from "@/components/ui/separator";
 import { useTranslations, translateDietaryTags, translateDietaryTag } from "@/lib/translations";
@@ -776,9 +776,9 @@ export default function MealPlanner() {
                       
                       if (dayMeals.length === 0) return null;
                       
-                      const breakfast = dayMeals.find(meal => meal.mealType === 'breakfast');
+                      const breakfast = dayMeals.find(meal => meal.mealType === 'breakfast' || meal.mealType === 'ontbijt');
                       const lunch = dayMeals.find(meal => meal.mealType === 'lunch');
-                      const dinner = dayMeals.find(meal => meal.mealType === 'dinner');
+                      const dinner = dayMeals.find(meal => meal.mealType === 'dinner' || meal.mealType === 'diner');
                       const dailyProtein = dayMeals.reduce((sum, meal) => sum + meal.protein, 0);
                       
                       const dayIsCooking = isCookingDay(day);
@@ -872,9 +872,9 @@ export default function MealPlanner() {
                               
                               if (dayMeals.length === 0) return null;
                               
-                              const breakfast = dayMeals.find(meal => meal.mealType === 'breakfast');
+                              const breakfast = dayMeals.find(meal => meal.mealType === 'breakfast' || meal.mealType === 'ontbijt');
                               const lunch = dayMeals.find(meal => meal.mealType === 'lunch');
-                              const dinner = dayMeals.find(meal => meal.mealType === 'dinner');
+                              const dinner = dayMeals.find(meal => meal.mealType === 'dinner' || meal.mealType === 'diner');
                               const dailyProtein = dayMeals.reduce((sum, meal) => sum + meal.protein, 0);
                               
                               const dayIsCooking = isCookingDay(day);
