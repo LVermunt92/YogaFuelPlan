@@ -809,7 +809,7 @@ export default function MealPlanner() {
                                 <RefreshCw className="h-4 w-4 text-blue-600" />
                               )}
                             </div>
-                            <span className="text-purple-600">{Math.round(dailyProtein)}g protein</span>
+                            <span className="text-gray-600">{Math.round(dailyProtein)}g protein</span>
                           </div>
                           
                           {/* Individual meal rows - Sunday only shows dinner, other days show all meals */}
@@ -817,11 +817,11 @@ export default function MealPlanner() {
                             // Sunday - only dinner
                             dinner && (
                               <div 
-                                className="cursor-pointer hover:bg-gray-50 p-3 border-l-4 border-purple-400 bg-purple-50 rounded-r-lg"
+                                className="cursor-pointer hover:bg-gray-50 p-3 border-l-4 border-gray-400 bg-gray-50 rounded-r-lg"
                                 onClick={() => setSelectedMealId(dinner.id)}
                               >
                                 <div className="flex items-center gap-2 mb-1">
-                                  <div className="text-xs font-medium text-purple-700">DINNER</div>
+                                  <div className="text-xs font-medium text-gray-700">DINNER</div>
                                   {dinner.foodDescription.includes('(leftover)') && (
                                     <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">
                                       <RefreshCw className="h-3 w-3" />
@@ -838,11 +838,11 @@ export default function MealPlanner() {
                             <>
                               {breakfast && (
                                 <div 
-                                  className="cursor-pointer hover:bg-gray-50 p-3 border-l-4 border-orange-400 bg-orange-50 rounded-r-lg"
+                                  className="cursor-pointer hover:bg-gray-50 p-3 border-l-4 border-gray-400 bg-gray-50 rounded-r-lg"
                                   onClick={() => setSelectedMealId(breakfast.id)}
                                 >
                                   <div className="flex items-center gap-2 mb-1">
-                                    <div className="text-xs font-medium text-orange-700">BREAKFAST</div>
+                                    <div className="text-xs font-medium text-gray-700">BREAKFAST</div>
                                     {breakfast.foodDescription.includes('(leftover)') && (
                                       <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">
                                         <RefreshCw className="h-3 w-3" />
@@ -857,11 +857,11 @@ export default function MealPlanner() {
                               
                               {lunch && (
                                 <div 
-                                  className="cursor-pointer hover:bg-gray-50 p-3 border-l-4 border-blue-400 bg-blue-50 rounded-r-lg"
+                                  className="cursor-pointer hover:bg-gray-50 p-3 border-l-4 border-gray-400 bg-gray-50 rounded-r-lg"
                                   onClick={() => setSelectedMealId(lunch.id)}
                                 >
                                   <div className="flex items-center gap-2 mb-1">
-                                    <div className="text-xs font-medium text-blue-700">LUNCH</div>
+                                    <div className="text-xs font-medium text-gray-700">LUNCH</div>
                                     {lunch.foodDescription.includes('(leftover)') && (
                                       <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">
                                         <RefreshCw className="h-3 w-3" />
@@ -876,11 +876,11 @@ export default function MealPlanner() {
                               
                               {dinner && (
                                 <div 
-                                  className="cursor-pointer hover:bg-gray-50 p-3 border-l-4 border-purple-400 bg-purple-50 rounded-r-lg"
+                                  className="cursor-pointer hover:bg-gray-50 p-3 border-l-4 border-gray-400 bg-gray-50 rounded-r-lg"
                                   onClick={() => setSelectedMealId(dinner.id)}
                                 >
                                   <div className="flex items-center gap-2 mb-1">
-                                    <div className="text-xs font-medium text-purple-700">DINNER</div>
+                                    <div className="text-xs font-medium text-gray-700">DINNER</div>
                                     {dinner.foodDescription.includes('(leftover)') && (
                                       <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">
                                         <RefreshCw className="h-3 w-3" />
