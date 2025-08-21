@@ -1077,7 +1077,7 @@ export default function MealPlanner() {
                   <div className="text-center">
                     <Leaf className="w-4 h-4 text-green-600 mx-auto mb-0.5" />
                     <p className="text-xs text-gray-500 font-medium">{t.vegetables || 'Vegetables'}</p>
-                    <p className="text-sm font-bold text-gray-800">{recipeData.vegetableContent?.servings || 0}</p>
+                    <p className="text-sm font-bold text-gray-800">{Math.round((recipeData.vegetableContent?.servings || 0) * 80)}g</p>
                   </div>
                   <div className="text-center">
                     <Apple className="w-4 h-4 text-blue-600 mx-auto mb-0.5" />
