@@ -285,11 +285,63 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   // Use regular 8-day Sunday cooking pattern for other cases
   console.log('Using 8-day Sunday cooking pattern');
 
-  // Fast recipe loading: Use existing database for maximum speed
-  console.log('🚀 Fast recipe loading using existing database (AI generation temporarily disabled for speed)');
-  const breakfastOptions = getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags);
-  const lunchOptions = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
-  const dinnerOptions = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
+  // Check if user wants only their own recipes
+  const useOnlyMyRecipes = user?.useOnlyMyRecipes || false;
+  console.log(`🍽️ Recipe source preference: ${useOnlyMyRecipes ? 'User recipes only' : 'All recipes'}`);
+
+  let breakfastOptions, lunchOptions, dinnerOptions;
+
+  if (useOnlyMyRecipes) {
+    // Use only user's custom recipes
+    console.log('🚀 Loading user recipes only');
+    const { storage } = require('./storage');
+    const userRecipes = await storage.getUserRecipes(request.userId);
+    
+    // Convert user recipes to MealOption format
+    const convertUserRecipeToMealOption = (recipe: any): MealOption => ({
+      name: recipe.name,
+      portion: recipe.portion || '1 serving',
+      ingredients: recipe.ingredients,
+      instructions: recipe.instructions,
+      nutrition: recipe.nutrition || { protein: 15, calories: 400, carbohydrates: 40, fats: 15 },
+      tags: recipe.tags || [],
+      prepTime: recipe.prepTime || 30,
+      costEuros: recipe.costEuros || 3.0,
+      proteinPerEuro: recipe.nutrition?.protein ? (recipe.nutrition.protein / (recipe.costEuros || 3.0)) : 5.0,
+      tips: recipe.tips || [],
+      notes: recipe.notes || '',
+      origin: 'user-recipe'
+    });
+    
+    breakfastOptions = userRecipes
+      .filter(recipe => 
+        recipe.mealTypes.includes('breakfast') && 
+        (!dietaryTags.length || dietaryTags.some(tag => recipe.tags.includes(tag)))
+      )
+      .map(convertUserRecipeToMealOption);
+      
+    lunchOptions = userRecipes
+      .filter(recipe => 
+        recipe.mealTypes.includes('lunch') && 
+        (!dietaryTags.length || dietaryTags.some(tag => recipe.tags.includes(tag)))
+      )
+      .map(convertUserRecipeToMealOption);
+      
+    dinnerOptions = userRecipes
+      .filter(recipe => 
+        recipe.mealTypes.includes('dinner') && 
+        (!dietaryTags.length || dietaryTags.some(tag => recipe.tags.includes(tag)))
+      )
+      .map(convertUserRecipeToMealOption);
+    
+    console.log(`📊 User recipes found: ${breakfastOptions.length} breakfast, ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
+  } else {
+    // Fast recipe loading: Use existing database for maximum speed
+    console.log('🚀 Fast recipe loading using existing database (AI generation temporarily disabled for speed)');
+    breakfastOptions = getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags);
+    lunchOptions = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
+    dinnerOptions = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
+  }
   
   console.log(`📊 Available recipes: ${breakfastOptions.length} breakfast, ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
   console.log(`🔍 Dietary tags being used: [${dietaryTags.join(', ')}]`);
@@ -667,10 +719,51 @@ async function generateMealPrepPlan(
   let lunchOptions: MealOption[] = [];
   let dinnerOptions: MealOption[] = [];
   
-  // Fast recipe selection: Use existing database only (AI generation disabled for speed)
-  console.log('🚀 Fast recipe selection: using existing database only');
-  lunchOptions = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
-  dinnerOptions = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
+  // Check if user wants only their own recipes
+  const useOnlyMyRecipes = user?.useOnlyMyRecipes || false;
+  console.log(`🍽️ Recipe source preference: ${useOnlyMyRecipes ? 'User recipes only' : 'All recipes'}`);
+
+  if (useOnlyMyRecipes) {
+    // Use only user's custom recipes
+    console.log('🚀 Loading user recipes only for meal prep');
+    const { storage } = require('./storage');
+    const userRecipes = await storage.getUserRecipes(request.userId);
+    
+    // Convert user recipes to MealOption format
+    const convertUserRecipeToMealOption = (recipe: any): MealOption => ({
+      name: recipe.name,
+      portion: recipe.portion || '1 serving',
+      ingredients: recipe.ingredients,
+      instructions: recipe.instructions,
+      nutrition: recipe.nutrition || { protein: 15, calories: 400, carbohydrates: 40, fats: 15 },
+      tags: recipe.tags || [],
+      prepTime: recipe.prepTime || 30,
+      costEuros: recipe.costEuros || 3.0,
+      proteinPerEuro: recipe.nutrition?.protein ? (recipe.nutrition.protein / (recipe.costEuros || 3.0)) : 5.0,
+      tips: recipe.tips || [],
+      notes: recipe.notes || '',
+      origin: 'user-recipe'
+    });
+    
+    lunchOptions = userRecipes
+      .filter(recipe => 
+        recipe.mealTypes.includes('lunch') && 
+        (!dietaryTags.length || dietaryTags.some(tag => recipe.tags.includes(tag)))
+      )
+      .map(convertUserRecipeToMealOption);
+      
+    dinnerOptions = userRecipes
+      .filter(recipe => 
+        recipe.mealTypes.includes('dinner') && 
+        (!dietaryTags.length || dietaryTags.some(tag => recipe.tags.includes(tag)))
+      )
+      .map(convertUserRecipeToMealOption);
+  } else {
+    // Fast recipe selection: Use existing database only (AI generation disabled for speed)
+    console.log('🚀 Fast recipe selection: using existing database only');
+    lunchOptions = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
+    dinnerOptions = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
+  }
   
   console.log(`📊 Available recipe counts: ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
   console.log(`🔍 Dietary tags being used: [${dietaryTags.join(', ')}]`);

@@ -824,7 +824,7 @@ export default function MealPlanner() {
                         </div>
                         <div className="text-right">
                           <p className="text-sm text-gray-400">{plan.totalProtein.toFixed(0)}g protein/day</p>
-                          <p className="text-xs text-gray-400">{new Date(plan.createdAt).toLocaleDateString()}</p>
+                          <p className="text-xs text-gray-400">{plan.createdAt ? new Date(plan.createdAt).toLocaleDateString() : ''}</p>
                         </div>
                       </div>
                     </div>
