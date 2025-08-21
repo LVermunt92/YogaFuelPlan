@@ -165,6 +165,4 @@ function estimateNutritionFromIngredients(ingredients: string[], servings: numbe
   console.log(`✅ Estimated nutrition fallback: ${perServing.protein}g protein, ${perServing.calories} calories, €${perServing.costEuros} per serving`);
   
   return perServing;
-  
-  return perServing;
 }

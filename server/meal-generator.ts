@@ -12,6 +12,7 @@ import { ensureRecipeVariety, selectMealsWithBetterVariety } from "./recipe-vari
 import { calculateProteinTarget } from "./nutrition";
 import { getCurrentAyurvedicSeason } from "./ayurveda-seasonal";
 import { selectProteinOptimizedMeals } from "./smart-protein-selection";
+import { calculateMealFreshnessPriority, getRecommendedDayForMeal, logMealFreshnessAnalysis, sortMealsByFreshness } from "./ingredient-freshness";
 
 export interface GeneratedMealPlan {
   mealPlan: InsertMealPlan;
@@ -651,8 +652,26 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
           }
         }
       } else {
-        // Fresh lunch/dinner for other days - use variety tracking
-        selectedMeal = selectUnusedMeal(availableMeals, mealCategory === 'lunch' ? usedLunchMeals : usedDinnerMeals, allSelectedMealNames);
+        // Fresh lunch/dinner for other days - use freshness-based selection
+        
+        // Apply freshness-based filtering for optimal ingredient scheduling
+        const freshnessFilteredMeals = availableMeals.filter(meal => {
+          const recommendedDays = getRecommendedDayForMeal(meal.ingredients || []);
+          return recommendedDays.includes(day);
+        });
+        
+        // Use freshness-filtered meals if available, otherwise fall back to all meals
+        const mealsToSelectFrom = freshnessFilteredMeals.length > 0 ? freshnessFilteredMeals : availableMeals;
+        
+        if (freshnessFilteredMeals.length > 0) {
+          console.log(`🥬 Day ${day}: Using ${freshnessFilteredMeals.length} freshness-optimized ${mealCategory} options`);
+        }
+        
+        selectedMeal = selectUnusedMeal(mealsToSelectFrom, mealCategory === 'lunch' ? usedLunchMeals : usedDinnerMeals, allSelectedMealNames);
+        
+        // Log freshness analysis for the selected meal
+        logMealFreshnessAnalysis(selectedMeal.name, selectedMeal.ingredients || []);
+        
         if (mealCategory === 'lunch') {
           usedLunchMeals.add(selectedMeal.name);
         } else {
@@ -827,6 +846,12 @@ async function generateMealPrepPlan(
     console.log(`🍽️ Sample dinner recipes: ${dinnerOptions.slice(0, 3).map(m => m.name).join(', ')}`);
   }
   
+  // Sort meals by freshness priority before meal planning
+  console.log('🥬 Applying ingredient freshness optimization...');
+  lunchOptions = sortMealsByFreshness(lunchOptions);
+  dinnerOptions = sortMealsByFreshness(dinnerOptions);
+  console.log(`🥬 Sorted ${lunchOptions.length} lunch and ${dinnerOptions.length} dinner options by ingredient freshness`);
+
   // Apply summer filtering for ALL ayurvedic meals - regardless of user's dietary selection
   // All ayurvedic recipes should follow seasonal guidelines during grishma season
   const currentSeason = getCurrentAyurvedicSeason(new Date(), 'europe');
