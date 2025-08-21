@@ -821,37 +821,37 @@ export default function Profile() {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div className="p-4 bg-muted rounded-lg">
-                  <div className="text-sm font-medium text-foreground mb-1">Protein</div>
-                  <div className="text-2xl font-bold text-foreground">{Math.round(nutritionTargets.protein)}g</div>
-                  <div className="text-xs text-gray-500 mt-1">
+                <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg">
+                  <div className="text-sm font-medium text-emerald-800 mb-1">Protein</div>
+                  <div className="text-2xl font-bold text-emerald-900">{Math.round(nutritionTargets.protein)}g</div>
+                  <div className="text-xs text-emerald-600 mt-1">
                     {formData.activityLevel === 'high' || formData.activityLevel === 'athlete' 
                       ? 'High Protein Target' 
                       : 'Standard Target'}
                   </div>
                 </div>
                 
-                <div className="p-4 bg-muted rounded-lg">
-                  <div className="text-sm font-medium text-foreground mb-1">Carbohydrates</div>
-                  <div className="text-2xl font-bold text-foreground">{Math.round(nutritionTargets.carbohydrates)}g</div>
-                  <div className="text-xs text-gray-500 mt-1">
+                <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <div className="text-sm font-medium text-yellow-800 mb-1">Healthy Fats</div>
+                  <div className="text-2xl font-bold text-yellow-900">{Math.round(nutritionTargets.fats)}g</div>
+                  <div className="text-xs text-yellow-600 mt-1">
+                    {Math.round(nutritionTargets.fatPercentage)}% of calories
+                  </div>
+                </div>
+                
+                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                  <div className="text-sm font-medium text-blue-800 mb-1">Carbohydrates</div>
+                  <div className="text-2xl font-bold text-blue-900">{Math.round(nutritionTargets.carbohydrates)}g</div>
+                  <div className="text-xs text-blue-600 mt-1">
                     {formData.trainingType === 'endurance' ? 'Endurance Focus' : 
                      formData.trainingType === 'strength' ? 'Strength Focus' : 'General'}
                   </div>
                 </div>
                 
-                <div className="p-4 bg-muted rounded-lg">
-                  <div className="text-sm font-medium text-foreground mb-1">Healthy Fats</div>
-                  <div className="text-2xl font-bold text-foreground">{Math.round(nutritionTargets.fats)}g</div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    {Math.round(nutritionTargets.fatPercentage)}% of calories
-                  </div>
-                </div>
-                
-                <div className="p-4 bg-muted rounded-lg">
-                  <div className="text-sm font-medium text-foreground mb-1">Total Calories</div>
-                  <div className="text-2xl font-bold text-foreground">{Math.round(nutritionTargets.calories)}</div>
-                  <div className="text-xs text-gray-500 mt-1">
+                <div className="p-4 bg-orange-50 border border-orange-200 rounded-lg">
+                  <div className="text-sm font-medium text-orange-800 mb-1">Total Calories</div>
+                  <div className="text-2xl font-bold text-orange-900">{Math.round(nutritionTargets.calories)}</div>
+                  <div className="text-xs text-orange-600 mt-1">
                     {formData.goal === 'lose' ? 'Weight Loss' : 
                      formData.goal === 'gain' ? 'Weight Gain' : 'Maintenance'}
                   </div>
