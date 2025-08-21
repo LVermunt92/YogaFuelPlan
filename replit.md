@@ -51,6 +51,7 @@ Mobile-Optimized Meal Plan Display: Redesigned meal plan interface with responsi
 User Recipe Management System: Implemented comprehensive custom recipe functionality allowing users to create, edit, and manage their personal recipe collections separate from the main curated database.
 Unified Meal Plan Color Scheme: Simplified meal plan interface from multiple meal-type colors (orange/blue/purple) to single unified gray color scheme while preserving blue leftover indicators.
 Nutrition Targets Display Restoration: Restored comprehensive nutrition targets section in profile page showing protein, carbohydrates, fats, and calories based on activity level calculations with detailed breakdown.
+Recipe Source Preference System: Added user preference toggle in "My Recipes" page allowing users to choose between using only their custom recipes or mixing them with the curated database for meal plan generation.
 
 # System Architecture
 - **UI/UX Decisions**: Utilizes `shadcn/ui` built on `Radix UI` primitives with `Tailwind CSS` and CSS variables for theming. The UI is streamlined, removing redundant elements and focusing on core meal planning functionality.

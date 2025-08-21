@@ -11,9 +11,11 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Plus, Edit, Trash2, Clock, Users, ChefHat, Star } from 'lucide-react';
+import { Plus, Edit, Trash2, Clock, Users, ChefHat, Star, Settings } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 
 // Types
 interface UserRecipe {
@@ -78,12 +80,49 @@ export default function MyRecipes() {
   const queryClient = useQueryClient();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingRecipe, setEditingRecipe] = useState<UserRecipe | null>(null);
+  const [useOnlyMyRecipes, setUseOnlyMyRecipes] = useState(false);
 
   // Fetch user recipes
   const { data: recipes = [], isLoading } = useQuery<UserRecipe[]>({
     queryKey: ['/api/user-recipes'],
     enabled: !!user,
   });
+
+  // Fetch user profile to get recipe preference
+  const { data: userProfile } = useQuery({
+    queryKey: ['/api/users', user?.id, 'profile'],
+    enabled: !!user?.id,
+  });
+
+  // Update local state when profile data loads
+  React.useEffect(() => {
+    if (userProfile?.useOnlyMyRecipes !== undefined) {
+      setUseOnlyMyRecipes(userProfile.useOnlyMyRecipes);
+    }
+  }, [userProfile]);
+
+  // Mutation to update recipe preference
+  const updatePreferenceMutation = useMutation({
+    mutationFn: (useOnlyMyRecipes: boolean) => 
+      apiRequest(`/api/users/${user?.id}/profile`, 'PATCH', { useOnlyMyRecipes }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/users', user?.id, 'profile'] });
+      toast({ 
+        title: useOnlyMyRecipes 
+          ? "Now using only your recipes for meal plans" 
+          : "Now mixing your recipes with curated database"
+      });
+    },
+    onError: () => {
+      toast({ title: "Failed to update preference", variant: "destructive" });
+    },
+  });
+
+  // Handle preference change
+  const handlePreferenceChange = (checked: boolean) => {
+    setUseOnlyMyRecipes(checked);
+    updatePreferenceMutation.mutate(checked);
+  };
 
   // Form setup
   const form = useForm<RecipeFormData>({
@@ -246,6 +285,29 @@ export default function MyRecipes() {
         <div>
           <h1 className="text-3xl font-bold">My Recipes</h1>
           <p className="text-gray-600">Create and manage your personal recipe collection</p>
+        </div>
+        
+        {/* Recipe Source Preference */}
+        <div className="flex flex-col items-end gap-4">
+          <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg border">
+            <Settings className="h-4 w-4 text-gray-600" />
+            <div className="flex items-center space-x-2">
+              <Label htmlFor="recipe-source" className="text-sm font-medium">
+                Use only my recipes for meal plans
+              </Label>
+              <Switch
+                id="recipe-source"
+                checked={useOnlyMyRecipes}
+                onCheckedChange={handlePreferenceChange}
+              />
+            </div>
+          </div>
+          <p className="text-xs text-gray-500 max-w-xs text-right">
+            {useOnlyMyRecipes 
+              ? "Meal plans will only use your custom recipes" 
+              : "Meal plans will mix your recipes with our curated database"
+            }
+          </p>
         </div>
         
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

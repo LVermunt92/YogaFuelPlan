@@ -56,6 +56,7 @@ interface UserProfile {
   cookingDaysPerWeek: number;
   eatingDaysAtHome: number;
   meatFishMealsPerWeek: number;
+  useOnlyMyRecipes: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -113,7 +114,8 @@ export default function Profile() {
     householdSize: '1',
     cookingDaysPerWeek: '7',
     eatingDaysAtHome: '7',
-    meatFishMealsPerWeek: '0'
+    meatFishMealsPerWeek: '0',
+    useOnlyMyRecipes: false
   });
 
   // Calculate dynamic protein target based on age, gender, and activity level
@@ -175,7 +177,8 @@ export default function Profile() {
         householdSize: user.householdSize?.toString() || '1',
         cookingDaysPerWeek: user.cookingDaysPerWeek?.toString() || '7',
         eatingDaysAtHome: user.eatingDaysAtHome?.toString() || '7',
-        meatFishMealsPerWeek: user.meatFishMealsPerWeek?.toString() || '0'
+        meatFishMealsPerWeek: user.meatFishMealsPerWeek?.toString() || '0',
+        useOnlyMyRecipes: user.useOnlyMyRecipes || false
       });
       setIsFormInitialized(true);
     }

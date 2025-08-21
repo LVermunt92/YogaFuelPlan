@@ -28,6 +28,7 @@ export const users = pgTable("users", {
   meatFishMealsPerWeek: integer("meat_fish_meals_per_week").default(0),
   language: text("language").default("en"), // en, nl
   leftovers: text("leftovers").array().default([]), // current leftovers to use in meal planning
+  useOnlyMyRecipes: boolean("use_only_my_recipes").default(false), // preference for meal plan generation
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -217,6 +218,7 @@ export const updateUserProfileSchema = createInsertSchema(users).pick({
   meatFishMealsPerWeek: true,
   language: true,
   leftovers: true,
+  useOnlyMyRecipes: true,
 }).partial();
 
 export const insertMealPlanSchema = createInsertSchema(mealPlans).omit({
