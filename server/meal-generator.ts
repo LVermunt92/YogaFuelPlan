@@ -769,11 +769,18 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
     totalWeeklyProtein += dailyProtein;
   }
 
-  // Calculate actual days with meals for proper protein average
-  const daysWithMeals = new Set(meals.map(meal => meal.day)).size;
-  const averageProteinPerDay = daysWithMeals > 0 ? totalWeeklyProtein / daysWithMeals : 0;
+  // Calculate actual days with meals for proper protein average (exclude "eating out" days)
+  const daysWithRealMeals = new Set();
+  meals.forEach(meal => {
+    if (meal.protein > 0 && meal.foodDescription !== 'Eating out') {
+      daysWithRealMeals.add(meal.day);
+    }
+  });
   
-  console.log(`🎯 Protein optimization results: ${totalWeeklyProtein}g total / ${daysWithMeals} days = ${averageProteinPerDay.toFixed(1)}g per day`);
+  const totalDaysWithRealMeals = daysWithRealMeals.size;
+  const averageProteinPerDay = totalDaysWithRealMeals > 0 ? totalWeeklyProtein / totalDaysWithRealMeals : 0;
+  
+  console.log(`🎯 Protein optimization results: ${totalWeeklyProtein}g total / ${totalDaysWithRealMeals} full meal days = ${averageProteinPerDay.toFixed(1)}g per day`);
   console.log(`🎯 Personal protein target: ${dailyProteinTarget}g/day | Achievement: ${((averageProteinPerDay / dailyProteinTarget) * 100).toFixed(1)}%`);
 
   const mealPlan: InsertMealPlan = {
@@ -1501,21 +1508,20 @@ async function generateMealPrepPlan(
   }
 
   // Calculate actual days with meals for proper protein average
-  // Count days with at least one meal (breakfast always exists for days 2-7, plus lunch/dinner for daysWithMeals)
+  // Only count days that have real meals (exclude "eating out" days from protein calculation)
   const actualDaysWithMeals = new Set();
   
-  // Add days 2-7 (breakfast days)
-  for (let day = 2; day <= 7; day++) {
-    actualDaysWithMeals.add(day);
-  }
-  
-  // Add days with lunch/dinner
-  daysWithMeals.forEach(day => actualDaysWithMeals.add(day));
+  // Count each day that has at least one real meal (with protein > 0)
+  meals.forEach(meal => {
+    if (meal.protein > 0 && meal.foodDescription !== 'Eating out') {
+      actualDaysWithMeals.add(meal.day);
+    }
+  });
   
   const totalDaysWithMeals = actualDaysWithMeals.size;
   const averageProteinPerDay = totalDaysWithMeals > 0 ? totalWeeklyProtein / totalDaysWithMeals : 0;
   
-  console.log(`🥩 Protein calculation: ${totalWeeklyProtein}g total / ${totalDaysWithMeals} days = ${averageProteinPerDay.toFixed(1)}g per day`);
+  console.log(`🥩 Protein calculation: ${totalWeeklyProtein}g total / ${totalDaysWithMeals} full meal days = ${averageProteinPerDay.toFixed(1)}g per day`);
 
   const mealPlan: InsertMealPlan = {
     userId: request.userId || 1,
