@@ -30,6 +30,7 @@ Preferred communication style: Simple, everyday language.
     - **Admin Panel**: Full-featured admin interface for managing nutrition calculation parameters, monitoring system statistics, and configuring meal planning logic, including editable lookup tables and audit trails.
     - **User Recipe Management**: Complete custom recipe system allowing users to create, store, and manage personal recipes separate from the curated database, including CRUD operations, nutrition tracking, meal type categorization, and soft-delete.
     - **AI-Powered Nutrition Analysis**: Automated generation of comprehensive nutritional values (protein, calories, carbohydrates, fats, fiber, sugar, sodium) directly from recipe ingredients using OpenAI GPT-4o model.
+    - **High-Protein Meal Database**: Enhanced meal database with naturally high-protein options (28-45g protein) covering breakfast (including dairy), vegetarian, and meat-based meals for better protein target achievement without relying on tags.
 - **System Design Choices**:
     - **Data Flow**: User input drives meal generation, stored in PostgreSQL, displayed via React Query.
     - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, favorite meals, and user-created custom recipes.

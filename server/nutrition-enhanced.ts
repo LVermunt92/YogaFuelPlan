@@ -4017,6 +4017,447 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       ],
       notes: "All the comfort of mac and cheese with a fraction of the carbs"
     }
+  },
+
+  // HIGH-PROTEIN BREAKFAST OPTIONS
+  {
+    name: "Greek yogurt protein power bowl",
+    portion: "1 large bowl",
+    nutrition: { 
+      protein: 32, 
+      prepTime: 5, 
+      calories: 485,
+      carbohydrates: 38,
+      fats: 22,
+      fiber: 8,
+      sugar: 24,
+      sodium: 120,
+      costEuros: 3.20, 
+      proteinPerEuro: 10.0 
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "gluten-free", "high-protein", "quick", "probiotic"],
+    ingredients: [
+      "1 cup Greek yogurt (2% fat)",
+      "2 tbsp almond butter",
+      "1 tbsp chia seeds",
+      "1 tbsp hemp hearts",
+      "½ cup mixed berries",
+      "1 tbsp honey",
+      "2 tbsp crushed walnuts",
+      "1 tsp vanilla extract"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["berries"],
+      benefits: ["Antioxidants", "Natural sugars", "Vitamin C"]
+    },
+    recipe: {
+      instructions: [
+        "Place Greek yogurt in a large bowl",
+        "Swirl in almond butter and vanilla extract",
+        "Top with chia seeds and hemp hearts",
+        "Add mixed berries on top",
+        "Drizzle with honey",
+        "Finish with crushed walnuts"
+      ],
+      tips: [
+        "Use thick Greek yogurt for best texture",
+        "Let chia seeds sit for 5 minutes to absorb moisture"
+      ],
+      notes: "Creamy, protein-packed breakfast that feels indulgent"
+    }
+  },
+
+  {
+    name: "Cottage cheese and eggs scramble with spinach",
+    portion: "1 large serving",
+    nutrition: { 
+      protein: 38, 
+      prepTime: 10, 
+      calories: 420,
+      carbohydrates: 8,
+      fats: 26,
+      fiber: 3,
+      sugar: 6,
+      sodium: 580,
+      costEuros: 2.80, 
+      proteinPerEuro: 13.6 
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "gluten-free", "high-protein", "keto", "quick"],
+    ingredients: [
+      "3 large eggs",
+      "½ cup cottage cheese",
+      "2 cups fresh spinach",
+      "1 tbsp butter",
+      "¼ cup shredded cheddar cheese",
+      "2 tbsp chives (chopped)",
+      "Salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["spinach", "chives"],
+      benefits: ["Iron", "Folate", "Vitamin K"]
+    },
+    recipe: {
+      instructions: [
+        "Heat butter in non-stick pan over medium heat",
+        "Add spinach, cook until wilted",
+        "Beat eggs and add to pan",
+        "As eggs begin to set, add cottage cheese",
+        "Gently scramble, adding cheddar cheese",
+        "Cook until eggs are set but still creamy",
+        "Season with salt, pepper, and chives"
+      ],
+      tips: [
+        "Don't overcook - eggs should remain creamy",
+        "Add cottage cheese when eggs are half set"
+      ],
+      notes: "Restaurant-quality protein breakfast in minutes"
+    }
+  },
+
+  {
+    name: "Protein pancakes with almond flour",
+    portion: "3 medium pancakes",
+    nutrition: { 
+      protein: 28, 
+      prepTime: 15, 
+      calories: 390,
+      carbohydrates: 18,
+      fats: 24,
+      fiber: 6,
+      sugar: 8,
+      sodium: 280,
+      costEuros: 3.50, 
+      proteinPerEuro: 8.0 
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "gluten-free", "high-protein", "weekend"],
+    ingredients: [
+      "3 large eggs",
+      "1 scoop vanilla protein powder",
+      "½ cup almond flour",
+      "2 tbsp Greek yogurt",
+      "1 tsp baking powder",
+      "1 tsp vanilla extract",
+      "1 tbsp maple syrup",
+      "2 tbsp butter for cooking",
+      "Fresh berries for topping"
+    ],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["berries"],
+      benefits: ["Antioxidants", "Natural sweetness"]
+    },
+    recipe: {
+      instructions: [
+        "Whisk eggs, protein powder, and Greek yogurt",
+        "Add almond flour, baking powder, vanilla, maple syrup",
+        "Let batter rest 5 minutes to thicken",
+        "Heat butter in non-stick pan over medium-low heat",
+        "Pour ¼ cup batter per pancake",
+        "Cook 2-3 minutes until bubbles form, flip carefully",
+        "Cook 1-2 minutes more until golden",
+        "Serve with fresh berries"
+      ],
+      tips: [
+        "Keep heat medium-low to prevent burning",
+        "Batter will be thicker than regular pancakes"
+      ],
+      notes: "Fluffy, protein-rich weekend breakfast treat"
+    }
+  },
+
+  // HIGH-PROTEIN LUNCH OPTIONS
+  {
+    name: "Lentil and turkey meatball power bowl",
+    portion: "1 large bowl",
+    nutrition: { 
+      protein: 42, 
+      prepTime: 25, 
+      calories: 520,
+      carbohydrates: 35,
+      fats: 18,
+      fiber: 14,
+      sugar: 8,
+      sodium: 680,
+      costEuros: 4.20, 
+      proteinPerEuro: 10.0 
+    },
+    category: "lunch",
+    tags: ["gluten-free", "high-protein", "meal-prep"],
+    ingredients: [
+      "150g ground turkey (93% lean)",
+      "¾ cup cooked green lentils",
+      "2 cups baby spinach",
+      "1 medium roasted sweet potato (cubed)",
+      "¼ cup feta cheese",
+      "2 tbsp tahini",
+      "1 tbsp lemon juice",
+      "1 tbsp olive oil",
+      "1 tsp cumin",
+      "1 tsp paprika",
+      "2 cloves garlic (minced)",
+      "Fresh herbs (parsley, mint)"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["spinach", "sweet potato", "herbs"],
+      benefits: ["Beta carotene", "Iron", "Complex carbs"]
+    },
+    recipe: {
+      instructions: [
+        "Season turkey with cumin, paprika, salt, pepper",
+        "Form into small meatballs, brown in olive oil",
+        "Cook meatballs through, about 10 minutes",
+        "Whisk tahini, lemon juice, water to make dressing",
+        "Layer spinach in bowl",
+        "Top with warm lentils and sweet potato",
+        "Add meatballs and crumbled feta",
+        "Drizzle with tahini dressing",
+        "Garnish with fresh herbs"
+      ],
+      tips: [
+        "Don't overwork meatballs to keep them tender",
+        "Roast sweet potato at 400°F for 25 minutes"
+      ],
+      notes: "Mediterranean-inspired power lunch with complete proteins"
+    }
+  },
+
+  {
+    name: "Chickpea tuna salad protein wrap",
+    portion: "1 large wrap",
+    nutrition: { 
+      protein: 35, 
+      prepTime: 15, 
+      calories: 480,
+      carbohydrates: 52,
+      fats: 16,
+      fiber: 12,
+      sugar: 8,
+      sodium: 720,
+      costEuros: 3.80, 
+      proteinPerEuro: 9.2 
+    },
+    category: "lunch",
+    tags: ["vegetarian", "high-protein", "meal-prep", "quick"],
+    ingredients: [
+      "1 can (400g) chickpeas (drained, mashed)",
+      "2 tbsp hemp hearts",
+      "2 tbsp nutritional yeast",
+      "2 tbsp tahini",
+      "1 tbsp lemon juice",
+      "1 large whole wheat tortilla",
+      "2 cups mixed greens",
+      "1 medium avocado (sliced)",
+      "¼ cup shredded carrots",
+      "2 tbsp pumpkin seeds",
+      "1 tsp kelp granules (for umami)",
+      "Salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["mixed greens", "carrots", "avocado"],
+      benefits: ["Fiber", "Healthy fats", "Vitamins A, K"]
+    },
+    recipe: {
+      instructions: [
+        "Mash chickpeas leaving some texture",
+        "Mix in hemp hearts, nutritional yeast, tahini",
+        "Add lemon juice, kelp granules, salt, pepper",
+        "Lay tortilla flat, spread chickpea mixture",
+        "Layer with greens, avocado, carrots",
+        "Sprinkle with pumpkin seeds",
+        "Roll tightly, slice in half"
+      ],
+      tips: [
+        "Don't over-mash chickpeas - texture is key",
+        "Wrap in foil for easier eating"
+      ],
+      notes: "Plant-based protein powerhouse that tastes like tuna salad"
+    }
+  },
+
+  // HIGH-PROTEIN DINNER OPTIONS
+  {
+    name: "Herb-crusted salmon with quinoa pilaf",
+    portion: "1 fillet with 1 cup pilaf",
+    nutrition: { 
+      protein: 45, 
+      prepTime: 30, 
+      calories: 580,
+      carbohydrates: 42,
+      fats: 26,
+      fiber: 6,
+      sugar: 4,
+      sodium: 480,
+      costEuros: 6.80, 
+      proteinPerEuro: 6.6 
+    },
+    category: "dinner",
+    tags: ["pescatarian", "gluten-free", "high-protein", "omega-3"],
+    ingredients: [
+      "180g salmon fillet",
+      "¾ cup cooked quinoa",
+      "2 tbsp fresh dill (chopped)",
+      "2 tbsp fresh parsley (chopped)",
+      "1 tbsp capers",
+      "2 tbsp olive oil",
+      "1 lemon (zested and juiced)",
+      "¼ cup toasted pine nuts",
+      "2 cups steamed broccoli",
+      "2 cloves garlic (minced)",
+      "Salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["broccoli", "herbs"],
+      benefits: ["Vitamin C", "Antioxidants", "Anti-inflammatory"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 400°F",
+        "Mix herbs, capers, olive oil, lemon zest",
+        "Season salmon, top with herb mixture",
+        "Bake 12-15 minutes until flakes easily",
+        "Sauté garlic, add cooked quinoa",
+        "Stir in lemon juice and pine nuts",
+        "Steam broccoli until bright green",
+        "Serve salmon over quinoa with broccoli"
+      ],
+      tips: [
+        "Don't overcook salmon - internal temp 145°F",
+        "Toast pine nuts in dry pan for extra flavor"
+      ],
+      notes: "Restaurant-quality high-protein dinner with omega-3s"
+    }
+  },
+
+  {
+    name: "Lean beef and black bean power chili",
+    portion: "1.5 cups",
+    nutrition: { 
+      protein: 38, 
+      prepTime: 35, 
+      calories: 420,
+      carbohydrates: 28,
+      fats: 16,
+      fiber: 12,
+      sugar: 8,
+      sodium: 680,
+      costEuros: 4.50, 
+      proteinPerEuro: 8.4 
+    },
+    category: "dinner",
+    tags: ["gluten-free", "high-protein", "meal-prep", "comfort-food"],
+    ingredients: [
+      "200g lean ground beef (93/7)",
+      "1 can (400g) black beans (drained)",
+      "1 can (400g) diced tomatoes",
+      "1 bell pepper (diced)",
+      "1 onion (diced)",
+      "3 cloves garlic (minced)",
+      "2 tbsp tomato paste",
+      "1 tbsp olive oil",
+      "2 tsp chili powder",
+      "1 tsp cumin",
+      "1 tsp smoked paprika",
+      "1 cup beef broth",
+      "¼ cup Greek yogurt for serving",
+      "2 tbsp cilantro (chopped)"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["bell pepper", "onion", "tomatoes"],
+      benefits: ["Vitamin C", "Lycopene", "Fiber"]
+    },
+    recipe: {
+      instructions: [
+        "Heat olive oil in large pot over medium-high heat",
+        "Brown ground beef, breaking into small pieces",
+        "Add onion and bell pepper, cook 5 minutes",
+        "Add garlic, cook 1 minute",
+        "Stir in tomato paste, spices, cook 1 minute",
+        "Add tomatoes, black beans, broth",
+        "Simmer 20 minutes until thickened",
+        "Serve topped with Greek yogurt and cilantro"
+      ],
+      tips: [
+        "Brown meat well for deeper flavor",
+        "Chili tastes better the next day"
+      ],
+      notes: "Hearty, protein-packed chili perfect for meal prep"
+    }
+  },
+
+  {
+    name: "Protein-packed vegetarian lentil bolognese",
+    portion: "1.5 cups sauce with 100g pasta",
+    nutrition: { 
+      protein: 32, 
+      prepTime: 40, 
+      calories: 520,
+      carbohydrates: 78,
+      fats: 12,
+      fiber: 16,
+      sugar: 12,
+      sodium: 580,
+      costEuros: 3.20, 
+      proteinPerEuro: 10.0 
+    },
+    category: "dinner",
+    tags: ["vegetarian", "high-protein", "meal-prep", "comfort-food"],
+    ingredients: [
+      "1 cup red lentils (dried)",
+      "100g whole wheat pasta",
+      "1 can (400g) crushed tomatoes",
+      "1 large carrot (finely diced)",
+      "1 celery stalk (finely diced)",
+      "1 onion (finely diced)",
+      "4 cloves garlic (minced)",
+      "2 tbsp tomato paste",
+      "3 tbsp nutritional yeast",
+      "2 tbsp olive oil",
+      "1 tsp dried oregano",
+      "1 tsp dried basil",
+      "2 cups vegetable broth",
+      "¼ cup fresh parsley (chopped)",
+      "Salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["carrot", "celery", "onion", "tomatoes"],
+      benefits: ["Beta carotene", "Lycopene", "Complex carbs"]
+    },
+    recipe: {
+      instructions: [
+        "Heat olive oil in large pot over medium heat",
+        "Sauté onion, carrot, celery until soft, 8 minutes",
+        "Add garlic, cook 1 minute",
+        "Stir in tomato paste, cook 2 minutes",
+        "Add lentils, crushed tomatoes, broth, herbs",
+        "Simmer 25 minutes until lentils are tender",
+        "Stir in nutritional yeast",
+        "Cook pasta according to package directions",
+        "Serve sauce over pasta, garnish with parsley"
+      ],
+      tips: [
+        "Dice vegetables very fine for authentic texture",
+        "Add water if sauce gets too thick"
+      ],
+      notes: "Meaty texture from lentils, packed with plant protein"
+    }
   }
 ];
 
