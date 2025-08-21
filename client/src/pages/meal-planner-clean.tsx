@@ -245,8 +245,13 @@ export default function MealPlanner() {
   });
 
   const getDayMeals = (day: number) => {
-    if (!currentMealPlan?.meals) return [];
-    return currentMealPlan.meals.filter(meal => meal.day === day);
+    if (!currentMealPlan?.meals) {
+      console.log('Debug: No currentMealPlan or meals available');
+      return [];
+    }
+    const mealsForDay = currentMealPlan.meals.filter(meal => meal.day === day);
+    console.log(`Debug: getDayMeals(${day}) found ${mealsForDay.length} meals`);
+    return mealsForDay;
   };
 
   // Leftover ingredients management
@@ -765,6 +770,7 @@ export default function MealPlanner() {
                   ))}
                 </div>
               ) : currentMealPlan?.meals ? (
+                console.log('Debug: Rendering meal plan with', currentMealPlan.meals.length, 'total meals'),
                 <div className="bg-white rounded-lg border overflow-hidden">
                   <table className="w-full">
                     <thead className="bg-gray-50">
@@ -780,6 +786,8 @@ export default function MealPlanner() {
                       {[1, 2, 3, 4, 5, 6, 7].map(day => {
                         const dayMeals = getDayMeals(day);
                         const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                        
+                        console.log(`Debug: Day ${day} has ${dayMeals.length} meals:`, dayMeals.map(m => m.foodDescription));
                         
                         if (dayMeals.length === 0) return null;
                         
