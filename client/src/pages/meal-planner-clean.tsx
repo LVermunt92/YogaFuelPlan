@@ -684,9 +684,11 @@ export default function MealPlanner() {
                               {shoppingListData.shoppingList
                                 ?.filter(item => item.category === category)
                                 ?.map((item, index) => (
-                                  <div key={index} className="flex flex-col gap-1 py-2 px-2 bg-gray-50 rounded text-xs">
-                                    <span className="text-foreground font-medium break-words leading-tight">{item.ingredient}</span>
-                                    <span className="text-gray-500 font-medium text-xs">{item.totalAmount}</span>
+                                  <div key={index} className="py-2 px-2 bg-gray-50 rounded text-xs">
+                                    <div className="flex justify-between items-start gap-2 w-full">
+                                      <span className="text-foreground font-medium leading-tight flex-1 min-w-0 break-words">{item.ingredient}</span>
+                                      <span className="text-gray-500 font-medium text-xs shrink-0 whitespace-nowrap">{item.totalAmount}</span>
+                                    </div>
                                   </div>
                                 ))}
                             </div>
