@@ -806,6 +806,7 @@ async function generateMealPrepPlan(
   // Check if user wants only their own recipes
   const useOnlyMyRecipes = user?.use_only_my_recipes || false;
   console.log(`🍽️ Recipe source preference: ${useOnlyMyRecipes ? 'User recipes only' : 'All recipes'}`);
+  console.log(`🔍 Debug: user?.use_only_my_recipes = ${user?.use_only_my_recipes}, useOnlyMyRecipes = ${useOnlyMyRecipes}`);
 
   if (useOnlyMyRecipes) {
     // Use user's custom recipes with smart fallback for meal prep
