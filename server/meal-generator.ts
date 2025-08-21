@@ -825,10 +825,7 @@ async function generateMealPrepPlan(
     console.log(`🚀 User ID: ${user.id}, useOnlyMyRecipes: ${user.useOnlyMyRecipes}`);
   }
   
-  // 🚨 EMERGENCY FIX FOR USER 2 CUSTOM RECIPES 🚨
-  if (user?.id === 2) {
-    console.log(`⚡ EMERGENCY CUSTOM RECIPE INJECTION FOR USER 2! ⚡`);
-  }
+  // Custom recipe handling is done properly through the meal prep logic below
   
   // Use the normalized week start from the calling function
   const normalizedWeekStart = normalizeToSunday(request.weekStart);
@@ -923,7 +920,7 @@ async function generateMealPrepPlan(
     console.log(`📊 User meal prep recipes found: ${userLunchOptions.length} lunch, ${userDinnerOptions.length} dinner`);
     
     // Smart fallback: If user doesn't have enough variety, supplement with curated recipes
-    const minVarietyThreshold = 2; // Meal prep needs at least 2 options per meal type
+    const minVarietyThreshold = 3; // Meal prep needs at least 3 options per meal type for good variety
     
     lunchOptions = userLunchOptions;
     dinnerOptions = userDinnerOptions;
@@ -951,55 +948,8 @@ async function generateMealPrepPlan(
     
     console.log(`🔍 DEBUGGING CURATED: Found ${lunchOptions.length} curated lunch, ${dinnerOptions.length} curated dinner meals for tags: ${dietaryTags.join(', ')}`);
     
-    // EMERGENCY INJECTION: Add User 2 custom recipes here!
-    if (user?.id === 2) {
-      console.log('🚨 MAIN FUNCTION EMERGENCY INJECTION: Adding User 2 custom recipes to curated meals!');
-      
-      const userLunchRecipe = {
-        name: 'User 2 High Protein Bowl',
-        portion: '1 serving',
-        ingredients: ['High-protein custom ingredients'],
-        nutrition: { 
-          protein: 28, // High protein content
-          calories: 450, 
-          carbohydrates: 30, 
-          fats: 18,
-          prepTime: 25
-        },
-        tags: ['high-protein', 'gluten-free', 'vegetarian'],
-        costEuros: 4.0,
-        proteinPerEuro: 28 / 4.0,
-        tips: [],
-        notes: 'User custom recipe',
-        origin: 'user-recipe'
-      };
-      
-      const userDinnerRecipe = {
-        name: 'Test',
-        portion: '1 serving', 
-        ingredients: ['Test ingredients'],
-        nutrition: {
-          protein: 22, 
-          calories: 380,
-          carbohydrates: 25,
-          fats: 16,
-          prepTime: 20
-        },
-        tags: ['vegetarian'],
-        costEuros: 3.5,
-        proteinPerEuro: 22 / 3.5,
-        tips: [],
-        notes: 'User test recipe',
-        origin: 'user-recipe'
-      };
-      
-      // Add to beginning for priority selection
-      lunchOptions = [userLunchRecipe, ...lunchOptions];
-      dinnerOptions = [userDinnerRecipe, ...dinnerOptions];
-      console.log(`🚨 Emergency injection complete: ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner meals`);
-      console.log(`🚨 First lunch option is now: ${lunchOptions[0]?.name}`);
-      console.log(`🚨 First dinner option is now: ${dinnerOptions[0]?.name}`);
-    }
+    // Note: Custom recipes are now handled properly through the normal path above
+    // Emergency injection removed to prevent duplicates
   }
   
   console.log(`📊 Available recipe counts: ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
@@ -1057,62 +1007,19 @@ async function generateMealPrepPlan(
     dinnerOptions = applySeasonalFilter(dinnerOptions, 'dinner');
   }
   
-  // INJECT USER 2 CUSTOM RECIPES for testing
-  if (user?.id === 2) {
-    console.log('🔧 INJECTING User 2 custom recipes directly into meal options!');
-    
-    // Debug: Check curated meal counts before injection
-    const curatedLunch = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
-    const curatedDinner = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
-    console.log(`🔍 DEBUGGING: Before injection - ${curatedLunch.length} curated lunch, ${curatedDinner.length} curated dinner for tags: ${dietaryTags.join(', ')}`);
-    
-    // Add both custom recipes to both lunch and dinner for maximum variety
-    const userLunchRecipe = {
-      name: 'User 2 High Protein Bowl',
-      portion: '1 serving',
-      ingredients: ['High-protein custom ingredients', 'Quinoa', 'Black beans'],
-      nutrition: { 
-        protein: 28, // High protein for better selection
-        calories: 450, 
-        carbohydrates: 35, 
-        fats: 18,
-        prepTime: 25
-      },
-      tags: ['high-protein', 'gluten-free', 'vegetarian'],
-      costEuros: 4.0,
-      proteinPerEuro: 28 / 4.0,
-      tips: [],
-      notes: 'User custom high-protein bowl',
-      origin: 'user-recipe'
-    };
-    
-    const userDinnerRecipe = {
-      name: 'Test',
-      portion: '1 serving', 
-      ingredients: ['Test custom ingredients', 'Vegetables'],
-      nutrition: {
-        protein: 22, // Good protein content
-        calories: 400,
-        carbohydrates: 30,
-        fats: 16,
-        prepTime: 20
-      },
-      tags: ['vegetarian'],
-      costEuros: 3.5,
-      proteinPerEuro: 22 / 3.5,
-      tips: [],
-      notes: 'User test dinner recipe',
-      origin: 'user-recipe'
-    };
-    
-    // Add both recipes to both lunch and dinner options for variety
-    lunchOptions = [userLunchRecipe, userDinnerRecipe, ...lunchOptions];
-    dinnerOptions = [userDinnerRecipe, userLunchRecipe, ...dinnerOptions];
-    console.log(`🔧 Enhanced custom recipes: ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
-    console.log(`🔧 Custom recipes added: "${userLunchRecipe.name}" (${userLunchRecipe.nutrition.protein}g protein), "${userDinnerRecipe.name}" (${userDinnerRecipe.nutrition.protein}g protein)`);
-    console.log(`🔧 First 5 lunch options: ${lunchOptions.slice(0, 5).map(m => m.name).join(' | ')}`);
-    console.log(`🔧 First 5 dinner options: ${dinnerOptions.slice(0, 5).map(m => m.name).join(' | ')}`);
+  // Smart fallback: Always ensure minimum variety for meal prep
+  if (lunchOptions.length < 3) {
+    console.log(`🔄 Smart fallback: Adding more curated lunch recipes (current: ${lunchOptions.length}, target: 3+)`);
+    const extraCuratedLunch = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
+    lunchOptions = [...lunchOptions, ...extraCuratedLunch.slice(0, 3 - lunchOptions.length)];
   }
+  
+  if (dinnerOptions.length < 3) {
+    console.log(`🔄 Smart fallback: Adding more curated dinner recipes (current: ${dinnerOptions.length}, target: 3+)`);
+    const extraCuratedDinner = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
+    dinnerOptions = [...dinnerOptions, ...extraCuratedDinner.slice(0, 3 - dinnerOptions.length)];
+  }
+
 
   // Apply 45-minute cooking time limit for weekday meals
   let weekdayLunchOptions = lunchOptions.filter(meal => meal.nutrition.prepTime <= 45);
