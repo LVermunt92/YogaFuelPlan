@@ -14,7 +14,7 @@ import { ensureRecipeVariety, selectMealsWithBetterVariety } from "./recipe-vari
 import { calculateProteinTarget } from "./nutrition";
 import { getCurrentAyurvedicSeason } from "./ayurveda-seasonal";
 import { selectProteinOptimizedMeals } from "./smart-protein-selection";
-import { selectProteinOptimizedMealsForTarget } from "./protein-target-optimizer";
+import { selectProteinOptimizedMealsForTarget, calculateUserProteinTarget } from "./protein-target-optimizer";
 import { calculateMealFreshnessPriority, getRecommendedDayForMeal, logMealFreshnessAnalysis, sortMealsByFreshness } from "./ingredient-freshness";
 import { normalizeToSunday } from "./date-utils";
 import { storage } from "./storage";
@@ -269,7 +269,6 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   // Calculate personalized protein target based on user profile
   let dailyProteinTarget: number;
   if (user) {
-    const { calculateUserProteinTarget } = require('./protein-target-optimizer');
     dailyProteinTarget = calculateUserProteinTarget(user);
     console.log(`🎯 Using personalized protein target: ${dailyProteinTarget}g/day (based on user profile)`);
   } else {

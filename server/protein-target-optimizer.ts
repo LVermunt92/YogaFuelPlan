@@ -26,7 +26,7 @@ interface OptimizedMealSelection {
 /**
  * Calculate user's personal protein target based on their profile
  */
-function calculateUserProteinTarget(user: User): number {
+export function calculateUserProteinTarget(user: User): number {
   if (!user.weight) {
     console.log('⚠️ No weight data available, using default protein target of 80g');
     return 80; // Default fallback

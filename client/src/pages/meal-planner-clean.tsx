@@ -118,6 +118,30 @@ export default function MealPlanner() {
     return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}-${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
   };
 
+  // Get current week Sunday
+  const getCurrentWeekSunday = () => {
+    const today = new Date();
+    const dayOfWeek = today.getDay();
+    const daysToSubtract = dayOfWeek;
+    
+    const sunday = new Date(today);
+    sunday.setDate(today.getDate() - daysToSubtract);
+    
+    return sunday.toISOString().split('T')[0];
+  };
+
+  // Get next week Sunday  
+  const getNextWeekSunday = () => {
+    const today = new Date();
+    const daysUntilNextSunday = (7 - today.getDay()) % 7;
+    const daysToAdd = daysUntilNextSunday === 0 ? 7 : daysUntilNextSunday;
+    
+    const nextSunday = new Date(today);
+    nextSunday.setDate(today.getDate() + daysToAdd);
+    
+    return nextSunday.toISOString().split('T')[0];
+  };
+
   // Helper functions for shopping list
   const toggleItemChecked = (itemKey: string) => {
     setCheckedItems(prev => {
@@ -229,10 +253,17 @@ export default function MealPlanner() {
   // Generate meal plan mutation
   const generateMutation = useMutation({
     mutationFn: async () => {
+      if (!authUser?.id) throw new Error('User not authenticated');
+      
+      // Calculate the correct week start date based on selected week type
+      const weekStart = selectedWeekType === "current" ? getCurrentWeekSunday() : getNextWeekSunday();
+      
       const response = await apiRequest('POST', '/api/meal-plans/generate', {
-        userId: authUser?.id,
+        userId: authUser.id,
         activityLevel: "high",
-        weekType: selectedWeekType,
+        weekStart: weekStart,
+        dietaryTags: userProfile?.dietaryTags || [],
+        leftovers: userProfile?.leftovers || [],
       });
       return response.json();
     },
