@@ -726,13 +726,13 @@ export default function MealPlanner() {
           {/* 5. Saved Meal Plans */}
           {mealPlans.length > 0 && (
             <Card className="w-full">
-              <CardHeader>
+              <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2">
                   <History className="h-6 w-6" />
                   {t.savedMealPlans || 'Saved Meal Plans'}
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-0">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {mealPlans.map((plan, index) => (
                     <div 
@@ -798,11 +798,9 @@ export default function MealPlanner() {
                       return (
                         <div key={day} className="space-y-1">
                           {/* Day header */}
-                          <div className={`flex justify-between items-center p-3 font-semibold text-base border rounded-lg ${dayIsCooking ? 'bg-green-100 border-green-300' : dayIsLeftover ? 'bg-blue-100 border-blue-300' : 'bg-gray-100 border-gray-300'}`}>
+                          <div className="flex justify-between items-center p-3 font-semibold text-base border rounded-lg bg-gray-50 border-gray-200">
                             <div className="flex items-center gap-2">
                               <span className="text-gray-900">{dayNames[day - 1]}</span>
-                              {dayIsCooking && <ChefHat className="h-4 w-4 text-green-600" />}
-                              {dayIsLeftover && <RefreshCw className="h-4 w-4 text-blue-600" />}
                             </div>
                             <span className="text-purple-600">{Math.round(dailyProtein)}g protein</span>
                           </div>
@@ -815,8 +813,16 @@ export default function MealPlanner() {
                                 className="cursor-pointer hover:bg-gray-50 p-3 border-l-4 border-purple-400 bg-purple-50 rounded-r-lg"
                                 onClick={() => setSelectedMealId(dinner.id)}
                               >
-                                <div className="text-xs font-medium text-purple-700 mb-1">DINNER</div>
-                                <div className="text-sm font-medium text-gray-900 mb-1">{dinner.foodDescription}</div>
+                                <div className="flex items-center gap-2 mb-1">
+                                  <div className="text-xs font-medium text-purple-700">DINNER</div>
+                                  {dinner.foodDescription.includes('(leftover)') && (
+                                    <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">
+                                      <RefreshCw className="h-3 w-3" />
+                                      Leftover
+                                    </div>
+                                  )}
+                                </div>
+                                <div className="text-sm font-medium text-gray-900 mb-1">{dinner.foodDescription.replace(' (leftover)', '')}</div>
                                 <div className="text-sm text-gray-600">{dinner.protein}g protein • {dinner.prepTime} min</div>
                               </div>
                             )
@@ -828,8 +834,16 @@ export default function MealPlanner() {
                                   className="cursor-pointer hover:bg-gray-50 p-3 border-l-4 border-orange-400 bg-orange-50 rounded-r-lg"
                                   onClick={() => setSelectedMealId(breakfast.id)}
                                 >
-                                  <div className="text-xs font-medium text-orange-700 mb-1">BREAKFAST</div>
-                                  <div className="text-sm font-medium text-gray-900 mb-1">{breakfast.foodDescription}</div>
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <div className="text-xs font-medium text-orange-700">BREAKFAST</div>
+                                    {breakfast.foodDescription.includes('(leftover)') && (
+                                      <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">
+                                        <RefreshCw className="h-3 w-3" />
+                                        Leftover
+                                      </div>
+                                    )}
+                                  </div>
+                                  <div className="text-sm font-medium text-gray-900 mb-1">{breakfast.foodDescription.replace(' (leftover)', '')}</div>
                                   <div className="text-sm text-gray-600">{breakfast.protein}g protein • {breakfast.prepTime} min</div>
                                 </div>
                               )}
@@ -839,8 +853,16 @@ export default function MealPlanner() {
                                   className="cursor-pointer hover:bg-gray-50 p-3 border-l-4 border-blue-400 bg-blue-50 rounded-r-lg"
                                   onClick={() => setSelectedMealId(lunch.id)}
                                 >
-                                  <div className="text-xs font-medium text-blue-700 mb-1">LUNCH</div>
-                                  <div className="text-sm font-medium text-gray-900 mb-1">{lunch.foodDescription}</div>
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <div className="text-xs font-medium text-blue-700">LUNCH</div>
+                                    {lunch.foodDescription.includes('(leftover)') && (
+                                      <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">
+                                        <RefreshCw className="h-3 w-3" />
+                                        Leftover
+                                      </div>
+                                    )}
+                                  </div>
+                                  <div className="text-sm font-medium text-gray-900 mb-1">{lunch.foodDescription.replace(' (leftover)', '')}</div>
                                   <div className="text-sm text-gray-600">{lunch.protein}g protein • {lunch.prepTime} min</div>
                                 </div>
                               )}
@@ -850,8 +872,16 @@ export default function MealPlanner() {
                                   className="cursor-pointer hover:bg-gray-50 p-3 border-l-4 border-purple-400 bg-purple-50 rounded-r-lg"
                                   onClick={() => setSelectedMealId(dinner.id)}
                                 >
-                                  <div className="text-xs font-medium text-purple-700 mb-1">DINNER</div>
-                                  <div className="text-sm font-medium text-gray-900 mb-1">{dinner.foodDescription}</div>
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <div className="text-xs font-medium text-purple-700">DINNER</div>
+                                    {dinner.foodDescription.includes('(leftover)') && (
+                                      <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">
+                                        <RefreshCw className="h-3 w-3" />
+                                        Leftover
+                                      </div>
+                                    )}
+                                  </div>
+                                  <div className="text-sm font-medium text-gray-900 mb-1">{dinner.foodDescription.replace(' (leftover)', '')}</div>
                                   <div className="text-sm text-gray-600">{dinner.protein}g protein • {dinner.prepTime} min</div>
                                 </div>
                               )}
@@ -998,54 +1028,54 @@ export default function MealPlanner() {
             ) : recipeData ? (
               <div className="space-y-6">
                 {/* Comprehensive Recipe KPIs */}
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-9 gap-4 p-4 bg-gray-50 rounded-lg">
+                <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-2 p-3 bg-gray-50 rounded-lg">
                   {/* Basic Info */}
                   <div className="text-center">
-                    <Timer className="w-5 h-5 text-orange-600 mx-auto mb-1" />
+                    <Timer className="w-4 h-4 text-orange-600 mx-auto mb-0.5" />
                     <p className="text-xs text-gray-500 font-medium">{t.prepTime}</p>
-                    <p className="text-lg font-bold text-gray-800">{recipeData.prepTime} {t.min}</p>
+                    <p className="text-sm font-bold text-gray-800">{recipeData.prepTime} {t.min}</p>
                   </div>
                   <div className="text-center">
-                    <Users className="w-5 h-5 text-blue-600 mx-auto mb-1" />
+                    <Users className="w-4 h-4 text-blue-600 mx-auto mb-0.5" />
                     <p className="text-xs text-gray-500 font-medium">{t.servings}</p>
-                    <p className="text-lg font-bold text-gray-800">{recipeData.portion}</p>
+                    <p className="text-sm font-bold text-gray-800">{recipeData.portion}</p>
                   </div>
                   <div className="text-center">
-                    <Activity className="w-5 h-5 text-purple-600 mx-auto mb-1" />
+                    <Activity className="w-4 h-4 text-purple-600 mx-auto mb-0.5" />
                     <p className="text-xs text-gray-500 font-medium">{t.calories}</p>
-                    <p className="text-lg font-bold text-gray-800">{Math.round(recipeData.nutrition.calories)}</p>
+                    <p className="text-sm font-bold text-gray-800">{Math.round(recipeData.nutrition.calories)}</p>
                   </div>
                   <div className="text-center">
-                    <Euro className="w-5 h-5 text-green-600 mx-auto mb-1" />
+                    <Euro className="w-4 h-4 text-green-600 mx-auto mb-0.5" />
                     <p className="text-xs text-gray-500 font-medium">{t.cost}</p>
-                    <p className="text-lg font-bold text-gray-800">€{recipeData.nutrition.costEuros?.toFixed(2) || '0.00'}</p>
+                    <p className="text-sm font-bold text-gray-800">€{recipeData.nutrition.costEuros?.toFixed(2) || '0.00'}</p>
                   </div>
                   <div className="text-center">
-                    <TrendingUp className="w-5 h-5 text-amber-600 mx-auto mb-1" />
+                    <TrendingUp className="w-4 h-4 text-amber-600 mx-auto mb-0.5" />
                     <p className="text-xs text-gray-500 font-medium">{t.proteinPerEuro}</p>
-                    <p className="text-lg font-bold text-gray-800">{recipeData.nutrition.proteinPerEuro?.toFixed(1) || '0.0'}g/€</p>
+                    <p className="text-sm font-bold text-gray-800">{recipeData.nutrition.proteinPerEuro?.toFixed(1) || '0.0'}g/€</p>
                   </div>
                   
                   {/* Nutrition Info */}
                   <div className="text-center">
-                    <Target className="w-5 h-5 text-emerald-600 mx-auto mb-1" />
+                    <Target className="w-4 h-4 text-emerald-600 mx-auto mb-0.5" />
                     <p className="text-xs text-gray-500 font-medium">{t.protein}</p>
-                    <p className="text-lg font-bold text-gray-800">{Math.round(recipeData.nutrition.protein)}g</p>
+                    <p className="text-sm font-bold text-gray-800">{Math.round(recipeData.nutrition.protein)}g</p>
                   </div>
                   <div className="text-center">
-                    <Droplet className="w-5 h-5 text-orange-600 mx-auto mb-1" />
+                    <Droplet className="w-4 h-4 text-orange-600 mx-auto mb-0.5" />
                     <p className="text-xs text-gray-500 font-medium">Good Fats</p>
-                    <p className="text-lg font-bold text-gray-800">{Math.round(recipeData.nutrition.fats || 0)}g</p>
+                    <p className="text-sm font-bold text-gray-800">{Math.round(recipeData.nutrition.fats || 0)}g</p>
                   </div>
                   <div className="text-center">
-                    <Leaf className="w-5 h-5 text-green-600 mx-auto mb-1" />
+                    <Leaf className="w-4 h-4 text-green-600 mx-auto mb-0.5" />
                     <p className="text-xs text-gray-500 font-medium">{t.vegetables || 'Vegetables'}</p>
-                    <p className="text-lg font-bold text-gray-800">{recipeData.vegetableContent?.servings || 0}</p>
+                    <p className="text-sm font-bold text-gray-800">{recipeData.vegetableContent?.servings || 0}</p>
                   </div>
                   <div className="text-center">
-                    <Apple className="w-5 h-5 text-blue-600 mx-auto mb-1" />
+                    <Apple className="w-4 h-4 text-blue-600 mx-auto mb-0.5" />
                     <p className="text-xs text-gray-500 font-medium">Fruits/Starches</p>
-                    <p className="text-lg font-bold text-gray-800">{Math.round(recipeData.nutrition.carbohydrates || 0)}g</p>
+                    <p className="text-sm font-bold text-gray-800">{Math.round(recipeData.nutrition.carbohydrates || 0)}g</p>
                   </div>
                 </div>
 
