@@ -802,7 +802,10 @@ export default function MealPlanner() {
                               {breakfast && (
                                 <div 
                                   className="cursor-pointer hover:bg-gray-100 p-2 rounded"
-                                  onClick={() => setSelectedMealId(breakfast.id)}
+                                  onClick={() => {
+                                    console.log('Breakfast clicked, setting selectedMealId to:', breakfast.id);
+                                    setSelectedMealId(breakfast.id);
+                                  }}
                                 >
                                   <div className="text-sm font-medium text-gray-900 mb-1">{breakfast.foodDescription}</div>
                                   <div className="text-xs text-gray-500">{breakfast.protein}g protein • {breakfast.prepTime} min</div>
@@ -813,7 +816,10 @@ export default function MealPlanner() {
                               {lunch && (
                                 <div 
                                   className="cursor-pointer hover:bg-gray-100 p-2 rounded"
-                                  onClick={() => setSelectedMealId(lunch.id)}
+                                  onClick={() => {
+                                    console.log('Lunch clicked, setting selectedMealId to:', lunch.id);
+                                    setSelectedMealId(lunch.id);
+                                  }}
                                 >
                                   <div className="text-sm font-medium text-gray-900 mb-1">{lunch.foodDescription}</div>
                                   <div className="text-xs text-gray-500">{lunch.protein}g protein • {lunch.prepTime} min</div>
@@ -824,7 +830,10 @@ export default function MealPlanner() {
                               {dinner && (
                                 <div 
                                   className="cursor-pointer hover:bg-gray-100 p-2 rounded"
-                                  onClick={() => setSelectedMealId(dinner.id)}
+                                  onClick={() => {
+                                    console.log('Dinner clicked, setting selectedMealId to:', dinner.id);
+                                    setSelectedMealId(dinner.id);
+                                  }}
                                 >
                                   <div className="text-sm font-medium text-gray-900 mb-1">{dinner.foodDescription}</div>
                                   <div className="text-xs text-gray-500">{dinner.protein}g protein • {dinner.prepTime} min</div>
@@ -853,7 +862,10 @@ export default function MealPlanner() {
         </div>
 
         {/* Recipe Dialog */}
-        <Dialog open={!!selectedMealId} onOpenChange={() => setSelectedMealId(null)}>
+        <Dialog open={!!selectedMealId} onOpenChange={() => {
+          console.log('Dialog onOpenChange called, closing dialog');
+          setSelectedMealId(null);
+        }}>
           <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
             <DialogHeader className="pb-4">
               <DialogTitle className="text-2xl font-bold text-foreground flex items-center gap-3">
