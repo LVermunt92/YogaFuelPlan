@@ -601,12 +601,14 @@ export default function MyRecipes() {
         </div>
         
         {/* Recipe Source Preference */}
-        <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg border max-w-fit">
-          <Settings className="h-4 w-4 text-gray-600" />
-          <div className="flex items-center space-x-2">
-            <Label htmlFor="recipe-source" className="text-sm font-medium">
-              Use only my recipes for meal plans
-            </Label>
+        <div className="p-4 bg-gray-50 rounded-lg border">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center space-x-2">
+              <Settings className="h-4 w-4 text-gray-600" />
+              <Label htmlFor="recipe-source" className="text-sm font-medium">
+                Use only my recipes for meal plans
+              </Label>
+            </div>
             <Switch
               id="recipe-source"
               checked={useOnlyMyRecipes}
@@ -614,13 +616,17 @@ export default function MyRecipes() {
               disabled={updatePreferenceMutation.isPending || !user}
             />
           </div>
+          <p className="text-xs text-gray-500 mb-2">
+            Prioritize your personal recipes when generating meal plans. If you don't have enough variety for a full week, 
+            the system will fill gaps with curated recipes that match your dietary preferences.
+          </p>
+          <div className="text-xs">
+            {useOnlyMyRecipes 
+              ? <span className="text-emerald-600 bg-emerald-100 px-2 py-1 rounded">✓ Using your recipes with smart fallback</span>
+              : <span className="text-gray-600 bg-gray-100 px-2 py-1 rounded">Using mixed recipe sources</span>
+            }
+          </div>
         </div>
-        <p className="text-xs text-gray-500 mt-2">
-          {useOnlyMyRecipes 
-            ? "Meal plans will only use your custom recipes" 
-            : "Meal plans will mix your recipes with our curated database"
-          }
-        </p>
       </div>
 
       {recipes.length === 0 ? (

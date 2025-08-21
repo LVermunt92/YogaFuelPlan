@@ -292,8 +292,8 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   let breakfastOptions, lunchOptions, dinnerOptions;
 
   if (useOnlyMyRecipes) {
-    // Use only user's custom recipes
-    console.log('🚀 Loading user recipes only');
+    // Use user's custom recipes with smart fallback
+    console.log('🚀 Loading user recipes with smart fallback');
     const { storage } = require('./storage');
     const userRecipes = await storage.getUserRecipes(request.userId);
     
@@ -313,28 +313,56 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
       origin: 'user-recipe'
     });
     
-    breakfastOptions = userRecipes
+    // Get user recipes by meal type
+    const userBreakfastOptions = userRecipes
       .filter(recipe => 
         recipe.mealTypes.includes('breakfast') && 
         (!dietaryTags.length || dietaryTags.some(tag => recipe.tags.includes(tag)))
       )
       .map(convertUserRecipeToMealOption);
       
-    lunchOptions = userRecipes
+    const userLunchOptions = userRecipes
       .filter(recipe => 
         recipe.mealTypes.includes('lunch') && 
         (!dietaryTags.length || dietaryTags.some(tag => recipe.tags.includes(tag)))
       )
       .map(convertUserRecipeToMealOption);
       
-    dinnerOptions = userRecipes
+    const userDinnerOptions = userRecipes
       .filter(recipe => 
         recipe.mealTypes.includes('dinner') && 
         (!dietaryTags.length || dietaryTags.some(tag => recipe.tags.includes(tag)))
       )
       .map(convertUserRecipeToMealOption);
     
-    console.log(`📊 User recipes found: ${breakfastOptions.length} breakfast, ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
+    console.log(`📊 User recipes found: ${userBreakfastOptions.length} breakfast, ${userLunchOptions.length} lunch, ${userDinnerOptions.length} dinner`);
+    
+    // Smart fallback: If user doesn't have enough variety, supplement with curated recipes
+    const minVarietyThreshold = 3; // Need at least 3 options per meal type for good variety
+    
+    breakfastOptions = userBreakfastOptions;
+    lunchOptions = userLunchOptions;
+    dinnerOptions = userDinnerOptions;
+    
+    if (breakfastOptions.length < minVarietyThreshold) {
+      console.log(`🔄 Smart fallback: Adding curated breakfast recipes (user has ${breakfastOptions.length}, need ${minVarietyThreshold})`);
+      const curatedBreakfast = getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags);
+      breakfastOptions = [...breakfastOptions, ...curatedBreakfast.slice(0, minVarietyThreshold - breakfastOptions.length)];
+    }
+    
+    if (lunchOptions.length < minVarietyThreshold) {
+      console.log(`🔄 Smart fallback: Adding curated lunch recipes (user has ${lunchOptions.length}, need ${minVarietyThreshold})`);
+      const curatedLunch = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
+      lunchOptions = [...lunchOptions, ...curatedLunch.slice(0, minVarietyThreshold - lunchOptions.length)];
+    }
+    
+    if (dinnerOptions.length < minVarietyThreshold) {
+      console.log(`🔄 Smart fallback: Adding curated dinner recipes (user has ${dinnerOptions.length}, need ${minVarietyThreshold})`);
+      const curatedDinner = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
+      dinnerOptions = [...dinnerOptions, ...curatedDinner.slice(0, minVarietyThreshold - dinnerOptions.length)];
+    }
+    
+    console.log(`📊 Final recipe counts with fallback: ${breakfastOptions.length} breakfast, ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
   } else {
     // Fast recipe loading: Use existing database for maximum speed
     console.log('🚀 Fast recipe loading using existing database (AI generation temporarily disabled for speed)');
@@ -724,8 +752,8 @@ async function generateMealPrepPlan(
   console.log(`🍽️ Recipe source preference: ${useOnlyMyRecipes ? 'User recipes only' : 'All recipes'}`);
 
   if (useOnlyMyRecipes) {
-    // Use only user's custom recipes
-    console.log('🚀 Loading user recipes only for meal prep');
+    // Use user's custom recipes with smart fallback for meal prep
+    console.log('🚀 Loading user recipes with smart fallback for meal prep');
     const { storage } = require('./storage');
     const userRecipes = await storage.getUserRecipes(request.userId);
     
@@ -745,19 +773,42 @@ async function generateMealPrepPlan(
       origin: 'user-recipe'
     });
     
-    lunchOptions = userRecipes
+    // Get user recipes by meal type
+    const userLunchOptions = userRecipes
       .filter(recipe => 
         recipe.mealTypes.includes('lunch') && 
         (!dietaryTags.length || dietaryTags.some(tag => recipe.tags.includes(tag)))
       )
       .map(convertUserRecipeToMealOption);
       
-    dinnerOptions = userRecipes
+    const userDinnerOptions = userRecipes
       .filter(recipe => 
         recipe.mealTypes.includes('dinner') && 
         (!dietaryTags.length || dietaryTags.some(tag => recipe.tags.includes(tag)))
       )
       .map(convertUserRecipeToMealOption);
+    
+    console.log(`📊 User meal prep recipes found: ${userLunchOptions.length} lunch, ${userDinnerOptions.length} dinner`);
+    
+    // Smart fallback: If user doesn't have enough variety, supplement with curated recipes
+    const minVarietyThreshold = 2; // Meal prep needs at least 2 options per meal type
+    
+    lunchOptions = userLunchOptions;
+    dinnerOptions = userDinnerOptions;
+    
+    if (lunchOptions.length < minVarietyThreshold) {
+      console.log(`🔄 Smart fallback: Adding curated lunch recipes for meal prep (user has ${lunchOptions.length}, need ${minVarietyThreshold})`);
+      const curatedLunch = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
+      lunchOptions = [...lunchOptions, ...curatedLunch.slice(0, minVarietyThreshold - lunchOptions.length)];
+    }
+    
+    if (dinnerOptions.length < minVarietyThreshold) {
+      console.log(`🔄 Smart fallback: Adding curated dinner recipes for meal prep (user has ${dinnerOptions.length}, need ${minVarietyThreshold})`);
+      const curatedDinner = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
+      dinnerOptions = [...dinnerOptions, ...curatedDinner.slice(0, minVarietyThreshold - dinnerOptions.length)];
+    }
+    
+    console.log(`📊 Final meal prep recipe counts with fallback: ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
   } else {
     // Fast recipe selection: Use existing database only (AI generation disabled for speed)
     console.log('🚀 Fast recipe selection: using existing database only');
