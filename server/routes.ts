@@ -31,6 +31,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const user = await storage.createUser(userData);
       
+      // Set session for newly registered user
+      req.session.userId = user.id;
+      console.log('Session set for new user:', user.id);
+      
       // Don't return password in response
       const { password, ...userWithoutPassword } = user;
       
@@ -53,6 +57,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!user) {
         return res.status(401).json({ message: "Invalid username or password" });
       }
+
+      // Set session for authenticated user
+      req.session.userId = user.id;
+      console.log('Session set for user:', user.id);
 
       // Don't return password in response
       const { password: _, ...userWithoutPassword } = user;
@@ -136,6 +144,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Password reset verification error:", error);
       res.status(400).json({ message: "Password reset failed" });
+    }
+  });
+
+  // Logout route
+  app.post("/api/auth/logout", async (req, res) => {
+    try {
+      req.session.destroy((err) => {
+        if (err) {
+          console.error('Session destroy error:', err);
+          return res.status(500).json({ message: "Logout failed" });
+        }
+        res.clearCookie('connect.sid'); // Clear session cookie
+        res.json({ message: "Logout successful" });
+      });
+    } catch (error) {
+      console.error("Logout error:", error);
+      res.status(500).json({ message: "Logout failed" });
     }
   });
   
