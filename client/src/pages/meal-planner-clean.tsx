@@ -972,8 +972,8 @@ export default function MealPlanner() {
               </div>
             ) : recipeData ? (
               <div className="space-y-6">
-                {/* Unified Recipe KPIs */}
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4 bg-gray-50 rounded-lg">
+                {/* Comprehensive Recipe KPIs */}
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-9 gap-4 p-4 bg-gray-50 rounded-lg">
                   {/* Basic Info */}
                   <div className="text-center">
                     <Timer className="w-5 h-5 text-orange-600 mx-auto mb-1" />
@@ -1000,33 +1000,29 @@ export default function MealPlanner() {
                     <p className="text-xs text-gray-500 font-medium">{t.proteinPerEuro}</p>
                     <p className="text-lg font-bold text-gray-800">{recipeData.nutrition.proteinPerEuro?.toFixed(1) || '0.0'}g/€</p>
                   </div>
-                </div>
-
-                {/* Nutrition KPIs */}
-                {recipeData.nutrition && (
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-gray-50 rounded-lg">
-                    <div className="text-center">
-                      <Target className="w-5 h-5 text-emerald-600 mx-auto mb-1" />
-                      <p className="text-xs text-gray-500 font-medium">{t.protein}</p>
-                      <p className="text-lg font-bold text-gray-800">{Math.round(recipeData.nutrition.protein)}g</p>
-                    </div>
-                    <div className="text-center">
-                      <div className="w-5 h-5 bg-orange-600 rounded-full mx-auto mb-1"></div>
-                      <p className="text-xs text-gray-500 font-medium">Good Fats</p>
-                      <p className="text-lg font-bold text-gray-800">{Math.round(recipeData.nutrition.fats || 0)}g</p>
-                    </div>
-                    <div className="text-center">
-                      <div className="w-5 h-5 bg-green-600 rounded-full mx-auto mb-1"></div>
-                      <p className="text-xs text-gray-500 font-medium">{t.vegetables || 'Vegetables'}</p>
-                      <p className="text-lg font-bold text-gray-800">{recipeData.vegetableContent?.servings || 0}</p>
-                    </div>
-                    <div className="text-center">
-                      <div className="w-5 h-5 bg-blue-600 rounded-full mx-auto mb-1"></div>
-                      <p className="text-xs text-gray-500 font-medium">Fruits/Starches</p>
-                      <p className="text-lg font-bold text-gray-800">{Math.round(recipeData.nutrition.carbohydrates || 0)}g</p>
-                    </div>
+                  
+                  {/* Nutrition Info */}
+                  <div className="text-center">
+                    <Target className="w-5 h-5 text-emerald-600 mx-auto mb-1" />
+                    <p className="text-xs text-gray-500 font-medium">{t.protein}</p>
+                    <p className="text-lg font-bold text-gray-800">{Math.round(recipeData.nutrition.protein)}g</p>
                   </div>
-                )}
+                  <div className="text-center">
+                    <Droplet className="w-5 h-5 text-orange-600 mx-auto mb-1" />
+                    <p className="text-xs text-gray-500 font-medium">Good Fats</p>
+                    <p className="text-lg font-bold text-gray-800">{Math.round(recipeData.nutrition.fats || 0)}g</p>
+                  </div>
+                  <div className="text-center">
+                    <Leaf className="w-5 h-5 text-green-600 mx-auto mb-1" />
+                    <p className="text-xs text-gray-500 font-medium">{t.vegetables || 'Vegetables'}</p>
+                    <p className="text-lg font-bold text-gray-800">{recipeData.vegetableContent?.servings || 0}</p>
+                  </div>
+                  <div className="text-center">
+                    <Apple className="w-5 h-5 text-blue-600 mx-auto mb-1" />
+                    <p className="text-xs text-gray-500 font-medium">Fruits/Starches</p>
+                    <p className="text-lg font-bold text-gray-800">{Math.round(recipeData.nutrition.carbohydrates || 0)}g</p>
+                  </div>
+                </div>
 
                 {/* Dietary Tags */}
                 {recipeData.tags && recipeData.tags.length > 0 && (
