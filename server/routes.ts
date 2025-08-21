@@ -147,6 +147,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Check current authentication status
+  app.get("/api/auth/me", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+      
+      const user = await storage.getUserById(req.session.userId);
+      if (!user) {
+        // Session points to non-existent user, clear session
+        req.session.destroy(() => {});
+        return res.status(401).json({ message: "User not found" });
+      }
+      
+      const { password, ...userWithoutPassword } = user;
+      res.json({ user: userWithoutPassword });
+    } catch (error) {
+      console.error("Auth check error:", error);
+      res.status(500).json({ message: "Authentication check failed" });
+    }
+  });
+
   // Logout route
   app.post("/api/auth/logout", async (req, res) => {
     try {

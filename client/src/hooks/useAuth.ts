@@ -11,18 +11,43 @@ export function useAuth() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is logged in on app start
-    const userId = localStorage.getItem('userId');
-    const username = localStorage.getItem('username');
+    // Check session validity with backend
+    const checkAuth = async () => {
+      try {
+        const response = await fetch('/api/auth/me', {
+          credentials: 'include'
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          setUser(data.user);
+          // Update localStorage with fresh data
+          localStorage.setItem('userId', data.user.id.toString());
+          localStorage.setItem('username', data.user.username);
+        } else {
+          // Session expired or invalid, clear localStorage
+          setUser(null);
+          localStorage.removeItem('userId');
+          localStorage.removeItem('username');
+        }
+      } catch (error) {
+        console.error('Auth check failed:', error);
+        // Fallback to localStorage if network error
+        const userId = localStorage.getItem('userId');
+        const username = localStorage.getItem('username');
+        
+        if (userId && username) {
+          setUser({
+            id: parseInt(userId),
+            username: username,
+          });
+        }
+      }
+      
+      setIsLoading(false);
+    };
     
-    if (userId && username) {
-      setUser({
-        id: parseInt(userId),
-        username: username,
-      });
-    }
-    
-    setIsLoading(false);
+    checkAuth();
   }, []);
 
   const login = (userData: User) => {
