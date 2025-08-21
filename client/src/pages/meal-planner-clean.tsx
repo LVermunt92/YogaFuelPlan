@@ -799,11 +799,11 @@ export default function MealPlanner() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-0">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
                   {mealPlans.map((plan, index) => (
                     <div 
                       key={plan.id}
-                      className={`p-4 border rounded-lg cursor-pointer transition-colors ${
+                      className={`p-4 border rounded-lg cursor-pointer transition-colors w-full ${
                         selectedMealPlan === plan.id 
                           ? 'border-primary bg-primary/5' 
                           : 'border-border hover:border-primary/50'
@@ -813,9 +813,16 @@ export default function MealPlanner() {
                         localStorage.setItem('selectedMealPlan', plan.id.toString());
                       }}
                     >
-                      <h4 className="font-medium">{plan.planName || `Meal Plan ${index + 1}`}</h4>
-                      <p className="text-sm text-gray-500">{t.weekOf} {plan.weekStart}</p>
-                      <p className="text-sm text-gray-400">{plan.totalProtein.toFixed(0)}g protein/day</p>
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <h4 className="font-medium">{plan.planName || `Meal Plan ${index + 1}`}</h4>
+                          <p className="text-sm text-gray-500">{t.weekOf} {formatWeekRange(plan.weekStart)}</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-sm text-gray-400">{plan.totalProtein.toFixed(0)}g protein/day</p>
+                          <p className="text-xs text-gray-400">{new Date(plan.createdAt).toLocaleDateString()}</p>
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
