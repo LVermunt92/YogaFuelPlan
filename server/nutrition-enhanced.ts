@@ -5218,6 +5218,7 @@ function cleanIngredientName(ingredient: string): string {
   // "¼ cup cherry tomatoes (halved)" -> "cherry tomatoes"
   // "Pinch of sea salt and black pepper" -> "salt"
   
+  const originalInput = ingredient; // Store original input for logging
   let cleaned = ingredient.toLowerCase().trim();
   
   // Remove leading measurements and quantities (including fractions and numbers)
