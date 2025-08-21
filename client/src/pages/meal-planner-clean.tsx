@@ -797,10 +797,17 @@ export default function MealPlanner() {
                       
                       return (
                         <div key={day} className="space-y-1">
-                          {/* Day header */}
-                          <div className="flex justify-between items-center p-3 font-semibold text-base border rounded-lg bg-gray-50 border-gray-200">
+                          {/* Day header with leftover day indication */}
+                          <div className={`flex justify-between items-center p-3 font-semibold text-base border rounded-lg ${
+                            dayMeals.some(meal => meal.foodDescription.includes('(leftover)')) 
+                              ? 'bg-blue-50 border-blue-200' 
+                              : 'bg-gray-50 border-gray-200'
+                          }`}>
                             <div className="flex items-center gap-2">
                               <span className="text-gray-900">{dayNames[day - 1]}</span>
+                              {dayMeals.some(meal => meal.foodDescription.includes('(leftover)')) && (
+                                <RefreshCw className="h-4 w-4 text-blue-600" />
+                              )}
                             </div>
                             <span className="text-purple-600">{Math.round(dailyProtein)}g protein</span>
                           </div>
