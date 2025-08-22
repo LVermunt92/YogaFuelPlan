@@ -4592,6 +4592,8 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
 }
 
 export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' | 'lunch' | 'dinner', dietaryTags: string[] = [], userId?: number): Promise<MealOption[]> {
+  console.log(`🎯 ASYNC FUNCTION START: category=${category}, userId=${userId}, tags=[${dietaryTags.join(', ')}]`);
+  
   let allMeals: MealOption[] = [];
   
   // STEP 1: Add user's custom recipes FIRST (priority placement)
@@ -4604,25 +4606,46 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
       if (userRecipes.length > 0) {
         // Filter user recipes by meal type and convert to MealOption format
         const userMealsForCategory = userRecipes
-          .filter(recipe => recipe.mealTypes.includes(category))
+          .filter(recipe => recipe.mealTypes && recipe.mealTypes.includes(category))
           .map(recipe => {
-            const convertedRecipe: MealOption = {
-              name: recipe.name,
-              portion: recipe.portion || '1 serving',
-              ingredients: recipe.ingredients,
-              instructions: recipe.instructions,
-              nutrition: recipe.nutrition || { protein: 15, calories: 400, carbohydrates: 40, fats: 15 },
-              tags: recipe.tags || [],
-              prepTime: recipe.prepTime || 30,
-              costEuros: recipe.costEuros || 3.0,
-              proteinPerEuro: recipe.nutrition?.protein ? (recipe.nutrition.protein / (recipe.costEuros || 3.0)) : 5.0,
-              tips: recipe.tips || [],
-              notes: recipe.notes || '',
-              origin: 'user-recipe',
-              category: category
-            };
-            return convertedRecipe;
-          });
+            try {
+              const convertedRecipe: MealOption = {
+                name: recipe.name,
+                portion: recipe.portion || '1 serving',
+                ingredients: recipe.ingredients || [],
+                nutrition: { 
+                  protein: (recipe as any).nutrition?.protein || 15, 
+                  calories: (recipe as any).nutrition?.calories || 400, 
+                  carbohydrates: (recipe as any).nutrition?.carbohydrates || 40, 
+                  fats: (recipe as any).nutrition?.fats || 15,
+                  fiber: (recipe as any).nutrition?.fiber || 5,
+                  sugar: (recipe as any).nutrition?.sugar || 10,
+                  sodium: (recipe as any).nutrition?.sodium || 400,
+                  prepTime: (recipe as any).prepTime || 30,
+                  costEuros: (recipe as any).costEuros || 3.0,
+                  proteinPerEuro: ((recipe as any).nutrition?.protein || 15) / ((recipe as any).costEuros || 3.0)
+                },
+                category: category,
+                tags: recipe.tags || [],
+                wholeFoodLevel: 'moderate',
+                vegetableContent: {
+                  servings: 1,
+                  vegetables: ['mixed vegetables'],
+                  benefits: ['User created recipe']
+                },
+                recipe: {
+                  instructions: recipe.instructions || [],
+                  tips: (recipe as any).tips || [],
+                  notes: (recipe as any).notes || ''
+                }
+              };
+              return convertedRecipe;
+            } catch (error) {
+              console.warn(`Failed to convert recipe ${recipe.name}:`, error);
+              return null;
+            }
+          })
+          .filter(recipe => recipe !== null) as MealOption[];
           
         console.log(`🎯 CUSTOM RECIPES: Added ${userMealsForCategory.length} custom ${category} recipes: ${userMealsForCategory.map(m => m.name).join(', ')}`);
         allMeals = [...userMealsForCategory];
@@ -4635,9 +4658,7 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
   // STEP 2: Add curated database meals
   const categoryMeals = getEnhancedMealsByCategory(category);
   allMeals = [...allMeals, ...categoryMeals];
-  
-  console.log(`🔍 DEBUGGING CURATED: Total meals: ${allMeals.length} (${allMeals.filter(m => m.origin === 'user-recipe').length} custom + ${categoryMeals.length} curated)`);
-  console.log(`🔍 DEBUGGING CURATED: Filtering for dietary tags: [${dietaryTags.join(', ')}]`);
+  console.log(`🔍 DEBUGGING CURATED: Total meals: ${allMeals.length} (${allMeals.length - categoryMeals.length} custom + ${categoryMeals.length} curated)`);
   
   // Filter meals by dietary tags (protein targets handled automatically by activity level)
   let filteredMeals = filterEnhancedMealsByDietaryTags(allMeals, dietaryTags);
@@ -4743,6 +4764,7 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
   // Protein optimization is now handled automatically based on activity level targets
   // No special "high-protein" tag filtering needed
   
+  console.log(`🔄 ABOUT TO RETURN: ${filteredMeals.length} filtered meals`);
   return filteredMeals;
 }
 

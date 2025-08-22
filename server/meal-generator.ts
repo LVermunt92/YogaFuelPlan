@@ -293,20 +293,15 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   // Calculate caloric adjustment based on user goals
   const caloricAdjustment = user ? calculateCaloricAdjustment(user) : 1.0;
   
-  // Plan cooking and eating schedule
-  const { cookingDays, eatingDays } = planCookingDays(user);
-  console.log(`🍳 Cooking schedule analysis: ${cookingDays.length} cooking days, ${eatingDays.length} eating days`);
-  console.log(`🍳 Cooking days: [${cookingDays.join(', ')}], Eating days: [${eatingDays.join(', ')}]`);
-  
-  // DEBUG: Show exact values and types
-  console.log(`🚨 DEBUG CONDITION: cookingDays.length=${cookingDays.length} (type: ${typeof cookingDays.length})`);
-  console.log(`🚨 DEBUG CONDITION: eatingDays.length=${eatingDays.length} (type: ${typeof eatingDays.length})`);
-  console.log(`🚨 DEBUG CONDITION: cookingDays.length < eatingDays.length = ${cookingDays.length < eatingDays.length}`);
+  // Use direct user settings for meal prep mode decision
+  const userCookingDays = user?.cookingDaysPerWeek || 7;
+  const userEatingDays = user?.eatingDaysAtHome || 7;
+  console.log(`🍳 User schedule: ${userCookingDays} cooking days, ${userEatingDays} eating days`);
   
   // Check if we should use meal prep mode (cooking days < eating days)
-  console.log(`🍳 Meal prep mode check: ${cookingDays.length} cooking < ${eatingDays.length} eating? ${cookingDays.length < eatingDays.length}`);
-  if (cookingDays.length < eatingDays.length) {
-    console.log(`🎯 ENTERING MEAL PREP MODE: ${cookingDays.length} cooking days for ${eatingDays.length} eating days`);
+  console.log(`🍳 Meal prep mode check: ${userCookingDays} cooking < ${userEatingDays} eating? ${userCookingDays < userEatingDays}`);
+  if (userCookingDays < userEatingDays) {
+    console.log(`🎯 ENTERING MEAL PREP MODE: ${userCookingDays} cooking days for ${userEatingDays} eating days`);
     console.log(`🔍 CALLING MEAL PREP with user: ${user?.id}, useOnlyMyRecipes: ${user?.useOnlyMyRecipes}`);
     console.log(`🔍 MEAL PREP USER OBJECT:`, JSON.stringify(user, null, 2));
     
@@ -322,7 +317,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
     console.log(`🚀 MEAL PREP RESULT RECEIVED, meal count: ${result.meals.length}`);
     return result;
   } else {
-    console.log(`🚨 USING REGULAR MODE: ${cookingDays.length} cooking >= ${eatingDays.length} eating`);
+    console.log(`🚨 USING REGULAR MODE: ${userCookingDays} cooking >= ${userEatingDays} eating`);
   }
 
   // Use regular 8-day Sunday cooking pattern for other cases
@@ -399,19 +394,19 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
     
     if (breakfastOptions.length < minVarietyThreshold) {
       console.log(`🔄 Smart fallback: Adding curated breakfast recipes (user has ${breakfastOptions.length}, need ${minVarietyThreshold})`);
-      const curatedBreakfast = getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags);
+      const curatedBreakfast = await getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags, user?.id);
       breakfastOptions = [...breakfastOptions, ...curatedBreakfast.slice(0, minVarietyThreshold - breakfastOptions.length)];
     }
     
     if (lunchOptions.length < minVarietyThreshold) {
       console.log(`🔄 Smart fallback: Adding curated lunch recipes (user has ${lunchOptions.length}, need ${minVarietyThreshold})`);
-      const curatedLunch = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
+      const curatedLunch = await getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags, user?.id);
       lunchOptions = [...lunchOptions, ...curatedLunch.slice(0, minVarietyThreshold - lunchOptions.length)];
     }
     
     if (dinnerOptions.length < minVarietyThreshold) {
       console.log(`🔄 Smart fallback: Adding curated dinner recipes (user has ${dinnerOptions.length}, need ${minVarietyThreshold})`);
-      const curatedDinner = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
+      const curatedDinner = await getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags, user?.id);
       dinnerOptions = [...dinnerOptions, ...curatedDinner.slice(0, minVarietyThreshold - dinnerOptions.length)];
     }
     
@@ -1148,7 +1143,7 @@ async function generateMealPrepPlan(
 
 
   // Generate meals for all 7 days (breakfast always included)
-  let breakfastOptions = getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags);
+  let breakfastOptions = await getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags, user?.id);
   console.log(`✓ Breakfast variety: Found ${breakfastOptions.length} breakfast options for dietary tags: ${dietaryTags.join(', ')}`);
   
   // Smart fallback for breakfast variety - prioritize meal variety for better user experience
