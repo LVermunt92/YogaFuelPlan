@@ -4900,10 +4900,35 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
   
   console.log(`🔍 UNIFIED POOL: ${allMeals.length} total ${category} meals (${allMeals.filter(m => m.tags.includes('custom')).length} custom + ${allMeals.filter(m => !m.tags.includes('custom')).length} curated)`);
   
-  // Filter meals by dietary tags using existing logic
-  let filteredMeals = filterEnhancedMealsByDietaryTags(allMeals, dietaryTags);
+  // CUSTOM RECIPE PROTECTION: Separate custom recipes before filtering to ensure they're preserved
+  const customRecipesBeforeFiltering = allMeals.filter(m => m.tags.includes('custom'));
+  const curatedRecipes = allMeals.filter(m => !m.tags.includes('custom'));
   
-  console.log(`🔍 DEBUGGING CURATED: After dietary filtering: ${filteredMeals.length} ${category} meals`);
+  console.log(`🛡️ PROTECTING: ${customRecipesBeforeFiltering.length} custom recipes before dietary filtering`);
+  
+  // Filter only curated recipes by dietary tags (be more lenient with custom recipes)
+  let filteredCuratedMeals = filterEnhancedMealsByDietaryTags(curatedRecipes, dietaryTags);
+  
+  // For custom recipes, apply more lenient filtering (assume user knows their dietary needs)
+  let filteredCustomMeals = customRecipesBeforeFiltering.filter(meal => {
+    // Only exclude custom recipes if they explicitly conflict with critical dietary restrictions
+    if (dietaryTags.includes('vegetarian') && meal.tags.includes('non-vegetarian')) {
+      console.log(`🚫 CUSTOM EXCLUDED: "${meal.name}" - explicitly non-vegetarian`);
+      return false;
+    }
+    if (dietaryTags.includes('vegan') && meal.tags.includes('non-vegan')) {
+      console.log(`🚫 CUSTOM EXCLUDED: "${meal.name}" - explicitly non-vegan`);
+      return false;
+    }
+    // Otherwise, assume user's custom recipes match their dietary needs
+    console.log(`✅ CUSTOM PRESERVED: "${meal.name}" - user recipe trusted`);
+    return true;
+  });
+  
+  // Combine filtered meals with custom recipes prioritized first
+  let filteredMeals = [...filteredCustomMeals, ...filteredCuratedMeals];
+  
+  console.log(`🔍 AFTER DIETARY FILTERING: ${filteredCustomMeals.length} custom + ${filteredCuratedMeals.length} curated = ${filteredMeals.length} total ${category} meals`);
   if (filteredMeals.length > 0) {
     console.log(`🍽️ Sample ${category} recipes: ${filteredMeals.slice(0, 5).map(m => m.name).join(', ')}`);
   }
