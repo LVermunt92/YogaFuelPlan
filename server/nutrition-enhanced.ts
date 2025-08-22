@@ -4591,14 +4591,56 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
   });
 }
 
-export function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' | 'lunch' | 'dinner', dietaryTags: string[] = []): MealOption[] {
-  const categoryMeals = getEnhancedMealsByCategory(category);
+export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' | 'lunch' | 'dinner', dietaryTags: string[] = [], userId?: number): Promise<MealOption[]> {
+  let allMeals: MealOption[] = [];
   
-  console.log(`🔍 DEBUGGING CURATED: Starting with ${categoryMeals.length} total ${category} meals`);
+  // STEP 1: Add user's custom recipes FIRST (priority placement)
+  if (userId) {
+    try {
+      const { storage } = await import('./storage');
+      const userRecipes = await storage.getUserRecipes(userId);
+      console.log(`🎯 CUSTOM RECIPES: Found ${userRecipes.length} user recipes for user ${userId}`);
+      
+      if (userRecipes.length > 0) {
+        // Filter user recipes by meal type and convert to MealOption format
+        const userMealsForCategory = userRecipes
+          .filter(recipe => recipe.mealTypes.includes(category))
+          .map(recipe => {
+            const convertedRecipe: MealOption = {
+              name: recipe.name,
+              portion: recipe.portion || '1 serving',
+              ingredients: recipe.ingredients,
+              instructions: recipe.instructions,
+              nutrition: recipe.nutrition || { protein: 15, calories: 400, carbohydrates: 40, fats: 15 },
+              tags: recipe.tags || [],
+              prepTime: recipe.prepTime || 30,
+              costEuros: recipe.costEuros || 3.0,
+              proteinPerEuro: recipe.nutrition?.protein ? (recipe.nutrition.protein / (recipe.costEuros || 3.0)) : 5.0,
+              tips: recipe.tips || [],
+              notes: recipe.notes || '',
+              origin: 'user-recipe',
+              category: category
+            };
+            return convertedRecipe;
+          });
+          
+        console.log(`🎯 CUSTOM RECIPES: Added ${userMealsForCategory.length} custom ${category} recipes: ${userMealsForCategory.map(m => m.name).join(', ')}`);
+        allMeals = [...userMealsForCategory];
+      }
+    } catch (error) {
+      console.warn(`Failed to load custom recipes for user ${userId}:`, error);
+    }
+  }
+  
+  // STEP 2: Add curated database meals
+  const categoryMeals = getEnhancedMealsByCategory(category);
+  allMeals = [...allMeals, ...categoryMeals];
+  
+  console.log(`🔍 DEBUGGING CURATED: Total meals: ${allMeals.length} (${allMeals.filter(m => m.origin === 'user-recipe').length} custom + ${categoryMeals.length} curated)`);
   console.log(`🔍 DEBUGGING CURATED: Filtering for dietary tags: [${dietaryTags.join(', ')}]`);
   
   // Filter meals by dietary tags (protein targets handled automatically by activity level)
-  let filteredMeals = filterEnhancedMealsByDietaryTags(categoryMeals, dietaryTags);
+  let filteredMeals = filterEnhancedMealsByDietaryTags(allMeals, dietaryTags);
   
   console.log(`🔍 DEBUGGING CURATED: After dietary filtering: ${filteredMeals.length} ${category} meals`);
   if (filteredMeals.length > 0) {

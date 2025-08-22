@@ -417,11 +417,11 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
     
     console.log(`📊 Final recipe counts with fallback: ${breakfastOptions.length} breakfast, ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
   } else {
-    // Fast recipe loading: Use existing database for maximum speed
-    console.log('🚀 Fast recipe loading using existing database (AI generation temporarily disabled for speed)');
-    breakfastOptions = getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags);
-    lunchOptions = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
-    dinnerOptions = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
+    // Fast recipe loading: Use existing database for maximum speed + custom recipes
+    console.log('🚀 Fast recipe loading using existing database + custom recipes');
+    breakfastOptions = await getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags, user?.id);
+    lunchOptions = await getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags, user?.id);
+    dinnerOptions = await getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags, user?.id);
   }
   
   console.log(`📊 Available recipes: ${breakfastOptions.length} breakfast, ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
@@ -943,14 +943,14 @@ async function generateMealPrepPlan(
     
     if (lunchOptions.length < minVarietyThreshold) {
       console.log(`🔄 Smart fallback: Adding curated lunch recipes for meal prep (user has ${lunchOptions.length}, need ${minVarietyThreshold})`);
-      const curatedLunch = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
+      const curatedLunch = await getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags, user?.id);
       console.log(`🔄 Smart fallback: Found ${curatedLunch.length} curated lunch recipes`);
       lunchOptions = [...lunchOptions, ...curatedLunch];
     }
     
     if (dinnerOptions.length < minVarietyThreshold) {
       console.log(`🔄 Smart fallback: Adding curated dinner recipes for meal prep (user has ${dinnerOptions.length}, need ${minVarietyThreshold})`);
-      const curatedDinner = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
+      const curatedDinner = await getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags, user?.id);
       console.log(`🔄 Smart fallback: Found ${curatedDinner.length} curated dinner recipes`);
       dinnerOptions = [...dinnerOptions, ...curatedDinner];
     }
@@ -959,8 +959,8 @@ async function generateMealPrepPlan(
   } else {
     // No custom recipes found - use only curated database
     console.log('🔧 No custom recipes found, using curated database only');
-    lunchOptions = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
-    dinnerOptions = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
+    lunchOptions = await getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags, user?.id);
+    dinnerOptions = await getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags, user?.id);
     
     console.log(`🔍 CURATED ONLY: Found ${lunchOptions.length} curated lunch, ${dinnerOptions.length} curated dinner meals for tags: ${dietaryTags.join(', ')}`);
   }
