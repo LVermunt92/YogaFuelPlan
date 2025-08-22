@@ -122,7 +122,21 @@ export function AlbertHeijnIntegration({ ingredients, mealPlanId }: AlbertHeijnI
             Generate your shopping list for Albert Heijn supermarket
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
+          {/* Construction Notice */}
+          <div className="flex items-center gap-2 p-3 bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-lg">
+            <div className="flex items-center justify-center w-5 h-5 text-amber-600 dark:text-amber-400">
+              🚧
+            </div>
+            <div className="flex-1">
+              <div className="text-sm font-medium text-amber-800 dark:text-amber-200">
+                Under Construction
+              </div>
+              <div className="text-xs text-amber-700 dark:text-amber-300">
+                Albert Heijn integration is currently being improved. Some features may not work as expected.
+              </div>
+            </div>
+          </div>
           <p className="text-muted-foreground">No ingredients available to create shopping list.</p>
         </CardContent>
       </Card>
@@ -141,6 +155,20 @@ export function AlbertHeijnIntegration({ ingredients, mealPlanId }: AlbertHeijnI
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
+        {/* Construction Notice */}
+        <div className="flex items-center gap-2 p-3 bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-lg">
+          <div className="flex items-center justify-center w-5 h-5 text-amber-600 dark:text-amber-400">
+            🚧
+          </div>
+          <div className="flex-1">
+            <div className="text-sm font-medium text-amber-800 dark:text-amber-200">
+              Under Construction
+            </div>
+            <div className="text-xs text-amber-700 dark:text-amber-300">
+              Albert Heijn integration is currently being improved. Some features may not work as expected.
+            </div>
+          </div>
+        </div>
         {error && (
           <div className="flex items-center gap-2 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
             <AlertCircle className="h-4 w-4 text-destructive" />
