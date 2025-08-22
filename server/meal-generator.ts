@@ -1101,13 +1101,13 @@ async function generateMealPrepPlan(
   // Smart fallback: Always ensure minimum variety for meal prep
   if (lunchOptions.length < 3) {
     console.log(`🔄 Smart fallback: Adding more curated lunch recipes (current: ${lunchOptions.length}, target: 3+)`);
-    const extraCuratedLunch = getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
+    const extraCuratedLunch = await getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
     lunchOptions = [...lunchOptions, ...extraCuratedLunch.slice(0, 3 - lunchOptions.length)];
   }
   
   if (dinnerOptions.length < 3) {
     console.log(`🔄 Smart fallback: Adding more curated dinner recipes (current: ${dinnerOptions.length}, target: 3+)`);
-    const extraCuratedDinner = getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
+    const extraCuratedDinner = await getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
     dinnerOptions = [...dinnerOptions, ...extraCuratedDinner.slice(0, 3 - dinnerOptions.length)];
   }
 
