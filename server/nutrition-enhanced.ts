@@ -1,5 +1,5 @@
 import { getCurrentSeasonalGuidance, adaptRecipeForSeason, getCurrentAyurvedicSeason } from './ayurveda-seasonal';
-import { applyDietarySubstitutions } from './ingredient-substitution';
+import { applyDietarySubstitutions, substituteIngredients } from './ingredient-substitution';
 import { selectProteinOptimizedMeals } from './smart-protein-selection';
 import { specifyIngredients, validateIngredientSpecificity, updateRecipeIngredients } from './ingredient-specifier';
 import { standardizePortion } from './portion-standardizer';
@@ -5186,6 +5186,9 @@ export interface ShoppingListItem {
 export function generateEnhancedShoppingList(meals: { foodDescription: string }[], language: string = 'en', dietaryTags: string[] = []): ShoppingListItem[] {
   const ingredientAmounts = new Map<string, { totalAmount: number; unit: string; count: number }>();
   
+  // Debug: log that we're applying substitutions
+  console.log(`🔄 SHOPPING LIST: Applying dietary substitutions for tags: ${JSON.stringify(dietaryTags)}`);
+  
   // Parse actual recipe amounts from meal instructions
   meals.forEach(meal => {
     // Strip any leftover suffix and portion scaling for meal matching
@@ -5198,8 +5201,17 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     
     const mealOption = ENHANCED_MEAL_DATABASE.find(m => m.name === cleanMealName);
     if (mealOption) {
-      // Use ingredients directly since they already have proper measurements
-      mealOption.ingredients.forEach(ingredient => {
+      // Apply dietary substitutions to ingredients before processing
+      const substitutionResult = substituteIngredients(mealOption.ingredients, dietaryTags);
+      const substitutedIngredients = substitutionResult.ingredients;
+      
+      // Log substitutions for debugging
+      if (substitutionResult.substitutions.length > 0) {
+        console.log(`🔄 Applied ${substitutionResult.substitutions.length} dietary substitutions for ${cleanMealName}`);
+      }
+      
+      // Use substituted ingredients for shopping list
+      substitutedIngredients.forEach(ingredient => {
         // Extract clean ingredient name from formatted text like "3 large free-range eggs" -> "eggs"
         const cleanIngredient = cleanIngredientName(ingredient);
         
@@ -5235,7 +5247,17 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
       
       if (fallbackMeal) {
         console.log(`🔄 FALLBACK: Found similar recipe "${fallbackMeal.name}" for "${cleanMealName}"`);
-        fallbackMeal.ingredients.forEach(ingredient => {
+        
+        // Apply dietary substitutions to fallback ingredients as well
+        const substitutionResult = substituteIngredients(fallbackMeal.ingredients, dietaryTags);
+        const substitutedIngredients = substitutionResult.ingredients;
+        
+        // Log substitutions for debugging
+        if (substitutionResult.substitutions.length > 0) {
+          console.log(`🔄 Applied ${substitutionResult.substitutions.length} dietary substitutions for fallback ${fallbackMeal.name}`);
+        }
+        
+        substitutedIngredients.forEach(ingredient => {
           const cleanIngredient = cleanIngredientName(ingredient);
           const existing = ingredientAmounts.get(cleanIngredient);
           if (existing) {
@@ -5341,7 +5363,29 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'fresh chives': 'Fresh Herbs',
     'chives': 'Fresh Herbs',
     
-    // Dairy & Cheese (Fresh Department)
+    // Dairy & Cheese (Fresh Department) - Only actual dairy products
+    'parmesan cheese': 'Dairy & Cheese', // Aged, naturally lactose-free
+    'aged dutch cheese': 'Dairy & Cheese', // Aged, naturally lactose-free
+    
+    // Plant-Based Alternatives - Lactose-free substitutes
+    'dairy-free cheddar cheese': 'Plant-Based Alternatives',
+    'dairy-free cheddar': 'Plant-Based Alternatives',
+    'dairy-free cheese': 'Plant-Based Alternatives',
+    'dairy-free mozzarella': 'Plant-Based Alternatives',
+    'violife feta': 'Plant-Based Alternatives',
+    'dairy-free feta': 'Plant-Based Alternatives',
+    'dairy-free cream cheese': 'Plant-Based Alternatives',
+    'dairy-free cottage cheese': 'Plant-Based Alternatives',
+    'dairy-free ricotta': 'Plant-Based Alternatives',
+    'coconut yogurt': 'Plant-Based Alternatives',
+    'unsweetened coconut yogurt': 'Plant-Based Alternatives',
+    'oat milk': 'Plant-Based Alternatives',
+    'almond milk': 'Plant-Based Alternatives',
+    'vegan butter': 'Plant-Based Alternatives',
+    'coconut cream': 'Plant-Based Alternatives',
+    'dairy-free sour cream': 'Plant-Based Alternatives',
+    
+    // Legacy dairy items (only include if no substitution is applied)
     'cheese': 'Dairy & Cheese',
     'feta cheese': 'Dairy & Cheese',
     'goat cheese': 'Dairy & Cheese',

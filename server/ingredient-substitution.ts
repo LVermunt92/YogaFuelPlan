@@ -18,12 +18,18 @@ const LACTOSE_FREE_SUBSTITUTIONS: IngredientSubstitution[] = [
   { original: 'skim milk', substitute: 'almond milk', ratio: 1.0 },
   { original: '2% milk', substitute: 'oat milk', ratio: 1.0 },
   
-  // Cheese substitutions
+  // Cheese substitutions (allow aged cheeses which are naturally lactose-free)
   { original: 'cheddar cheese', substitute: 'dairy-free cheddar cheese', ratio: 1.0 },
+  { original: 'cheddar', substitute: 'dairy-free cheddar', ratio: 1.0 },
+  { original: 'cheese', substitute: 'dairy-free cheese', ratio: 1.0 },
   { original: 'mozzarella', substitute: 'dairy-free mozzarella', ratio: 1.0 },
-  { original: 'parmesan', substitute: 'nutritional yeast', ratio: 0.5, note: 'Nutritional yeast provides umami flavor' },
-  { original: 'feta cheese', substitute: 'dairy-free feta', ratio: 1.0 },
+  { original: 'parmesan', substitute: 'parmesan cheese', ratio: 1.0, note: 'Aged parmesan is naturally lactose-free' },
+  { original: 'aged cheese', substitute: 'aged Dutch cheese', ratio: 1.0, note: 'Aged Dutch cheese is naturally lactose-free' },
+  { original: 'old cheese', substitute: 'aged Dutch cheese', ratio: 1.0, note: 'Old cheese is naturally lactose-free' },
+  { original: 'feta cheese', substitute: 'Violife feta', ratio: 1.0, note: 'Plant-based feta alternative' },
+  { original: 'feta', substitute: 'Violife feta', ratio: 1.0, note: 'Plant-based feta alternative' },
   { original: 'cream cheese', substitute: 'dairy-free cream cheese', ratio: 1.0 },
+  { original: 'cottage cheese', substitute: 'dairy-free cottage cheese', ratio: 1.0 },
   
   // Yogurt substitutions
   { original: 'greek yogurt', substitute: 'coconut yogurt', ratio: 1.0 },
