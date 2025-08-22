@@ -152,7 +152,8 @@ function areMealsSimilar(meal1: string, meal2: string): boolean {
 function selectUnusedMeal(
   availableMeals: MealOption[], 
   usedMeals: Set<string>, 
-  allSelectedMeals?: Set<string>
+  allSelectedMeals?: Set<string>,
+  prioritizeCustom: boolean = false
 ): MealOption {
   if (availableMeals.length === 0) {
     throw new Error('No available meals to select from');
@@ -160,6 +161,15 @@ function selectUnusedMeal(
   
   // First try to find a meal that hasn't been used yet
   let unusedMeals = availableMeals.filter(meal => !usedMeals.has(meal.name));
+  
+  // Prioritize custom recipes if the switch is on
+  if (prioritizeCustom && unusedMeals.length > 0) {
+    const customMeals = unusedMeals.filter(meal => meal.tags.includes('custom'));
+    if (customMeals.length > 0) {
+      console.log(`🎯 PRIORITIZING CUSTOM: Found ${customMeals.length} custom recipes out of ${unusedMeals.length} available`);
+      unusedMeals = customMeals; // Use only custom recipes
+    }
+  }
   
   // If we have a global tracker, also filter out similar recipes across all categories
   if (allSelectedMeals && allSelectedMeals.size > 0) {
@@ -344,7 +354,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
       ingredients: recipe.ingredients,
       instructions: recipe.instructions,
       nutrition: recipe.nutrition || { protein: 15, calories: 400, carbohydrates: 40, fats: 15 },
-      tags: recipe.tags || [],
+      tags: [...(recipe.tags || []), 'custom'], // Always add 'custom' tag to user recipes
       prepTime: recipe.prepTime || 30,
       costEuros: recipe.costEuros || 3.0,
       proteinPerEuro: recipe.nutrition?.protein ? (recipe.nutrition.protein / (recipe.costEuros || 3.0)) : 5.0,
@@ -901,7 +911,7 @@ async function generateMealPrepPlan(
         ingredients: recipe.ingredients,
         instructions: recipe.instructions,
         nutrition: recipe.nutrition || { protein: 15, calories: 400, carbohydrates: 40, fats: 15 },
-        tags: recipe.tags || [],
+        tags: [...(recipe.tags || []), 'custom'], // Always add 'custom' tag to user recipes
         prepTime: recipe.prepTime || 30,
         costEuros: recipe.costEuros || 3.0,
         proteinPerEuro: recipe.nutrition?.protein ? (recipe.nutrition.protein / (recipe.costEuros || 3.0)) : 5.0,

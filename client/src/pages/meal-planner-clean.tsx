@@ -473,7 +473,8 @@ export default function MealPlanner() {
 
           {/* 2. Compact Nutrition Charts */}
           {currentMealPlan && kpiData && (
-            <div className="responsive-grid-4 mb-6 bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg">
+            <div className="flex justify-center mb-6">
+              <div className="responsive-grid-4 bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg max-w-4xl w-full">
               {/* Protein Chart - First position */}
               <div className="text-center">
                 <div className="relative w-20 h-20 mx-auto mb-1">
@@ -599,6 +600,7 @@ export default function MealPlanner() {
               </div>
 
 
+              </div>
             </div>
           )}
 
