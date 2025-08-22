@@ -638,6 +638,19 @@ export default function MyRecipes() {
             }
           </div>
         </div>
+        
+        {/* Construction Notice */}
+        <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
+          <div className="flex items-start gap-3">
+            <div className="text-amber-600 mt-0.5">🚧</div>
+            <div>
+              <h3 className="font-medium text-amber-900 text-sm">Fridge Integration Under Construction</h3>
+              <p className="text-amber-700 text-sm mt-1">
+                We're working on connecting your recipes with the fridge inventory system to suggest meals based on ingredients you already have. This feature will be available soon!
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {recipes.length === 0 ? (
