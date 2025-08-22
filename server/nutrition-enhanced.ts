@@ -4603,6 +4603,7 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
       const { storage } = await import('./storage');
       const userRecipes = await storage.getUserRecipes(userId);
       console.log(`🎯 CUSTOM RECIPES: Found ${userRecipes.length} user recipes for user ${userId}`);
+      console.log(`🎯 CUSTOM RECIPES DETAILS:`, userRecipes.map(r => ({ name: r.name, mealTypes: r.mealTypes, tags: r.tags })));
       
       if (userRecipes.length > 0) {
         const customMealsForCategory = userRecipes
