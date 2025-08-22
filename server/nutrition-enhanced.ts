@@ -5242,6 +5242,11 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
           return;
         }
         
+        // Skip empty ingredient names
+        if (!cleanIngredient || cleanIngredient.trim() === '') {
+          return;
+        }
+        
         const existing = ingredientAmounts.get(cleanIngredient);
         if (existing) {
           existing.count += 1;
@@ -5289,6 +5294,11 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
           
           // Skip water-related ingredients - people have tap water
           if (isWaterIngredient(cleanIngredient)) {
+            return;
+          }
+          
+          // Skip empty ingredient names
+          if (!cleanIngredient || cleanIngredient.trim() === '') {
             return;
           }
           
@@ -5359,6 +5369,9 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'tomatoes': 'Vegetables',
     'crushed tomatoes': 'Vegetables',
     'sun-dried tomatoes': 'Vegetables',
+    'fresh tomatoes': 'Vegetables',
+    'tomato': 'Vegetables',
+    'fresh tomato': 'Vegetables',
     'broccoli': 'Vegetables',
     'sugar snaps': 'Vegetables',
     'brussels sprouts': 'Vegetables',
@@ -5636,15 +5649,10 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'certified oats': 'Grains, Pasta & Canned Goods',
     'scoop vanilla protein powder': 'Other Dry Goods',
     'strawberries for topping': 'Fruits',
-    'cashews': 'Nuts, Seeds & Spreads',
-    'pine nuts': 'Nuts, Seeds & Spreads',
     'sesame seeds': 'Nuts, Seeds & Spreads',
-    'coconut flakes': 'Other Dry Goods',
     'spirulina': 'Other Dry Goods',
-    'plain flour': 'Baking & Cooking Basics',
     'coriander': 'Fresh Herbs',
-    'fresh coriander': 'Fresh Herbs',
-    'fennel seeds': 'Pantry Essentials'
+    'fresh coriander': 'Fresh Herbs'
   };
 
   // Function to normalize ingredient names for grocery shopping
@@ -5704,6 +5712,16 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     if (normalized.includes('garlic') && !normalized.includes('clove') && !normalized.includes('powder')) {
       // Convert generic "garlic" to "garlic cloves" for proper quantity display (but not garlic powder)
       normalized = normalized.replace(/\bgarlic\b/g, 'garlic cloves');
+    }
+    
+    // Simplify steel-cut oats variations to just "oats"
+    if (normalized.includes('steel-cut') && normalized.includes('oats')) {
+      normalized = normalized.replace(/steel-cut\s+(certified\s+)?oats/gi, 'oats');
+    }
+    
+    // Simplify rolled certified oats to just "oats"
+    if (normalized.includes('rolled') && normalized.includes('certified') && normalized.includes('oats')) {
+      normalized = normalized.replace(/rolled\s+certified\s+oats/gi, 'oats');
     }
     
     // Remove redundant words and clean up spacing
