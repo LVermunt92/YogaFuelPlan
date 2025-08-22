@@ -844,20 +844,20 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     name: "Wild mushroom and herb quinoa with roasted vegetables",
     portion: "2 servings",
     nutrition: { 
-      protein: 20, 
+      protein: 32, 
       prepTime: 35, 
-      calories: 420,
+      calories: 520,
       carbohydrates: 48,
-      fats: 18,
-      fiber: 12,
+      fats: 22,
+      fiber: 14,
       sugar: 8,
-      sodium: 320,
-      costEuros: 5.20, 
-      proteinPerEuro: 3.8 
+      sodium: 380,
+      costEuros: 6.40, 
+      proteinPerEuro: 5.0 
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "anti-inflammatory"],
-    ingredients: ["quinoa", "mixed wild mushrooms", "fresh herbs (parsley, thyme)", "zucchini", "red bell pepper", "carrots", "red onion", "pine nuts", "olive oil", "vegetable broth", "tahini", "lemon juice", "parmesan cheese"],
+    tags: ["vegetarian", "gluten-free", "anti-inflammatory", "high-protein"],
+    ingredients: ["quinoa", "mixed wild mushrooms", "fresh herbs (parsley, thyme)", "zucchini", "red bell pepper", "carrots", "red onion", "pine nuts", "olive oil", "vegetable broth", "tahini", "lemon juice", "parmesan cheese", "hemp hearts", "pumpkin seeds", "chickpeas", "nutritional yeast"],
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 4,
@@ -871,23 +871,25 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         "Sauté sliced mushrooms in 1 tbsp olive oil until golden, set aside",
         "Cook quinoa in 2 cups vegetable broth with 1 tbsp olive oil for 15 minutes",
         "Meanwhile, dice zucchini, bell pepper, carrots, and onion",
-        "Toss vegetables with 2 tbsp olive oil, salt, and pepper",
-        "Roast vegetables at 200°C for 25 minutes until tender and slightly caramelized",
-        "Toast pine nuts in dry pan for 2-3 minutes until golden",
-        "Make tahini dressing: whisk 2 tbsp tahini, 2 tbsp lemon juice, 1 tbsp olive oil, and 2-3 tbsp water until smooth",
-        "Fluff cooked quinoa and mix with extra 1 tbsp olive oil",
+        "Drain and rinse 1 can chickpeas, pat dry",
+        "Toss vegetables and chickpeas with 2 tbsp olive oil, salt, and pepper",
+        "Roast vegetables and chickpeas at 200°C for 25 minutes until tender and slightly caramelized",
+        "Toast pine nuts and pumpkin seeds in dry pan for 2-3 minutes until golden",
+        "Make protein-rich tahini dressing: whisk 2 tbsp tahini, 2 tbsp lemon juice, 1 tbsp olive oil, 1 tbsp nutritional yeast, and 2-3 tbsp water until smooth",
+        "Fluff cooked quinoa and mix with extra 1 tbsp olive oil and 2 tbsp hemp hearts",
         "Stir in mushrooms, fresh herbs, and half the tahini dressing",
-        "Top with roasted vegetables and toasted pine nuts",
+        "Top with roasted vegetables, chickpeas, toasted pine nuts and pumpkin seeds",
         "Drizzle with remaining tahini dressing and extra olive oil",
-        "Finish with freshly grated parmesan cheese to taste"
+        "Finish with freshly grated parmesan cheese and extra nutritional yeast to taste"
       ],
       tips: [
         "Use a variety of mushrooms for complex flavour",
         "Make extra tahini dressing - it keeps quinoa moist and adds protein",
         "Add vegetables while quinoa is still warm so flavors meld together",
-        "Pine nuts can be replaced with chopped almonds or walnuts"
+        "Hemp hearts and nutritional yeast boost protein while adding nutty flavor",
+        "Roasted chickpeas add satisfying crunch and substantial protein"
       ],
-      notes: "The tahini dressing prevents quinoa from being dry while adding healthy fats and protein. Extra olive oil throughout the cooking process ensures a moist, flavorful dish. Parmesan adds a nice umami flavor that complements the earthy mushrooms without overpowering the tahini dressing."
+      notes: "This protein-enhanced version delivers 32g protein through quinoa, chickpeas, hemp hearts, tahini, and parmesan. The tahini dressing prevents quinoa from being dry while adding healthy fats. Nutritional yeast provides B-vitamins and umami depth. The combination creates a deeply satisfying and appetizing meal."
     }
   },
   {
