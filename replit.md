@@ -6,6 +6,8 @@ Preferred communication style: Simple, everyday language.
 **CRITICAL DEVELOPMENT RULE**: Never remove existing functionality, features, or logic without explicit user permission. Always ask twice before removing anything. Only make additive changes unless specifically requested to remove features. Preserve all working functionality by default.
 
 ## Recent Fixes (August 22, 2025)
+- **Fridge Inventory System Implementation**: Created complete fridge inventory management system with database schema, API routes, and user interface for tracking existing ingredients, expiration dates, and priorities to optimize meal planning
+- **Recipe Enhancement - Wild Mushroom Quinoa**: Updated "Wild mushroom and herb quinoa with roasted vegetables" recipe per user feedback: removed garlic (was unusual combination), kept tahini dressing for moisture, and added parmesan cheese for umami flavor that complements the earthy mushrooms
 - **Comprehensive Ingredient Normalization System**: Created automatic grocery list optimization that removes cooking methods (steamed broccoli → broccoli, roasted vegetables → vegetables) and specifies generic plant-based milk terms (plant-based milk → oat milk) for practical grocery shopping
 - **Smart Milk Specification**: All generic plant milk terms now automatically convert to "oat milk" as the preferred dairy-free option, eliminating confusing redundant naming like "coconut oat milk"
 - **Automatic Cooking Method Removal**: Shopping lists now show clean ingredient names by removing preparation methods (steamed, chopped, fresh, frozen, etc.) that shoppers don't need when purchasing groceries

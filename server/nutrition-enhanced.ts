@@ -856,8 +856,8 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.8 
     },
     category: "dinner",
-    tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "anti-inflammatory"],
-    ingredients: ["quinoa", "mixed wild mushrooms", "fresh herbs (parsley, thyme)", "zucchini", "red bell pepper", "carrots", "red onion", "garlic", "pine nuts", "olive oil", "vegetable broth", "tahini", "lemon juice"],
+    tags: ["vegetarian", "gluten-free", "anti-inflammatory"],
+    ingredients: ["quinoa", "mixed wild mushrooms", "fresh herbs (parsley, thyme)", "zucchini", "red bell pepper", "carrots", "red onion", "pine nuts", "olive oil", "vegetable broth", "tahini", "lemon juice", "parmesan cheese"],
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 4,
@@ -878,7 +878,8 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         "Fluff cooked quinoa and mix with extra 1 tbsp olive oil",
         "Stir in mushrooms, fresh herbs, and half the tahini dressing",
         "Top with roasted vegetables and toasted pine nuts",
-        "Drizzle with remaining tahini dressing and extra olive oil"
+        "Drizzle with remaining tahini dressing and extra olive oil",
+        "Finish with freshly grated parmesan cheese to taste"
       ],
       tips: [
         "Use a variety of mushrooms for complex flavour",
@@ -886,7 +887,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         "Add vegetables while quinoa is still warm so flavors meld together",
         "Pine nuts can be replaced with chopped almonds or walnuts"
       ],
-      notes: "The tahini dressing prevents quinoa from being dry while adding healthy fats and protein. Extra olive oil throughout the cooking process ensures a moist, flavorful dish."
+      notes: "The tahini dressing prevents quinoa from being dry while adding healthy fats and protein. Extra olive oil throughout the cooking process ensures a moist, flavorful dish. Parmesan adds a nice umami flavor that complements the earthy mushrooms without overpowering the tahini dressing."
     }
   },
   {
