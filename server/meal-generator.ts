@@ -187,7 +187,13 @@ function incorporateLeftoverIngredients(meal: MealOption, ingredientsToUseUp: st
        (ingredient.includes('leafy') || ingredient.includes('green') || ingredient.includes('spinach') || 
         ingredient.includes('vegetable'))) ||
       ((leftoverLower.includes('tomato') || leftoverLower.includes('tomaat')) && 
-       (ingredient.includes('vegetable') || ingredient.includes('sauce') || ingredient.includes('tomato')))
+       (ingredient.includes('vegetable') || ingredient.includes('sauce') || ingredient.includes('tomato'))) ||
+      ((leftoverLower.includes('cauliflower') || leftoverLower.includes('bloemkool')) && 
+       (ingredient.includes('cauliflower') || ingredient.includes('rice') || ingredient.includes('vegetable') || 
+        ingredient.includes('roasted') || ingredient.includes('mash'))) ||
+      ((leftoverLower.includes('sugar snap') || leftoverLower.includes('sugarsnap') || leftoverLower.includes('snap pea')) && 
+       (ingredient.includes('pea') || ingredient.includes('vegetable') || ingredient.includes('green') || 
+        ingredient.includes('stir') || ingredient.includes('roasted')))
     );
     
     if (canIncorporate) {
