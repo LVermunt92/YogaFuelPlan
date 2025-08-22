@@ -4403,6 +4403,163 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   },
 
   {
+    name: "Gluten-free pasta with roasted vegetables and pesto",
+    portion: "2 cups pasta with vegetables",
+    nutrition: { 
+      protein: 22, 
+      prepTime: 30, 
+      calories: 450,
+      carbohydrates: 65,
+      fats: 18,
+      fiber: 8,
+      sugar: 8,
+      sodium: 420,
+      costEuros: 4.50, 
+      proteinPerEuro: 4.9 
+    },
+    category: "dinner",
+    tags: ["vegetarian", "gluten-free", "mediterranean", "colorful"],
+    ingredients: [
+      "200g gluten-free pasta (rice or chickpea)",
+      "2 cups mixed vegetables (zucchini, bell peppers, cherry tomatoes)",
+      "3 tbsp basil pesto (dairy-free)",
+      "2 tbsp pine nuts",
+      "2 tbsp nutritional yeast",
+      "45ml olive oil",
+      "2 cloves garlic (minced)",
+      "1 cup fresh spinach",
+      "Salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["zucchini", "bell peppers", "tomatoes", "spinach"],
+      benefits: ["Vitamin C", "Folate", "Antioxidants"]
+    },
+    recipe: {
+      instructions: [
+        "Cook gluten-free pasta according to package instructions",
+        "Heat olive oil in large pan over medium-high heat",
+        "Add garlic and mixed vegetables, roast for 8-10 minutes",
+        "Add cooked pasta to pan with vegetables",
+        "Stir in pesto, pine nuts, and nutritional yeast",
+        "Add fresh spinach until wilted",
+        "Season with salt and pepper"
+      ],
+      tips: [
+        "Don't overcook gluten-free pasta - check frequently",
+        "Toast pine nuts for extra flavor"
+      ],
+      notes: "Naturally gluten-free and packed with colorful vegetables"
+    }
+  },
+
+  {
+    name: "Creamy gluten-free pasta carbonara with dairy-free sauce",
+    portion: "1.5 cups pasta with sauce",
+    nutrition: { 
+      protein: 26, 
+      prepTime: 25, 
+      calories: 520,
+      carbohydrates: 62,
+      fats: 22,
+      fiber: 6,
+      sugar: 4,
+      sodium: 480,
+      costEuros: 3.80, 
+      proteinPerEuro: 6.8 
+    },
+    category: "dinner",
+    tags: ["vegetarian", "gluten-free", "lactose-free", "comfort-food"],
+    ingredients: [
+      "180g gluten-free pasta",
+      "200ml coconut cream",
+      "100g plant-based protein (tempeh or tofu)",
+      "50g nutritional yeast",
+      "2 cloves garlic (minced)",
+      "30ml olive oil",
+      "1 onion (diced)",
+      "2 tbsp fresh parsley",
+      "Black pepper and sea salt"
+    ],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["onion", "garlic"],
+      benefits: ["Prebiotic fiber", "Antioxidants"]
+    },
+    recipe: {
+      instructions: [
+        "Cook gluten-free pasta al dente",
+        "Cube and pan-fry protein until golden",
+        "Sauté onion and garlic in olive oil",
+        "Add coconut cream and nutritional yeast",
+        "Toss hot pasta with creamy sauce",
+        "Add protein and fresh parsley",
+        "Season generously with black pepper"
+      ],
+      tips: [
+        "Remove pan from heat when adding pasta to prevent curdling",
+        "Save pasta water to adjust sauce consistency"
+      ],
+      notes: "Rich, creamy texture without dairy - perfect comfort food"
+    }
+  },
+
+  {
+    name: "Mediterranean gluten-free pasta salad with olives",
+    portion: "2 cups pasta salad",
+    nutrition: { 
+      protein: 18, 
+      prepTime: 20, 
+      calories: 420,
+      carbohydrates: 55,
+      fats: 16,
+      fiber: 7,
+      sugar: 6,
+      sodium: 390,
+      costEuros: 3.60, 
+      proteinPerEuro: 5.0 
+    },
+    category: "lunch",
+    tags: ["vegetarian", "gluten-free", "mediterranean", "fresh", "make-ahead"],
+    ingredients: [
+      "180g gluten-free pasta (small shapes)",
+      "1 cup cherry tomatoes (halved)",
+      "100g mixed olives",
+      "1 cucumber (diced)",
+      "100g dairy-free feta cheese",
+      "60ml extra virgin olive oil",
+      "30ml lemon juice",
+      "2 tbsp fresh basil (chopped)",
+      "1 tsp dried oregano",
+      "Salt to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["tomatoes", "cucumber"],
+      benefits: ["Lycopene", "Hydration", "Vitamin K"]
+    },
+    recipe: {
+      instructions: [
+        "Cook pasta and rinse with cold water",
+        "Halve tomatoes and dice cucumber",
+        "Whisk olive oil, lemon juice, oregano, and salt",
+        "Combine pasta, vegetables, and olives",
+        "Add dressing and toss well",
+        "Crumble in dairy-free feta",
+        "Garnish with fresh basil before serving"
+      ],
+      tips: [
+        "Chill for 30 minutes before serving for best flavor",
+        "Add extra lemon juice if pasta absorbs dressing"
+      ],
+      notes: "Perfect make-ahead lunch, flavors improve over time"
+    }
+  },
+
+  {
     name: "Protein-packed vegetarian lentil bolognese",
     portion: "1.5 cups sauce with 100g pasta",
     nutrition: { 
@@ -4650,8 +4807,15 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
           
         console.log(`🎯 CUSTOM RECIPES: Adding ${customMealsForCategory.length} custom ${category} recipes: ${customMealsForCategory.map(m => m.name).join(', ')}`);
         
-        // Add custom recipes to unified pool (they'll be prioritized by the selection logic)
+        // Add custom recipes to unified pool with higher priority by putting them first
         allMeals = [...customMealsForCategory, ...allMeals];
+        
+        // Custom recipe prioritization: Move all "custom" tagged meals to the front
+        const customMeals = allMeals.filter(m => m.tags.includes('custom'));
+        const nonCustomMeals = allMeals.filter(m => !m.tags.includes('custom'));
+        allMeals = [...customMeals, ...nonCustomMeals];
+        
+        console.log(`🎯 PRIORITIZED: ${customMeals.length} custom recipes moved to front of ${allMeals.length} total meals`);
       }
     } catch (error) {
       console.warn(`Failed to load custom recipes for user ${userId}:`, error);
