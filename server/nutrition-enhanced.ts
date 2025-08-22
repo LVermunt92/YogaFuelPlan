@@ -4620,10 +4620,86 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   }
 ];
 
+// Function to automatically convert existing pasta recipes to gluten-free versions
+function convertPastaRecipesToGlutenFree(recipes: MealOption[]): MealOption[] {
+  const glutenFreeVersions: MealOption[] = [];
+  
+  for (const recipe of recipes) {
+    // Check if recipe mentions gluten-free substitution in notes or has pasta ingredients
+    const hasGlutenFreeNote = recipe.notes?.toLowerCase().includes('gluten-free pasta') || 
+                              recipe.notes?.toLowerCase().includes('substitute') && recipe.notes?.toLowerCase().includes('gluten');
+    const hasPastaIngredient = recipe.ingredients?.some(ing => 
+      ing.toLowerCase().includes('pasta') && !ing.toLowerCase().includes('gluten-free')
+    );
+    
+    // Skip if already gluten-free or not a convertible pasta recipe
+    if (recipe.tags.includes('gluten-free') || !(hasGlutenFreeNote || hasPastaIngredient)) {
+      continue;
+    }
+    
+    console.log(`🔄 CONVERTING: "${recipe.name}" has gluten-free note: ${hasGlutenFreeNote}, pasta ingredient: ${hasPastaIngredient}`);
+    
+    // Create gluten-free version
+    const glutenFreeVersion: MealOption = {
+      ...recipe,
+      name: `Gluten-free ${recipe.name.toLowerCase()}`,
+      tags: [...recipe.tags.filter(tag => tag !== 'wheat'), 'gluten-free', 'vegetarian'],
+      ingredients: recipe.ingredients?.map(ingredient => {
+        // Convert regular pasta to gluten-free
+        if (ingredient.toLowerCase().includes('pasta') && !ingredient.toLowerCase().includes('gluten-free')) {
+          return ingredient.replace(/\d+g\s*pasta/g, '$&').replace('pasta', 'gluten-free pasta (rice or chickpea)');
+        }
+        
+        // Convert other gluten ingredients
+        if (ingredient.toLowerCase().includes('wheat')) {
+          return ingredient.replace(/wheat/gi, 'gluten-free');
+        }
+        
+        // Auto-convert to dairy-free for lactose intolerance
+        if (ingredient.toLowerCase().includes('parmesan')) {
+          return ingredient.replace(/parmesan/gi, 'nutritional yeast');
+        }
+        if (ingredient.toLowerCase().includes('butter') && !ingredient.toLowerCase().includes('nut')) {
+          return ingredient.replace(/butter/gi, 'vegan butter');
+        }
+        if (ingredient.toLowerCase().includes('cream') && !ingredient.toLowerCase().includes('coconut')) {
+          return ingredient.replace(/cream/gi, 'coconut cream');
+        }
+        
+        return ingredient;
+      }),
+      recipe: recipe.recipe ? {
+        ...recipe.recipe,
+        notes: `Dedicated gluten-free version with dairy-free options. ${recipe.recipe.notes || ''}`.trim(),
+        tips: [
+          ...(recipe.recipe.tips || []),
+          "Use rice or chickpea pasta for best texture",
+          "Don't overcook gluten-free pasta - check frequently"
+        ]
+      } : undefined,
+      notes: `Gluten-free and dairy-free version of the original recipe. Perfect for multiple dietary restrictions.`
+    };
+    
+    glutenFreeVersions.push(glutenFreeVersion);
+  }
+  
+  console.log(`🔄 AUTO-CONVERTED: Created ${glutenFreeVersions.length} gluten-free pasta versions`);
+  return glutenFreeVersions;
+}
+
 // Function to get complete unified meal database (now contains all recipes in one place)
 export function getCompleteEnhancedMealDatabase(): MealOption[] {
-  console.log(`📊 Unified meal database: ${ENHANCED_MEAL_DATABASE.length} total recipes available`);
-  return ENHANCED_MEAL_DATABASE;
+  // Get base recipes
+  const baseRecipes = [...ENHANCED_MEAL_DATABASE];
+  
+  // Auto-convert pasta recipes with gluten-free notes to dedicated versions
+  const autoConvertedRecipes = convertPastaRecipesToGlutenFree(baseRecipes);
+  
+  // Combine all recipes
+  const allRecipes = [...baseRecipes, ...autoConvertedRecipes];
+  
+  console.log(`📊 Unified meal database: ${baseRecipes.length} base + ${autoConvertedRecipes.length} auto-converted = ${allRecipes.length} total recipes`);
+  return allRecipes;
 }
 
 // Function to get meals from unified database filtered by dietary requirements
