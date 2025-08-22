@@ -5647,8 +5647,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'honey': 'Pantry Essentials',
     'mustard powder': 'Pantry Essentials',
     'fennel seeds': 'Pantry Essentials',
-    'pine nuts': 'Nuts, Seeds & Spreads',
-    'cashews': 'Nuts, Seeds & Spreads',
+
     'coconut': 'Other Dry Goods',
     'coconut flakes': 'Other Dry Goods',
     'rolled certified oats': 'Grains, Pasta & Canned Goods',
@@ -5657,7 +5656,6 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'certified oats': 'Grains, Pasta & Canned Goods',
     'scoop vanilla protein powder': 'Other Dry Goods',
     'strawberries for topping': 'Fruits',
-    'sesame seeds': 'Nuts, Seeds & Spreads',
     'spirulina': 'Other Dry Goods',
     'coriander': 'Fresh Herbs',
     'fresh coriander': 'Fresh Herbs'

@@ -6,6 +6,7 @@ import {
   mealHistory,
   mealFavorites,
   userRecipes,
+  fridgeInventory,
   type User, 
   type InsertUser,
   type UpdateUserProfile, 
@@ -24,6 +25,9 @@ import {
   type UserRecipe,
   type InsertUserRecipe,
   type UpdateUserRecipe,
+  type FridgeItem,
+  type InsertFridgeItem,
+  type UpdateFridgeItem,
   passwordResetCodes,
   type PasswordResetCode,
   type InsertPasswordResetCode,
@@ -68,6 +72,14 @@ export interface IStorage {
   getUserRecipe(id: number, userId: number): Promise<UserRecipe | undefined>;
   updateUserRecipe(id: number, userId: number, updates: UpdateUserRecipe): Promise<UserRecipe>;
   deleteUserRecipe(id: number, userId: number): Promise<void>;
+  // Fridge Inventory methods
+  addFridgeItem(data: InsertFridgeItem): Promise<FridgeItem>;
+  getFridgeItems(userId: number, includeUsed?: boolean): Promise<FridgeItem[]>;
+  getFridgeItem(id: number, userId: number): Promise<FridgeItem | undefined>;
+  updateFridgeItem(id: number, userId: number, updates: UpdateFridgeItem): Promise<FridgeItem>;
+  deleteFridgeItem(id: number, userId: number): Promise<void>;
+  markFridgeItemAsUsed(id: number, userId: number): Promise<void>;
+  getFridgeItemsByIngredient(userId: number, ingredientName: string): Promise<FridgeItem[]>;
 }
 
 export class MemStorage implements IStorage {
@@ -485,6 +497,56 @@ export class MemStorage implements IStorage {
 
   async isFavorite(userId: number, mealName: string): Promise<boolean> {
     return false;
+  }
+
+  // User Recipe methods (MemStorage - not implemented)
+  async createUserRecipe(data: InsertUserRecipe): Promise<UserRecipe> {
+    throw new Error("User recipes storage requires DatabaseStorage implementation");
+  }
+
+  async getUserRecipes(userId: number): Promise<UserRecipe[]> {
+    return [];
+  }
+
+  async getUserRecipe(id: number, userId: number): Promise<UserRecipe | undefined> {
+    return undefined;
+  }
+
+  async updateUserRecipe(id: number, userId: number, updates: UpdateUserRecipe): Promise<UserRecipe> {
+    throw new Error("User recipes storage requires DatabaseStorage implementation");
+  }
+
+  async deleteUserRecipe(id: number, userId: number): Promise<void> {
+    // No-op for MemStorage
+  }
+
+  // Fridge Inventory methods (MemStorage - not implemented)
+  async addFridgeItem(data: InsertFridgeItem): Promise<FridgeItem> {
+    throw new Error("Fridge inventory storage requires DatabaseStorage implementation");
+  }
+
+  async getFridgeItems(userId: number, includeUsed?: boolean): Promise<FridgeItem[]> {
+    return [];
+  }
+
+  async getFridgeItem(id: number, userId: number): Promise<FridgeItem | undefined> {
+    return undefined;
+  }
+
+  async updateFridgeItem(id: number, userId: number, updates: UpdateFridgeItem): Promise<FridgeItem> {
+    throw new Error("Fridge inventory storage requires DatabaseStorage implementation");
+  }
+
+  async deleteFridgeItem(id: number, userId: number): Promise<void> {
+    // No-op for MemStorage
+  }
+
+  async markFridgeItemAsUsed(id: number, userId: number): Promise<void> {
+    // No-op for MemStorage
+  }
+
+  async getFridgeItemsByIngredient(userId: number, ingredientName: string): Promise<FridgeItem[]> {
+    return [];
   }
 }
 
@@ -966,6 +1028,79 @@ export class DatabaseStorage implements IStorage {
         eq(userRecipes.id, id),
         eq(userRecipes.userId, userId)
       ));
+  }
+
+  // Fridge Inventory methods
+  async addFridgeItem(data: InsertFridgeItem): Promise<FridgeItem> {
+    const [item] = await db.insert(fridgeInventory).values(data).returning();
+    return item;
+  }
+
+  async getFridgeItems(userId: number, includeUsed: boolean = false): Promise<FridgeItem[]> {
+    const conditions = [eq(fridgeInventory.userId, userId)];
+    if (!includeUsed) {
+      conditions.push(eq(fridgeInventory.isUsed, false));
+    }
+    
+    return await db
+      .select()
+      .from(fridgeInventory)
+      .where(and(...conditions))
+      .orderBy(desc(fridgeInventory.priority), fridgeInventory.expirationDate);
+  }
+
+  async getFridgeItem(id: number, userId: number): Promise<FridgeItem | undefined> {
+    const [item] = await db
+      .select()
+      .from(fridgeInventory)
+      .where(and(
+        eq(fridgeInventory.id, id),
+        eq(fridgeInventory.userId, userId)
+      ));
+    return item || undefined;
+  }
+
+  async updateFridgeItem(id: number, userId: number, updates: UpdateFridgeItem): Promise<FridgeItem> {
+    const [item] = await db
+      .update(fridgeInventory)
+      .set(updates)
+      .where(and(
+        eq(fridgeInventory.id, id),
+        eq(fridgeInventory.userId, userId)
+      ))
+      .returning();
+    return item;
+  }
+
+  async deleteFridgeItem(id: number, userId: number): Promise<void> {
+    await db
+      .delete(fridgeInventory)
+      .where(and(
+        eq(fridgeInventory.id, id),
+        eq(fridgeInventory.userId, userId)
+      ));
+  }
+
+  async markFridgeItemAsUsed(id: number, userId: number): Promise<void> {
+    await db
+      .update(fridgeInventory)
+      .set({ isUsed: true })
+      .where(and(
+        eq(fridgeInventory.id, id),
+        eq(fridgeInventory.userId, userId)
+      ));
+  }
+
+  async getFridgeItemsByIngredient(userId: number, ingredientName: string): Promise<FridgeItem[]> {
+    return await db
+      .select()
+      .from(fridgeInventory)
+      .where(and(
+        eq(fridgeInventory.userId, userId),
+        eq(fridgeInventory.ingredient, ingredientName),
+        eq(fridgeInventory.isUsed, false)
+      ))
+      .orderBy(desc(fridgeInventory.priority), fridgeInventory.expirationDate);
   }
 }
 
