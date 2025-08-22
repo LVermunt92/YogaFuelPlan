@@ -11,6 +11,7 @@ Preferred communication style: Simple, everyday language.
 - **Automatic Cooking Method Removal**: Shopping lists now show clean ingredient names by removing preparation methods (steamed, chopped, fresh, frozen, etc.) that shoppers don't need when purchasing groceries
 - **Smart Garlic Quantity Display**: Garlic ingredients now automatically specify "garlic cloves" to show proper quantities (e.g., "3 garlic cloves" instead of just "Garlic") while preserving "garlic powder" unchanged
 - **Complete Onion Categorization**: All onion varieties (red, white, yellow, brown, sweet onions) now properly categorize under "Vegetables" section in shopping lists
+- **Enhanced Seed & Nut Categorization**: Pumpkin seeds, flax seeds, and all other seeds/nuts now properly categorize under "Nuts, Seeds & Spreads" section for organized grocery shopping
 
 ## Previous Fixes (August 21, 2025)
 - **Date Restriction Implementation**: Added validation to limit meal plan generation to current week and next week only, preventing future meal plans
