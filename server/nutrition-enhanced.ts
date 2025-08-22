@@ -4592,11 +4592,12 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
 }
 
 export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' | 'lunch' | 'dinner', dietaryTags: string[] = [], userId?: number): Promise<MealOption[]> {
-  console.log(`🎯 ASYNC FUNCTION START: category=${category}, userId=${userId}, tags=[${dietaryTags.join(', ')}]`);
+  console.log(`🎯 STREAMLINED APPROACH: category=${category}, userId=${userId}, tags=[${dietaryTags.join(', ')}]`);
   
-  let allMeals: MealOption[] = [];
+  // Start with curated database meals
+  let allMeals: MealOption[] = getEnhancedMealsByCategory(category);
   
-  // STEP 1: Add user's custom recipes FIRST (priority placement)
+  // Add custom recipes to the unified pool with "custom" tag
   if (userId) {
     try {
       const { storage } = await import('./storage');
@@ -4604,8 +4605,7 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
       console.log(`🎯 CUSTOM RECIPES: Found ${userRecipes.length} user recipes for user ${userId}`);
       
       if (userRecipes.length > 0) {
-        // Filter user recipes by meal type and convert to MealOption format
-        const userMealsForCategory = userRecipes
+        const customMealsForCategory = userRecipes
           .filter(recipe => recipe.mealTypes && recipe.mealTypes.includes(category))
           .map(recipe => {
             try {
@@ -4626,7 +4626,7 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
                   proteinPerEuro: ((recipe as any).nutrition?.protein || 15) / ((recipe as any).costEuros || 3.0)
                 },
                 category: category,
-                tags: recipe.tags || [],
+                tags: [...(recipe.tags || []), 'custom'], // Add "custom" tag for priority handling
                 wholeFoodLevel: 'moderate',
                 vegetableContent: {
                   servings: 1,
@@ -4647,20 +4647,19 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
           })
           .filter(recipe => recipe !== null) as MealOption[];
           
-        console.log(`🎯 CUSTOM RECIPES: Added ${userMealsForCategory.length} custom ${category} recipes: ${userMealsForCategory.map(m => m.name).join(', ')}`);
-        allMeals = [...userMealsForCategory];
+        console.log(`🎯 CUSTOM RECIPES: Adding ${customMealsForCategory.length} custom ${category} recipes: ${customMealsForCategory.map(m => m.name).join(', ')}`);
+        
+        // Add custom recipes to unified pool (they'll be prioritized by the selection logic)
+        allMeals = [...customMealsForCategory, ...allMeals];
       }
     } catch (error) {
       console.warn(`Failed to load custom recipes for user ${userId}:`, error);
     }
   }
   
-  // STEP 2: Add curated database meals
-  const categoryMeals = getEnhancedMealsByCategory(category);
-  allMeals = [...allMeals, ...categoryMeals];
-  console.log(`🔍 DEBUGGING CURATED: Total meals: ${allMeals.length} (${allMeals.length - categoryMeals.length} custom + ${categoryMeals.length} curated)`);
+  console.log(`🔍 UNIFIED POOL: ${allMeals.length} total ${category} meals (${allMeals.filter(m => m.tags.includes('custom')).length} custom + ${allMeals.filter(m => !m.tags.includes('custom')).length} curated)`);
   
-  // Filter meals by dietary tags (protein targets handled automatically by activity level)
+  // Filter meals by dietary tags using existing logic
   let filteredMeals = filterEnhancedMealsByDietaryTags(allMeals, dietaryTags);
   
   console.log(`🔍 DEBUGGING CURATED: After dietary filtering: ${filteredMeals.length} ${category} meals`);
