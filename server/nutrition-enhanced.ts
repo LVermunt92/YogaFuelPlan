@@ -5593,6 +5593,12 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
       }
     }
     
+    // Special handling for garlic - preserve clove specification for proper quantities
+    if (normalized.includes('garlic') && !normalized.includes('clove') && !normalized.includes('powder')) {
+      // Convert generic "garlic" to "garlic cloves" for proper quantity display (but not garlic powder)
+      normalized = normalized.replace(/\bgarlic\b/g, 'garlic cloves');
+    }
+    
     // Remove redundant words and clean up spacing
     normalized = normalized
       .replace(/\s+/g, ' ') // Multiple spaces → single space
@@ -5614,6 +5620,11 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
       'soy sauce', 'tamari', 'vinegar', 'lemon juice', 'lime juice', 'nutritional yeast',
       'fennel seeds', 'mustard powder', 'stevia'
     ];
+    
+    // Garlic cloves should always show quantity (e.g., "3 garlic cloves" not just "Garlic cloves")
+    if (ingredient.toLowerCase().includes('garlic cloves') || ingredient.toLowerCase().includes('garlic clove')) {
+      return false; // Always show quantity for garlic cloves
+    }
     
     // Check if it's a spice/seasoning or very small quantity
     const isSpice = spicesAndSeasonings.some(spice => ingredient.toLowerCase().includes(spice));

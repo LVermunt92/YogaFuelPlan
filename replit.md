@@ -9,6 +9,8 @@ Preferred communication style: Simple, everyday language.
 - **Comprehensive Ingredient Normalization System**: Created automatic grocery list optimization that removes cooking methods (steamed broccoli → broccoli, roasted vegetables → vegetables) and specifies generic plant-based milk terms (plant-based milk → oat milk) for practical grocery shopping
 - **Smart Milk Specification**: All generic plant milk terms now automatically convert to "oat milk" as the preferred dairy-free option, eliminating confusing redundant naming like "coconut oat milk"
 - **Automatic Cooking Method Removal**: Shopping lists now show clean ingredient names by removing preparation methods (steamed, chopped, fresh, frozen, etc.) that shoppers don't need when purchasing groceries
+- **Smart Garlic Quantity Display**: Garlic ingredients now automatically specify "garlic cloves" to show proper quantities (e.g., "3 garlic cloves" instead of just "Garlic") while preserving "garlic powder" unchanged
+- **Complete Onion Categorization**: All onion varieties (red, white, yellow, brown, sweet onions) now properly categorize under "Vegetables" section in shopping lists
 
 ## Previous Fixes (August 21, 2025)
 - **Date Restriction Implementation**: Added validation to limit meal plan generation to current week and next week only, preventing future meal plans

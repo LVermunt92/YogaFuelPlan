@@ -98,6 +98,14 @@ export function specifyIngredients(ingredients: string[]): string[] {
       return; // Skip further processing
     }
     
+    // Priority check for garlic - always specify as "garlic cloves" for proper quantities
+    if (lowerIngredient.includes('garlic') && !lowerIngredient.includes('clove') && !lowerIngredient.includes('powder')) {
+      const garlicSpecified = ingredient.replace(/\bgarlic\b/gi, 'garlic cloves');
+      result.push(garlicSpecified);
+      console.log(`🧄 Garlic specification: "${ingredient}" → "${garlicSpecified}"`);
+      return; // Skip further processing
+    }
+    
     // Find matching specification
     for (const spec of INGREDIENT_SPECIFICATIONS) {
       if (lowerIngredient.includes(spec.generic.toLowerCase())) {
