@@ -5547,6 +5547,53 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'fennel seeds': 'Pantry Essentials'
   };
 
+  // Function to normalize ingredient names for grocery shopping
+  const normalizeIngredientForGrocery = (ingredient: string): string => {
+    let normalized = ingredient.toLowerCase().trim();
+    
+    // Remove cooking methods - people buy the raw ingredient
+    const cookingMethods = [
+      'steamed', 'roasted', 'sautéed', 'grilled', 'baked', 'boiled', 'fried',
+      'fresh', 'cooked', 'raw', 'frozen', 'chopped', 'diced', 'sliced',
+      'minced', 'crushed', 'ground', 'whole', 'dried', 'canned'
+    ];
+    
+    cookingMethods.forEach(method => {
+      // Remove method at beginning (e.g., "steamed broccoli" → "broccoli")
+      normalized = normalized.replace(new RegExp(`^${method}\\s+`, 'g'), '');
+      // Remove method in middle (e.g., "broccoli, steamed" → "broccoli")
+      normalized = normalized.replace(new RegExp(`\\s*,?\\s*${method}\\s*`, 'g'), ' ');
+    });
+    
+    // Specify generic plant-based milk terms to specific types
+    const milkSpecifications: Record<string, string> = {
+      'plant milk': 'oat milk',
+      'plant-based milk': 'oat milk', 
+      'non-dairy milk': 'oat milk',
+      'dairy-free milk': 'oat milk',
+      'unsweetened plant milk': 'unsweetened oat milk',
+      'plant oat milk': 'oat milk', // Fix redundant naming
+      'almond oat milk': 'oat milk', // Standardize to oat milk as preferred
+      'coconut oat milk': 'oat milk'
+    };
+    
+    // Apply milk specifications
+    for (const [generic, specific] of Object.entries(milkSpecifications)) {
+      if (normalized.includes(generic)) {
+        normalized = normalized.replace(generic, specific);
+      }
+    }
+    
+    // Remove redundant words and clean up spacing
+    normalized = normalized
+      .replace(/\s+/g, ' ') // Multiple spaces → single space
+      .replace(/^\s+|\s+$/g, '') // Trim
+      .replace(/\s*,\s*$/, ''); // Remove trailing comma
+    
+    // Capitalize first letter for display
+    return normalized.charAt(0).toUpperCase() + normalized.slice(1);
+  };
+
   // Function to determine if an ingredient should show clean name instead of quantity
   const shouldShowCleanName = (ingredient: string, category: string, totalAmount: number, unit: string): boolean => {
     // Small spices/seasonings - show just the name for grocery shopping convenience
@@ -5583,8 +5630,8 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
       const separateIngredients = finalIngredient.split(',').map(item => item.trim());
       
       separateIngredients.forEach(separateIngredient => {
-        // Capitalize first letter of ingredient name for display
-        const capitalizedIngredient = separateIngredient.charAt(0).toUpperCase() + separateIngredient.slice(1);
+        // Normalize ingredient name for grocery shopping (remove cooking methods, specify milk types)
+        const normalizedIngredient = normalizeIngredientForGrocery(separateIngredient);
         
         // Try to get category for the specific ingredient, fallback to original, then fallback to 'Fruits' for berries
         const category = ingredientCategories[separateIngredient.toLowerCase()] || ingredientCategories[ingredient.toLowerCase()] || 'Fruits';
@@ -5595,11 +5642,11 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
         
         // For spices and small pantry items, show just the ingredient name
         const finalDisplayAmount = shouldShowCleanName(separateIngredient, category, proportionalAmount, amounts.unit) 
-          ? capitalizedIngredient 
+          ? normalizedIngredient 
           : displayAmount;
         
         shoppingList.push({
-          ingredient: capitalizedIngredient,
+          ingredient: normalizedIngredient,
           category,
           count: amounts.count,
           totalAmount: finalDisplayAmount,
@@ -5607,8 +5654,8 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
         });
       });
     } else {
-      // Capitalize first letter of ingredient name for display
-      finalIngredient = finalIngredient.charAt(0).toUpperCase() + finalIngredient.slice(1);
+      // Normalize ingredient name for grocery shopping (remove cooking methods, specify milk types)
+      const normalizedIngredient = normalizeIngredientForGrocery(finalIngredient);
       
       const category = ingredientCategories[ingredient.toLowerCase()] || 'Other';
       
@@ -5617,14 +5664,14 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
       
       // For spices and small pantry items, show just the ingredient name
       const finalDisplayAmount = shouldShowCleanName(ingredient, category, amounts.totalAmount, amounts.unit) 
-        ? finalIngredient 
+        ? normalizedIngredient 
         : displayAmount;
       
       // Determine final unit after conversion
       const finalUnit = amounts.unit;
       
       shoppingList.push({
-        ingredient: finalIngredient,
+        ingredient: normalizedIngredient,
         category,
         count: amounts.count,
         totalAmount: finalDisplayAmount,

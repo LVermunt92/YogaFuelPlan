@@ -5,7 +5,12 @@ This full-stack meal planning application generates personalized weekly meal pla
 Preferred communication style: Simple, everyday language.
 **CRITICAL DEVELOPMENT RULE**: Never remove existing functionality, features, or logic without explicit user permission. Always ask twice before removing anything. Only make additive changes unless specifically requested to remove features. Preserve all working functionality by default.
 
-## Recent Fixes (August 21, 2025)
+## Recent Fixes (August 22, 2025)
+- **Comprehensive Ingredient Normalization System**: Created automatic grocery list optimization that removes cooking methods (steamed broccoli → broccoli, roasted vegetables → vegetables) and specifies generic plant-based milk terms (plant-based milk → oat milk) for practical grocery shopping
+- **Smart Milk Specification**: All generic plant milk terms now automatically convert to "oat milk" as the preferred dairy-free option, eliminating confusing redundant naming like "coconut oat milk"
+- **Automatic Cooking Method Removal**: Shopping lists now show clean ingredient names by removing preparation methods (steamed, chopped, fresh, frozen, etc.) that shoppers don't need when purchasing groceries
+
+## Previous Fixes (August 21, 2025)
 - **Date Restriction Implementation**: Added validation to limit meal plan generation to current week and next week only, preventing future meal plans
 - **Custom Recipe Prioritization**: Fixed property mapping issue where `useOnlyMyRecipes` wasn't reading the correct database field `use_only_my_recipes`
 - **Vegetarian Dietary Filtering**: Enhanced dietary filtering to properly exclude non-vegetarian meals for vegetarian users in both curated and custom recipe systems
