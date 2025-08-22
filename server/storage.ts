@@ -526,7 +526,24 @@ export class MemStorage implements IStorage {
   }
 
   async getFridgeItems(userId: number, includeUsed?: boolean): Promise<FridgeItem[]> {
-    return [];
+    let query = db
+      .select()
+      .from(fridgeInventory)
+      .where(eq(fridgeInventory.userId, userId));
+
+    if (!includeUsed) {
+      query = query.where(and(
+        eq(fridgeInventory.userId, userId),
+        eq(fridgeInventory.used, false)
+      ));
+    }
+
+    const items = await query.orderBy(
+      fridgeInventory.priority, 
+      fridgeInventory.expirationDate
+    );
+    
+    return items;
   }
 
   async getFridgeItem(id: number, userId: number): Promise<FridgeItem | undefined> {
@@ -1039,7 +1056,7 @@ export class DatabaseStorage implements IStorage {
   async getFridgeItems(userId: number, includeUsed: boolean = false): Promise<FridgeItem[]> {
     const conditions = [eq(fridgeInventory.userId, userId)];
     if (!includeUsed) {
-      conditions.push(eq(fridgeInventory.isUsed, false));
+      conditions.push(eq(fridgeInventory.used, false));
     }
     
     return await db
@@ -1084,7 +1101,7 @@ export class DatabaseStorage implements IStorage {
   async markFridgeItemAsUsed(id: number, userId: number): Promise<void> {
     await db
       .update(fridgeInventory)
-      .set({ isUsed: true })
+      .set({ used: true })
       .where(and(
         eq(fridgeInventory.id, id),
         eq(fridgeInventory.userId, userId)

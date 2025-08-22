@@ -176,7 +176,7 @@ export const fridgeInventory = pgTable("fridge_inventory", {
   category: text("category"), // Vegetables, Proteins, etc.
   expirationDate: date("expiration_date"),
   addedDate: timestamp("added_date").defaultNow(),
-  isUsed: boolean("is_used").default(false), // marked as used when incorporated into meal plan
+  used: boolean("used").default(false), // marked as used when incorporated into meal plan
   priority: integer("priority").default(1), // 1-5, higher number = use first (expiring soon)
   notes: text("notes"), // storage notes, condition, etc.
 });
