@@ -30,7 +30,11 @@ async function getFridgeInventoryIngredients(userId: number): Promise<string[]> 
     
     // Convert fridge items to ingredient names, prioritizing high priority and soon-to-expire items
     const priorityIngredients = fridgeItems
-      .filter(item => item.priority === 'high' || (item.expirationDate && new Date(item.expirationDate) <= new Date(Date.now() + 7 * 24 * 60 * 60 * 1000))) // within 7 days
+      .filter(item => 
+        (typeof item.priority === 'string' && item.priority === 'high') || 
+        (typeof item.priority === 'number' && item.priority >= 3) ||
+        (item.expirationDate && new Date(item.expirationDate) <= new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)) // within 7 days
+      )
       .map(item => item.ingredient.toLowerCase());
     
     console.log(`🧊 Found ${fridgeItems.length} fridge items, ${priorityIngredients.length} priority ingredients: ${JSON.stringify(priorityIngredients)}`);
@@ -49,9 +53,28 @@ function scoreMealsByFridgeInventory(meals: MealOption[], fridgeIngredients: str
   
   return meals.map(meal => {
     const ingredientMatches = meal.ingredients.filter(ingredient => 
-      fridgeIngredients.some(fridgeItem => 
-        ingredient.toLowerCase().includes(fridgeItem) || fridgeItem.includes(ingredient.toLowerCase().split(' ')[0])
-      )
+      fridgeIngredients.some(fridgeItem => {
+        const lowerIngredient = ingredient.toLowerCase();
+        const lowerFridgeItem = fridgeItem.toLowerCase();
+        
+        // Direct substring match
+        if (lowerIngredient.includes(lowerFridgeItem) || lowerFridgeItem.includes(lowerIngredient)) {
+          return true;
+        }
+        
+        // Word-based matching for compound ingredients like "cauliflower rice"
+        const fridgeWords = lowerFridgeItem.split(' ');
+        const ingredientWords = lowerIngredient.split(' ');
+        
+        // Check if all words from fridge item appear in meal ingredient
+        const allWordsMatch = fridgeWords.every(fridgeWord => 
+          ingredientWords.some(ingredientWord => 
+            ingredientWord.includes(fridgeWord) || fridgeWord.includes(ingredientWord)
+          )
+        );
+        
+        return allWordsMatch;
+      })
     );
     
     const fridgeScore = ingredientMatches.length;
