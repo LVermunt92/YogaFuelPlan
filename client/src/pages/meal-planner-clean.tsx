@@ -993,8 +993,8 @@ export default function MealPlanner() {
                                   dinner.foodDescription === 'Eating out'
                                     ? 'border-gray-400 bg-gray-50'
                                     : dinner.foodDescription.includes('(leftover)') 
-                                      ? 'border-blue-400 bg-blue-50' 
-                                      : 'border-green-400 bg-green-50'
+                                      ? 'border-blue-400 bg-blue-50 dark:bg-blue-950/20' 
+                                      : 'border-green-400 bg-green-50 dark:bg-green-950/20'
                                 }`}
                                 onClick={() => setSelectedMealId(dinner.id)}
                               >
@@ -1030,8 +1030,8 @@ export default function MealPlanner() {
                                     breakfast.foodDescription === 'Eating out'
                                       ? 'border-gray-400 bg-gray-50'
                                       : breakfast.foodDescription.includes('(leftover)') 
-                                        ? 'border-blue-400 bg-blue-50' 
-                                        : 'border-green-400 bg-green-50'
+                                        ? 'border-blue-400 bg-blue-50 dark:bg-blue-950/20' 
+                                        : 'border-green-400 bg-green-50 dark:bg-green-950/20'
                                   }`}
                                   onClick={() => setSelectedMealId(breakfast.id)}
                                 >
@@ -1067,8 +1067,8 @@ export default function MealPlanner() {
                                     lunch.foodDescription === 'Eating out'
                                       ? 'border-gray-400 bg-gray-50'
                                       : lunch.foodDescription.includes('(leftover)') 
-                                        ? 'border-blue-400 bg-blue-50' 
-                                        : 'border-green-400 bg-green-50'
+                                        ? 'border-blue-400 bg-blue-50 dark:bg-blue-950/20' 
+                                        : 'border-green-400 bg-green-50 dark:bg-green-950/20'
                                   }`}
                                   onClick={() => setSelectedMealId(lunch.id)}
                                 >
@@ -1104,8 +1104,8 @@ export default function MealPlanner() {
                                     dinner.foodDescription === 'Eating out'
                                       ? 'border-gray-400 bg-gray-50'
                                       : dinner.foodDescription.includes('(leftover)') 
-                                        ? 'border-blue-400 bg-blue-50' 
-                                        : 'border-green-400 bg-green-50'
+                                        ? 'border-blue-400 bg-blue-50 dark:bg-blue-950/20' 
+                                        : 'border-green-400 bg-green-50 dark:bg-green-950/20'
                                   }`}
                                   onClick={() => setSelectedMealId(dinner.id)}
                                 >
@@ -1171,7 +1171,7 @@ export default function MealPlanner() {
                               const dayIsLeftover = isLeftoverDay(day);
                               
                               return (
-                                <tr key={day} className={dayIsCooking ? 'bg-green-50' : dayIsLeftover ? 'bg-blue-50' : ''}>
+                                <tr key={day} className={dayIsCooking ? 'bg-green-50 dark:bg-green-950/20' : dayIsLeftover ? 'bg-blue-50 dark:bg-blue-950/20' : 'bg-white dark:bg-gray-900'}>
                                   <td className="px-2 py-4">
                                     <div className="flex flex-col items-start gap-1">
                                       <span className="text-xs font-medium text-gray-900">{dayNames[day - 1].slice(0, 3)}</span>
@@ -1401,7 +1401,7 @@ export default function MealPlanner() {
                 {recipeData.notes && (
                   <>
                     <Separator />
-                    <div className="bg-blue-50 rounded-lg p-4">
+                    <div className="bg-blue-50 dark:bg-blue-950/20 rounded-lg p-4">
                       <h4 className="font-semibold text-blue-900 mb-2">📝 {t.notes}</h4>
                       <p className="text-blue-800 text-sm leading-relaxed">
                         {recipeData.notes}
