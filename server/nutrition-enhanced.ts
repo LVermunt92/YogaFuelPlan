@@ -4679,14 +4679,13 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
             "Check labels to ensure all ingredients are certified gluten-free"
           ]
         } : undefined,
-        notes: `Gluten-free adaptation of ${recipe.name}`
+
       };
     } else {
       // Recipe is naturally gluten-free - just add the tag
       glutenFreeVersion = {
         ...recipe,
-        tags: [...recipe.tags, 'gluten-free'],
-        notes: recipe.notes ? `${recipe.notes} (Naturally gluten-free)` : 'Naturally gluten-free'
+        tags: [...recipe.tags, 'gluten-free']
       };
     }
     
@@ -4739,34 +4738,44 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
             "Coconut cream works best for rich, creamy textures"
           ]
         } : undefined,
-        notes: `Lactose-free adaptation of ${recipe.name}`
+
       };
     } else {
       // Recipe is naturally lactose-free - just add the tag
       lactoseFreeVersion = {
         ...recipe,
-        tags: [...recipe.tags, 'lactose-free', 'dairy-free'],
-        notes: recipe.notes ? `${recipe.notes} (Naturally lactose-free)` : 'Naturally lactose-free'
+        tags: [...recipe.tags, 'lactose-free', 'dairy-free']
       };
     }
     
-    // 3. VEGETARIAN VERSION (for meat-containing recipes)
+    // 3. VEGETARIAN VERSION (for meat-containing recipes, excluding fish/seafood)
     const hasMeat = recipe.ingredients?.some(ing => 
       ing.toLowerCase().includes('chicken') || 
       ing.toLowerCase().includes('beef') || 
       ing.toLowerCase().includes('pork') || 
       ing.toLowerCase().includes('lamb') || 
+      ing.toLowerCase().includes('turkey') || 
+      ing.toLowerCase().includes('bacon') || 
+      ing.toLowerCase().includes('ham') || 
+      ing.toLowerCase().includes('sausage')
+    );
+    
+    // Check if recipe contains fish/seafood (we won't create vegetarian versions for these)
+    const hasFish = recipe.ingredients?.some(ing => 
       ing.toLowerCase().includes('fish') || 
       ing.toLowerCase().includes('salmon') || 
       ing.toLowerCase().includes('tuna') || 
-      ing.toLowerCase().includes('shrimp')
+      ing.toLowerCase().includes('shrimp') ||
+      ing.toLowerCase().includes('crab') ||
+      ing.toLowerCase().includes('cod') ||
+      ing.toLowerCase().includes('halibut')
     );
     
-    if (hasMeat && !recipe.tags.includes('vegetarian')) {
+    if (hasMeat && !hasFish && !recipe.tags.includes('vegetarian')) {
       const vegetarianVersion: MealOption = {
         ...recipe,
         name: `${recipe.name} (Vegetarian)`,
-        tags: [...recipe.tags.filter(tag => !['non-vegetarian', 'pescatarian'].includes(tag)), 'vegetarian'],
+        tags: [...recipe.tags.filter(tag => !['non-vegetarian'].includes(tag)), 'vegetarian'],
         ingredients: recipe.ingredients?.map(ingredient => {
           // Convert meat ingredients using Dutch vegetarian substitutes
           if (ingredient.toLowerCase().includes('chicken')) {
@@ -4778,14 +4787,14 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
           if (ingredient.toLowerCase().includes('pork')) {
             return ingredient.replace(/pork/gi, 'vegetarische spekjes');
           }
-          if (ingredient.toLowerCase().includes('salmon') || ingredient.toLowerCase().includes('fish')) {
-            return ingredient.replace(/salmon|fish/gi, 'plantaardige vis-alternatief');
-          }
-          if (ingredient.toLowerCase().includes('shrimp')) {
-            return ingredient.replace(/shrimp/gi, 'plantaardige garnalen');
-          }
           if (ingredient.toLowerCase().includes('bacon')) {
             return ingredient.replace(/bacon/gi, 'vegetarische spek');
+          }
+          if (ingredient.toLowerCase().includes('ham')) {
+            return ingredient.replace(/ham/gi, 'vegetarische ham');
+          }
+          if (ingredient.toLowerCase().includes('sausage')) {
+            return ingredient.replace(/sausage/gi, 'vegetarische worst');
           }
           return ingredient;
         }),
@@ -4798,9 +4807,11 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
             "Season well as plant-based proteins absorb flavors differently"
           ]
         } : undefined,
-        notes: `Vegetarian adaptation of ${recipe.name} using kipstukjes and Beyond Meat`
+
       };
       variants.push(vegetarianVersion);
+    } else if (hasFish) {
+      console.log(`🐟 SKIPPING vegetarian variant for "${recipe.name}" - contains fish/seafood (no widely available plant-based alternative)`);
     }
     
     // Add all applicable variants (but only if they're different from the original)
@@ -5125,7 +5136,7 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
     
     // If user has critical dietary restrictions, only respect those in fallback
     if (criticalUserTags.length > 0) {
-      const criticalFilteredMeals = filterEnhancedMealsByDietaryTags(categoryMeals, criticalUserTags);
+      const criticalFilteredMeals = filterEnhancedMealsByDietaryTags(curatedRecipes, criticalUserTags);
       if (criticalFilteredMeals.length > 0) {
         console.log(`Fallback: Found ${criticalFilteredMeals.length} ${category} meals respecting critical dietary restrictions: ${criticalUserTags.join(', ')}`);
         
@@ -5299,7 +5310,6 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     // Fruits (Fresh Produce section 2)
     'banana': 'Fruits',
     'avocado': 'Fruits',
-    'pieces of lemon': 'Fruits',
     'lime': 'Fruits',
     'mango': 'Fruits',
     'frozen berries': 'Fruits',
