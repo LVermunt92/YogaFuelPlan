@@ -5491,8 +5491,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'walnuts': 'Nuts, Seeds & Spreads',
     'cashews': 'Nuts, Seeds & Spreads',
     'cashew nuts': 'Nuts, Seeds & Spreads',
-    'crushed walnuts': 'Nuts, Seeds & Spreads',
-    'crushed almonds': 'Nuts, Seeds & Spreads',
+
     'baking powder': 'Baking & Cooking Basics',
     'salt': 'Baking & Cooking Basics',
     'pepper': 'Baking & Cooking Basics',
@@ -5546,7 +5545,6 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'honey': 'Pantry Essentials',
     'mustard powder': 'Pantry Essentials',
     'fennel seeds': 'Pantry Essentials',
-    'crushed almonds': 'Nuts, Seeds & Spreads',
     'pine nuts': 'Nuts, Seeds & Spreads',
     'cashews': 'Nuts, Seeds & Spreads',
     'coconut': 'Other Dry Goods',
@@ -5568,6 +5566,22 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
   // Function to normalize ingredient names for grocery shopping
   const normalizeIngredientForGrocery = (ingredient: string): string => {
     let normalized = ingredient.toLowerCase().trim();
+    
+    // Enhanced nut preparation normalization - remove all preparation methods from nuts
+    const nutPreparationPatterns = [
+      { pattern: /crushed\s+(walnuts|almonds|pistachios|pecans|hazelnuts|cashews|peanuts)/gi, replacement: '$1' },
+      { pattern: /chopped\s+(walnuts|almonds|pistachios|pecans|hazelnuts|cashews|peanuts)/gi, replacement: '$1' },
+      { pattern: /sliced\s+(almonds)/gi, replacement: '$1' },
+      { pattern: /whole\s+(walnuts|almonds|pistachios|pecans|hazelnuts|cashews|peanuts)/gi, replacement: '$1' },
+      { pattern: /raw\s+(walnuts|almonds|pistachios|pecans|hazelnuts|cashews|peanuts)/gi, replacement: '$1' },
+      { pattern: /toasted\s+(walnuts|almonds|pistachios|pecans|hazelnuts|cashews|peanuts)/gi, replacement: '$1' },
+      { pattern: /(walnuts|almonds|pistachios|pecans|hazelnuts|cashews|peanuts),?\s+(crushed|chopped|sliced|whole|raw|toasted)/gi, replacement: '$1' }
+    ];
+    
+    // Apply nut-specific normalization first
+    nutPreparationPatterns.forEach(({ pattern, replacement }) => {
+      normalized = normalized.replace(pattern, replacement);
+    });
     
     // Remove cooking methods - people buy the raw ingredient
     const cookingMethods = [

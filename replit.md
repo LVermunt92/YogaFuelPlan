@@ -12,6 +12,7 @@ Preferred communication style: Simple, everyday language.
 - **Smart Garlic Quantity Display**: Garlic ingredients now automatically specify "garlic cloves" to show proper quantities (e.g., "3 garlic cloves" instead of just "Garlic") while preserving "garlic powder" unchanged
 - **Complete Onion Categorization**: All onion varieties (red, white, yellow, brown, sweet onions) now properly categorize under "Vegetables" section in shopping lists
 - **Enhanced Seed & Nut Categorization**: Pumpkin seeds, flax seeds, and all other seeds/nuts now properly categorize under "Nuts, Seeds & Spreads" section for organized grocery shopping
+- **Enhanced Nut Preparation Normalization**: Shopping lists now automatically normalize all nut preparation methods (crushed walnuts → walnuts, chopped almonds → almonds, sliced almonds → almonds) for practical grocery shopping since people buy whole nuts and prepare them at home
 - **Custom Recipe Integration**: All user custom recipes now automatically receive a "custom" tag and are properly integrated into the main meal database for meal plan generation
 - **Custom Recipe Reactivation**: Fixed issue where custom recipes were incorrectly deactivated, restored all User 2's custom recipes to active status
 
