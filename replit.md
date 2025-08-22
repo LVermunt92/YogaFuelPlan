@@ -13,6 +13,7 @@ Preferred communication style: Simple, everyday language.
 - **Complete Onion Categorization**: All onion varieties (red, white, yellow, brown, sweet onions) now properly categorize under "Vegetables" section in shopping lists
 - **Enhanced Seed & Nut Categorization**: Pumpkin seeds, flax seeds, and all other seeds/nuts now properly categorize under "Nuts, Seeds & Spreads" section for organized grocery shopping
 - **Enhanced Nut Preparation Normalization**: Shopping lists now automatically normalize all nut preparation methods (crushed walnuts → walnuts, chopped almonds → almonds, sliced almonds → almonds) for practical grocery shopping since people buy whole nuts and prepare them at home
+- **Comprehensive Pasta & Rice Categorization**: Added complete coverage of pasta types (spaghetti, penne, linguine, fusilli, rigatoni, orzo, macaroni, angel hair, fettuccine, tagliatelle, ravioli, gnocchi, etc.) and rice varieties (sushi rice, jasmine rice, wild rice, arborio rice) plus Asian noodles (soba, udon, ramen, glass noodles) to ensure all grain-based ingredients properly categorize under "Grains, Pasta & Canned Goods" section
 - **Custom Recipe Integration**: All user custom recipes now automatically receive a "custom" tag and are properly integrated into the main meal database for meal plan generation
 - **Custom Recipe Reactivation**: Fixed issue where custom recipes were incorrectly deactivated, restored all User 2's custom recipes to active status
 
