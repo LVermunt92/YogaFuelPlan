@@ -844,41 +844,49 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     name: "Wild mushroom and herb quinoa with roasted vegetables",
     portion: "2 servings",
     nutrition: { 
-      protein: 18, 
+      protein: 20, 
       prepTime: 35, 
-      calories: 340,
+      calories: 420,
       carbohydrates: 48,
-      fats: 12,
-      fiber: 10,
+      fats: 18,
+      fiber: 12,
       sugar: 8,
       sodium: 320,
-      costEuros: 4.80, 
+      costEuros: 5.20, 
       proteinPerEuro: 3.8 
     },
     category: "dinner",
     tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "anti-inflammatory"],
-    ingredients: ["quinoa", "mixed wild mushrooms", "fresh herbs (parsley, thyme)", "zucchini", "red bell pepper", "red onion", "garlic", "olive oil", "vegetable broth"],
+    ingredients: ["quinoa", "mixed wild mushrooms", "fresh herbs (parsley, thyme)", "zucchini", "red bell pepper", "carrots", "red onion", "garlic", "pine nuts", "olive oil", "vegetable broth", "tahini", "lemon juice"],
     wholeFoodLevel: "high",
     vegetableContent: {
-      servings: 3,
-      vegetables: ["mushrooms", "zucchini", "bell pepper", "onion"],
-      benefits: ["High in antioxidants", "Supports immune system", "Rich in B vitamins"]
+      servings: 4,
+      vegetables: ["mushrooms", "zucchini", "bell pepper", "carrots", "onion"],
+      benefits: ["High in antioxidants", "Supports immune system", "Rich in B vitamins", "High in beta-carotene"]
     },
     recipe: {
       instructions: [
         "Rinse 1 cup quinoa until water runs clear",
-        "Sauté sliced mushrooms until golden, set aside",
-        "Cook quinoa in 2 cups vegetable broth for 15 minutes",
-        "Meanwhile, roast diced vegetables with olive oil at 200°C for 20 minutes",
-        "Fluff quinoa and stir in mushrooms and fresh herbs",
-        "Top with roasted vegetables",
-        "Drizzle with olive oil and lemon juice"
+        "Toast quinoa in dry pan for 2-3 minutes for nuttier taste",
+        "Sauté sliced mushrooms in 1 tbsp olive oil until golden, set aside",
+        "Cook quinoa in 2 cups vegetable broth with 1 tbsp olive oil for 15 minutes",
+        "Meanwhile, dice zucchini, bell pepper, carrots, and onion",
+        "Toss vegetables with 2 tbsp olive oil, salt, and pepper",
+        "Roast vegetables at 200°C for 25 minutes until tender and slightly caramelized",
+        "Toast pine nuts in dry pan for 2-3 minutes until golden",
+        "Make tahini dressing: whisk 2 tbsp tahini, 2 tbsp lemon juice, 1 tbsp olive oil, and 2-3 tbsp water until smooth",
+        "Fluff cooked quinoa and mix with extra 1 tbsp olive oil",
+        "Stir in mushrooms, fresh herbs, and half the tahini dressing",
+        "Top with roasted vegetables and toasted pine nuts",
+        "Drizzle with remaining tahini dressing and extra olive oil"
       ],
       tips: [
         "Use a variety of mushrooms for complex flavour",
-        "Toast quinoa in dry pan before cooking for nuttier taste"
+        "Make extra tahini dressing - it keeps quinoa moist and adds protein",
+        "Add vegetables while quinoa is still warm so flavors meld together",
+        "Pine nuts can be replaced with chopped almonds or walnuts"
       ],
-      notes: "Wild mushrooms provide more nutrients than cultivated varieties"
+      notes: "The tahini dressing prevents quinoa from being dry while adding healthy fats and protein. Extra olive oil throughout the cooking process ensures a moist, flavorful dish."
     }
   },
   {
