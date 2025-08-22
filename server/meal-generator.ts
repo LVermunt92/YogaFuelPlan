@@ -25,22 +25,26 @@ import { applyDietarySubstitutions } from "./ingredient-substitution";
  */
 async function getFridgeInventoryIngredients(userId: number): Promise<string[]> {
   try {
+    console.log(`🧊 DEBUG: Fetching fridge items for user ${userId}`);
     // Get fresh fridge items (not used yet) ordered by priority and expiration
     const fridgeItems = await storage.getFridgeItems(userId, false);
+    console.log(`🧊 DEBUG: Raw fridge items:`, JSON.stringify(fridgeItems, null, 2));
     
     // Convert fridge items to ingredient names, prioritizing high priority and soon-to-expire items
     const priorityIngredients = fridgeItems
-      .filter(item => 
-        (typeof item.priority === 'string' && item.priority === 'high') || 
-        (typeof item.priority === 'number' && item.priority >= 3) ||
-        (item.expirationDate && new Date(item.expirationDate) <= new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)) // within 7 days
-      )
+      .filter(item => {
+        const isHighPriority = (typeof item.priority === 'string' && item.priority === 'high') || 
+                              (typeof item.priority === 'number' && item.priority >= 3);
+        const isExpiringSoon = item.expirationDate && new Date(item.expirationDate) <= new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+        console.log(`🧊 DEBUG: Item "${item.ingredient}" - priority: ${item.priority} (${typeof item.priority}), isHighPriority: ${isHighPriority}, isExpiringSoon: ${isExpiringSoon}`);
+        return isHighPriority || isExpiringSoon;
+      })
       .map(item => item.ingredient.toLowerCase());
     
     console.log(`🧊 Found ${fridgeItems.length} fridge items, ${priorityIngredients.length} priority ingredients: ${JSON.stringify(priorityIngredients)}`);
     return priorityIngredients;
   } catch (error) {
-    console.error('Error fetching fridge inventory:', error);
+    console.error('🧊 ERROR fetching fridge inventory:', error);
     return [];
   }
 }
@@ -376,8 +380,12 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   
   // Fetch fridge inventory for meal prioritization
   let fridgeIngredients: string[] = [];
+  console.log(`🧊 DEBUG: User object:`, JSON.stringify(user ? { id: user.id, username: user.username } : null));
   if (user?.id) {
+    console.log(`🧊 DEBUG: About to fetch fridge inventory for user ${user.id}`);
     fridgeIngredients = await getFridgeInventoryIngredients(user.id);
+  } else {
+    console.log(`🧊 DEBUG: No user ID found, skipping fridge inventory`);
   }
   
   console.log(`🥕 Starting meal generation with leftover ingredients: ${JSON.stringify(ingredientsToUseUp)}`);
