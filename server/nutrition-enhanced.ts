@@ -5303,9 +5303,14 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'bell peppers': 'Vegetables',
     'onions': 'Vegetables',
     'red onion': 'Vegetables',
+    'brown onion': 'Vegetables',
     'garlic': 'Vegetables',
+    'garlic cloves': 'Vegetables',
     'ginger': 'Vegetables',
     'carrots': 'Vegetables',
+    'carrot': 'Vegetables',
+    'head cauliflower': 'Vegetables',
+    'cauliflower': 'Vegetables',
     'celery': 'Vegetables',
     'cucumber': 'Vegetables',
     'cherry tomatoes': 'Vegetables',
@@ -5378,10 +5383,15 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'dairy-free cottage cheese': 'Plant-Based Alternatives',
     'dairy-free ricotta': 'Plant-Based Alternatives',
     'coconut yogurt': 'Plant-Based Alternatives',
+    'coconut coconut yogurt': 'Plant-Based Alternatives',
     'unsweetened coconut yogurt': 'Plant-Based Alternatives',
     'oat milk': 'Plant-Based Alternatives',
     'almond milk': 'Plant-Based Alternatives',
+    'almond oat milk': 'Plant-Based Alternatives',
+    'coconut oat milk': 'Plant-Based Alternatives',
+    'plant oat milk': 'Plant-Based Alternatives',
     'vegan butter': 'Plant-Based Alternatives',
+    'almond vegan butter': 'Plant-Based Alternatives',
     'coconut cream': 'Plant-Based Alternatives',
     'dairy-free sour cream': 'Plant-Based Alternatives',
     
@@ -5425,11 +5435,9 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'beyond meat': 'Protein',
     'impossible meat': 'Protein',
     
-    // Plant-Based Alternatives (Dairy alternatives)
+    // Plant-Based Alternatives (Additional dairy alternatives)
     'hummus': 'Plant-Based Alternatives',
-    'almond milk': 'Plant-Based Alternatives',
     'coconut milk': 'Plant-Based Alternatives',
-    'coconut yogurt': 'Plant-Based Alternatives',
     'fermented kefir': 'Plant-Based Alternatives',
     
     // Eggs (Dairy & Eggs section)
@@ -5509,10 +5517,25 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'rice noodles': 'Grains, Pasta & Canned Goods',
     'pasta': 'Grains, Pasta & Canned Goods',
     'couscous': 'Grains, Pasta & Canned Goods',
+    'basmati rice': 'Grains, Pasta & Canned Goods',
+    'lasagna sheets': 'Grains, Pasta & Canned Goods',
+    'plain flour': 'Baking & Cooking Basics',
     'vegetable stock': 'Baking & Cooking Basics',
     'vegetable broth': 'Baking & Cooking Basics',
     'canned tomatoes': 'Baking & Cooking Basics',
     'tomato paste': 'Baking & Cooking Basics',
+    'avocado oil': 'Pantry Essentials',
+    'honey': 'Pantry Essentials',
+    'mustard powder': 'Pantry Essentials',
+    'fennel seeds': 'Pantry Essentials',
+    'crushed almonds': 'Nuts, Seeds & Spreads',
+    'pine nuts': 'Nuts, Seeds & Spreads',
+    'cashews': 'Nuts, Seeds & Spreads',
+    'coconut': 'Other Dry Goods',
+    'coconut flakes': 'Other Dry Goods',
+    'rolled certified oats': 'Grains, Pasta & Canned Goods',
+    'scoop vanilla protein powder': 'Other Dry Goods',
+    'strawberries for topping': 'Fruits',
     'cashews': 'Nuts, Seeds & Spreads',
     'pine nuts': 'Nuts, Seeds & Spreads',
     'sesame seeds': 'Nuts, Seeds & Spreads',
@@ -5564,7 +5587,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
         const capitalizedIngredient = separateIngredient.charAt(0).toUpperCase() + separateIngredient.slice(1);
         
         // Try to get category for the specific ingredient, fallback to original, then fallback to 'Fruits' for berries
-        const category = ingredientCategories[separateIngredient.toLowerCase()] || ingredientCategories[ingredient] || 'Fruits';
+        const category = ingredientCategories[separateIngredient.toLowerCase()] || ingredientCategories[ingredient.toLowerCase()] || 'Fruits';
         
         // Convert amounts to grams using the formatAmount function (split proportionally)
         const proportionalAmount = amounts.totalAmount / separateIngredients.length;
@@ -5587,7 +5610,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
       // Capitalize first letter of ingredient name for display
       finalIngredient = finalIngredient.charAt(0).toUpperCase() + finalIngredient.slice(1);
       
-      const category = ingredientCategories[ingredient] || 'Other';
+      const category = ingredientCategories[ingredient.toLowerCase()] || 'Other';
       
       // Convert amounts to grams using the formatAmount function
       const displayAmount = formatAmountWithLanguage(amounts.totalAmount, amounts.unit, language);
