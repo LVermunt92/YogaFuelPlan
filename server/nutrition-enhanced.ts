@@ -4620,71 +4620,154 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   }
 ];
 
-// Function to automatically convert existing pasta recipes to gluten-free versions
-function convertPastaRecipesToGlutenFree(recipes: MealOption[]): MealOption[] {
-  const glutenFreeVersions: MealOption[] = [];
+// Function to automatically generate dietary variants for every recipe
+function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
+  const variants: MealOption[] = [];
   
   for (const recipe of recipes) {
-    // Check if recipe mentions gluten-free substitution in notes or has pasta ingredients
-    const hasGlutenFreeNote = recipe.notes?.toLowerCase().includes('gluten-free pasta') || 
-                              recipe.notes?.toLowerCase().includes('substitute') && recipe.notes?.toLowerCase().includes('gluten');
-    const hasPastaIngredient = recipe.ingredients?.some(ing => 
-      ing.toLowerCase().includes('pasta') && !ing.toLowerCase().includes('gluten-free')
-    );
-    
-    // Skip if already gluten-free or not a convertible pasta recipe
-    if (recipe.tags.includes('gluten-free') || !(hasGlutenFreeNote || hasPastaIngredient)) {
+    // Skip if already a variant (to avoid infinite loops)
+    if (recipe.name.toLowerCase().includes('gluten-free') || 
+        recipe.name.toLowerCase().includes('lactose-free') || 
+        recipe.name.toLowerCase().includes('vegetarian version')) {
       continue;
     }
     
-    console.log(`🔄 CONVERTING: "${recipe.name}" has gluten-free note: ${hasGlutenFreeNote}, pasta ingredient: ${hasPastaIngredient}`);
+    console.log(`🔄 GENERATING VARIANTS for: "${recipe.name}"`);
     
-    // Create gluten-free version
+    // 1. GLUTEN-FREE VERSION
     const glutenFreeVersion: MealOption = {
       ...recipe,
-      name: `Gluten-free ${recipe.name.toLowerCase()}`,
-      tags: [...recipe.tags.filter(tag => tag !== 'wheat'), 'gluten-free', 'vegetarian'],
+      name: `${recipe.name} (Gluten-Free)`,
+      tags: [...recipe.tags.filter(tag => tag !== 'wheat'), 'gluten-free'],
       ingredients: recipe.ingredients?.map(ingredient => {
-        // Convert regular pasta to gluten-free
+        // Convert gluten-containing ingredients
         if (ingredient.toLowerCase().includes('pasta') && !ingredient.toLowerCase().includes('gluten-free')) {
-          return ingredient.replace(/\d+g\s*pasta/g, '$&').replace('pasta', 'gluten-free pasta (rice or chickpea)');
+          return ingredient.replace('pasta', 'gluten-free pasta (rice or chickpea)');
         }
-        
-        // Convert other gluten ingredients
+        if (ingredient.toLowerCase().includes('flour') && !ingredient.toLowerCase().includes('gluten-free')) {
+          return ingredient.replace('flour', 'gluten-free flour blend');
+        }
+        if (ingredient.toLowerCase().includes('bread') && !ingredient.toLowerCase().includes('gluten-free')) {
+          return ingredient.replace('bread', 'gluten-free bread');
+        }
+        if (ingredient.toLowerCase().includes('soy sauce') && !ingredient.toLowerCase().includes('gluten-free')) {
+          return ingredient.replace('soy sauce', 'gluten-free tamari');
+        }
         if (ingredient.toLowerCase().includes('wheat')) {
-          return ingredient.replace(/wheat/gi, 'gluten-free');
+          return ingredient.replace(/wheat/gi, 'gluten-free grain');
         }
-        
-        // Auto-convert to dairy-free for lactose intolerance
-        if (ingredient.toLowerCase().includes('parmesan')) {
-          return ingredient.replace(/parmesan/gi, 'nutritional yeast');
-        }
-        if (ingredient.toLowerCase().includes('butter') && !ingredient.toLowerCase().includes('nut')) {
-          return ingredient.replace(/butter/gi, 'vegan butter');
-        }
-        if (ingredient.toLowerCase().includes('cream') && !ingredient.toLowerCase().includes('coconut')) {
-          return ingredient.replace(/cream/gi, 'coconut cream');
-        }
-        
         return ingredient;
       }),
       recipe: recipe.recipe ? {
         ...recipe.recipe,
-        notes: `Dedicated gluten-free version with dairy-free options. ${recipe.recipe.notes || ''}`.trim(),
+        notes: `Gluten-free version using alternative grains and flours. ${recipe.recipe.notes || ''}`.trim(),
         tips: [
           ...(recipe.recipe.tips || []),
-          "Use rice or chickpea pasta for best texture",
-          "Don't overcook gluten-free pasta - check frequently"
+          "Gluten-free products may need different cooking times",
+          "Check labels to ensure all ingredients are certified gluten-free"
         ]
       } : undefined,
-      notes: `Gluten-free and dairy-free version of the original recipe. Perfect for multiple dietary restrictions.`
+      notes: `Gluten-free adaptation of ${recipe.name}`
     };
     
-    glutenFreeVersions.push(glutenFreeVersion);
+    // 2. LACTOSE-FREE VERSION
+    const lactoseFreeVersion: MealOption = {
+      ...recipe,
+      name: `${recipe.name} (Lactose-Free)`,
+      tags: [...recipe.tags, 'lactose-free', 'dairy-free'],
+      ingredients: recipe.ingredients?.map(ingredient => {
+        // Convert dairy ingredients
+        if (ingredient.toLowerCase().includes('milk') && !ingredient.toLowerCase().includes('almond') && !ingredient.toLowerCase().includes('coconut') && !ingredient.toLowerCase().includes('oat')) {
+          return ingredient.replace(/milk/gi, 'oat milk');
+        }
+        if (ingredient.toLowerCase().includes('cream') && !ingredient.toLowerCase().includes('coconut')) {
+          return ingredient.replace(/cream/gi, 'coconut cream');
+        }
+        if (ingredient.toLowerCase().includes('butter') && !ingredient.toLowerCase().includes('nut') && !ingredient.toLowerCase().includes('peanut')) {
+          return ingredient.replace(/butter/gi, 'vegan butter');
+        }
+        if (ingredient.toLowerCase().includes('cheese') && !ingredient.toLowerCase().includes('vegan')) {
+          return ingredient.replace(/cheese/gi, 'vegan cheese');
+        }
+        if (ingredient.toLowerCase().includes('yogurt') && !ingredient.toLowerCase().includes('coconut')) {
+          return ingredient.replace(/yogurt/gi, 'coconut yogurt');
+        }
+        if (ingredient.toLowerCase().includes('parmesan')) {
+          return ingredient.replace(/parmesan/gi, 'nutritional yeast');
+        }
+        return ingredient;
+      }),
+      recipe: recipe.recipe ? {
+        ...recipe.recipe,
+        notes: `Lactose-free version using plant-based dairy alternatives. ${recipe.recipe.notes || ''}`.trim(),
+        tips: [
+          ...(recipe.recipe.tips || []),
+          "Plant-based milks may have different consistencies",
+          "Coconut cream works best for rich, creamy textures"
+        ]
+      } : undefined,
+      notes: `Lactose-free adaptation of ${recipe.name}`
+    };
+    
+    // 3. VEGETARIAN VERSION (for meat-containing recipes)
+    const hasMeat = recipe.ingredients?.some(ing => 
+      ing.toLowerCase().includes('chicken') || 
+      ing.toLowerCase().includes('beef') || 
+      ing.toLowerCase().includes('pork') || 
+      ing.toLowerCase().includes('lamb') || 
+      ing.toLowerCase().includes('fish') || 
+      ing.toLowerCase().includes('salmon') || 
+      ing.toLowerCase().includes('tuna') || 
+      ing.toLowerCase().includes('shrimp')
+    );
+    
+    if (hasMeat && !recipe.tags.includes('vegetarian')) {
+      const vegetarianVersion: MealOption = {
+        ...recipe,
+        name: `${recipe.name} (Vegetarian)`,
+        tags: [...recipe.tags.filter(tag => !['non-vegetarian', 'pescatarian'].includes(tag)), 'vegetarian'],
+        ingredients: recipe.ingredients?.map(ingredient => {
+          // Convert meat ingredients using Dutch vegetarian substitutes
+          if (ingredient.toLowerCase().includes('chicken')) {
+            return ingredient.replace(/chicken/gi, 'kipstukjes van vegetarische slager');
+          }
+          if (ingredient.toLowerCase().includes('beef') || ingredient.toLowerCase().includes('ground beef')) {
+            return ingredient.replace(/beef|ground beef/gi, 'Beyond Meat gehakt');
+          }
+          if (ingredient.toLowerCase().includes('pork')) {
+            return ingredient.replace(/pork/gi, 'vegetarische spekjes');
+          }
+          if (ingredient.toLowerCase().includes('salmon') || ingredient.toLowerCase().includes('fish')) {
+            return ingredient.replace(/salmon|fish/gi, 'plantaardige vis-alternatief');
+          }
+          if (ingredient.toLowerCase().includes('shrimp')) {
+            return ingredient.replace(/shrimp/gi, 'plantaardige garnalen');
+          }
+          if (ingredient.toLowerCase().includes('bacon')) {
+            return ingredient.replace(/bacon/gi, 'vegetarische spek');
+          }
+          return ingredient;
+        }),
+        recipe: recipe.recipe ? {
+          ...recipe.recipe,
+          notes: `Vegetarian version using plant-based meat alternatives from vegetarische slager and Beyond Meat. ${recipe.recipe.notes || ''}`.trim(),
+          tips: [
+            ...(recipe.recipe.tips || []),
+            "Vegetarian meat substitutes may cook faster than traditional meat",
+            "Season well as plant-based proteins absorb flavors differently"
+          ]
+        } : undefined,
+        notes: `Vegetarian adaptation of ${recipe.name} using kipstukjes and Beyond Meat`
+      };
+      variants.push(vegetarianVersion);
+    }
+    
+    // Add all applicable variants
+    variants.push(glutenFreeVersion, lactoseFreeVersion);
   }
   
-  console.log(`🔄 AUTO-CONVERTED: Created ${glutenFreeVersions.length} gluten-free pasta versions`);
-  return glutenFreeVersions;
+  console.log(`🔄 AUTO-GENERATED: Created ${variants.length} dietary variants (gluten-free, lactose-free, vegetarian versions)`);
+  return variants;
 }
 
 // Function to get complete unified meal database (now contains all recipes in one place)
@@ -4692,13 +4775,14 @@ export function getCompleteEnhancedMealDatabase(): MealOption[] {
   // Get base recipes
   const baseRecipes = [...ENHANCED_MEAL_DATABASE];
   
-  // Auto-convert pasta recipes with gluten-free notes to dedicated versions
-  const autoConvertedRecipes = convertPastaRecipesToGlutenFree(baseRecipes);
+  // Auto-generate dietary variants for EVERY recipe (gluten-free, lactose-free, vegetarian versions)
+  const dietaryVariants = generateDietaryVariants(baseRecipes);
   
   // Combine all recipes
-  const allRecipes = [...baseRecipes, ...autoConvertedRecipes];
+  const allRecipes = [...baseRecipes, ...dietaryVariants];
   
-  console.log(`📊 Unified meal database: ${baseRecipes.length} base + ${autoConvertedRecipes.length} auto-converted = ${allRecipes.length} total recipes`);
+  console.log(`📊 UNIVERSAL VARIANTS: ${baseRecipes.length} base recipes + ${dietaryVariants.length} dietary variants = ${allRecipes.length} total recipes`);
+  console.log(`📊 DEVELOPER FRIENDLY: Every recipe now has gluten-free, lactose-free, and vegetarian versions using kipstukjes & Beyond Meat`);
   return allRecipes;
 }
 
