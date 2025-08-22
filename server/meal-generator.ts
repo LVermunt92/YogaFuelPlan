@@ -154,50 +154,126 @@ function adjustMealPortion(originalPortion: string, adjustmentFactor: number): s
 }
 
 /**
+ * Calculate compatibility score between leftover ingredient and meal
+ */
+function calculateIngredientCompatibility(leftoverIngredient: string, meal: MealOption): number {
+  const leftoverLower = leftoverIngredient.toLowerCase();
+  const mealIngredients = meal.ingredients.map(i => i.toLowerCase());
+  const mealName = meal.name.toLowerCase();
+  let score = 0;
+  
+  // Direct ingredient match (highest score)
+  if (mealIngredients.some(ing => ing.includes(leftoverLower) || leftoverLower.includes(ing))) {
+    score += 10;
+  }
+  
+  // Cuisine and cooking style compatibility
+  const cuisineMatches = {
+    'spinach': ['mediterranean', 'italian', 'greek', 'pasta', 'lasagna', 'curry', 'stir'],
+    'spinazie': ['mediterranean', 'italian', 'greek', 'pasta', 'lasagna', 'curry', 'stir'],
+    'cauliflower': ['indian', 'curry', 'roasted', 'mash', 'rice', 'keto', 'low-carb'],
+    'bloemkool': ['indian', 'curry', 'roasted', 'mash', 'rice', 'keto', 'low-carb'],
+    'sugar snap': ['asian', 'stir', 'chinese', 'thai', 'steam', 'crisp'],
+    'sugarsnap': ['asian', 'stir', 'chinese', 'thai', 'steam', 'crisp']
+  };
+  
+  // Check cuisine compatibility
+  for (const [ingredient, cuisines] of Object.entries(cuisineMatches)) {
+    if (leftoverLower.includes(ingredient)) {
+      for (const cuisine of cuisines) {
+        if (mealName.includes(cuisine) || mealIngredients.some(ing => ing.includes(cuisine))) {
+          score += 3;
+        }
+      }
+    }
+  }
+  
+  // Cooking method compatibility
+  const cookingMethodMatches = {
+    'spinach': ['sauté', 'steam', 'wilt', 'fresh', 'raw'],
+    'cauliflower': ['roast', 'steam', 'mash', 'rice', 'grain'],
+    'sugar snap': ['stir', 'steam', 'crisp', 'crunch', 'fresh']
+  };
+  
+  for (const [ingredient, methods] of Object.entries(cookingMethodMatches)) {
+    if (leftoverLower.includes(ingredient)) {
+      for (const method of methods) {
+        if (mealName.includes(method) || mealIngredients.some(ing => ing.includes(method))) {
+          score += 2;
+        }
+      }
+    }
+  }
+  
+  // Nutritional profile compatibility
+  if (mealIngredients.some(ing => ing.includes('vegetable') || ing.includes('green'))) {
+    score += 1;
+  }
+  
+  return score;
+}
+
+/**
+ * Search for meals that naturally contain leftover ingredients
+ */
+async function findMealsWithIngredients(
+  ingredientsToUseUp: string[], 
+  mealType: 'breakfast' | 'lunch' | 'dinner',
+  dietaryTags: string[],
+  userId?: number
+): Promise<MealOption[]> {
+  // Get all meals for the category
+  const allMeals = await getEnhancedMealsForCategoryAndDiet(mealType, dietaryTags, userId);
+  
+  const mealsWithIngredients: Array<MealOption & { ingredientMatches: number; compatibilityScore: number }> = [];
+  
+  for (const meal of allMeals) {
+    let ingredientMatches = 0;
+    let totalCompatibility = 0;
+    
+    for (const leftoverIngredient of ingredientsToUseUp) {
+      const compatibility = calculateIngredientCompatibility(leftoverIngredient, meal);
+      if (compatibility > 0) {
+        ingredientMatches++;
+        totalCompatibility += compatibility;
+      }
+    }
+    
+    if (ingredientMatches > 0) {
+      mealsWithIngredients.push({
+        ...meal,
+        ingredientMatches,
+        compatibilityScore: totalCompatibility
+      });
+    }
+  }
+  
+  // Sort by compatibility score (highest first)
+  return mealsWithIngredients
+    .sort((a, b) => b.compatibilityScore - a.compatibilityScore)
+    .map(meal => {
+      const { ingredientMatches, compatibilityScore, ...cleanMeal } = meal;
+      console.log(`🔍 Found compatible meal: "${meal.name}" (matches: ${ingredientMatches}, score: ${compatibilityScore})`);
+      return cleanMeal;
+    });
+}
+
+/**
  * Check if a meal can incorporate leftover ingredients and modify description
  */
 function incorporateLeftoverIngredients(meal: MealOption, ingredientsToUseUp: string[]): { modifiedMeal: MealOption, usedIngredients: string[] } {
   if (!ingredientsToUseUp.length) return { modifiedMeal: meal, usedIngredients: [] };
   
-  const mealIngredients = meal.ingredients.map(i => i.toLowerCase());
   const usedIngredients: string[] = [];
   
-  // Check which leftover ingredients can be incorporated
+  // Check which leftover ingredients are compatible with this meal
   for (const leftoverIngredient of ingredientsToUseUp) {
-    const leftoverLower = leftoverIngredient.toLowerCase();
+    const compatibility = calculateIngredientCompatibility(leftoverIngredient, meal);
     
-    // Check if this ingredient or similar can be used in this meal
-    const canIncorporate = mealIngredients.some(ingredient => 
-      ingredient.includes(leftoverLower) || 
-      leftoverLower.includes(ingredient) ||
-      // Common ingredient matches (English and Dutch)
-      ((leftoverLower.includes('celery') || leftoverLower.includes('bleekselderij')) && 
-       (ingredient.includes('vegetable') || ingredient.includes('soup') || ingredient.includes('broth') || 
-        ingredient.includes('stir') || ingredient.includes('onion') || ingredient.includes('mushroom') || 
-        ingredient.includes('quinoa') || ingredient.includes('herbs'))) ||
-      ((leftoverLower.includes('carrot') || leftoverLower.includes('wortel')) && 
-       (ingredient.includes('vegetable') || ingredient.includes('soup') || ingredient.includes('stir') || 
-        ingredient.includes('roasted') || ingredient.includes('quinoa'))) ||
-      ((leftoverLower.includes('onion') || leftoverLower.includes('ui')) && 
-       (ingredient.includes('vegetable') || ingredient.includes('soup') || ingredient.includes('stir') || 
-        ingredient.includes('mushroom') || ingredient.includes('quinoa'))) ||
-      ((leftoverLower.includes('pepper') || leftoverLower.includes('paprika')) && 
-       (ingredient.includes('vegetable') || ingredient.includes('stir') || ingredient.includes('roasted'))) ||
-      ((leftoverLower.includes('spinach') || leftoverLower.includes('spinazie')) && 
-       (ingredient.includes('leafy') || ingredient.includes('green') || ingredient.includes('spinach') || 
-        ingredient.includes('vegetable'))) ||
-      ((leftoverLower.includes('tomato') || leftoverLower.includes('tomaat')) && 
-       (ingredient.includes('vegetable') || ingredient.includes('sauce') || ingredient.includes('tomato'))) ||
-      ((leftoverLower.includes('cauliflower') || leftoverLower.includes('bloemkool')) && 
-       (ingredient.includes('cauliflower') || ingredient.includes('rice') || ingredient.includes('vegetable') || 
-        ingredient.includes('roasted') || ingredient.includes('mash'))) ||
-      ((leftoverLower.includes('sugar snap') || leftoverLower.includes('sugarsnap') || leftoverLower.includes('snap pea')) && 
-       (ingredient.includes('pea') || ingredient.includes('vegetable') || ingredient.includes('green') || 
-        ingredient.includes('stir') || ingredient.includes('roasted')))
-    );
-    
-    if (canIncorporate) {
+    // Only incorporate if compatibility score is reasonable (> 1)
+    if (compatibility > 1) {
       usedIngredients.push(leftoverIngredient);
+      console.log(`✓ Incorporating "${leftoverIngredient}" into "${meal.name}" (compatibility: ${compatibility})`);
     }
   }
   
@@ -233,7 +309,8 @@ function selectUnusedMeal(
   usedMeals: Set<string>, 
   allSelectedMeals?: Set<string>,
   prioritizeCustom: boolean = false,
-  fridgeIngredients: string[] = []
+  fridgeIngredients: string[] = [],
+  leftoverIngredients: string[] = []
 ): MealOption {
   if (availableMeals.length === 0) {
     throw new Error('No available meals to select from');
@@ -269,7 +346,33 @@ function selectUnusedMeal(
   }
   
   if (unusedMeals.length > 0) {
-    // Prioritize meals that use fridge ingredients
+    // First priority: meals that naturally contain leftover ingredients
+    if (leftoverIngredients.length > 0) {
+      const mealsWithLeftovers: Array<MealOption & { compatibilityScore: number }> = [];
+      
+      for (const meal of unusedMeals) {
+        let totalCompatibility = 0;
+        for (const leftoverIngredient of leftoverIngredients) {
+          totalCompatibility += calculateIngredientCompatibility(leftoverIngredient, meal);
+        }
+        
+        if (totalCompatibility > 5) { // High compatibility threshold for natural incorporation
+          mealsWithLeftovers.push({
+            ...meal,
+            compatibilityScore: totalCompatibility
+          });
+        }
+      }
+      
+      if (mealsWithLeftovers.length > 0) {
+        // Sort by compatibility and use the best match
+        const bestMatch = mealsWithLeftovers.sort((a, b) => b.compatibilityScore - a.compatibilityScore)[0];
+        console.log(`🎯 Found meal that naturally uses leftovers: "${bestMatch.name}" (score: ${bestMatch.compatibilityScore})`);
+        return bestMatch;
+      }
+    }
+    
+    // Second priority: meals that use fridge ingredients
     if (fridgeIngredients.length > 0) {
       const fridgeScoredMeals = scoreMealsByFridgeInventory(unusedMeals, fridgeIngredients);
       const topFridgeMatches = fridgeScoredMeals.filter((meal: any) => meal.fridgeScore > 0);
