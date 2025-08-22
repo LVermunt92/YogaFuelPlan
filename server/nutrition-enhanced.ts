@@ -5174,6 +5174,28 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
   return filteredMeals;
 }
 
+// Function to identify water-related ingredients that should be excluded from shopping lists
+function isWaterIngredient(ingredient: string): boolean {
+  const lowerIngredient = ingredient.toLowerCase().trim();
+  
+  const waterKeywords = [
+    'water',
+    'water for cooking',
+    'cooking water',
+    'boiling water',
+    'hot water',
+    'cold water',
+    'tap water',
+    'filtered water',
+    'warm water',
+    'pasta water',
+    'rice water',
+    'barley water'
+  ];
+  
+  return waterKeywords.some(keyword => lowerIngredient === keyword || lowerIngredient.includes(keyword));
+}
+
 // Shopping list interfaces and functions
 export interface ShoppingListItem {
   ingredient: string;
@@ -5214,6 +5236,11 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
       substitutedIngredients.forEach(ingredient => {
         // Extract clean ingredient name from formatted text like "3 large free-range eggs" -> "eggs"
         const cleanIngredient = cleanIngredientName(ingredient);
+        
+        // Skip water-related ingredients - people have tap water
+        if (isWaterIngredient(cleanIngredient)) {
+          return;
+        }
         
         const existing = ingredientAmounts.get(cleanIngredient);
         if (existing) {
@@ -5259,6 +5286,12 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
         
         substitutedIngredients.forEach(ingredient => {
           const cleanIngredient = cleanIngredientName(ingredient);
+          
+          // Skip water-related ingredients - people have tap water
+          if (isWaterIngredient(cleanIngredient)) {
+            return;
+          }
+          
           const existing = ingredientAmounts.get(cleanIngredient);
           if (existing) {
             existing.count += 1;
