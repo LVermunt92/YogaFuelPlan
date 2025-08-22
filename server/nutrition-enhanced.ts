@@ -5524,6 +5524,26 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'fennel seeds': 'Pantry Essentials'
   };
 
+  // Function to determine if an ingredient should show clean name instead of quantity
+  const shouldShowCleanName = (ingredient: string, category: string, totalAmount: number, unit: string): boolean => {
+    // Small spices/seasonings - show just the name for grocery shopping convenience
+    const spicesAndSeasonings = [
+      'salt', 'pepper', 'cinnamon', 'paprika', 'cumin', 'turmeric', 'oregano', 'basil', 'thyme',
+      'rosemary', 'sage', 'garlic powder', 'onion powder', 'ginger powder', 'chili powder',
+      'vanilla extract', 'almond extract', 'baking powder', 'baking soda', 'cornstarch',
+      'flour', 'sugar', 'honey', 'maple syrup', 'olive oil', 'coconut oil', 'sesame oil',
+      'soy sauce', 'tamari', 'vinegar', 'lemon juice', 'lime juice', 'nutritional yeast',
+      'fennel seeds', 'mustard powder', 'stevia'
+    ];
+    
+    // Check if it's a spice/seasoning or very small quantity
+    const isSpice = spicesAndSeasonings.some(spice => ingredient.toLowerCase().includes(spice));
+    const isSmallQuantity = (unit === 'g' && totalAmount < 20) || (unit === 'ml' && totalAmount < 30);
+    const isPantryEssential = category === 'Pantry Essentials' || category === 'Baking & Cooking Basics';
+    
+    return isSpice || (isSmallQuantity && isPantryEssential);
+  };
+
   // Create shopping list with categories and converted amounts
   const shoppingList: ShoppingListItem[] = [];
   
@@ -5550,11 +5570,16 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
         const proportionalAmount = amounts.totalAmount / separateIngredients.length;
         const displayAmount = formatAmountWithLanguage(proportionalAmount, amounts.unit, language);
         
+        // For spices and small pantry items, show just the ingredient name
+        const finalDisplayAmount = shouldShowCleanName(separateIngredient, category, proportionalAmount, amounts.unit) 
+          ? capitalizedIngredient 
+          : displayAmount;
+        
         shoppingList.push({
           ingredient: capitalizedIngredient,
           category,
           count: amounts.count,
-          totalAmount: displayAmount,
+          totalAmount: finalDisplayAmount,
           unit: amounts.unit
         });
       });
@@ -5567,6 +5592,11 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
       // Convert amounts to grams using the formatAmount function
       const displayAmount = formatAmountWithLanguage(amounts.totalAmount, amounts.unit, language);
       
+      // For spices and small pantry items, show just the ingredient name
+      const finalDisplayAmount = shouldShowCleanName(ingredient, category, amounts.totalAmount, amounts.unit) 
+        ? finalIngredient 
+        : displayAmount;
+      
       // Determine final unit after conversion
       const finalUnit = amounts.unit;
       
@@ -5574,7 +5604,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
         ingredient: finalIngredient,
         category,
         count: amounts.count,
-        totalAmount: displayAmount,
+        totalAmount: finalDisplayAmount,
         unit: finalUnit
       });
     }
