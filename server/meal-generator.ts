@@ -20,6 +20,52 @@ import { normalizeToSunday } from "./date-utils";
 import { storage } from "./storage";
 import { applyDietarySubstitutions } from "./ingredient-substitution";
 
+/**
+ * Get priority ingredients from user's fridge inventory
+ */
+async function getFridgeInventoryIngredients(userId: number): Promise<string[]> {
+  try {
+    // Get fresh fridge items (not used yet) ordered by priority and expiration
+    const fridgeItems = await storage.getFridgeItems(userId, false);
+    
+    // Convert fridge items to ingredient names, prioritizing high priority and soon-to-expire items
+    const priorityIngredients = fridgeItems
+      .filter(item => item.priority === 'high' || (item.expirationDate && new Date(item.expirationDate) <= new Date(Date.now() + 7 * 24 * 60 * 60 * 1000))) // within 7 days
+      .map(item => item.ingredient.toLowerCase());
+    
+    console.log(`🧊 Found ${fridgeItems.length} fridge items, ${priorityIngredients.length} priority ingredients: ${JSON.stringify(priorityIngredients)}`);
+    return priorityIngredients;
+  } catch (error) {
+    console.error('Error fetching fridge inventory:', error);
+    return [];
+  }
+}
+
+/**
+ * Score meals based on fridge inventory matches
+ */
+function scoreMealsByFridgeInventory(meals: MealOption[], fridgeIngredients: string[]): MealOption[] {
+  if (fridgeIngredients.length === 0) return meals;
+  
+  return meals.map(meal => {
+    const ingredientMatches = meal.ingredients.filter(ingredient => 
+      fridgeIngredients.some(fridgeItem => 
+        ingredient.toLowerCase().includes(fridgeItem) || fridgeItem.includes(ingredient.toLowerCase().split(' ')[0])
+      )
+    );
+    
+    const fridgeScore = ingredientMatches.length;
+    if (fridgeScore > 0) {
+      console.log(`🎯 Fridge match: "${meal.name}" uses ${fridgeScore} fridge ingredients: ${ingredientMatches.join(', ')}`);
+    }
+    
+    return {
+      ...meal,
+      fridgeScore
+    };
+  }).sort((a, b) => (b as any).fridgeScore - (a as any).fridgeScore);
+}
+
 export interface GeneratedMealPlan {
   mealPlan: InsertMealPlan;
   meals: InsertMeal[];
@@ -153,7 +199,8 @@ function selectUnusedMeal(
   availableMeals: MealOption[], 
   usedMeals: Set<string>, 
   allSelectedMeals?: Set<string>,
-  prioritizeCustom: boolean = false
+  prioritizeCustom: boolean = false,
+  fridgeIngredients: string[] = []
 ): MealOption {
   if (availableMeals.length === 0) {
     throw new Error('No available meals to select from');
@@ -189,6 +236,17 @@ function selectUnusedMeal(
   }
   
   if (unusedMeals.length > 0) {
+    // Prioritize meals that use fridge ingredients
+    if (fridgeIngredients.length > 0) {
+      const fridgeScoredMeals = scoreMealsByFridgeInventory(unusedMeals, fridgeIngredients);
+      const topFridgeMatches = fridgeScoredMeals.filter((meal: any) => meal.fridgeScore > 0);
+      
+      if (topFridgeMatches.length > 0) {
+        console.log(`🧊 Found ${topFridgeMatches.length} meals using fridge ingredients, prioritizing them`);
+        unusedMeals = topFridgeMatches;
+      }
+    }
+    
     // Use intelligent variety selection instead of pure random
     const selectedMeals = selectMealsWithBetterVariety(unusedMeals, 1, Array.from(usedMeals));
     const selectedMeal = selectedMeals[0] || unusedMeals[0];
@@ -293,7 +351,14 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   const ingredientsToUseUp = user?.leftovers || [];
   let remainingIngredientsToUseUp = [...ingredientsToUseUp];
   
+  // Fetch fridge inventory for meal prioritization
+  let fridgeIngredients: string[] = [];
+  if (user?.id) {
+    fridgeIngredients = await getFridgeInventoryIngredients(user.id);
+  }
+  
   console.log(`🥕 Starting meal generation with leftover ingredients: ${JSON.stringify(ingredientsToUseUp)}`);
+  console.log(`🧊 Fridge inventory ingredients to prioritize: ${JSON.stringify(fridgeIngredients)}`);
   
   // Keep all leftover ingredients for incorporation into meals
   if (ingredientsToUseUp.length > 0) {
@@ -560,7 +625,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
       
       if (day === 1 && mealCategory === 'dinner') {
         // Day 1: Sunday dinner - FIRST cooking moment (only meal on Sunday)
-        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames);
+        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames, fridgeIngredients);
         sundayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
         allSelectedMealNames.add(selectedMeal.name);
@@ -573,7 +638,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         isLeftover = true;
       } else if (day === 2 && mealCategory === 'dinner') {
         // Day 2: Monday dinner - fresh cooking
-        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames);
+        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames, fridgeIngredients);
         mondayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
         allSelectedMealNames.add(selectedMeal.name);
@@ -586,7 +651,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         isLeftover = true;
       } else if (day === 3 && mealCategory === 'dinner') {
         // Day 3: Tuesday dinner - fresh cooking
-        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames);
+        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames, fridgeIngredients);
         tuesdayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
         allSelectedMealNames.add(selectedMeal.name);
@@ -599,7 +664,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         isLeftover = true;
       } else if (day === 4 && mealCategory === 'dinner') {
         // Day 4: Wednesday dinner - fresh cooking
-        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames);
+        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames, fridgeIngredients);
         wednesdayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
         allSelectedMealNames.add(selectedMeal.name);
@@ -612,7 +677,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         isLeftover = true;
       } else if (day === 5 && mealCategory === 'dinner') {
         // Day 5: Thursday dinner - fresh cooking
-        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames);
+        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames, fridgeIngredients);
         thursdayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
         allSelectedMealNames.add(selectedMeal.name);
@@ -625,7 +690,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         isLeftover = true;
       } else if (day === 6 && mealCategory === 'dinner') {
         // Day 6: Friday dinner - fresh cooking
-        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames);
+        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames, fridgeIngredients);
         let fridayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
         allSelectedMealNames.add(selectedMeal.name);
@@ -642,7 +707,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
           };
         } else {
           // User eats at home - select proper meal
-          selectedMeal = selectUnusedMeal(availableMeals, usedLunchMeals, allSelectedMealNames);
+          selectedMeal = selectUnusedMeal(availableMeals, usedLunchMeals, allSelectedMealNames, fridgeIngredients);
           usedLunchMeals.add(selectedMeal.name);
           allSelectedMealNames.add(selectedMeal.name);
         }
@@ -662,13 +727,13 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
             };
           } else {
             // Skip duplicate eating out - generate actual meal instead
-            selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames);
+            selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames, fridgeIngredients);
             usedDinnerMeals.add(selectedMeal.name);
             allSelectedMealNames.add(selectedMeal.name);
           }
         } else {
           // User eats at home - select proper meal
-          selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames);
+          selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames, fridgeIngredients);
           usedDinnerMeals.add(selectedMeal.name);
           allSelectedMealNames.add(selectedMeal.name);
         }
@@ -686,12 +751,12 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
           );
           
           if (weekendBreakfasts.length > 0) {
-            selectedMeal = selectUnusedMeal(weekendBreakfasts, usedBreakfastMeals, allSelectedMealNames);
+            selectedMeal = selectUnusedMeal(weekendBreakfasts, usedBreakfastMeals, allSelectedMealNames, fridgeIngredients);
             usedBreakfastMeals.add(selectedMeal.name);
             allSelectedMealNames.add(selectedMeal.name);
             console.log(`Day ${day} (weekend) breakfast: ${selectedMeal.name} (prep: ${selectedMeal.nutrition.prepTime}min)`);
           } else {
-            selectedMeal = selectUnusedMeal(availableMeals, usedBreakfastMeals, allSelectedMealNames);
+            selectedMeal = selectUnusedMeal(availableMeals, usedBreakfastMeals, allSelectedMealNames, fridgeIngredients);
             usedBreakfastMeals.add(selectedMeal.name);
             allSelectedMealNames.add(selectedMeal.name);
           }
@@ -706,12 +771,12 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
           );
           
           if (weekdayBreakfasts.length > 0) {
-            selectedMeal = selectUnusedMeal(weekdayBreakfasts, usedBreakfastMeals, allSelectedMealNames);
+            selectedMeal = selectUnusedMeal(weekdayBreakfasts, usedBreakfastMeals, allSelectedMealNames, fridgeIngredients);
             usedBreakfastMeals.add(selectedMeal.name);
             allSelectedMealNames.add(selectedMeal.name);
             console.log(`Day ${day} (weekday) breakfast: ${selectedMeal.name} (prep: ${selectedMeal.nutrition.prepTime}min)`);
           } else {
-            selectedMeal = selectUnusedMeal(availableMeals, usedBreakfastMeals, allSelectedMealNames);
+            selectedMeal = selectUnusedMeal(availableMeals, usedBreakfastMeals, allSelectedMealNames, fridgeIngredients);
             usedBreakfastMeals.add(selectedMeal.name);
             allSelectedMealNames.add(selectedMeal.name);
           }
@@ -732,7 +797,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
           console.log(`🥬 Day ${day}: Using ${freshnessFilteredMeals.length} freshness-optimized ${mealCategory} options`);
         }
         
-        selectedMeal = selectUnusedMeal(mealsToSelectFrom, mealCategory === 'lunch' ? usedLunchMeals : usedDinnerMeals, allSelectedMealNames);
+        selectedMeal = selectUnusedMeal(mealsToSelectFrom, mealCategory === 'lunch' ? usedLunchMeals : usedDinnerMeals, allSelectedMealNames, fridgeIngredients);
         
         // Log freshness analysis for the selected meal
         logMealFreshnessAnalysis(selectedMeal.name, selectedMeal.ingredients || []);
@@ -1209,13 +1274,13 @@ async function generateMealPrepPlan(
     
     if (isWeekend && weekendBreakfasts.length > 0) {
       // Weekend: use elaborate breakfasts with variety
-      const selectedBreakfast = selectUnusedMeal(weekendBreakfasts, usedBreakfastMeals, allSelectedMealNames);
+      const selectedBreakfast = selectUnusedMeal(weekendBreakfasts, usedBreakfastMeals, allSelectedMealNames, fridgeIngredients);
       usedBreakfastMeals.add(selectedBreakfast.name);
       allSelectedMealNames.add(selectedBreakfast.name);
       breakfastPool.push(selectedBreakfast);
     } else if (!isWeekend && weekdayBreakfasts.length > 0) {
       // Weekday: use quick breakfasts with variety
-      const selectedBreakfast = selectUnusedMeal(weekdayBreakfasts, usedBreakfastMeals, allSelectedMealNames);
+      const selectedBreakfast = selectUnusedMeal(weekdayBreakfasts, usedBreakfastMeals, allSelectedMealNames, fridgeIngredients);
       usedBreakfastMeals.add(selectedBreakfast.name);
       allSelectedMealNames.add(selectedBreakfast.name);
       breakfastPool.push(selectedBreakfast);
@@ -1225,19 +1290,19 @@ async function generateMealPrepPlan(
       
       if (isWeekend && weekendBreakfasts.length === 0 && weekdayBreakfasts.length > 0) {
         // Weekend but no weekend options - use weekday as fallback
-        const selectedBreakfast = selectUnusedMeal(weekdayBreakfasts, usedBreakfastMeals, allSelectedMealNames);
+        const selectedBreakfast = selectUnusedMeal(weekdayBreakfasts, usedBreakfastMeals, allSelectedMealNames, fridgeIngredients);
         usedBreakfastMeals.add(selectedBreakfast.name);
         allSelectedMealNames.add(selectedBreakfast.name);
         breakfastPool.push(selectedBreakfast);
       } else if (!isWeekend && weekdayBreakfasts.length === 0 && weekendBreakfasts.length > 0) {
         // Weekday but no weekday options - use weekend as fallback  
-        const selectedBreakfast = selectUnusedMeal(weekendBreakfasts, usedBreakfastMeals, allSelectedMealNames);
+        const selectedBreakfast = selectUnusedMeal(weekendBreakfasts, usedBreakfastMeals, allSelectedMealNames, fridgeIngredients);
         usedBreakfastMeals.add(selectedBreakfast.name);
         allSelectedMealNames.add(selectedBreakfast.name);
         breakfastPool.push(selectedBreakfast);
       } else {
         // General fallback
-        const selectedBreakfast = selectUnusedMeal(breakfastOptions, usedBreakfastMeals, allSelectedMealNames);
+        const selectedBreakfast = selectUnusedMeal(breakfastOptions, usedBreakfastMeals, allSelectedMealNames, fridgeIngredients);
         usedBreakfastMeals.add(selectedBreakfast.name);
         allSelectedMealNames.add(selectedBreakfast.name);
         breakfastPool.push(selectedBreakfast);
@@ -1317,7 +1382,7 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayLunchOptions : lunchOptions;
-        lunchMeal = selectUnusedMeal(mealOptions, usedLunchMeals, allSelectedMealNames);
+        lunchMeal = selectUnusedMeal(mealOptions, usedLunchMeals, allSelectedMealNames, fridgeIngredients);
         usedLunchMeals.add(lunchMeal.name);
         allSelectedMealNames.add(lunchMeal.name);
       }
@@ -1363,7 +1428,7 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        let selectedDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames);
+        let selectedDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames, fridgeIngredients);
         usedDinnerMeals.add(selectedDinnerMeal.name);
         allSelectedMealNames.add(selectedDinnerMeal.name);
         
@@ -1384,7 +1449,7 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        let selectedDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames);
+        let selectedDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames, fridgeIngredients);
         usedDinnerMeals.add(selectedDinnerMeal.name);
         allSelectedMealNames.add(selectedDinnerMeal.name);
         
@@ -1405,7 +1470,7 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        let selectedDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames);
+        let selectedDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames, fridgeIngredients);
         usedDinnerMeals.add(selectedDinnerMeal.name);
         allSelectedMealNames.add(selectedDinnerMeal.name);
         
@@ -1426,7 +1491,7 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        wednesdayDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames);
+        wednesdayDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames, fridgeIngredients);
         usedDinnerMeals.add(wednesdayDinnerMeal.name);
         allSelectedMealNames.add(wednesdayDinnerMeal.name);
         dinnerMeal = wednesdayDinnerMeal;
@@ -1435,7 +1500,7 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        thursdayDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames);
+        thursdayDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames, fridgeIngredients);
         usedDinnerMeals.add(thursdayDinnerMeal.name);
         allSelectedMealNames.add(thursdayDinnerMeal.name);
         dinnerMeal = thursdayDinnerMeal;
@@ -1444,7 +1509,7 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        dinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames);
+        dinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames, fridgeIngredients);
         usedDinnerMeals.add(dinnerMeal.name);
         allSelectedMealNames.add(dinnerMeal.name);
       } else if (day === 7 && thursdayDinnerMeal) {
@@ -1456,7 +1521,7 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        dinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames);
+        dinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames, fridgeIngredients);
         usedDinnerMeals.add(dinnerMeal.name);
         allSelectedMealNames.add(dinnerMeal.name);
       }
