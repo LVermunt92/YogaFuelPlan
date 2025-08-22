@@ -297,6 +297,8 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   const userCookingDays = user?.cookingDaysPerWeek || 7;
   const userEatingDays = user?.eatingDaysAtHome || 7;
   console.log(`🍳 User schedule: ${userCookingDays} cooking days, ${userEatingDays} eating days`);
+  console.log(`🔍 USER DEBUG: cookingDaysPerWeek=${user?.cookingDaysPerWeek}, eatingDaysAtHome=${user?.eatingDaysAtHome}`);
+  console.log(`🔍 USER DEBUG: useOnlyMyRecipes=${user?.useOnlyMyRecipes}, user.id=${user?.id}`);
   
   // Check if we should use meal prep mode (cooking days < eating days)
   console.log(`🍳 Meal prep mode check: ${userCookingDays} cooking < ${userEatingDays} eating? ${userCookingDays < userEatingDays}`);
@@ -862,6 +864,7 @@ async function generateMealPrepPlan(
   console.log(`🎯 LOADING CUSTOM RECIPES for user ${user?.id}`);
   const userRecipes = user?.id ? await storage.getUserRecipes(user.id) : [];
   console.log(`🎯 Found ${userRecipes.length} custom recipes for user ${user?.id}`);
+  console.log(`🎯 RAW CUSTOM RECIPES:`, JSON.stringify(userRecipes, null, 2));
   
   if (userRecipes.length > 0) {
     console.log(`🎯 PROCESSING CUSTOM RECIPES! Found ${userRecipes.length} recipes for user ${user?.id}`);
