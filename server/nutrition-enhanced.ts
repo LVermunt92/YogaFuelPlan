@@ -5226,10 +5226,17 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
   meals.forEach(meal => {
     // Strip any leftover suffix and portion scaling for meal matching
     const cleanMealName = meal.foodDescription
+      .replace(/\s*\(incorporating leftover.*?\)/gi, '') // Remove leftover incorporation text
       .replace(/ \(leftover\)$/, '')
       .replace(/ \(2\.0x.*?\)$/, '')
       .replace(/ \- batch cook$/, '')
-      .replace(/ \(protein-enhanced\)$/, '') // Fix: Strip protein-enhanced suffix
+      .replace(/ \(protein-enhanced\)$/, '')
+      .replace(/\s*\(Gluten-Free\)/gi, '') // Remove dietary tags
+      .replace(/\s*\(Lactose-Free\)/gi, '') 
+      .replace(/\s*\(Dairy-Free\)/gi, '')
+      .replace(/\s*\(Vegetarian\)/gi, '')
+      .replace(/\s*\(Plant-Based\)/gi, '')
+      .replace(/\s*\(Vegan\)/gi, '')
       .trim();
     
     const mealOption = ENHANCED_MEAL_DATABASE.find(m => m.name === cleanMealName);
@@ -5747,7 +5754,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
   const shouldShowCleanName = (ingredient: string, category: string, totalAmount: number, unit: string): boolean => {
     // Small spices/seasonings - show just the name for grocery shopping convenience
     const spicesAndSeasonings = [
-      'salt', 'pepper', 'cinnamon', 'paprika', 'cumin', 'turmeric', 'oregano', 'basil', 'thyme',
+      'salt', 'black pepper', 'white pepper', 'ground pepper', 'cinnamon', 'paprika', 'cumin', 'turmeric', 'oregano', 'basil', 'thyme',
       'rosemary', 'sage', 'garlic powder', 'onion powder', 'ginger powder', 'chili powder',
       'vanilla extract', 'almond extract', 'baking powder', 'baking soda', 'cornstarch',
       'flour', 'sugar', 'honey', 'maple syrup', 'olive oil', 'coconut oil', 'sesame oil',
@@ -5755,13 +5762,28 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
       'fennel seeds', 'mustard powder', 'stevia'
     ];
     
+    // Bell peppers and vegetables should NEVER show clean name - they need quantities
+    if (ingredient.toLowerCase().includes('bell pepper') || 
+        ingredient.toLowerCase().includes('sugar snap') || 
+        ingredient.toLowerCase().includes('snap pea') ||
+        category === 'Vegetables') {
+      return false;
+    }
+    
     // Garlic cloves should always show quantity (e.g., "3 garlic cloves" not just "Garlic cloves")
     if (ingredient.toLowerCase().includes('garlic cloves') || ingredient.toLowerCase().includes('garlic clove')) {
       return false; // Always show quantity for garlic cloves
     }
     
     // Check if it's a spice/seasoning or very small quantity
-    const isSpice = spicesAndSeasonings.some(spice => ingredient.toLowerCase().includes(spice));
+    const isSpice = spicesAndSeasonings.some(spice => {
+      const ingredientLower = ingredient.toLowerCase();
+      // Exclude "bell pepper" when matching "pepper"
+      if (spice === 'pepper' && ingredientLower.includes('bell pepper')) {
+        return false;
+      }
+      return ingredientLower.includes(spice);
+    });
     const isSmallQuantity = (unit === 'g' && totalAmount < 20) || (unit === 'ml' && totalAmount < 30);
     const isPantryEssential = category === 'Pantry Essentials' || category === 'Baking & Cooking Basics';
     
@@ -5795,16 +5817,20 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
         const displayAmount = formatAmountWithLanguage(proportionalAmount, amounts.unit, language);
         
         // For spices and small pantry items, show just the ingredient name
-        const finalDisplayAmount = shouldShowCleanName(separateIngredient, category, proportionalAmount, amounts.unit) 
+        const shouldShowClean = shouldShowCleanName(separateIngredient, category, proportionalAmount, amounts.unit);
+        const finalDisplayAmount = shouldShowClean 
           ? normalizedIngredient 
           : displayAmount;
+        
+        // When showing clean names (spices/seasonings), don't show a separate unit
+        const finalUnit = shouldShowClean ? '' : amounts.unit;
         
         shoppingList.push({
           ingredient: normalizedIngredient,
           category,
           count: amounts.count,
           totalAmount: finalDisplayAmount,
-          unit: amounts.unit
+          unit: finalUnit
         });
       });
     } else {
@@ -5817,12 +5843,13 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
       const displayAmount = formatAmountWithLanguage(amounts.totalAmount, amounts.unit, language);
       
       // For spices and small pantry items, show just the ingredient name
-      const finalDisplayAmount = shouldShowCleanName(ingredient, category, amounts.totalAmount, amounts.unit) 
+      const shouldShowClean = shouldShowCleanName(ingredient, category, amounts.totalAmount, amounts.unit);
+      const finalDisplayAmount = shouldShowClean 
         ? normalizedIngredient 
         : displayAmount;
       
-      // Determine final unit after conversion
-      const finalUnit = amounts.unit;
+      // When showing clean names (spices/seasonings), don't show a separate unit
+      const finalUnit = shouldShowClean ? '' : amounts.unit;
       
       shoppingList.push({
         ingredient: normalizedIngredient,

@@ -795,12 +795,28 @@ export interface ShoppingListItem {
   unit: string;
 }
 
+// Function to clean meal names by removing leftover indicators and extra text
+function cleanMealName(mealName: string): string {
+  return mealName
+    .replace(/\s*\(incorporating leftover.*?\)/gi, '') // Remove leftover incorporation text
+    .replace(/\s*\(leftover\)/gi, '') // Remove (leftover) suffix
+    .replace(/\s*\(Gluten-Free\)/gi, '') // Remove dietary tags
+    .replace(/\s*\(Lactose-Free\)/gi, '') 
+    .replace(/\s*\(Dairy-Free\)/gi, '')
+    .replace(/\s*\(Vegetarian\)/gi, '')
+    .replace(/\s*\(Plant-Based\)/gi, '')
+    .trim();
+}
+
 export function generateShoppingList(meals: { foodDescription: string }[], language: string = 'en'): ShoppingListItem[] {
   const ingredientAmounts = new Map<string, { totalAmount: number; unit: string; count: number }>();
   
   // Parse actual recipe amounts from meal instructions
   meals.forEach(meal => {
-    const mealOption = MEAL_DATABASE.find(m => m.name === meal.foodDescription);
+    // Clean the meal name to match database entries
+    const cleanedMealName = cleanMealName(meal.foodDescription);
+    const mealOption = MEAL_DATABASE.find(m => m.name === cleanedMealName);
+    
     if (mealOption && mealOption.recipe?.instructions) {
       parseRecipeIngredients(mealOption.recipe.instructions, ingredientAmounts);
     } else if (mealOption) {
@@ -818,6 +834,8 @@ export function generateShoppingList(meals: { foodDescription: string }[], langu
           });
         }
       });
+    } else {
+      console.log(`⚠️ No recipe found for cleaned meal name: "${cleanedMealName}" (original: "${meal.foodDescription}")`);
     }
   });
 
