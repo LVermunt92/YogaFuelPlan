@@ -450,10 +450,20 @@ export default function MealPlanner() {
   // Auto-select first meal plan
   useEffect(() => {
     console.log('Meal plans effect:', { selectedMealPlan, mealPlansCount: mealPlans.length });
-    if (!selectedMealPlan && mealPlans.length > 0) {
-      console.log('Auto-selecting first meal plan:', mealPlans[0].id);
-      setSelectedMealPlan(mealPlans[0].id);
-      localStorage.setItem('selectedMealPlan', mealPlans[0].id.toString());
+    
+    if (mealPlans.length > 0) {
+      // Check if the currently selected meal plan actually exists in the available meal plans
+      const selectedPlanExists = mealPlans.some(plan => plan.id === selectedMealPlan);
+      
+      if (!selectedMealPlan || !selectedPlanExists) {
+        // If no meal plan selected or selected one doesn't exist, auto-select the latest one
+        const latestMealPlan = mealPlans.reduce((latest, current) => 
+          current.id > latest.id ? current : latest
+        );
+        console.log('Auto-selecting latest meal plan:', latestMealPlan.id);
+        setSelectedMealPlan(latestMealPlan.id);
+        localStorage.setItem('selectedMealPlan', latestMealPlan.id.toString());
+      }
     }
   }, [selectedMealPlan, mealPlans]);
 
