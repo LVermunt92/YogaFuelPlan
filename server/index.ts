@@ -70,6 +70,24 @@ app.use((req, res, next) => {
     console.error("Failed to initialize Oura auto-sync:", error);
   }
 
+  // Development-only: Keep database alive during active development
+  if (process.env.NODE_ENV !== 'production') {
+    const { storage } = await import("./storage");
+    const keepAliveInterval = setInterval(async () => {
+      try {
+        await storage.getUser(1); // Simple query to keep database active
+        console.log('📡 Database keep-alive ping');
+      } catch (error) {
+        console.log('📡 Database keep-alive failed (normal if inactive)');
+      }
+    }, 4 * 60 * 1000); // Every 4 minutes
+
+    // Clear interval on shutdown
+    process.on('SIGTERM', () => clearInterval(keepAliveInterval));
+    process.on('SIGINT', () => clearInterval(keepAliveInterval));
+    console.log('📡 Database keep-alive enabled for development (pings every 4 minutes)');
+  }
+
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
