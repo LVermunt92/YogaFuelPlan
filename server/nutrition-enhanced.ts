@@ -6025,6 +6025,8 @@ function getDefaultPortion(ingredient: string): { amount: number; unit: string }
     'coconut yogurt': { amount: 120, unit: 'g' }, // 0.5 cup = ~120g
     'cherry tomatoes': { amount: 150, unit: 'g' }, // 1 cup = ~150g
     'bell peppers': { amount: 2, unit: 'pieces' }, // 2 medium peppers
+    'sugar snaps': { amount: 150, unit: 'g' }, // Sugar snap peas in grams
+    'sugarsnaps': { amount: 150, unit: 'g' }, // Sugar snap peas in grams (alternative name)
     'zucchini': { amount: 200, unit: 'g' }, // 1 medium zucchini
     'brussels sprouts': { amount: 150, unit: 'g' }, // 1 cup = ~150g
     'sweet potato': { amount: 200, unit: 'g' }, // 1 medium sweet potato
