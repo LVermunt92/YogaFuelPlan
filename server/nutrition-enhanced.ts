@@ -351,27 +351,28 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   },
 
   {
-    name: "Green smoothie bowl with hemp hearts and coconut",
+    name: "Green smoothie bowl with hemp hearts, coconut and protein powder",
     portion: "1 serving",
     nutrition: {
-      protein: 16,
-      prepTime: 10,
-      calories: 295,
-      carbohydrates: 35,
-      fats: 11,
-      fiber: 15,
+      protein: 28,
+      prepTime: 12,
+      calories: 375,
+      carbohydrates: 36,
+      fats: 12,
+      fiber: 16,
       sugar: 20,
-      sodium: 95,
-      costEuros: 4.2,
-      proteinPerEuro: 3.8
+      sodium: 110,
+      costEuros: 5.40,
+      proteinPerEuro: 5.2
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "lactose-free", "high-fiber", "antioxidant", "ayurvedic"],
+    tags: ["vegetarian", "gluten-free", "lactose-free", "high-fiber", "antioxidant", "ayurvedic", "high-protein"],
     ingredients: [
       "1 cup spinach",
       "½ frozen banana",
       "½ cup unsweetened almond milk",
       "1 tbsp almond butter",
+      "1 scoop plant protein powder (vanilla)",
       "2 tbsp hemp hearts",
       "1 tbsp coconut flakes",
       "½ cup frozen mango",
@@ -386,6 +387,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     recipe: {
       instructions: [
         "Blend spinach, banana, almond milk, and almond butter until smooth",
+        "Add protein powder and blend until fully incorporated",
         "Add frozen mango and blend until thick consistency",
         "Pour into bowl",
         "Top with hemp hearts and coconut flakes",
@@ -1065,27 +1067,37 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   },
 
   {
-    name: "Cucumber Salad",
+    name: "Cucumber Salad with Edamame and Hemp Hearts",
     portion: "1 serving",
     nutrition: { 
-      protein: 8, 
-      prepTime: 10, 
-      calories: 180,
-      carbohydrates: 12,
-      fats: 14,
-      fiber: 6,
+      protein: 16, 
+      prepTime: 12, 
+      calories: 265,
+      carbohydrates: 16,
+      fats: 16,
+      fiber: 8,
       sugar: 8,
-      sodium: 520,
-      potassium: 320,
-      calcium: 45,
-      iron: 1.2,
-      vitaminC: 25,
-      costEuros: 2.10, 
-      proteinPerEuro: 3.8 
+      sodium: 540,
+      potassium: 420,
+      calcium: 85,
+      iron: 2.8,
+      vitaminC: 28,
+      costEuros: 3.20, 
+      proteinPerEuro: 5.0 
     },
     category: "lunch",
-    tags: ["vegetarian", "gluten-free", "viral", "social-media", "low-calorie", "refreshing"],
-    ingredients: ["cucumbers", "rice vinegar", "soy sauce", "sesame oil", "garlic", "chili flakes", "sesame seeds"],
+    tags: ["vegetarian", "gluten-free", "viral", "social-media", "protein-rich", "refreshing"],
+    ingredients: [
+      "2 large cucumbers (sliced)",
+      "80g cooked edamame beans", 
+      "2 tbsp hemp hearts",
+      "3 tbsp rice vinegar", 
+      "2 tbsp soy sauce", 
+      "1 tbsp sesame oil", 
+      "2 cloves garlic (minced)", 
+      "1/2 tsp chili flakes", 
+      "1 tbsp sesame seeds"
+    ],
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 2,
@@ -1096,9 +1108,10 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       instructions: [
         "Slice cucumbers thin using viral TikTok technique",
         "Salt cucumbers and let drain for 10 minutes",
+        "If using frozen edamame, cook according to package directions and cool",
         "Mix rice vinegar, soy sauce, sesame oil, minced garlic",
-        "Toss cucumbers with dressing",
-        "Top with chili flakes and sesame seeds",
+        "Toss cucumbers and edamame with dressing",
+        "Top with hemp hearts, chili flakes and sesame seeds",
         "Let marinate for viral flavor development"
       ],
       tips: ["This salad broke TikTok for being addictively delicious", "The key is the perfect balance of salty, sour, and spicy", "Many creators make this daily"],
@@ -1196,24 +1209,25 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   // Quick weekday dinner options for complex dietary restrictions
   {
-    name: "Quick veggie stir-fry with rice noodles and tahini sauce",
+    name: "Quick veggie stir-fry with rice noodles, tofu and tahini sauce",
     portion: "2 servings",
     nutrition: { 
-      protein: 18, 
-      prepTime: 20, 
-      calories: 420,
+      protein: 28, 
+      prepTime: 25, 
+      calories: 520,
       carbohydrates: 58,
-      fats: 14,
-      fiber: 8,
+      fats: 18,
+      fiber: 9,
       sugar: 12,
-      sodium: 380,
-      costEuros: 4.20, 
-      proteinPerEuro: 4.3 
+      sodium: 420,
+      costEuros: 5.40, 
+      proteinPerEuro: 5.2 
     },
     category: "dinner",
-    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "quick", "colorful"],
+    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "quick", "colorful", "high-protein"],
     ingredients: [
       "200g rice noodles",
+      "200g firm tofu (cubed)",
       "1 red bell pepper (sliced)",
       "1 zucchini (sliced)",
       "150g sugar snaps",
@@ -1224,7 +1238,8 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       "2 tsp sesame oil",
       "2 cloves garlic (minced)",
       "1 tsp fresh ginger (grated)",
-      "2 green onions (chopped)"
+      "2 green onions (chopped)",
+      "1 tbsp cornstarch (for tofu coating)"
     ],
     wholeFoodLevel: "moderate",
     vegetableContent: {
@@ -1235,20 +1250,24 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     recipe: {
       instructions: [
         "Soak rice noodles in hot water for 8-10 minutes until tender",
-        "Meanwhile, heat sesame oil in large wok over high heat",
-        "Stir-fry bell pepper and carrots for 2 minutes",
+        "Press tofu to remove excess water, then cube and toss with cornstarch",
+        "Heat 1 tsp sesame oil in large wok over high heat",
+        "Cook tofu cubes until golden and crispy on all sides, about 4 minutes - remove and set aside",
+        "Add remaining sesame oil to wok, stir-fry bell pepper and carrots for 2 minutes",
         "Add zucchini and sugar snaps, stir-fry 3 minutes more",
         "Add minced garlic and ginger, cook 30 seconds",
+        "Return crispy tofu to wok with vegetables",
         "Whisk tahini, soy sauce, and rice vinegar in small bowl",
-        "Drain noodles and add to wok with vegetables",
+        "Drain noodles and add to wok with vegetables and tofu",
         "Pour tahini sauce over noodles and toss until coated",
         "Garnish with chopped green onions and serve immediately"
       ],
       tips: [
-        "Keep vegetables crisp by cooking on high heat",
-        "Add tahini sauce last to prevent burning"
+        "Press tofu for at least 15 minutes for best texture",
+        "Cornstarch coating makes tofu extra crispy",
+        "Keep vegetables crisp by cooking on high heat"
       ],
-      notes: "Quick weekday dinner ready in under 25 minutes"
+      notes: "Protein-packed stir-fry with crispy tofu ready in 25 minutes"
     }
   },
 
@@ -1928,26 +1947,27 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   // Fresh summer vegetable and coconut milk soup (ayurvedic cooling)
   {
-    name: "Fresh summer vegetable and coconut milk soup",
+    name: "Fresh summer vegetable and coconut milk soup with lentils",
     portion: "1 portion (large bowl with quinoa)",
     nutrition: {
-      protein: 12,
-      prepTime: 20,
-      calories: 285,
-      carbohydrates: 42,
-      fats: 8,
-      fiber: 10,
+      protein: 20,
+      prepTime: 25,
+      calories: 365,
+      carbohydrates: 48,
+      fats: 10,
+      fiber: 14,
       sugar: 12,
-      sodium: 320,
-      costEuros: 2.80,
-      proteinPerEuro: 4.3
+      sodium: 340,
+      costEuros: 3.60,
+      proteinPerEuro: 5.6
     },
     category: 'lunch',
-    tags: ['vegetarian', 'vegan', 'gluten-free', 'lactose-free', 'ayurvedic', 'cooling', 'quick'],
+    tags: ['vegetarian', 'vegan', 'gluten-free', 'lactose-free', 'ayurvedic', 'cooling', 'quick', 'high-protein'],
     ingredients: [
       '1 cup mixed summer vegetables (zucchini, cucumber, fresh corn)',
       '1/2 cup coconut milk',
       '1/4 cup cooked quinoa',
+      '1/2 cup cooked red lentils',
       '1 tbsp coconut oil',
       '1/2 tsp fennel seeds',
       '1 cup vegetable broth',
@@ -1967,7 +1987,8 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         'Heat coconut oil gently, add fennel seeds until fragrant',
         'Add diced summer vegetables, sauté lightly for 3 minutes',
         'Pour in vegetable broth, bring to gentle simmer',
-        'Add coconut milk and cooked quinoa, warm through',
+        'Add cooked red lentils and coconut milk, warm through',
+        'Stir in cooked quinoa to heat through',
         'Stir in fresh herbs and lime juice off heat',
         'Serve warm or at room temperature'
       ],
@@ -2090,24 +2111,25 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   // Cooling coconut and herb rice noodle soup (ayurvedic summer)
   {
-    name: "Cooling coconut and herb rice noodle soup",
+    name: "Cooling coconut and herb rice noodle soup with tempeh",
     portion: "1 serving",
     nutrition: {
-      protein: 10,
-      prepTime: 22,
-      calories: 315,
+      protein: 22,
+      prepTime: 25,
+      calories: 425,
       carbohydrates: 48,
-      fats: 9,
-      fiber: 6,
+      fats: 14,
+      fiber: 8,
       sugar: 8,
-      sodium: 380,
-      costEuros: 2.60,
-      proteinPerEuro: 3.8
+      sodium: 420,
+      costEuros: 4.20,
+      proteinPerEuro: 5.2
     },
     category: 'dinner',
-    tags: ['vegetarian', 'vegan', 'gluten-free', 'lactose-free', 'ayurvedic', 'cooling', 'quick'],
+    tags: ['vegetarian', 'vegan', 'gluten-free', 'lactose-free', 'ayurvedic', 'cooling', 'quick', 'high-protein'],
     ingredients: [
       '2 oz rice noodles',
+      '80g tempeh (cubed)',
       '1/2 cup coconut milk',
       '1 cup vegetable broth',
       '1/4 cup fresh vegetables (cucumber, zucchini)',
@@ -2127,10 +2149,11 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     recipe: {
       instructions: [
         'Cook rice noodles according to package directions, drain',
+        'Steam or pan-fry tempeh cubes until golden, about 4 minutes each side',
         'Heat coconut oil gently, add fennel seeds until fragrant',
         'Add vegetable broth and coconut milk, bring to gentle simmer',
         'Add fresh vegetables, cook 2-3 minutes until just tender',
-        'Add cooked noodles to warm through',
+        'Add cooked noodles and tempeh to warm through',
         'Remove from heat, stir in herbs and lime juice'
       ],
       tips: [
@@ -2144,24 +2167,25 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
 
   // Cooling barley water and vegetable soup (ayurvedic summer)
   {
-    name: "Cooling barley water and vegetable soup",
+    name: "Cooling barley water and vegetable soup with white beans",
     portion: "1 serving",
     nutrition: {
-      protein: 8,
-      prepTime: 25,
-      calories: 220,
-      carbohydrates: 42,
-      fats: 4,
-      fiber: 8,
+      protein: 18,
+      prepTime: 30,
+      calories: 320,
+      carbohydrates: 48,
+      fats: 6,
+      fiber: 12,
       sugar: 6,
-      sodium: 320,
-      costEuros: 1.80,
-      proteinPerEuro: 4.4
+      sodium: 360,
+      costEuros: 2.60,
+      proteinPerEuro: 6.9
     },
     category: 'lunch',
-    tags: ['vegetarian', 'vegan', 'gluten-free', 'lactose-free', 'ayurvedic', 'cooling'],
+    tags: ['vegetarian', 'vegan', 'gluten-free', 'lactose-free', 'ayurvedic', 'cooling', 'high-protein'],
     ingredients: [
       '1/2 cup pearl barley',
+      '1/2 cup cooked white cannellini beans',
       '1 cup cooling vegetables (cucumber, bottle gourd, fresh greens)',
       '2 cups water',
       '1 tbsp coconut oil',
@@ -2182,9 +2206,9 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         'Cook pearl barley in water until soft (20 minutes)',
         'Heat coconut oil gently, add fennel seeds',
         'Add cooling vegetables, cook very lightly 2 minutes',
-        'Add cooked barley with cooking water',
-        'Simmer gently 3 minutes, remove from heat',
-        'Stir in fresh herbs and lime juice'
+        'Add cooked barley with cooking water and cooked white beans',
+        'Simmer gently 3 minutes to warm beans through',
+        'Remove from heat, stir in fresh herbs and lime juice'
       ],
       tips: [
         'Barley water is traditionally very cooling',
@@ -2923,26 +2947,27 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     }
   },
   {
-    name: "Nature's Cereal",
+    name: "Nature's Cereal with Greek Yogurt",
     portion: "1 serving",
     nutrition: { 
-      protein: 8, 
-      prepTime: 5, 
-      calories: 160,
-      carbohydrates: 35,
-      fats: 2,
+      protein: 18, 
+      prepTime: 7, 
+      calories: 280,
+      carbohydrates: 38,
+      fats: 6,
       fiber: 8,
-      sugar: 28,
-      sodium: 45,
-      costEuros: 3.20, 
-      proteinPerEuro: 2.5 
+      sugar: 30,
+      sodium: 85,
+      costEuros: 4.50, 
+      proteinPerEuro: 4.0 
     },
     category: "breakfast",
-    tags: ["viral", "social-media", "vegan", "gluten-free", "raw", "refreshing"],
+    tags: ["viral", "social-media", "vegetarian", "gluten-free", "refreshing", "high-protein"],
     ingredients: [
       "150g fresh blueberries",
       "30ml pomegranate seeds",
-      "240ml coconut water",
+      "120ml coconut water",
+      "120ml Greek yogurt (plain)",
       "Ice cubes",
       "Optional: mint leaves"
     ],
@@ -2954,9 +2979,10 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
-        "Fill bowl with fresh blueberries",
-        "Sprinkle pomegranate seeds on top",
-        "Pour chilled coconut water over fruit",
+        "Add Greek yogurt as base layer in bowl",
+        "Fill with fresh blueberries on top of yogurt",
+        "Sprinkle pomegranate seeds over fruit",
+        "Pour chilled coconut water around the sides",
         "Add ice cubes for viral crunch",
         "Garnish with mint if desired",
         "Eat immediately for best texture"

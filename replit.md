@@ -5,7 +5,16 @@ This full-stack meal planning application generates personalized weekly meal pla
 Preferred communication style: Simple, everyday language.
 **CRITICAL DEVELOPMENT RULE**: Never remove existing functionality, features, or logic without explicit user permission. Always ask twice before removing anything. Only make additive changes unless specifically requested to remove features. Preserve all working functionality by default.
 
-## Recent Fixes (August 22, 2025)
+## Recent Fixes (August 26, 2025)
+- **Protein Enhancement Initiative**: Systematically enhanced multiple recipes that lacked adequate protein sources by adding high-quality protein ingredients while maintaining recipe integrity and dietary tag compatibility
+- **Enhanced Noodle Stir-fry Recipe**: Updated "Quick veggie stir-fry with rice noodles and tahini sauce" to include 200g firm tofu with cornstarch coating for crispiness, increasing protein from 18g to 28g while adding proper cooking instructions for optimal texture
+- **Cucumber Salad Protein Boost**: Enhanced viral TikTok cucumber salad with 80g edamame beans and hemp hearts, doubling protein content from 8g to 16g while maintaining refreshing properties
+- **Soup Protein Additions**: Added red lentils to summer vegetable coconut soup (12g→20g protein) and tempeh to coconut herb rice noodle soup (10g→22g protein), with detailed cooking instructions for proper integration
+- **Breakfast Bowl Enhancements**: Added plant protein powder to green smoothie bowl (16g→28g protein) and Greek yogurt to Nature's Cereal (8g→18g protein) while preserving viral appeal and nutritional benefits
+- **Bean Integration**: Enhanced cooling barley soup with white cannellini beans (8g→18g protein), providing complete protein profiles while maintaining Ayurvedic cooling properties
+- **Shopping List Auto-Selection Fix**: Resolved issue where frontend was attempting to access non-existent meal plan IDs by implementing smart meal plan selection that automatically chooses the latest available plan when stored ID doesn't exist
+
+## Previous Fixes (August 22, 2025)
 - **Fridge Inventory System Implementation**: Created complete fridge inventory management system with database schema, API routes, and user interface for tracking existing ingredients, expiration dates, and priorities to optimize meal planning
 - **Recipe Enhancement - Wild Mushroom Quinoa**: Updated "Wild mushroom and herb quinoa with roasted vegetables" recipe per user feedback: removed garlic (was unusual combination), kept tahini dressing for moisture, and added parmesan cheese for umami flavor that complements the earthy mushrooms
 - **Comprehensive Ingredient Normalization System**: Created automatic grocery list optimization that removes cooking methods (steamed broccoli → broccoli, roasted vegetables → vegetables) and specifies generic plant-based milk terms (plant-based milk → oat milk) for practical grocery shopping
