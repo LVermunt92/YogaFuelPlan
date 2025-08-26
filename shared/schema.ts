@@ -166,20 +166,8 @@ export const userRecipes = pgTable("user_recipes", {
   uniqueUserRecipe: unique().on(table.userId, table.name),
 }));
 
-// Fridge inventory for tracking ingredients user already has
-export const fridgeInventory = pgTable("fridge_inventory", {
-  id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id, { onDelete: "cascade" }).notNull(),
-  ingredient: text("ingredient").notNull(),
-  quantity: text("quantity"), // e.g., "1 head", "500g", "2 cups"
-  unit: text("unit"), // e.g., "g", "ml", "pieces"
-  category: text("category"), // Vegetables, Proteins, etc.
-  expirationDate: date("expiration_date"),
-  addedDate: timestamp("added_date").defaultNow(),
-  used: boolean("used").default(false), // marked as used when incorporated into meal plan
-  priority: integer("priority").default(1), // 1-5, higher number = use first (expiring soon)
-  notes: text("notes"), // storage notes, condition, etc.
-});
+
+
 
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
@@ -344,21 +332,7 @@ export type UserRecipe = typeof userRecipes.$inferSelect;
 export type InsertUserRecipe = z.infer<typeof insertUserRecipeSchema>;
 export type UpdateUserRecipe = z.infer<typeof updateUserRecipeSchema>;
 
-// Fridge inventory schemas
-export const insertFridgeItemSchema = createInsertSchema(fridgeInventory).omit({
-  id: true,
-  addedDate: true,
-});
 
-export const updateFridgeItemSchema = createInsertSchema(fridgeInventory).omit({
-  id: true,
-  userId: true,
-  addedDate: true,
-}).partial();
-
-export type FridgeItem = typeof fridgeInventory.$inferSelect;
-export type InsertFridgeItem = z.infer<typeof insertFridgeItemSchema>;
-export type UpdateFridgeItem = z.infer<typeof updateFridgeItemSchema>;
 
 export const passwordResetCodes = pgTable("password_reset_codes", {
   id: serial("id").primaryKey(),
