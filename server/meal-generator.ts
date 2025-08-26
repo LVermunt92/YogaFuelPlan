@@ -297,8 +297,21 @@ function areMealsSimilar(meal1: string, meal2: string): boolean {
   const name1 = meal1.toLowerCase().trim();
   const name2 = meal2.toLowerCase().trim();
   
-  // Only prevent exact duplicates of the same recipe
-  return name1 === name2;
+  // Clean both names by removing dietary tags and leftover indicators
+  const cleanName1 = name1
+    .replace(/ \(incorporating leftover.*?\)/g, '')
+    .replace(/ \([^)]*\)/g, '') // Remove all parenthetical tags
+    .replace(/ \(leftover\)/g, '')
+    .trim();
+  
+  const cleanName2 = name2
+    .replace(/ \(incorporating leftover.*?\)/g, '')
+    .replace(/ \([^)]*\)/g, '') // Remove all parenthetical tags  
+    .replace(/ \(leftover\)/g, '')
+    .trim();
+  
+  // Prevent exact duplicates of the same base recipe
+  return cleanName1 === cleanName2;
 }
 
 /**
@@ -404,10 +417,47 @@ function selectUnusedMeal(
         );
       });
       
-      // If global filtering removed all options, fallback to all available
+      // If global filtering removed all options, use intelligent fallback
       if (resetCandidates.length === 0) {
-        console.log('⚠️ Global filtering removed all options, using fallback selection');
-        resetCandidates = availableMeals;
+        console.log('⚠️ Global filtering removed all options, using smart fallback with usage counts');
+        
+        // Count how many times each meal appears in global selection
+        const mealUsageCounts = new Map<string, number>();
+        Array.from(allSelectedMeals).forEach(selectedMeal => {
+          const cleanName = selectedMeal
+            .replace(/ \(incorporating leftover.*?\)/g, '')
+            .replace(/ \([^)]*\)/g, '')
+            .trim().toLowerCase();
+          mealUsageCounts.set(cleanName, (mealUsageCounts.get(cleanName) || 0) + 1);
+        });
+        
+        // Find meals that have been used least
+        let minUsageCount = Number.MAX_SAFE_INTEGER;
+        availableMeals.forEach(meal => {
+          const cleanName = meal.name
+            .replace(/ \(incorporating leftover.*?\)/g, '')
+            .replace(/ \([^)]*\)/g, '')
+            .trim().toLowerCase();
+          const count = mealUsageCounts.get(cleanName) || 0;
+          minUsageCount = Math.min(minUsageCount, count);
+        });
+        
+        // Select only meals with minimum usage count
+        resetCandidates = availableMeals.filter(meal => {
+          const cleanName = meal.name
+            .replace(/ \(incorporating leftover.*?\)/g, '')
+            .replace(/ \([^)]*\)/g, '')
+            .trim().toLowerCase();
+          const count = mealUsageCounts.get(cleanName) || 0;
+          return count === minUsageCount;
+        });
+        
+        console.log(`🎯 Smart fallback: Selected ${resetCandidates.length} meals with usage count ${minUsageCount}`);
+        
+        // If still empty (shouldn't happen), use all available
+        if (resetCandidates.length === 0) {
+          resetCandidates = availableMeals;
+        }
       }
     }
     
@@ -769,6 +819,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         sundayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
         allSelectedMealNames.add(selectedMeal.name);
+        console.log(`🍽️ Day 1 Sunday dinner: "${selectedMeal.name}" (Global tracker now has ${allSelectedMealNames.size} unique meals)`);
       } else if (day === 2 && mealCategory === 'lunch') {
         // Day 2: Monday lunch - leftover from Sunday dinner
         if (!sundayDinnerMeal) {
@@ -782,6 +833,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         mondayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
         allSelectedMealNames.add(selectedMeal.name);
+        console.log(`🍽️ Day 2 Monday dinner: "${selectedMeal.name}" (Global tracker now has ${allSelectedMealNames.size} unique meals)`);
       } else if (day === 3 && mealCategory === 'lunch') {
         // Day 3: Tuesday lunch - leftover from Monday dinner
         if (!mondayDinnerMeal) {
@@ -795,6 +847,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         tuesdayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
         allSelectedMealNames.add(selectedMeal.name);
+        console.log(`🍽️ Day 3 Tuesday dinner: "${selectedMeal.name}" (Global tracker now has ${allSelectedMealNames.size} unique meals)`);
       } else if (day === 4 && mealCategory === 'lunch') {
         // Day 4: Wednesday lunch - leftover from Tuesday dinner
         if (!tuesdayDinnerMeal) {
@@ -808,6 +861,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         wednesdayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
         allSelectedMealNames.add(selectedMeal.name);
+        console.log(`🍽️ Day 4 Wednesday dinner: "${selectedMeal.name}" (Global tracker now has ${allSelectedMealNames.size} unique meals)`);
       } else if (day === 5 && mealCategory === 'lunch') {
         // Day 5: Thursday lunch - leftover from Wednesday dinner
         if (!wednesdayDinnerMeal) {
@@ -821,6 +875,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         thursdayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
         allSelectedMealNames.add(selectedMeal.name);
+        console.log(`🍽️ Day 5 Thursday dinner: "${selectedMeal.name}" (Global tracker now has ${allSelectedMealNames.size} unique meals)`);
       } else if (day === 6 && mealCategory === 'lunch') {
         // Day 6: Friday lunch - leftover from Thursday dinner
         if (!thursdayDinnerMeal) {
