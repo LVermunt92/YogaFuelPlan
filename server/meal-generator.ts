@@ -19,79 +19,21 @@ import { calculateMealFreshnessPriority, getRecommendedDayForMeal, logMealFreshn
 import { normalizeToSunday } from "./date-utils";
 import { storage } from "./storage";
 import { applyDietarySubstitutions } from "./ingredient-substitution";
+import { getIntelligentRecipeRecommendations } from './intelligent-ingredient-matcher';
 
 /**
- * Get priority ingredients from user's fridge inventory
+ * Get ingredients to use up from user profile
  */
-async function getFridgeInventoryIngredients(userId: number): Promise<string[]> {
-  try {
-    console.log(`🧊 DEBUG: Fetching fridge items for user ${userId}`);
-    // Get fresh fridge items (not used yet) ordered by priority and expiration
-    const fridgeItems = await storage.getFridgeItems(userId, false);
-    console.log(`🧊 DEBUG: Raw fridge items:`, JSON.stringify(fridgeItems, null, 2));
-    
-    // Convert fridge items to ingredient names, prioritizing high priority and soon-to-expire items
-    const priorityIngredients = fridgeItems
-      .filter(item => {
-        const isHighPriority = (typeof item.priority === 'string' && item.priority === 'high') || 
-                              (typeof item.priority === 'number' && item.priority >= 3);
-        const isExpiringSoon = item.expirationDate && new Date(item.expirationDate) <= new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-        console.log(`🧊 DEBUG: Item "${item.ingredient}" - priority: ${item.priority} (${typeof item.priority}), isHighPriority: ${isHighPriority}, isExpiringSoon: ${isExpiringSoon}`);
-        return isHighPriority || isExpiringSoon;
-      })
-      .map(item => item.ingredient.toLowerCase());
-    
-    console.log(`🧊 Found ${fridgeItems.length} fridge items, ${priorityIngredients.length} priority ingredients: ${JSON.stringify(priorityIngredients)}`);
-    return priorityIngredients;
-  } catch (error) {
-    console.error('🧊 ERROR fetching fridge inventory:', error);
+function getIngredientsToUseUp(user?: User): string[] {
+  if (!user?.leftovers) {
     return [];
   }
+  
+  console.log(`🥬 INGREDIENTS TO USE UP: Found ${user.leftovers.length} ingredients: ${user.leftovers.join(', ')}`);
+  return user.leftovers;
 }
 
-/**
- * Score meals based on fridge inventory matches
- */
-function scoreMealsByFridgeInventory(meals: MealOption[], fridgeIngredients: string[]): MealOption[] {
-  if (fridgeIngredients.length === 0) return meals;
-  
-  return meals.map(meal => {
-    const ingredientMatches = meal.ingredients.filter(ingredient => 
-      fridgeIngredients.some(fridgeItem => {
-        const lowerIngredient = ingredient.toLowerCase();
-        const lowerFridgeItem = fridgeItem.toLowerCase();
-        
-        // Direct substring match
-        if (lowerIngredient.includes(lowerFridgeItem) || lowerFridgeItem.includes(lowerIngredient)) {
-          return true;
-        }
-        
-        // Word-based matching for compound ingredients like "cauliflower rice"
-        const fridgeWords = lowerFridgeItem.split(' ');
-        const ingredientWords = lowerIngredient.split(' ');
-        
-        // Check if all words from fridge item appear in meal ingredient
-        const allWordsMatch = fridgeWords.every(fridgeWord => 
-          ingredientWords.some(ingredientWord => 
-            ingredientWord.includes(fridgeWord) || fridgeWord.includes(ingredientWord)
-          )
-        );
-        
-        return allWordsMatch;
-      })
-    );
-    
-    const fridgeScore = ingredientMatches.length;
-    if (fridgeScore > 0) {
-      console.log(`🎯 Fridge match: "${meal.name}" uses ${fridgeScore} fridge ingredients: ${ingredientMatches.join(', ')}`);
-    }
-    
-    return {
-      ...meal,
-      fridgeScore
-    };
-  }).sort((a, b) => (b as any).fridgeScore - (a as any).fridgeScore);
-}
+
 
 export interface GeneratedMealPlan {
   mealPlan: InsertMealPlan;
@@ -317,14 +259,16 @@ function areMealsSimilar(meal1: string, meal2: string): boolean {
 /**
  * Select an unused meal from available options, ensuring intelligent variety and preventing similar recipes
  */
-function selectUnusedMeal(
+async function selectUnusedMealIntelligently(
   availableMeals: MealOption[], 
   usedMeals: Set<string>, 
   allSelectedMeals?: Set<string>,
   prioritizeCustom: boolean = false,
-  fridgeIngredients: string[] = [],
-  leftoverIngredients: string[] = []
-): MealOption {
+  ingredientsToUseUp: string[] = [],
+  category: 'breakfast' | 'lunch' | 'dinner',
+  dietaryTags: string[] = [],
+  targetProtein: number = 25
+): Promise<MealOption> {
   if (availableMeals.length === 0) {
     throw new Error('No available meals to select from');
   }
@@ -358,43 +302,44 @@ function selectUnusedMeal(
     }
   }
   
-  if (unusedMeals.length > 0) {
-    // First priority: meals that naturally contain leftover ingredients
-    if (leftoverIngredients.length > 0) {
-      const mealsWithLeftovers: Array<MealOption & { compatibilityScore: number }> = [];
-      
-      for (const meal of unusedMeals) {
-        let totalCompatibility = 0;
-        for (const leftoverIngredient of leftoverIngredients) {
-          totalCompatibility += calculateIngredientCompatibility(leftoverIngredient, meal);
-        }
-        
-        if (totalCompatibility > 5) { // High compatibility threshold for natural incorporation
-          mealsWithLeftovers.push({
-            ...meal,
-            compatibilityScore: totalCompatibility
-          });
-        }
-      }
-      
-      if (mealsWithLeftovers.length > 0) {
-        // Sort by compatibility and use the best match
-        const bestMatch = mealsWithLeftovers.sort((a, b) => b.compatibilityScore - a.compatibilityScore)[0];
-        console.log(`🎯 Found meal that naturally uses leftovers: "${bestMatch.name}" (score: ${bestMatch.compatibilityScore})`);
-        return bestMatch;
-      }
-    }
+  // Try intelligent ingredient matching first if we have ingredients to use up
+  if (ingredientsToUseUp.length > 0) {
+    console.log(`🧠 Using intelligent ingredient matching for: ${ingredientsToUseUp.join(', ')}`);
     
-    // Second priority: meals that use fridge ingredients
-    if (fridgeIngredients.length > 0) {
-      const fridgeScoredMeals = scoreMealsByFridgeInventory(unusedMeals, fridgeIngredients);
-      const topFridgeMatches = fridgeScoredMeals.filter((meal: any) => meal.fridgeScore > 0);
+    try {
+      const intelligentRecommendations = await getIntelligentRecipeRecommendations(
+        ingredientsToUseUp,
+        category,
+        dietaryTags,
+        targetProtein,
+        3 // Get up to 3 recommendations
+      );
       
-      if (topFridgeMatches.length > 0) {
-        console.log(`🧊 Found ${topFridgeMatches.length} meals using fridge ingredients, prioritizing them`);
-        unusedMeals = topFridgeMatches;
+      if (intelligentRecommendations.length > 0) {
+        // Filter recommendations to only include available and unused meals
+        const availableIntelligentMeals = intelligentRecommendations.filter(meal => {
+          // Check if this meal is already used in this category
+          if (usedMeals.has(meal.name)) return false;
+          
+          // Check if similar meal already selected globally
+          if (allSelectedMeals && Array.from(allSelectedMeals).some(selectedMeal => 
+            areMealsSimilar(meal.name, selectedMeal))) return false;
+            
+          return true;
+        });
+        
+        if (availableIntelligentMeals.length > 0) {
+          const selectedMeal = availableIntelligentMeals[0];
+          console.log(`🎯✨ Selected intelligent match: "${selectedMeal.name}" using ingredients: ${ingredientsToUseUp.join(', ')}`);
+          return selectedMeal;
+        }
       }
+    } catch (error) {
+      console.warn('Failed to get intelligent recommendations, falling back to regular selection:', error);
     }
+  }
+
+  if (unusedMeals.length > 0) {
     
     // Use intelligent variety selection instead of pure random
     const selectedMeals = selectMealsWithBetterVariety(unusedMeals, 1, Array.from(usedMeals));
@@ -534,25 +479,15 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   const meals: InsertMeal[] = [];
   let totalWeeklyProtein = 0;
   const dietaryTags = request.dietaryTags || [];
-  const ingredientsToUseUp = user?.leftovers || [];
-  let remainingIngredientsToUseUp = [...ingredientsToUseUp];
   
-  // Fetch fridge inventory for meal prioritization
-  let fridgeIngredients: string[] = [];
-  console.log(`🧊 DEBUG: User object:`, JSON.stringify(user ? { id: user.id, username: user.username } : null));
-  if (user?.id) {
-    console.log(`🧊 DEBUG: About to fetch fridge inventory for user ${user.id}`);
-    fridgeIngredients = await getFridgeInventoryIngredients(user.id);
-  } else {
-    console.log(`🧊 DEBUG: No user ID found, skipping fridge inventory`);
-  }
+  // Get ingredients to use up from user profile
+  const ingredientsToUseUp = getIngredientsToUseUp(user);
   
-  console.log(`🥕 Starting meal generation with leftover ingredients: ${JSON.stringify(ingredientsToUseUp)}`);
-  console.log(`🧊 Fridge inventory ingredients to prioritize: ${JSON.stringify(fridgeIngredients)}`);
+  console.log(`🥕 Starting meal generation with ingredients to use up: ${JSON.stringify(ingredientsToUseUp)}`);
   
-  // Keep all leftover ingredients for incorporation into meals
+  // Keep all leftover ingredients for intelligent recipe matching
   if (ingredientsToUseUp.length > 0) {
-    console.log(`🥕 Will incorporate leftover ingredients into meals: ${JSON.stringify(ingredientsToUseUp)}`);
+    console.log(`🥕 Will find recipes that naturally use these ingredients: ${JSON.stringify(ingredientsToUseUp)}`);
   }
   
   // Calculate caloric adjustment based on user goals
@@ -580,7 +515,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
     }
     
     console.log(`🚀 ABOUT TO CALL generateMealPrepPlan...`);
-    const result = await generateMealPrepPlan(request, user, caloricAdjustment, fridgeIngredients);
+    const result = await generateMealPrepPlan(request, user, caloricAdjustment, ingredientsToUseUp);
     console.log(`🚀 MEAL PREP RESULT RECEIVED, meal count: ${result.meals.length}`);
     return result;
   } else {
@@ -738,7 +673,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
       console.log(`🌅 Day ${day}: all meals`);
     }
 
-    mealsToGenerate.forEach(mealCategory => {
+    for (const mealCategory of mealsToGenerate) {
       // Get cached meals for this category (much faster than repeated database queries)
       let availableMeals = mealCategory === 'breakfast' ? [...breakfastOptions] : 
                           mealCategory === 'lunch' ? [...lunchOptions] : 
@@ -815,7 +750,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
       
       if (day === 1 && mealCategory === 'dinner') {
         // Day 1: Sunday dinner - FIRST cooking moment (only meal on Sunday)
-        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+        selectedMeal = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
         sundayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
         allSelectedMealNames.add(selectedMeal.name);
@@ -829,7 +764,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         isLeftover = true;
       } else if (day === 2 && mealCategory === 'dinner') {
         // Day 2: Monday dinner - fresh cooking
-        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+        selectedMeal = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
         mondayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
         allSelectedMealNames.add(selectedMeal.name);
@@ -843,7 +778,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         isLeftover = true;
       } else if (day === 3 && mealCategory === 'dinner') {
         // Day 3: Tuesday dinner - fresh cooking
-        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+        selectedMeal = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
         tuesdayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
         allSelectedMealNames.add(selectedMeal.name);
@@ -857,7 +792,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         isLeftover = true;
       } else if (day === 4 && mealCategory === 'dinner') {
         // Day 4: Wednesday dinner - fresh cooking
-        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+        selectedMeal = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
         wednesdayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
         allSelectedMealNames.add(selectedMeal.name);
@@ -871,7 +806,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         isLeftover = true;
       } else if (day === 5 && mealCategory === 'dinner') {
         // Day 5: Thursday dinner - fresh cooking
-        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+        selectedMeal = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
         thursdayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
         allSelectedMealNames.add(selectedMeal.name);
@@ -885,7 +820,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         isLeftover = true;
       } else if (day === 6 && mealCategory === 'dinner') {
         // Day 6: Friday dinner - fresh cooking
-        selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+        selectedMeal = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
         let fridayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
         allSelectedMealNames.add(selectedMeal.name);
@@ -902,7 +837,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
           };
         } else {
           // User eats at home - select proper meal
-          selectedMeal = selectUnusedMeal(availableMeals, usedLunchMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+          selectedMeal = await selectUnusedMealIntelligently(availableMeals, usedLunchMeals, allSelectedMealNames, false, ingredientsToUseUp, 'lunch', dietaryTags, dailyProteinTarget);
           usedLunchMeals.add(selectedMeal.name);
           allSelectedMealNames.add(selectedMeal.name);
         }
@@ -922,13 +857,13 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
             };
           } else {
             // Skip duplicate eating out - generate actual meal instead
-            selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+            selectedMeal = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
             usedDinnerMeals.add(selectedMeal.name);
             allSelectedMealNames.add(selectedMeal.name);
           }
         } else {
           // User eats at home - select proper meal
-          selectedMeal = selectUnusedMeal(availableMeals, usedDinnerMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+          selectedMeal = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
           usedDinnerMeals.add(selectedMeal.name);
           allSelectedMealNames.add(selectedMeal.name);
         }
@@ -946,12 +881,12 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
           );
           
           if (weekendBreakfasts.length > 0) {
-            selectedMeal = selectUnusedMeal(weekendBreakfasts, usedBreakfastMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+            selectedMeal = await selectUnusedMealIntelligently(weekendBreakfasts, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget);
             usedBreakfastMeals.add(selectedMeal.name);
             allSelectedMealNames.add(selectedMeal.name);
             console.log(`Day ${day} (weekend) breakfast: ${selectedMeal.name} (prep: ${selectedMeal.nutrition.prepTime}min)`);
           } else {
-            selectedMeal = selectUnusedMeal(availableMeals, usedBreakfastMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+            selectedMeal = await selectUnusedMealIntelligently(availableMeals, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget);
             usedBreakfastMeals.add(selectedMeal.name);
             allSelectedMealNames.add(selectedMeal.name);
           }
@@ -966,12 +901,12 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
           );
           
           if (weekdayBreakfasts.length > 0) {
-            selectedMeal = selectUnusedMeal(weekdayBreakfasts, usedBreakfastMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+            selectedMeal = await selectUnusedMealIntelligently(weekdayBreakfasts, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget);
             usedBreakfastMeals.add(selectedMeal.name);
             allSelectedMealNames.add(selectedMeal.name);
             console.log(`Day ${day} (weekday) breakfast: ${selectedMeal.name} (prep: ${selectedMeal.nutrition.prepTime}min)`);
           } else {
-            selectedMeal = selectUnusedMeal(availableMeals, usedBreakfastMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+            selectedMeal = await selectUnusedMealIntelligently(availableMeals, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget);
             usedBreakfastMeals.add(selectedMeal.name);
             allSelectedMealNames.add(selectedMeal.name);
           }
@@ -992,7 +927,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
           console.log(`🥬 Day ${day}: Using ${freshnessFilteredMeals.length} freshness-optimized ${mealCategory} options`);
         }
         
-        selectedMeal = selectUnusedMeal(mealsToSelectFrom, mealCategory === 'lunch' ? usedLunchMeals : usedDinnerMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+        selectedMeal = await selectUnusedMealIntelligently(mealsToSelectFrom, mealCategory === 'lunch' ? usedLunchMeals : usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, mealCategory as 'lunch' | 'dinner', dietaryTags, dailyProteinTarget);
         
         // Log freshness analysis for the selected meal
         logMealFreshnessAnalysis(selectedMeal.name, selectedMeal.ingredients || []);
@@ -1047,7 +982,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
 
       meals.push(meal);
       dailyProtein += adjustedProtein;
-    });
+    }
 
     totalWeeklyProtein += dailyProtein;
   }
