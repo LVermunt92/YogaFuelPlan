@@ -1,4 +1,5 @@
 import OpenAI from "openai";
+import { hasAdequateProteinSource, enhanceRecipeWithProtein } from './protein-validator';
 import { MealOption } from './nutrition-enhanced';
 
 // Initialize OpenAI - will use environment variable OPENAI_API_KEY
@@ -36,6 +37,11 @@ RECIPE REQUIREMENTS:
 - Calculate realistic European pricing
 - CRITICAL: Use ONLY metric measurements (grams for dry ingredients, milliliters for liquids, kilograms for large amounts). NEVER use cups, tablespoons, teaspoons, ounces, or pounds. Examples: "120g oats", "240ml milk", "15ml olive oil", "5ml vanilla", "2.5ml salt"
 - IMPORTANT: Include a sauce or topping that makes the dish feel more indulgent or satisfying while remaining healthy and made from whole foods (examples: roasted pepper sauce with tomato paste and nuts, tahini-based dressings, herb-infused oils, nut-based creams, or vegetable-based salsas)
+- MANDATORY PROTEIN REQUIREMENT: Every recipe MUST include adequate protein sources to meet the target protein goal. Include at least one high-quality protein source such as:
+  * For plant-based: lentils, chickpeas, tofu, tempeh, hemp hearts, nuts, protein powder, quinoa
+  * For vegetarian: Greek yogurt, cottage cheese, eggs, or plant proteins  
+  * For non-vegetarian: chicken, fish, or plant proteins
+  The recipe must realistically provide the target protein amount through these ingredients. IMPORTANT: Be specific about protein amounts (e.g., "200g firm tofu", "120g cooked lentils", "30g hemp hearts") to ensure protein targets are met.
 
 RESPONSE FORMAT:
 Return a JSON object matching this exact structure:
@@ -112,6 +118,32 @@ Ensure the recipe is practical, nutritious, and aligns with the dietary requirem
       console.warn(`Generated recipe protein (${generatedRecipe.nutrition.protein}g) differs significantly from target (${request.targetProtein}g)`);
     }
 
+    // Validate protein content and enhance if needed
+    const { hasProtein, estimatedProtein, suggestions } = hasAdequateProteinSource(
+      generatedRecipe.ingredients,
+      request.targetProtein
+    );
+    
+    if (!hasProtein) {
+      console.log(`⚠️ AI recipe "${generatedRecipe.name}" has insufficient protein (${estimatedProtein}g < ${request.targetProtein}g). Enhancing...`);
+      
+      const enhancement = enhanceRecipeWithProtein(
+        generatedRecipe.name,
+        generatedRecipe.ingredients,
+        request.dietaryTags,
+        request.targetProtein
+      );
+      
+      if (enhancement.addedProteins.length > 0) {
+        generatedRecipe.ingredients = enhancement.enhancedIngredients;
+        generatedRecipe.nutrition.protein = Math.max(
+          generatedRecipe.nutrition.protein,
+          generatedRecipe.nutrition.protein + enhancement.proteinIncrease
+        );
+        console.log(`✅ Enhanced recipe with ${enhancement.addedProteins.map(p => p.name).join(', ')} (+${enhancement.proteinIncrease}g protein)`);
+      }
+    }
+    
     console.log(`✨ AI generated recipe: "${generatedRecipe.name}" (${generatedRecipe.nutrition.protein}g protein, ${generatedRecipe.nutrition.prepTime}min)`);
     
     return generatedRecipe as MealOption;

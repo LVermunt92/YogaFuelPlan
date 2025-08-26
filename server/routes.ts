@@ -15,6 +15,7 @@ import { translateRecipeEnhanced, getTranslationStatus } from './ai-enhanced-tra
 import { adminRouter } from './admin-routes';
 import { calculateNutritionTargets, type NutritionProfile } from './nutrition-calculator';
 import { analyzeRecipeNutrition } from './ai-nutrition-analyzer';
+import { hasAdequateProteinSource, enhanceRecipeWithProtein } from './protein-validator';
 import cron from 'node-cron';
 import { normalizeToSunday, getNextSunday, getCurrentWeekSunday, isValidWeekStart, getAllowedWeekStarts } from './date-utils';
 
@@ -1941,10 +1942,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
         "1 serving" // Default portion since we removed the field
       );
       
-      // Combine form data with AI-generated nutrition
+      // AUTOMATIC PROTEIN VALIDATION: Ensure user recipe has adequate protein
+      console.log('🥩 VALIDATING PROTEIN SOURCES: Checking custom recipe for adequate protein content');
+      const proteinTarget = nutritionAnalysis.nutrition?.protein || 20; // Use AI calculated protein or default
+      const proteinAnalysis = hasAdequateProteinSource(formData.ingredients, proteinTarget);
+      
+      let finalIngredients = formData.ingredients;
+      let finalNutrition = nutritionAnalysis.nutrition;
+      
+      if (!proteinAnalysis.hasProtein) {
+        console.log(`⚠️ Custom recipe "${formData.name}" has insufficient protein (${proteinAnalysis.estimatedProtein}g < ${proteinTarget}g). Auto-enhancing...`);
+        
+        const enhancement = enhanceRecipeWithProtein(
+          formData.name,
+          formData.ingredients,
+          formData.tags || [],
+          proteinTarget
+        );
+        
+        if (enhancement.addedProteins.length > 0) {
+          finalIngredients = enhancement.enhancedIngredients;
+          // Update protein in nutrition if enhanced
+          if (finalNutrition) {
+            finalNutrition.protein = Math.max(finalNutrition.protein, finalNutrition.protein + enhancement.proteinIncrease);
+          }
+          console.log(`✅ Enhanced custom recipe with ${enhancement.addedProteins.map(p => p.name).join(', ')} (+${enhancement.proteinIncrease}g protein)`);
+        }
+      } else {
+        console.log(`✅ Custom recipe "${formData.name}" has adequate protein (${proteinAnalysis.estimatedProtein}g)`);
+      }
+      
+      // Combine form data with AI-generated nutrition and protein validation
       const recipeData = {
         ...formData,
         ...nutritionAnalysis,
+        ingredients: finalIngredients, // Use protein-enhanced ingredients if needed
+        nutrition: finalNutrition, // Use protein-enhanced nutrition if needed
         portion: "1 serving", // Set default portion
         cookTime: 0, // Set default cookTime since we merged it into prepTime
         difficulty: "easy", // Set default difficulty since we removed the field
@@ -1979,10 +2012,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
           "1 serving" // Default portion since we removed the field
         );
         
-        // Include AI-generated nutrition in update
+        // AUTOMATIC PROTEIN VALIDATION: Ensure updated recipe has adequate protein
+        console.log('🥩 VALIDATING PROTEIN SOURCES: Re-checking updated recipe for adequate protein content');
+        const proteinTarget = nutritionAnalysis.nutrition?.protein || 20;
+        const proteinAnalysis = hasAdequateProteinSource(updateData.ingredients, proteinTarget);
+        
+        let finalIngredients = updateData.ingredients;
+        let finalNutrition = nutritionAnalysis.nutrition;
+        
+        if (!proteinAnalysis.hasProtein) {
+          console.log(`⚠️ Updated recipe has insufficient protein (${proteinAnalysis.estimatedProtein}g < ${proteinTarget}g). Auto-enhancing...`);
+          
+          const enhancement = enhanceRecipeWithProtein(
+            updateData.name || "Updated recipe",
+            updateData.ingredients,
+            updateData.tags || [],
+            proteinTarget
+          );
+          
+          if (enhancement.addedProteins.length > 0) {
+            finalIngredients = enhancement.enhancedIngredients;
+            if (finalNutrition) {
+              finalNutrition.protein = Math.max(finalNutrition.protein, finalNutrition.protein + enhancement.proteinIncrease);
+            }
+            console.log(`✅ Enhanced updated recipe with ${enhancement.addedProteins.map(p => p.name).join(', ')} (+${enhancement.proteinIncrease}g protein)`);
+          }
+        }
+        
+        // Include AI-generated nutrition and protein validation in update
         const dataWithNutrition = {
           ...updateData,
-          ...nutritionAnalysis
+          ...nutritionAnalysis,
+          ingredients: finalIngredients,
+          nutrition: finalNutrition
         };
         
         console.log('✅ AI nutrition re-analysis complete:', nutritionAnalysis);

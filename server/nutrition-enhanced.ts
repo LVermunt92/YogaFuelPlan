@@ -4,6 +4,7 @@ import { selectProteinOptimizedMeals } from './smart-protein-selection';
 import { specifyIngredients, validateIngredientSpecificity, updateRecipeIngredients } from './ingredient-specifier';
 import { standardizePortion } from './portion-standardizer';
 import { convertAllRecipeUnits } from './bulk-unit-converter';
+import { validateAndEnhanceMealDatabase } from './protein-validator';
 
 export interface NutritionInfo {
   protein: number;
@@ -43,6 +44,7 @@ export interface MealOption {
 }
 
 // Enhanced meal database focusing on whole foods and minimal processing
+// Note: All recipes in this database are automatically validated for protein content
 export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   // Breakfast options - Whole Foods Focus
   {
@@ -5208,7 +5210,16 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
   // No special "high-protein" tag filtering needed
   
   console.log(`🔄 ABOUT TO RETURN: ${filteredMeals.length} filtered meals`);
-  return filteredMeals;
+  
+  // AUTOMATIC PROTEIN VALIDATION: Ensure all meals have adequate protein sources
+  console.log(`🥩 VALIDATING PROTEIN SOURCES: Checking ${filteredMeals.length} meals for adequate protein content`);
+  const proteinValidatedMeals = validateAndEnhanceMealDatabase(filteredMeals);
+  
+  if (proteinValidatedMeals.length !== filteredMeals.length) {
+    console.log(`🥩 PROTEIN ENHANCEMENT: Enhanced ${proteinValidatedMeals.length - filteredMeals.length} meals with additional protein sources`);
+  }
+  
+  return proteinValidatedMeals;
 }
 
 // Function to identify water-related ingredients that should be excluded from shopping lists
