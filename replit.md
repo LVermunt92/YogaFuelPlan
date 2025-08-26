@@ -6,12 +6,12 @@ Preferred communication style: Simple, everyday language.
 **CRITICAL DEVELOPMENT RULE**: Never remove existing functionality, features, or logic without explicit user permission. Always ask twice before removing anything. Only make additive changes unless specifically requested to remove features. Preserve all working functionality by default.
 
 ## Recent Fixes (August 26, 2025)
-- **Protein Enhancement Initiative**: Systematically enhanced multiple recipes that lacked adequate protein sources by adding high-quality protein ingredients while maintaining recipe integrity and dietary tag compatibility
+- **Comprehensive Automatic Protein Source Validation System**: Created complete protein validation system with 25+ protein sources database that automatically enhances all recipes (both curated database and user-created) to ensure adequate protein content. System intelligently adds appropriate protein sources based on recipe type (tofu for stir-fries, lentils for soups, hemp hearts for breakfasts, etc.) and dietary preferences.
+- **AI Recipe Generator Protein Requirements**: Enhanced AI recipe generator to mandate specific protein sources in every generated recipe, with automatic validation and enhancement if protein content is insufficient.
+- **Custom Recipe Protein Auto-Enhancement**: All user-created recipes now automatically receive protein validation during creation and editing, with smart enhancement adding appropriate protein sources when needed.
+- **Fridge Inventory Page Removal**: Removed standalone fridge inventory page per user request, keeping only the ingredients use section on the homepage for streamlined user experience.
 - **Enhanced Noodle Stir-fry Recipe**: Updated "Quick veggie stir-fry with rice noodles and tahini sauce" to include 200g firm tofu with cornstarch coating for crispiness, increasing protein from 18g to 28g while adding proper cooking instructions for optimal texture
 - **Cucumber Salad Protein Boost**: Enhanced viral TikTok cucumber salad with 80g edamame beans and hemp hearts, doubling protein content from 8g to 16g while maintaining refreshing properties
-- **Soup Protein Additions**: Added red lentils to summer vegetable coconut soup (12g→20g protein) and tempeh to coconut herb rice noodle soup (10g→22g protein), with detailed cooking instructions for proper integration
-- **Breakfast Bowl Enhancements**: Added plant protein powder to green smoothie bowl (16g→28g protein) and Greek yogurt to Nature's Cereal (8g→18g protein) while preserving viral appeal and nutritional benefits
-- **Bean Integration**: Enhanced cooling barley soup with white cannellini beans (8g→18g protein), providing complete protein profiles while maintaining Ayurvedic cooling properties
 - **Shopping List Auto-Selection Fix**: Resolved issue where frontend was attempting to access non-existent meal plan IDs by implementing smart meal plan selection that automatically chooses the latest available plan when stored ID doesn't exist
 
 ## Previous Fixes (August 22, 2025)
