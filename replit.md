@@ -32,6 +32,7 @@ Preferred communication style: Simple, everyday language.
     - **Unified Recipe Database**: Consolidated all recipe databases into a single unified system.
 
 # Recent Changes (August 30, 2025)
+- **Mediterranean Cauliflower Rice Bowls Addition**: Added four versions of Mediterranean cauliflower rice bowls - chicken (28g protein), Beyond Meat (25g protein), feta & chickpea (24g protein), and lactose-free feta (22g protein), all featuring keto-friendly cauliflower rice base with fresh Mediterranean vegetables and tahini dressing
 - **Thai Green Curry Addition**: Added "Thai Green Curry with Super Crunchy Tofu" with 26g protein from cornstarch-coated crispy tofu, featuring authentic Thai green curry paste, coconut milk, and fresh vegetables served over jasmine rice
 - **Lactose-Free Kapsalon Addition**: Added "Healthy Lactose-Free Kapsalon" with 21g protein from marinated tofu, hemp hearts, and nutritional yeast, featuring coconut yogurt sauce and sweet potato fries for a completely dairy-free Dutch comfort food option
 - **Thai Red Lentil Chickpea Curry Addition**: Added "Thai Red Lentil & Chickpea Curry" with 24g protein from red lentils and chickpeas, featuring Thai red curry paste, coconut milk, and fresh vegetables in a batch-cooking friendly one-pan meal

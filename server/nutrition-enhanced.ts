@@ -5828,6 +5828,289 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-08-30'),
     active: true
+  },
+  {
+    name: "Mediterranean Chicken & Cauliflower Rice Bowl",
+    portion: "1 generous serving (about 450g)",
+    nutrition: {
+      protein: 28,
+      prepTime: 35,
+      calories: 385,
+      carbohydrates: 18,
+      fats: 20,
+      fiber: 10,
+      sugar: 12,
+      sodium: 580,
+      potassium: 920,
+      calcium: 85,
+      iron: 3.2,
+      vitaminC: 95,
+      costEuros: 4.60,
+      proteinPerEuro: 6.1
+    },
+    category: "dinner",
+    tags: ["high-protein", "gluten-free", "keto", "low-carb", "mediterranean", "lean-protein", "fresh"],
+    ingredients: [
+      "400g cauliflower, cut into florets (or 300g pre-made cauliflower rice)",
+      "200g chicken breast, diced",
+      "240g canned chickpeas, drained and rinsed",
+      "1 red bell pepper, diced",
+      "200g cherry tomatoes, halved",
+      "1 small red onion, thinly sliced",
+      "60g cucumber, diced",
+      "30ml hemp hearts",
+      "30ml olive oil",
+      "30ml tahini",
+      "1 lemon, juiced",
+      "2 garlic cloves, minced",
+      "5ml dried oregano",
+      "30ml fresh parsley, chopped",
+      "15ml fresh mint, chopped",
+      "15ml fresh dill, chopped",
+      "Sea salt and black pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["cauliflower", "bell pepper", "tomatoes", "red onion", "cucumber", "garlic"],
+      benefits: ["vitamin C from vegetables", "lean protein from chicken", "fiber from chickpeas"]
+    },
+    recipe: {
+      instructions: [
+        "If using fresh cauliflower, pulse florets in food processor until rice-sized pieces form",
+        "Season diced chicken with oregano, salt, pepper, and half the minced garlic",
+        "Heat 15ml olive oil in large frying pan over medium-high heat",
+        "Cook seasoned chicken for 6-8 minutes until golden brown and cooked through, set aside",
+        "In same pan, add cauliflower rice and remaining garlic, cook for 5-7 minutes until tender",
+        "Season cauliflower rice with salt, pepper, and fresh herbs",
+        "Meanwhile, prepare dressing by whisking tahini, lemon juice, remaining olive oil, salt and pepper",
+        "In large serving bowl, combine warm cauliflower rice and cooked chicken",
+        "Add chickpeas, bell pepper, cherry tomatoes, red onion, and cucumber",
+        "Drizzle with tahini lemon dressing and toss gently to combine",
+        "Sprinkle with hemp hearts and fresh herbs before serving"
+      ],
+      tips: [
+        "Don't overcook cauliflower rice - it should retain slight bite for best texture",
+        "Can be served warm immediately or chilled as a refreshing salad",
+        "Pre-made cauliflower rice saves time but fresh tastes better"
+      ],
+      notes: "Mediterranean-inspired bowl with lean chicken protein and cauliflower rice base, perfect for low-carb and keto diets"
+    },
+    createdAt: new Date('2025-08-30'),
+    active: true
+  },
+  {
+    name: "Mediterranean Beyond Meat & Cauliflower Rice Bowl",
+    portion: "1 generous serving (about 450g)",
+    nutrition: {
+      protein: 25,
+      prepTime: 30,
+      calories: 415,
+      carbohydrates: 22,
+      fats: 22,
+      fiber: 12,
+      sugar: 14,
+      sodium: 650,
+      potassium: 890,
+      calcium: 95,
+      iron: 4.8,
+      vitaminC: 95,
+      costEuros: 5.20,
+      proteinPerEuro: 4.8
+    },
+    category: "dinner",
+    tags: ["vegetarian", "dairy-free", "gluten-free", "keto", "low-carb", "mediterranean", "plant-based", "fresh"],
+    ingredients: [
+      "400g cauliflower, cut into florets (or 300g pre-made cauliflower rice)",
+      "150g Beyond Meat crumbles",
+      "240g canned chickpeas, drained and rinsed",
+      "1 red bell pepper, diced",
+      "200g cherry tomatoes, halved",
+      "1 small red onion, thinly sliced",
+      "60g cucumber, diced",
+      "30ml hemp hearts",
+      "30ml olive oil",
+      "30ml tahini",
+      "1 lemon, juiced",
+      "2 garlic cloves, minced",
+      "5ml dried oregano",
+      "2.5ml smoked paprika",
+      "30ml fresh parsley, chopped",
+      "15ml fresh mint, chopped",
+      "15ml fresh dill, chopped",
+      "Sea salt and black pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["cauliflower", "bell pepper", "tomatoes", "red onion", "cucumber", "garlic"],
+      benefits: ["vitamin C from vegetables", "plant protein from Beyond Meat", "fiber from chickpeas"]
+    },
+    recipe: {
+      instructions: [
+        "If using fresh cauliflower, pulse florets in food processor until rice-sized pieces form",
+        "Season Beyond Meat crumbles with oregano, smoked paprika, salt, pepper, and half the minced garlic",
+        "Heat 15ml olive oil in large frying pan over medium-high heat",
+        "Cook seasoned Beyond Meat for 5-6 minutes until lightly browned and heated through, set aside",
+        "In same pan, add cauliflower rice and remaining garlic, cook for 5-7 minutes until tender",
+        "Season cauliflower rice with salt, pepper, and fresh herbs",
+        "Meanwhile, prepare dressing by whisking tahini, lemon juice, remaining olive oil, salt and pepper",
+        "In large serving bowl, combine warm cauliflower rice and cooked Beyond Meat",
+        "Add chickpeas, bell pepper, cherry tomatoes, red onion, and cucumber",
+        "Drizzle with tahini lemon dressing and toss gently to combine",
+        "Sprinkle with hemp hearts and fresh herbs before serving"
+      ],
+      tips: [
+        "Beyond Meat crumbles cook quickly - don't overcook to maintain texture",
+        "Smoked paprika adds depth that complements Mediterranean flavors",
+        "Perfect for meal prep - flavors develop beautifully overnight"
+      ],
+      notes: "Plant-based Mediterranean bowl with Beyond Meat protein and cauliflower rice base, ideal for vegetarians following keto diets"
+    },
+    createdAt: new Date('2025-08-30'),
+    active: true
+  },
+  {
+    name: "Mediterranean Feta & Chickpea Cauliflower Rice Bowl",
+    portion: "1 generous serving (about 450g)",
+    nutrition: {
+      protein: 24,
+      prepTime: 25,
+      calories: 425,
+      carbohydrates: 26,
+      fats: 24,
+      fiber: 12,
+      sugar: 16,
+      sodium: 720,
+      potassium: 850,
+      calcium: 285,
+      iron: 4.2,
+      vitaminC: 95,
+      costEuros: 4.80,
+      proteinPerEuro: 5.0
+    },
+    category: "dinner",
+    tags: ["vegetarian", "gluten-free", "keto", "low-carb", "mediterranean", "traditional", "fresh"],
+    ingredients: [
+      "400g cauliflower, cut into florets (or 300g pre-made cauliflower rice)",
+      "240g canned chickpeas, drained and rinsed",
+      "120g feta cheese, crumbled",
+      "1 red bell pepper, diced",
+      "200g cherry tomatoes, halved",
+      "1 small red onion, thinly sliced",
+      "60g cucumber, diced",
+      "30ml hemp hearts",
+      "30ml pine nuts",
+      "30ml olive oil",
+      "30ml tahini",
+      "1 lemon, juiced",
+      "2 garlic cloves, minced",
+      "5ml dried oregano",
+      "30ml fresh parsley, chopped",
+      "15ml fresh mint, chopped",
+      "15ml fresh dill, chopped",
+      "Sea salt and black pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["cauliflower", "bell pepper", "tomatoes", "red onion", "cucumber", "garlic"],
+      benefits: ["vitamin C from vegetables", "calcium from feta", "fiber from chickpeas"]
+    },
+    recipe: {
+      instructions: [
+        "If using fresh cauliflower, pulse florets in food processor until rice-sized pieces form",
+        "Heat 15ml olive oil in large frying pan over medium heat",
+        "Add cauliflower rice and minced garlic, cook for 5-7 minutes until tender",
+        "Season cauliflower rice with oregano, salt, pepper, and fresh herbs",
+        "Meanwhile, prepare dressing by whisking tahini, lemon juice, remaining olive oil, salt and pepper",
+        "Toast pine nuts in dry pan for 2-3 minutes until lightly golden",
+        "In large serving bowl, combine warm cauliflower rice with chickpeas",
+        "Add bell pepper, cherry tomatoes, red onion, and cucumber",
+        "Drizzle with tahini lemon dressing and toss gently to combine",
+        "Top with crumbled feta cheese, toasted pine nuts, and hemp hearts",
+        "Garnish with fresh herbs before serving"
+      ],
+      tips: [
+        "Use high-quality Greek or Bulgarian feta for best flavor",
+        "Don't mix feta into the warm rice - add on top to prevent melting",
+        "Can be served warm or at room temperature as a refreshing salad"
+      ],
+      notes: "Traditional Mediterranean combination with creamy feta, protein-rich chickpeas, and fresh cauliflower rice"
+    },
+    createdAt: new Date('2025-08-30'),
+    active: true
+  },
+  {
+    name: "Mediterranean Lactose-Free Feta & Chickpea Cauliflower Rice Bowl",
+    portion: "1 generous serving (about 450g)",
+    nutrition: {
+      protein: 22,
+      prepTime: 25,
+      calories: 405,
+      carbohydrates: 26,
+      fats: 22,
+      fiber: 12,
+      sugar: 16,
+      sodium: 620,
+      potassium: 850,
+      calcium: 245,
+      iron: 4.2,
+      vitaminC: 95,
+      costEuros: 5.40,
+      proteinPerEuro: 4.1
+    },
+    category: "dinner",
+    tags: ["vegetarian", "lactose-free", "dairy-free", "gluten-free", "keto", "low-carb", "mediterranean", "fresh"],
+    ingredients: [
+      "400g cauliflower, cut into florets (or 300g pre-made cauliflower rice)",
+      "240g canned chickpeas, drained and rinsed",
+      "120g lactose-free feta cheese (Violife or similar), crumbled",
+      "1 red bell pepper, diced",
+      "200g cherry tomatoes, halved",
+      "1 small red onion, thinly sliced",
+      "60g cucumber, diced",
+      "30ml hemp hearts",
+      "30ml pine nuts",
+      "30ml olive oil",
+      "30ml tahini",
+      "1 lemon, juiced",
+      "2 garlic cloves, minced",
+      "5ml dried oregano",
+      "30ml fresh parsley, chopped",
+      "15ml fresh mint, chopped",
+      "15ml fresh dill, chopped",
+      "Sea salt and black pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["cauliflower", "bell pepper", "tomatoes", "red onion", "cucumber", "garlic"],
+      benefits: ["vitamin C from vegetables", "plant-based calcium from dairy-free feta", "fiber from chickpeas"]
+    },
+    recipe: {
+      instructions: [
+        "If using fresh cauliflower, pulse florets in food processor until rice-sized pieces form",
+        "Heat 15ml olive oil in large frying pan over medium heat",
+        "Add cauliflower rice and minced garlic, cook for 5-7 minutes until tender",
+        "Season cauliflower rice with oregano, salt, pepper, and fresh herbs",
+        "Meanwhile, prepare dressing by whisking tahini, lemon juice, remaining olive oil, salt and pepper",
+        "Toast pine nuts in dry pan for 2-3 minutes until lightly golden",
+        "In large serving bowl, combine warm cauliflower rice with chickpeas",
+        "Add bell pepper, cherry tomatoes, red onion, and cucumber",
+        "Drizzle with tahini lemon dressing and toss gently to combine",
+        "Top with crumbled lactose-free feta cheese, toasted pine nuts, and hemp hearts",
+        "Garnish with fresh herbs before serving"
+      ],
+      tips: [
+        "Violife or other quality dairy-free feta provides authentic Mediterranean flavor",
+        "Let lactose-free feta come to room temperature before crumbling for best texture",
+        "Perfect for those with lactose intolerance who love Mediterranean flavors"
+      ],
+      notes: "Lactose-free version of traditional Mediterranean combination with dairy-free feta, chickpeas, and fresh cauliflower rice"
+    },
+    createdAt: new Date('2025-08-30'),
+    active: true
   }
 ];
 
