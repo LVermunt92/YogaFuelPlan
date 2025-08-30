@@ -7996,8 +7996,14 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
         // Normalize ingredient name for grocery shopping (remove cooking methods, specify milk types)
         const normalizedIngredient = normalizeIngredientForGrocery(separateIngredient);
         
-        // Try to get category for the specific ingredient, fallback to original, then fallback to 'Fruits' for berries
-        const category = ingredientCategories[separateIngredient.toLowerCase()] || ingredientCategories[ingredient.toLowerCase()] || 'Fruits';
+        // Skip empty or whitespace-only ingredients that might slip through
+        if (!separateIngredient || separateIngredient.trim() === '' || separateIngredient.trim().length === 0) {
+          console.warn(`⚠️ SHOPPING LIST: Skipping empty ingredient from "${ingredient}"`);
+          return;
+        }
+        
+        // Try to get category for the specific ingredient, fallback to original, then fallback to 'Other' (not 'Fruits')
+        const category = ingredientCategories[separateIngredient.toLowerCase()] || ingredientCategories[ingredient.toLowerCase()] || 'Other';
         
         // Convert amounts to grams using the formatAmount function (split proportionally)
         const proportionalAmount = amounts.totalAmount / separateIngredients.length;
@@ -8023,6 +8029,12 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     } else {
       // Normalize ingredient name for grocery shopping (remove cooking methods, specify milk types)
       const normalizedIngredient = normalizeIngredientForGrocery(finalIngredient);
+      
+      // Skip empty ingredients that might slip through normalization
+      if (!normalizedIngredient || normalizedIngredient.trim() === '' || normalizedIngredient.trim().length === 0) {
+        console.warn(`⚠️ SHOPPING LIST: Skipping empty normalized ingredient from "${finalIngredient}"`);
+        return;
+      }
       
       const category = ingredientCategories[ingredient.toLowerCase()] || 'Other';
       
