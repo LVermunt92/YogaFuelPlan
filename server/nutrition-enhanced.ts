@@ -4727,8 +4727,6 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       ],
       notes: "A comforting pasta bake with rich tomato sauce and creamy protein-packed white sauce"
     },
-    season: "all-seasons",
-    ayurvedic: "warming",
     proteinSources: ["tofu", "nutritional yeast", "oat milk"],
     createdAt: new Date('2025-08-30'),
     active: true
@@ -4804,9 +4802,66 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       ],
       notes: "Gluten-free version with lentils and hemp hearts for extra plant protein"
     },
-    season: "all-seasons",
-    ayurvedic: "warming",
     proteinSources: ["lentils", "hemp hearts", "nutritional yeast"],
+    createdAt: new Date('2025-08-30'),
+    active: true
+  },
+  {
+    name: "Protein-Packed Quinoa Breakfast Porridge with Banana & Peanut Butter",
+    portion: "1 bowl (about 300g)",
+    nutrition: {
+      protein: 26,
+      prepTime: 8,
+      calories: 420,
+      carbohydrates: 52,
+      fats: 14,
+      fiber: 9,
+      sugar: 18,
+      sodium: 120,
+      potassium: 580,
+      calcium: 140,
+      iron: 3.2,
+      vitaminC: 8,
+      costEuros: 2.60,
+      proteinPerEuro: 10.0
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "gluten-free", "high-protein", "quick", "wholesome"],
+    ingredients: [
+      "30ml quinoa (uncooked)",
+      "30g porridge oats",
+      "100ml oat milk",
+      "30ml frozen blueberries",
+      "1 ripe banana, sliced",
+      "15ml peanut butter",
+      "15ml ground flaxseeds",
+      "30g vanilla protein powder",
+      "Pinch of cinnamon"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1.5,
+      vegetables: ["banana", "blueberries"],
+      benefits: ["antioxidants from blueberries", "potassium from banana", "omega-3 from flaxseeds"]
+    },
+    recipe: {
+      instructions: [
+        "Place cooked quinoa, porridge oats, oat milk, and frozen blueberries in small saucepan",
+        "Cook over medium heat, stirring frequently until oat milk is absorbed and oats are tender (4-5 minutes)",
+        "Alternatively, microwave on high for 1 minute at a time, stirring between intervals until tender",
+        "Slice half the banana into the pan and gently mash with fork while stirring through porridge",
+        "Transfer to serving bowl and top with remaining banana slices",
+        "Add dollop of peanut butter and sprinkle with ground flaxseeds",
+        "Dust with cinnamon and serve immediately while warm"
+      ],
+      tips: [
+        "Use pre-cooked quinoa to save time - cook a batch ahead",
+        "Frozen blueberries work better than fresh as they break down slightly",
+        "Adjust liquid if porridge becomes too thick"
+      ],
+      notes: "A protein-rich breakfast combining quinoa's complete amino acids with oats for sustained energy"
+    },
+    proteinSources: ["quinoa", "protein powder", "peanut butter", "oats"],
     createdAt: new Date('2025-08-30'),
     active: true
   }
