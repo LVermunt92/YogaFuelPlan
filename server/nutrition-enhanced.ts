@@ -7535,7 +7535,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
 
   // Categorize ingredients following supermarket layout order
   const ingredientCategories: Record<string, string> = {
-    // Lemon standardization in categories - all lemon forms go to Fruits as "pieces of lemon"
+    // Lemon standardization in categories - all lemon forms go to Fruits as "lemon"
     'lemon': 'Fruits',
     'lemons': 'Fruits', 
     'lemon juice': 'Fruits',
@@ -7543,7 +7543,6 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'lime juice': 'Fruits',
     'fresh lime juice': 'Fruits',
     'lemon zest': 'Fruits',
-    'pieces of lemon': 'Fruits',
     
     // Vegetables (Fresh Produce section 1)
     'fresh spinach': 'Vegetables',
@@ -8351,21 +8350,36 @@ function cleanIngredientName(ingredient: string): string {
     cleaned = 'plant protein powder';
   }
   
-  // Lemon standardization - convert all lemon variants to "pieces of lemon"
+  // Lemon standardization - convert all lemon variants to "lemon"
   if (cleaned === 'lemon' || cleaned === 'lemons' || cleaned.includes('lemon zest') || 
       cleaned.includes('lemon juice') || cleaned.includes('lime juice')) {
-    cleaned = 'pieces of lemon';
-  }
-  
-  // Lemon standardization - convert all lemon variants to "pieces of lemon"
-  if (cleaned === 'lemon' || cleaned === 'lemons' || cleaned.includes('lemon zest') || 
-      cleaned.includes('lemon juice') || cleaned.includes('lime juice')) {
-    cleaned = 'pieces of lemon';
+    cleaned = 'lemon'; // Use simple "lemon" instead of "pieces of lemon"
   }
   
   // Apply comprehensive ingredient specification to replace generic terms
   const specified = specifyIngredients([cleaned]);
   cleaned = specified[0];
+  
+  // CRITICAL FIX: Prevent ingredient names from containing amount descriptions
+  // This fixes issues like "5 mL of olive oil" appearing as ingredient name
+  const amountPatterns = [
+    /^\d+(\.\d+)?\s*(ml|mL|g|kg|tbsp|tsp|cup|cups|piece|pieces|clove|cloves|bunch|bunches)\s+(of\s+)?/,
+    /\d+(\.\d+)?\s*(ml|mL|g|kg|tbsp|tsp|cup|cups|piece|pieces|clove|cloves|bunch|bunches)\s+(of\s+)/g,
+    /^(a|an|\d+)\s+(piece|pieces|clove|cloves|bunch|bunches)\s+(of\s+)?/i
+  ];
+  
+  // Remove any amount descriptions that got mixed into ingredient names
+  amountPatterns.forEach(pattern => {
+    cleaned = cleaned.replace(pattern, '');
+  });
+  
+  // Clean up any remaining formatting issues
+  cleaned = cleaned.replace(/^(of\s+|the\s+)/i, '').trim();
+  
+  // Debug log for amount contamination issues
+  if (originalInput.includes('ml of') || originalInput.includes('g of') || originalInput.includes('pieces of')) {
+    console.log(`🔧 Amount contamination fixed: "${originalInput}" → "${cleaned}"`);
+  }
   
   // Consolidate herbs that have different names but are essentially the same for shopping
   // This prevents duplicate listings in shopping list (e.g., both "cilantro" and "coriander" appearing)
