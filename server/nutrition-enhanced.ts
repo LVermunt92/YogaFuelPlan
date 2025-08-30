@@ -5884,6 +5884,132 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     }
   },
   {
+    name: "Crispy Aubergine with Spiced Tomato Sauce & Hemp Hearts",
+    portion: "2 large aubergines + sauce (2 servings)",
+    nutrition: { 
+      protein: 22, 
+      prepTime: 35, 
+      calories: 420,
+      carbohydrates: 48,
+      fats: 18,
+      fiber: 12,
+      sugar: 14,
+      sodium: 580,
+      costEuros: 4.80, 
+      proteinPerEuro: 4.6 
+    },
+    category: "dinner",
+    tags: ["vegetarian", "high-protein", "mediterranean", "crispy", "comfort-food"],
+    ingredients: [
+      "2 large aubergines, sliced lengthwise",
+      "120ml oat milk",
+      "80g spelt flour (for better texture and nutty flavor)",
+      "60g panko breadcrumbs (vegan)",
+      "30ml hemp hearts",
+      "15ml nutritional yeast",
+      "5ml paprika powder",
+      "5ml dried oregano",
+      "2ml chili flakes (optional)",
+      "Olive oil for frying",
+      "Salt and black pepper to taste",
+      "1 can (400g) crushed tomatoes",
+      "2 shallots, finely chopped",
+      "2 cloves garlic, minced",
+      "5ml sugar",
+      "Fresh basil, chopped"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["aubergines", "tomatoes", "shallots", "garlic", "basil"],
+      benefits: ["High in fiber", "Rich in antioxidants", "Supports heart health", "Anti-inflammatory"]
+    },
+    recipe: {
+      instructions: [
+        "Slice aubergines lengthwise into 1cm thick planks, salt generously and let drain 20 minutes",
+        "Meanwhile, make spiced tomato sauce: heat olive oil, sauté chopped shallots until soft",
+        "Add minced garlic, cook 1 minute, then add crushed tomatoes, sugar, salt, pepper",
+        "Simmer sauce 15 minutes until thickened, stir in fresh basil at end",
+        "Pat aubergine slices dry with paper towels",
+        "Set up breading station: spelt flour with salt and pepper, oat milk, panko mixed with hemp hearts and nutritional yeast",
+        "Dredge aubergine: flour, then milk, then hemp heart panko mixture, pressing gently",
+        "Heat olive oil in large pan over medium heat",
+        "Fry breaded aubergine slices 3-4 minutes per side until golden and crispy",
+        "Season with paprika, oregano, and chili flakes while hot",
+        "Serve immediately over warm spiced tomato sauce, garnish with fresh basil"
+      ],
+      tips: [
+        "Spelt flour creates better texture than regular wheat - nuttier and less dense",
+        "Hemp hearts in breading boost protein and add omega-3s",
+        "Salt aubergine well to remove bitterness and excess moisture",
+        "Don't overcrowd pan - fry in batches for maximum crispiness"
+      ],
+      notes: "Spelt flour provides superior texture with its lower gluten content and nutty flavor that complements aubergine. Hemp hearts cleverly boost protein while maintaining the crispy coating integrity."
+    }
+  },
+  {
+    name: "Gluten-Free Crispy Aubergine with Spiced Tomato Sauce & Almond Coating",
+    portion: "2 large aubergines + sauce (2 servings)",
+    nutrition: { 
+      protein: 20, 
+      prepTime: 35, 
+      calories: 385,
+      carbohydrates: 42,
+      fats: 20,
+      fiber: 14,
+      sugar: 14,
+      sodium: 520,
+      costEuros: 5.20, 
+      proteinPerEuro: 3.8 
+    },
+    category: "dinner",
+    tags: ["vegetarian", "gluten-free", "high-protein", "mediterranean", "crispy", "comfort-food"],
+    ingredients: [
+      "2 large aubergines, sliced lengthwise",
+      "120ml oat milk",
+      "60g rice flour",
+      "20g tapioca starch",
+      "80g gluten-free panko breadcrumbs",
+      "40g ground almonds",
+      "30ml hemp hearts",
+      "15ml nutritional yeast",
+      "5ml paprika powder",
+      "5ml dried oregano",
+      "2ml chili flakes (optional)",
+      "2ml xanthan gum",
+      "Olive oil for frying",
+      "Salt and black pepper to taste",
+      "Same tomato sauce ingredients as regular version"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["aubergines", "tomatoes", "shallots", "garlic", "basil"],
+      benefits: ["High in fiber", "Rich in antioxidants", "Supports heart health", "Anti-inflammatory"]
+    },
+    recipe: {
+      instructions: [
+        "Prepare aubergines and tomato sauce exactly as regular version",
+        "Make gluten-free flour blend: mix rice flour, tapioca starch, and xanthan gum",
+        "This blend mimics wheat's binding properties while staying light",
+        "Create enhanced coating: mix gluten-free panko, ground almonds, hemp hearts, nutritional yeast",
+        "The almond-hemp combination provides superior protein and texture",
+        "Follow same breading process: flour blend, oat milk, then almond-panko mixture",
+        "Fry at slightly lower heat to prevent almond coating from burning",
+        "Cook 3-4 minutes per side until golden, watching carefully for even browning",
+        "Season while hot with paprika, oregano, and chili flakes",
+        "Serve over spiced tomato sauce with fresh basil garnish"
+      ],
+      tips: [
+        "Rice flour + tapioca starch + xanthan gum creates perfect gluten-free binding",
+        "Ground almonds add richness and protein while maintaining crispiness",
+        "Lower frying temperature prevents almond coating from burning",
+        "Tapioca starch gives the light, crispy texture missing in most gluten-free coatings"
+      ],
+      notes: "This gluten-free version uses a carefully balanced flour blend that delivers the same satisfying crunch as wheat. Ground almonds boost both protein and flavor complexity while hemp hearts maintain the nutritional profile."
+    }
+  },
+  {
     name: "Thai Green Curry with Super Crunchy Tofu",
     portion: "1 generous serving (about 400g with rice)",
     nutrition: {
