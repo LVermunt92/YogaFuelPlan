@@ -8285,7 +8285,7 @@ function formatAmountWithLanguage(amount: number, unit: string, language: string
   return `${amount} ${unit}`;
 }
 
-function getDefaultPortion(ingredient: string): { amount: number; unit: string } {
+export function getDefaultPortion(ingredient: string): { amount: number; unit: string } {
   // Default portions for common ingredients in grams (when no recipe amounts are found)
   const defaults: Record<string, { amount: number; unit: string }> = {
     'almond milk': { amount: 240, unit: 'ml' }, // 1 cup = 240ml
@@ -8339,9 +8339,61 @@ function getDefaultPortion(ingredient: string): { amount: number; unit: string }
     'fresh mint': { amount: 1, unit: 'bunch' }, // 1 bunch fresh mint
     'fresh dill': { amount: 1, unit: 'bunch' }, // 1 bunch fresh dill
     'fresh chives': { amount: 1, unit: 'bunch' }, // 1 bunch fresh chives
+    // Herbs without "fresh" prefix (fallback for generic herb names)
+    'basil': { amount: 1, unit: 'bunch' },
+    'rosemary': { amount: 1, unit: 'bunch' },
+    'sage': { amount: 1, unit: 'bunch' },
+    'thyme': { amount: 1, unit: 'bunch' },
+    'parsley': { amount: 1, unit: 'bunch' },
+    'cilantro': { amount: 1, unit: 'bunch' },
+    'oregano': { amount: 1, unit: 'bunch' },
+    'mint': { amount: 1, unit: 'bunch' },
+    'dill': { amount: 1, unit: 'bunch' },
+    'chives': { amount: 1, unit: 'bunch' },
+    // Common spices and seasonings  
+    'chili powder': { amount: 20, unit: 'g' }, // Small spice jar
+    'cumin': { amount: 20, unit: 'g' }, // Small spice jar
+    'paprika': { amount: 20, unit: 'g' }, // Small spice jar
+    'turmeric': { amount: 20, unit: 'g' },
+    'curry powder': { amount: 20, unit: 'g' },
+    'garlic powder': { amount: 20, unit: 'g' },
+    'onion powder': { amount: 20, unit: 'g' },
+    'smoked paprika': { amount: 20, unit: 'g' },
+    'dried oregano': { amount: 10, unit: 'g' },
+    'dried basil': { amount: 10, unit: 'g' },
+    'dried thyme': { amount: 10, unit: 'g' },
+    // Oils and liquids
+    'sesame oil': { amount: 125, unit: 'ml' }, // Small bottle
+    'rice vinegar': { amount: 250, unit: 'ml' }, // Standard bottle
+    'tamari': { amount: 250, unit: 'ml' }, // Standard bottle
+    'honey': { amount: 350, unit: 'g' }, // Standard jar
+    // Baking essentials
+    'cornstarch': { amount: 200, unit: 'g' }, // Small box
+    'gram flour': { amount: 500, unit: 'g' }, // Standard bag
     'carrots': { amount: 3, unit: 'pieces' }, // 3 medium carrots
     'kiwi': { amount: 4, unit: 'pieces' } // 4 kiwi fruits
   };
+  
+  // Intelligent fallback logic based on ingredient type
+  const lowerIngredient = ingredient.toLowerCase();
+  
+  // Fresh herbs fallback
+  if (lowerIngredient.includes('herb') || 
+      ['basil', 'thyme', 'rosemary', 'sage', 'parsley', 'cilantro', 'oregano', 'mint', 'dill', 'chives'].some(herb => lowerIngredient.includes(herb))) {
+    return { amount: 1, unit: 'bunch' };
+  }
+  
+  // Oils and liquids fallback
+  if (lowerIngredient.includes('oil') || lowerIngredient.includes('vinegar') || 
+      lowerIngredient.includes('sauce') || lowerIngredient.includes('syrup')) {
+    return { amount: 250, unit: 'ml' };
+  }
+  
+  // Spices and powders fallback  
+  if (lowerIngredient.includes('powder') || lowerIngredient.includes('spice') ||
+      ['cumin', 'paprika', 'chili', 'turmeric', 'curry'].some(spice => lowerIngredient.includes(spice))) {
+    return { amount: 20, unit: 'g' };
+  }
   
   return defaults[ingredient] || { amount: 50, unit: 'g' };
 }

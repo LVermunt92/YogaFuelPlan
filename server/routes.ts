@@ -5,7 +5,7 @@ import { storage } from "./storage";
 import { generateWeeklyMealPlan } from "./meal-generator";
 import { mealPlanRequestSchema } from "@shared/schema";
 
-import { generateEnhancedShoppingList, updateAllRecipesWithSpecificIngredients, validateAllRecipeIngredients } from "./nutrition-enhanced";
+import { generateEnhancedShoppingList, updateAllRecipesWithSpecificIngredients, validateAllRecipeIngredients, getDefaultPortion } from "./nutrition-enhanced";
 import { OuraService } from "./oura";
 import { updateUserProfileSchema, authRegisterSchema, authLoginSchema } from "@shared/schema";
 import { z } from "zod";
@@ -1209,6 +1209,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const leftoverIngredients = user?.leftovers || [];
 
       let shoppingList = generateEnhancedShoppingList(mealPlan.meals, language, dietaryTags, leftoverIngredients);
+
+      // VALIDATION: Ensure no shopping list items have empty amounts
+      const itemsWithEmptyAmounts = shoppingList.filter(item => !item.totalAmount || item.totalAmount === '' || item.totalAmount === '0');
+      if (itemsWithEmptyAmounts.length > 0) {
+        console.warn(`⚠️ SHOPPING LIST VALIDATION: Found ${itemsWithEmptyAmounts.length} items with empty amounts, fixing...`);
+        itemsWithEmptyAmounts.forEach(item => {
+          console.warn(`  - Fixing empty amount for: ${item.ingredient} (${item.category})`);
+          const defaultPortion = getDefaultPortion(item.ingredient);
+          item.totalAmount = defaultPortion.amount.toString();
+          item.unit = defaultPortion.unit;
+        });
+        console.log(`✅ SHOPPING LIST VALIDATION: Fixed all empty amounts`);
+      }
       
       // Create proper structure for translation
       // Define supermarket shopping order - must match nutrition-enhanced.ts
