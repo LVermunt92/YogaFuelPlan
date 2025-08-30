@@ -4762,7 +4762,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       "400g canned chopped tomatoes",
       "15ml balsamic vinegar",
       "60ml olive oil",
-      "60ml gluten-free flour blend",
+      "40ml rice flour + 15ml tapioca starch + 5ml xanthan gum (for better binding)",
       "500ml oat milk",
       "30g nutritional yeast",
       "5ml Dijon mustard",
@@ -4786,8 +4786,8 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         "Add tomato paste, canned tomatoes, and balsamic vinegar",
         "Mix well and simmer 10-15 minutes until sauce thickens",
         "Meanwhile, cook gluten-free pasta according to package instructions and drain",
-        "For white sauce: heat remaining oil and gluten-free flour in medium pan",
-        "Whisk to form smooth paste, cook 2-3 minutes over medium-high heat",
+        "For white sauce: heat remaining oil and rice flour mixture in medium pan",
+        "Whisk to form smooth paste, cook 2-3 minutes over medium-high heat (rice flour creates better texture)",
         "Gradually stream in oat milk, whisking constantly until smooth and thick",
         "Add nutritional yeast, mustard, cooked lentils, hemp hearts, salt and pepper",
         "Combine pasta with tomato sauce in baking dish",
@@ -4796,10 +4796,11 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       ],
       tips: [
         "Use certified gluten-free bread for safe breadcrumbs",
+        "Rice flour + tapioca starch + xanthan gum creates better texture than single flour",
         "Pre-cooked lentils work best - canned or leftover home-cooked",
         "Hemp hearts add extra protein and nutty flavor"
       ],
-      notes: "Gluten-free version with lentils and hemp hearts for extra plant protein"
+      notes: "Gluten-free version using rice flour blend with xanthan gum for optimal texture, plus lentils and hemp hearts for extra plant protein"
     },
     createdAt: new Date('2025-08-30'),
     active: true
