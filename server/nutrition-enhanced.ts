@@ -8015,6 +8015,12 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
           return;
         }
         
+        // Skip if it's just a cooking method after normalization
+        if (!normalizedIngredient || normalizedIngredient.trim() === '' || normalizedIngredient.trim().length === 0) {
+          console.warn(`⚠️ SHOPPING LIST: Skipping cooking method ingredient: "${separateIngredient}" → "${normalizedIngredient}"`);
+          return;
+        }
+        
         // Try to get category for the specific ingredient, fallback to original, then fallback to 'Other' (not 'Fruits')
         const category = ingredientCategories[separateIngredient.toLowerCase()] || ingredientCategories[ingredient.toLowerCase()] || 'Other';
         
@@ -8046,6 +8052,13 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
       // Skip empty ingredients that might slip through normalization
       if (!normalizedIngredient || normalizedIngredient.trim() === '' || normalizedIngredient.trim().length === 0) {
         console.warn(`⚠️ SHOPPING LIST: Skipping empty normalized ingredient from "${finalIngredient}"`);
+        return;
+      }
+      
+      // Double-check for cooking methods that slipped through
+      const cookingMethods = ['chopped', 'sliced', 'diced', 'minced', 'grated', 'melted', 'cooked'];
+      if (cookingMethods.includes(normalizedIngredient.toLowerCase().trim())) {
+        console.warn(`⚠️ SHOPPING LIST: Skipping cooking method: "${normalizedIngredient}"`);
         return;
       }
       
@@ -8454,6 +8467,24 @@ function cleanIngredientName(ingredient: string): string {
     cleaned = cleaned.replace(/\b(extra virgin|sea|black|white|ground|mixed|frozen|unsweetened|pure|gluten-free)\b/g, '');
   }
   cleaned = cleaned.replace(/^(pinch of|dash of|handful of)\s*/i, '');
+  
+  // Remove extra whitespace and validate the result
+  cleaned = cleaned.trim();
+  
+  // Blacklist cooking methods that should never become standalone ingredients
+  const cookingMethodsBlacklist = [
+    'chopped', 'sliced', 'diced', 'minced', 'grated', 'halved', 'quartered',
+    'melted', 'cooked', 'steamed', 'sautéed', 'roasted', 'grilled', 'baked',
+    'fried', 'boiled', 'mashed', 'crushed', 'shredded', 'julienned', 'cubed',
+    'roughly', 'finely', 'thinly', 'thickly', 'softened', 'warmed', 'heated',
+    'fresh', 'dried', 'frozen', 'canned', 'raw', 'organic', 'free-range'
+  ];
+  
+  // If cleaned ingredient is just a cooking method, skip it entirely
+  if (cookingMethodsBlacklist.includes(cleaned) || cleaned.length < 2) {
+    console.warn(`⚠️ SHOPPING LIST: Skipping cooking method/invalid ingredient: "${cleaned}" from "${originalInput}"`);
+    return ''; // Return empty string to be filtered out later
+  }
   
   // Clean up spaces and handle special cases
   cleaned = cleaned.replace(/\s+/g, ' ').trim();
