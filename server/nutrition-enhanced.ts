@@ -5686,6 +5686,76 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-08-30'),
     active: true
+  },
+  {
+    name: "Healthy Lactose-Free Kapsalon",
+    portion: "1 generous serving (about 450g)",
+    nutrition: {
+      protein: 21,
+      prepTime: 35,
+      calories: 455,
+      carbohydrates: 58,
+      fats: 16,
+      fiber: 14,
+      sugar: 12,
+      sodium: 520,
+      potassium: 940,
+      calcium: 160,
+      iron: 5.8,
+      vitaminC: 35,
+      costEuros: 4.40,
+      proteinPerEuro: 4.8
+    },
+    category: "dinner",
+    tags: ["vegetarian", "lactose-free", "dairy-free", "gluten-free", "high-protein", "dutch-fusion", "comfort-food", "wholesome"],
+    ingredients: [
+      "400g sweet potatoes, cut into thick fries",
+      "15ml olive oil",
+      "2.5ml smoked paprika",
+      "150g firm tofu, sliced and marinated in 15ml tamari",
+      "120g mixed salad leaves",
+      "1 large tomato, diced",
+      "Half cucumber, diced",
+      "1 small red onion, thinly sliced",
+      "60ml coconut yogurt (unsweetened)",
+      "15ml tahini",
+      "1 garlic clove, minced",
+      "15ml lemon juice",
+      "2.5ml ground cumin",
+      "30ml hemp hearts",
+      "15ml nutritional yeast",
+      "Sea salt and black pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["sweet potatoes", "salad leaves", "tomato", "cucumber", "red onion", "garlic"],
+      benefits: ["beta-carotene from sweet potatoes", "plant protein from tofu", "fiber from vegetables"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 220°C (200°C fan)",
+        "Cut sweet potatoes into thick fries, toss with olive oil, smoked paprika, salt and pepper",
+        "Arrange on baking tray and roast for 25-30 minutes until crispy outside and tender inside",
+        "Meanwhile, slice tofu and marinate in tamari for 10 minutes",
+        "Prepare salad by mixing leaves, diced tomato, cucumber, and red onion in large bowl",
+        "For sauce, whisk together coconut yogurt, tahini, minced garlic, lemon juice, cumin, nutritional yeast, salt and pepper",
+        "Heat dry frying pan over medium heat, cook marinated tofu slices for 3-4 minutes each side until golden",
+        "Layer roasted sweet potato fries in serving bowl as base",
+        "Top with grilled tofu pieces",
+        "Add generous portion of mixed salad on top",
+        "Drizzle with tahini coconut yogurt sauce",
+        "Sprinkle with hemp hearts and nutritional yeast for extra protein and umami flavor"
+      ],
+      tips: [
+        "Soak sweet potato fries in cold water for 30 minutes before roasting for extra crispiness",
+        "Press tofu between paper towels for 15 minutes before slicing for better texture",
+        "Nutritional yeast adds cheesy flavor while keeping it dairy-free"
+      ],
+      notes: "Lactose-free take on Dutch kapsalon using sweet potato fries, marinated tofu, fresh salad, and creamy tahini coconut yogurt sauce"
+    },
+    createdAt: new Date('2025-08-30'),
+    active: true
   }
 ];
 
