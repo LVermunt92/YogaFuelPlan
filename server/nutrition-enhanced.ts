@@ -7364,11 +7364,16 @@ export interface ShoppingListItem {
   unit: string;
 }
 
-export function generateEnhancedShoppingList(meals: { foodDescription: string }[], language: string = 'en', dietaryTags: string[] = []): ShoppingListItem[] {
+export function generateEnhancedShoppingList(meals: { foodDescription: string }[], language: string = 'en', dietaryTags: string[] = [], leftoverIngredients: string[] = []): ShoppingListItem[] {
   const ingredientAmounts = new Map<string, { totalAmount: number; unit: string; count: number }>();
   
   // Debug: log that we're applying substitutions
   console.log(`🔄 SHOPPING LIST: Applying dietary substitutions for tags: ${JSON.stringify(dietaryTags)}`);
+  
+  // Debug: log leftover ingredients that will be excluded from shopping list
+  if (leftoverIngredients.length > 0) {
+    console.log(`🥬 LEFTOVER INGREDIENTS: Excluding from shopping list: ${JSON.stringify(leftoverIngredients)}`);
+  }
   
   // Parse actual recipe amounts from meal instructions
   meals.forEach(meal => {
@@ -7410,6 +7415,19 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
         
         // Skip empty ingredient names
         if (!cleanIngredient || cleanIngredient.trim() === '') {
+          return;
+        }
+        
+        // Skip ingredients that user already has (leftover ingredients)
+        const isLeftoverIngredient = leftoverIngredients.some(leftover => {
+          const cleanLeftover = cleanIngredientName(leftover.toLowerCase());
+          return cleanLeftover === cleanIngredient || 
+                 cleanIngredient.includes(cleanLeftover) || 
+                 cleanLeftover.includes(cleanIngredient);
+        });
+        
+        if (isLeftoverIngredient) {
+          console.log(`🥬 EXCLUDING from shopping list (already have): ${cleanIngredient}`);
           return;
         }
         
@@ -7465,6 +7483,19 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
           
           // Skip empty ingredient names
           if (!cleanIngredient || cleanIngredient.trim() === '') {
+            return;
+          }
+          
+          // Skip ingredients that user already has (leftover ingredients)
+          const isLeftoverIngredient = leftoverIngredients.some(leftover => {
+            const cleanLeftover = cleanIngredientName(leftover.toLowerCase());
+            return cleanLeftover === cleanIngredient || 
+                   cleanIngredient.includes(cleanLeftover) || 
+                   cleanLeftover.includes(cleanIngredient);
+          });
+          
+          if (isLeftoverIngredient) {
+            console.log(`🥬 EXCLUDING from shopping list (already have): ${cleanIngredient}`);
             return;
           }
           

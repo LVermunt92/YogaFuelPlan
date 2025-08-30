@@ -1206,8 +1206,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Get user dietary preferences for vegan egg alternatives
       const user = await storage.getUser(mealPlan.userId);
       const dietaryTags = user?.dietaryTags || [];
+      const leftoverIngredients = user?.leftovers || [];
 
-      let shoppingList = generateEnhancedShoppingList(mealPlan.meals, language, dietaryTags);
+      let shoppingList = generateEnhancedShoppingList(mealPlan.meals, language, dietaryTags, leftoverIngredients);
       
       // Create proper structure for translation
       // Define supermarket shopping order - must match nutrition-enhanced.ts
