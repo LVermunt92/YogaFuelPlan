@@ -5079,7 +5079,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 9.3
     },
     category: "dinner",
-    tags: ["vegetarian", "hearty", "one-pan", "protein-rich", "mediterranean"],
+    tags: ["vegetarian", "gluten-free", "hearty", "one-pan", "protein-rich", "mediterranean"],
     ingredients: [
       "60g gram flour (chickpea flour)",
       "5ml olive oil (for batter)",
