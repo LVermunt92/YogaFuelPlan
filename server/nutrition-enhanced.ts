@@ -8031,7 +8031,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
         // For spices and small pantry items, show just the ingredient name
         const shouldShowClean = shouldShowCleanName(separateIngredient, category, proportionalAmount, amounts.unit);
         const finalDisplayAmount = shouldShowClean 
-          ? normalizedIngredient 
+          ? '' // No amount display for pantry essentials 
           : displayAmount;
         
         // When showing clean names (spices/seasonings), don't show a separate unit
@@ -8070,7 +8070,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
       // For spices and small pantry items, show just the ingredient name
       const shouldShowClean = shouldShowCleanName(ingredient, category, amounts.totalAmount, amounts.unit);
       const finalDisplayAmount = shouldShowClean 
-        ? normalizedIngredient 
+        ? '' // No amount display for pantry essentials
         : displayAmount;
       
       // When showing clean names (spices/seasonings), don't show a separate unit
