@@ -6153,6 +6153,133 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     }
   },
   {
+    name: "Crispy Herb-Crusted Chicken with Spiced Tomato Sauce",
+    portion: "300g chicken + sauce (1 serving)",
+    nutrition: { 
+      protein: 35, 
+      prepTime: 35, 
+      calories: 485,
+      carbohydrates: 28,
+      fats: 22,
+      fiber: 6,
+      sugar: 8,
+      sodium: 680,
+      costEuros: 6.20, 
+      proteinPerEuro: 5.6 
+    },
+    category: "dinner",
+    tags: ["non-vegetarian", "high-protein", "crispy", "comfort-food", "herb-crusted"],
+    ingredients: [
+      "500g chicken breast, cut into chunks",
+      "120ml whole milk",
+      "80g plain flour",
+      "60g panko breadcrumbs",
+      "15ml paprika powder",
+      "5ml dried oregano",
+      "2ml chili flakes (optional)",
+      "Olive oil for frying",
+      "Salt and black pepper to taste",
+      "1 can (400g) crushed tomatoes",
+      "2 shallots, finely chopped",
+      "2 cloves garlic, minced",
+      "5ml sugar",
+      "Fresh basil, chopped"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2.5,
+      vegetables: ["tomatoes", "shallots", "garlic", "basil"],
+      benefits: ["High in lycopene", "Rich in antioxidants", "Supports immune system"]
+    },
+    recipe: {
+      instructions: [
+        "Cut chicken breast into bite-sized chunks, season with salt and pepper",
+        "Make spiced tomato sauce: heat olive oil, sauté chopped shallots until soft",
+        "Add minced garlic, cook 1 minute, then add crushed tomatoes, sugar, salt, pepper",
+        "Simmer sauce 15 minutes until thickened, stir in fresh basil at end",
+        "Set up breading station: seasoned flour, milk, panko with paprika and oregano",
+        "Dredge chicken chunks: flour, then milk, then seasoned panko, pressing gently",
+        "Heat olive oil in large pan over medium-high heat",
+        "Fry breaded chicken pieces 4-5 minutes per side until golden and cooked through",
+        "Check internal temperature reaches 75°C",
+        "Season with extra paprika and oregano while hot",
+        "Serve immediately over warm spiced tomato sauce with fresh basil"
+      ],
+      tips: [
+        "Cut chicken evenly for consistent cooking",
+        "Don't overcrowd pan - fry in batches if needed",
+        "Press panko coating gently to help it stick",
+        "Fresh basil added at end preserves bright flavor"
+      ],
+      notes: "Crispy herb-crusted chicken with vibrant tomato sauce creates a satisfying comfort food that delivers excellent protein while maintaining indulgent flavors."
+    }
+  },
+  {
+    name: "Gluten-Free Lactose-Free Crispy Plant Chicken with Herb Tomato Sauce",
+    portion: "250g plant chicken + sauce (1 serving)",
+    nutrition: { 
+      protein: 28, 
+      prepTime: 30, 
+      calories: 420,
+      carbohydrates: 35,
+      fats: 18,
+      fiber: 8,
+      sugar: 8,
+      sodium: 580,
+      costEuros: 7.80, 
+      proteinPerEuro: 3.6 
+    },
+    category: "dinner",
+    tags: ["vegetarian", "gluten-free", "lactose-free", "high-protein", "crispy", "plant-based"],
+    ingredients: [
+      "400g vegetarische kipstuckjes (plant-based chicken pieces)",
+      "120ml oat milk",
+      "60g rice flour",
+      "20g tapioca starch",
+      "60g gluten-free panko breadcrumbs",
+      "30ml nutritional yeast",
+      "15ml paprika powder",
+      "5ml dried oregano",
+      "2ml chili flakes (optional)",
+      "2ml xanthan gum",
+      "Olive oil for frying",
+      "Salt and black pepper to taste",
+      "1 can (400g) crushed tomatoes",
+      "2 shallots, finely chopped",
+      "2 cloves garlic, minced",
+      "5ml sugar",
+      "Fresh basil, chopped"
+    ],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 2.5,
+      vegetables: ["tomatoes", "shallots", "garlic", "basil"],
+      benefits: ["High in lycopene", "Rich in antioxidants", "Plant-based protein", "Anti-inflammatory"]
+    },
+    recipe: {
+      instructions: [
+        "Prepare spiced tomato sauce exactly as regular version",
+        "Make gluten-free flour blend: mix rice flour, tapioca starch, and xanthan gum",
+        "Season plant-based chicken pieces with salt and pepper",
+        "Create enhanced coating: mix gluten-free panko with nutritional yeast, paprika, oregano",
+        "Set up breading station: flour blend, oat milk, seasoned panko mixture",
+        "Dredge plant chicken: flour blend, then oat milk, then panko coating",
+        "Heat olive oil in large pan over medium heat",
+        "Fry coated plant chicken 3-4 minutes per side until golden and heated through",
+        "Plant-based pieces cook faster than regular chicken",
+        "Season with extra paprika and oregano while hot",
+        "Serve immediately over warm herb tomato sauce with fresh basil"
+      ],
+      tips: [
+        "Plant-based chicken pieces are pre-cooked, so just heat through",
+        "Rice flour + tapioca blend creates excellent gluten-free coating",
+        "Nutritional yeast adds umami depth and extra protein",
+        "Watch temperature - plant pieces can dry out if overcooked"
+      ],
+      notes: "This plant-based version delivers 28g protein while being completely gluten-free and lactose-free. The vegetarische kipstuckjes provide excellent texture that crisps beautifully with the rice flour coating."
+    }
+  },
+  {
     name: "Thai Green Curry with Super Crunchy Tofu",
     portion: "1 generous serving (about 400g with rice)",
     nutrition: {
