@@ -5,48 +5,6 @@ This full-stack meal planning application generates personalized weekly meal pla
 Preferred communication style: Simple, everyday language.
 **CRITICAL DEVELOPMENT RULE**: Never remove existing functionality, features, or logic without explicit user permission. Always ask twice before removing anything. Only make additive changes unless specifically requested to remove features. Preserve all working functionality by default.
 
-## Recent Fixes (August 26, 2025)
-- **Comprehensive Automatic Protein Source Validation System**: Created complete protein validation system with 25+ protein sources database that automatically enhances all recipes (both curated database and user-created) to ensure adequate protein content. System intelligently adds appropriate protein sources based on recipe type (tofu for stir-fries, lentils for soups, hemp hearts for breakfasts, etc.) and dietary preferences.
-- **AI Recipe Generator Protein Requirements**: Enhanced AI recipe generator to mandate specific protein sources in every generated recipe, with automatic validation and enhancement if protein content is insufficient.
-- **Custom Recipe Protein Auto-Enhancement**: All user-created recipes now automatically receive protein validation during creation and editing, with smart enhancement adding appropriate protein sources when needed.
-- **Complete Fridge Inventory System Removal**: Completely removed fridge inventory page, all related API routes, database schema, storage functions, and backend logic per user request. Preserved only the simple ingredients use section on homepage that uses user profile's "leftovers" field for tracking ingredients to use up.
-- **Intelligent Ingredient-Based Recipe Matching**: Implemented comprehensive intelligent ingredient matching system that finds existing recipes naturally containing user's leftover ingredients instead of random addition. System searches enhanced meal database for ingredient matches using smart normalization and scoring, with AI recipe generation fallback when no existing matches found. Replaces old fridge inventory logic with smarter ingredient-based meal selection that prioritizes recipes containing specific ingredients users want to use up.
-- **Enhanced Noodle Stir-fry Recipe**: Updated "Quick veggie stir-fry with rice noodles and tahini sauce" to include 200g firm tofu with cornstarch coating for crispiness, increasing protein from 18g to 28g while adding proper cooking instructions for optimal texture
-- **Cucumber Salad Protein Boost**: Enhanced viral TikTok cucumber salad with 80g edamame beans and hemp hearts, doubling protein content from 8g to 16g while maintaining refreshing properties
-- **Shopping List Auto-Selection Fix**: Resolved issue where frontend was attempting to access non-existent meal plan IDs by implementing smart meal plan selection that automatically chooses the latest available plan when stored ID doesn't exist
-- **New Recipe Addition**: Added "Rustic Tomato Pasta Bake with Herbed Breadcrumbs" in both regular and gluten-free versions with proper protein enhancement (32g and 28g protein respectively), metric measurements, detailed instructions, and dietary adaptations using tofu/lentils for protein
-- **Quinoa Breakfast Porridge Addition**: Added "Protein-Packed Quinoa Breakfast Porridge with Banana & Peanut Butter" with 26g protein combining quinoa's complete amino acids, protein powder, and peanut butter for a wholesome high-protein breakfast option
-- **One-Pan Masala Mushroom Rice Addition**: Added "One-Pan Masala Mushroom Rice with Cashews" with 24g protein enhanced with chickpeas and hemp hearts, featuring aromatic Indian spices, saffron, and a complete one-pan cooking method for busy evenings
-- **Chickpea Tofu Harissa Stew Addition**: Added "Chickpea, Tofu & Harissa Stew" with 28g protein combining chickpeas and firm tofu, featuring North African spices and harissa for a hearty, warming plant-based dinner option perfect for meal planning
-- **Oat Quinoa Apple Porridge Addition**: Added "Oat & Quinoa Porridge with Apple & Cinnamon" with 22g protein enhanced with protein powder and hemp seeds, perfect for winter breakfast meal prep with batch-cooked quinoa for weekly use
-
-## Previous Fixes (August 22, 2025)
-- **Fridge Inventory System Implementation**: Created complete fridge inventory management system with database schema, API routes, and user interface for tracking existing ingredients, expiration dates, and priorities to optimize meal planning
-- **Recipe Enhancement - Wild Mushroom Quinoa**: Updated "Wild mushroom and herb quinoa with roasted vegetables" recipe per user feedback: removed garlic (was unusual combination), kept tahini dressing for moisture, and added parmesan cheese for umami flavor that complements the earthy mushrooms
-- **Comprehensive Ingredient Normalization System**: Created automatic grocery list optimization that removes cooking methods (steamed broccoli → broccoli, roasted vegetables → vegetables) and specifies generic plant-based milk terms (plant-based milk → oat milk) for practical grocery shopping
-- **Smart Milk Specification**: All generic plant milk terms now automatically convert to "oat milk" as the preferred dairy-free option, eliminating confusing redundant naming like "coconut oat milk"
-- **Automatic Cooking Method Removal**: Shopping lists now show clean ingredient names by removing preparation methods (steamed, chopped, fresh, frozen, etc.) that shoppers don't need when purchasing groceries
-- **Smart Garlic Quantity Display**: Garlic ingredients now automatically specify "garlic cloves" to show proper quantities (e.g., "3 garlic cloves" instead of just "Garlic") while preserving "garlic powder" unchanged
-- **Complete Onion Categorization**: All onion varieties (red, white, yellow, brown, sweet onions) now properly categorize under "Vegetables" section in shopping lists
-- **Enhanced Seed & Nut Categorization**: Pumpkin seeds, flax seeds, and all other seeds/nuts now properly categorize under "Nuts, Seeds & Spreads" section for organized grocery shopping
-- **Enhanced Nut Preparation Normalization**: Shopping lists now automatically normalize all nut preparation methods (crushed walnuts → walnuts, chopped almonds → almonds, sliced almonds → almonds) for practical grocery shopping since people buy whole nuts and prepare them at home
-- **Comprehensive Pasta & Rice Categorization**: Added complete coverage of pasta types (spaghetti, penne, linguine, fusilli, rigatoni, orzo, macaroni, angel hair, fettuccine, tagliatelle, ravioli, gnocchi, etc.) and rice varieties (sushi rice, jasmine rice, wild rice, arborio rice) plus Asian noodles (soba, udon, ramen, glass noodles) to ensure all grain-based ingredients properly categorize under "Grains, Pasta & Canned Goods" section
-- **Water Ingredient Filtering**: Shopping lists now automatically exclude all water-related ingredients (water, water for cooking, cooking water, boiling water, hot water, cold water, tap water, pasta water, rice water, etc.) since users have access to tap water and don't need to purchase it
-- **Custom Recipe Integration**: All user custom recipes now automatically receive a "custom" tag and are properly integrated into the main meal database for meal plan generation
-- **Custom Recipe Reactivation**: Fixed issue where custom recipes were incorrectly deactivated, restored all User 2's custom recipes to active status
-
-## Previous Fixes (August 21, 2025)
-- **Date Restriction Implementation**: Added validation to limit meal plan generation to current week and next week only, preventing future meal plans
-- **Custom Recipe Prioritization**: Fixed property mapping issue where `useOnlyMyRecipes` wasn't reading the correct database field `use_only_my_recipes`
-- **Vegetarian Dietary Filtering**: Enhanced dietary filtering to properly exclude non-vegetarian meals for vegetarian users in both curated and custom recipe systems
-- **User Recipe Dietary Logic**: Made user recipe filtering more permissive - assumes user's recipes match their dietary needs unless explicitly conflicting
-- **Shopping List Error Resolution**: Fixed `originalInput` undefined error in shopping list generation that was causing failures
-- **Meal Plan Date Validation**: System now restricts meal plan creation to current week (starts last Sunday) and next week (starts this Sunday) only
-- **Smart Lactose-Free Filtering**: Enhanced dietary filtering to be less restrictive for lactose-free requirement - now includes meals without dairy ingredients even if not explicitly tagged
-- **Comprehensive Metric Unit Conversion**: Converted all recipe measurements from imperial (cups, tablespoons, teaspoons) to metric units (grams, milliliters) throughout the database and AI recipe generation system
-- **Smart Vegetarian Filtering**: Implemented intelligent vegetarian filtering that includes naturally vegetarian recipes (like pancakes) even if not explicitly tagged, while excluding any recipes containing meat/fish ingredients
-- **Automatic Ingredient Substitution**: Smart substitution system that automatically replaces lactose-containing ingredients with dairy-free alternatives and gluten ingredients with gluten-free options based on user dietary restrictions
-
 # System Architecture
 - **UI/UX Decisions**: Utilizes `shadcn/ui` built on `Radix UI` primitives with `Tailwind CSS` and CSS variables for theming, focusing on a streamlined interface. Color schemes are standardized across the application (emerald, yellow, green, blue, orange for KPIs; gray for general UI; green/blue/orange for meal cards). Mobile layouts are optimized for responsiveness.
 - **Technical Implementations**:
@@ -57,22 +15,16 @@ Preferred communication style: Simple, everyday language.
     - **Build Tools**: Vite for frontend, esbuild for backend.
 - **Feature Specifications**:
     - **Authentication & Multi-User Support**: Secure login/registration, password reset, isolated user data, and route protection.
-    - **Meal Generation**: Calculates protein targets, selects meals from a nutrition database, generates 7-day plans with variety, and creates shopping lists. Includes smart AI recipe generation and comprehensive ingredient specification, with recipes being alcohol-free.
-    - **Universal Meal Prep Engine**: Adapts to user cooking schedules, supporting batch cooking, proper meal distribution, and intelligent dietary fallbacks.
-    - **Time Constraints**: Weekday meals (Mon-Fri) are limited to ≤45 minutes prep time; weekends have no time restrictions.
+    - **Meal Generation**: Calculates protein targets, selects meals from a nutrition database, generates 7-day plans with variety, and creates shopping lists. Includes smart AI recipe generation and comprehensive ingredient specification, with recipes being alcohol-free. Features a comprehensive automatic protein source validation system, AI recipe generator protein requirements, and custom recipe protein auto-enhancement.
+    - **Universal Meal Prep Engine**: Adapts to user cooking schedules, supporting batch cooking, proper meal distribution, and intelligent dietary fallbacks. Weekday meals (Mon-Fri) are limited to ≤45 minutes prep time; weekends have no time restrictions.
     - **Ayurvedic Integration**: Supports Ayurvedic dietary tags and seasonal adaptation.
-    - **Meal Plan Persistence**: Meal plans persist across browser sessions with automatic loading and cleanup (max 3 plans).
-    - **Meal Plan Management**: Users can delete individual saved meal plans with confirmation dialog and automatic selection handling.
-    - **Sunday-Based Weekly Planning**: All meal plans automatically normalize to Sunday as the week start date for consistent weekly boundaries and scheduling alignment.
-    - **Automated Recipe Updates**: System automatically adds new trending recipes.
-    - **Dutch Recipe Translation System**: Comprehensive translation service for recipe names, ingredients, and cooking instructions from English to Dutch, including AI-enhanced translation.
-    - **Consolidated Shopping List Workflow**: Single-flow shopping list generation with supermarket-ordered categories, detailed dry goods separation, and comprehensive lemon standardization.
-    - **Macronutrient Distribution Tracking**: Added real-time tracking of macronutrient distribution (fats, vegetables, fruits/starches) in meal plans.
-    - **Advanced Protein Range Calculator**: Evidence-based protein calculation with gender-specific age thresholds and activity level considerations.
+    - **Meal Plan Management**: Meal plans persist across browser sessions with automatic loading and cleanup (max 3 plans). Users can delete individual saved meal plans with confirmation dialog and automatic selection handling. All meal plans automatically normalize to Sunday as the week start date. Meal plan generation is limited to the current and next week only.
+    - **Recipe Management**: Automated recipe updates for trending recipes, Dutch translation system for recipes, and comprehensive metric unit conversion for all measurements. Includes intelligent ingredient-based recipe matching, automatic ingredient substitution based on dietary restrictions, smart vegetarian filtering, and an enhanced high-protein meal database.
+    - **Shopping List Features**: Consolidated shopping list generation with supermarket-ordered categories, detailed dry goods separation, and comprehensive lemon standardization. Features comprehensive ingredient normalization, smart milk specification (oat milk), automatic cooking method removal, smart garlic quantity display, complete onion categorization, enhanced seed & nut categorization, enhanced nut preparation normalization, comprehensive pasta & rice categorization, and water ingredient filtering.
+    - **Nutritional Tracking**: Macronutrient distribution tracking (fats, vegetables, fruits/starches) in meal plans and an advanced protein range calculator with gender-specific age thresholds and activity level considerations.
     - **Admin Panel**: Full-featured admin interface for managing nutrition calculation parameters, monitoring system statistics, and configuring meal planning logic, including editable lookup tables and audit trails.
     - **User Recipe Management**: Complete custom recipe system allowing users to create, store, and manage personal recipes separate from the curated database, including CRUD operations, nutrition tracking, meal type categorization, and soft-delete.
-    - **AI-Powered Nutrition Analysis**: Automated generation of comprehensive nutritional values (protein, calories, carbohydrates, fats, fiber, sugar, sodium) directly from recipe ingredients using OpenAI GPT-4o model.
-    - **High-Protein Meal Database**: Enhanced meal database with naturally high-protein options (28-45g protein) covering breakfast (including dairy), vegetarian, and meat-based meals for better protein target achievement without relying on tags.
+    - **AI-Powered Nutrition Analysis**: Automated generation of comprehensive nutritional values (protein, calories, carbohydrates, fats, fiber, sugar, sodium) directly from recipe ingredients.
 - **System Design Choices**:
     - **Data Flow**: User input drives meal generation, stored in PostgreSQL, displayed via React Query.
     - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, favorite meals, and user-created custom recipes.
