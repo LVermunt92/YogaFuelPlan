@@ -5057,6 +5057,150 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-08-30'),
     active: true
+  },
+  {
+    name: "Chickpea & Potato Pancakes with Warm Veggie Salsa",
+    portion: "2 medium pancakes with salsa (about 300g)",
+    nutrition: {
+      protein: 26,
+      prepTime: 25,
+      calories: 420,
+      carbohydrates: 52,
+      fats: 14,
+      fiber: 11,
+      sugar: 9,
+      sodium: 650,
+      potassium: 890,
+      calcium: 120,
+      iron: 4.8,
+      vitaminC: 45,
+      costEuros: 2.80,
+      proteinPerEuro: 9.3
+    },
+    category: "dinner",
+    tags: ["vegetarian", "hearty", "one-pan", "protein-rich", "mediterranean"],
+    ingredients: [
+      "60g gram flour (chickpea flour)",
+      "5ml olive oil (for batter)",
+      "5ml fine sea salt",
+      "75g potatoes, cut into 1cm pieces",
+      "Half large red onion, finely chopped",
+      "Half sweet red pepper, finely chopped",
+      "70g cherry tomatoes, halved",
+      "Handful fresh spinach",
+      "120g cooked chickpeas",
+      "30g hemp hearts",
+      "60ml water",
+      "Pinch sea salt and black pepper",
+      "7.5ml olive oil (for drizzling)",
+      "Extra olive oil for cooking"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["potatoes", "onion", "red pepper", "cherry tomatoes", "spinach"],
+      benefits: ["vitamin C from peppers", "lycopene from tomatoes", "iron from spinach"]
+    },
+    recipe: {
+      instructions: [
+        "Make pancake batter by whisking gram flour, 5ml olive oil, and salt with 60ml water until combined with no lumps",
+        "Set batter aside to rest",
+        "Heat generous drizzle of olive oil in non-stick frying pan over medium heat",
+        "Add potato pieces with pinch of salt, cook stirring frequently until golden brown and tender (about 10 minutes)",
+        "Transfer cooked potatoes to plate",
+        "Return pan to heat with small drizzle of oil",
+        "Spoon pancake batter into pan - make 2 medium pancakes or 1 large",
+        "Sprinkle cooked potato pieces and chickpeas on top",
+        "Cook until golden brown on both sides (about 2 minutes per side, add 1-2 minutes if making 1 large pancake)",
+        "Transfer pancakes to serving plate",
+        "Add another drizzle of oil to pan and add onion, pepper, and tomatoes",
+        "Cook until hot and juicy (about 3 minutes)",
+        "Stir in spinach and cook until wilted (1-2 minutes)",
+        "Season veggie salsa with salt and pepper",
+        "Spoon warm veggie salsa on top of pancakes and sprinkle with hemp hearts",
+        "Serve immediately"
+      ],
+      tips: [
+        "Potato sizes vary - you only need enough to scatter across pancake surface",
+        "Let batter rest while preparing vegetables for better texture",
+        "Don't overcook the vegetables - they should remain vibrant and juicy"
+      ],
+      notes: "Protein-enhanced with chickpeas and hemp hearts, inspired by socca (Southern French chickpea pancakes)"
+    },
+    createdAt: new Date('2025-08-30'),
+    active: true
+  },
+  {
+    name: "Chickpea & Potato Pancakes with Warm Veggie Salsa (Gluten-Free)",
+    portion: "2 medium pancakes with salsa (about 300g)",
+    nutrition: {
+      protein: 24,
+      prepTime: 25,
+      calories: 395,
+      carbohydrates: 49,
+      fats: 13,
+      fiber: 10,
+      sugar: 8,
+      sodium: 620,
+      potassium: 860,
+      calcium: 110,
+      iron: 4.5,
+      vitaminC: 45,
+      costEuros: 2.90,
+      proteinPerEuro: 8.3
+    },
+    category: "dinner",
+    tags: ["vegetarian", "gluten-free", "hearty", "one-pan", "protein-rich", "mediterranean"],
+    ingredients: [
+      "60g gram flour (chickpea flour, certified gluten-free)",
+      "5ml olive oil (for batter)",
+      "5ml fine sea salt",
+      "75g potatoes, cut into 1cm pieces",
+      "Half large red onion, finely chopped",
+      "Half sweet red pepper, finely chopped",
+      "70g cherry tomatoes, halved",
+      "Handful fresh spinach",
+      "100g cooked lentils",
+      "25g hemp hearts",
+      "60ml water",
+      "Pinch sea salt and black pepper",
+      "7.5ml olive oil (for drizzling)",
+      "Extra olive oil for cooking"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["potatoes", "onion", "red pepper", "cherry tomatoes", "spinach"],
+      benefits: ["vitamin C from peppers", "lycopene from tomatoes", "iron from spinach"]
+    },
+    recipe: {
+      instructions: [
+        "Make pancake batter by whisking certified gluten-free gram flour, 5ml olive oil, and salt with 60ml water until combined with no lumps",
+        "Set batter aside to rest",
+        "Heat generous drizzle of olive oil in non-stick frying pan over medium heat",
+        "Add potato pieces with pinch of salt, cook stirring frequently until golden brown and tender (about 10 minutes)",
+        "Transfer cooked potatoes to plate",
+        "Return pan to heat with small drizzle of oil",
+        "Spoon pancake batter into pan - make 2 medium pancakes or 1 large",
+        "Sprinkle cooked potato pieces and lentils on top",
+        "Cook until golden brown on both sides (about 2 minutes per side, add 1-2 minutes if making 1 large pancake)",
+        "Transfer pancakes to serving plate",
+        "Add another drizzle of oil to pan and add onion, pepper, and tomatoes",
+        "Cook until hot and juicy (about 3 minutes)",
+        "Stir in spinach and cook until wilted (1-2 minutes)",
+        "Season veggie salsa with salt and pepper",
+        "Spoon warm veggie salsa on top of pancakes and sprinkle with hemp hearts",
+        "Serve immediately"
+      ],
+      tips: [
+        "Use certified gluten-free gram flour to ensure safety",
+        "Cooked lentils provide excellent protein and fiber",
+        "Gram flour is naturally gluten-free but check certification for celiac safety"
+      ],
+      notes: "Gluten-free version using certified chickpea flour with lentils and hemp hearts for protein"
+    },
+    createdAt: new Date('2025-08-30'),
+    active: true
   }
 ];
 

@@ -30,6 +30,11 @@ Preferred communication style: Simple, everyday language.
     - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, favorite meals, and user-created custom recipes.
     - **Unified Recipe Database**: Consolidated all recipe databases into a single unified system.
 
+# Recent Changes (August 30, 2025)
+- **Chickpea Potato Pancakes Addition**: Added "Chickpea & Potato Pancakes with Warm Veggie Salsa" in both regular and gluten-free versions with 26g and 24g protein respectively, inspired by socca French pancakes with one-pan cooking method and enhanced with chickpeas/lentils and hemp hearts
+- **Oat Quinoa Apple Porridge Addition**: Added "Oat & Quinoa Porridge with Apple & Cinnamon" with 22g protein enhanced with protein powder and hemp seeds, perfect for winter breakfast meal prep with batch-cooked quinoa for weekly use
+- **Chickpea Tofu Harissa Stew Addition**: Added "Chickpea, Tofu & Harissa Stew" with 28g protein combining chickpeas and firm tofu, featuring North African spices and harissa for a hearty, warming plant-based dinner option perfect for meal planning
+
 # External Dependencies
 - `@neondatabase/serverless` (PostgreSQL client)
 - `drizzle-orm` (ORM for PostgreSQL)
