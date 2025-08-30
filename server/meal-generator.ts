@@ -151,16 +151,12 @@ function selectUnusedMeal(
   fridgeIngredients: string[], 
   ingredientsToUseUp: string[]
 ): MealOption {
-  return selectUnusedMealIntelligently(
-    availableMeals, 
-    usedMeals, 
-    allSelectedMealNames, 
-    isLeftover, 
-    ingredientsToUseUp, 
-    'dinner', // default category
-    [], // default dietary tags
-    25 // default protein target
-  );
+  // Simple implementation to avoid async complications
+  const unusedMeals = availableMeals.filter(meal => !usedMeals.has(meal.name));
+  if (unusedMeals.length > 0) {
+    return unusedMeals[0];
+  }
+  return availableMeals[0];
 }
 
 
@@ -336,6 +332,11 @@ async function findMealsWithIngredients(
  * Check if two meal names are exactly the same (prevent duplicates of identical recipes)
  */
 function areMealsSimilar(meal1: string, meal2: string): boolean {
+  // Guard against undefined values
+  if (!meal1 || !meal2) {
+    return false;
+  }
+  
   const name1 = meal1.toLowerCase().trim();
   const name2 = meal2.toLowerCase().trim();
   
@@ -362,10 +363,10 @@ function areMealsSimilar(meal1: string, meal2: string): boolean {
 async function selectUnusedMealIntelligently(
   availableMeals: MealOption[], 
   usedMeals: Set<string>, 
-  allSelectedMeals?: Set<string>,
+  allSelectedMeals: Set<string> = new Set(),
   prioritizeCustom: boolean = false,
   ingredientsToUseUp: string[] = [],
-  category: 'breakfast' | 'lunch' | 'dinner',
+  category: 'breakfast' | 'lunch' | 'dinner' = 'dinner',
   dietaryTags: string[] = [],
   targetProtein: number = 25
 ): Promise<MealOption> {
@@ -582,6 +583,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   
   // Get ingredients to use up from user profile
   const ingredientsToUseUp = getIngredientsToUseUp(user);
+  let remainingIngredientsToUseUp = [...ingredientsToUseUp];
   
   console.log(`🥕 Starting meal generation with ingredients to use up: ${JSON.stringify(ingredientsToUseUp)}`);
   
@@ -929,11 +931,11 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         allSelectedMealNames.add(selectedMeal.name);
       } else if (day === 7 && mealCategory === 'lunch') {
         // Day 7: Saturday lunch - only add eating out if user doesn't eat at home
-        if (!daysWithMeals.includes(day)) {
+        if (!daysWithRealMeals.has(day)) {
           selectedMeal = {
             name: "Eating out",
             portion: "",
-            nutrition: { protein: 0, prepTime: 30 },
+            nutrition: { protein: 0, prepTime: 30, calories: 0, carbohydrates: 0, fats: 0, fiber: 0, sugar: 0, sodium: 0 },
             ingredients: [],
             tags: [],
             recipe: { instructions: [], tips: [] }
@@ -946,14 +948,14 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         }
       } else if (day === 7 && mealCategory === 'dinner') {
         // Day 7: Saturday dinner - only add eating out if different from lunch
-        if (!daysWithMeals.includes(day)) {
+        if (!daysWithRealMeals.has(day)) {
           // Only add "Eating out" for dinner if lunch wasn't already "Eating out"
           const lunchMeal = meals.find(m => m.day === day && m.mealType === 'lunch');
           if (!lunchMeal || lunchMeal.foodDescription !== 'Eating out') {
             selectedMeal = {
               name: "Eating out",
               portion: "",
-              nutrition: { protein: 0, prepTime: 30 },
+              nutrition: { protein: 0, prepTime: 30, calories: 0, carbohydrates: 0, fats: 0, fiber: 0, sugar: 0, sodium: 0 },
               ingredients: [],
               tags: [],
               recipe: { instructions: [], tips: [] }
@@ -1389,6 +1391,13 @@ async function generateMealPrepPlan(
   const usedDinnerMeals: Set<string> = new Set();
   // Initialize global variety tracking for similar recipe filtering
   const allSelectedMealNames = new Set<string>();
+  
+  // Declare dinner meal variables
+  let sundayDinnerMeal: MealOption | null = null;
+  let mondayDinnerMeal: MealOption | null = null;
+  let tuesdayDinnerMeal: MealOption | null = null;
+  let wednesdayDinnerMeal: MealOption | null = null;
+  let thursdayDinnerMeal: MealOption | null = null;
   
   const cookingDaysPerWeek = user?.cookingDaysPerWeek || 3;
   const eatingDaysAtHome = user?.eatingDaysAtHome || 6;
