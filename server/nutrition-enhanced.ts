@@ -6181,6 +6181,70 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-08-30'),
     active: true
+  },
+  {
+    name: "Chocolate Overnight Oats with Dark Chocolate Crumble",
+    portion: "1 generous serving (about 400g)",
+    nutrition: {
+      protein: 31,
+      prepTime: 10,
+      calories: 375,
+      carbohydrates: 44,
+      fats: 8,
+      fiber: 12,
+      sugar: 18,
+      sodium: 120,
+      potassium: 480,
+      calcium: 180,
+      iron: 4.2,
+      vitaminC: 2,
+      costEuros: 2.40,
+      proteinPerEuro: 12.9
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "high-protein", "meal-prep", "overnight-oats", "chocolate", "wholesome", "make-ahead"],
+    ingredients: [
+      "40g quick oats",
+      "20g cocoa protein powder",
+      "80ml soy milk (or any plant milk)",
+      "8ml flax seeds",
+      "8ml chia seeds",
+      "2.5ml sweetener (maple syrup or stevia)",
+      "5ml cocoa powder",
+      "2.5ml vanilla extract",
+      "15ml vanilla yogurt",
+      "1 wholegrain brown rice cake, crushed",
+      "10g dark chocolate, melted",
+      "2.5ml coconut oil (for melting chocolate)"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 0,
+      vegetables: [],
+      benefits: ["high fiber from oats and seeds", "complete protein from protein powder", "antioxidants from cocoa and dark chocolate"]
+    },
+    recipe: {
+      instructions: [
+        "In a jar or container, mix together oats, cocoa protein powder, cocoa powder, flax seeds, and chia seeds",
+        "Add soy milk, sweetener, and vanilla extract, stir well to combine all dry ingredients",
+        "Pour the mixture into your storage jar and refrigerate overnight or at least 1 hour",
+        "In separate small bowl, mix vanilla yogurt - this will be your middle layer",
+        "Melt dark chocolate with coconut oil in microwave or double boiler until smooth",
+        "Crush rice cake into small pieces and mix with half the melted chocolate",
+        "When ready to serve, layer the overnight oats base in serving jar",
+        "Add yogurt layer on top of the oat base",
+        "Top with chocolate rice cake crumble and drizzle remaining melted chocolate",
+        "Refrigerate for 1 hour or overnight before enjoying for best texture"
+      ],
+      tips: [
+        "Prepare multiple jars at once for easy grab-and-go breakfasts",
+        "Cocoa protein powder provides rich chocolate flavor while boosting protein content",
+        "Rice cake adds satisfying crunch - can substitute with granola if preferred"
+      ],
+      notes: "Indulgent chocolate overnight oats with impressive protein content, perfect for meal prep and satisfying chocolate cravings healthily"
+    },
+    createdAt: new Date('2025-08-30'),
+    active: true
   }
 ];
 
