@@ -16,6 +16,7 @@ Preferred communication style: Simple, everyday language.
 - **Shopping List Auto-Selection Fix**: Resolved issue where frontend was attempting to access non-existent meal plan IDs by implementing smart meal plan selection that automatically chooses the latest available plan when stored ID doesn't exist
 - **New Recipe Addition**: Added "Rustic Tomato Pasta Bake with Herbed Breadcrumbs" in both regular and gluten-free versions with proper protein enhancement (32g and 28g protein respectively), metric measurements, detailed instructions, and dietary adaptations using tofu/lentils for protein
 - **Quinoa Breakfast Porridge Addition**: Added "Protein-Packed Quinoa Breakfast Porridge with Banana & Peanut Butter" with 26g protein combining quinoa's complete amino acids, protein powder, and peanut butter for a wholesome high-protein breakfast option
+- **One-Pan Masala Mushroom Rice Addition**: Added "One-Pan Masala Mushroom Rice with Cashews" with 24g protein enhanced with chickpeas and hemp hearts, featuring aromatic Indian spices, saffron, and a complete one-pan cooking method for busy evenings
 
 ## Previous Fixes (August 22, 2025)
 - **Fridge Inventory System Implementation**: Created complete fridge inventory management system with database schema, API routes, and user interface for tracking existing ingredients, expiration dates, and priorities to optimize meal planning

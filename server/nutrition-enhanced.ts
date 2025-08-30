@@ -4727,7 +4727,6 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       ],
       notes: "A comforting pasta bake with rich tomato sauce and creamy protein-packed white sauce"
     },
-    proteinSources: ["tofu", "nutritional yeast", "oat milk"],
     createdAt: new Date('2025-08-30'),
     active: true
   },
@@ -4802,7 +4801,6 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       ],
       notes: "Gluten-free version with lentils and hemp hearts for extra plant protein"
     },
-    proteinSources: ["lentils", "hemp hearts", "nutritional yeast"],
     createdAt: new Date('2025-08-30'),
     active: true
   },
@@ -4861,7 +4859,75 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       ],
       notes: "A protein-rich breakfast combining quinoa's complete amino acids with oats for sustained energy"
     },
-    proteinSources: ["quinoa", "protein powder", "peanut butter", "oats"],
+    createdAt: new Date('2025-08-30'),
+    active: true
+  },
+  {
+    name: "One-Pan Masala Mushroom Rice with Cashews",
+    portion: "1 generous serving (about 400g)",
+    nutrition: {
+      protein: 24,
+      prepTime: 60,
+      calories: 485,
+      carbohydrates: 58,
+      fats: 18,
+      fiber: 6,
+      sugar: 8,
+      sodium: 680,
+      potassium: 720,
+      calcium: 85,
+      iron: 4.8,
+      vitaminC: 12,
+      costEuros: 4.20,
+      proteinPerEuro: 5.7
+    },
+    category: "dinner",
+    tags: ["vegetarian", "gluten-free", "one-pan", "indian", "aromatic", "high-protein"],
+    ingredients: [
+      "300g chestnut mushrooms, halved",
+      "60ml coconut yogurt",
+      "20g fresh ginger, finely chopped",
+      "2 garlic cloves, minced",
+      "1 brown onion, thinly sliced",
+      "5ml garam masala",
+      "150g basmati rice, rinsed",
+      "270ml boiling water",
+      "Pinch of saffron",
+      "Pinch of sea salt",
+      "15ml olive oil",
+      "15g fresh coriander, chopped",
+      "50g cashews, toasted",
+      "120g cooked chickpeas",
+      "30g hemp hearts"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["mushrooms", "onion", "ginger", "garlic"],
+      benefits: ["umami from mushrooms", "anti-inflammatory ginger", "prebiotics from onion"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 180°C fan / 350°F",
+        "In large bowl, combine halved mushrooms, coconut yogurt, chopped ginger, and pinch of salt",
+        "Set mushroom mixture aside to marinate",
+        "Heat olive oil in medium oven-safe casserole dish over medium heat",
+        "Add sliced onion and garam masala, cook 8-10 minutes until softened and fragrant",
+        "Remove pan from heat and stir in marinated mushroom mixture",
+        "Cover with lid and place in oven for 30 minutes until mushrooms are tender",
+        "Remove from oven and stir in rinsed rice, boiling water, cooked chickpeas, and salt",
+        "Scatter saffron over top and replace lid",
+        "Return to oven for 15 minutes until rice is just cooked",
+        "Let stand 5-10 minutes to absorb steam and make rice light and fluffy",
+        "Fluff with fork and top with fresh coriander, toasted cashews, and hemp hearts before serving"
+      ],
+      tips: [
+        "Rinse basmati rice until water runs clear for best texture",
+        "Toast cashews in dry pan for 2-3 minutes for extra flavor",
+        "Add handful of spinach or peas before serving for extra greens as suggested"
+      ],
+      notes: "Protein-enhanced version with chickpeas and hemp hearts to meet high-protein requirements"
+    },
     createdAt: new Date('2025-08-30'),
     active: true
   }
