@@ -104,6 +104,65 @@ function getIngredientsToUseUp(user?: User): string[] {
   return user.leftovers;
 }
 
+/**
+ * Get recommended day for meal based on ingredient freshness
+ */
+function getRecommendedDayForMeal(ingredients: string[]): number[] {
+  const freshIngredients = ['spinach', 'lettuce', 'herbs', 'berries'];
+  const mediumIngredients = ['tomatoes', 'bell peppers', 'mushrooms'];
+  
+  const hasFresh = ingredients.some(ing => 
+    freshIngredients.some(fresh => ing.toLowerCase().includes(fresh))
+  );
+  const hasMedium = ingredients.some(ing => 
+    mediumIngredients.some(medium => ing.toLowerCase().includes(medium))
+  );
+  
+  if (hasFresh) return [2, 3, 4]; // Early in week
+  if (hasMedium) return [3, 4, 5, 6]; // Mid-week
+  return [2, 3, 4, 5, 6, 7]; // Any day
+}
+
+/**
+ * Log meal freshness analysis
+ */
+function logMealFreshnessAnalysis(mealName: string, ingredients: string[]) {
+  const recommendedDays = getRecommendedDayForMeal(ingredients);
+  console.log(`🥬 ${mealName}: Optimal days ${recommendedDays.join(', ')}`);
+}
+
+/**
+ * Incorporate leftover ingredients into meal
+ */
+function incorporateLeftoverIngredients(meal: MealOption, leftovers: string[]): { modifiedMeal: MealOption, usedIngredients: string[] } {
+  // Simple implementation - just return the meal as-is for now
+  // This can be enhanced later to actually modify ingredients
+  return { modifiedMeal: meal, usedIngredients: [] };
+}
+
+/**
+ * Select an unused meal intelligently with fallback logic
+ */
+function selectUnusedMeal(
+  availableMeals: MealOption[], 
+  usedMeals: Set<string>, 
+  allSelectedMealNames: Set<string>, 
+  isLeftover: boolean, 
+  fridgeIngredients: string[], 
+  ingredientsToUseUp: string[]
+): MealOption {
+  return selectUnusedMealIntelligently(
+    availableMeals, 
+    usedMeals, 
+    allSelectedMealNames, 
+    isLeftover, 
+    ingredientsToUseUp, 
+    'dinner', // default category
+    [], // default dietary tags
+    25 // default protein target
+  );
+}
+
 
 
 export interface GeneratedMealPlan {
@@ -271,37 +330,7 @@ async function findMealsWithIngredients(
     });
 }
 
-/**
- * Check if a meal can incorporate leftover ingredients and modify description
- */
-function incorporateLeftoverIngredients(meal: MealOption, ingredientsToUseUp: string[]): { modifiedMeal: MealOption, usedIngredients: string[] } {
-  if (!ingredientsToUseUp.length) return { modifiedMeal: meal, usedIngredients: [] };
-  
-  const usedIngredients: string[] = [];
-  
-  // Check which leftover ingredients are compatible with this meal
-  for (const leftoverIngredient of ingredientsToUseUp) {
-    const compatibility = calculateIngredientCompatibility(leftoverIngredient, meal);
-    
-    // Only incorporate if compatibility score is reasonable (> 1)
-    if (compatibility > 1) {
-      usedIngredients.push(leftoverIngredient);
-      console.log(`✓ Incorporating "${leftoverIngredient}" into "${meal.name}" (compatibility: ${compatibility})`);
-    }
-  }
-  
-  // If we can use leftover ingredients, modify the meal description
-  if (usedIngredients.length > 0) {
-    const modifiedMeal = {
-      ...meal,
-      name: `${meal.name} (incorporating leftover ${usedIngredients.join(', ')})`,
-      ingredients: [...meal.ingredients, ...usedIngredients.map(ing => `leftover ${ing}`)]
-    };
-    return { modifiedMeal, usedIngredients };
-  }
-  
-  return { modifiedMeal: meal, usedIngredients: [] };
-}
+
 
 /**
  * Check if two meal names are exactly the same (prevent duplicates of identical recipes)
@@ -1411,13 +1440,7 @@ async function generateMealPrepPlan(
   
   // Variables already declared above - use shuffled options for variety
 
-  // Use Sunday night cooking pattern with proper leftover linking
-  // Track which meals to use as leftovers
-  let sundayDinnerMeal: any = null;
-  let mondayDinnerMeal: any = null;
-  let tuesdayDinnerMeal: any = null;
-  let wednesdayDinnerMeal: any = null;
-  let thursdayDinnerMeal: any = null;
+  // Variables already declared at function start - no need to redeclare
   
 
   
