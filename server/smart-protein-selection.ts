@@ -108,13 +108,13 @@ export function prioritizeByProteinContent(meals: MealOption[]): MealOption[] {
     proteinScore: scoreProteinContent(meal.nutrition.protein)
   }));
   
-  // Sort by protein score (highest first) but maintain some randomness within each tier
+  // Sort by protein score (highest first) but maintain randomness within each tier
   scoredMeals.sort((a, b) => {
     if (a.proteinScore !== b.proteinScore) {
       return b.proteinScore - a.proteinScore;
     }
-    // Within same protein tier, maintain variety by sorting by name
-    return a.meal.name.localeCompare(b.meal.name);
+    // Within same protein tier, use random ordering for variety
+    return Math.random() - 0.5;
   });
   
   return scoredMeals.map(item => item.meal);

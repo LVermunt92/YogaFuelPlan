@@ -135,9 +135,39 @@ function logMealFreshnessAnalysis(mealName: string, ingredients: string[]) {
  * Incorporate leftover ingredients into meal
  */
 function incorporateLeftoverIngredients(meal: MealOption, leftovers: string[]): { modifiedMeal: MealOption, usedIngredients: string[] } {
-  // Simple implementation - just return the meal as-is for now
-  // This can be enhanced later to actually modify ingredients
-  return { modifiedMeal: meal, usedIngredients: [] };
+  if (!leftovers || leftovers.length === 0) {
+    return { modifiedMeal: meal, usedIngredients: [] };
+  }
+
+  const usedIngredients: string[] = [];
+  
+  // Check which leftover ingredients are actually used in this meal
+  for (const leftoverIngredient of leftovers) {
+    const normalizedLeftover = leftoverIngredient.toLowerCase().trim();
+    
+    // Check if any ingredient in the meal matches the leftover
+    const hasIngredient = meal.ingredients.some(ingredient => {
+      const normalizedIngredient = ingredient.toLowerCase();
+      return normalizedIngredient.includes(normalizedLeftover) || 
+             normalizedLeftover.includes(normalizedIngredient.replace(/[^a-z\s]/g, '').trim());
+    });
+    
+    if (hasIngredient) {
+      usedIngredients.push(leftoverIngredient);
+      console.log(`✓ Using leftover ingredient: ${leftoverIngredient} in ${meal.name}`);
+    }
+  }
+  
+  // Add note to meal name if ingredients were used
+  let modifiedMeal = meal;
+  if (usedIngredients.length > 0) {
+    modifiedMeal = {
+      ...meal,
+      name: `${meal.name} (incorporating leftover ${usedIngredients.join(', ')})`
+    };
+  }
+  
+  return { modifiedMeal, usedIngredients };
 }
 
 /**
@@ -374,6 +404,9 @@ async function selectUnusedMealIntelligently(
     throw new Error('No available meals to select from');
   }
   
+  // Add timestamp-based randomization to improve variety across generations
+  const randomOffset = (Date.now() % 1000) / 1000;
+  
   // First try to find a meal that hasn't been used yet
   let unusedMeals = availableMeals.filter(meal => !usedMeals.has(meal.name));
   
@@ -441,11 +474,17 @@ async function selectUnusedMealIntelligently(
   }
 
   if (unusedMeals.length > 0) {
+    // Add extra randomization for better variety
+    const shuffledUnused = [...unusedMeals];
+    for (let i = shuffledUnused.length - 1; i > 0; i--) {
+      const j = Math.floor((Math.random() + randomOffset) % 1 * (i + 1));
+      [shuffledUnused[i], shuffledUnused[j]] = [shuffledUnused[j], shuffledUnused[i]];
+    }
     
-    // Use intelligent variety selection instead of pure random
-    const selectedMeals = selectMealsWithBetterVariety(unusedMeals, 1, Array.from(usedMeals));
-    const selectedMeal = selectedMeals[0] || unusedMeals[0];
-    console.log(`📋 Selected unused meal: ${selectedMeal.name} (${unusedMeals.length} unused options available)`);
+    // Use intelligent variety selection with randomized input
+    const selectedMeals = selectMealsWithBetterVariety(shuffledUnused, 1, Array.from(usedMeals));
+    const selectedMeal = selectedMeals[0] || shuffledUnused[0];
+    console.log(`📋 Selected unused meal with enhanced randomization: ${selectedMeal.name} (${unusedMeals.length} unused options available)`);
     return selectedMeal;
   }
   
@@ -507,10 +546,17 @@ async function selectUnusedMealIntelligently(
       }
     }
     
+    // Add extra shuffle to reset candidates for better variety
+    const extraShuffled = [...resetCandidates];
+    for (let i = extraShuffled.length - 1; i > 0; i--) {
+      const j = Math.floor((Math.random() + randomOffset) % 1 * (i + 1));
+      [extraShuffled[i], extraShuffled[j]] = [extraShuffled[j], extraShuffled[i]];
+    }
+    
     // Use intelligent selection after reset
-    const selectedMeals = selectMealsWithBetterVariety(resetCandidates, 1);
-    const selectedMeal = selectedMeals[0] || resetCandidates[0];
-    console.log(`📋 Reset and selected: ${selectedMeal.name} (from ${resetCandidates.length} filtered options)`);
+    const selectedMeals = selectMealsWithBetterVariety(extraShuffled, 1);
+    const selectedMeal = selectedMeals[0] || extraShuffled[0];
+    console.log(`📋 Reset and selected with enhanced randomization: ${selectedMeal.name} (from ${resetCandidates.length} filtered options)`);
     return selectedMeal;
   } else {
     // Only one meal available, use it
@@ -617,7 +663,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
     }
     
     console.log(`🚀 ABOUT TO CALL generateMealPrepPlan...`);
-    const result = await generateMealPrepPlan(request, user, caloricAdjustment, ingredientsToUseUp);
+    const result = await generateMealPrepPlan(request, user, caloricAdjustment, ingredientsToUseUp, dailyProteinTarget);
     console.log(`🚀 MEAL PREP RESULT RECEIVED, meal count: ${result.meals.length}`);
     return result;
   } else {
@@ -1124,7 +1170,8 @@ async function generateMealPrepPlan(
   request: MealPlanRequest, 
   user: User | undefined, 
   caloricAdjustment: number,
-  fridgeIngredients: string[] = []
+  fridgeIngredients: string[] = [],
+  dailyProteinTarget: number
 ): Promise<GeneratedMealPlan> {
   console.log(`🚀🚀🚀 MEAL PREP FUNCTION CALLED! 🚀🚀🚀`);
   console.log(`🚀 Request user ID: ${request.userId}`);
@@ -1510,13 +1557,13 @@ async function generateMealPrepPlan(
     
     if (isWeekend && weekendBreakfasts.length > 0) {
       // Weekend: use elaborate breakfasts with variety
-      const selectedBreakfast = selectUnusedMeal(weekendBreakfasts, usedBreakfastMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+      const selectedBreakfast = await selectUnusedMealIntelligently(weekendBreakfasts, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget);
       usedBreakfastMeals.add(selectedBreakfast.name);
       allSelectedMealNames.add(selectedBreakfast.name);
       breakfastPool.push(selectedBreakfast);
     } else if (!isWeekend && weekdayBreakfasts.length > 0) {
       // Weekday: use quick breakfasts with variety
-      const selectedBreakfast = selectUnusedMeal(weekdayBreakfasts, usedBreakfastMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+      const selectedBreakfast = await selectUnusedMealIntelligently(weekdayBreakfasts, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget);
       usedBreakfastMeals.add(selectedBreakfast.name);
       allSelectedMealNames.add(selectedBreakfast.name);
       breakfastPool.push(selectedBreakfast);
@@ -1526,19 +1573,19 @@ async function generateMealPrepPlan(
       
       if (isWeekend && weekendBreakfasts.length === 0 && weekdayBreakfasts.length > 0) {
         // Weekend but no weekend options - use weekday as fallback
-        const selectedBreakfast = selectUnusedMeal(weekdayBreakfasts, usedBreakfastMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+        const selectedBreakfast = await selectUnusedMealIntelligently(weekdayBreakfasts, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget);
         usedBreakfastMeals.add(selectedBreakfast.name);
         allSelectedMealNames.add(selectedBreakfast.name);
         breakfastPool.push(selectedBreakfast);
       } else if (!isWeekend && weekdayBreakfasts.length === 0 && weekendBreakfasts.length > 0) {
         // Weekday but no weekday options - use weekend as fallback  
-        const selectedBreakfast = selectUnusedMeal(weekendBreakfasts, usedBreakfastMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+        const selectedBreakfast = await selectUnusedMealIntelligently(weekendBreakfasts, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget);
         usedBreakfastMeals.add(selectedBreakfast.name);
         allSelectedMealNames.add(selectedBreakfast.name);
         breakfastPool.push(selectedBreakfast);
       } else {
         // General fallback
-        const selectedBreakfast = selectUnusedMeal(breakfastOptions, usedBreakfastMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+        const selectedBreakfast = await selectUnusedMealIntelligently(breakfastOptions, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget);
         usedBreakfastMeals.add(selectedBreakfast.name);
         allSelectedMealNames.add(selectedBreakfast.name);
         breakfastPool.push(selectedBreakfast);
@@ -1618,7 +1665,7 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayLunchOptions : lunchOptions;
-        lunchMeal = selectUnusedMeal(mealOptions, usedLunchMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+        lunchMeal = await selectUnusedMealIntelligently(mealOptions, usedLunchMeals, allSelectedMealNames, false, ingredientsToUseUp, 'lunch', dietaryTags, dailyProteinTarget);
         usedLunchMeals.add(lunchMeal.name);
         allSelectedMealNames.add(lunchMeal.name);
       }
@@ -1664,7 +1711,7 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        let selectedDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+        let selectedDinnerMeal = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
         usedDinnerMeals.add(selectedDinnerMeal.name);
         allSelectedMealNames.add(selectedDinnerMeal.name);
         
@@ -1685,7 +1732,7 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        let selectedDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+        let selectedDinnerMeal = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
         usedDinnerMeals.add(selectedDinnerMeal.name);
         allSelectedMealNames.add(selectedDinnerMeal.name);
         
@@ -1706,7 +1753,7 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        let selectedDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+        let selectedDinnerMeal = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
         usedDinnerMeals.add(selectedDinnerMeal.name);
         allSelectedMealNames.add(selectedDinnerMeal.name);
         
@@ -1727,7 +1774,7 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        wednesdayDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+        wednesdayDinnerMeal = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
         usedDinnerMeals.add(wednesdayDinnerMeal.name);
         allSelectedMealNames.add(wednesdayDinnerMeal.name);
         dinnerMeal = wednesdayDinnerMeal;
@@ -1736,7 +1783,7 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        thursdayDinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+        thursdayDinnerMeal = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
         usedDinnerMeals.add(thursdayDinnerMeal.name);
         allSelectedMealNames.add(thursdayDinnerMeal.name);
         dinnerMeal = thursdayDinnerMeal;
@@ -1745,7 +1792,7 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        dinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+        dinnerMeal = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
         usedDinnerMeals.add(dinnerMeal.name);
         allSelectedMealNames.add(dinnerMeal.name);
       } else if (day === 7 && thursdayDinnerMeal) {
@@ -1757,7 +1804,7 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        dinnerMeal = selectUnusedMeal(mealOptions, usedDinnerMeals, allSelectedMealNames, false, fridgeIngredients, ingredientsToUseUp);
+        dinnerMeal = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
         usedDinnerMeals.add(dinnerMeal.name);
         allSelectedMealNames.add(dinnerMeal.name);
       }

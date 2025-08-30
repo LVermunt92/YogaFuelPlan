@@ -20,11 +20,11 @@ export interface VarietyAnalysis {
   needsGeneration: number;
 }
 
-export function analyzeRecipeVariety(
+export async function analyzeRecipeVariety(
   category: 'breakfast' | 'lunch' | 'dinner',
   dietaryTags: string[]
-): VarietyAnalysis {
-  const availableRecipes = getEnhancedMealsForCategoryAndDiet(category, dietaryTags);
+): Promise<VarietyAnalysis> {
+  const availableRecipes = await getEnhancedMealsForCategoryAndDiet(category, dietaryTags);
   const minimumNeeded = MIN_RECIPES_PER_CATEGORY[category];
   const hasEnoughVariety = availableRecipes.length >= minimumNeeded;
   const needsGeneration = Math.max(0, minimumNeeded - availableRecipes.length);
@@ -41,10 +41,11 @@ export function analyzeRecipeVariety(
   };
 }
 
-export function analyzeAllRecipeVariety(dietaryTags: string[]): VarietyAnalysis[] {
-  return ['breakfast', 'lunch', 'dinner'].map(category => 
+export async function analyzeAllRecipeVariety(dietaryTags: string[]): Promise<VarietyAnalysis[]> {
+  const results = await Promise.all(['breakfast', 'lunch', 'dinner'].map(category => 
     analyzeRecipeVariety(category as any, dietaryTags)
-  );
+  ));
+  return results;
 }
 
 export async function ensureRecipeVariety(
@@ -52,11 +53,11 @@ export async function ensureRecipeVariety(
   dietaryTags: string[],
   targetProtein: number = 20
 ): Promise<MealOption[]> {
-  const analysis = analyzeRecipeVariety(category, dietaryTags);
+  const analysis = await analyzeRecipeVariety(category, dietaryTags);
   
   if (analysis.hasEnoughVariety) {
     console.log(`✅ Sufficient recipe variety for ${category} with tags [${dietaryTags.join(', ')}]`);
-    return getEnhancedMealsForCategoryAndDiet(category, dietaryTags);
+    return await getEnhancedMealsForCategoryAndDiet(category, dietaryTags);
   }
 
   console.log(`⚠️ Insufficient variety for ${category} with tags [${dietaryTags.join(', ')}] - generating ${analysis.needsGeneration} new recipes`);
@@ -65,7 +66,7 @@ export async function ensureRecipeVariety(
   const cacheKey = `${category}-${dietaryTags.sort().join(',')}-${targetProtein}`;
   if (generatedRecipeCache.has(cacheKey)) {
     console.log(`🎯 Using cached generated recipes for ${cacheKey}`);
-    return [...getEnhancedMealsForCategoryAndDiet(category, dietaryTags), ...generatedRecipeCache.get(cacheKey)!];
+    return [...await getEnhancedMealsForCategoryAndDiet(category, dietaryTags), ...generatedRecipeCache.get(cacheKey)!];
   }
 
   // Generate needed recipes with AI
@@ -91,7 +92,7 @@ export async function ensureRecipeVariety(
       console.log(`✨ Generated ${newRecipes.length} new recipes for ${category} with tags [${dietaryTags.join(', ')}]`);
       
       // Return existing + new recipes
-      return [...getEnhancedMealsForCategoryAndDiet(category, dietaryTags), ...newRecipes];
+      return [...await getEnhancedMealsForCategoryAndDiet(category, dietaryTags), ...newRecipes];
     }
   } catch (error) {
     console.error(`❌ Failed to generate recipes for ${category}:`, error);
@@ -99,7 +100,7 @@ export async function ensureRecipeVariety(
 
   // Fallback: return what we have
   console.log(`⚠️ Using available recipes despite limited variety for ${category}`);
-  return getEnhancedMealsForCategoryAndDiet(category, dietaryTags);
+  return await getEnhancedMealsForCategoryAndDiet(category, dietaryTags);
 }
 
 function getRandomCuisine(): string {
@@ -206,8 +207,14 @@ export function selectMealsWithBetterVariety(
   }
 
   // Equal treatment for viral and regular recipes - no prioritization
-  // Just shuffle for variety and return requested count
-  const shuffled = [...candidateMeals].sort(() => Math.random() - 0.5);
+  // Use Fisher-Yates shuffle for better randomization
+  const shuffled = [...candidateMeals];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  
+  console.log(`🎲 Shuffled ${candidateMeals.length} meals for better variety. Selected: ${shuffled.slice(0, count).map(m => m.name).join(', ')}`);
   return shuffled.slice(0, count);
 }
 
