@@ -4930,6 +4930,75 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-08-30'),
     active: true
+  },
+  {
+    name: "Chickpea, Tofu & Harissa Stew",
+    portion: "1 generous serving (about 350g)",
+    nutrition: {
+      protein: 28,
+      prepTime: 30,
+      calories: 395,
+      carbohydrates: 42,
+      fats: 16,
+      fiber: 12,
+      sugar: 14,
+      sodium: 720,
+      potassium: 890,
+      calcium: 165,
+      iron: 6.2,
+      vitaminC: 35,
+      costEuros: 3.20,
+      proteinPerEuro: 8.8
+    },
+    category: "dinner",
+    tags: ["vegetarian", "gluten-free", "high-protein", "spicy", "north-african", "hearty"],
+    ingredients: [
+      "15ml toasted sesame oil",
+      "5ml ground cumin",
+      "5ml hot smoked paprika",
+      "400g canned chopped tomatoes",
+      "3 garlic cloves, minced",
+      "30ml tomato paste",
+      "1 onion, diced",
+      "240g canned chickpeas, drained",
+      "100g fresh spinach",
+      "200g firm tofu, cubed",
+      "30ml harissa paste",
+      "5ml tamari",
+      "2.5ml maple syrup",
+      "Half lemon, juiced",
+      "30ml coconut yogurt",
+      "Sea salt and black pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["onion", "garlic", "tomatoes", "spinach"],
+      benefits: ["lycopene from tomatoes", "iron from spinach", "fiber from chickpeas"]
+    },
+    recipe: {
+      instructions: [
+        "Heat sesame oil in large frying pan over medium heat",
+        "Add diced onion with pinch of salt, cook stirring often until softened (about 10 minutes)",
+        "Reduce heat to low if necessary to prevent browning",
+        "Add minced garlic and cook, stirring frequently, for 2 minutes",
+        "Stir in cumin and paprika, cook stirring throughout until fragrant (about 1 minute)",
+        "Add chickpeas, cubed tofu, chopped tomatoes, tomato paste, and harissa paste",
+        "Cook stirring often until tomatoes have darkened and reduced (10-15 minutes)",
+        "Stir in fresh spinach and allow to wilt (1-2 minutes)",
+        "Add tamari, maple syrup, and lemon juice",
+        "Taste and season with salt and pepper as needed",
+        "Remove from heat and stir in coconut yogurt before serving"
+      ],
+      tips: [
+        "Harissa spice levels vary by brand - taste yours first and adjust amount accordingly",
+        "If stew becomes too spicy, add more coconut yogurt to mellow it out",
+        "Serve with roasted sweet potatoes, rice noodles, or brown rice as suggested"
+      ],
+      notes: "A hearty plant-based stew packed with protein from chickpeas and tofu, with warming North African spices"
+    },
+    createdAt: new Date('2025-08-30'),
+    active: true
   }
 ];
 
