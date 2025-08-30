@@ -8421,6 +8421,23 @@ function cleanIngredientName(ingredient: string): string {
   if (cleaned.includes('salt') || cleaned === 'sea salt' || cleaned === 'kosher salt' || cleaned === 'table salt' || cleaned === 'himalayan salt' || cleaned === 'rock salt') {
     cleaned = 'salt';
   }
+  // Consolidate all tomato variations to prevent duplicates
+  if (cleaned.includes('cherry tomatoes') || cleaned === 'cherry tomatoes' || 
+      cleaned.includes('cherry tomato') || cleaned === 'cherry tomato') {
+    cleaned = 'cherry tomatoes';
+  } else if (cleaned.includes('sun-dried tomatoes') || cleaned === 'sun-dried tomatoes') {
+    cleaned = 'sun-dried tomatoes';
+  } else if (cleaned.includes('roma tomatoes') || cleaned === 'roma tomatoes' ||
+             cleaned.includes('plum tomatoes') || cleaned === 'plum tomatoes') {
+    cleaned = 'roma tomatoes';
+  } else if (cleaned.includes('tomatoes') || cleaned === 'tomatoes' || 
+             cleaned.includes('tomato') || cleaned === 'tomato') {
+    // Generic tomatoes - exclude cherry and sun-dried varieties already handled above
+    if (!cleaned.includes('cherry') && !cleaned.includes('sun-dried') && !cleaned.includes('roma') && !cleaned.includes('plum')) {
+      cleaned = 'tomatoes';
+    }
+  }
+  
   // Consolidate all tofu variations into "tofu", except silken tofu
   if ((cleaned.includes('tofu') || cleaned === 'extra firm tofu' || cleaned === 'firm tofu' || cleaned === 'medium tofu' || cleaned === 'soft tofu') && !cleaned.includes('silken')) {
     cleaned = 'tofu';
