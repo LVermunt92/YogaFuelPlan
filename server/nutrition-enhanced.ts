@@ -5202,6 +5202,79 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-08-30'),
     active: true
+  },
+  {
+    name: "High Protein Sweet Potato Traybake with Tahini Mustard Dressing",
+    portion: "1 generous serving (about 350g)",
+    nutrition: {
+      protein: 24,
+      prepTime: 45,
+      calories: 420,
+      carbohydrates: 48,
+      fats: 16,
+      fiber: 12,
+      sugar: 14,
+      sodium: 580,
+      potassium: 920,
+      calcium: 180,
+      iron: 5.2,
+      vitaminC: 35,
+      costEuros: 3.80,
+      proteinPerEuro: 6.3
+    },
+    category: "dinner",
+    tags: ["vegetarian", "gluten-free", "high-protein", "colorful", "meal-prep", "traybake"],
+    ingredients: [
+      "130g sweet potato, cut into 2cm cubes",
+      "5ml ground cumin",
+      "2.5ml ground cinnamon",
+      "2.5ml smoked paprika",
+      "480g canned black beans (2 x 400g cans), drained and rinsed",
+      "100g frozen edamame beans, defrosted",
+      "2 large handfuls kale, stalks removed and torn into bite-sized pieces",
+      "15ml olive oil (for roasting)",
+      "Pinch of sea salt and black pepper",
+      "30ml tahini",
+      "Half lemon, juiced",
+      "5ml smooth Dijon mustard",
+      "5ml maple syrup",
+      "30ml boiling water",
+      "5ml sesame seeds (optional)"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["sweet potato", "kale"],
+      benefits: ["beta-carotene from sweet potato", "iron and calcium from kale", "antioxidants from spices"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 200°C fan / 390°F",
+        "Place sweet potato cubes on baking tray and drizzle lightly with olive oil",
+        "Sprinkle with ground cumin, cinnamon, smoked paprika and pinch of salt",
+        "Using clean hands, rub oil and spices into sweet potatoes until evenly coated",
+        "Bake for 40-45 minutes, turning halfway through to ensure even cooking",
+        "While sweet potatoes roast, make tahini mustard dressing in medium bowl",
+        "Whisk together tahini, lemon juice, Dijon mustard, maple syrup and boiling water until smooth and creamy",
+        "Add salt to taste and set aside",
+        "Place kale in medium bowl and add 2.5ml olive oil",
+        "Massage gently for 1 minute until kale darkens and reduces in size",
+        "Add drained black beans and edamame beans to massaged kale and toss to combine",
+        "Once sweet potatoes have been cooking for 30 minutes, add kale and bean mixture to tray",
+        "Bake for further 10 minutes until kale is slightly crispy",
+        "Remove from oven and serve half portion in bowl",
+        "Drizzle with half of tahini mustard dressing and sprinkle with sesame seeds if desired",
+        "Reserve remainder for lunch on day 7 of meal plan"
+      ],
+      tips: [
+        "Chopping sweet potato into small 2cm pieces ensures quick cooking",
+        "Massaging kale with oil helps break down tough fibers",
+        "Perfect for meal prep - makes 2 servings as suggested"
+      ],
+      notes: "Vibrant no-fuss midweek meal packed with plant-based protein from black beans and edamame, finished with creamy tahini dressing"
+    },
+    createdAt: new Date('2025-08-30'),
+    active: true
   }
 ];
 
