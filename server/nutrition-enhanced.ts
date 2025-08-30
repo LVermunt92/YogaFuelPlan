@@ -7750,6 +7750,13 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'cashew nuts': 'Nuts, Seeds & Spreads',
 
     'baking powder': 'Baking & Cooking Basics',
+    'dark chocolate': 'Baking & Cooking Basics',
+    'chocolate': 'Baking & Cooking Basics',
+    'cocoa powder': 'Baking & Cooking Basics',
+    'cocoa': 'Baking & Cooking Basics',
+    'dark chocolate chips': 'Baking & Cooking Basics',
+    'chocolate chips': 'Baking & Cooking Basics',
+    'melted chocolate': 'Baking & Cooking Basics',
     'salt': 'Baking & Cooking Basics',
     'pepper': 'Baking & Cooking Basics',
     'black pepper': 'Baking & Cooking Basics',
