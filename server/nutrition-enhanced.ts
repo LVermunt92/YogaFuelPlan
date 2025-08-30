@@ -5404,6 +5404,80 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-08-30'),
     active: true
+  },
+  {
+    name: "Super-Charged Peanut Noodles",
+    portion: "1 generous serving (about 400g)",
+    nutrition: {
+      protein: 24,
+      prepTime: 30,
+      calories: 485,
+      carbohydrates: 58,
+      fats: 18,
+      fiber: 12,
+      sugar: 14,
+      sodium: 650,
+      potassium: 720,
+      calcium: 95,
+      iron: 4.8,
+      vitaminC: 45,
+      costEuros: 3.80,
+      proteinPerEuro: 6.3
+    },
+    category: "dinner",
+    tags: ["vegetarian", "dairy-free", "high-protein", "asian-fusion", "quick", "one-pan", "nutritious"],
+    ingredients: [
+      "120g cashews",
+      "60g sunflower seeds", 
+      "250ml boiling water",
+      "30ml peanut butter",
+      "2 limes, juiced",
+      "15ml tamari",
+      "1.25ml dried red chilli flakes",
+      "15ml maple syrup",
+      "15ml sriracha",
+      "300g rice noodles",
+      "1 x 5cm piece ginger, peeled & finely chopped",
+      "1 clove garlic, minced",
+      "200g chestnut mushrooms, finely sliced",
+      "1 red pepper, deseeded & chopped into bite-sized pieces",
+      "Half Savoy cabbage, cored & finely sliced",
+      "100g frozen edamame beans, defrosted",
+      "15ml toasted sesame oil",
+      "Pinch of sea salt"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["ginger", "garlic", "mushrooms", "red pepper", "cabbage"],
+      benefits: ["vitamin C from red pepper", "fiber from cabbage", "antioxidants from mushrooms"]
+    },
+    recipe: {
+      instructions: [
+        "Add cashews and sunflower seeds to bowl and cover with freshly boiled water",
+        "Allow to soak for 5 minutes, then place into blender with soaking water",
+        "Add peanut butter, lime juice, tamari, maple syrup and sriracha to blender",
+        "Blitz until smooth and creamy, then set aside",
+        "Fill medium saucepan with water and place over medium-high heat",
+        "Bring to boil, cook rice noodles according to packet instructions then drain",
+        "Heat frying pan over medium-high heat, add drizzle of sesame oil",
+        "Add chopped ginger and garlic, along with pinch of salt",
+        "Cook for 1 minute until fragrant, then add sliced mushrooms",
+        "Cook for 7-8 minutes until darkened and reduced",
+        "Add red pepper, cabbage and edamame and cook for 2-3 minutes until tender and reduced",
+        "Toss cooked noodles with creamy sauce and vegetables",
+        "Ensure all vegetables and noodles are coated in the creamy sauce",
+        "If pan isn't large enough, mix everything in large bowl with boiling water poured away first"
+      ],
+      tips: [
+        "Soaking cashews makes them blend smoother for creamier sauce",
+        "Feel free to use whatever vegetables you have - defrosted mixed vegetables or stir-fry mix work well",
+        "Adjust sriracha and chilli flakes to taste preference"
+      ],
+      notes: "DIY 'fakeaway' noodle dish full of nutritious veggies and packed with plant-based protein from cashews, sunflower seeds and edamame"
+    },
+    createdAt: new Date('2025-08-30'),
+    active: true
   }
 ];
 

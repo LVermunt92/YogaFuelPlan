@@ -32,6 +32,7 @@ Preferred communication style: Simple, everyday language.
     - **Unified Recipe Database**: Consolidated all recipe databases into a single unified system.
 
 # Recent Changes (August 30, 2025)
+- **Super-Charged Peanut Noodles Addition**: Added "Super-Charged Peanut Noodles" with 24g protein from cashews, sunflower seeds, and edamame, featuring Asian-fusion flavors in a DIY fakeaway dish that's faster than takeaway delivery
 - **Sweet Potato Lentil Stew Addition**: Added "Warming Sweet Potato & Lentil Stew" with 20g protein from red lentils, featuring rose harissa, tahini, and warming Ayurvedic spices in a one-pan weeknight dinner similar to dhal
 - **Creamy Black-Eyed Beans Addition**: Added "Creamy Black-Eyed Beans & Mushrooms" with 22g protein from black-eyed peas, featuring curry-style flavors with turmeric, coconut milk, and fresh herbs served over brown rice for a wholesome midweek dinner
 - **Sweet Potato Traybake Addition**: Added "High Protein Sweet Potato Traybake with Tahini Mustard Dressing" with 24g protein from black beans and edamame, featuring colorful vegetables, warming spices, and creamy tahini dressing perfect for meal prep
