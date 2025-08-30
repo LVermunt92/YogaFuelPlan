@@ -4656,6 +4656,159 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       ],
       notes: "Meaty texture from lentils, packed with plant protein"
     }
+  },
+  {
+    name: "Rustic Tomato Pasta Bake with Herbed Breadcrumbs",
+    portion: "1 generous serving (about 350g)",
+    nutrition: {
+      protein: 32,
+      prepTime: 35,
+      calories: 580,
+      carbohydrates: 65,
+      fats: 22,
+      fiber: 8,
+      sugar: 12,
+      sodium: 850,
+      potassium: 680,
+      calcium: 180,
+      iron: 4.2,
+      vitaminC: 25,
+      costEuros: 3.80,
+      proteinPerEuro: 8.4
+    },
+    category: "dinner",
+    tags: ["vegetarian", "comfort-food", "baked", "italian", "high-protein"],
+    ingredients: [
+      "400g penne pasta",
+      "2 slices sourdough bread (for breadcrumbs)",
+      "1 large onion, diced",
+      "4 garlic cloves, minced",
+      "6 sun-dried tomatoes, chopped",
+      "5ml dried oregano",
+      "15ml tomato paste",
+      "400g canned chopped tomatoes",
+      "15ml balsamic vinegar",
+      "60ml olive oil",
+      "60ml plain flour",
+      "500ml oat milk",
+      "30g nutritional yeast",
+      "5ml Dijon mustard",
+      "150g firm tofu, crumbled",
+      "Sea salt and black pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2.5,
+      vegetables: ["onion", "garlic", "sun-dried tomatoes", "canned tomatoes"],
+      benefits: ["lycopene from tomatoes", "antioxidants from garlic", "fiber from vegetables"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 180°C fan / 390°F, grill setting",
+        "Make breadcrumbs by pulsing bread in blender until coarse crumbs form",
+        "Heat 30ml olive oil in large pan over medium heat",
+        "Add diced onion, garlic, and sun-dried tomatoes with pinch of salt",
+        "Cook 5-10 minutes until onions soften, stirring through oregano",
+        "Add tomato paste, canned tomatoes, and balsamic vinegar",
+        "Mix well and simmer 10-15 minutes until sauce thickens",
+        "Meanwhile, cook pasta according to package instructions and drain",
+        "For white sauce: heat remaining oil and flour in medium pan",
+        "Whisk to form smooth paste, cook 2-3 minutes over medium-high heat",
+        "Gradually stream in oat milk, whisking constantly until smooth and thick",
+        "Add nutritional yeast, mustard, crumbled tofu, salt and pepper",
+        "Combine pasta with tomato sauce in baking dish",
+        "Spoon white sauce over top and scatter with breadcrumbs",
+        "Bake 5-10 minutes until golden and bubbling"
+      ],
+      tips: [
+        "Use good-quality sourdough for best breadcrumb texture",
+        "Don't let the flour burn when making the white sauce",
+        "Crumble tofu finely for better integration"
+      ],
+      notes: "A comforting pasta bake with rich tomato sauce and creamy protein-packed white sauce"
+    },
+    season: "all-seasons",
+    ayurvedic: "warming",
+    proteinSources: ["tofu", "nutritional yeast", "oat milk"],
+    createdAt: new Date('2025-08-30'),
+    active: true
+  },
+  {
+    name: "Rustic Tomato Pasta Bake with Herbed Breadcrumbs (Gluten-Free)",
+    portion: "1 generous serving (about 350g)",
+    nutrition: {
+      protein: 28,
+      prepTime: 35,
+      calories: 540,
+      carbohydrates: 62,
+      fats: 20,
+      fiber: 7,
+      sugar: 11,
+      sodium: 820,
+      potassium: 650,
+      calcium: 160,
+      iron: 3.8,
+      vitaminC: 25,
+      costEuros: 4.20,
+      proteinPerEuro: 6.7
+    },
+    category: "dinner",
+    tags: ["vegetarian", "gluten-free", "comfort-food", "baked", "italian"],
+    ingredients: [
+      "400g gluten-free penne pasta",
+      "2 slices gluten-free bread (for breadcrumbs)",
+      "1 large onion, diced",
+      "4 garlic cloves, minced",
+      "6 sun-dried tomatoes, chopped",
+      "5ml dried oregano",
+      "15ml tomato paste",
+      "400g canned chopped tomatoes",
+      "15ml balsamic vinegar",
+      "60ml olive oil",
+      "60ml gluten-free flour blend",
+      "500ml oat milk",
+      "30g nutritional yeast",
+      "5ml Dijon mustard",
+      "120g cooked lentils",
+      "30g hemp hearts",
+      "Sea salt and black pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2.5,
+      vegetables: ["onion", "garlic", "sun-dried tomatoes", "canned tomatoes"],
+      benefits: ["lycopene from tomatoes", "antioxidants from garlic", "fiber from vegetables"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 180°C fan / 390°F, grill setting",
+        "Make breadcrumbs by pulsing gluten-free bread in blender until coarse crumbs form",
+        "Heat 30ml olive oil in large pan over medium heat",
+        "Add diced onion, garlic, and sun-dried tomatoes with pinch of salt",
+        "Cook 5-10 minutes until onions soften, stirring through oregano",
+        "Add tomato paste, canned tomatoes, and balsamic vinegar",
+        "Mix well and simmer 10-15 minutes until sauce thickens",
+        "Meanwhile, cook gluten-free pasta according to package instructions and drain",
+        "For white sauce: heat remaining oil and gluten-free flour in medium pan",
+        "Whisk to form smooth paste, cook 2-3 minutes over medium-high heat",
+        "Gradually stream in oat milk, whisking constantly until smooth and thick",
+        "Add nutritional yeast, mustard, cooked lentils, hemp hearts, salt and pepper",
+        "Combine pasta with tomato sauce in baking dish",
+        "Spoon white sauce over top and scatter with breadcrumbs",
+        "Bake 5-10 minutes until golden and bubbling"
+      ],
+      tips: [
+        "Use certified gluten-free bread for safe breadcrumbs",
+        "Pre-cooked lentils work best - canned or leftover home-cooked",
+        "Hemp hearts add extra protein and nutty flavor"
+      ],
+      notes: "Gluten-free version with lentils and hemp hearts for extra plant protein"
+    },
+    season: "all-seasons",
+    ayurvedic: "warming",
+    proteinSources: ["lentils", "hemp hearts", "nutritional yeast"],
+    createdAt: new Date('2025-08-30'),
+    active: true
   }
 ];
 
