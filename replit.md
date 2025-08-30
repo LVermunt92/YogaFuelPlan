@@ -32,6 +32,7 @@ Preferred communication style: Simple, everyday language.
     - **Unified Recipe Database**: Consolidated all recipe databases into a single unified system.
 
 # Recent Changes (August 30, 2025)
+- **Resistant Starch Weight Loss Logic**: Integrated intelligent resistant starch preference system that prioritizes meals containing beans, lentils, oats, brown rice, green bananas, and potatoes for users with weight loss goals or BMI >25, enhancing metabolic benefits and satiety
 - **Chocolate Overnight Oats Addition**: Added "Chocolate Overnight Oats with Dark Chocolate Crumble" with 31g protein from cocoa protein powder, featuring layered construction with yogurt middle and crunchy rice cake chocolate topping for indulgent meal prep breakfast
 - **Earl Grey Tea-Infused Quinoa Porridge Addition**: Added "Earl Grey Tea-Infused Quinoa Porridge with Caramelized Persimmon" with 22g protein, featuring tea-infused quinoa and oats with bergamot notes, topped with caramelized persimmon for elegant winter breakfast
 - **Mediterranean Cauliflower Rice Bowls Addition**: Added four versions of Mediterranean cauliflower rice bowls - chicken (28g protein), Beyond Meat (25g protein), feta & chickpea (24g protein), and lactose-free feta (22g protein), all featuring keto-friendly cauliflower rice base with fresh Mediterranean vegetables and tahini dressing

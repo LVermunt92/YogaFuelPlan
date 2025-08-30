@@ -22,6 +22,77 @@ import { applyDietarySubstitutions } from "./ingredient-substitution";
 import { getIntelligentRecipeRecommendations } from './intelligent-ingredient-matcher';
 
 /**
+ * Resistant starch sources and their benefits for weight management
+ */
+const RESISTANT_STARCH_SOURCES = {
+  // Primary resistant starch ingredients from the image
+  'green bananas': { resistantStarchPer100g: 4.7, weightLossBenefit: 'high', tags: ['fruit', 'potassium'] },
+  'beans': { resistantStarchPer100g: 3.2, weightLossBenefit: 'high', tags: ['legume', 'fiber', 'protein'] },
+  'lentils': { resistantStarchPer100g: 3.4, weightLossBenefit: 'high', tags: ['legume', 'fiber', 'protein'] },
+  'brown rice': { resistantStarchPer100g: 3.5, weightLossBenefit: 'medium', tags: ['grain', 'whole-grain'] },
+  'oats': { resistantStarchPer100g: 3.6, weightLossBenefit: 'high', tags: ['grain', 'fiber', 'beta-glucan'] },
+  'potatoes': { resistantStarchPer100g: 3.6, weightLossBenefit: 'medium', tags: ['starchy-vegetable', 'potassium'] },
+  // Additional resistant starch sources
+  'sweet potato': { resistantStarchPer100g: 2.8, weightLossBenefit: 'medium', tags: ['starchy-vegetable', 'beta-carotene'] },
+  'quinoa': { resistantStarchPer100g: 2.9, weightLossBenefit: 'high', tags: ['grain', 'complete-protein'] },
+  'chickpeas': { resistantStarchPer100g: 3.1, weightLossBenefit: 'high', tags: ['legume', 'fiber', 'protein'] },
+  'black beans': { resistantStarchPer100g: 3.8, weightLossBenefit: 'high', tags: ['legume', 'fiber', 'protein'] }
+};
+
+/**
+ * Check if a meal contains resistant starch sources
+ */
+function getMealResistantStarchScore(meal: MealOption): number {
+  let score = 0;
+  const mealText = `${meal.name} ${meal.ingredients.join(' ')}`.toLowerCase();
+  
+  for (const [source, data] of Object.entries(RESISTANT_STARCH_SOURCES)) {
+    if (mealText.includes(source.toLowerCase()) || 
+        mealText.includes(source.replace(' ', '').toLowerCase())) {
+      const benefit = data.weightLossBenefit === 'high' ? 3 : 
+                     data.weightLossBenefit === 'medium' ? 2 : 1;
+      score += benefit * data.resistantStarchPer100g;
+    }
+  }
+  
+  return score;
+}
+
+/**
+ * Prioritize meals with resistant starch for weight loss goals
+ */
+function applyResistantStarchPreference(meals: MealOption[], user: User): MealOption[] {
+  // Only apply resistant starch preference for weight loss goals
+  const isWeightLoss = user.goalWeight && user.weight && user.goalWeight < user.weight;
+  const hasHighBMI = user.height && user.weight && calculateBMI(user.weight, user.height) > 25;
+  
+  if (!isWeightLoss && !hasHighBMI) {
+    return meals;
+  }
+  
+  console.log(`🌾 RESISTANT STARCH: Applying preference for weight management`);
+  
+  // Score meals by resistant starch content
+  const scoredMeals = meals.map(meal => ({
+    meal,
+    resistantStarchScore: getMealResistantStarchScore(meal),
+    isResistantStarchRich: getMealResistantStarchScore(meal) > 5
+  }));
+  
+  // Sort with resistant starch preference
+  return scoredMeals
+    .sort((a, b) => {
+      // Prioritize resistant starch-rich meals for weight loss
+      if (a.isResistantStarchRich && !b.isResistantStarchRich) return -1;
+      if (!a.isResistantStarchRich && b.isResistantStarchRich) return 1;
+      
+      // Then by resistant starch score
+      return b.resistantStarchScore - a.resistantStarchScore;
+    })
+    .map(scored => scored.meal);
+}
+
+/**
  * Get ingredients to use up from user profile
  */
 function getIngredientsToUseUp(user?: User): string[] {
@@ -735,6 +806,9 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         
         const enhancedAvgProtein = availableMeals.reduce((sum, m) => sum + m.nutrition.protein, 0) / availableMeals.length;
         console.log(`🎯 After protein optimization: ${availableMeals.length} ${mealCategory} meals, avg ${enhancedAvgProtein.toFixed(1)}g protein`);
+        
+        // Apply resistant starch preference for weight loss goals
+        availableMeals = applyResistantStarchPreference(availableMeals, user);
       } else {
         // Fallback to activity-level based optimization if no user data
         const shouldOptimizeProtein = request.activityLevel === 'high';
