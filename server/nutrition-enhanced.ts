@@ -5618,6 +5618,74 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-08-30'),
     active: true
+  },
+  {
+    name: "Thai Red Lentil & Chickpea Curry",
+    portion: "1 generous serving (about 400g)",
+    nutrition: {
+      protein: 24,
+      prepTime: 45,
+      calories: 465,
+      carbohydrates: 52,
+      fats: 18,
+      fiber: 16,
+      sugar: 12,
+      sodium: 680,
+      potassium: 980,
+      calcium: 145,
+      iron: 7.8,
+      vitaminC: 85,
+      costEuros: 3.60,
+      proteinPerEuro: 6.7
+    },
+    category: "dinner",
+    tags: ["vegetarian", "gluten-free", "high-protein", "thai", "curry", "one-pan", "batch-cooking", "warming"],
+    ingredients: [
+      "30ml olive oil",
+      "2 cloves garlic, finely chopped",
+      "30g fresh ginger (about 1 small chunk), finely chopped",
+      "2 whole bird's eye chillies, finely chopped (extra to serve)",
+      "45ml Thai red curry paste",
+      "4 whole large sweet pointed red peppers, cut into 1cm slices",
+      "200g dried red lentils, rinsed",
+      "400ml coconut milk (1 can)",
+      "15ml tamari",
+      "15ml maple syrup",
+      "400ml vegetable stock",
+      "500g chickpeas (1 x 500g jar), plus liquid from jar",
+      "120g baby spinach",
+      "1 whole lime, juiced (extra to serve)",
+      "30g Thai basil (about 1 handful), extra to garnish"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["garlic", "ginger", "chillies", "red peppers", "spinach"],
+      benefits: ["vitamin C from peppers", "anti-inflammatory ginger", "iron from spinach and lentils"]
+    },
+    recipe: {
+      instructions: [
+        "Warm olive oil in large saucepan set over medium-low heat",
+        "Add garlic, ginger, chillies and curry paste",
+        "Cook for 5-7 minutes, stirring often, until fragrant",
+        "Add red peppers, red lentils, coconut milk, tamari, maple syrup and vegetable stock",
+        "Bring to boil then reduce heat and simmer with lid on for 20-25 minutes until lentils are tender",
+        "Add chickpeas along with liquid from jar and simmer for 5-10 minutes",
+        "Add spinach and cook until just wilted",
+        "Stir in lime juice and three-quarters of Thai basil",
+        "Taste and adjust seasoning",
+        "Serve in bowls, topped with remaining Thai basil, extra chillies, and lime wedges",
+        "Delicious with steamed sticky rice or quinoa"
+      ],
+      tips: [
+        "Keep curry mild for sensitive palates or add extra chillies for heat lovers",
+        "Curry keeps well in fridge for up to 3 days or freezer for up to 3 months",
+        "Let cool completely before storing in airtight containers for best results"
+      ],
+      notes: "One-pan curry perfect for batch-cooking - rich, fragrant, and packed with lentils, chickpeas and spinach for fiber, protein and iron"
+    },
+    createdAt: new Date('2025-08-30'),
+    active: true
   }
 ];
 
