@@ -8797,6 +8797,10 @@ function cleanIngredientName(ingredient: string): string {
     'quick certified oats': 'rolled oats',
     'vanilla coconut yogurt': 'coconut yogurt',
     'granola': 'gluten-free granola',
+    // Consolidate flax seed variations to prevent duplicates  
+    'flaxseed': 'flax seeds',
+    'ground flaxseed': 'flax seeds',
+    'flaxseed meal': 'flax seeds',
     // Bean and legume specific mappings
     'black beans': 'black beans',
     'white beans': 'white beans', 
