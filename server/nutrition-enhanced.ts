@@ -6010,6 +6010,149 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     }
   },
   {
+    name: "Traditional Beef Rendang with Coconut Rice & Toasted Peanuts",
+    portion: "200g beef + rice (1 generous serving)",
+    nutrition: { 
+      protein: 32, 
+      prepTime: 90, 
+      calories: 580,
+      carbohydrates: 45,
+      fats: 28,
+      fiber: 6,
+      sugar: 8,
+      sodium: 820,
+      costEuros: 9.50, 
+      proteinPerEuro: 3.4 
+    },
+    category: "dinner",
+    tags: ["non-vegetarian", "dairy-free", "high-protein", "indonesian", "spicy", "coconut", "weekend-cooking"],
+    ingredients: [
+      "600g beef chuck or shin, cubed",
+      "400ml coconut milk (full-fat)",
+      "200ml coconut cream",
+      "200g jasmine rice",
+      "6 dried chilies (soaked and deseeded)",
+      "8 shallots, roughly chopped",
+      "6 garlic cloves",
+      "30ml fresh ginger, chopped",
+      "15ml fresh galangal (or extra ginger)",
+      "3 lemongrass stalks, white parts only",
+      "4 candlenuts or macadamias",
+      "15ml tamarind paste",
+      "30ml palm sugar or brown sugar",
+      "5ml ground coriander",
+      "5ml ground cumin",
+      "2ml ground fennel",
+      "4 kaffir lime leaves",
+      "15ml peanut oil",
+      "30ml toasted peanuts, crushed",
+      "Salt to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["chilies", "shallots", "garlic", "ginger", "lemongrass"],
+      benefits: ["Anti-inflammatory spices", "Rich in antioxidants", "Supports digestion", "Immune boosting"]
+    },
+    recipe: {
+      instructions: [
+        "Soak dried chilies in warm water for 15 minutes, remove seeds",
+        "Make spice paste: blend soaked chilies, shallots, garlic, ginger, galangal, lemongrass, and candlenuts until smooth",
+        "Cook jasmine rice with 200ml coconut milk and water for fragrant coconut rice",
+        "Heat peanut oil in heavy-bottomed pot, fry spice paste 8-10 minutes until fragrant and dark",
+        "Add beef cubes, brown on all sides for 5 minutes",
+        "Pour in coconut milk and coconut cream, add tamarind paste, palm sugar",
+        "Add ground spices (coriander, cumin, fennel) and torn kaffir lime leaves",
+        "Bring to boil, then reduce to low simmer",
+        "Cook uncovered 1.5-2 hours, stirring occasionally, until sauce reduces and darkens",
+        "In final 30 minutes, sauce should be thick and coating the beef",
+        "Season with salt, adjust sweetness and sourness with palm sugar and tamarind",
+        "Serve over coconut rice, garnish with crushed toasted peanuts"
+      ],
+      tips: [
+        "Authentic rendang should be dry with dark, caramelized sauce",
+        "Don't rush - slow cooking develops the complex flavors",
+        "Candlenuts are traditional but macadamias work well",
+        "Toast peanuts separately to maintain crunch"
+      ],
+      notes: "Traditional Indonesian rendang requires patience but delivers incredible depth of flavor. The long, slow cooking transforms tough beef into tender, spice-coated perfection."
+    }
+  },
+  {
+    name: "Vegan Jackfruit Rendang with Cashew Protein & Coconut Rice",
+    portion: "300g jackfruit + rice (1 generous serving)",
+    nutrition: { 
+      protein: 24, 
+      prepTime: 75, 
+      calories: 520,
+      carbohydrates: 58,
+      fats: 22,
+      fiber: 8,
+      sugar: 12,
+      sodium: 680,
+      costEuros: 7.20, 
+      proteinPerEuro: 3.3 
+    },
+    category: "dinner",
+    tags: ["vegan", "dairy-free", "high-protein", "indonesian", "spicy", "coconut", "weekend-cooking"],
+    ingredients: [
+      "2 cans (800g) young green jackfruit in brine, drained",
+      "400ml coconut milk (full-fat)",
+      "200ml coconut cream",
+      "200g jasmine rice",
+      "80g raw cashews, soaked",
+      "30ml hemp hearts",
+      "15ml nutritional yeast",
+      "6 dried chilies (soaked and deseeded)",
+      "8 shallots, roughly chopped",
+      "6 garlic cloves",
+      "30ml fresh ginger, chopped",
+      "15ml fresh galangal (or extra ginger)",
+      "3 lemongrass stalks, white parts only",
+      "4 macadamia nuts",
+      "15ml tamarind paste",
+      "30ml coconut sugar",
+      "5ml ground coriander",
+      "5ml ground cumin",
+      "2ml ground fennel",
+      "4 kaffir lime leaves",
+      "15ml coconut oil",
+      "30ml toasted cashews, crushed",
+      "Salt to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["jackfruit", "chilies", "shallots", "garlic", "ginger", "lemongrass"],
+      benefits: ["High in fiber", "Anti-inflammatory spices", "Rich in antioxidants", "Supports digestion"]
+    },
+    recipe: {
+      instructions: [
+        "Drain and shred jackfruit into pulled meat-like strands",
+        "Soak cashews in warm water for 20 minutes for protein blend",
+        "Make spice paste: blend soaked chilies, shallots, garlic, ginger, galangal, lemongrass, and macadamias",
+        "Cook jasmine rice with 200ml coconut milk for fragrant coconut rice",
+        "Heat coconut oil in heavy pot, fry spice paste 8-10 minutes until dark and fragrant",
+        "Add shredded jackfruit, stir-fry 5 minutes to absorb spices",
+        "Blend soaked cashews with 100ml water until smooth and creamy",
+        "Add coconut milk, coconut cream, cashew cream, tamarind, coconut sugar",
+        "Add ground spices and torn kaffir lime leaves",
+        "Simmer uncovered 1-1.5 hours, stirring regularly, until sauce reduces",
+        "In final 20 minutes, add hemp hearts and nutritional yeast for extra protein",
+        "Cook until sauce is thick and coating jackfruit pieces",
+        "Adjust seasoning with salt, coconut sugar, and tamarind",
+        "Serve over coconut rice, garnish with crushed toasted cashews"
+      ],
+      tips: [
+        "Jackfruit texture improves with longer cooking - becomes more meat-like",
+        "Cashew cream adds richness and significant protein boost",
+        "Hemp hearts dissolve into sauce while adding omega-3s and protein",
+        "Toast cashews separately for textural contrast"
+      ],
+      notes: "This vegan version achieves 24g protein through clever combinations of jackfruit, cashew cream, hemp hearts, and nutritional yeast. The slow-cooked jackfruit develops incredible texture that rivals traditional beef rendang."
+    }
+  },
+  {
     name: "Thai Green Curry with Super Crunchy Tofu",
     portion: "1 generous serving (about 400g with rice)",
     nutrition: {
