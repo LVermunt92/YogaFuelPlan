@@ -7736,6 +7736,8 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'chia seeds': 'Nuts, Seeds & Spreads',
     'hemp hearts': 'Nuts, Seeds & Spreads',
     'hemp seeds': 'Nuts, Seeds & Spreads',
+    'hennepzaad': 'Nuts, Seeds & Spreads',
+    'shelled hemp seeds': 'Nuts, Seeds & Spreads',
     'flax seeds': 'Nuts, Seeds & Spreads',
     'flaxseeds': 'Nuts, Seeds & Spreads',
     'ground flax': 'Nuts, Seeds & Spreads',
@@ -8260,6 +8262,8 @@ function getDefaultPortion(ingredient: string): { amount: number; unit: string }
     'chia seeds': { amount: 20, unit: 'g' }, // 2 tbsp = ~20g
     'hemp hearts': { amount: 20, unit: 'g' }, // 2 tbsp = ~20g
     'hemp seeds': { amount: 20, unit: 'g' },
+    'hennepzaad': { amount: 20, unit: 'g' }, // Dutch for hemp hearts
+    'shelled hemp seeds': { amount: 20, unit: 'g' },
     'mixed berries': { amount: 75, unit: 'g' }, // 0.5 cup = ~75g
     'banana': { amount: 1, unit: 'piece' }, // 1 medium banana
     'apples': { amount: 3, unit: 'pieces' }, // 3 medium apples  
@@ -8576,6 +8580,14 @@ function cleanIngredientName(ingredient: string): string {
   if ((cleaned.includes('tofu') || cleaned === 'extra firm tofu' || cleaned === 'firm tofu' || cleaned === 'medium tofu' || cleaned === 'soft tofu') && !cleaned.includes('silken')) {
     cleaned = 'tofu';
   }
+  
+  // Consolidate all hemp variations (hemp hearts = hemp seeds = hennepzaad)
+  if (cleaned.includes('hemp hearts') || cleaned === 'hemp hearts' ||
+      cleaned.includes('hemp seeds') || cleaned === 'hemp seeds' ||
+      cleaned.includes('hennepzaad') || cleaned === 'hennepzaad' ||
+      cleaned.includes('shelled hemp seeds') || cleaned === 'shelled hemp seeds') {
+    cleaned = 'hemp hearts'; // Use "hemp hearts" as the canonical name
+  }
   // Consolidate all egg variations into "eggs"
   if (cleaned.includes('egg') && !cleaned.includes('eggplant')) {
     cleaned = 'eggs';
@@ -8642,7 +8654,9 @@ function cleanIngredientName(ingredient: string): string {
     'nuts': 'mixed nuts',
     'almonds': 'mixed nuts',
     'walnuts': 'mixed nuts',
-    'hemp seeds': 'hemp seeds',
+    'hemp seeds': 'hemp hearts',
+    'hennepzaad': 'hemp hearts',
+    'shelled hemp seeds': 'hemp hearts',
     'banana': 'banana',
     'lemon': 'lemon',
     // Carrot consolidation - all carrot forms go to "carrots"
