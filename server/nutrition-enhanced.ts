@@ -4952,7 +4952,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 8.8
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "high-protein", "spicy", "north-african", "hearty"],
+    tags: ["vegetarian", "gluten-free", "high-protein", "spicy", "north-african", "hearty", "ayurvedic", "warming"],
     ingredients: [
       "15ml toasted sesame oil",
       "5ml ground cumin",
@@ -5021,7 +5021,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 9.2
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "high-protein", "quick", "wholesome", "winter"],
+    tags: ["vegetarian", "gluten-free", "high-protein", "quick", "wholesome", "winter", "ayurvedic"],
     ingredients: [
       "30ml cooked quinoa",
       "30g porridge oats",
@@ -5296,7 +5296,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.1
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "high-protein", "curry-style", "creamy", "wholesome"],
+    tags: ["vegetarian", "gluten-free", "high-protein", "curry-style", "creamy", "wholesome", "ayurvedic"],
     ingredients: [
       "75g brown rice (per serving)",
       "1 medium white onion, finely sliced",
@@ -5338,6 +5338,69 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         "Don't rush the onion caramelisation - it builds the flavor base"
       ],
       notes: "Veggie-packed dish similar to a delicate curry - light, fresh, zesty but also creamy and satisfying"
+    },
+    createdAt: new Date('2025-08-30'),
+    active: true
+  },
+  {
+    name: "Warming Sweet Potato & Lentil Stew",
+    portion: "1 generous serving (about 400g)",
+    nutrition: {
+      protein: 20,
+      prepTime: 30,
+      calories: 420,
+      carbohydrates: 72,
+      fats: 8,
+      fiber: 16,
+      sugar: 12,
+      sodium: 480,
+      potassium: 950,
+      calcium: 120,
+      iron: 7.2,
+      vitaminC: 25,
+      costEuros: 3.20,
+      proteinPerEuro: 6.3
+    },
+    category: "dinner",
+    tags: ["vegetarian", "gluten-free", "high-protein", "one-pan", "warming", "ayurvedic", "hearty"],
+    ingredients: [
+      "1 medium white onion, finely chopped",
+      "2 cloves garlic, minced",
+      "2 sweet potatoes, peeled and cut into small 1cm pieces",
+      "150g dried red lentils",
+      "800g canned chopped tomatoes (2 x 400g cans)",
+      "100g quinoa",
+      "200g baby leaf spinach, finely sliced",
+      "45ml rose harissa paste",
+      "45ml tahini",
+      "15ml olive oil",
+      "Pinch of sea salt and black pepper"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["onion", "garlic", "sweet potatoes", "tomatoes", "spinach"],
+      benefits: ["beta-carotene from sweet potato", "iron from spinach and lentils", "lycopene from tomatoes"]
+    },
+    recipe: {
+      instructions: [
+        "Place large heavy-bottomed pan over medium-high heat and add drizzle of olive oil",
+        "Add chopped onion, garlic and sprinkle of salt and pepper",
+        "Cook, stirring frequently, for 3-4 minutes until softened and translucent",
+        "Add chopped sweet potato, red lentils, canned tomatoes and quinoa to pan",
+        "Fill each empty tomato tin with water and pour into the pan",
+        "Stir well and bring to gentle simmer",
+        "Leave to bubble gently for 20-25 minutes, stirring occasionally, until everything is tender and cooked",
+        "Add finely sliced spinach several minutes before end of cooking time",
+        "Once spinach is wilted, stir through rose harissa and tahini",
+        "Adjust seasoning to taste and serve"
+      ],
+      tips: [
+        "Chop sweet potato into small 1cm pieces to ensure speedy cooking",
+        "Once cooked, keep in fridge for up to 3 days - perfect for meal prep",
+        "Rose harissa adds warming spice - adjust amount to taste preference"
+      ],
+      notes: "One-pan wonder similar to dhal in texture and body - quick, easy but flavoursome supper with warming Ayurvedic spices"
     },
     createdAt: new Date('2025-08-30'),
     active: true
