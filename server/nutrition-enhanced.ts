@@ -7596,6 +7596,12 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     
     // Fruits (Fresh Produce section 2)
     'banana': 'Fruits',
+    'apple': 'Fruits',
+    'apples': 'Fruits',
+    'grated apple': 'Fruits',
+    'diced apple': 'Fruits',
+    'sliced apple': 'Fruits',
+    'chopped apple': 'Fruits',
     'avocado': 'Fruits',
     'lime': 'Fruits',
     'mango': 'Fruits',
@@ -8236,6 +8242,8 @@ function getDefaultPortion(ingredient: string): { amount: number; unit: string }
     'hemp seeds': { amount: 20, unit: 'g' },
     'mixed berries': { amount: 75, unit: 'g' }, // 0.5 cup = ~75g
     'banana': { amount: 1, unit: 'piece' }, // 1 medium banana
+    'apples': { amount: 3, unit: 'pieces' }, // 3 medium apples  
+    'apple': { amount: 1, unit: 'piece' }, // 1 medium apple
     'avocado': { amount: 1, unit: 'piece' }, // 1 medium avocado
     'lemon': { amount: 1, unit: 'piece' }, // 1 lemon
     'quinoa': { amount: 85, unit: 'g' }, // 0.5 cup dry = ~85g
@@ -8504,6 +8512,15 @@ function cleanIngredientName(ingredient: string): string {
       cleaned.includes('diced carrots') || cleaned.includes('sliced carrots') ||
       cleaned.includes('chunked carrots') || cleaned.includes('julienned carrots')) {
     cleaned = 'carrots';
+  }
+  
+  // Consolidate all apple variations to show as pieces
+  if (cleaned.includes('apple') || cleaned === 'apple' || cleaned === 'apples' ||
+      cleaned.includes('grated apple') || cleaned.includes('diced apple') ||
+      cleaned.includes('sliced apple') || cleaned.includes('chopped apple') ||
+      cleaned.includes('small apple') || cleaned.includes('medium apple') ||
+      cleaned.includes('large apple') || cleaned.includes('roughly grated')) {
+    cleaned = 'apples';
   }
   
   // Consolidate all tofu variations into "tofu", except silken tofu
