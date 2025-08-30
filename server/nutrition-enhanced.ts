@@ -8469,6 +8469,15 @@ function cleanIngredientName(ingredient: string): string {
     }
   }
   
+  // Consolidate all carrot variations to prevent duplicates - this was causing 6 carrot items
+  if (cleaned.includes('carrot') || cleaned === 'carrot' || cleaned === 'carrots' ||
+      cleaned.includes('large carrots') || cleaned.includes('medium carrots') || 
+      cleaned.includes('small carrots') || cleaned.includes('baby carrots') ||
+      cleaned.includes('diced carrots') || cleaned.includes('sliced carrots') ||
+      cleaned.includes('chunked carrots') || cleaned.includes('julienned carrots')) {
+    cleaned = 'carrots';
+  }
+  
   // Consolidate all tofu variations into "tofu", except silken tofu
   if ((cleaned.includes('tofu') || cleaned === 'extra firm tofu' || cleaned === 'firm tofu' || cleaned === 'medium tofu' || cleaned === 'soft tofu') && !cleaned.includes('silken')) {
     cleaned = 'tofu';
@@ -8542,6 +8551,17 @@ function cleanIngredientName(ingredient: string): string {
     'hemp seeds': 'hemp seeds',
     'banana': 'banana',
     'lemon': 'lemon',
+    // Carrot consolidation - all carrot forms go to "carrots"
+    'carrot': 'carrots',
+    'carrots': 'carrots',
+    'large carrots': 'carrots',
+    'medium carrots': 'carrots',
+    'small carrots': 'carrots',
+    'baby carrots': 'carrots',
+    'diced carrots': 'carrots',
+    'sliced carrots': 'carrots',
+    'chunked carrots': 'carrots',
+    'julienned carrots': 'carrots',
     'lemons': 'lemon',
     'bananas': 'banana',
     'sliced banana': 'banana',
