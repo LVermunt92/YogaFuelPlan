@@ -32,6 +32,7 @@ Preferred communication style: Simple, everyday language.
     - **Unified Recipe Database**: Consolidated all recipe databases into a single unified system.
 
 # Recent Changes (August 30, 2025)
+- **Healthy Kapsalon Recipes Addition**: Added two versions of healthy Dutch kapsalon - "Healthy Vegetarian Kapsalon" with 22g protein from halloumi and hemp hearts, and "Healthy Chicken Kapsalon" with 28g protein from lean chicken breast, both featuring sweet potato fries and fresh salad toppings
 - **Super-Charged Peanut Noodles Addition**: Added "Super-Charged Peanut Noodles" with 24g protein from cashews, sunflower seeds, and edamame, featuring Asian-fusion flavors in a DIY fakeaway dish that's faster than takeaway delivery
 - **Sweet Potato Lentil Stew Addition**: Added "Warming Sweet Potato & Lentil Stew" with 20g protein from red lentils, featuring rose harissa, tahini, and warming Ayurvedic spices in a one-pan weeknight dinner similar to dhal
 - **Creamy Black-Eyed Beans Addition**: Added "Creamy Black-Eyed Beans & Mushrooms" with 22g protein from black-eyed peas, featuring curry-style flavors with turmeric, coconut milk, and fresh herbs served over brown rice for a wholesome midweek dinner

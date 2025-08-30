@@ -5478,6 +5478,146 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-08-30'),
     active: true
+  },
+  {
+    name: "Healthy Vegetarian Kapsalon",
+    portion: "1 generous serving (about 450g)",
+    nutrition: {
+      protein: 22,
+      prepTime: 35,
+      calories: 465,
+      carbohydrates: 58,
+      fats: 16,
+      fiber: 14,
+      sugar: 12,
+      sodium: 580,
+      potassium: 920,
+      calcium: 180,
+      iron: 5.2,
+      vitaminC: 35,
+      costEuros: 4.20,
+      proteinPerEuro: 5.2
+    },
+    category: "dinner",
+    tags: ["vegetarian", "gluten-free", "high-protein", "dutch-fusion", "comfort-food", "wholesome"],
+    ingredients: [
+      "400g sweet potatoes, cut into thick fries",
+      "15ml olive oil",
+      "2.5ml smoked paprika",
+      "150g halloumi cheese, sliced",
+      "120g mixed salad leaves",
+      "1 large tomato, diced",
+      "Half cucumber, diced",
+      "1 small red onion, thinly sliced",
+      "60ml Greek yogurt",
+      "15ml tahini",
+      "1 garlic clove, minced",
+      "15ml lemon juice",
+      "2.5ml ground cumin",
+      "30ml hemp hearts",
+      "Sea salt and black pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["sweet potatoes", "salad leaves", "tomato", "cucumber", "red onion", "garlic"],
+      benefits: ["beta-carotene from sweet potatoes", "fiber from vegetables", "probiotics from yogurt"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 220°C (200°C fan)",
+        "Cut sweet potatoes into thick fries, toss with olive oil, smoked paprika, salt and pepper",
+        "Arrange on baking tray and roast for 25-30 minutes until crispy outside and tender inside",
+        "Meanwhile, prepare salad by mixing leaves, diced tomato, cucumber, and red onion in large bowl",
+        "For sauce, whisk together Greek yogurt, tahini, minced garlic, lemon juice, cumin, salt and pepper",
+        "Heat dry frying pan over medium heat, cook halloumi slices for 2-3 minutes each side until golden",
+        "Layer roasted sweet potato fries in serving bowl as base",
+        "Top with grilled halloumi pieces",
+        "Add generous portion of mixed salad on top",
+        "Drizzle with tahini yogurt sauce",
+        "Sprinkle with hemp hearts for extra protein and crunch"
+      ],
+      tips: [
+        "Soak sweet potato fries in cold water for 30 minutes before roasting for extra crispiness",
+        "Don't overcrowd the baking tray - use two trays if needed for crispier fries",
+        "Halloumi can be replaced with grilled tofu or tempeh for vegan option"
+      ],
+      notes: "Healthy take on Dutch kapsalon using sweet potato fries, grilled halloumi, fresh salad, and creamy tahini yogurt sauce"
+    },
+    createdAt: new Date('2025-08-30'),
+    active: true
+  },
+  {
+    name: "Healthy Chicken Kapsalon",
+    portion: "1 generous serving (about 480g)",
+    nutrition: {
+      protein: 28,
+      prepTime: 40,
+      calories: 485,
+      carbohydrates: 52,
+      fats: 18,
+      fiber: 12,
+      sugar: 11,
+      sodium: 650,
+      potassium: 890,
+      calcium: 120,
+      iron: 4.8,
+      vitaminC: 40,
+      costEuros: 4.80,
+      proteinPerEuro: 5.8
+    },
+    category: "dinner",
+    tags: ["high-protein", "gluten-free", "dutch-fusion", "comfort-food", "lean-protein", "wholesome"],
+    ingredients: [
+      "400g sweet potatoes, cut into thick fries",
+      "15ml olive oil",
+      "2.5ml smoked paprika",
+      "200g chicken breast, sliced into strips",
+      "5ml ground cumin",
+      "2.5ml garlic powder",
+      "2.5ml dried oregano",
+      "120g mixed salad leaves",
+      "1 large tomato, diced",
+      "Half cucumber, diced",
+      "1 small red onion, thinly sliced",
+      "60ml Greek yogurt",
+      "15ml sriracha sauce",
+      "15ml lemon juice",
+      "1 garlic clove, minced",
+      "30ml pumpkin seeds",
+      "Sea salt and black pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["sweet potatoes", "salad leaves", "tomato", "cucumber", "red onion", "garlic"],
+      benefits: ["beta-carotene from sweet potatoes", "lean protein from chicken", "fiber from vegetables"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 220°C (200°C fan)",
+        "Cut sweet potatoes into thick fries, toss with half the olive oil, smoked paprika, salt and pepper",
+        "Arrange on baking tray and roast for 25-30 minutes until crispy outside and tender inside",
+        "Season chicken strips with cumin, garlic powder, oregano, salt and pepper",
+        "Heat remaining olive oil in frying pan over medium-high heat",
+        "Cook chicken strips for 6-8 minutes, turning frequently, until golden brown and cooked through",
+        "Meanwhile, prepare salad by mixing leaves, diced tomato, cucumber, and red onion in large bowl",
+        "For sauce, whisk together Greek yogurt, sriracha, minced garlic, lemon juice, salt and pepper",
+        "Layer roasted sweet potato fries in serving bowl as base",
+        "Top with seasoned grilled chicken strips",
+        "Add generous portion of mixed salad on top",
+        "Drizzle with spicy yogurt sauce",
+        "Sprinkle with pumpkin seeds for extra protein and crunch"
+      ],
+      tips: [
+        "Soak sweet potato fries in cold water for 30 minutes before roasting for extra crispiness",
+        "Don't overcrowd the baking tray - use two trays if needed for better roasting",
+        "Adjust sriracha amount in sauce according to spice preference"
+      ],
+      notes: "Healthy take on Dutch kapsalon using sweet potato fries, lean seasoned chicken, fresh salad, and spicy yogurt sauce"
+    },
+    createdAt: new Date('2025-08-30'),
+    active: true
   }
 ];
 
