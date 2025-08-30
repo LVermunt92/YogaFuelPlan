@@ -7418,6 +7418,15 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
           return;
         }
         
+        // FINAL FILTER: Block cooking instructions that slip through recipe parsing
+        const forbiddenInstructions = [
+          'cut into 1cm pieces', 'finely', 'melted', 'roughly', 'chopped', 'diced', 'sliced', 'minced'
+        ];
+        if (forbiddenInstructions.includes(cleanIngredient.toLowerCase())) {
+          console.warn(`🚫 SHOPPING LIST: Blocking cooking instruction: "${cleanIngredient}"`);
+          return;
+        }
+        
         // Skip ingredients that user already has (leftover ingredients)
         const isLeftoverIngredient = leftoverIngredients.some(leftover => {
           const cleanLeftover = cleanIngredientName(leftover.toLowerCase());
@@ -7487,6 +7496,15 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
           
           // Skip empty ingredient names
           if (!cleanIngredient || cleanIngredient.trim() === '') {
+            return;
+          }
+          
+          // FINAL FILTER: Block cooking instructions that slip through recipe parsing
+          const forbiddenInstructions = [
+            'cut into 1cm pieces', 'finely', 'melted', 'roughly', 'chopped', 'diced', 'sliced', 'minced'
+          ];
+          if (forbiddenInstructions.includes(cleanIngredient.toLowerCase())) {
+            console.warn(`🚫 SHOPPING LIST: Blocking cooking instruction: "${cleanIngredient}"`);
             return;
           }
           
@@ -7718,6 +7736,20 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'chickpea flour': 'Baking & Cooking Basics',
     'coconut flour': 'Baking & Cooking Basics',
     'sweet potatoes': 'Vegetables',
+    'potatoes': 'Vegetables',
+    'olives': 'Other Dry Goods', // Olives belong in dry goods
+    'raisins': 'Other Dry Goods', // Dried fruit
+    'cornstarch': 'Baking & Cooking Basics',
+    'gram flour': 'Baking & Cooking Basics',
+    'flaxseed': 'Nuts, Seeds & Spreads',
+    'tamari': 'Pantry Essentials',
+    'sage': 'Fresh Herbs',
+    'cocoa protein powder': 'Other Dry Goods',
+    'soy milk': 'Plant-Based Alternatives',
+    'sweetener': 'Pantry Essentials',
+    'half sweet red pepper': 'Vegetables',
+    'plant-based protein': 'Plant-Based Alternatives',
+    'soy milk': 'Plant-Based Alternatives', // Ensure it stays in Plant-Based
     'gluten-free granola': 'Other Dry Goods',
     'red lentils': 'Grains, Pasta & Canned Goods',
     'green lentils': 'Grains, Pasta & Canned Goods',
@@ -8325,12 +8357,13 @@ function cleanIngredientName(ingredient: string): string {
   const originalInput = ingredient; // Store original input for logging
   let cleaned = ingredient.toLowerCase().trim();
   
-  // Remove leading measurements and quantities (including fractions and numbers)
-  cleaned = cleaned.replace(/^[\d\/½¼¾⅓⅔⅛⅜⅝⅞]+\s*(cup|cups|tbsp|tsp|tablespoons?|teaspoons?|g|grams?|lb|lbs|pounds?|oz|ounces?|pieces?|slices?|cloves?|sprigs?|medium|large|small|ml)\s*of\s*/, '');
-  cleaned = cleaned.replace(/^[\d\/½¼¾⅓⅔⅛⅜⅝⅞]+\s*(cup|cups|tbsp|tsp|tablespoons?|teaspoons?|g|grams?|lb|lbs|pounds?|oz|ounces?|pieces?|slices?|cloves?|sprigs?|medium|large|small|ml)\s*/, '');
+  // Remove leading measurements and quantities (including fractions, numbers, and decimals)
+  // Updated to catch decimal amounts like ".5ml", "0.5ml", "2.5g", etc.
+  cleaned = cleaned.replace(/^[\d\.\/½¼¾⅓⅔⅛⅜⅝⅞]+\s*(cup|cups|tbsp|tsp|tablespoons?|teaspoons?|g|grams?|lb|lbs|pounds?|oz|ounces?|pieces?|slices?|cloves?|sprigs?|medium|large|small|ml|mL)\s*of\s*/i, '');
+  cleaned = cleaned.replace(/^[\d\.\/½¼¾⅓⅔⅛⅜⅝⅞]+\s*(cup|cups|tbsp|tsp|tablespoons?|teaspoons?|g|grams?|lb|lbs|pounds?|oz|ounces?|pieces?|slices?|cloves?|sprigs?|medium|large|small|ml|mL)\s*/i, '');
   
-  // Remove leading numbers and fractions that might still be there  
-  cleaned = cleaned.replace(/^[\d\/½¼¾⅓⅔⅛⅜⅝⅞]+\s*/, '');
+  // Remove leading numbers, decimals and fractions that might still be there  
+  cleaned = cleaned.replace(/^[\d\.\/½¼¾⅓⅔⅛⅜⅝⅞]+\s*/, '');
   
   // Remove vague quantity descriptions like "handful", "small handful", etc.
   cleaned = cleaned.replace(/^(small\s+handful|large\s+handful|handful|few|some|bit|touch|splash|drizzle|sprinkle)\s+(of\s+)?/i, '');
@@ -8356,10 +8389,6 @@ function cleanIngredientName(ingredient: string): string {
     cleaned = 'lemon'; // Use simple "lemon" instead of "pieces of lemon"
   }
   
-  // Apply comprehensive ingredient specification to replace generic terms
-  const specified = specifyIngredients([cleaned]);
-  cleaned = specified[0];
-  
   // CRITICAL FIX: Prevent ingredient names from containing amount descriptions
   // This fixes issues like "5 mL of olive oil" appearing as ingredient name
   const amountPatterns = [
@@ -8379,6 +8408,26 @@ function cleanIngredientName(ingredient: string): string {
   // Debug log for amount contamination issues
   if (originalInput.includes('ml of') || originalInput.includes('g of') || originalInput.includes('pieces of')) {
     console.log(`🔧 Amount contamination fixed: "${originalInput}" → "${cleaned}"`);
+  }
+  
+  // Apply comprehensive ingredient specification to replace generic terms
+  // BUT prevent double specification (don't specify already specified ingredients)
+  if (!cleaned.includes('pieces of') && !cleaned.includes('oat oat') && !cleaned.includes('soy oat') && 
+      cleaned !== 'lemon' && cleaned !== 'lemon (juiced)') {
+    const specified = specifyIngredients([cleaned]);
+    cleaned = specified[0];
+  }
+  
+  // FINAL SAFETY CHECK: After specification, catch any cooking instructions that slipped through
+  const finalSafetyCheck = cleaned.toLowerCase();
+  const prohibitedFinalPatterns = [
+    'cut into 1cm pieces', 'cut into pieces', 'finely', 'melted', 'roughly',
+    'coarsely', 'chopped', 'diced', 'sliced', 'minced'
+  ];
+  
+  if (prohibitedFinalPatterns.includes(finalSafetyCheck)) {
+    console.warn(`🚫 FINAL SAFETY: Filtering cooking instruction that slipped through: "${cleaned}"`);
+    return '';
   }
   
   // Consolidate herbs that have different names but are essentially the same for shopping
@@ -8500,19 +8549,55 @@ function cleanIngredientName(ingredient: string): string {
   // Remove extra whitespace and validate the result
   cleaned = cleaned.replace(/\s+/g, ' ').trim();
   
-  // Blacklist cooking methods that should never become standalone ingredients
+  // Enhanced blacklist for cooking methods and instructions that should never become standalone ingredients
   const cookingMethodsBlacklist = [
+    // Cooking methods
     'chopped', 'sliced', 'diced', 'minced', 'grated', 'halved', 'quartered',
     'melted', 'cooked', 'steamed', 'sautéed', 'roasted', 'grilled', 'baked',
     'fried', 'boiled', 'mashed', 'crushed', 'shredded', 'julienned', 'cubed',
     'roughly', 'finely', 'thinly', 'thickly', 'softened', 'warmed', 'heated',
-    'fresh', 'dried', 'frozen', 'canned', 'raw', 'organic', 'free-range'
+    'fresh', 'dried', 'frozen', 'canned', 'raw', 'organic', 'free-range',
+    // Cooking instructions that slip through
+    'cut into 1cm pieces', 'cut into pieces', 'cut into cubes', 'cut into strips',
+    'finely', 'roughly', 'coarsely', 'thinly sliced', 'thickly sliced',
+    'for cooking', 'for serving', 'for garnish', 'for topping', 'extra', 'additional',
+    // Common instruction fragments
+    'into pieces', 'into cubes', 'into strips', 'into chunks', 'into slices'
   ];
   
-  // If cleaned ingredient is just a cooking method, skip it entirely
-  if (cookingMethodsBlacklist.includes(cleaned) || cleaned.length < 2) {
+  // Enhanced cooking method detection - check both exact matches and partial matches
+  const cleanedLower = cleaned.toLowerCase();
+  if (cookingMethodsBlacklist.includes(cleanedLower) || cleaned.length < 2) {
     console.warn(`⚠️ SHOPPING LIST: Skipping cooking method/invalid ingredient: "${cleaned}" from "${originalInput}"`);
     return ''; // Return empty string to be filtered out later
+  }
+  
+  // Additional specific patterns that slip through as standalone words
+  const problematicStandalone = ['melted', 'finely', 'roughly', 'coarsely', 'chopped', 'diced', 'sliced', 'minced'];
+  if (problematicStandalone.includes(cleanedLower)) {
+    console.warn(`⚠️ SHOPPING LIST: Skipping standalone cooking method: "${cleaned}" from "${originalInput}"`);
+    return ''; // Return empty string to be filtered out later
+  }
+  
+  // Additional check for cooking instruction patterns that contain multiple words
+  const cookingInstructionPatterns = [
+    /^cut into \d+cm pieces?$/i,
+    /^cut into \d+ cm pieces?$/i,
+    /^finely$/i,
+    /^melted$/i,
+    /^half sweet red pepper$/i,
+    /^cut into pieces?$/i,
+    /^finely (chopped|diced|sliced)$/i,
+    /^roughly (chopped|diced|sliced)$/i,
+    /^(extra|additional) .* for (cooking|serving|garnish|topping)$/i,
+    /^for (cooking|serving|garnish|topping)$/i
+  ];
+  
+  for (const pattern of cookingInstructionPatterns) {
+    if (pattern.test(cleaned)) {
+      console.warn(`⚠️ SHOPPING LIST: Skipping cooking instruction: "${cleaned}" from "${originalInput}"`);
+      return ''; // Return empty string to be filtered out later
+    }
   }
   
   // Clean up spaces and handle special cases
@@ -8703,6 +8788,14 @@ function cleanIngredientName(ingredient: string): string {
     'kefir': 'fermented kefir',
     'berries': 'mixed berries',
     'oats': 'rolled oats',
+    // Prevent double oat specification and milk specification
+    'oat oat milk': 'oat milk',
+    'soy oat milk': 'soy milk',
+    'pieces of pieces of lemon': 'lemon',
+    'pieces of lemon': 'lemon', // Simplify lemon to avoid complex specifications
+    'porridge certified oats': 'rolled oats',
+    'quick certified oats': 'rolled oats',
+    'vanilla coconut yogurt': 'coconut yogurt',
     'granola': 'gluten-free granola',
     // Bean and legume specific mappings
     'black beans': 'black beans',

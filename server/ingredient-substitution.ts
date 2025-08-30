@@ -100,7 +100,8 @@ export function substituteIngredients(ingredients: string[], dietaryTags: string
         const lowerIngredient = ingredient.toLowerCase();
         const lowerOriginal = substitution.original.toLowerCase();
         
-        if (lowerIngredient.includes(lowerOriginal)) {
+        // Prevent double substitution (e.g., 'oat milk' → 'oat oat milk')
+        if (lowerIngredient.includes(lowerOriginal) && !lowerIngredient.includes(substitution.substitute.toLowerCase())) {
           appliedSubstitutions.push(substitution);
           
           // Handle ratio adjustments for measurements
@@ -136,7 +137,8 @@ export function substituteIngredients(ingredients: string[], dietaryTags: string
         const lowerIngredient = ingredient.toLowerCase();
         const lowerOriginal = substitution.original.toLowerCase();
         
-        if (lowerIngredient.includes(lowerOriginal)) {
+        // Prevent double substitution (e.g., 'oat milk' → 'oat oat milk')
+        if (lowerIngredient.includes(lowerOriginal) && !lowerIngredient.includes(substitution.substitute.toLowerCase())) {
           appliedSubstitutions.push(substitution);
           
           // Handle ratio adjustments for measurements
