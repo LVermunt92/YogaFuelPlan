@@ -5758,6 +5758,132 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     active: true
   },
   {
+    name: "Fresh Salmon Rice Paper Rolls with Spicy Asian Dipping Sauce",
+    portion: "4 rolls (2 servings)",
+    nutrition: { 
+      protein: 28, 
+      prepTime: 25, 
+      calories: 385,
+      carbohydrates: 42,
+      fats: 12,
+      fiber: 4,
+      sugar: 8,
+      sodium: 650,
+      costEuros: 8.50, 
+      proteinPerEuro: 3.3 
+    },
+    category: "lunch",
+    tags: ["pescatarian", "dairy-free", "low-carb", "high-protein", "fresh", "asian"],
+    ingredients: [
+      "450g fresh salmon fillet, cubed small",
+      "8 rice paper wraps",
+      "4 nori seaweed sheets, halved",
+      "3 green onions, sliced thin",
+      "200g daikon radish, julienned",
+      "200g sugar snap peas, blanched",
+      "1 red bell pepper, sliced thin",
+      "100g fresh bean sprouts",
+      "60ml kewpie mayonnaise",
+      "45ml low sodium soy sauce",
+      "30ml rice vinegar",
+      "15ml toasted sesame oil",
+      "15ml arrowroot starch",
+      "Fresh cilantro and mint leaves",
+      "Fresh Thai basil leaves"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["radish", "sugar snap peas", "bell pepper", "bean sprouts", "herbs"],
+      benefits: ["High in vitamin C", "Digestive support", "Fresh enzymes", "Anti-inflammatory"]
+    },
+    recipe: {
+      instructions: [
+        "Make spicy dipping sauce: whisk 120ml soy sauce, 30ml rice wine vinegar, 30ml sesame oil, 4 minced garlic cloves, 15ml grated ginger, 10ml sriracha, and 15ml sesame seeds",
+        "Cut salmon into small cubes and marinate in kewpie mayo, soy sauce, rice vinegar, and sesame oil for 10 minutes",
+        "Prepare vegetables: julienne radish, blanch sugar snap peas for 1 minute, slice bell pepper thin, rinse bean sprouts",
+        "Pick fresh herb leaves from cilantro, mint, and Thai basil stems",
+        "Soak rice papers in warm water for 30 seconds until pliable",
+        "Place half nori sheet on bottom third of rice paper",
+        "Add marinated salmon, julienned radish, sugar snap peas, bell pepper strips, and bean sprouts",
+        "Top with fresh herb mixture",
+        "Roll tightly from bottom, folding in sides halfway through",
+        "Slice rolls in half diagonally and serve immediately with spicy dipping sauce"
+      ],
+      tips: [
+        "Keep rolled papers under damp towel to prevent drying",
+        "Radish adds perfect peppery crunch that complements salmon",
+        "Fresh herbs are essential - don't skip the Thai basil",
+        "Blanched sugar snap peas stay crisp but are easier to bite"
+      ],
+      notes: "The peppery radish pairs beautifully with rich salmon while fresh Asian herbs provide aromatic complexity. Bean sprouts add satisfying crunch."
+    }
+  },
+  {
+    name: "Vegetarian Rice Paper Rolls with Marinated Shiitake & Fresh Herbs",
+    portion: "4 rolls (2 servings)",
+    nutrition: { 
+      protein: 24, 
+      prepTime: 30, 
+      calories: 420,
+      carbohydrates: 48,
+      fats: 16,
+      fiber: 8,
+      sugar: 10,
+      sodium: 580,
+      costEuros: 6.80, 
+      proteinPerEuro: 3.5 
+    },
+    category: "lunch",
+    tags: ["vegetarian", "dairy-free", "high-protein", "fresh", "asian", "umami"],
+    ingredients: [
+      "300g extra-firm tofu, cubed and marinated",
+      "200g shiitake mushrooms, sliced and marinated",
+      "200g shelled edamame, cooked",
+      "30ml hemp hearts",
+      "8 rice paper wraps",
+      "4 nori seaweed sheets, halved",
+      "3 green onions, sliced thin",
+      "200g sugar snap peas, blanched",
+      "1 red bell pepper, sliced thin",
+      "100g fresh bean sprouts",
+      "1 avocado, sliced",
+      "30ml tahini",
+      "Fresh cilantro, mint, and Thai basil leaves",
+      "Marinade: soy sauce, sesame oil, rice vinegar, ginger, garlic"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["mushrooms", "sugar snap peas", "bell pepper", "bean sprouts", "herbs"],
+      benefits: ["High in umami", "Rich in fiber", "Fresh enzymes", "Complete amino acids"]
+    },
+    recipe: {
+      instructions: [
+        "Make marinade: whisk 45ml soy sauce, 15ml sesame oil, 15ml rice vinegar, 10ml grated ginger, 2 minced garlic cloves",
+        "Cube tofu and slice shiitake mushrooms, marinate both in half the marinade for 20 minutes",
+        "Sauté marinated shiitakes until golden and caramelized, about 8 minutes",
+        "Pan-fry marinated tofu cubes until golden on all sides",
+        "Cook edamame according to package directions, cool slightly",
+        "Make tahini sauce: mix tahini with remaining marinade and 30ml water until smooth",
+        "Prepare vegetables: blanch sugar snap peas, slice bell pepper, rinse bean sprouts, slice avocado",
+        "Pick fresh herb leaves from cilantro, mint, and Thai basil",
+        "Soak rice papers in warm water until pliable",
+        "Layer half nori sheet, then marinated tofu, caramelized shiitakes, edamame, and vegetables",
+        "Sprinkle hemp hearts, add fresh herbs and avocado slices",
+        "Drizzle with tahini sauce before rolling tightly",
+        "Slice diagonally and serve with extra tahini dipping sauce"
+      ],
+      tips: [
+        "Marinated shiitakes provide deep umami that rivals any meat",
+        "Press tofu well before marinating for better texture",
+        "Hemp hearts add protein and omega-3s without changing flavor",
+        "Edamame and tahini boost the protein to 24g per serving"
+      ],
+      notes: "The combination of marinated shiitakes, tofu, edamame, and tahini creates a protein powerhouse while fresh herbs provide bright Asian flavors. Much more satisfying than typical vegetarian rolls."
+    }
+  },
+  {
     name: "Thai Green Curry with Super Crunchy Tofu",
     portion: "1 generous serving (about 400g with rice)",
     nutrition: {
