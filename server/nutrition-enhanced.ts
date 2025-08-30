@@ -7438,8 +7438,12 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
           const defaultPortion = getDefaultPortion(cleanIngredient);
           // For weekly shopping, use reasonable multipliers based on ingredient type
           let weeklyMultiplier = Math.min(existing.count, 3); // Max 3x for vegetables
-          if (cleanIngredient.includes('oil') || cleanIngredient.includes('spice') || cleanIngredient.includes('seasoning')) {
-            weeklyMultiplier = 1; // Pantry items don't multiply
+          if (cleanIngredient.includes('oil') || cleanIngredient.includes('spice') || cleanIngredient.includes('seasoning') ||
+              cleanIngredient.includes('fresh') && (cleanIngredient.includes('herb') || cleanIngredient.includes('basil') || 
+              cleanIngredient.includes('parsley') || cleanIngredient.includes('cilantro') || cleanIngredient.includes('thyme') ||
+              cleanIngredient.includes('rosemary') || cleanIngredient.includes('oregano') || cleanIngredient.includes('mint') ||
+              cleanIngredient.includes('dill') || cleanIngredient.includes('chives') || cleanIngredient.includes('sage'))) {
+            weeklyMultiplier = 1; // Fresh herbs don't multiply - one bunch lasts the week
           }
           existing.totalAmount = defaultPortion.amount * weeklyMultiplier;
         } else {
@@ -7506,8 +7510,12 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
             const defaultPortion = getDefaultPortion(cleanIngredient);
             // For weekly shopping, use reasonable multipliers based on ingredient type
             let weeklyMultiplier = Math.min(existing.count, 3); // Max 3x for vegetables
-            if (cleanIngredient.includes('oil') || cleanIngredient.includes('spice') || cleanIngredient.includes('seasoning')) {
-              weeklyMultiplier = 1; // Pantry items don't multiply
+            if (cleanIngredient.includes('oil') || cleanIngredient.includes('spice') || cleanIngredient.includes('seasoning') ||
+                cleanIngredient.includes('fresh') && (cleanIngredient.includes('herb') || cleanIngredient.includes('basil') || 
+                cleanIngredient.includes('parsley') || cleanIngredient.includes('cilantro') || cleanIngredient.includes('thyme') ||
+                cleanIngredient.includes('rosemary') || cleanIngredient.includes('oregano') || cleanIngredient.includes('mint') ||
+                cleanIngredient.includes('dill') || cleanIngredient.includes('chives') || cleanIngredient.includes('sage'))) {
+              weeklyMultiplier = 1; // Fresh herbs don't multiply - one bunch lasts the week
             }
             existing.totalAmount = defaultPortion.amount * weeklyMultiplier;
           } else {
@@ -8335,30 +8343,38 @@ function cleanIngredientName(ingredient: string): string {
     console.log(`🌿 Herb consolidation: "${originalInput}" → "${cleaned}"`);
   }
   
-  // Handle other specific fresh herbs
-  if (cleaned.includes('basil') && !cleaned.includes('dried')) {
+  // Handle other specific fresh herbs - consolidate all forms to prevent duplicates
+  if (cleaned.includes('basil') && !cleaned.includes('dried') && !cleaned.includes('ground')) {
     cleaned = 'fresh basil';
   }
-  if (cleaned.includes('parsley') && !cleaned.includes('dried')) {
+  if ((cleaned.includes('parsley') || cleaned === 'parsley') && !cleaned.includes('dried') && !cleaned.includes('ground')) {
     cleaned = 'fresh parsley';
   }
-  if (cleaned.includes('oregano') && !cleaned.includes('dried')) {
+  if (cleaned.includes('oregano') && !cleaned.includes('dried') && !cleaned.includes('ground')) {
     cleaned = 'fresh oregano';
   }
-  if (cleaned.includes('thyme') && !cleaned.includes('dried')) {
+  if (cleaned.includes('thyme') && !cleaned.includes('dried') && !cleaned.includes('ground')) {
     cleaned = 'fresh thyme';
   }
-  if (cleaned.includes('rosemary') && !cleaned.includes('dried')) {
+  if (cleaned.includes('rosemary') && !cleaned.includes('dried') && !cleaned.includes('ground')) {
     cleaned = 'fresh rosemary';
   }
-  if (cleaned.includes('mint') && !cleaned.includes('dried')) {
+  if (cleaned.includes('mint') && !cleaned.includes('dried') && !cleaned.includes('ground')) {
     cleaned = 'fresh mint';
   }
-  if (cleaned.includes('dill') && !cleaned.includes('dried')) {
+  if (cleaned.includes('dill') && !cleaned.includes('dried') && !cleaned.includes('ground')) {
     cleaned = 'fresh dill';
   }
-  if (cleaned.includes('chives') && !cleaned.includes('dried')) {
+  if (cleaned.includes('chives') && !cleaned.includes('dried') && !cleaned.includes('ground')) {
     cleaned = 'fresh chives';
+  }
+  if ((cleaned.includes('sage') || cleaned === 'sage') && !cleaned.includes('dried') && !cleaned.includes('ground')) {
+    cleaned = 'fresh sage';
+  }
+  
+  // Consolidate generic "herbs" to "fresh herbs"
+  if (cleaned === 'herbs' || cleaned === 'herb' || cleaned.includes('mixed herbs')) {
+    cleaned = 'fresh herbs';
   }
   
   // Handle specific cheese types
