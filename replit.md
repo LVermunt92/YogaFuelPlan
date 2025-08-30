@@ -18,6 +18,7 @@ Preferred communication style: Simple, everyday language.
 - **Quinoa Breakfast Porridge Addition**: Added "Protein-Packed Quinoa Breakfast Porridge with Banana & Peanut Butter" with 26g protein combining quinoa's complete amino acids, protein powder, and peanut butter for a wholesome high-protein breakfast option
 - **One-Pan Masala Mushroom Rice Addition**: Added "One-Pan Masala Mushroom Rice with Cashews" with 24g protein enhanced with chickpeas and hemp hearts, featuring aromatic Indian spices, saffron, and a complete one-pan cooking method for busy evenings
 - **Chickpea Tofu Harissa Stew Addition**: Added "Chickpea, Tofu & Harissa Stew" with 28g protein combining chickpeas and firm tofu, featuring North African spices and harissa for a hearty, warming plant-based dinner option perfect for meal planning
+- **Oat Quinoa Apple Porridge Addition**: Added "Oat & Quinoa Porridge with Apple & Cinnamon" with 22g protein enhanced with protein powder and hemp seeds, perfect for winter breakfast meal prep with batch-cooked quinoa for weekly use
 
 ## Previous Fixes (August 22, 2025)
 - **Fridge Inventory System Implementation**: Created complete fridge inventory management system with database schema, API routes, and user interface for tracking existing ingredients, expiration dates, and priorities to optimize meal planning

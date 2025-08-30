@@ -4999,6 +4999,64 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-08-30'),
     active: true
+  },
+  {
+    name: "Oat & Quinoa Porridge with Apple & Cinnamon",
+    portion: "1 bowl (about 250g)",
+    nutrition: {
+      protein: 22,
+      prepTime: 10,
+      calories: 385,
+      carbohydrates: 48,
+      fats: 12,
+      fiber: 8,
+      sugar: 16,
+      sodium: 85,
+      potassium: 420,
+      calcium: 150,
+      iron: 3.8,
+      vitaminC: 6,
+      costEuros: 2.40,
+      proteinPerEuro: 9.2
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "gluten-free", "high-protein", "quick", "wholesome", "winter"],
+    ingredients: [
+      "30ml cooked quinoa",
+      "30g porridge oats",
+      "15ml shelled hemp seeds",
+      "100ml oat milk",
+      "1 apple, roughly grated",
+      "Small handful almonds, chopped",
+      "15ml raisins",
+      "2.5ml ground cinnamon",
+      "30g vanilla protein powder"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["apple"],
+      benefits: ["fiber from apple", "omega-3 from hemp seeds", "antioxidants from cinnamon"]
+    },
+    recipe: {
+      instructions: [
+        "Place cooked quinoa, porridge oats, hemp seeds, and oat milk in small saucepan over medium heat",
+        "Cook, stirring frequently, until oat milk has been absorbed and oats are tender (about 5 minutes)",
+        "Alternatively, microwave on high for 1 minute at a time, stopping to stir until oats are tender (3-4 minutes total)",
+        "Add grated apple, chopped almonds, raisins, and cinnamon to the pan",
+        "Cook until heated through, stirring gently to combine",
+        "Stir in protein powder until well mixed",
+        "Serve immediately while warm, or place apple, raisins, and almonds on top as garnish and dust with cinnamon"
+      ],
+      tips: [
+        "Pre-cook quinoa in batches for quick breakfast prep throughout the week",
+        "Grate apple just before adding to prevent browning",
+        "Perfect for winter meal prep - quinoa adds protein and creamy texture"
+      ],
+      notes: "Enhanced with protein powder and hemp seeds to boost protein content while maintaining the satisfying winter breakfast appeal"
+    },
+    createdAt: new Date('2025-08-30'),
+    active: true
   }
 ];
 
