@@ -6111,6 +6111,75 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-08-30'),
     active: true
+  },
+  {
+    name: "Oat & Quinoa Porridge with Apple & Cinnamon",
+    portion: "1 hearty serving (about 350g)",
+    nutrition: {
+      protein: 22,
+      prepTime: 25,
+      calories: 435,
+      carbohydrates: 48,
+      fats: 16,
+      fiber: 12,
+      sugar: 18,
+      sodium: 85,
+      potassium: 520,
+      calcium: 165,
+      iron: 3.8,
+      vitaminC: 8,
+      costEuros: 2.80,
+      proteinPerEuro: 7.9
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "high-protein", "warming", "wholesome", "ayurvedic", "winter-comfort", "meal-prep"],
+    ingredients: [
+      "40g rolled oats",
+      "40g quinoa, rinsed",
+      "400ml oat milk",
+      "100ml water",
+      "20g vanilla protein powder",
+      "20g hemp hearts",
+      "1 medium apple, peeled and diced",
+      "15ml maple syrup",
+      "5ml ground cinnamon",
+      "2.5ml vanilla extract",
+      "1ml ground ginger",
+      "Pinch of cardamom",
+      "Pinch of sea salt",
+      "15ml chopped walnuts",
+      "15ml pumpkin seeds",
+      "Extra cinnamon for dusting"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["apple"],
+      benefits: ["fiber from oats and quinoa", "complete protein from quinoa", "healthy fats from hemp hearts and nuts"]
+    },
+    recipe: {
+      instructions: [
+        "Cook quinoa ahead: Rinse 200g quinoa and simmer in 400ml water for 15 minutes until tender. Store cooked quinoa in fridge for up to 5 days for quick porridge prep",
+        "In medium saucepan, combine oats, 80g pre-cooked quinoa, oat milk, water, and pinch of salt",
+        "Bring to gentle boil, then reduce heat and simmer for 8-10 minutes, stirring occasionally",
+        "Meanwhile, heat small frying pan over medium heat",
+        "Add diced apple with half the maple syrup and cinnamon",
+        "Cook apple for 5-7 minutes until caramelized and tender",
+        "When porridge is creamy and oats are tender, remove from heat",
+        "Stir in protein powder, vanilla extract, ginger, and cardamom until smooth",
+        "Add hemp hearts and remaining maple syrup, mix well",
+        "Serve in warm bowl topped with caramelized apple",
+        "Sprinkle with chopped walnuts, pumpkin seeds, and extra cinnamon"
+      ],
+      tips: [
+        "Batch-cook quinoa on Sunday for quick weekday porridge prep",
+        "Protein powder adds easily without changing texture when stirred in off heat",
+        "Caramelized apple can be prepared in larger batches and stored for 3 days"
+      ],
+      notes: "Warming winter breakfast combining complete protein from quinoa with oats, enhanced with protein powder and hemp seeds for sustained energy"
+    },
+    createdAt: new Date('2025-08-30'),
+    active: true
   }
 ];
 
