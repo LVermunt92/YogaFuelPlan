@@ -8329,6 +8329,10 @@ function cleanIngredientName(ingredient: string): string {
   // Remove leading numbers and fractions that might still be there  
   cleaned = cleaned.replace(/^[\d\/½¼¾⅓⅔⅛⅜⅝⅞]+\s*/, '');
   
+  // Remove vague quantity descriptions like "handful", "small handful", etc.
+  cleaned = cleaned.replace(/^(small\s+handful|large\s+handful|handful|few|some|bit|touch|splash|drizzle|sprinkle)\s+(of\s+)?/i, '');
+  cleaned = cleaned.replace(/^(a\s+)?(small|large|medium)\s+(handful|pinch|dash|bit|touch|splash|drizzle|sprinkle)\s+(of\s+)?/i, '');
+  
   // Fix common ingredient name corruption issues
   if (cleaned.startsWith('reen onions') || cleaned === 'reen onions') {
     cleaned = 'green onions';
@@ -8466,10 +8470,17 @@ function cleanIngredientName(ingredient: string): string {
     cleaned = cleaned.replace(/\b(free-range|organic|fresh|raw|toasted|chopped|sliced|diced|minced|halved|cooked|long-fermented)\b/g, '');
     cleaned = cleaned.replace(/\b(extra virgin|sea|black|white|ground|mixed|frozen|unsweetened|pure|gluten-free)\b/g, '');
   }
-  cleaned = cleaned.replace(/^(pinch of|dash of|handful of)\s*/i, '');
+  // Enhanced removal of vague quantity terms (this was already there but let's expand it)
+  cleaned = cleaned.replace(/^(pinch of|dash of|handful of|small handful of|large handful of|few|some|bit of|touch of|splash of|drizzle of|sprinkle of)\s*/i, '');
+  
+  // Remove "a" or "an" that might be left over
+  cleaned = cleaned.replace(/^(a|an)\s+/i, '');
+  
+  // Clean up vague descriptions in the middle of ingredient names
+  cleaned = cleaned.replace(/\s+(handful|small handful|large handful|pinch|dash|bit|touch|splash|drizzle|sprinkle)\s+(of\s+)?/gi, ' ');
   
   // Remove extra whitespace and validate the result
-  cleaned = cleaned.trim();
+  cleaned = cleaned.replace(/\s+/g, ' ').trim();
   
   // Blacklist cooking methods that should never become standalone ingredients
   const cookingMethodsBlacklist = [
