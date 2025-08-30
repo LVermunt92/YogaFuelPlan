@@ -5756,6 +5756,78 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-08-30'),
     active: true
+  },
+  {
+    name: "Thai Green Curry with Super Crunchy Tofu",
+    portion: "1 generous serving (about 400g with rice)",
+    nutrition: {
+      protein: 26,
+      prepTime: 40,
+      calories: 495,
+      carbohydrates: 52,
+      fats: 22,
+      fiber: 8,
+      sugar: 14,
+      sodium: 720,
+      potassium: 680,
+      calcium: 185,
+      iron: 4.5,
+      vitaminC: 45,
+      costEuros: 4.20,
+      proteinPerEuro: 6.2
+    },
+    category: "dinner",
+    tags: ["vegetarian", "dairy-free", "gluten-free", "high-protein", "thai", "curry", "crispy-tofu", "aromatic"],
+    ingredients: [
+      "200g firm tofu, cut into cubes",
+      "30g cornstarch",
+      "60ml neutral oil for frying",
+      "75g jasmine rice (per serving)",
+      "45ml Thai green curry paste",
+      "400ml coconut milk (1 can)",
+      "15ml fish sauce (or tamari for vegetarian)",
+      "15ml palm sugar or brown sugar",
+      "200ml vegetable stock",
+      "100g Thai eggplant, quartered (or regular eggplant)",
+      "1 red bell pepper, sliced",
+      "100g green beans, trimmed",
+      "4-5 Thai basil leaves",
+      "2 kaffir lime leaves, torn",
+      "1 small green chili, sliced",
+      "15ml lime juice",
+      "Sea salt to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["eggplant", "bell pepper", "green beans", "chili"],
+      benefits: ["antioxidants from colorful vegetables", "plant protein from tofu", "healthy fats from coconut milk"]
+    },
+    recipe: {
+      instructions: [
+        "Cook jasmine rice in saucepan with 150ml water and pinch of salt for 15 minutes until tender",
+        "Press tofu between paper towels to remove excess moisture, then cut into 2cm cubes",
+        "Toss tofu cubes in cornstarch until evenly coated",
+        "Heat neutral oil in wok or large frying pan over medium-high heat",
+        "Fry tofu cubes for 3-4 minutes each side until golden and super crispy, then set aside",
+        "In same pan, add green curry paste and fry for 1-2 minutes until fragrant",
+        "Add thick part of coconut milk (cream from top of can) and cook until oil separates",
+        "Add remaining coconut milk, fish sauce, sugar, and vegetable stock",
+        "Bring to gentle simmer, add eggplant and simmer for 5 minutes",
+        "Add bell pepper and green beans, cook for 3-4 minutes until just tender",
+        "Stir in crispy tofu, Thai basil, kaffir lime leaves, and green chili",
+        "Add lime juice and adjust seasoning with salt, sugar, or fish sauce",
+        "Serve immediately over jasmine rice with extra Thai basil garnish"
+      ],
+      tips: [
+        "Press tofu for at least 15 minutes before coating for maximum crispiness",
+        "Don't skip the cornstarch coating - it's essential for the crunchy texture",
+        "Use thick coconut cream first to develop the curry base properly"
+      ],
+      notes: "Authentic Thai green curry with perfectly crispy tofu that stays crunchy even in the aromatic coconut curry sauce"
+    },
+    createdAt: new Date('2025-08-30'),
+    active: true
   }
 ];
 
