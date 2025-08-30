@@ -32,6 +32,7 @@ Preferred communication style: Simple, everyday language.
     - **Unified Recipe Database**: Consolidated all recipe databases into a single unified system.
 
 # Recent Changes (August 30, 2025)
+- **Creamy Black-Eyed Beans Addition**: Added "Creamy Black-Eyed Beans & Mushrooms" with 22g protein from black-eyed peas, featuring curry-style flavors with turmeric, coconut milk, and fresh herbs served over brown rice for a wholesome midweek dinner
 - **Sweet Potato Traybake Addition**: Added "High Protein Sweet Potato Traybake with Tahini Mustard Dressing" with 24g protein from black beans and edamame, featuring colorful vegetables, warming spices, and creamy tahini dressing perfect for meal prep
 - **Chickpea Potato Pancakes Addition**: Added "Chickpea & Potato Pancakes with Warm Veggie Salsa" in both regular and gluten-free versions with 26g and 24g protein respectively, inspired by socca French pancakes with one-pan cooking method and enhanced with chickpeas/lentils and hemp hearts
 - **Oat Quinoa Apple Porridge Addition**: Added "Oat & Quinoa Porridge with Apple & Cinnamon" with 22g protein enhanced with protein powder and hemp seeds, perfect for winter breakfast meal prep with batch-cooked quinoa for weekly use

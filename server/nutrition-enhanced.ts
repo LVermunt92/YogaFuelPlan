@@ -5275,6 +5275,72 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-08-30'),
     active: true
+  },
+  {
+    name: "Creamy Black-Eyed Beans & Mushrooms",
+    portion: "1 generous serving (about 400g with rice)",
+    nutrition: {
+      protein: 22,
+      prepTime: 40,
+      calories: 450,
+      carbohydrates: 68,
+      fats: 12,
+      fiber: 14,
+      sugar: 8,
+      sodium: 520,
+      potassium: 850,
+      calcium: 140,
+      iron: 6.2,
+      vitaminC: 15,
+      costEuros: 3.60,
+      proteinPerEuro: 6.1
+    },
+    category: "dinner",
+    tags: ["vegetarian", "gluten-free", "high-protein", "curry-style", "creamy", "wholesome"],
+    ingredients: [
+      "75g brown rice (per serving)",
+      "1 medium white onion, finely sliced",
+      "1 clove garlic, minced",
+      "5ml ground turmeric",
+      "100g mushrooms, finely sliced (mix of brown chestnut & shiitake)",
+      "120g black-eyed peas (half 400g tin), drained and rinsed",
+      "100ml light coconut milk",
+      "7.5g fresh coriander",
+      "1 lemon, zested and juiced",
+      "15ml olive oil",
+      "Pinch of sea salt and black pepper",
+      "Red chilli flakes (optional)"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["onion", "garlic", "mushrooms"],
+      benefits: ["umami from mushrooms", "anti-inflammatory turmeric", "prebiotics from onion"]
+    },
+    recipe: {
+      instructions: [
+        "Place brown rice in saucepan with 150ml water and pinch of salt (2.5ml)",
+        "Cover and bring to gentle simmer, bubble gently for 20 minutes until most water is absorbed",
+        "Turn off heat and allow rice to steam gently in residual heat",
+        "Meanwhile, heat drizzle of olive oil in heavy-bottomed frying pan over medium-high heat",
+        "Add sliced onions and cook 10-12 minutes until softened, translucent and beginning to caramelise",
+        "Add minced garlic and turmeric, stir until onions have absorbed turmeric and are bright yellow",
+        "Add sliced mushrooms and cook 5-6 minutes until softened and reduced",
+        "Add black-eyed peas and coconut milk, bring to gentle simmer",
+        "Leave to bubble gently for further 5-6 minutes until thickened and reduced",
+        "Scatter with fresh coriander and top with lemon zest and juice",
+        "Sprinkle with red chilli flakes if desired",
+        "Serve in bowls with portions of brown rice"
+      ],
+      tips: [
+        "Brown rice can be cooked ahead and reheated",
+        "Mix of mushroom varieties adds depth of flavor",
+        "Don't rush the onion caramelisation - it builds the flavor base"
+      ],
+      notes: "Veggie-packed dish similar to a delicate curry - light, fresh, zesty but also creamy and satisfying"
+    },
+    createdAt: new Date('2025-08-30'),
+    active: true
   }
 ];
 
