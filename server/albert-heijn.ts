@@ -78,7 +78,8 @@ class AlbertHeijnService {
   async createShoppingListFromMealPlan(ingredients: string[]): Promise<ShoppingListExport> {
     console.log('🛒 Creating Albert Heijn shopping list from meal plan...');
     
-    const shoppingItems: AHShoppingListItem[] = [];
+    // Use Map to consolidate identical products
+    const consolidatedItems = new Map<string, AHShoppingListItem>();
     let totalPrice = 0;
 
     for (const ingredient of ingredients) {
@@ -87,36 +88,60 @@ class AlbertHeijnService {
         
         if (products.length > 0) {
           const product = products[0]; // Take first match
-          const item: AHShoppingListItem = {
-            productId: product.id,
-            productName: product.name,
-            quantity: 1,
-            price: product.price,
-            imageUrl: product.imageUrl,
-            unit: product.unit,
-            category: product.category,
-            found: true
-          };
+          const productKey = `${product.name}_${product.id}`; // Unique key for consolidation
           
-          shoppingItems.push(item);
-          totalPrice += product.price;
+          if (consolidatedItems.has(productKey)) {
+            // Product already exists, increment quantity and update price
+            const existingItem = consolidatedItems.get(productKey)!;
+            existingItem.quantity += 1;
+            totalPrice += product.price;
+            console.log(`🔄 Consolidated: ${product.name} (quantity now: ${existingItem.quantity})`);
+          } else {
+            // New product, add to map
+            const item: AHShoppingListItem = {
+              productId: product.id,
+              productName: product.name,
+              quantity: 1,
+              price: product.price,
+              imageUrl: product.imageUrl,
+              unit: product.unit,
+              category: product.category,
+              found: true
+            };
+            
+            consolidatedItems.set(productKey, item);
+            totalPrice += product.price;
+          }
         } else {
-          // Add as manual item if not found
-          shoppingItems.push({
-            productId: `manual_${Date.now()}`,
-            productName: ingredient,
-            quantity: 1,
-            price: 0,
-            imageUrl: '/placeholder-ingredient.jpg',
-            unit: '1 stuk',
-            category: 'Te zoeken',
-            found: false
-          });
+          // For manual items, use ingredient name as key for consolidation
+          const manualKey = `manual_${ingredient.toLowerCase().trim()}`;
+          
+          if (consolidatedItems.has(manualKey)) {
+            // Manual item already exists, increment quantity
+            const existingItem = consolidatedItems.get(manualKey)!;
+            existingItem.quantity += 1;
+            console.log(`🔄 Consolidated manual item: ${ingredient} (quantity now: ${existingItem.quantity})`);
+          } else {
+            // Add as new manual item
+            consolidatedItems.set(manualKey, {
+              productId: `manual_${Date.now()}`,
+              productName: ingredient,
+              quantity: 1,
+              price: 0,
+              imageUrl: '/placeholder-ingredient.jpg',
+              unit: '1 stuk',
+              category: 'Te zoeken',
+              found: false
+            });
+          }
         }
       } catch (error) {
         console.error(`Error processing ingredient "${ingredient}":`, error);
       }
     }
+
+    // Convert Map back to array
+    const shoppingItems = Array.from(consolidatedItems.values());
 
     const shoppingList: ShoppingListExport = {
       title: `Meal Plan - ${new Date().toLocaleDateString('nl-NL')}`,

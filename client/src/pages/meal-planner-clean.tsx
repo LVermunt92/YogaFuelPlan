@@ -1195,7 +1195,7 @@ export default function MealPlanner() {
                                         }`}
                                         onClick={() => setSelectedMealId(breakfast.id)}
                                       >
-                                        <div className="text-xs font-medium text-gray-900 mb-1 line-clamp-2">{breakfast.foodDescription}</div>
+                                        <div className="text-xs font-medium text-gray-900 mb-1 line-clamp-3">{breakfast.foodDescription}</div>
                                         <div className="text-xs text-gray-500">{breakfast.protein}g • {breakfast.prepTime}min</div>
                                       </div>
                                     )}
@@ -1208,7 +1208,7 @@ export default function MealPlanner() {
                                         }`}
                                         onClick={() => setSelectedMealId(lunch.id)}
                                       >
-                                        <div className="text-xs font-medium text-gray-900 mb-1 line-clamp-2">{lunch.foodDescription}</div>
+                                        <div className="text-xs font-medium text-gray-900 mb-1 line-clamp-3">{lunch.foodDescription}</div>
                                         <div className="text-xs text-gray-500">{lunch.protein}g • {lunch.prepTime}min</div>
                                       </div>
                                     )}
@@ -1221,7 +1221,7 @@ export default function MealPlanner() {
                                         }`}
                                         onClick={() => setSelectedMealId(dinner.id)}
                                       >
-                                        <div className="text-xs font-medium text-gray-900 mb-1 line-clamp-2">{dinner.foodDescription}</div>
+                                        <div className="text-xs font-medium text-gray-900 mb-1 line-clamp-3">{dinner.foodDescription}</div>
                                         <div className="text-xs text-gray-500">{dinner.protein}g • {dinner.prepTime}min</div>
                                       </div>
                                     )}
