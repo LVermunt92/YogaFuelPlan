@@ -49,7 +49,7 @@ export const mealPlans = pgTable("meal_plans", {
 export const meals = pgTable("meals", {
   id: serial("id").primaryKey(),
   mealPlanId: integer("meal_plan_id").references(() => mealPlans.id),
-  recipeId: text("recipe_id"), // ID of the recipe in the enhanced meal database
+  // recipeId: text("recipe_id"), // ID of the recipe in the enhanced meal database - temporarily disabled
   day: integer("day").notNull(), // 1-7
   mealType: text("meal_type").notNull(), // breakfast, lunch, dinner
   foodDescription: text("food_description").notNull(),

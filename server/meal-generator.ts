@@ -132,20 +132,20 @@ function logMealFreshnessAnalysis(mealName: string, ingredients: string[]) {
 }
 
 /**
- * Incorporate leftover ingredients into meal
+ * Check which leftover ingredients are naturally present in a meal (without modification)
  */
-function incorporateLeftoverIngredients(meal: MealOption, leftovers: string[]): { modifiedMeal: MealOption, usedIngredients: string[] } {
+function checkNaturalIngredientUsage(meal: MealOption, leftovers: string[]): string[] {
   if (!leftovers || leftovers.length === 0) {
-    return { modifiedMeal: meal, usedIngredients: [] };
+    return [];
   }
 
   const usedIngredients: string[] = [];
   
-  // Check which leftover ingredients are actually used in this meal
+  // Check which leftover ingredients are naturally present in this meal
   for (const leftoverIngredient of leftovers) {
     const normalizedLeftover = leftoverIngredient.toLowerCase().trim();
     
-    // Check if any ingredient in the meal matches the leftover
+    // Check if any ingredient in the meal naturally matches the leftover
     const hasIngredient = meal.ingredients.some(ingredient => {
       const normalizedIngredient = ingredient.toLowerCase();
       return normalizedIngredient.includes(normalizedLeftover) || 
@@ -154,20 +154,11 @@ function incorporateLeftoverIngredients(meal: MealOption, leftovers: string[]): 
     
     if (hasIngredient) {
       usedIngredients.push(leftoverIngredient);
-      console.log(`✓ Using leftover ingredient: ${leftoverIngredient} in ${meal.name}`);
+      console.log(`✓ Recipe naturally uses ingredient: ${leftoverIngredient} in ${meal.name}`);
     }
   }
   
-  // Add note to meal name if ingredients were used
-  let modifiedMeal = meal;
-  if (usedIngredients.length > 0) {
-    modifiedMeal = {
-      ...meal,
-      name: `${meal.name} (incorporating leftover ${usedIngredients.join(', ')})`
-    };
-  }
-  
-  return { modifiedMeal, usedIngredients };
+  return usedIngredients;
 }
 
 /**
@@ -1091,13 +1082,13 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         allSelectedMealNames.add(selectedMeal.name);
       }
       
-      // Try to incorporate leftover ingredients for cooking moments (not leftovers)
+      // Check and log which ingredients are naturally used in the selected meal (no artificial modification)
       if (!isLeftover && remainingIngredientsToUseUp.length > 0) {
-        const { modifiedMeal, usedIngredients } = incorporateLeftoverIngredients(selectedMeal, remainingIngredientsToUseUp);
-        if (usedIngredients.length > 0) {
-          selectedMeal = modifiedMeal;
-          remainingIngredientsToUseUp = remainingIngredientsToUseUp.filter(ing => !usedIngredients.includes(ing));
-          console.log(`✓ Incorporated leftover ingredients: ${usedIngredients.join(', ')} into ${selectedMeal.name}`);
+        const naturallyUsedIngredients = checkNaturalIngredientUsage(selectedMeal, remainingIngredientsToUseUp);
+        if (naturallyUsedIngredients.length > 0) {
+          // Remove used ingredients from the list
+          remainingIngredientsToUseUp = remainingIngredientsToUseUp.filter(ing => !naturallyUsedIngredients.includes(ing));
+          console.log(`✅ Recipe naturally uses up ingredients: ${naturallyUsedIngredients.join(', ')} from ${selectedMeal.name}`);
         }
       }
 

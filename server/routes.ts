@@ -864,7 +864,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           for (const meal of planWithMeals.meals) {
             if (meal.id === mealId) {
               targetMeal = meal;
-              console.log(`Found meal: "${meal.foodDescription}" with recipe ID: ${meal.recipeId || 'none'}`);
+              console.log(`Found meal: "${meal.foodDescription}"`);
               break;
             }
           }
