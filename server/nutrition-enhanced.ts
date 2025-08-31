@@ -8679,7 +8679,7 @@ export function getDefaultPortion(ingredient: string): { amount: number; unit: s
     // Baking essentials
     'cornstarch': { amount: 200, unit: 'g' }, // Small box
     'gram flour': { amount: 500, unit: 'g' }, // Standard bag
-    'carrots': { amount: 3, unit: 'pieces' }, // 3 medium carrots
+    'carrots': { amount: 1, unit: 'piece' }, // 1 medium carrot
     'kiwi': { amount: 4, unit: 'pieces' } // 4 kiwi fruits
   };
   
