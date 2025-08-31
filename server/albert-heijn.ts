@@ -236,6 +236,7 @@ class AlbertHeijnService {
           /^minced$/,
           /^grated$/,
           /^juiced$/,
+          /\bjuiced\b/,
           /^zested$/,
           /^cored$/,
           /^deseeded$/,

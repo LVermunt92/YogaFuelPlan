@@ -7624,6 +7624,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
           /^minced$/,
           /^grated$/,
           /^juiced$/,
+          /\bjuiced\b/,
           /^zested$/,
           /^cored$/,
           /^deseeded$/,
