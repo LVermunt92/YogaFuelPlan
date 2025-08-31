@@ -114,6 +114,222 @@ class AlbertHeijnService {
 
     for (const ingredient of ingredients) {
       try {
+        // Filter out non-grocery items BEFORE searching for products
+        const cleanedIngredient = ingredient
+          .replace(/\([^)]*\)/g, '') // Remove parentheses and contents
+          .replace(/,.*$/g, '') // Remove everything after comma
+          .replace(/\s+/g, ' ') // Normalize spaces
+          .trim().toLowerCase();
+
+        console.log(`🔍 Pre-filter check: "${ingredient}" → cleaned: "${cleanedIngredient}"`);
+
+        // Filter out non-grocery items (cooking instructions, temperatures, etc.)
+        const nonGroceryPatterns = [
+          // Time and temperature patterns
+          /^\d+\s*(minutes?|mins?|hours?|hrs?|seconds?|secs?)/,
+          /^\d+\s*°[cf]/,
+          /^\d+\s*degrees?/,
+          
+          // Cooking actions/verbs
+          /^heat\s/,
+          /^cook\s/,
+          /^bake\s/,
+          /^roast\s/,
+          /^steam\s/,
+          /^boil\s/,
+          /^fry\s/,
+          /^sauté\s/,
+          /^simmer\s/,
+          /^grill\s/,
+          /^broil\s/,
+          /^until\s/,
+          /^serve\s/,
+          /^season\s/,
+          /^add\s/,
+          /^mix\s/,
+          /^stir\s/,
+          /^blend\s/,
+          /^whisk\s/,
+          /^combine\s/,
+          /^toss\s/,
+          /^sprinkle\s/,
+          /^drizzle\s/,
+          /^garnish\s/,
+          /^top\s/,
+          /^finish\s/,
+          /^adjust\s/,
+          /^taste\s/,
+          /^check\s/,
+          
+          // Preparation methods (standalone)
+          /^chop\s/,
+          /^dice\s/,
+          /^slice\s/,
+          /^mince\s/,
+          /^grate\s/,
+          /^peel\s/,
+          /^trim\s/,
+          /^wash\s/,
+          /^rinse\s/,
+          /^drain\s/,
+          /^pat\s+dry/,
+          
+          // Preparation descriptions and instructions
+          /^finely$/,
+          /finely$/,
+          /^roughly$/,
+          /^thinly$/,
+          /^thickly$/,
+          /^coarsely$/,
+          /^finely\s/,
+          /^roughly\s/,
+          /^thinly\s/,
+          /^thickly\s/,
+          /^coarsely\s/,
+          /^chops$/,
+          /^chopped$/,
+          /finely\s+chopped/,
+          /dice\s+into\s+/,
+          /cut\s+into\s+/,
+          /slice\s+into\s+/,
+          /chop\s+into\s+/,
+          /break\s+into\s+/,
+          /tear\s+into\s+/,
+          /\d+\s*cm\s+pieces/,
+          /\d+\s*mm\s+pieces/,
+          /\d+\s*inch\s+pieces/,
+          /into\s+\d+/,
+          /cut\s+into\s+\d+cm/,
+          /cut\s+into\s+\d+\s*cm/,
+          /^cut\s+into\s+\d+cm\s+pieces$/,
+          /^cut\s+into\s+\d+\s*cm\s+pieces$/,
+          /cut\s+into\s+\d+cm\s+pieces/,
+          /cut\s+into\s+\d+\s*cm\s+pieces/,
+          /deseeded.*bite.sized/,
+          /cored.*finely/,
+          /bite\s+size/,
+          /bite-size/,
+          /small\s+pieces/,
+          /large\s+pieces/,
+          /medium\s+pieces/,
+          /into\s+pieces/,
+          /into\s+chunks/,
+          /into\s+strips/,
+          /into\s+cubes/,
+          /into\s+wedges/,
+          /into\s+rounds/,
+          /into\s+rings/,
+          /^very\s+/,
+          /^extra\s+/,
+          /^super\s+/,
+          
+          // Standalone descriptors that aren't actual ingredients
+          /^fresh$/,
+          /^dried$/,
+          /^ground$/,
+          /^chopped$/,
+          /^diced$/,
+          /^sliced$/,
+          /^minced$/,
+          /^grated$/,
+          /^juiced$/,
+          /^zested$/,
+          /^cored$/,
+          /^deseeded$/,
+          /^peeled$/,
+          /^trimmed$/,
+          /cored\s*&/,
+          /deseeded\s*&/,
+          /^cored\s*&\s*finely$/,
+          /cored\s*&\s*finely/,
+          /^washed$/,
+          /^rinsed$/,
+          /^drained$/,
+          /^cooked$/,
+          /^raw$/,
+          /^frozen$/,
+          /^thawed$/,
+          /^room\s+temperature$/,
+          /^cold$/,
+          /^warm$/,
+          /^hot$/,
+          
+          // Serving and optional instructions
+          /^optional$/,
+          /^to\s+taste$/,
+          /^for\s+serving$/,
+          /^for\s+garnish$/,
+          /^as\s+needed$/,
+          /^if\s+desired$/,
+          /^if\s+available$/,
+          
+          // Measurements without ingredients
+          /^pinch\s*$/,
+          /^dash\s*$/,
+          /^splash\s*$/,
+          /^drizzle\s*$/,
+          /^handful\s*$/,
+          /^bunch\s*$/,
+          /^sprig\s*$/,
+          /^leaf\s*$/,
+          /^leaves\s*$/,
+          
+          // Basic seasonings that are too generic
+          /^\s*salt\s*$/,
+          /^\s*pepper\s*$/,
+          /^\s*water\s*$/,
+          /^\s*ice\s*$/,
+          
+          // Empty or very short non-meaningful entries
+          /^\s*$/,
+          /^.{1,2}$/,
+          
+          // Common cooking equipment or non-food items
+          /^pan$/,
+          /^pot$/,
+          /^bowl$/,
+          /^plate$/,
+          /^dish$/,
+          /^tray$/,
+          /^sheet$/,
+          /^foil$/,
+          /^paper$/,
+          /^plastic$/,
+          /^wrap$/,
+          /^parchment$/,
+          
+          // Units without ingredients
+          /^\d+\s*g\s*$/,
+          /^\d+\s*ml\s*$/,
+          /^\d+\s*tbsp\s*$/,
+          /^\d+\s*tsp\s*$/,
+          /^\d+\s*cup\s*$/,
+          /^\d+\s*piece\s*$/,
+          /^\d+\s*clove\s*$/,
+          
+          // Common leftover preparation text
+          /^preparation$/,
+          /^method$/,
+          /^ingredients$/,
+          /^instructions$/,
+          /^notes$/,
+          /^tips$/,
+          /^serving$/,
+          /^yield$/,
+          /^makes$/,
+          /^serves$/,
+          /^prep\s+time$/,
+          /^cook\s+time$/,
+          /^total\s+time$/
+        ];
+
+        // Skip this ingredient if it matches non-grocery patterns
+        const shouldSkip = nonGroceryPatterns.some(pattern => pattern.test(cleanedIngredient));
+        if (shouldSkip) {
+          console.log(`🚫 Skipping non-grocery item: "${ingredient}"`);
+          continue; // Skip this ingredient entirely
+        }
+
         const products = await this.searchProduct(ingredient);
         
         if (products.length > 0) {
