@@ -183,6 +183,58 @@ class AlbertHeijnService {
               .replace(/\s+/g, ' ') // Normalize spaces
               .trim().toLowerCase();
 
+            // Filter out non-grocery items (cooking instructions, temperatures, etc.)
+            const nonGroceryPatterns = [
+              /^\d+\s*(minutes?|mins?|hours?|hrs?|seconds?|secs?)/,
+              /^\d+\s*°[cf]/,
+              /^heat\s/,
+              /^cook\s/,
+              /^bake\s/,
+              /^roast\s/,
+              /^steam\s/,
+              /^boil\s/,
+              /^fry\s/,
+              /^until\s/,
+              /^serve\s/,
+              /^season\s/,
+              /^add\s/,
+              /^mix\s/,
+              /^stir\s/,
+              /^blend\s/,
+              /^chop\s/,
+              /^dice\s/,
+              /^slice\s/,
+              /^fresh$/,
+              /^dried$/,
+              /^ground$/,
+              /^chopped$/,
+              /^diced$/,
+              /^sliced$/,
+              /^minced$/,
+              /^grated$/,
+              /^juiced$/,
+              /^zested$/,
+              /^optional$/,
+              /^to taste$/,
+              /^for serving$/,
+              /^for garnish$/,
+              /^pinch\s*$/,
+              /^dash\s*$/,
+              /^splash\s*$/,
+              /^drizzle\s*$/,
+              /^\s*salt\s*$/,
+              /^\s*pepper\s*$/,
+              /^\s*water\s*$/
+            ];
+
+            // Skip this ingredient if it matches non-grocery patterns
+            const shouldSkip = nonGroceryPatterns.some(pattern => pattern.test(cleanedIngredient));
+            if (shouldSkip) {
+              console.log(`🚫 Skipping non-grocery item: "${ingredient}"`);
+              continue; // Skip this ingredient entirely
+            }
+
+            // Enhanced categorization logic
             if (cleanedIngredient.includes('mushroom') || cleanedIngredient.includes('champignon') || 
                 cleanedIngredient.includes('chestnut')) {
               itemCategory = 'Groente & fruit';
@@ -191,22 +243,86 @@ class AlbertHeijnService {
                       cleanedIngredient.includes('lettuce') || cleanedIngredient.includes('spinach') ||
                       cleanedIngredient.includes('broccoli') || cleanedIngredient.includes('carrot') ||
                       cleanedIngredient.includes('cucumber') || cleanedIngredient.includes('avocado') ||
-                      cleanedIngredient.includes('zucchini') || cleanedIngredient.includes('bell pepper')) {
+                      cleanedIngredient.includes('zucchini') || cleanedIngredient.includes('bell pepper') ||
+                      cleanedIngredient.includes('potato') || cleanedIngredient.includes('sweet potato') ||
+                      cleanedIngredient.includes('bean') || cleanedIngredient.includes('lentil') ||
+                      cleanedIngredient.includes('chickpea') || cleanedIngredient.includes('pea') ||
+                      cleanedIngredient.includes('corn') || cleanedIngredient.includes('cabbage') ||
+                      cleanedIngredient.includes('kale') || cleanedIngredient.includes('celery') ||
+                      cleanedIngredient.includes('leek') || cleanedIngredient.includes('radish') ||
+                      cleanedIngredient.includes('beet') || cleanedIngredient.includes('turnip') ||
+                      cleanedIngredient.includes('parsnip') || cleanedIngredient.includes('squash') ||
+                      cleanedIngredient.includes('pumpkin') || cleanedIngredient.includes('eggplant') ||
+                      cleanedIngredient.includes('artichoke') || cleanedIngredient.includes('asparagus') ||
+                      cleanedIngredient.includes('brussels sprout') || cleanedIngredient.includes('fennel') ||
+                      cleanedIngredient.includes('apple') || cleanedIngredient.includes('banana') ||
+                      cleanedIngredient.includes('orange') || cleanedIngredient.includes('berr') ||
+                      cleanedIngredient.includes('grape') || cleanedIngredient.includes('melon') ||
+                      cleanedIngredient.includes('pear') || cleanedIngredient.includes('peach') ||
+                      cleanedIngredient.includes('plum') || cleanedIngredient.includes('kiwi') ||
+                      cleanedIngredient.includes('mango') || cleanedIngredient.includes('pineapple') ||
+                      cleanedIngredient.includes('lime') || cleanedIngredient.includes('lemon')) {
               itemCategory = 'Groente & fruit';
             } else if (cleanedIngredient.includes('milk') || cleanedIngredient.includes('cheese') ||
                       cleanedIngredient.includes('egg') || cleanedIngredient.includes('yogurt') ||
-                      cleanedIngredient.includes('kefir') || cleanedIngredient.includes('cream')) {
+                      cleanedIngredient.includes('kefir') || cleanedIngredient.includes('cream') ||
+                      cleanedIngredient.includes('butter') || cleanedIngredient.includes('cottage cheese') ||
+                      cleanedIngredient.includes('feta') || cleanedIngredient.includes('mozzarella') ||
+                      cleanedIngredient.includes('parmesan') || cleanedIngredient.includes('cheddar') ||
+                      cleanedIngredient.includes('goat cheese') || cleanedIngredient.includes('ricotta')) {
               itemCategory = 'Zuivel & eieren';
             } else if (cleanedIngredient.includes('chicken') || cleanedIngredient.includes('beef') ||
                       cleanedIngredient.includes('fish') || cleanedIngredient.includes('meat') ||
-                      cleanedIngredient.includes('tofu') || cleanedIngredient.includes('tempeh')) {
+                      cleanedIngredient.includes('tofu') || cleanedIngredient.includes('tempeh') ||
+                      cleanedIngredient.includes('salmon') || cleanedIngredient.includes('tuna') ||
+                      cleanedIngredient.includes('shrimp') || cleanedIngredient.includes('turkey') ||
+                      cleanedIngredient.includes('pork') || cleanedIngredient.includes('ham') ||
+                      cleanedIngredient.includes('bacon') || cleanedIngredient.includes('sausage')) {
               itemCategory = 'Vlees, vis & vegetarisch';
             } else if (cleanedIngredient.includes('peanut butter') || cleanedIngredient.includes('nut butter') ||
-                      cleanedIngredient.includes('jam') || cleanedIngredient.includes('honey')) {
+                      cleanedIngredient.includes('jam') || cleanedIngredient.includes('honey') ||
+                      cleanedIngredient.includes('maple syrup') || cleanedIngredient.includes('marmalade') ||
+                      cleanedIngredient.includes('nutella') || cleanedIngredient.includes('tahini')) {
               itemCategory = 'Ontbijt & beleg';
             } else if (cleanedIngredient.includes('rice') || cleanedIngredient.includes('pasta') ||
-                      cleanedIngredient.includes('quinoa') || cleanedIngredient.includes('noodle')) {
+                      cleanedIngredient.includes('quinoa') || cleanedIngredient.includes('noodle') ||
+                      cleanedIngredient.includes('couscous') || cleanedIngredient.includes('bulgur') ||
+                      cleanedIngredient.includes('barley') || cleanedIngredient.includes('oats') ||
+                      cleanedIngredient.includes('flour') || cleanedIngredient.includes('bread') ||
+                      cleanedIngredient.includes('tortilla') || cleanedIngredient.includes('wrap')) {
               itemCategory = 'Rijst, pasta & wereldkeuken';
+            } else if (cleanedIngredient.includes('oil') || cleanedIngredient.includes('vinegar') ||
+                      cleanedIngredient.includes('soy sauce') || cleanedIngredient.includes('tamari') ||
+                      cleanedIngredient.includes('sesame oil') || cleanedIngredient.includes('coconut oil') ||
+                      cleanedIngredient.includes('olive oil') || cleanedIngredient.includes('balsamic') ||
+                      cleanedIngredient.includes('mustard') || cleanedIngredient.includes('mayo') ||
+                      cleanedIngredient.includes('ketchup') || cleanedIngredient.includes('hot sauce') ||
+                      cleanedIngredient.includes('sriracha') || cleanedIngredient.includes('pesto') ||
+                      cleanedIngredient.includes('curry paste') || cleanedIngredient.includes('tomato paste') ||
+                      cleanedIngredient.includes('stock') || cleanedIngredient.includes('broth') ||
+                      cleanedIngredient.includes('coconut milk') || cleanedIngredient.includes('almond milk') ||
+                      cleanedIngredient.includes('cumin') || cleanedIngredient.includes('paprika') ||
+                      cleanedIngredient.includes('turmeric') || cleanedIngredient.includes('ginger') ||
+                      cleanedIngredient.includes('cinnamon') || cleanedIngredient.includes('oregano') ||
+                      cleanedIngredient.includes('basil') || cleanedIngredient.includes('thyme') ||
+                      cleanedIngredient.includes('rosemary') || cleanedIngredient.includes('sage') ||
+                      cleanedIngredient.includes('parsley') || cleanedIngredient.includes('cilantro') ||
+                      cleanedIngredient.includes('dill') || cleanedIngredient.includes('mint') ||
+                      cleanedIngredient.includes('chili') || cleanedIngredient.includes('pepper') ||
+                      cleanedIngredient.includes('garlic powder') || cleanedIngredient.includes('onion powder') ||
+                      cleanedIngredient.includes('vanilla') || cleanedIngredient.includes('lemon juice') ||
+                      cleanedIngredient.includes('lime juice') || cleanedIngredient.includes('coconut flakes') ||
+                      cleanedIngredient.includes('sesame seeds') || cleanedIngredient.includes('sunflower seeds') ||
+                      cleanedIngredient.includes('pumpkin seeds') || cleanedIngredient.includes('chia seeds') ||
+                      cleanedIngredient.includes('flaxseed') || cleanedIngredient.includes('hemp hearts') ||
+                      cleanedIngredient.includes('nutritional yeast') || cleanedIngredient.includes('protein powder')) {
+              itemCategory = 'Conserven & sauzen';
+            } else if (cleanedIngredient.includes('nuts') || cleanedIngredient.includes('almond') ||
+                      cleanedIngredient.includes('walnut') || cleanedIngredient.includes('pecan') ||
+                      cleanedIngredient.includes('cashew') || cleanedIngredient.includes('pistachio') ||
+                      cleanedIngredient.includes('hazelnut') || cleanedIngredient.includes('pine nuts') ||
+                      cleanedIngredient.includes('macadamia') || cleanedIngredient.includes('brazil nuts')) {
+              itemCategory = 'Snacks & snoep';
             }
 
             // Clean the display name too
