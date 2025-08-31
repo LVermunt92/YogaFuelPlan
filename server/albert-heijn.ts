@@ -51,24 +51,39 @@ class AlbertHeijnService {
       // Note: In production, you would implement proper web scraping here
       // For now, returning mock data structure that matches AH products
       
-      // Determine appropriate category based on product type
+      // Clean query and determine appropriate category based on product type
+      const cleanQuery = query
+        .replace(/\([^)]*\)/g, '') // Remove parentheses and contents
+        .replace(/,.*$/g, '') // Remove everything after comma
+        .replace(/\s+/g, ' ') // Normalize spaces
+        .trim().toLowerCase();
+
       let productCategory = 'Groente & fruit'; // Default for vegetables/fruits
-      if (query.toLowerCase().includes('milk') || query.toLowerCase().includes('cheese') || 
-          query.toLowerCase().includes('egg') || query.toLowerCase().includes('yogurt')) {
+      if (cleanQuery.includes('milk') || cleanQuery.includes('cheese') || 
+          cleanQuery.includes('egg') || cleanQuery.includes('yogurt') ||
+          cleanQuery.includes('kefir') || cleanQuery.includes('cream')) {
         productCategory = 'Zuivel & eieren';
-      } else if (query.toLowerCase().includes('chicken') || query.toLowerCase().includes('beef') || 
-                query.toLowerCase().includes('fish') || query.toLowerCase().includes('meat')) {
+      } else if (cleanQuery.includes('chicken') || cleanQuery.includes('beef') || 
+                cleanQuery.includes('fish') || cleanQuery.includes('meat') ||
+                cleanQuery.includes('tofu') || cleanQuery.includes('tempeh')) {
         productCategory = 'Vlees, vis & vegetarisch';
-      } else if (query.toLowerCase().includes('bread') || query.toLowerCase().includes('pastry')) {
+      } else if (cleanQuery.includes('bread') || cleanQuery.includes('pastry')) {
         productCategory = 'Brood & gebak';
-      } else if (query.toLowerCase().includes('rice') || query.toLowerCase().includes('pasta')) {
+      } else if (cleanQuery.includes('peanut butter') || cleanQuery.includes('nut butter') ||
+                cleanQuery.includes('jam') || cleanQuery.includes('honey')) {
+        productCategory = 'Ontbijt & beleg';
+      } else if (cleanQuery.includes('rice') || cleanQuery.includes('pasta') ||
+                cleanQuery.includes('quinoa') || cleanQuery.includes('noodle')) {
         productCategory = 'Rijst, pasta & wereldkeuken';
       }
+
+      // Clean the product name for display
+      const cleanProductName = cleanQuery.charAt(0).toUpperCase() + cleanQuery.slice(1);
 
       const mockProducts: AHProduct[] = [
         {
           id: `ah_${Date.now()}`,
-          name: query.charAt(0).toUpperCase() + query.slice(1),
+          name: cleanProductName,
           brand: 'AH',
           price: 2.99,
           unit: '1 stuk',
@@ -161,25 +176,49 @@ class AlbertHeijnService {
             // Add as new manual item
             // Determine appropriate category for manual items
             let itemCategory = 'Te zoeken'; // Default fallback
-            if (ingredient.toLowerCase().includes('mushroom') || ingredient.toLowerCase().includes('champignon') || 
-                ingredient.toLowerCase().includes('chestnut')) {
+            // Clean ingredient name by removing descriptions and preparation methods
+            const cleanedIngredient = ingredient
+              .replace(/\([^)]*\)/g, '') // Remove parentheses and contents
+              .replace(/,.*$/g, '') // Remove everything after comma
+              .replace(/\s+/g, ' ') // Normalize spaces
+              .trim().toLowerCase();
+
+            if (cleanedIngredient.includes('mushroom') || cleanedIngredient.includes('champignon') || 
+                cleanedIngredient.includes('chestnut')) {
               itemCategory = 'Groente & fruit';
-            } else if (ingredient.toLowerCase().includes('garlic') || ingredient.toLowerCase().includes('onion') || 
-                      ingredient.toLowerCase().includes('tomato') || ingredient.toLowerCase().includes('pepper') ||
-                      ingredient.toLowerCase().includes('lettuce') || ingredient.toLowerCase().includes('spinach') ||
-                      ingredient.toLowerCase().includes('broccoli') || ingredient.toLowerCase().includes('carrot')) {
+            } else if (cleanedIngredient.includes('garlic') || cleanedIngredient.includes('onion') || 
+                      cleanedIngredient.includes('tomato') || cleanedIngredient.includes('pepper') ||
+                      cleanedIngredient.includes('lettuce') || cleanedIngredient.includes('spinach') ||
+                      cleanedIngredient.includes('broccoli') || cleanedIngredient.includes('carrot') ||
+                      cleanedIngredient.includes('cucumber') || cleanedIngredient.includes('avocado') ||
+                      cleanedIngredient.includes('zucchini') || cleanedIngredient.includes('bell pepper')) {
               itemCategory = 'Groente & fruit';
-            } else if (ingredient.toLowerCase().includes('milk') || ingredient.toLowerCase().includes('cheese') ||
-                      ingredient.toLowerCase().includes('egg') || ingredient.toLowerCase().includes('yogurt')) {
+            } else if (cleanedIngredient.includes('milk') || cleanedIngredient.includes('cheese') ||
+                      cleanedIngredient.includes('egg') || cleanedIngredient.includes('yogurt') ||
+                      cleanedIngredient.includes('kefir') || cleanedIngredient.includes('cream')) {
               itemCategory = 'Zuivel & eieren';
-            } else if (ingredient.toLowerCase().includes('chicken') || ingredient.toLowerCase().includes('beef') ||
-                      ingredient.toLowerCase().includes('fish') || ingredient.toLowerCase().includes('meat')) {
+            } else if (cleanedIngredient.includes('chicken') || cleanedIngredient.includes('beef') ||
+                      cleanedIngredient.includes('fish') || cleanedIngredient.includes('meat') ||
+                      cleanedIngredient.includes('tofu') || cleanedIngredient.includes('tempeh')) {
               itemCategory = 'Vlees, vis & vegetarisch';
+            } else if (cleanedIngredient.includes('peanut butter') || cleanedIngredient.includes('nut butter') ||
+                      cleanedIngredient.includes('jam') || cleanedIngredient.includes('honey')) {
+              itemCategory = 'Ontbijt & beleg';
+            } else if (cleanedIngredient.includes('rice') || cleanedIngredient.includes('pasta') ||
+                      cleanedIngredient.includes('quinoa') || cleanedIngredient.includes('noodle')) {
+              itemCategory = 'Rijst, pasta & wereldkeuken';
             }
+
+            // Clean the display name too
+            const cleanDisplayName = ingredient
+              .replace(/\([^)]*\)/g, '') // Remove parentheses and contents
+              .replace(/,.*$/g, '') // Remove everything after comma
+              .replace(/\s+/g, ' ') // Normalize spaces
+              .trim();
 
             consolidatedItems.set(manualKey, {
               productId: `manual_${Date.now()}`,
-              productName: ingredient,
+              productName: cleanDisplayName,
               quantity: 1,
               price: 0,
               imageUrl: '/placeholder-ingredient.jpg',
