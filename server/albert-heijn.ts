@@ -96,6 +96,8 @@ class AlbertHeijnService {
             productKey = `lime_consolidated`; // Use unified key for all lime products
           } else if (ingredient.toLowerCase().includes('lemon') || product.name.toLowerCase().includes('citroen')) {
             productKey = `lemon_consolidated`; // Use unified key for all lemon products
+          } else if (ingredient.toLowerCase().includes('oat milk') || product.name.toLowerCase().includes('haver') || product.name.toLowerCase().includes('oat')) {
+            productKey = `oat_milk_consolidated`; // Use unified key for all oat milk products
           }
           
           if (consolidatedItems.has(productKey)) {
@@ -131,6 +133,8 @@ class AlbertHeijnService {
             manualKey = `manual_lime_pieces`;
           } else if (ingredient.toLowerCase().includes('lemon')) {
             manualKey = `manual_lemon_pieces`;
+          } else if (ingredient.toLowerCase().includes('oat milk')) {
+            manualKey = `manual_oat_milk`;
           }
           
           if (consolidatedItems.has(manualKey)) {
