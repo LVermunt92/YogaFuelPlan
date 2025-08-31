@@ -915,6 +915,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
       
+      // If still not found, try fuzzy matching for similar recipes
+      if (!mealOption) {
+        console.log(`Trying fuzzy matching for: "${cleanMealName}"`);
+        
+        // Extract key words from the meal name for fuzzy matching
+        const mealWords = cleanMealName.toLowerCase()
+          .replace(/\(.*?\)/g, '') // Remove parenthetical content
+          .split(/[\s,&-]+/)
+          .filter(word => word.length > 2 && !['with', 'and', 'the', 'for'].includes(word));
+        
+        // Find recipes that contain most of the key words
+        let bestMatch: any = null;
+        let bestScore = 0;
+        
+        for (const recipe of ENHANCED_MEAL_DATABASE) {
+          const recipeWords = recipe.name.toLowerCase().split(/[\s,&-]+/);
+          const matchingWords = mealWords.filter(word => 
+            recipeWords.some(recipeWord => recipeWord.includes(word) || word.includes(recipeWord))
+          );
+          
+          const score = matchingWords.length / mealWords.length;
+          if (score > bestScore && score >= 0.6) { // At least 60% word match
+            bestScore = score;
+            bestMatch = recipe;
+          }
+        }
+        
+        if (bestMatch) {
+          mealOption = bestMatch;
+          console.log(`Found recipe using fuzzy matching: "${bestMatch.name}" (score: ${bestScore.toFixed(2)})`);
+        }
+      }
+      
       console.log(`Recipe found: ${mealOption ? 'YES' : 'NO'}`);
       if (!mealOption) {
         console.log(`Available recipes: ${ENHANCED_MEAL_DATABASE.slice(0, 5).map(m => m.name).join(', ')}...`);
