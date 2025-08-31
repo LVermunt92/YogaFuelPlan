@@ -107,6 +107,9 @@ class AlbertHeijnService {
    */
   async createShoppingListFromMealPlan(ingredients: string[]): Promise<ShoppingListExport> {
     console.log('🛒 Creating Albert Heijn shopping list from meal plan...');
+    console.log('🚨 SHOPPING LIST GENERATION STARTED - FILTERING ENABLED!');
+    console.log(`📋 Total ingredients received: ${ingredients.length}`);
+    console.log('📋 Raw ingredients:', ingredients);
     
     // Use Map to consolidate identical products
     const consolidatedItems = new Map<string, AHShoppingListItem>();

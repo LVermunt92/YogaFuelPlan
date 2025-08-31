@@ -7509,12 +7509,187 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
           return;
         }
         
-        // FINAL FILTER: Block cooking instructions that slip through recipe parsing
-        const forbiddenInstructions = [
-          'cut into 1cm pieces', 'finely', 'melted', 'roughly', 'chopped', 'diced', 'sliced', 'minced'
+        // COMPREHENSIVE FILTER: Block all cooking instructions and non-grocery items
+        console.log(`🔍 Shopping list filter check: "${cleanIngredient}"`);
+        
+        const cleanedForFilter = cleanIngredient.toLowerCase().trim();
+        
+        // Comprehensive filtering patterns to remove non-grocery items
+        const nonGroceryPatterns = [
+          // Time and temperature patterns
+          /^\d+\s*(minutes?|mins?|hours?|hrs?|seconds?|secs?)/,
+          /^\d+\s*°[cf]/,
+          /^\d+\s*degrees?/,
+          
+          // Cooking actions/verbs
+          /^heat\s/,
+          /^cook\s/,
+          /^bake\s/,
+          /^roast\s/,
+          /^steam\s/,
+          /^boil\s/,
+          /^fry\s/,
+          /^sauté\s/,
+          /^simmer\s/,
+          /^grill\s/,
+          /^broil\s/,
+          /^until\s/,
+          /^serve\s/,
+          /^season\s/,
+          /^add\s/,
+          /^mix\s/,
+          /^stir\s/,
+          /^blend\s/,
+          /^whisk\s/,
+          /^combine\s/,
+          /^toss\s/,
+          /^sprinkle\s/,
+          /^drizzle\s/,
+          /^garnish\s/,
+          /^top\s/,
+          /^finish\s/,
+          /^adjust\s/,
+          /^taste\s/,
+          /^check\s/,
+          
+          // Preparation methods (standalone)
+          /^chop\s/,
+          /^dice\s/,
+          /^slice\s/,
+          /^mince\s/,
+          /^grate\s/,
+          /^peel\s/,
+          /^trim\s/,
+          /^wash\s/,
+          /^rinse\s/,
+          /^drain\s/,
+          /^pat\s+dry/,
+          
+          // Preparation descriptions and instructions
+          /^finely$/,
+          /finely$/,
+          /^roughly$/,
+          /^thinly$/,
+          /^thickly$/,
+          /^coarsely$/,
+          /^finely\s/,
+          /^roughly\s/,
+          /^thinly\s/,
+          /^thickly\s/,
+          /^coarsely\s/,
+          /^chops$/,
+          /^chopped$/,
+          /finely\s+chopped/,
+          /dice\s+into\s+/,
+          /cut\s+into\s+/,
+          /slice\s+into\s+/,
+          /chop\s+into\s+/,
+          /break\s+into\s+/,
+          /tear\s+into\s+/,
+          /\d+\s*cm\s+pieces/,
+          /\d+\s*mm\s+pieces/,
+          /\d+\s*inch\s+pieces/,
+          /into\s+\d+/,
+          /cut\s+into\s+\d+cm/,
+          /cut\s+into\s+\d+\s*cm/,
+          /^cut\s+into\s+\d+cm\s+pieces$/,
+          /^cut\s+into\s+\d+\s*cm\s+pieces$/,
+          /cut\s+into\s+\d+cm\s+pieces/,
+          /cut\s+into\s+\d+\s*cm\s+pieces/,
+          /deseeded.*bite.sized/,
+          /cored.*finely/,
+          /bite\s+size/,
+          /bite-size/,
+          /small\s+pieces/,
+          /large\s+pieces/,
+          /medium\s+pieces/,
+          /into\s+pieces/,
+          /into\s+chunks/,
+          /into\s+strips/,
+          /into\s+cubes/,
+          /into\s+wedges/,
+          /into\s+rounds/,
+          /into\s+rings/,
+          /^very\s+/,
+          /^extra\s+/,
+          /^super\s+/,
+          
+          // Standalone descriptors that aren't actual ingredients
+          /^fresh$/,
+          /^dried$/,
+          /^ground$/,
+          /^chopped$/,
+          /^diced$/,
+          /^sliced$/,
+          /^minced$/,
+          /^grated$/,
+          /^juiced$/,
+          /^zested$/,
+          /^cored$/,
+          /^deseeded$/,
+          /^peeled$/,
+          /^trimmed$/,
+          /cored\s*&/,
+          /deseeded\s*&/,
+          /^cored\s*&\s*finely$/,
+          /cored\s*&\s*finely/,
+          /^washed$/,
+          /^rinsed$/,
+          /^drained$/,
+          /^cooked$/,
+          /^raw$/,
+          /^frozen$/,
+          /^thawed$/,
+          /^room\s+temperature$/,
+          /^cold$/,
+          /^warm$/,
+          /^hot$/,
+          /^melted$/,
+          
+          // Serving and optional instructions
+          /^optional$/,
+          /^to\s+taste$/,
+          /^for\s+serving$/,
+          /^for\s+garnish$/,
+          /^as\s+needed$/,
+          /^if\s+desired$/,
+          /^if\s+available$/,
+          
+          // Measurements without ingredients
+          /^pinch\s*$/,
+          /^dash\s*$/,
+          /^splash\s*$/,
+          /^drizzle\s*$/,
+          /^handful\s*$/,
+          /^bunch\s*$/,
+          /^sprig\s*$/,
+          /^leaf\s*$/,
+          /^leaves\s*$/,
+          
+          // Basic seasonings that are too generic
+          /^\s*salt\s*$/,
+          /^\s*pepper\s*$/,
+          /^\s*water\s*$/,
+          /^\s*ice\s*$/,
+          
+          // Empty or very short non-meaningful entries
+          /^\s*$/,
+          /^.{1,2}$/,
+          
+          // Units without ingredients
+          /^\d+\s*g\s*$/,
+          /^\d+\s*ml\s*$/,
+          /^\d+\s*tbsp\s*$/,
+          /^\d+\s*tsp\s*$/,
+          /^\d+\s*cup\s*$/,
+          /^\d+\s*piece\s*$/,
+          /^\d+\s*clove\s*$/
         ];
-        if (forbiddenInstructions.includes(cleanIngredient.toLowerCase())) {
-          console.warn(`🚫 SHOPPING LIST: Blocking cooking instruction: "${cleanIngredient}"`);
+
+        // Skip this ingredient if it matches non-grocery patterns
+        const shouldSkip = nonGroceryPatterns.some(pattern => pattern.test(cleanedForFilter));
+        if (shouldSkip) {
+          console.log(`🚫 SHOPPING LIST: Skipping non-grocery item: "${cleanIngredient}"`);
           return;
         }
         
