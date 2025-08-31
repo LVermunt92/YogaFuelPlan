@@ -5640,7 +5640,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.7
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "high-protein", "thai", "curry", "one-pan", "batch-cooking", "warming"],
+    tags: ["vegetarian", "gluten-free", "high-protein", "thai", "curry", "one-pan", "batch-cooking", "warming", "ayurvedic"],
     ingredients: [
       "30ml olive oil",
       "2 cloves garlic, finely chopped",
@@ -6300,7 +6300,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.2
     },
     category: "dinner",
-    tags: ["vegetarian", "dairy-free", "gluten-free", "high-protein", "thai", "curry", "crispy-tofu", "aromatic"],
+    tags: ["vegetarian", "dairy-free", "gluten-free", "high-protein", "thai", "curry", "crispy-tofu", "aromatic", "ayurvedic"],
     ingredients: [
       "200g firm tofu, cut into cubes",
       "30g cornstarch",
@@ -6789,7 +6789,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.2
     },
     category: "dinner",
-    tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "comfort-food", "warming", "mushroom", "umami"],
+    tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "comfort-food", "warming", "mushroom", "umami", "ayurvedic"],
     ingredients: [
       "1 tbsp olive oil",
       "1 onion",
@@ -7115,7 +7115,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.2
     },
     category: "dinner",
-    tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "warming", "quinoa", "beans", "chilli", "one-pot", "weeknight"],
+    tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "warming", "quinoa", "beans", "chilli", "one-pot", "weeknight", "ayurvedic"],
     ingredients: [
       "1 large red onion (peeled & finely chopped)",
       "3 cloves garlic (peeled & finely chopped)",
