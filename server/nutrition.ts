@@ -664,7 +664,7 @@ export const MEAL_DATABASE: MealOption[] = [
     nutrition: { protein: 28, prepTime: 10, costEuros: 4.60, proteinPerEuro: 6.1 },
     category: "breakfast",
     tags: ["raw", "omega-3", "quick", "energizing", "alkalizing"],
-    ingredients: ["spinach", "avocado", "banana", "pea protein powder", "hemp hearts", "chia seeds", "coconut water", "spirulina", "mint", "lime", "coconut flakes", "berries"],
+    ingredients: ["spinach", "avocado", "banana", "pea protein powder", "hemp hearts", "chia seeds", "coconut water", "spirulina", "mint", "1 lime", "coconut flakes", "berries"],
     vegetableContent: {
       servings: 3,
       vegetables: ["spinach", "avocado", "mint"],
@@ -697,7 +697,7 @@ export const MEAL_DATABASE: MealOption[] = [
     nutrition: { protein: 31, prepTime: 20, costEuros: 5.40, proteinPerEuro: 5.7 },
     category: "lunch",
     tags: ["fresh", "crunchy", "probiotic", "Asian-inspired", "low-carb"],
-    ingredients: ["tempeh", "butter lettuce", "peanut butter", "soy sauce", "rice vinegar", "ginger", "garlic", "carrots", "cucumber", "bell peppers", "fresh herbs", "lime", "sesame oil"],
+    ingredients: ["tempeh", "butter lettuce", "peanut butter", "soy sauce", "rice vinegar", "ginger", "garlic", "carrots", "cucumber", "bell peppers", "fresh herbs", "1 lime", "sesame oil"],
     vegetableContent: {
       servings: 5,
       vegetables: ["lettuce", "carrots", "cucumber", "bell peppers", "fresh herbs"],

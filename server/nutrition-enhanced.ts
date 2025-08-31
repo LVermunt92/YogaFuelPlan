@@ -8614,6 +8614,7 @@ export function getDefaultPortion(ingredient: string): { amount: number; unit: s
     'coconut yogurt': { amount: 120, unit: 'g' }, // 0.5 cup = ~120g
     'cherry tomatoes': { amount: 150, unit: 'g' }, // 1 cup = ~150g
     'tomatoes': { amount: 2, unit: 'pieces' }, // 2 medium tomatoes
+    'lime': { amount: 1, unit: 'piece' }, // 1 lime
     'bell peppers': { amount: 2, unit: 'pieces' }, // 2 medium peppers
     'sugar snaps': { amount: 150, unit: 'g' }, // Sugar snap peas in grams
     'sugarsnaps': { amount: 150, unit: 'g' }, // Sugar snap peas in grams (alternative name)
@@ -8753,8 +8754,14 @@ function cleanIngredientName(ingredient: string): string {
   
   // Lemon standardization - convert all lemon variants to "lemon"
   if (cleaned === 'lemon' || cleaned === 'lemons' || cleaned.includes('lemon zest') || 
-      cleaned.includes('lemon juice') || cleaned.includes('lime juice')) {
+      cleaned.includes('lemon juice')) {
     cleaned = 'lemon'; // Use simple "lemon" instead of "pieces of lemon"
+  }
+  
+  // Lime standardization - convert all lime variants to "lime"
+  if (cleaned === 'lime' || cleaned === 'limes' || cleaned.includes('lime zest') || 
+      cleaned.includes('lime juice')) {
+    cleaned = 'lime'; // Use simple "lime" instead of "pieces of lime"
   }
   
   // CRITICAL FIX: Prevent ingredient names from containing amount descriptions
