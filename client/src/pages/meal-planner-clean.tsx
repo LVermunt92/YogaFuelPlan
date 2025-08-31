@@ -1009,8 +1009,10 @@ export default function MealPlanner() {
                         {/* Albert Heijn Integration */}
                         <div className="mt-3 pt-3 border-t border-border">
                           <AlbertHeijnIntegration 
-                            ingredients={persistentShoppingList.items?.map(item => item.productName) || []}
-                            mealPlanId={persistentShoppingList.mealPlanId || selectedMealPlan}
+                            ingredients={persistentShoppingList.items?.map(item => 
+                              `${item.quantity}${item.unit ? ` ${item.unit}` : ''} ${item.productName}`
+                            ) || []}
+                            mealPlanId={persistentShoppingList.mealPlanId || selectedMealPlan || undefined}
                           />
                         </div>
                       </div>

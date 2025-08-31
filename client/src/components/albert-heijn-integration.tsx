@@ -62,7 +62,8 @@ export function AlbertHeijnIntegration({ ingredients, mealPlanId }: AlbertHeijnI
         mealPlanId
       });
 
-      setShoppingList(response.shoppingList);
+      const data = await response.json();
+      setShoppingList(data.shoppingList);
     } catch (error) {
       console.error('Error generating Albert Heijn shopping list:', error);
       setError('Failed to generate shopping list. Please try again.');

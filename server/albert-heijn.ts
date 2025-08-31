@@ -117,8 +117,26 @@ class AlbertHeijnService {
 
     for (const ingredient of ingredients) {
       try {
+        // Parse quantity and unit from ingredient string (e.g., "200g rice" -> quantity: 200, unit: "g", ingredient: "rice")
+        const parseQuantityAndUnit = (ingredient: string): { quantity: number; unit: string; productName: string } => {
+          if (!ingredient || ingredient === '') {
+            return { quantity: 1, unit: '', productName: ingredient };
+          }
+          const cleanIngredient = ingredient.trim();
+          const match = cleanIngredient.match(/^(\d+(?:\.\d+)?)\s*([a-zA-Z]*)\s+(.+)/);
+          if (match) {
+            const quantity = parseFloat(match[1]);
+            const unit = match[2].trim();
+            const productName = match[3].trim();
+            return { quantity, unit, productName };
+          }
+          return { quantity: 1, unit: '', productName: cleanIngredient };
+        };
+
+        const { quantity: itemQuantity, unit: itemUnit, productName } = parseQuantityAndUnit(ingredient);
+
         // Filter out non-grocery items BEFORE searching for products
-        const cleanedIngredient = ingredient
+        const cleanedIngredient = productName
           .replace(/\([^)]*\)/g, '') // Remove parentheses and contents
           .replace(/,.*$/g, '') // Remove everything after comma
           .replace(/\s+/g, ' ') // Normalize spaces
@@ -334,7 +352,7 @@ class AlbertHeijnService {
           continue; // Skip this ingredient entirely
         }
 
-        const products = await this.searchProduct(ingredient);
+        const products = await this.searchProduct(productName);
         
         if (products.length > 0) {
           const product = products[0]; // Take first match
@@ -355,20 +373,20 @@ class AlbertHeijnService {
           }
           
           if (consolidatedItems.has(productKey)) {
-            // Product already exists, increment quantity and update price
+            // Product already exists, add quantity and update price
             const existingItem = consolidatedItems.get(productKey)!;
-            existingItem.quantity += 1;
+            existingItem.quantity += itemQuantity;
             totalPrice += product.price;
-            console.log(`🔄 Consolidated: ${product.name} (quantity now: ${existingItem.quantity})`);
+            console.log(`🔄 Consolidated: ${product.name} (quantity now: ${existingItem.quantity} ${itemUnit})`);
           } else {
             // New product, add to map
             const item: AHShoppingListItem = {
               productId: product.id,
               productName: product.name,
-              quantity: 1,
+              quantity: itemQuantity,
               price: product.price,
               imageUrl: product.imageUrl,
-              unit: product.unit,
+              unit: itemUnit || product.unit,
               category: product.category,
               found: true
             };
@@ -378,32 +396,32 @@ class AlbertHeijnService {
           }
         } else {
           // For manual items, use ingredient name as key for consolidation
-          let manualKey = `manual_${ingredient.toLowerCase().trim()}`;
+          let manualKey = `manual_${productName.toLowerCase().trim()}`;
           
           // Special handling for specific ingredients to consolidate all variations
-          if (ingredient.toLowerCase().includes('garlic') || ingredient.toLowerCase().includes('clove')) {
+          if (productName.toLowerCase().includes('garlic') || productName.toLowerCase().includes('clove')) {
             manualKey = `manual_garlic_cloves`;
-          } else if (ingredient.toLowerCase().includes('lime')) {
+          } else if (productName.toLowerCase().includes('lime')) {
             manualKey = `manual_lime_pieces`;
-          } else if (ingredient.toLowerCase().includes('lemon')) {
+          } else if (productName.toLowerCase().includes('lemon')) {
             manualKey = `manual_lemon_pieces`;
-          } else if (ingredient.toLowerCase().includes('oat milk') || ingredient.toLowerCase().includes('haver')) {
+          } else if (productName.toLowerCase().includes('oat milk') || productName.toLowerCase().includes('haver')) {
             manualKey = `oat_milk_consolidated`; // Use same key as products for consolidation
-          } else if (ingredient.toLowerCase().includes('red pepper') || ingredient.toLowerCase().includes('sweet red pepper')) {
+          } else if (productName.toLowerCase().includes('red pepper') || productName.toLowerCase().includes('sweet red pepper')) {
             manualKey = `red_pepper_consolidated`; // Consolidate all red pepper variations
           }
           
           if (consolidatedItems.has(manualKey)) {
-            // Manual item already exists, increment quantity
+            // Manual item already exists, add quantity
             const existingItem = consolidatedItems.get(manualKey)!;
-            existingItem.quantity += 1;
-            console.log(`🔄 Consolidated manual item: ${ingredient} (quantity now: ${existingItem.quantity})`);
+            existingItem.quantity += itemQuantity;
+            console.log(`🔄 Consolidated manual item: ${productName} (quantity now: ${existingItem.quantity} ${itemUnit})`);
           } else {
             // Add as new manual item
             // Determine appropriate category for manual items
             let itemCategory = 'Te zoeken'; // Default fallback
             // Clean ingredient name by removing descriptions and preparation methods
-            const cleanedIngredient = ingredient
+            const cleanedIngredient = productName
               .replace(/\([^)]*\)/g, '') // Remove parentheses and contents
               .replace(/,.*$/g, '') // Remove everything after comma
               .replace(/\s+/g, ' ') // Normalize spaces
@@ -712,8 +730,8 @@ class AlbertHeijnService {
               itemCategory = 'Snacks & snoep';
             }
 
-            // Clean the display name too
-            const cleanDisplayName = ingredient
+            // Clean the display name too  
+            const cleanDisplayName = productName
               .replace(/\([^)]*\)/g, '') // Remove parentheses and contents
               .replace(/,.*$/g, '') // Remove everything after comma
               .replace(/\s+/g, ' ') // Normalize spaces
@@ -722,10 +740,10 @@ class AlbertHeijnService {
             consolidatedItems.set(manualKey, {
               productId: `manual_${Date.now()}`,
               productName: cleanDisplayName,
-              quantity: 1,
+              quantity: itemQuantity,
               price: 0,
               imageUrl: '/placeholder-ingredient.jpg',
-              unit: '1 stuk',
+              unit: itemUnit || '1 stuk',
               category: itemCategory,
               found: false
             });
