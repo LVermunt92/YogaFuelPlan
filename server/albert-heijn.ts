@@ -128,6 +128,9 @@ class AlbertHeijnService {
             productKey = `lemon_consolidated`; // Use unified key for all lemon products
           } else if (ingredient.toLowerCase().includes('oat milk') || product.name.toLowerCase().includes('haver') || product.name.toLowerCase().includes('oat')) {
             productKey = `oat_milk_consolidated`; // Use unified key for all oat milk products
+          } else if (ingredient.toLowerCase().includes('red pepper') || ingredient.toLowerCase().includes('sweet red pepper') || 
+                    product.name.toLowerCase().includes('red pepper') || product.name.toLowerCase().includes('paprika')) {
+            productKey = `red_pepper_consolidated`; // Use unified key for all red pepper products
           }
           
           if (consolidatedItems.has(productKey)) {
@@ -165,6 +168,8 @@ class AlbertHeijnService {
             manualKey = `manual_lemon_pieces`;
           } else if (ingredient.toLowerCase().includes('oat milk') || ingredient.toLowerCase().includes('haver')) {
             manualKey = `oat_milk_consolidated`; // Use same key as products for consolidation
+          } else if (ingredient.toLowerCase().includes('red pepper') || ingredient.toLowerCase().includes('sweet red pepper')) {
+            manualKey = `red_pepper_consolidated`; // Consolidate all red pepper variations
           }
           
           if (consolidatedItems.has(manualKey)) {
@@ -244,6 +249,8 @@ class AlbertHeijnService {
                       cleanedIngredient.includes('broccoli') || cleanedIngredient.includes('carrot') ||
                       cleanedIngredient.includes('cucumber') || cleanedIngredient.includes('avocado') ||
                       cleanedIngredient.includes('zucchini') || cleanedIngredient.includes('bell pepper') ||
+                      cleanedIngredient.includes('red pepper') || cleanedIngredient.includes('sweet red pepper') ||
+                      cleanedIngredient.includes('green pepper') || cleanedIngredient.includes('yellow pepper') ||
                       cleanedIngredient.includes('potato') || cleanedIngredient.includes('sweet potato') ||
                       cleanedIngredient.includes('bean') || cleanedIngredient.includes('lentil') ||
                       cleanedIngredient.includes('chickpea') || cleanedIngredient.includes('pea') ||
