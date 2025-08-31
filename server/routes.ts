@@ -19,6 +19,28 @@ import { hasAdequateProteinSource, enhanceRecipeWithProtein } from './protein-va
 import cron from 'node-cron';
 import { normalizeToSunday, getNextSunday, getCurrentWeekSunday, isValidWeekStart, getAllowedWeekStarts } from './date-utils';
 
+// Helper function to parse quantity and unit from totalAmount string (e.g., "200g" -> {quantity: 200, unit: "g"})
+function parseQuantityAndUnit(totalAmount: string): { quantity: number; unit: string } {
+  if (!totalAmount || totalAmount === '') {
+    return { quantity: 1, unit: '' };
+  }
+
+  // Handle cases where totalAmount is already clean (just numbers)
+  const cleanAmount = totalAmount.trim();
+  
+  // Match patterns like "200g", "2 pieces", "300ml", "1.5 L", etc.
+  const match = cleanAmount.match(/^(\d+(?:\.\d+)?)\s*(.*)/);
+  
+  if (match) {
+    const quantity = parseFloat(match[1]);
+    const unit = match[2].trim();
+    return { quantity, unit };
+  }
+
+  // If no numeric pattern found, return 1 with the entire string as unit
+  return { quantity: 1, unit: cleanAmount };
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
   
   // Authentication routes
@@ -218,14 +240,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
           let shoppingList = generateEnhancedShoppingList(savedMeals, 'en', dietaryTags, leftoverIngredients);
           
           // Convert shopping list to persistent format and save it
-          const itemsToSave = shoppingList.map((item, index) => ({
-            productName: item.ingredient,
-            quantity: item.count,
-            unit: item.unit,
-            price: 0,
-            category: item.category,
-            sortOrder: index
-          }));
+          const itemsToSave = shoppingList.map((item, index) => {
+            // Parse quantity and unit from totalAmount (e.g., "200g" -> quantity: 200, unit: "g")
+            const { quantity, unit } = parseQuantityAndUnit(item.totalAmount);
+            
+            return {
+              productName: item.ingredient,
+              quantity: quantity,
+              unit: unit,
+              price: 0,
+              category: item.category,
+              sortOrder: index
+            };
+          });
           
           // Save the shopping list
           await storage.createShoppingList({
@@ -308,14 +335,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         let shoppingList = generateEnhancedShoppingList(savedMeals, 'en', dietaryTags, leftoverIngredients);
         
         // Convert shopping list to persistent format and save it
-        const itemsToSave = shoppingList.map((item, index) => ({
-          productName: item.ingredient,
-          quantity: item.count,
-          unit: item.unit,
-          price: 0,
-          category: item.category,
-          sortOrder: index
-        }));
+        const itemsToSave = shoppingList.map((item, index) => {
+          // Parse quantity and unit from totalAmount (e.g., "200g" -> quantity: 200, unit: "g")
+          const { quantity, unit } = parseQuantityAndUnit(item.totalAmount);
+          
+          return {
+            productName: item.ingredient,
+            quantity: quantity,
+            unit: unit,
+            price: 0,
+            category: item.category,
+            sortOrder: index
+          };
+        });
         
         // Save the shopping list
         await storage.createShoppingList({
@@ -1568,14 +1600,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         let shoppingList = generateEnhancedShoppingList(savedMeals, 'en', dietaryTags, leftoverIngredients);
         
         // Convert shopping list to persistent format and save it
-        const itemsToSave = shoppingList.map((item, index) => ({
-          productName: item.ingredient,
-          quantity: item.count,
-          unit: item.unit,
-          price: 0,
-          category: item.category,
-          sortOrder: index
-        }));
+        const itemsToSave = shoppingList.map((item, index) => {
+          // Parse quantity and unit from totalAmount (e.g., "200g" -> quantity: 200, unit: "g")
+          const { quantity, unit } = parseQuantityAndUnit(item.totalAmount);
+          
+          return {
+            productName: item.ingredient,
+            quantity: quantity,
+            unit: unit,
+            price: 0,
+            category: item.category,
+            sortOrder: index
+          };
+        });
         
         // Save the shopping list
         await storage.createShoppingList({
