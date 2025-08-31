@@ -7094,6 +7094,75 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       ],
       notes: "Gluten-free version of the comforting aubergine bake with melt-in-your-mouth roasted aubergines, rich tomato sauce and creamy cashew layer"
     }
+  },
+  {
+    name: "Super Simple Quinoa Chilli",
+    portion: "1 generous serving (about 320g)",
+    nutrition: {
+      protein: 24,
+      prepTime: 30,
+      calories: 445,
+      carbohydrates: 58,
+      fats: 16,
+      fiber: 15,
+      sugar: 12,
+      sodium: 520,
+      potassium: 1200,
+      calcium: 95,
+      iron: 5.8,
+      vitaminC: 35,
+      costEuros: 3.90,
+      proteinPerEuro: 6.2
+    },
+    category: "dinner",
+    tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "warming", "quinoa", "beans", "chilli", "one-pot", "weeknight"],
+    ingredients: [
+      "1 large red onion (peeled & finely chopped)",
+      "3 cloves garlic (peeled & finely chopped)",
+      "2 tsp paprika",
+      "1 tsp ground cumin",
+      "1 tbsp tomato purée",
+      "200g quinoa",
+      "400g canned chopped tomatoes",
+      "240g canned chickpeas (drained)",
+      "240g canned red kidney beans (drained)",
+      "2 tbsp almond butter",
+      "1 tbsp brown rice miso paste",
+      "1 tbsp maple syrup",
+      "1 lime (juiced)",
+      "15g fresh coriander (roughly chopped)",
+      "1 avocado (sliced)",
+      "Olive oil",
+      "Sea salt",
+      "Black pepper"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["red onion", "garlic", "tomatoes", "coriander", "avocado"],
+      benefits: ["complete protein from quinoa and beans", "high fiber content", "healthy fats from almond butter", "warming spices for digestion", "antioxidants from tomatoes"]
+    },
+    recipe: {
+      instructions: [
+        "Place a large, heavy-bottomed pan over medium-high heat and add a drizzle of olive oil",
+        "Once hot, add the red onion, garlic and a sprinkle of salt and pepper",
+        "Cook for 4-5 minutes, until softened and translucent",
+        "Add the paprika, cumin and tomato purée, stirring until everything is coated in the spices and tomato",
+        "After about a minute, the mixture should smell lovely and fragrant",
+        "Add in the quinoa, drained chickpeas and kidney beans, and the tin of tomatoes",
+        "Fill the empty tin with water and add this liquid to the pan",
+        "Cover the pan and leave to simmer for 30 minutes, stirring occasionally to prevent the quinoa from sticking",
+        "Once the quinoa is tender, stir in the almond butter, lime juice, miso and maple syrup",
+        "Adjust seasoning to taste, and serve with extra lime squeezed over",
+        "Top with chopped avocado and fresh coriander"
+      ],
+      tips: [
+        "Stir occasionally during simmering to prevent quinoa from sticking to the bottom",
+        "Black beans or pinto beans work well as alternatives to kidney beans",
+        "Make extra portions for easy lunch leftovers the next day"
+      ],
+      notes: "Warming chilli that becomes a favourite all-in-one weeknight meal, packed with plant protein from quinoa, beans and almond butter"
+    }
   }
 ];
 
