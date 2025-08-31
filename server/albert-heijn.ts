@@ -188,6 +188,9 @@ class AlbertHeijnService {
               .replace(/\s+/g, ' ') // Normalize spaces
               .trim().toLowerCase();
 
+            // Debug logging to see what we're testing
+            console.log(`🔍 Testing ingredient: "${ingredient}" → cleaned: "${cleanedIngredient}"`);
+
             // Filter out non-grocery items (cooking instructions, temperatures, etc.)
             const nonGroceryPatterns = [
               // Time and temperature patterns
