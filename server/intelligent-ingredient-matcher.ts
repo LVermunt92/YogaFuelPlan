@@ -111,47 +111,76 @@ export async function generateRecipeForIngredients(
 }
 
 /**
- * Get intelligent recipe recommendations that use up specified ingredients
+ * Get intelligent recipe recommendation that uses a subset of specified ingredients
+ * This promotes better distribution across multiple recipes
  */
-export async function getIntelligentRecipeRecommendations(
+export async function getIntelligentRecipeRecommendation(
   ingredientsToUse: string[],
   category: 'breakfast' | 'lunch' | 'dinner',
   dietaryTags: string[] = [],
   targetProtein: number = 25,
-  maxRecommendations: number = 3
-): Promise<MealOption[]> {
-  const recommendations: MealOption[] = [];
+  preferFewerIngredients: boolean = true
+): Promise<{ recipe: MealOption; usedIngredients: string[] } | null> {
+  if (!ingredientsToUse || ingredientsToUse.length === 0) {
+    return null;
+  }
 
-  // First, try to find existing recipes that match
+  // Find existing recipes that match some of the ingredients
   const matches = findRecipesWithIngredients(ingredientsToUse, category, dietaryTags);
   
-  // Add best matching recipes
-  const bestMatches = matches.slice(0, Math.min(maxRecommendations, matches.length));
-  recommendations.push(...bestMatches.map(match => match.recipe));
+  if (matches.length > 0) {
+    // If we want better distribution, prefer recipes that use fewer ingredients
+    // This allows other recipes to use the remaining ingredients
+    let selectedMatch;
+    
+    if (preferFewerIngredients && matches.length > 1) {
+      // Sort by number of matched ingredients (ascending) then by score (descending)
+      matches.sort((a, b) => {
+        const ingredientDiff = a.matchedIngredients.length - b.matchedIngredients.length;
+        if (ingredientDiff !== 0) return ingredientDiff;
+        return b.matchScore - a.matchScore;
+      });
+      selectedMatch = matches[0];
+      console.log(`🎯 SMART DISTRIBUTION: Selected recipe with ${selectedMatch.matchedIngredients.length} ingredients for better distribution`);
+    } else {
+      selectedMatch = matches[0]; // Best match by score
+    }
+    
+    console.log(`✅ RECIPE SELECTED: "${selectedMatch.recipe.name}" uses: [${selectedMatch.matchedIngredients.join(', ')}]`);
+    
+    return {
+      recipe: selectedMatch.recipe,
+      usedIngredients: selectedMatch.matchedIngredients
+    };
+  }
 
-  // If we don't have enough recommendations, generate AI recipes
-  if (recommendations.length < maxRecommendations && ingredientsToUse.length > 0) {
-    console.log(`🤖 FALLBACK: Need ${maxRecommendations - recommendations.length} more recipes, generating with AI`);
+  // No existing recipes found, try to generate one with AI (but only for a subset of ingredients)
+  if (ingredientsToUse.length > 0) {
+    console.log(`🤖 FALLBACK: No existing recipes found, generating AI recipe`);
     
     try {
+      // Limit to 2-3 ingredients for better distribution
+      const ingredientsForAI = ingredientsToUse.slice(0, Math.min(3, ingredientsToUse.length));
+      
       const aiRecipe = await generateRecipeForIngredients(
-        ingredientsToUse,
+        ingredientsForAI,
         category,
         dietaryTags,
         targetProtein
       );
       
       if (aiRecipe) {
-        recommendations.push(aiRecipe);
+        return {
+          recipe: aiRecipe,
+          usedIngredients: ingredientsForAI
+        };
       }
     } catch (error) {
       console.warn('Failed to generate AI recipe for ingredients:', error);
     }
   }
 
-  console.log(`🎯 FINAL RECOMMENDATIONS: Returning ${recommendations.length} recipes that use ingredients to use up`);
-  
-  return recommendations;
+  return null;
 }
 
 /**

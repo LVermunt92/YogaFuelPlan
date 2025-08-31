@@ -19,7 +19,7 @@ import { calculateMealFreshnessPriority, getRecommendedDayForMeal, logMealFreshn
 import { normalizeToSunday } from "./date-utils";
 import { storage } from "./storage";
 import { applyDietarySubstitutions } from "./ingredient-substitution";
-import { getIntelligentRecipeRecommendations } from './intelligent-ingredient-matcher';
+import { getIntelligentRecipeRecommendation } from './intelligent-ingredient-matcher';
 
 /**
  * Resistant starch sources and their benefits for weight management
@@ -390,7 +390,7 @@ async function selectUnusedMealIntelligently(
   category: 'breakfast' | 'lunch' | 'dinner' = 'dinner',
   dietaryTags: string[] = [],
   targetProtein: number = 25
-): Promise<MealOption> {
+): Promise<{ meal: MealOption; usedIngredients: string[] }> {
   if (availableMeals.length === 0) {
     throw new Error('No available meals to select from');
   }
@@ -432,31 +432,30 @@ async function selectUnusedMealIntelligently(
     console.log(`🧠 Using intelligent ingredient matching for: ${ingredientsToUseUp.join(', ')}`);
     
     try {
-      const intelligentRecommendations = await getIntelligentRecipeRecommendations(
+      const intelligentRecommendation = await getIntelligentRecipeRecommendation(
         ingredientsToUseUp,
         category,
         dietaryTags,
         targetProtein,
-        3 // Get up to 3 recommendations
+        true // Prefer recipes that use fewer ingredients for better distribution
       );
       
-      if (intelligentRecommendations.length > 0) {
-        // Filter recommendations to only include available and unused meals
-        const availableIntelligentMeals = intelligentRecommendations.filter(meal => {
-          // Check if this meal is already used in this category
-          if (usedMeals.has(meal.name)) return false;
-          
-          // Check if similar meal already selected globally
-          if (allSelectedMeals && Array.from(allSelectedMeals).some(selectedMeal => 
-            areMealsSimilar(meal.name, selectedMeal))) return false;
-            
-          return true;
-        });
+      if (intelligentRecommendation) {
+        const { recipe: candidateMeal, usedIngredients } = intelligentRecommendation;
         
-        if (availableIntelligentMeals.length > 0) {
-          const selectedMeal = availableIntelligentMeals[0];
-          console.log(`🎯✨ Selected intelligent match: "${selectedMeal.name}" using ingredients: ${ingredientsToUseUp.join(', ')}`);
-          return selectedMeal;
+        // Check if this meal is available
+        const isAvailable = !usedMeals.has(candidateMeal.name) && 
+          (!allSelectedMeals || !Array.from(allSelectedMeals).some(selectedMeal => 
+            areMealsSimilar(candidateMeal.name, selectedMeal)));
+            
+        if (isAvailable) {
+          console.log(`🎯✨ Selected intelligent match: "${candidateMeal.name}" using ingredients: [${usedIngredients.join(', ')}]`);
+          
+          // Return both the meal and the ingredients it uses
+          return {
+            meal: candidateMeal,
+            usedIngredients: usedIngredients
+          };
         }
       }
     } catch (error) {
@@ -476,7 +475,7 @@ async function selectUnusedMealIntelligently(
     const selectedMeals = selectMealsWithBetterVariety(shuffledUnused, 1, Array.from(usedMeals));
     const selectedMeal = selectedMeals[0] || shuffledUnused[0];
     console.log(`📋 Selected unused meal with enhanced randomization: ${selectedMeal.name} (${unusedMeals.length} unused options available)`);
-    return selectedMeal;
+    return { meal: selectedMeal, usedIngredients: [] };
   }
   
   // If all meals have been used, reset and select with better variety
@@ -548,11 +547,11 @@ async function selectUnusedMealIntelligently(
     const selectedMeals = selectMealsWithBetterVariety(extraShuffled, 1);
     const selectedMeal = selectedMeals[0] || extraShuffled[0];
     console.log(`📋 Reset and selected with enhanced randomization: ${selectedMeal.name} (from ${resetCandidates.length} filtered options)`);
-    return selectedMeal;
+    return { meal: selectedMeal, usedIngredients: [] };
   } else {
     // Only one meal available, use it
     console.log(`⚠️ Only one meal option available: ${availableMeals[0].name}`);
-    return availableMeals[0];
+    return { meal: availableMeals[0], usedIngredients: [] };
   }
 }
 
@@ -1069,7 +1068,10 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
           console.log(`🥬 Day ${day}: Using ${freshnessFilteredMeals.length} freshness-optimized ${mealCategory} options`);
         }
         
-        selectedMeal = await selectUnusedMealIntelligently(mealsToSelectFrom, mealCategory === 'lunch' ? usedLunchMeals : usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, mealCategory as 'lunch' | 'dinner', dietaryTags, dailyProteinTarget);
+        const mealSelection = await selectUnusedMealIntelligently(mealsToSelectFrom, mealCategory === 'lunch' ? usedLunchMeals : usedDinnerMeals, allSelectedMealNames, false, remainingIngredientsToUseUp, mealCategory as 'lunch' | 'dinner', dietaryTags, dailyProteinTarget);
+        
+        selectedMeal = mealSelection.meal;
+        const intelligentlyUsedIngredients = mealSelection.usedIngredients;
         
         // Log freshness analysis for the selected meal
         logMealFreshnessAnalysis(selectedMeal.name, selectedMeal.ingredients || []);
@@ -1080,10 +1082,16 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
           usedDinnerMeals.add(selectedMeal.name);
         }
         allSelectedMealNames.add(selectedMeal.name);
+        
+        // Remove intelligently used ingredients from the remaining list
+        if (intelligentlyUsedIngredients.length > 0) {
+          remainingIngredientsToUseUp = remainingIngredientsToUseUp.filter(ing => !intelligentlyUsedIngredients.includes(ing));
+          console.log(`✅ Intelligent matcher used up ingredients: ${intelligentlyUsedIngredients.join(', ')} from ${selectedMeal.name}`);
+        }
       }
       
-      // Check and log which ingredients are naturally used in the selected meal (no artificial modification)
-      if (!isLeftover && remainingIngredientsToUseUp.length > 0) {
+      // For leftover meals or when no intelligent matching occurred, check natural ingredient usage  
+      if (isLeftover && remainingIngredientsToUseUp.length > 0) {
         const naturallyUsedIngredients = checkNaturalIngredientUsage(selectedMeal, remainingIngredientsToUseUp);
         if (naturallyUsedIngredients.length > 0) {
           // Remove used ingredients from the list
