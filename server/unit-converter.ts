@@ -85,6 +85,21 @@ export const CONVERSION_RULES: ConversionRule[] = [
     category: 'liquid'
   },
 
+  // Garlic-specific conversions - keep cloves as cloves
+  {
+    pattern: /(\d+(?:\.\d+)?)\s*cloves?\s+(garlic)/i,
+    convert: (amount, unit) => ({ 
+      amount: Math.round(amount), 
+      unit: Math.round(amount) === 1 ? 'clove' : 'cloves' 
+    }),
+    category: 'count'
+  },
+  {
+    pattern: /(\d+(?:\.\d+)?)\s*g\s+(garlic)/i,
+    convert: (amount, unit) => ({ amount: Math.max(1, Math.round(amount / 3)), unit: 'cloves' }),
+    category: 'count'
+  },
+
   // Tablespoon and teaspoon conversions
   {
     pattern: /(\d+(?:\.\d+)?)\s*tbsp\.?\s+(.*)/i,
@@ -147,7 +162,7 @@ export function convertIngredientUnits(ingredient: string): string {
       // Replace the matched portion with converted values
       convertedIngredient = convertedIngredient.replace(
         rule.pattern,
-        `${converted.amount}${converted.unit} ${restOfIngredient}`.trim()
+        `${converted.amount} ${converted.unit} ${restOfIngredient}`.trim()
       );
       
       console.log(`🔄 Unit conversion: "${ingredient}" → "${convertedIngredient}"`);

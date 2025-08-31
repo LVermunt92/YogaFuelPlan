@@ -9086,9 +9086,9 @@ function formatAmount(amount: number, unit: string): string {
     // Keep pieces as is for countable items (lemons, onions, etc.)
     finalUnit = amount === 1 ? 'piece' : 'pieces';
     finalAmount = amount;
-  } else if (unit === 'cloves') {
+  } else if (unit === 'cloves' || unit === 'clove') {
     // Keep cloves as is for garlic
-    finalUnit = 'cloves';
+    finalUnit = amount === 1 ? 'clove' : 'cloves';
     finalAmount = amount;
   } else if (unit === 'g') {
     // Already in grams
@@ -9101,7 +9101,9 @@ function formatAmount(amount: number, unit: string): string {
   }
   
   // Format the final amount nicely
-  if (finalAmount >= 1000) {
+  if (finalUnit === 'cloves' || finalUnit === 'clove') {
+    return `${Math.round(finalAmount)} ${finalUnit}`;
+  } else if (finalAmount >= 1000) {
     return `${(finalAmount / 1000).toFixed(1)} kg`;
   } else if (finalAmount < 1) {
     return `${(finalAmount * 1000).toFixed(0)} mg`;

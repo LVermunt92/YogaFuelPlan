@@ -88,7 +88,11 @@ class AlbertHeijnService {
         
         if (products.length > 0) {
           const product = products[0]; // Take first match
-          const productKey = `${product.name}_${product.id}`; // Unique key for consolidation
+          // Special handling for garlic to normalize different variations
+          let productKey = `${product.name}_${product.id}`;
+          if (ingredient.toLowerCase().includes('garlic') || product.name.toLowerCase().includes('knoflook')) {
+            productKey = `garlic_consolidated`; // Use unified key for all garlic products
+          }
           
           if (consolidatedItems.has(productKey)) {
             // Product already exists, increment quantity and update price
@@ -114,7 +118,12 @@ class AlbertHeijnService {
           }
         } else {
           // For manual items, use ingredient name as key for consolidation
-          const manualKey = `manual_${ingredient.toLowerCase().trim()}`;
+          let manualKey = `manual_${ingredient.toLowerCase().trim()}`;
+          
+          // Special handling for garlic cloves to consolidate all variations
+          if (ingredient.toLowerCase().includes('garlic') || ingredient.toLowerCase().includes('clove')) {
+            manualKey = `manual_garlic_cloves`;
+          }
           
           if (consolidatedItems.has(manualKey)) {
             // Manual item already exists, increment quantity
