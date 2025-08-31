@@ -6768,6 +6768,72 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-08-30'),
     active: true
+  },
+  {
+    name: "Creamy Mushroom Stroganoff",
+    portion: "1 generous serving with rice (about 350g)",
+    nutrition: {
+      protein: 22,
+      prepTime: 50,
+      calories: 485,
+      carbohydrates: 52,
+      fats: 24,
+      fiber: 8,
+      sugar: 12,
+      sodium: 680,
+      potassium: 920,
+      calcium: 85,
+      iron: 4.8,
+      vitaminC: 15,
+      costEuros: 4.20,
+      proteinPerEuro: 5.2
+    },
+    category: "dinner",
+    tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "comfort-food", "warming", "mushroom", "umami"],
+    ingredients: [
+      "1 tbsp olive oil",
+      "1 onion",
+      "2 medium leeks (halved & finely sliced)",
+      "500g mixed mushrooms (sliced)",
+      "4 cloves garlic (grated)",
+      "2 tsp paprika",
+      "1 x 400ml tin coconut milk",
+      "1 vegetable stock cube",
+      "2 tbsp brown rice miso paste",
+      "2 tbsp tahini",
+      "20g fresh chives (finely chopped)",
+      "4 servings of rice",
+      "Flaky sea salt",
+      "Black pepper"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["onion", "leeks", "mushrooms", "garlic", "chives"],
+      benefits: ["rich in B vitamins from mushrooms", "immune-supporting garlic", "prebiotic fiber from leeks and onions", "umami depth from miso"]
+    },
+    recipe: {
+      instructions: [
+        "Heat the olive oil in a large frying pan over medium heat",
+        "Add the onion, leeks and mushrooms, plus a large pinch of flaky sea salt",
+        "Fry for 15 minutes until softened and the water from the mushrooms has evaporated",
+        "Stir through the garlic and paprika and fry for 30 seconds",
+        "Pour in the coconut milk and 150ml boiling water",
+        "Crumble in the stock cube and add the miso paste",
+        "Stir and bring to the boil, then simmer for 30 minutes until thick and luxurious",
+        "Season with flaky sea salt and a good crack of black pepper",
+        "Stir through the tahini and half of the chives",
+        "Serve with rice and top with the remainder of the chives"
+      ],
+      tips: [
+        "Don't rush the initial mushroom cooking - let all the water evaporate for concentrated flavor",
+        "Miso paste adds incredible umami depth - whisk it well to avoid lumps",
+        "Tahini should be stirred in at the end to maintain its creamy texture"
+      ],
+      notes: "Comforting creamy mushroom stroganoff that's completely plant-based yet rich and satisfying - perfect for cozy winter evenings"
+    },
+    createdAt: new Date('2025-08-31'),
+    active: true
   }
 ];
 
