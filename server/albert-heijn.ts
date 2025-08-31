@@ -133,8 +133,8 @@ class AlbertHeijnService {
             manualKey = `manual_lime_pieces`;
           } else if (ingredient.toLowerCase().includes('lemon')) {
             manualKey = `manual_lemon_pieces`;
-          } else if (ingredient.toLowerCase().includes('oat milk')) {
-            manualKey = `manual_oat_milk`;
+          } else if (ingredient.toLowerCase().includes('oat milk') || ingredient.toLowerCase().includes('haver')) {
+            manualKey = `oat_milk_consolidated`; // Use same key as products for consolidation
           }
           
           if (consolidatedItems.has(manualKey)) {
