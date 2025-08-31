@@ -7748,7 +7748,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'soy milk': 'Plant-Based Alternatives',
     'sweetener': 'Pantry Essentials',
     'half sweet red pepper': 'Vegetables',
-    'plant-based protein': 'Plant-Based Alternatives',
+    'plant-based protein': 'Other Dry Goods', // Consolidate all protein powders in same category
     'soy milk': 'Plant-Based Alternatives', // Ensure it stays in Plant-Based
     'gluten-free granola': 'Other Dry Goods',
     'red lentils': 'Grains, Pasta & Canned Goods',
