@@ -8459,6 +8459,12 @@ export function getDefaultPortion(ingredient: string): { amount: number; unit: s
     'mint': { amount: 1, unit: 'bunch' },
     'dill': { amount: 1, unit: 'bunch' },
     'chives': { amount: 1, unit: 'bunch' },
+    // Coriander/Cilantro specific portions
+    'fresh coriander': { amount: 1, unit: 'bunch' }, // Fresh coriander = cilantro
+    'coriander': { amount: 1, unit: 'bunch' }, // Default to fresh when not specified
+    'coriander seeds': { amount: 20, unit: 'g' }, // Whole spice
+    'ground coriander': { amount: 20, unit: 'g' }, // Ground spice
+    'coriander powder': { amount: 20, unit: 'g' }, // Ground spice alternate name
     // Common spices and seasonings  
     'chili powder': { amount: 20, unit: 'g' }, // Small spice jar
     'cumin': { amount: 20, unit: 'g' }, // Small spice jar
@@ -8486,9 +8492,17 @@ export function getDefaultPortion(ingredient: string): { amount: number; unit: s
   // Intelligent fallback logic based on ingredient type
   const lowerIngredient = ingredient.toLowerCase();
   
-  // Fresh herbs fallback
+  // Fresh herbs fallback - includes coriander when not specified as seeds/powder
   if (lowerIngredient.includes('herb') || 
       ['basil', 'thyme', 'rosemary', 'sage', 'parsley', 'cilantro', 'oregano', 'mint', 'dill', 'chives'].some(herb => lowerIngredient.includes(herb))) {
+    return { amount: 1, unit: 'bunch' };
+  }
+  
+  // Special case for coriander - default to fresh herb unless specified as seeds/powder
+  if (lowerIngredient.includes('coriander') && 
+      !lowerIngredient.includes('seed') && 
+      !lowerIngredient.includes('ground') && 
+      !lowerIngredient.includes('powder')) {
     return { amount: 1, unit: 'bunch' };
   }
   
@@ -9034,7 +9048,18 @@ function cleanIngredientName(ingredient: string): string {
     'can mung beans': 'mung beans',
     'can beans': 'mixed beans',
     'cooked chickpeas': 'chickpeas',
-    'mixed beans': 'mixed beans'
+    'mixed beans': 'mixed beans',
+    // Comprehensive coriander/cilantro consolidation
+    'fresh coriander': 'fresh cilantro', // Fresh coriander is the same as fresh cilantro
+    'coriander': 'fresh cilantro', // When not specified as seeds/powder, assume fresh herb
+    'cilantro': 'fresh cilantro',
+    'fresh cilantro': 'fresh cilantro',
+    'coriander leaves': 'fresh cilantro',
+    'cilantro leaves': 'fresh cilantro',
+    // Keep spice forms distinct from fresh herbs
+    'coriander seeds': 'coriander seeds',
+    'ground coriander': 'ground coriander',
+    'coriander powder': 'ground coriander'
   };
   
   return ingredientMappings[cleaned] || cleaned;
