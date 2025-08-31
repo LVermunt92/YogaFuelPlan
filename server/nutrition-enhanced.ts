@@ -6805,6 +6805,10 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
         ingredients: recipe.ingredients?.map(ingredient => {
           // Convert gluten-containing ingredients
           if (ingredient.toLowerCase().includes('pasta') && !ingredient.toLowerCase().includes('gluten-free')) {
+            // For wheat pasta or similar, replace entirely with gluten-free version
+            if (ingredient.toLowerCase().includes('wheat')) {
+              return ingredient.replace(/.*pasta/gi, 'gluten-free pasta (rice or chickpea)');
+            }
             return ingredient.replace('pasta', 'gluten-free pasta (rice or chickpea)');
           }
           if (ingredient.toLowerCase().includes('flour') && !ingredient.toLowerCase().includes('gluten-free')) {
@@ -8143,6 +8147,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'lentil pasta': 'Grains, Pasta & Canned Goods',
     'rice pasta': 'Grains, Pasta & Canned Goods',
     'corn pasta': 'Grains, Pasta & Canned Goods',
+    'wheat gluten-free pasta': 'Grains, Pasta & Canned Goods', // Fix for incorrect conversion
     
     // Asian noodle types
     'soba noodles': 'Grains, Pasta & Canned Goods',
