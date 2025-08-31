@@ -862,7 +862,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     category: "dinner",
     tags: ["vegetarian", "gluten-free", "anti-inflammatory", "high-protein"],
-    ingredients: ["quinoa", "mixed wild mushrooms", "fresh herbs (parsley, thyme)", "zucchini", "red bell pepper", "carrots", "red onion", "pine nuts", "olive oil", "vegetable stock", "tahini", "lemon juice", "parmesan cheese", "hemp hearts", "pumpkin seeds", "chickpeas", "nutritional yeast"],
+    ingredients: ["quinoa", "mixed wild mushrooms", "fresh herbs (parsley, thyme)", "1 zucchini", "red bell pepper", "carrots", "red onion", "pine nuts", "olive oil", "vegetable stock", "tahini", "lemon juice", "parmesan cheese", "hemp hearts", "pumpkin seeds", "chickpeas", "nutritional yeast"],
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 4,
@@ -914,7 +914,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     category: "dinner",
     tags: ["pescatarian", "gluten-free", "dairy-free", "mediterranean", "anti-inflammatory"],
-    ingredients: ["fresh cod fillet", "cherry tomatoes", "zucchini", "red onion", "black olives", "fresh basil", "fresh oregano", "olive oil", "lemon", "capers"],
+    ingredients: ["fresh cod fillet", "200g cherry tomatoes", "1 zucchini", "red onion", "black olives", "fresh basil", "fresh oregano", "olive oil", "lemon", "capers"],
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 2.5,
@@ -1047,7 +1047,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     category: "dinner",
     tags: ["vegetarian", "viral", "social-media", "high-protein", "comfort-food"],
-    ingredients: ["king oyster mushrooms", "pasta", "sun-dried tomatoes", "cashew cream", "nutritional yeast", "garlic", "herbs", "vegetable stock"],
+    ingredients: ["king oyster mushrooms", "pasta", "30g sun-dried tomatoes", "cashew cream", "nutritional yeast", "garlic", "herbs", "vegetable stock"],
     wholeFoodLevel: "moderate",
     vegetableContent: {
       servings: 2,
@@ -8613,10 +8613,11 @@ export function getDefaultPortion(ingredient: string): { amount: number; unit: s
     'nutritional yeast': { amount: 15, unit: 'g' }, // 2 tbsp = ~15g
     'coconut yogurt': { amount: 120, unit: 'g' }, // 0.5 cup = ~120g
     'cherry tomatoes': { amount: 150, unit: 'g' }, // 1 cup = ~150g
+    'tomatoes': { amount: 2, unit: 'pieces' }, // 2 medium tomatoes
     'bell peppers': { amount: 2, unit: 'pieces' }, // 2 medium peppers
     'sugar snaps': { amount: 150, unit: 'g' }, // Sugar snap peas in grams
     'sugarsnaps': { amount: 150, unit: 'g' }, // Sugar snap peas in grams (alternative name)
-    'zucchini': { amount: 200, unit: 'g' }, // 1 medium zucchini
+    'zucchini': { amount: 1, unit: 'piece' }, // 1 medium zucchini
     'brussels sprouts': { amount: 150, unit: 'g' }, // 1 cup = ~150g
     'sweet potato': { amount: 200, unit: 'g' }, // 1 medium sweet potato
     'cashew cream': { amount: 60, unit: 'g' }, // 1/4 cup = ~60g
