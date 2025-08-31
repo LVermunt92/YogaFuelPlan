@@ -67,6 +67,8 @@ const ingredientTranslations: Record<string, string> = {
   'whole wheat flour': 'volkoren meel',
   'coconut flour': 'kokosmeel',
   'almond flour': 'amandelmeel',
+  'gram flour': 'kikkererwtenmeel',
+  'chickpea flour': 'kikkererwtenmeel',
   'baking powder': 'bakpoeder',
   'cinnamon': 'kaneel',
   'soy sauce': 'sojasaus',
