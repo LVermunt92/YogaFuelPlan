@@ -8409,6 +8409,7 @@ export function getDefaultPortion(ingredient: string): { amount: number; unit: s
     'apple': { amount: 1, unit: 'piece' }, // 1 medium apple
     'avocado': { amount: 1, unit: 'piece' }, // 1 medium avocado
     'lemon': { amount: 1, unit: 'piece' }, // 1 lemon
+    'lemons': { amount: 2, unit: 'pieces' }, // 2 lemons
     'quinoa': { amount: 85, unit: 'g' }, // 0.5 cup dry = ~85g
     'brown rice': { amount: 95, unit: 'g' }, // 0.5 cup dry = ~95g
     'spinach': { amount: 60, unit: 'g' }, // 2 cups fresh = ~60g
@@ -9066,7 +9067,7 @@ function cleanIngredientName(ingredient: string): string {
 }
 
 function formatAmount(amount: number, unit: string): string {
-  // Convert all measurements to grams for consistency
+  // Convert all measurements to grams for consistency, except special cases
   let finalAmount = amount;
   let finalUnit = 'g';
   
@@ -9082,8 +9083,8 @@ function formatAmount(amount: number, unit: string): string {
   } else if (unit === 'lb' || unit === 'lbs') {
     finalAmount = amount * 454; // 1 lb ≈ 454g
   } else if (unit === 'pieces' || unit === 'piece') {
-    // Keep pieces as is for countable items
-    finalUnit = 'pieces';
+    // Keep pieces as is for countable items (lemons, onions, etc.)
+    finalUnit = amount === 1 ? 'piece' : 'pieces';
     finalAmount = amount;
   } else if (unit === 'cloves') {
     // Keep cloves as is for garlic

@@ -73,6 +73,18 @@ export const CONVERSION_RULES: ConversionRule[] = [
     category: 'dry'
   },
 
+  // Lemon-specific conversions - always convert to pieces
+  {
+    pattern: /(\d+(?:\.\d+)?)\s*g\s+(lemon|lemons)/i,
+    convert: (amount, unit) => ({ amount: Math.max(1, Math.round(amount / 60)), unit: 'pieces' }),
+    category: 'weight'
+  },
+  {
+    pattern: /(\d+(?:\.\d+)?)\s*(lemon|lemons)\s*\(.*?\)/i,
+    convert: (amount, unit) => ({ amount: Math.round(amount), unit: 'pieces' }),
+    category: 'weight'
+  },
+
   // Tablespoon and teaspoon conversions
   {
     pattern: /(\d+(?:\.\d+)?)\s*tbsp\.?\s+(.*)/i,

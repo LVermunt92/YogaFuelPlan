@@ -1714,15 +1714,7 @@ async function generateMealPrepPlan(
         usedDinnerMeals.add(selectedDinnerMeal.name);
         allSelectedMealNames.add(selectedDinnerMeal.name);
         
-        // Try to incorporate leftover ingredients
-        if (remainingIngredientsToUseUp.length > 0) {
-          const { modifiedMeal, usedIngredients } = incorporateLeftoverIngredients(selectedDinnerMeal, remainingIngredientsToUseUp);
-          if (usedIngredients.length > 0) {
-            selectedDinnerMeal = modifiedMeal;
-            remainingIngredientsToUseUp = remainingIngredientsToUseUp.filter(ing => !usedIngredients.includes(ing));
-            console.log(`✓ Incorporated leftover ingredients: ${usedIngredients.join(', ')} into ${selectedDinnerMeal.name}`);
-          }
-        }
+        // Leftover ingredients are now handled by the intelligent ingredient matching system
         
         sundayDinnerMeal = selectedDinnerMeal;
         dinnerMeal = sundayDinnerMeal;
@@ -1735,15 +1727,7 @@ async function generateMealPrepPlan(
         usedDinnerMeals.add(selectedDinnerMeal.name);
         allSelectedMealNames.add(selectedDinnerMeal.name);
         
-        // Try to incorporate leftover ingredients
-        if (remainingIngredientsToUseUp.length > 0) {
-          const { modifiedMeal, usedIngredients } = incorporateLeftoverIngredients(selectedDinnerMeal, remainingIngredientsToUseUp);
-          if (usedIngredients.length > 0) {
-            selectedDinnerMeal = modifiedMeal;
-            remainingIngredientsToUseUp = remainingIngredientsToUseUp.filter(ing => !usedIngredients.includes(ing));
-            console.log(`✓ Incorporated leftover ingredients: ${usedIngredients.join(', ')} into ${selectedDinnerMeal.name}`);
-          }
-        }
+        // Leftover ingredients are now handled by the intelligent ingredient matching system
         
         mondayDinnerMeal = selectedDinnerMeal;
         dinnerMeal = mondayDinnerMeal;
@@ -1756,15 +1740,7 @@ async function generateMealPrepPlan(
         usedDinnerMeals.add(selectedDinnerMeal.name);
         allSelectedMealNames.add(selectedDinnerMeal.name);
         
-        // Try to incorporate leftover ingredients
-        if (remainingIngredientsToUseUp.length > 0) {
-          const { modifiedMeal, usedIngredients } = incorporateLeftoverIngredients(selectedDinnerMeal, remainingIngredientsToUseUp);
-          if (usedIngredients.length > 0) {
-            selectedDinnerMeal = modifiedMeal;
-            remainingIngredientsToUseUp = remainingIngredientsToUseUp.filter(ing => !usedIngredients.includes(ing));
-            console.log(`✓ Incorporated leftover ingredients: ${usedIngredients.join(', ')} into ${selectedDinnerMeal.name}`);
-          }
-        }
+        // Leftover ingredients are now handled by the intelligent ingredient matching system
         
         tuesdayDinnerMeal = selectedDinnerMeal;
         dinnerMeal = tuesdayDinnerMeal;
