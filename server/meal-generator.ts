@@ -428,8 +428,9 @@ async function selectUnusedMealIntelligently(
   }
   
   // Try intelligent ingredient matching first if we have ingredients to use up
-  if (ingredientsToUseUp.length > 0) {
-    console.log(`🧠 Using intelligent ingredient matching for: ${ingredientsToUseUp.join(', ')}`);
+  // But only if we still have unused meals available for variety
+  if (ingredientsToUseUp.length > 0 && unusedMeals.length > 2) {
+    console.log(`🧠 Using intelligent ingredient matching for: ${ingredientsToUseUp.join(', ')} (${unusedMeals.length} unused meals available)`);
     
     try {
       const intelligentRecommendation = await getIntelligentRecipeRecommendation(
@@ -443,10 +444,15 @@ async function selectUnusedMealIntelligently(
       if (intelligentRecommendation) {
         const { recipe: candidateMeal, usedIngredients } = intelligentRecommendation;
         
-        // Check if this meal is available
-        const isAvailable = !usedMeals.has(candidateMeal.name) && 
-          (!allSelectedMeals || !Array.from(allSelectedMeals).some(selectedMeal => 
-            areMealsSimilar(candidateMeal.name, selectedMeal)));
+        // Check if this meal is available - more strict checking
+        const isUsed = usedMeals.has(candidateMeal.name);
+        const isSimilarToGlobal = allSelectedMeals && Array.from(allSelectedMeals).some(selectedMeal => 
+          areMealsSimilar(candidateMeal.name, selectedMeal));
+        const isInAvailableList = availableMeals.some(meal => meal.name === candidateMeal.name);
+        
+        console.log(`🔍 Availability check for "${candidateMeal.name}": used=${isUsed}, similar=${isSimilarToGlobal}, available=${isInAvailableList}`);
+        
+        const isAvailable = !isUsed && !isSimilarToGlobal && isInAvailableList;
             
         if (isAvailable) {
           console.log(`🎯✨ Selected intelligent match: "${candidateMeal.name}" using ingredients: [${usedIngredients.join(', ')}]`);
@@ -456,6 +462,8 @@ async function selectUnusedMealIntelligently(
             meal: candidateMeal,
             usedIngredients: usedIngredients
           };
+        } else {
+          console.log(`❌ Intelligent match "${candidateMeal.name}" rejected: used=${isUsed}, similar=${isSimilarToGlobal}, available=${isInAvailableList}`);
         }
       }
     } catch (error) {
