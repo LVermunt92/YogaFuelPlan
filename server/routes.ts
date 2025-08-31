@@ -1029,7 +1029,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               proteinPerEuro: (targetMeal.protein || 25) / 3.5
             },
             category: targetMeal.mealType,
-            tags: ["ai-generated", "fallback"],
+            tags: ["fallback"],
             ingredients: ["See meal description for ingredients"],
             wholeFoodLevel: "moderate",
             vegetableContent: {

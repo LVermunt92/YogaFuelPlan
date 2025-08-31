@@ -66,7 +66,7 @@ Return a JSON object matching this exact structure:
     "proteinPerEuro": number
   },
   "category": "${request.category}",
-  "tags": [${request.dietaryTags.map(tag => `"${tag}"`).join(', ')}, "ai-generated"],
+  "tags": [${request.dietaryTags.map(tag => `"${tag}"`).join(', ')}],
   "ingredients": ["ingredient 1", "ingredient 2", "..."],
   "wholeFoodLevel": "high|moderate|minimal",
   "vegetableContent": {
@@ -108,9 +108,7 @@ Ensure the recipe is practical, nutritious, and aligns with the dietary requirem
     }
 
     // Ensure dietary tags are properly included
-    if (!generatedRecipe.tags.includes('ai-generated')) {
-      generatedRecipe.tags.push('ai-generated');
-    }
+    // (AI-generated tag removed per user request)
 
     // Validate protein target is met (within 15% tolerance)
     const proteinDiff = Math.abs(generatedRecipe.nutrition.protein - request.targetProtein);
@@ -197,7 +195,7 @@ function createFallbackRecipe(request: RecipeGenerationRequest): MealOption {
       proteinPerEuro: request.targetProtein / 3.50
     },
     category: request.category,
-    tags: [...request.dietaryTags, 'ai-generated', 'fallback'],
+    tags: [...request.dietaryTags, 'fallback'],
     ingredients: base.ingredients,
     wholeFoodLevel: "moderate" as const,
     vegetableContent: {
