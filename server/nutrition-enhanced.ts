@@ -6866,7 +6866,12 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
           if (ingredient.toLowerCase().includes('cream') && !ingredient.toLowerCase().includes('coconut')) {
             return ingredient.replace(/cream/gi, 'coconut cream');
           }
-          if (ingredient.toLowerCase().includes('butter') && !ingredient.toLowerCase().includes('nut') && !ingredient.toLowerCase().includes('peanut')) {
+          if (ingredient.toLowerCase().includes('butter') && 
+              !ingredient.toLowerCase().includes('nut') && 
+              !ingredient.toLowerCase().includes('peanut') && 
+              !ingredient.toLowerCase().includes('almond') && 
+              !ingredient.toLowerCase().includes('cashew') && 
+              !ingredient.toLowerCase().includes('coconut')) {
             return ingredient.replace(/butter/gi, 'vegan butter');
           }
           if (ingredient.toLowerCase().includes('cheese') && !ingredient.toLowerCase().includes('vegan')) {
