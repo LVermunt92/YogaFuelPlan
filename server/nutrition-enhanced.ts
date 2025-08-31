@@ -7830,6 +7830,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     // Additional ingredients for the new categories
     'rice noodles': 'Grains, Pasta & Canned Goods',
     'pasta': 'Grains, Pasta & Canned Goods',
+    'gluten-free pasta': 'Grains, Pasta & Canned Goods', // Same category for gluten-free
     'couscous': 'Grains, Pasta & Canned Goods',
     'basmati rice': 'Grains, Pasta & Canned Goods',
     'sushi rice': 'Grains, Pasta & Canned Goods',
@@ -8322,6 +8323,7 @@ export function getDefaultPortion(ingredient: string): { amount: number; unit: s
     'cashew cream': { amount: 60, unit: 'g' }, // 1/4 cup = ~60g
     'sun-dried tomatoes': { amount: 30, unit: 'g' }, // 2 tbsp = ~30g
     'pasta': { amount: 100, unit: 'g' }, // 1 serving dry pasta
+    'gluten-free pasta': { amount: 100, unit: 'g' }, // 1 serving gluten-free pasta
     'vegetable broth': { amount: 240, unit: 'ml' }, // 1 cup = 240ml
     'mixed nuts': { amount: 30, unit: 'g' }, // 2 tbsp = ~30g
     'maple syrup': { amount: 20, unit: 'g' }, // 1 tbsp = ~20g
@@ -8462,12 +8464,32 @@ function cleanIngredientName(ingredient: string): string {
     console.log(`🔧 Amount contamination fixed: "${originalInput}" → "${cleaned}"`);
   }
   
+  // PRESERVE DIETARY QUALIFIERS before specification
+  const hasGlutenFree = cleaned.includes('gluten-free') || cleaned.includes('gluten free');
+  const hasLactoseFree = cleaned.includes('lactose-free') || cleaned.includes('lactose free');
+  const hasDairyFree = cleaned.includes('dairy-free') || cleaned.includes('dairy free');
+  const hasOrganic = cleaned.includes('organic');
+  
   // Apply comprehensive ingredient specification to replace generic terms
   // BUT prevent double specification (don't specify already specified ingredients)
   if (!cleaned.includes('pieces of') && !cleaned.includes('oat oat') && !cleaned.includes('soy oat') && 
       cleaned !== 'lemon' && cleaned !== 'lemon (juiced)') {
     const specified = specifyIngredients([cleaned]);
     cleaned = specified[0];
+  }
+  
+  // RESTORE DIETARY QUALIFIERS after specification 
+  if (hasGlutenFree && !cleaned.includes('gluten-free') && !cleaned.includes('gluten free')) {
+    cleaned = 'gluten-free ' + cleaned;
+  }
+  if (hasLactoseFree && !cleaned.includes('lactose-free') && !cleaned.includes('lactose free')) {
+    cleaned = 'lactose-free ' + cleaned;
+  }
+  if (hasDairyFree && !cleaned.includes('dairy-free') && !cleaned.includes('dairy free')) {
+    cleaned = 'dairy-free ' + cleaned;
+  }
+  if (hasOrganic && !cleaned.includes('organic')) {
+    cleaned = 'organic ' + cleaned;
   }
   
   // FINAL SAFETY CHECK: After specification, catch any cooking instructions that slipped through
@@ -8587,7 +8609,8 @@ function cleanIngredientName(ingredient: string): string {
     // Remove descriptive words and parenthetical content (only if not a specific bean type)
     cleaned = cleaned.replace(/\s*\([^)]*\)/g, ''); // Remove (content in parentheses)
     cleaned = cleaned.replace(/\b(free-range|organic|fresh|raw|toasted|chopped|sliced|diced|minced|halved|cooked|long-fermented)\b/g, '');
-    cleaned = cleaned.replace(/\b(extra virgin|sea|black|white|ground|mixed|frozen|unsweetened|pure|gluten-free)\b/g, '');
+    // FIXED: Removed "gluten-free" from removal regex to preserve dietary qualifiers
+    cleaned = cleaned.replace(/\b(extra virgin|sea|black|white|ground|mixed|frozen|unsweetened|pure)\b/g, '');
   }
   // Enhanced removal of vague quantity terms (this was already there but let's expand it)
   cleaned = cleaned.replace(/^(pinch of|dash of|handful of|small handful of|large handful of|few|some|bit of|touch of|splash of|drizzle of|sprinkle of)\s*/i, '');
@@ -8830,6 +8853,7 @@ function cleanIngredientName(ingredient: string): string {
     'cinnamon to taste': 'cinnamon',
     'stevia to taste': 'stevia',
     'pasta': 'pasta',
+    'gluten-free pasta': 'gluten-free pasta', // Preserve gluten-free qualifier
     'cashew cream': 'cashew cream',
     'nutritional yeast': 'nutritional yeast',
     'sun-dried tomatoes': 'sun-dried tomatoes',
