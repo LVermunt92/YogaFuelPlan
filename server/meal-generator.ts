@@ -131,6 +131,7 @@ function logMealFreshnessAnalysis(mealName: string, ingredients: string[]) {
   console.log(`🥬 ${mealName}: Optimal days ${recommendedDays.join(', ')}`);
 }
 
+
 /**
  * Check which leftover ingredients are naturally present in a meal (without modification)
  */
@@ -350,7 +351,8 @@ async function findMealsWithIngredients(
 
 
 /**
- * Check if two meal names are exactly the same (prevent duplicates of identical recipes)
+ * Check if two meal names are similar enough to be considered duplicates
+ * This prevents repetitive recipes like multiple stir-fries or lasagnas
  */
 function areMealsSimilar(meal1: string, meal2: string): boolean {
   // Guard against undefined values
@@ -358,24 +360,98 @@ function areMealsSimilar(meal1: string, meal2: string): boolean {
     return false;
   }
   
+  if (meal1 === meal2) return true;
+  
   const name1 = meal1.toLowerCase().trim();
   const name2 = meal2.toLowerCase().trim();
   
   // Clean both names by removing dietary tags and leftover indicators
   const cleanName1 = name1
-    .replace(/ \(incorporating leftover.*?\)/g, '')
-    .replace(/ \([^)]*\)/g, '') // Remove all parenthetical tags
-    .replace(/ \(leftover\)/g, '')
+    .replace(/\s*\([^)]*\)\s*/g, '') // Remove all parenthetical content
+    .replace(/\s*(incorporating|leftover|dairy-free|lactose-free|gluten-free|vegan|vegetarian)\s*/gi, '')
+    .replace(/\s+/g, ' ')
     .trim();
   
   const cleanName2 = name2
-    .replace(/ \(incorporating leftover.*?\)/g, '')
-    .replace(/ \([^)]*\)/g, '') // Remove all parenthetical tags  
-    .replace(/ \(leftover\)/g, '')
+    .replace(/\s*\([^)]*\)\s*/g, '')
+    .replace(/\s*(incorporating|leftover|dairy-free|lactose-free|gluten-free|vegan|vegetarian)\s*/gi, '')
+    .replace(/\s+/g, ' ')
     .trim();
   
-  // Prevent exact duplicates of the same base recipe
-  return cleanName1 === cleanName2;
+  // Check for exact match after cleaning
+  if (cleanName1 === cleanName2) {
+    console.log(`🔍 EXACT MATCH: "${meal1}" ≈ "${meal2}"`);
+    return true;
+  }
+  
+  // Check for high word overlap (75%+ shared words)
+  const words1 = cleanName1.split(' ').filter(w => w.length > 2);
+  const words2 = cleanName2.split(' ').filter(w => w.length > 2);
+  
+  if (words1.length === 0 || words2.length === 0) return false;
+  
+  const sharedWords = words1.filter(word => words2.includes(word));
+  const similarity = sharedWords.length / Math.max(words1.length, words2.length);
+  
+  if (similarity >= 0.75) {
+    console.log(`🔍 HIGH SIMILARITY: "${meal1}" ≈ "${meal2}" (${(similarity * 100).toFixed(1)}% word overlap)`);
+    return true;
+  }
+  
+  // Check for specific recipe patterns that should be treated as similar
+  const patterns = [
+    ['stir-fry', 'stir fry', 'stirfry', 'stir fried'],
+    ['lasagna', 'lasagne'],
+    ['curry', 'curried'],
+    ['noodle', 'noodles', 'rice noodles'],
+    ['pasta', 'spaghetti', 'linguine', 'penne'],
+    ['pancake', 'pancakes'],
+    ['smoothie', 'shake'],
+    ['soup', 'broth'],
+    ['salad', 'bowl', 'mixed greens']
+  ];
+  
+  for (const pattern of patterns) {
+    const has1 = pattern.some(p => cleanName1.includes(p));
+    const has2 = pattern.some(p => cleanName2.includes(p));
+    
+    if (has1 && has2) {
+      // Additional check for key ingredients to avoid false positives
+      const keyWords1 = words1.filter(w => !['with', 'and', 'the', 'in', 'on', 'to', 'of', 'for', 'sauce'].includes(w));
+      const keyWords2 = words2.filter(w => !['with', 'and', 'the', 'in', 'on', 'to', 'of', 'for', 'sauce'].includes(w));
+      
+      const keyShared = keyWords1.filter(word => keyWords2.includes(word));
+      const keySimilarity = keyShared.length / Math.max(keyWords1.length, keyWords2.length);
+      
+      if (keySimilarity >= 0.5) {
+        console.log(`🔍 PATTERN MATCH: "${meal1}" ≈ "${meal2}" (both ${pattern[0]}, ${(keySimilarity * 100).toFixed(1)}% key similarity)`);
+        return true;
+      }
+    }
+  }
+  
+  return false;
+}
+
+/**
+ * Get recently used meals from meal history to prevent week-to-week repetition
+ */
+async function getRecentMealHistory(userId: number, weeksBack: number = 2): Promise<string[]> {
+  try {
+    const storage = await getStorage();
+    const recentHistory = await storage.getMealHistory(userId, weeksBack * 21); // 3 meals per day × 7 days × weeks
+    const recentMealNames = recentHistory.map(h => h.mealName);
+    
+    if (recentMealNames.length > 0) {
+      console.log(`📊 HISTORY CHECK: Found ${recentMealNames.length} recent meals from last ${weeksBack} weeks`);
+      console.log(`📊 Recent meals: ${recentMealNames.slice(0, 5).join(', ')}${recentMealNames.length > 5 ? '...' : ''}`);
+    }
+    
+    return recentMealNames;
+  } catch (error) {
+    console.warn('Failed to fetch meal history for variety checking:', error);
+    return [];
+  }
 }
 
 /**
@@ -389,17 +465,38 @@ async function selectUnusedMealIntelligently(
   ingredientsToUseUp: string[] = [],
   category: 'breakfast' | 'lunch' | 'dinner' = 'dinner',
   dietaryTags: string[] = [],
-  targetProtein: number = 25
+  targetProtein: number = 25,
+  userId?: number
 ): Promise<{ meal: MealOption; usedIngredients: string[] }> {
   if (availableMeals.length === 0) {
     throw new Error('No available meals to select from');
   }
+  
+  // Get recent meal history to prevent week-to-week repetition
+  const recentMealHistory = userId ? await getRecentMealHistory(userId, 2) : [];
   
   // Add timestamp-based randomization to improve variety across generations
   const randomOffset = (Date.now() % 1000) / 1000;
   
   // First try to find a meal that hasn't been used yet
   let unusedMeals = availableMeals.filter(meal => !usedMeals.has(meal.name));
+  
+  // Filter out recently used meals from history (cross-week variety)
+  if (recentMealHistory.length > 0) {
+    const beforeHistory = unusedMeals.length;
+    unusedMeals = unusedMeals.filter(meal => {
+      const isRecentlyUsed = recentMealHistory.some(historyMeal => 
+        areMealsSimilar(meal.name, historyMeal)
+      );
+      if (isRecentlyUsed) {
+        console.log(`🚫 HISTORY FILTER: "${meal.name}" skipped (used recently)`);
+      }
+      return !isRecentlyUsed;
+    });
+    if (beforeHistory !== unusedMeals.length) {
+      console.log(`📊 HISTORY VARIETY: ${beforeHistory} → ${unusedMeals.length} meals after filtering recent history`);
+    }
+  }
   
   // Prioritize custom recipes if the switch is on
   if (prioritizeCustom && unusedMeals.length > 0) {
@@ -899,7 +996,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
       
       if (day === 1 && mealCategory === 'dinner') {
         // Day 1: Sunday dinner - FIRST cooking moment (only meal on Sunday)
-        const sundayDinnerResult = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        const sundayDinnerResult = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget, user?.id);
         selectedMeal = sundayDinnerResult.meal;
         sundayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
@@ -914,7 +1011,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         isLeftover = true;
       } else if (day === 2 && mealCategory === 'dinner') {
         // Day 2: Monday dinner - fresh cooking
-        const mondayDinnerResult = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        const mondayDinnerResult = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget, user?.id);
         selectedMeal = mondayDinnerResult.meal;
         mondayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
@@ -929,7 +1026,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         isLeftover = true;
       } else if (day === 3 && mealCategory === 'dinner') {
         // Day 3: Tuesday dinner - fresh cooking
-        const tuesdayDinnerResult = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        const tuesdayDinnerResult = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget, user?.id);
         selectedMeal = tuesdayDinnerResult.meal;
         tuesdayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
@@ -1012,14 +1109,14 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
             };
           } else {
             // Skip duplicate eating out - generate actual meal instead
-            const saturdayDinnerAltResult = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+            const saturdayDinnerAltResult = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget, user?.id);
             selectedMeal = saturdayDinnerAltResult.meal;
             usedDinnerMeals.add(selectedMeal.name);
             allSelectedMealNames.add(selectedMeal.name);
           }
         } else {
           // User eats at home - select proper meal
-          const saturdayDinnerResult = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+          const saturdayDinnerResult = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget, user?.id);
           selectedMeal = saturdayDinnerResult.meal;
           usedDinnerMeals.add(selectedMeal.name);
           allSelectedMealNames.add(selectedMeal.name);
@@ -1038,13 +1135,13 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
           );
           
           if (weekendBreakfasts.length > 0) {
-            const weekendBreakfastResult = await selectUnusedMealIntelligently(weekendBreakfasts, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget);
+            const weekendBreakfastResult = await selectUnusedMealIntelligently(weekendBreakfasts, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget, user?.id);
             selectedMeal = weekendBreakfastResult.meal;
             usedBreakfastMeals.add(selectedMeal.name);
             allSelectedMealNames.add(selectedMeal.name);
             console.log(`Day ${day} (weekend) breakfast: ${selectedMeal.name} (prep: ${selectedMeal.nutrition.prepTime}min)`);
           } else {
-            const fallbackWeekendBreakfastResult = await selectUnusedMealIntelligently(availableMeals, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget);
+            const fallbackWeekendBreakfastResult = await selectUnusedMealIntelligently(availableMeals, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget, user?.id);
             selectedMeal = fallbackWeekendBreakfastResult.meal;
             usedBreakfastMeals.add(selectedMeal.name);
             allSelectedMealNames.add(selectedMeal.name);
@@ -1066,7 +1163,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
             allSelectedMealNames.add(selectedMeal.name);
             console.log(`Day ${day} (weekday) breakfast: ${selectedMeal.name} (prep: ${selectedMeal.nutrition.prepTime}min)`);
           } else {
-            const fallbackWeekdayBreakfastResult = await selectUnusedMealIntelligently(availableMeals, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget);
+            const fallbackWeekdayBreakfastResult = await selectUnusedMealIntelligently(availableMeals, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget, user?.id);
             selectedMeal = fallbackWeekdayBreakfastResult.meal;
             usedBreakfastMeals.add(selectedMeal.name);
             allSelectedMealNames.add(selectedMeal.name);
@@ -1088,7 +1185,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
           console.log(`🥬 Day ${day}: Using ${freshnessFilteredMeals.length} freshness-optimized ${mealCategory} options`);
         }
         
-        const mealSelection = await selectUnusedMealIntelligently(mealsToSelectFrom, mealCategory === 'lunch' ? usedLunchMeals : usedDinnerMeals, allSelectedMealNames, false, remainingIngredientsToUseUp, mealCategory as 'lunch' | 'dinner', dietaryTags, dailyProteinTarget);
+        const mealSelection = await selectUnusedMealIntelligently(mealsToSelectFrom, mealCategory === 'lunch' ? usedLunchMeals : usedDinnerMeals, allSelectedMealNames, false, remainingIngredientsToUseUp, mealCategory as 'lunch' | 'dinner', dietaryTags, dailyProteinTarget, user?.id);
         
         selectedMeal = mealSelection.meal;
         const intelligentlyUsedIngredients = mealSelection.usedIngredients;
