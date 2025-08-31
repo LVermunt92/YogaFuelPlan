@@ -9102,10 +9102,10 @@ function formatAmount(amount: number, unit: string): string {
   
   // Format the final amount nicely
   if (finalAmount >= 1000) {
-    return `${(finalAmount / 1000).toFixed(1)}kg`;
+    return `${(finalAmount / 1000).toFixed(1)} kg`;
   } else if (finalAmount < 1) {
-    return `${(finalAmount * 1000).toFixed(0)}mg`;
+    return `${(finalAmount * 1000).toFixed(0)} mg`;
   } else {
-    return `${Math.round(finalAmount)}${finalUnit}`;
+    return `${Math.round(finalAmount)} ${finalUnit}`;
   }
 }
