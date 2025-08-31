@@ -6956,6 +6956,144 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       ],
       notes: "Gluten-free version of the comforting vegan mac and cheese with sweet cherry tomatoes and creamy nutritional yeast sauce"
     }
+  },
+  {
+    name: "Aubergine Parmigiana",
+    portion: "1 generous serving (about 280g)",
+    nutrition: {
+      protein: 20,
+      prepTime: 45,
+      calories: 395,
+      carbohydrates: 38,
+      fats: 22,
+      fiber: 12,
+      sugar: 18,
+      sodium: 520,
+      potassium: 1100,
+      calcium: 145,
+      iron: 4.2,
+      vitaminC: 28,
+      costEuros: 4.60,
+      proteinPerEuro: 4.3
+    },
+    category: "dinner",
+    tags: ["vegetarian", "vegan", "dairy-free", "comfort-food", "aubergine", "cashew", "bake", "Italian", "tomato"],
+    ingredients: [
+      "100g cashews",
+      "145g silken tofu (drained)",
+      "4 tbsp nutritional yeast",
+      "0.5 lemon (zested & juiced)",
+      "3 tbsp olive oil",
+      "3 whole aubergines (cut into 1cm slices)",
+      "2 cloves garlic (thinly sliced)",
+      "1 onion (finely diced)",
+      "1 pinch dried red chilli flakes",
+      "800g canned cherry tomatoes",
+      "1 tbsp tomato purée",
+      "1 tsp maple syrup",
+      "30g fresh basil (sliced)",
+      "100g breadcrumbs",
+      "Sea salt",
+      "Black pepper"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 5,
+      vegetables: ["aubergines", "garlic", "onion", "tomatoes", "basil"],
+      benefits: ["3 of your 5-a-day", "high fiber from aubergines", "lycopene from tomatoes", "healthy fats from cashews", "complete protein from tofu and cashews"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat the oven to 180°C fan/390°F",
+        "Place cashews in a bowl and cover with boiling water, set aside to soften for 10 minutes",
+        "Spread aubergine on a large baking tray, drizzle generously with olive oil and season with salt",
+        "Roast aubergines for 30-35 minutes, turning halfway, until tender and golden",
+        "Warm 2 tbsp olive oil in a shallow casserole dish (26cm diameter) over medium heat",
+        "Add garlic and chilli, cook for 2-3 minutes until golden",
+        "Add onion and a pinch of salt, cook for 10 minutes until softened",
+        "Stir in canned tomatoes, tomato purée, maple syrup and salt",
+        "Rinse empty tins with 100ml water and add to pan, simmer 10-15 minutes until reduced by half",
+        "For creamy sauce: blend cashews with 100ml soaking water, tofu, nutritional yeast, lemon zest, lemon juice, 1 tbsp olive oil, salt and pepper until smooth",
+        "Remove casserole from heat, stir in roasted aubergine and basil",
+        "Pour over the creamy sauce, scatter breadcrumbs on top and drizzle with olive oil",
+        "Bake for 15 minutes until bubbling and golden"
+      ],
+      tips: [
+        "Don't skip soaking the cashews - this makes the sauce ultra-creamy",
+        "Make sure aubergines are properly golden before adding to the sauce",
+        "Keep breadcrumb stash in freezer - blitz stale bread and store up to 3 months"
+      ],
+      notes: "Easy, comforting aubergine bake with melt-in-your-mouth roasted aubergines, rich tomato sauce and creamy cashew layer - perfect for midweek suppers"
+    }
+  },
+  {
+    name: "Aubergine Parmigiana (Gluten-Free)",
+    portion: "1 generous serving (about 280g)",
+    nutrition: {
+      protein: 19,
+      prepTime: 45,
+      calories: 388,
+      carbohydrates: 36,
+      fats: 22,
+      fiber: 13,
+      sugar: 18,
+      sodium: 520,
+      potassium: 1100,
+      calcium: 145,
+      iron: 4.5,
+      vitaminC: 28,
+      costEuros: 5.20,
+      proteinPerEuro: 3.7
+    },
+    category: "dinner",
+    tags: ["vegetarian", "vegan", "dairy-free", "gluten-free", "comfort-food", "aubergine", "cashew", "bake", "Italian", "tomato"],
+    ingredients: [
+      "100g cashews",
+      "145g silken tofu (drained)",
+      "4 tbsp nutritional yeast",
+      "0.5 lemon (zested & juiced)",
+      "3 tbsp olive oil",
+      "3 whole aubergines (cut into 1cm slices)",
+      "2 cloves garlic (thinly sliced)",
+      "1 onion (finely diced)",
+      "1 pinch dried red chilli flakes",
+      "800g canned cherry tomatoes",
+      "1 tbsp tomato purée",
+      "1 tsp maple syrup",
+      "30g fresh basil (sliced)",
+      "100g gluten-free breadcrumbs",
+      "Sea salt",
+      "Black pepper"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 5,
+      vegetables: ["aubergines", "garlic", "onion", "tomatoes", "basil"],
+      benefits: ["3 of your 5-a-day", "high fiber from aubergines", "lycopene from tomatoes", "healthy fats from cashews", "complete protein from tofu and cashews"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat the oven to 180°C fan/390°F",
+        "Place cashews in a bowl and cover with boiling water, set aside to soften for 10 minutes",
+        "Spread aubergine on a large baking tray, drizzle generously with olive oil and season with salt",
+        "Roast aubergines for 30-35 minutes, turning halfway, until tender and golden",
+        "Warm 2 tbsp olive oil in a shallow casserole dish (26cm diameter) over medium heat",
+        "Add garlic and chilli, cook for 2-3 minutes until golden",
+        "Add onion and a pinch of salt, cook for 10 minutes until softened",
+        "Stir in canned tomatoes, tomato purée, maple syrup and salt",
+        "Rinse empty tins with 100ml water and add to pan, simmer 10-15 minutes until reduced by half",
+        "For creamy sauce: blend cashews with 100ml soaking water, tofu, nutritional yeast, lemon zest, lemon juice, 1 tbsp olive oil, salt and pepper until smooth",
+        "Remove casserole from heat, stir in roasted aubergine and basil",
+        "Pour over the creamy sauce, scatter gluten-free breadcrumbs on top and drizzle with olive oil",
+        "Bake for 15 minutes until bubbling and golden"
+      ],
+      tips: [
+        "Use certified gluten-free breadcrumbs or make from gluten-free bread",
+        "Don't skip soaking the cashews - this makes the sauce ultra-creamy",
+        "Make sure aubergines are properly golden before adding to the sauce"
+      ],
+      notes: "Gluten-free version of the comforting aubergine bake with melt-in-your-mouth roasted aubergines, rich tomato sauce and creamy cashew layer"
+    }
   }
 ];
 
