@@ -380,7 +380,7 @@ function areMealsSimilar(meal1: string, meal2: string): boolean {
   
   // Check for exact match after cleaning
   if (cleanName1 === cleanName2) {
-    console.log(`🔍 EXACT MATCH: "${meal1}" ≈ "${meal2}"`);
+    console.log(`🔍 EXACT MATCH: "${meal1}" ≈ "${meal2}" (cleaned: "${cleanName1}")`);
     return true;
   }
   
@@ -475,27 +475,36 @@ async function selectUnusedMealIntelligently(
   // Get recent meal history to prevent week-to-week repetition
   const recentMealHistory = userId ? await getRecentMealHistory(userId, 2) : [];
   
+  console.log(`🔍 VARIETY DEBUG: Starting with ${availableMeals.length} available meals for ${category}`);
+  console.log(`🔍 VARIETY DEBUG: Used meals in current week: ${Array.from(usedMeals).join(', ')}`);
+  console.log(`🔍 VARIETY DEBUG: All selected meals: ${Array.from(allSelectedMeals).join(', ')}`);
+  
   // Add timestamp-based randomization to improve variety across generations
   const randomOffset = (Date.now() % 1000) / 1000;
   
   // First try to find a meal that hasn't been used yet
   let unusedMeals = availableMeals.filter(meal => !usedMeals.has(meal.name));
+  console.log(`🔍 VARIETY DEBUG: After filtering used meals: ${unusedMeals.length} meals remaining`);
   
   // Filter out recently used meals from history (cross-week variety)
   if (recentMealHistory.length > 0) {
     const beforeHistory = unusedMeals.length;
+    console.log(`🔍 HISTORY DEBUG: Checking ${unusedMeals.length} meals against ${recentMealHistory.length} recent meals`);
     unusedMeals = unusedMeals.filter(meal => {
-      const isRecentlyUsed = recentMealHistory.some(historyMeal => 
-        areMealsSimilar(meal.name, historyMeal)
-      );
-      if (isRecentlyUsed) {
-        console.log(`🚫 HISTORY FILTER: "${meal.name}" skipped (used recently)`);
-      }
+      const isRecentlyUsed = recentMealHistory.some(historyMeal => {
+        const similar = areMealsSimilar(meal.name, historyMeal);
+        if (similar) {
+          console.log(`🚫 HISTORY BLOCK: "${meal.name}" blocked (similar to recent "${historyMeal}")`);
+        }
+        return similar;
+      });
       return !isRecentlyUsed;
     });
     if (beforeHistory !== unusedMeals.length) {
       console.log(`📊 HISTORY VARIETY: ${beforeHistory} → ${unusedMeals.length} meals after filtering recent history`);
     }
+  } else {
+    console.log(`📊 HISTORY DEBUG: No recent meal history to check for userId: ${userId}`);
   }
   
   // Prioritize custom recipes if the switch is on
@@ -510,18 +519,23 @@ async function selectUnusedMealIntelligently(
   // If we have a global tracker, also filter out similar recipes across all categories
   if (allSelectedMeals && allSelectedMeals.size > 0) {
     const beforeFilter = unusedMeals.length;
+    console.log(`🔍 SIMILARITY DEBUG: Checking ${unusedMeals.length} meals against ${allSelectedMeals.size} already selected`);
+    console.log(`🔍 SELECTED MEALS: ${Array.from(allSelectedMeals).join(', ')}`);
     unusedMeals = unusedMeals.filter(candidateMeal => {
-      const isSimilar = Array.from(allSelectedMeals).some(selectedMeal => 
-        areMealsSimilar(candidateMeal.name, selectedMeal)
-      );
-      if (isSimilar) {
-        console.log(`🚫 Global filter blocked: ${candidateMeal.name} (similar to existing meals)`);
-      }
+      const isSimilar = Array.from(allSelectedMeals).some(selectedMeal => {
+        const similar = areMealsSimilar(candidateMeal.name, selectedMeal);
+        if (similar) {
+          console.log(`🚫 SIMILARITY BLOCK: "${candidateMeal.name}" blocked (similar to "${selectedMeal}")`);
+        }
+        return similar;
+      });
       return !isSimilar;
     });
     if (beforeFilter !== unusedMeals.length) {
-      console.log(`🔍 Global filter: ${beforeFilter} → ${unusedMeals.length} meals after similarity filtering`);
+      console.log(`🔍 SIMILARITY FILTER: ${beforeFilter} → ${unusedMeals.length} meals after similarity filtering`);
     }
+  } else {
+    console.log(`🔍 SIMILARITY DEBUG: No selected meals to check against yet`);
   }
   
   // Try intelligent ingredient matching first if we have ingredients to use up
