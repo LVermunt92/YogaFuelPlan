@@ -182,18 +182,9 @@ export default function MealPlanner() {
       // Refetch the shopping list to get updated state
       refetchShoppingList();
       
-      toast({
-        title: "Item updated",
-        description: "Shopping list item updated successfully",
-      });
     },
     onError: (error) => {
       console.error('Error updating shopping list item:', error);
-      toast({
-        title: "Update failed",
-        description: "Failed to update shopping list item",
-        variant: "destructive",
-      });
     },
   });
 
@@ -991,11 +982,6 @@ export default function MealPlanner() {
                                               {item.quantity} {item.unit}
                                             </span>
                                           </div>
-                                          {item.isChecked && item.checkedAt && (
-                                            <div className="text-xs text-green-600 mt-1">
-                                              ✓ Checked {new Date(item.checkedAt).toLocaleDateString()}
-                                            </div>
-                                          )}
                                         </div>
                                       );
                                     })}
