@@ -1537,29 +1537,37 @@ async function generateMealPrepPlan(
   // Create smart breakfast pool respecting weekday/weekend preferences
   const breakfastPool = [];
   
-  // Separate weekday and weekend breakfast options
+  // Separate weekday and weekend breakfast options with more flexible filtering
   const weekdayBreakfasts = breakfastOptions.filter(meal => {
-    // Explicitly exclude pancakes and other weekend-specific items
+    // Weekday: prefer quick options but be more inclusive
     const name = meal.name.toLowerCase();
     const isWeekendSpecific = name.includes('pancake') || name.includes('quinoa breakfast bowl');
-    const hasQuickPrep = meal.nutrition.prepTime <= 10;
+    const hasQuickPrep = meal.nutrition.prepTime <= 15; // Increased from 10 to 15
     const isQuickOption = name.includes('overnight') || name.includes('chia') || 
-                         name.includes('smoothie') || name.includes('kefir');
+                         name.includes('smoothie') || name.includes('kefir') ||
+                         name.includes('bowl') || name.includes('yogurt');
     
     return !isWeekendSpecific && (hasQuickPrep || isQuickOption);
   });
   
   const weekendBreakfasts = breakfastOptions.filter(meal => {
-    // Weekend breakfasts: pancakes, quinoa bowls, or elaborate options (15+ min prep)
+    // Weekend: include elaborate options and weekend-specific items
     const name = meal.name.toLowerCase();
     const isWeekendSpecific = name.includes('pancake') || name.includes('quinoa breakfast bowl');
-    const hasElaboratePrep = meal.nutrition.prepTime >= 15;
+    const hasElaboratePrep = meal.nutrition.prepTime >= 10; // Decreased from 15 to 10
     
     return isWeekendSpecific || hasElaboratePrep;
   });
   
-  console.log(`📋 Weekday breakfasts (≤10min): ${weekdayBreakfasts.map(b => `${b.name} (${b.nutrition.prepTime}min)`).join(' | ')}`);
-  console.log(`🥞 Weekend breakfasts (≥15min): ${weekendBreakfasts.map(b => `${b.name} (${b.nutrition.prepTime}min)`).join(' | ')}`);
+  console.log(`📋 Weekday breakfasts (≤15min): ${weekdayBreakfasts.map(b => `${b.name} (${b.nutrition.prepTime}min)`).join(' | ')}`);
+  console.log(`🥞 Weekend breakfasts (≥10min): ${weekendBreakfasts.map(b => `${b.name} (${b.nutrition.prepTime}min)`).join(' | ')}`);
+  
+  // If both arrays are still empty, use all breakfast options as fallback
+  if (weekdayBreakfasts.length === 0 && weekendBreakfasts.length === 0) {
+    console.log('⚠️ Both weekday and weekend breakfast arrays empty, using all breakfast options as fallback');
+    weekdayBreakfasts.push(...breakfastOptions);
+    weekendBreakfasts.push(...breakfastOptions);
+  }
   
   // Assign breakfasts to each day with variety tracking
   // Start from Day 2 because Day 1 = Sunday evening (dinner only)
@@ -1617,9 +1625,8 @@ async function generateMealPrepPlan(
       const selectedBreakfast = breakfastPool[day - 2]; // Adjust index since breakfastPool starts from day 2
       const isWeekend = day === 6 || day === 7; // Saturday or Sunday
       
-      console.log(`Day ${day} (${isWeekend ? 'weekend' : 'weekday'}) breakfast: ${selectedBreakfast.name} (prep: ${selectedBreakfast.nutrition.prepTime}min)`);
-      
       if (selectedBreakfast) {
+        console.log(`Day ${day} (${isWeekend ? 'weekend' : 'weekday'}) breakfast: ${selectedBreakfast.name} (prep: ${selectedBreakfast.nutrition.prepTime}min)`);
         const householdSize = user?.householdSize || 1;
         let adjustedPortion = adjustMealPortion(selectedBreakfast.portion, caloricAdjustment);
         let adjustedProtein = Math.round(selectedBreakfast.nutrition.protein * caloricAdjustment);
