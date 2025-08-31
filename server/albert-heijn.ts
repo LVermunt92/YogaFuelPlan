@@ -50,6 +50,21 @@ class AlbertHeijnService {
       
       // Note: In production, you would implement proper web scraping here
       // For now, returning mock data structure that matches AH products
+      
+      // Determine appropriate category based on product type
+      let productCategory = 'Groente & fruit'; // Default for vegetables/fruits
+      if (query.toLowerCase().includes('milk') || query.toLowerCase().includes('cheese') || 
+          query.toLowerCase().includes('egg') || query.toLowerCase().includes('yogurt')) {
+        productCategory = 'Zuivel & eieren';
+      } else if (query.toLowerCase().includes('chicken') || query.toLowerCase().includes('beef') || 
+                query.toLowerCase().includes('fish') || query.toLowerCase().includes('meat')) {
+        productCategory = 'Vlees, vis & vegetarisch';
+      } else if (query.toLowerCase().includes('bread') || query.toLowerCase().includes('pastry')) {
+        productCategory = 'Brood & gebak';
+      } else if (query.toLowerCase().includes('rice') || query.toLowerCase().includes('pasta')) {
+        productCategory = 'Rijst, pasta & wereldkeuken';
+      }
+
       const mockProducts: AHProduct[] = [
         {
           id: `ah_${Date.now()}`,
@@ -58,7 +73,7 @@ class AlbertHeijnService {
           price: 2.99,
           unit: '1 stuk',
           imageUrl: '/placeholder-product.jpg',
-          category: 'Groente & fruit',
+          category: productCategory,
           availability: true,
           description: `Fresh ${query} from Albert Heijn`
         }
@@ -144,6 +159,23 @@ class AlbertHeijnService {
             console.log(`🔄 Consolidated manual item: ${ingredient} (quantity now: ${existingItem.quantity})`);
           } else {
             // Add as new manual item
+            // Determine appropriate category for manual items
+            let itemCategory = 'Te zoeken'; // Default fallback
+            if (ingredient.toLowerCase().includes('mushroom') || ingredient.toLowerCase().includes('champignon')) {
+              itemCategory = 'Groente & fruit';
+            } else if (ingredient.toLowerCase().includes('garlic') || ingredient.toLowerCase().includes('onion') || 
+                      ingredient.toLowerCase().includes('tomato') || ingredient.toLowerCase().includes('pepper') ||
+                      ingredient.toLowerCase().includes('lettuce') || ingredient.toLowerCase().includes('spinach') ||
+                      ingredient.toLowerCase().includes('broccoli') || ingredient.toLowerCase().includes('carrot')) {
+              itemCategory = 'Groente & fruit';
+            } else if (ingredient.toLowerCase().includes('milk') || ingredient.toLowerCase().includes('cheese') ||
+                      ingredient.toLowerCase().includes('egg') || ingredient.toLowerCase().includes('yogurt')) {
+              itemCategory = 'Zuivel & eieren';
+            } else if (ingredient.toLowerCase().includes('chicken') || ingredient.toLowerCase().includes('beef') ||
+                      ingredient.toLowerCase().includes('fish') || ingredient.toLowerCase().includes('meat')) {
+              itemCategory = 'Vlees, vis & vegetarisch';
+            }
+
             consolidatedItems.set(manualKey, {
               productId: `manual_${Date.now()}`,
               productName: ingredient,
@@ -151,7 +183,7 @@ class AlbertHeijnService {
               price: 0,
               imageUrl: '/placeholder-ingredient.jpg',
               unit: '1 stuk',
-              category: 'Te zoeken',
+              category: itemCategory,
               found: false
             });
           }
