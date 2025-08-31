@@ -1047,7 +1047,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     category: "dinner",
     tags: ["vegetarian", "viral", "social-media", "high-protein", "comfort-food"],
-    ingredients: ["king oyster mushrooms", "pasta", "30g sun-dried tomatoes", "cashew cream", "nutritional yeast", "garlic", "herbs", "vegetable stock"],
+    ingredients: ["king oyster mushrooms", "100g pasta", "30g sun-dried tomatoes", "cashew cream", "nutritional yeast", "garlic", "herbs", "vegetable stock"],
     wholeFoodLevel: "moderate",
     vegetableContent: {
       servings: 2,
@@ -2346,7 +2346,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     category: "dinner",
     tags: ["viral", "social-media", "vegetarian", "italian-inspired", "instagram-inspired", "creamy"],
     ingredients: [
-      "pasta", "zucchini", "burrata cheese", "mozzarella", "garlic cloves",
+      "200g pasta", "zucchini", "burrata cheese", "mozzarella", "garlic cloves",
       "olive oil", "pine nuts", "fresh basil", "salt", "pepper"
     ],
     wholeFoodLevel: "high",
@@ -2499,7 +2499,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     category: "dinner",
     tags: ["viral", "social-media", "vegetarian", "lactose-free", "dairy-free", "italian-inspired", "instagram-inspired", "creamy"],
     ingredients: [
-      "pasta", "zucchini", "cashew cheese", "nutritional yeast", "garlic cloves",
+      "200g pasta", "zucchini", "cashew cheese", "nutritional yeast", "garlic cloves",
       "olive oil", "pine nuts", "fresh basil", "salt", "pepper", "lemon juice"
     ],
     wholeFoodLevel: "high",
