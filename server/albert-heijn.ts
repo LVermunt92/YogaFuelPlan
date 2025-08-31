@@ -241,6 +241,7 @@ class AlbertHeijnService {
               
               // Preparation descriptions and instructions
               /^finely$/,
+              /finely$/,
               /^roughly$/,
               /^thinly$/,
               /^thickly$/,
@@ -300,6 +301,8 @@ class AlbertHeijnService {
               /^trimmed$/,
               /cored\s*&/,
               /deseeded\s*&/,
+              /^cored\s*&\s*finely$/,
+              /cored\s*&\s*finely/,
               /^washed$/,
               /^rinsed$/,
               /^drained$/,
