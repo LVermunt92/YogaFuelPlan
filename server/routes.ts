@@ -208,6 +208,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
         await storage.cleanupOldMealPlans(request.userId, 3);
       }
       
+      // Auto-generate shopping list for the meal plan
+      if (request.userId) {
+        try {
+          const user = await storage.getUser(request.userId);
+          const dietaryTags = user?.dietaryTags || [];
+          const leftoverIngredients = user?.leftovers || [];
+          
+          let shoppingList = generateEnhancedShoppingList(savedMeals, 'en', dietaryTags, leftoverIngredients);
+          
+          // Convert shopping list to persistent format and save it
+          const itemsToSave = shoppingList.map((item, index) => ({
+            productName: item.ingredient,
+            quantity: item.count,
+            unit: item.unit,
+            price: 0,
+            category: item.category,
+            sortOrder: index
+          }));
+          
+          // Save the shopping list
+          await storage.createShoppingList({
+            userId: request.userId,
+            mealPlanId: savedMealPlan.id,
+            title: `Shopping List - Week ${savedMealPlan.weekStart}`,
+            listType: 'regular',
+            totalItems: shoppingList.length,
+            checkedItems: 0,
+            isActive: true
+          });
+          
+          // Get the saved shopping list to add items
+          const savedShoppingList = await storage.getShoppingList(request.userId, savedMealPlan.id, 'regular');
+          if (savedShoppingList) {
+            await storage.addShoppingListItems(savedShoppingList.id, itemsToSave);
+            console.log('🛒 Auto-generated shopping list with', shoppingList.length, 'items');
+          }
+        } catch (error) {
+          console.error('Failed to auto-generate shopping list:', error);
+          // Don't fail the meal plan creation if shopping list fails
+        }
+      }
+      
       res.json({
         mealPlan: savedMealPlan,
         meals: savedMeals,
@@ -257,6 +299,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Automatically cleanup old meal plans, keeping only 3 most recent
       await storage.cleanupOldMealPlans(request.userId, 3);
+      
+      // Auto-generate shopping list for the meal plan
+      try {
+        const dietaryTags = user?.dietaryTags || [];
+        const leftoverIngredients = user?.leftovers || [];
+        
+        let shoppingList = generateEnhancedShoppingList(savedMeals, 'en', dietaryTags, leftoverIngredients);
+        
+        // Convert shopping list to persistent format and save it
+        const itemsToSave = shoppingList.map((item, index) => ({
+          productName: item.ingredient,
+          quantity: item.count,
+          unit: item.unit,
+          price: 0,
+          category: item.category,
+          sortOrder: index
+        }));
+        
+        // Save the shopping list
+        await storage.createShoppingList({
+          userId: request.userId,
+          mealPlanId: savedMealPlan.id,
+          title: `Shopping List - Week ${savedMealPlan.weekStart}`,
+          listType: 'regular',
+          totalItems: shoppingList.length,
+          checkedItems: 0,
+          isActive: true
+        });
+        
+        // Get the saved shopping list to add items
+        const savedShoppingList = await storage.getShoppingList(request.userId, savedMealPlan.id, 'regular');
+        if (savedShoppingList) {
+          await storage.addShoppingListItems(savedShoppingList.id, itemsToSave);
+          console.log('🛒 Auto-generated shopping list with', shoppingList.length, 'items');
+        }
+      } catch (error) {
+        console.error('Failed to auto-generate shopping list:', error);
+        // Don't fail the meal plan creation if shopping list fails
+      }
       
       res.json({
         mealPlan: savedMealPlan,
@@ -1478,6 +1559,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Save to storage
       const savedMealPlan = await storage.createMealPlan(generated.mealPlan);
       const savedMeals = await storage.createMeals(savedMealPlan.id, generated.meals);
+      
+      // Auto-generate shopping list for the meal plan
+      try {
+        const dietaryTags = user?.dietaryTags || [];
+        const leftoverIngredients = user?.leftovers || [];
+        
+        let shoppingList = generateEnhancedShoppingList(savedMeals, 'en', dietaryTags, leftoverIngredients);
+        
+        // Convert shopping list to persistent format and save it
+        const itemsToSave = shoppingList.map((item, index) => ({
+          productName: item.ingredient,
+          quantity: item.count,
+          unit: item.unit,
+          price: 0,
+          category: item.category,
+          sortOrder: index
+        }));
+        
+        // Save the shopping list
+        await storage.createShoppingList({
+          userId: userId,
+          mealPlanId: savedMealPlan.id,
+          title: `Shopping List - Week ${savedMealPlan.weekStart}`,
+          listType: 'regular',
+          totalItems: shoppingList.length,
+          checkedItems: 0,
+          isActive: true
+        });
+        
+        // Get the saved shopping list to add items
+        const savedShoppingList = await storage.getShoppingList(userId, savedMealPlan.id, 'regular');
+        if (savedShoppingList) {
+          await storage.addShoppingListItems(savedShoppingList.id, itemsToSave);
+          console.log('🛒 Auto-generated shopping list with', shoppingList.length, 'items');
+        }
+      } catch (error) {
+        console.error('Failed to auto-generate shopping list:', error);
+        // Don't fail the meal plan creation if shopping list fails
+      }
       
       res.json({
         mealPlan: savedMealPlan,

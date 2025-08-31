@@ -929,16 +929,6 @@ export default function MealPlanner() {
                               {persistentShoppingList.totalItems} items
                             </Badge>
                           </div>
-                          <div className="flex gap-2">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={refetchShoppingList}
-                              className="text-sm"
-                            >
-                              Refresh
-                            </Button>
-                          </div>
                         </div>
                         
                         {/* Group items by category */}
