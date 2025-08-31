@@ -2260,9 +2260,9 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         "Slice chicken breast in half and pan-fry both sides (5-6 mins) until golden",
         "Shred chicken and set aside to cool",
         "Sauté onion, garlic, and mushrooms in butter until fragrant", 
-        "Add flour, then chicken stock and cheeses to create creamy sauce",
+        "Add flour, then chicken stock, cottage cheese and cream cheese to create creamy sauce",
         "Blanch broccoli until bright green and tender-crisp",
-        "Layer lasagna: sauce, chicken, cheese, broccoli, repeat",
+        "Layer lasagna: sauce, chicken, cottage cheese mixture, broccoli, repeat",
         "Top with mozzarella and grill for 3-5 minutes until bubbly",
         "Drizzle with herb-infused avocado oil before serving"
       ],
