@@ -9083,7 +9083,7 @@ function formatAmount(amount: number, unit: string): string {
   } else if (unit === 'lb' || unit === 'lbs') {
     finalAmount = amount * 454; // 1 lb ≈ 454g
   } else if (unit === 'pieces' || unit === 'piece') {
-    // Keep pieces as is for countable items (lemons, onions, etc.)
+    // Keep pieces as is for countable items (lemons, limes, onions, etc.)
     finalUnit = amount === 1 ? 'piece' : 'pieces';
     finalAmount = amount;
   } else if (unit === 'cloves' || unit === 'clove') {

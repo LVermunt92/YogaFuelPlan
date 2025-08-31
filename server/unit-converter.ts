@@ -73,16 +73,38 @@ export const CONVERSION_RULES: ConversionRule[] = [
     category: 'dry'
   },
 
-  // Lemon-specific conversions - convert to ml of juice
-  {
-    pattern: /(\d+(?:\.\d+)?)\s*g\s+(lemon|lemons)/i,
-    convert: (amount, unit) => ({ amount: Math.round(amount), unit: 'ml' }),
-    category: 'liquid'
-  },
+  // Citrus fruit conversions - keep as pieces for shopping
   {
     pattern: /(\d+(?:\.\d+)?)\s*(lemon|lemons)\s*\(.*?\)/i,
-    convert: (amount, unit) => ({ amount: Math.round(amount * 60), unit: 'ml' }),
-    category: 'liquid'
+    convert: (amount, unit) => ({ 
+      amount: Math.round(amount), 
+      unit: Math.round(amount) === 1 ? 'piece' : 'pieces' 
+    }),
+    category: 'citrus'
+  },
+  {
+    pattern: /(\d+(?:\.\d+)?)\s*(lime|limes)\s*\(.*?\)/i,
+    convert: (amount, unit) => ({ 
+      amount: Math.round(amount), 
+      unit: Math.round(amount) === 1 ? 'piece' : 'pieces' 
+    }),
+    category: 'citrus'
+  },
+  {
+    pattern: /(\d+(?:\.\d+)?)\s*g\s+(lemon|lemons)/i,
+    convert: (amount, unit) => ({ 
+      amount: Math.max(1, Math.round(amount / 60)), 
+      unit: Math.round(amount / 60) === 1 ? 'piece' : 'pieces' 
+    }),
+    category: 'citrus'
+  },
+  {
+    pattern: /(\d+(?:\.\d+)?)\s*g\s+(lime|limes)/i,
+    convert: (amount, unit) => ({ 
+      amount: Math.max(1, Math.round(amount / 50)), 
+      unit: Math.round(amount / 50) === 1 ? 'piece' : 'pieces' 
+    }),
+    category: 'citrus'
   },
 
   // Garlic-specific conversions - keep cloves as cloves

@@ -88,10 +88,14 @@ class AlbertHeijnService {
         
         if (products.length > 0) {
           const product = products[0]; // Take first match
-          // Special handling for garlic to normalize different variations
+          // Special handling for certain ingredients to normalize different variations
           let productKey = `${product.name}_${product.id}`;
           if (ingredient.toLowerCase().includes('garlic') || product.name.toLowerCase().includes('knoflook')) {
             productKey = `garlic_consolidated`; // Use unified key for all garlic products
+          } else if (ingredient.toLowerCase().includes('lime') || product.name.toLowerCase().includes('limoen')) {
+            productKey = `lime_consolidated`; // Use unified key for all lime products
+          } else if (ingredient.toLowerCase().includes('lemon') || product.name.toLowerCase().includes('citroen')) {
+            productKey = `lemon_consolidated`; // Use unified key for all lemon products
           }
           
           if (consolidatedItems.has(productKey)) {
@@ -120,9 +124,13 @@ class AlbertHeijnService {
           // For manual items, use ingredient name as key for consolidation
           let manualKey = `manual_${ingredient.toLowerCase().trim()}`;
           
-          // Special handling for garlic cloves to consolidate all variations
+          // Special handling for specific ingredients to consolidate all variations
           if (ingredient.toLowerCase().includes('garlic') || ingredient.toLowerCase().includes('clove')) {
             manualKey = `manual_garlic_cloves`;
+          } else if (ingredient.toLowerCase().includes('lime')) {
+            manualKey = `manual_lime_pieces`;
+          } else if (ingredient.toLowerCase().includes('lemon')) {
+            manualKey = `manual_lemon_pieces`;
           }
           
           if (consolidatedItems.has(manualKey)) {
