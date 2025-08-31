@@ -8036,10 +8036,26 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
       'plant-based milk': 'oat milk', 
       'non-dairy milk': 'oat milk',
       'dairy-free milk': 'oat milk',
-      'unsweetened plant milk': 'unsweetened oat milk',
+      'unsweetened plant milk': 'oat milk',
       'plant oat milk': 'oat milk', // Fix redundant naming
       'almond oat milk': 'oat milk', // Standardize to oat milk as preferred
-      'coconut oat milk': 'oat milk'
+      'coconut oat milk': 'oat milk',
+      // Comprehensive oat milk variations consolidation
+      'unsweetened oat milk': 'oat milk',
+      'organic oat milk': 'oat milk',
+      'barista oat milk': 'oat milk',
+      'sweetened oat milk': 'oat milk',
+      'vanilla oat milk': 'oat milk',
+      'chocolate oat milk': 'oat milk',
+      'enriched oat milk': 'oat milk',
+      'calcium enriched oat milk': 'oat milk',
+      'oat milk (unsweetened)': 'oat milk',
+      'oat milk (sweetened)': 'oat milk',
+      'oat milk (vanilla)': 'oat milk',
+      'oat milk (original)': 'oat milk',
+      'original oat milk': 'oat milk',
+      'fresh oat milk': 'oat milk',
+      'creamy oat milk': 'oat milk'
     };
     
     // Apply milk specifications
@@ -8955,9 +8971,26 @@ function cleanIngredientName(ingredient: string): string {
     'kefir': 'fermented kefir',
     'berries': 'mixed berries',
     'oats': 'rolled oats',
-    // Prevent double oat specification and milk specification
+    // Comprehensive oat milk consolidation - all variations standardize to 'oat milk'
     'oat oat milk': 'oat milk',
     'soy oat milk': 'soy milk',
+    'unsweetened oat milk': 'oat milk',
+    'organic oat milk': 'oat milk',
+    'barista oat milk': 'oat milk',
+    'sweetened oat milk': 'oat milk',
+    'vanilla oat milk': 'oat milk',
+    'chocolate oat milk': 'oat milk',
+    'enriched oat milk': 'oat milk',
+    'calcium enriched oat milk': 'oat milk',
+    'oat milk (unsweetened)': 'oat milk',
+    'oat milk (sweetened)': 'oat milk',
+    'oat milk (vanilla)': 'oat milk',
+    'oat milk (original)': 'oat milk',
+    'original oat milk': 'oat milk',
+    'fresh oat milk': 'oat milk',
+    'creamy oat milk': 'oat milk',
+    'oat drink': 'oat milk',
+    'oat beverage': 'oat milk',
     'pieces of pieces of lemon': 'lemon',
     'pieces of lemon': 'lemon', // Simplify lemon to avoid complex specifications
     'porridge certified oats': 'rolled oats',
