@@ -891,7 +891,8 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
       
       if (day === 1 && mealCategory === 'dinner') {
         // Day 1: Sunday dinner - FIRST cooking moment (only meal on Sunday)
-        selectedMeal = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        const sundayDinnerResult = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        selectedMeal = sundayDinnerResult.meal;
         sundayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
         allSelectedMealNames.add(selectedMeal.name);
@@ -905,7 +906,8 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         isLeftover = true;
       } else if (day === 2 && mealCategory === 'dinner') {
         // Day 2: Monday dinner - fresh cooking
-        selectedMeal = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        const mondayDinnerResult = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        selectedMeal = mondayDinnerResult.meal;
         mondayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
         allSelectedMealNames.add(selectedMeal.name);
@@ -919,7 +921,8 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         isLeftover = true;
       } else if (day === 3 && mealCategory === 'dinner') {
         // Day 3: Tuesday dinner - fresh cooking
-        selectedMeal = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        const tuesdayDinnerResult = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        selectedMeal = tuesdayDinnerResult.meal;
         tuesdayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
         allSelectedMealNames.add(selectedMeal.name);
@@ -947,7 +950,8 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         isLeftover = true;
       } else if (day === 5 && mealCategory === 'dinner') {
         // Day 5: Thursday dinner - fresh cooking
-        selectedMeal = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        const thursdayDinnerResult = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        selectedMeal = thursdayDinnerResult.meal;
         thursdayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
         allSelectedMealNames.add(selectedMeal.name);
@@ -961,7 +965,8 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         isLeftover = true;
       } else if (day === 6 && mealCategory === 'dinner') {
         // Day 6: Friday dinner - fresh cooking
-        selectedMeal = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        const fridayDinnerResult = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        selectedMeal = fridayDinnerResult.meal;
         let fridayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
         allSelectedMealNames.add(selectedMeal.name);
@@ -978,7 +983,8 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
           };
         } else {
           // User eats at home - select proper meal
-          selectedMeal = await selectUnusedMealIntelligently(availableMeals, usedLunchMeals, allSelectedMealNames, false, ingredientsToUseUp, 'lunch', dietaryTags, dailyProteinTarget);
+          const saturdayLunchResult = await selectUnusedMealIntelligently(availableMeals, usedLunchMeals, allSelectedMealNames, false, ingredientsToUseUp, 'lunch', dietaryTags, dailyProteinTarget);
+          selectedMeal = saturdayLunchResult.meal;
           usedLunchMeals.add(selectedMeal.name);
           allSelectedMealNames.add(selectedMeal.name);
         }
@@ -998,13 +1004,15 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
             };
           } else {
             // Skip duplicate eating out - generate actual meal instead
-            selectedMeal = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+            const saturdayDinnerAltResult = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+            selectedMeal = saturdayDinnerAltResult.meal;
             usedDinnerMeals.add(selectedMeal.name);
             allSelectedMealNames.add(selectedMeal.name);
           }
         } else {
           // User eats at home - select proper meal
-          selectedMeal = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+          const saturdayDinnerResult = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+          selectedMeal = saturdayDinnerResult.meal;
           usedDinnerMeals.add(selectedMeal.name);
           allSelectedMealNames.add(selectedMeal.name);
         }
@@ -1022,12 +1030,14 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
           );
           
           if (weekendBreakfasts.length > 0) {
-            selectedMeal = await selectUnusedMealIntelligently(weekendBreakfasts, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget);
+            const weekendBreakfastResult = await selectUnusedMealIntelligently(weekendBreakfasts, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget);
+            selectedMeal = weekendBreakfastResult.meal;
             usedBreakfastMeals.add(selectedMeal.name);
             allSelectedMealNames.add(selectedMeal.name);
             console.log(`Day ${day} (weekend) breakfast: ${selectedMeal.name} (prep: ${selectedMeal.nutrition.prepTime}min)`);
           } else {
-            selectedMeal = await selectUnusedMealIntelligently(availableMeals, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget);
+            const fallbackWeekendBreakfastResult = await selectUnusedMealIntelligently(availableMeals, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget);
+            selectedMeal = fallbackWeekendBreakfastResult.meal;
             usedBreakfastMeals.add(selectedMeal.name);
             allSelectedMealNames.add(selectedMeal.name);
           }
@@ -1042,12 +1052,14 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
           );
           
           if (weekdayBreakfasts.length > 0) {
-            selectedMeal = await selectUnusedMealIntelligently(weekdayBreakfasts, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget);
+            const weekdayBreakfastResult = await selectUnusedMealIntelligently(weekdayBreakfasts, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget);
+            selectedMeal = weekdayBreakfastResult.meal;
             usedBreakfastMeals.add(selectedMeal.name);
             allSelectedMealNames.add(selectedMeal.name);
             console.log(`Day ${day} (weekday) breakfast: ${selectedMeal.name} (prep: ${selectedMeal.nutrition.prepTime}min)`);
           } else {
-            selectedMeal = await selectUnusedMealIntelligently(availableMeals, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget);
+            const fallbackWeekdayBreakfastResult = await selectUnusedMealIntelligently(availableMeals, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget);
+            selectedMeal = fallbackWeekdayBreakfastResult.meal;
             usedBreakfastMeals.add(selectedMeal.name);
             allSelectedMealNames.add(selectedMeal.name);
           }
@@ -1664,7 +1676,8 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayLunchOptions : lunchOptions;
-        lunchMeal = await selectUnusedMealIntelligently(mealOptions, usedLunchMeals, allSelectedMealNames, false, ingredientsToUseUp, 'lunch', dietaryTags, dailyProteinTarget);
+        const lunchResult = await selectUnusedMealIntelligently(mealOptions, usedLunchMeals, allSelectedMealNames, false, ingredientsToUseUp, 'lunch', dietaryTags, dailyProteinTarget);
+        lunchMeal = lunchResult.meal;
         usedLunchMeals.add(lunchMeal.name);
         allSelectedMealNames.add(lunchMeal.name);
       }
@@ -1710,7 +1723,8 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        let selectedDinnerMeal = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        const selectedDinnerResult = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        let selectedDinnerMeal = selectedDinnerResult.meal;
         usedDinnerMeals.add(selectedDinnerMeal.name);
         allSelectedMealNames.add(selectedDinnerMeal.name);
         
@@ -1723,7 +1737,8 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        let selectedDinnerMeal = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        const selectedMondayDinnerResult = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        let selectedDinnerMeal = selectedMondayDinnerResult.meal;
         usedDinnerMeals.add(selectedDinnerMeal.name);
         allSelectedMealNames.add(selectedDinnerMeal.name);
         
@@ -1736,7 +1751,8 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        let selectedDinnerMeal = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        const selectedTuesdayDinnerResult = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        let selectedDinnerMeal = selectedTuesdayDinnerResult.meal;
         usedDinnerMeals.add(selectedDinnerMeal.name);
         allSelectedMealNames.add(selectedDinnerMeal.name);
         
@@ -1749,7 +1765,8 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        wednesdayDinnerMeal = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        const wednesdayDinnerResult = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        wednesdayDinnerMeal = wednesdayDinnerResult.meal;
         usedDinnerMeals.add(wednesdayDinnerMeal.name);
         allSelectedMealNames.add(wednesdayDinnerMeal.name);
         dinnerMeal = wednesdayDinnerMeal;
@@ -1758,7 +1775,8 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        thursdayDinnerMeal = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        const thursdayDinnerResult = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        thursdayDinnerMeal = thursdayDinnerResult.meal;
         usedDinnerMeals.add(thursdayDinnerMeal.name);
         allSelectedMealNames.add(thursdayDinnerMeal.name);
         dinnerMeal = thursdayDinnerMeal;
@@ -1767,7 +1785,8 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        dinnerMeal = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        const fridayDinnerResult = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        dinnerMeal = fridayDinnerResult.meal;
         usedDinnerMeals.add(dinnerMeal.name);
         allSelectedMealNames.add(dinnerMeal.name);
       } else if (day === 7 && thursdayDinnerMeal) {
@@ -1779,7 +1798,8 @@ async function generateMealPrepPlan(
         // Apply weekday time limit (Monday-Friday = days 2-6)
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        dinnerMeal = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        const fallbackDinnerResult = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        dinnerMeal = fallbackDinnerResult.meal;
         usedDinnerMeals.add(dinnerMeal.name);
         allSelectedMealNames.add(dinnerMeal.name);
       }
