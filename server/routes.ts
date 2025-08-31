@@ -864,7 +864,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           for (const meal of planWithMeals.meals) {
             if (meal.id === mealId) {
               targetMeal = meal;
-              console.log(`Found meal: "${meal.foodDescription}"`);
+              console.log(`Found meal: "${meal.foodDescription}" with recipe ID: ${meal.recipeId || 'none'}`);
               break;
             }
           }
@@ -877,80 +877,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "Meal not found" });
       }
 
-      // Find the recipe from the enhanced meal database including viral recipes
-      const { getCompleteEnhancedMealDatabase } = await import("./nutrition-enhanced");
-      const ENHANCED_MEAL_DATABASE = getCompleteEnhancedMealDatabase();
+      // Find recipe by ID using enhanced meal database
+      const { getCompleteEnhancedMealDatabase, findRecipeByName } = await import("./nutrition-enhanced");
       
-      // Clean the meal name by removing portion scaling and leftover indicators
-      let cleanMealName = targetMeal.foodDescription
-        .replace(" (leftover)", "")
-        .replace(/ \(\d+x portions[^)]*\)/, "") // Remove "(2x portions - batch cook)" etc.
-        .replace(/ \(batch cook\)/, "") // Remove standalone "(batch cook)"
-        .replace(/ \(incorporating leftover [^)]+\)/, "") // Remove "(incorporating leftover ingredient)"
-        .replace(/ \(protein-enhanced\)/, "") // Remove "(protein-enhanced)" suffix
-        .trim();
+      console.log(`Looking for recipe for meal: "${targetMeal.foodDescription}"`);
       
-      console.log(`Looking for recipe: "${cleanMealName}" (original: "${targetMeal.foodDescription}")`);
-      
-      let mealOption = ENHANCED_MEAL_DATABASE.find(option => 
-        option.name === cleanMealName
-      );
-      
-      // If not found, try looking for recipes with seasonal name adaptations
-      if (!mealOption) {
-        // Try finding by seasonal variations (e.g., "fresh" vs "warming")
-        const alternativeNames = [
-          cleanMealName.replace(/^fresh\s+/i, 'Warming '),
-          cleanMealName.replace(/^Fresh\s+/i, 'Warming '),
-          cleanMealName.replace(/^warming\s+/i, 'fresh '),
-          cleanMealName.replace(/^Warming\s+/i, 'fresh ')
-        ];
-        
-        for (const altName of alternativeNames) {
-          mealOption = ENHANCED_MEAL_DATABASE.find(option => option.name === altName);
-          if (mealOption) {
-            console.log(`Found recipe using alternative name: "${altName}"`);
-            break;
-          }
-        }
-      }
-      
-      // If still not found, try fuzzy matching for similar recipes
-      if (!mealOption) {
-        console.log(`Trying fuzzy matching for: "${cleanMealName}"`);
-        
-        // Extract key words from the meal name for fuzzy matching
-        const mealWords = cleanMealName.toLowerCase()
-          .replace(/\(.*?\)/g, '') // Remove parenthetical content
-          .split(/[\s,&-]+/)
-          .filter(word => word.length > 2 && !['with', 'and', 'the', 'for'].includes(word));
-        
-        // Find recipes that contain most of the key words
-        let bestMatch: any = null;
-        let bestScore = 0;
-        
-        for (const recipe of ENHANCED_MEAL_DATABASE) {
-          const recipeWords = recipe.name.toLowerCase().split(/[\s,&-]+/);
-          const matchingWords = mealWords.filter(word => 
-            recipeWords.some(recipeWord => recipeWord.includes(word) || word.includes(recipeWord))
-          );
-          
-          const score = matchingWords.length / mealWords.length;
-          if (score > bestScore && score >= 0.6) { // At least 60% word match
-            bestScore = score;
-            bestMatch = recipe;
-          }
-        }
-        
-        if (bestMatch) {
-          mealOption = bestMatch;
-          console.log(`Found recipe using fuzzy matching: "${bestMatch.name}" (score: ${bestScore.toFixed(2)})`);
-        }
-      }
+      // Use the new ID-based lookup function
+      const mealOption = findRecipeByName(targetMeal.foodDescription);
       
       console.log(`Recipe found: ${mealOption ? 'YES' : 'NO'}`);
       if (!mealOption) {
-        console.log(`Available recipes: ${ENHANCED_MEAL_DATABASE.slice(0, 5).map(m => m.name).join(', ')}...`);
+        const allRecipes = getCompleteEnhancedMealDatabase();
+        console.log(`Available recipes: ${allRecipes.slice(0, 5).map(m => m.name).join(', ')}...`);
       }
 
       // If recipe not found in database, generate with AI

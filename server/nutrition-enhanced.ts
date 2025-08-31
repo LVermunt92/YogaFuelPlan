@@ -24,6 +24,7 @@ export interface NutritionInfo {
 }
 
 export interface MealOption {
+  id?: string; // Unique identifier for the recipe
   name: string;
   portion: string;
   nutrition: NutritionInfo;
@@ -6988,9 +6989,99 @@ export function getCompleteEnhancedMealDatabase(): MealOption[] {
   // Combine all recipes
   const allRecipes = [...baseRecipes, ...dietaryVariants];
   
-  console.log(`📊 UNIVERSAL VARIANTS: ${baseRecipes.length} base recipes + ${dietaryVariants.length} dietary variants = ${allRecipes.length} total recipes`);
+  // Assign unique IDs to all recipes based on their names
+  const recipesWithIds = allRecipes.map((recipe, index) => ({
+    ...recipe,
+    id: generateRecipeId(recipe.name, index)
+  }));
+  
+  console.log(`📊 UNIVERSAL VARIANTS: ${baseRecipes.length} base recipes + ${dietaryVariants.length} dietary variants = ${recipesWithIds.length} total recipes`);
   console.log(`📊 DEVELOPER FRIENDLY: Every recipe now has gluten-free, lactose-free, and vegetarian versions using kipstukjes & Beyond Meat`);
-  return allRecipes;
+  return recipesWithIds;
+}
+
+// Generate a consistent, unique ID for a recipe based on its name
+function generateRecipeId(recipeName: string, index: number): string {
+  // Create a hash-like ID from the recipe name
+  const nameHash = recipeName
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, '') // Remove special characters
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .substring(0, 50); // Limit length
+  
+  // Add index to ensure uniqueness
+  return `recipe-${nameHash}-${index}`;
+}
+
+// Efficient recipe lookup by name using recipe IDs
+export function findRecipeByName(mealDescription: string): MealOption | null {
+  const ENHANCED_MEAL_DATABASE = getCompleteEnhancedMealDatabase();
+  
+  // Clean the meal name by removing portion scaling and leftover indicators
+  let cleanMealName = mealDescription
+    .replace(" (leftover)", "")
+    .replace(/ \(\d+x portions[^)]*\)/, "") // Remove "(2x portions - batch cook)" etc.
+    .replace(/ \(batch cook\)/, "") // Remove standalone "(batch cook)"
+    .replace(/ \(incorporating leftover [^)]+\)/, "") // Remove "(incorporating leftover ingredient)"
+    .replace(/ \(protein-enhanced\)/, "") // Remove "(protein-enhanced)" suffix
+    .trim();
+  
+  console.log(`🔍 ID-BASED LOOKUP: Searching for "${cleanMealName}" (original: "${mealDescription}")`);
+  
+  // Try exact name match first
+  let mealOption = ENHANCED_MEAL_DATABASE.find(option => option.name === cleanMealName);
+  if (mealOption) {
+    console.log(`✅ Found exact match: "${mealOption.name}" (ID: ${mealOption.id})`);
+    return mealOption;
+  }
+  
+  // Try seasonal variations
+  const alternativeNames = [
+    cleanMealName.replace(/^fresh\s+/i, 'Warming '),
+    cleanMealName.replace(/^Fresh\s+/i, 'Warming '),
+    cleanMealName.replace(/^warming\s+/i, 'fresh '),
+    cleanMealName.replace(/^Warming\s+/i, 'fresh ')
+  ];
+  
+  for (const altName of alternativeNames) {
+    mealOption = ENHANCED_MEAL_DATABASE.find(option => option.name === altName);
+    if (mealOption) {
+      console.log(`✅ Found seasonal variant: "${mealOption.name}" (ID: ${mealOption.id})`);
+      return mealOption;
+    }
+  }
+  
+  // Try fuzzy matching as last resort
+  console.log(`🔍 Trying fuzzy matching for: "${cleanMealName}"`);
+  
+  const mealWords = cleanMealName.toLowerCase()
+    .replace(/\(.*?\)/g, '') // Remove parenthetical content
+    .split(/[\s,&-]+/)
+    .filter(word => word.length > 2 && !['with', 'and', 'the', 'for'].includes(word));
+  
+  let bestMatch: MealOption | null = null;
+  let bestScore = 0;
+  
+  for (const recipe of ENHANCED_MEAL_DATABASE) {
+    const recipeWords = recipe.name.toLowerCase().split(/[\s,&-]+/);
+    const matchingWords = mealWords.filter(word => 
+      recipeWords.some(recipeWord => recipeWord.includes(word) || word.includes(recipeWord))
+    );
+    
+    const score = matchingWords.length / mealWords.length;
+    if (score > bestScore && score >= 0.6) { // At least 60% word match
+      bestScore = score;
+      bestMatch = recipe;
+    }
+  }
+  
+  if (bestMatch) {
+    console.log(`✅ Found fuzzy match: "${bestMatch.name}" (ID: ${bestMatch.id}, score: ${bestScore.toFixed(2)})`);
+    return bestMatch;
+  }
+  
+  console.log(`❌ No recipe found for: "${cleanMealName}"`);
+  return null;
 }
 
 // Function to get meals from unified database filtered by dietary requirements
