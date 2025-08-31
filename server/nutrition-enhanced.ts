@@ -9432,8 +9432,15 @@ function cleanIngredientName(ingredient: string): string {
   if (cleaned.includes('salt') || cleaned === 'sea salt' || cleaned === 'kosher salt' || cleaned === 'table salt' || cleaned === 'himalayan salt' || cleaned === 'rock salt') {
     cleaned = 'salt';
   }
+  // Handle tomato paste and purée separately - DO NOT consolidate with fresh tomatoes
+  if (cleaned.includes('tomato paste') || cleaned === 'tomato paste') {
+    cleaned = 'tomato paste';
+  } else if (cleaned.includes('tomato purée') || cleaned === 'tomato purée' || 
+             cleaned.includes('tomato puree') || cleaned === 'tomato puree') {
+    cleaned = 'tomato purée';
+  } 
   // Consolidate all tomato variations to prevent duplicates
-  if (cleaned.includes('cherry tomatoes') || cleaned === 'cherry tomatoes' || 
+  else if (cleaned.includes('cherry tomatoes') || cleaned === 'cherry tomatoes' || 
       cleaned.includes('cherry tomato') || cleaned === 'cherry tomato') {
     cleaned = 'cherry tomatoes';
   } else if (cleaned.includes('sun-dried tomatoes') || cleaned === 'sun-dried tomatoes') {
@@ -9443,8 +9450,9 @@ function cleanIngredientName(ingredient: string): string {
     cleaned = 'roma tomatoes';
   } else if (cleaned.includes('tomatoes') || cleaned === 'tomatoes' || 
              cleaned.includes('tomato') || cleaned === 'tomato') {
-    // Generic tomatoes - exclude cherry and sun-dried varieties already handled above
-    if (!cleaned.includes('cherry') && !cleaned.includes('sun-dried') && !cleaned.includes('roma') && !cleaned.includes('plum')) {
+    // Generic tomatoes - exclude cherry, sun-dried, roma, plum, paste, and purée varieties already handled above
+    if (!cleaned.includes('cherry') && !cleaned.includes('sun-dried') && !cleaned.includes('roma') && 
+        !cleaned.includes('plum') && !cleaned.includes('paste') && !cleaned.includes('purée') && !cleaned.includes('puree')) {
       cleaned = 'tomatoes';
     }
   }
