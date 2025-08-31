@@ -862,7 +862,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     category: "dinner",
     tags: ["vegetarian", "gluten-free", "anti-inflammatory", "high-protein"],
-    ingredients: ["quinoa", "mixed wild mushrooms", "fresh herbs (parsley, thyme)", "zucchini", "red bell pepper", "carrots", "red onion", "pine nuts", "olive oil", "vegetable broth", "tahini", "lemon juice", "parmesan cheese", "hemp hearts", "pumpkin seeds", "chickpeas", "nutritional yeast"],
+    ingredients: ["quinoa", "mixed wild mushrooms", "fresh herbs (parsley, thyme)", "zucchini", "red bell pepper", "carrots", "red onion", "pine nuts", "olive oil", "vegetable stock", "tahini", "lemon juice", "parmesan cheese", "hemp hearts", "pumpkin seeds", "chickpeas", "nutritional yeast"],
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 4,
@@ -874,7 +874,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         "Rinse 1 cup quinoa until water runs clear",
         "Toast quinoa in dry pan for 2-3 minutes for nuttier taste",
         "Sauté sliced mushrooms in 1 tbsp olive oil until golden, set aside",
-        "Cook quinoa in 2 cups vegetable broth with 1 tbsp olive oil for 15 minutes",
+        "Cook quinoa in 2 cups vegetable stock with 1 tbsp olive oil for 15 minutes",
         "Meanwhile, dice zucchini, bell pepper, carrots, and onion",
         "Drain and rinse 1 can chickpeas, pat dry",
         "Toss vegetables and chickpeas with 2 tbsp olive oil, salt, and pepper",
@@ -1047,7 +1047,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     category: "dinner",
     tags: ["vegetarian", "viral", "social-media", "high-protein", "comfort-food"],
-    ingredients: ["king oyster mushrooms", "pasta", "sun-dried tomatoes", "cashew cream", "nutritional yeast", "garlic", "herbs", "vegetable broth"],
+    ingredients: ["king oyster mushrooms", "pasta", "sun-dried tomatoes", "cashew cream", "nutritional yeast", "garlic", "herbs", "vegetable stock"],
     wholeFoodLevel: "moderate",
     vegetableContent: {
       servings: 2,
@@ -1059,7 +1059,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         "Make cashew cream: Soak 1/2 cup raw cashews in hot water for 30 minutes, then drain and blend with 1/3 cup water until smooth and creamy",
         "Slice king oyster mushrooms thick and sear until golden (viral technique for meaty texture)",
         "Remove mushrooms, sauté garlic in same pan",
-        "Add sun-dried tomatoes and a splash of vegetable broth",
+        "Add sun-dried tomatoes and a splash of vegetable stock",
         "Pour in the prepared cashew cream, add nutritional yeast for viral creamy sauce",
         "Return mushrooms to pan, simmer until heated through",
         "Serve over pasta with fresh herbs for Instagram appeal"
@@ -1973,7 +1973,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       '1/2 cup cooked red lentils',
       '1 tbsp coconut oil',
       '1/2 tsp fennel seeds',
-      '1 cup vegetable broth',
+      '1 cup vegetable stock',
       '2 tbsp fresh cilantro',
       '1 tbsp fresh mint',
       '1/2 lime (juice)',
@@ -1989,7 +1989,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       instructions: [
         'Heat coconut oil gently, add fennel seeds until fragrant',
         'Add diced summer vegetables, sauté lightly for 3 minutes',
-        'Pour in vegetable broth, bring to gentle simmer',
+        'Pour in vegetable stock, bring to gentle simmer',
         'Add cooked red lentils and coconut milk, warm through',
         'Stir in cooked quinoa to heat through',
         'Stir in fresh herbs and lime juice off heat',
@@ -2134,7 +2134,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       '2 oz rice noodles',
       '80g tempeh (cubed)',
       '1/2 cup coconut milk',
-      '1 cup vegetable broth',
+      '1 cup vegetable stock',
       '1/4 cup fresh vegetables (cucumber, zucchini)',
       '2 tbsp fresh cilantro',
       '1 tbsp fresh mint',
@@ -2154,7 +2154,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         'Cook rice noodles according to package directions, drain',
         'Steam or pan-fry tempeh cubes until golden, about 4 minutes each side',
         'Heat coconut oil gently, add fennel seeds until fragrant',
-        'Add vegetable broth and coconut milk, bring to gentle simmer',
+        'Add vegetable stock and coconut milk, bring to gentle simmer',
         'Add fresh vegetables, cook 2-3 minutes until just tender',
         'Add cooked noodles and tempeh to warm through',
         'Remove from heat, stir in herbs and lime juice'
@@ -3141,7 +3141,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         "Finish with everything bagel seasoning"
       ],
       tips: [
-        "Cook quinoa in vegetable broth for extra flavor",
+        "Cook quinoa in vegetable stock for extra flavor",
         "Perfect for those who prefer savory breakfasts",
         "Make quinoa ahead for quick assembly"
       ],
@@ -3381,7 +3381,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       "1 onion (diced)",
       "2 cloves garlic (minced)",
       "1 can (400g) diced tomatoes",
-      "3 cups vegetable broth",
+      "3 cups vegetable stock",
       "1 tsp cumin",
       "½ tsp paprika",
       "1 tbsp olive oil",
@@ -3398,7 +3398,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         "Heat olive oil in large pot over medium heat",
         "Add onion, carrot, and celery; cook for 5 minutes",
         "Add garlic and spices; cook for 1 minute",
-        "Add lentils, tomatoes, and vegetable broth",
+        "Add lentils, tomatoes, and vegetable stock",
         "Bring to boil, then reduce heat and simmer for 15 minutes",
         "Stir occasionally until lentils are tender",
         "Garnish with fresh parsley"
@@ -4629,7 +4629,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       "2 tbsp olive oil",
       "1 tsp dried oregano",
       "1 tsp dried basil",
-      "2 cups vegetable broth",
+      "2 cups vegetable stock",
       "¼ cup fresh parsley (chopped)",
       "Salt and pepper to taste"
     ],
@@ -7975,7 +7975,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'mung bean noodles': 'Grains, Pasta & Canned Goods',
     'plain flour': 'Baking & Cooking Basics',
     'vegetable stock': 'Baking & Cooking Basics',
-    'vegetable broth': 'Baking & Cooking Basics',
+    'vegetable stock': 'Baking & Cooking Basics',
     'canned tomatoes': 'Baking & Cooking Basics',
     'tomato paste': 'Baking & Cooking Basics',
     'avocado oil': 'Pantry Essentials',
@@ -8431,7 +8431,7 @@ export function getDefaultPortion(ingredient: string): { amount: number; unit: s
     'sun-dried tomatoes': { amount: 30, unit: 'g' }, // 2 tbsp = ~30g
     'pasta': { amount: 100, unit: 'g' }, // 1 serving dry pasta
     'gluten-free pasta': { amount: 100, unit: 'g' }, // 1 serving gluten-free pasta
-    'vegetable broth': { amount: 240, unit: 'ml' }, // 1 cup = 240ml
+    'vegetable stock': { amount: 240, unit: 'ml' }, // 1 cup = 240ml
     'mixed nuts': { amount: 30, unit: 'g' }, // 2 tbsp = ~30g
     'maple syrup': { amount: 20, unit: 'g' }, // 1 tbsp = ~20g
     'vanilla extract': { amount: 5, unit: 'g' }, // 1 tsp = ~5g
@@ -8801,7 +8801,7 @@ function cleanIngredientName(ingredient: string): string {
     cleaned = 'maple syrup';
   }
   if (cleaned === 'wine' || cleaned.includes('wine') || cleaned === 'white wine') {
-    cleaned = 'vegetable broth';
+    cleaned = 'vegetable stock';
   }
   if (cleaned.includes('kefir') || cleaned === 'kefir') {
     cleaned = 'fermented kefir';
@@ -8964,9 +8964,10 @@ function cleanIngredientName(ingredient: string): string {
     'cashew cream': 'cashew cream',
     'nutritional yeast': 'nutritional yeast',
     'sun-dried tomatoes': 'sun-dried tomatoes',
-    'white wine': 'vegetable broth',
-    'wine': 'vegetable broth',
-    'vegetable broth': 'vegetable broth',
+    'white wine': 'vegetable stock',
+    'wine': 'vegetable stock',
+    'vegetable broth': 'vegetable stock',
+    'vegetable stock': 'vegetable stock',
     'almond milk': 'almond milk',
     'kefir': 'fermented kefir',
     'berries': 'mixed berries',

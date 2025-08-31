@@ -308,7 +308,7 @@ export const MEAL_DATABASE: MealOption[] = [
     nutrition: { protein: 28, prepTime: 30, costEuros: 3.10, proteinPerEuro: 9.0 },
     category: "lunch",
     tags: ["warming", "omega-3", "fiber"],
-    ingredients: ["white beans", "hemp seeds", "vegetable broth", "carrots", "celery", "onions", "garlic", "kale", "herbs", "olive oil"],
+    ingredients: ["white beans", "hemp seeds", "vegetable stock", "carrots", "celery", "onions", "garlic", "kale", "herbs", "olive oil"],
     vegetableContent: {
       servings: 4,
       vegetables: ["carrots", "celery", "onions", "kale"],
@@ -319,7 +319,7 @@ export const MEAL_DATABASE: MealOption[] = [
         "Heat 2 tbsp olive oil in a large pot over medium heat",
         "Sauté 1 diced onion, 2 diced carrots, and 2 diced celery stalks for 8 minutes",
         "Add 3 cloves minced garlic and cook for 1 minute until fragrant",
-        "Add 4 cups vegetable broth and bring to boil",
+        "Add 4 cups vegetable stock and bring to boil",
         "Add 2 cans drained white beans and simmer 15 minutes",
         "Stir in 3 cups chopped kale and cook until wilted",
         "Season with salt, pepper, and herbs (thyme, rosemary)",
@@ -497,7 +497,7 @@ export const MEAL_DATABASE: MealOption[] = [
     nutrition: { protein: 32, prepTime: 30, costEuros: 3.80, proteinPerEuro: 8.4 },
     category: "dinner",
     tags: ["omega-3", "iron", "hearty"],
-    ingredients: ["red lentils", "walnuts", "gluten-free pasta", "crushed tomatoes", "onions", "carrots", "celery", "garlic", "herbs", "vegetable broth"],
+    ingredients: ["red lentils", "walnuts", "gluten-free pasta", "crushed tomatoes", "onions", "carrots", "celery", "garlic", "herbs", "vegetable stock"],
     vegetableContent: {
       servings: 4,
       vegetables: ["tomatoes", "onions", "carrots", "celery"],
@@ -509,8 +509,8 @@ export const MEAL_DATABASE: MealOption[] = [
         "Sauté diced onion, carrot, and celery until soft, about 8 minutes",
         "Add 4 cloves minced garlic and cook 1 minute",
         "Add 1 cup red lentils and 1/2 cup chopped walnuts",
-        "Pour in 1 can crushed tomatoes and 2 cups vegetable broth",
-        "Add 1/4 cup vegetable broth and dried herbs (oregano, basil)",
+        "Pour in 1 can crushed tomatoes and 2 cups vegetable stock",
+        "Add 1/4 cup vegetable stock and dried herbs (oregano, basil)",
         "Simmer 20 minutes until lentils are tender and sauce thickens",
         "Meanwhile, cook gluten-free pasta according to package directions",
         "Season bolognese with salt, pepper, and fresh herbs",
@@ -945,7 +945,7 @@ export function generateShoppingList(meals: { foodDescription: string }[], langu
     'cumin': 'Pantry Items',
     'cinnamon': 'Pantry Items',
     'herbs': 'Pantry Items',
-    'vegetable broth': 'Pantry Items'
+    'vegetable stock': 'Pantry Items'
   };
 
   // Helper function to parse recipe instructions for ingredient amounts
@@ -1021,7 +1021,7 @@ export function generateShoppingList(meals: { foodDescription: string }[], langu
       'water', 'sparkling water', 'coconut water',
       
       // Broths and stocks
-      'broth', 'stock', 'chicken broth', 'vegetable broth', 'beef broth',
+      'broth', 'stock', 'chicken broth', 'vegetable stock', 'beef broth',
       
       // Juices
       'juice', 'lemon juice', 'lime juice', 'orange juice', 'apple juice',
@@ -1167,7 +1167,7 @@ export function generateShoppingList(meals: { foodDescription: string }[], langu
     'cumin': { amount: 50, unit: 'g' },
     'cinnamon': { amount: 50, unit: 'g' },
     'herbs': { amount: 50, unit: 'g' },
-    'vegetable broth': { amount: 1000, unit: 'ml' },
+    'vegetable stock': { amount: 1000, unit: 'ml' },
     
     // Other
       'cilantro': { amount: 50, unit: 'g' },
