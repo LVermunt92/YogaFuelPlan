@@ -2552,7 +2552,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       "120g Greek yogurt",
       "30ml almond butter",
       "15ml chia seeds",
-      "Fresh strawberries for topping",
+      "Fresh strawberries",
       "Crushed almonds"
     ],
     wholeFoodLevel: "high",
@@ -4188,7 +4188,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       "1 tsp vanilla extract",
       "1 tbsp maple syrup",
       "2 tbsp butter for cooking",
-      "Fresh berries for topping"
+      "Fresh berries"
     ],
     wholeFoodLevel: "moderate",
     vegetableContent: {
@@ -8176,7 +8176,9 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'steel-cut oats': 'Grains, Pasta & Canned Goods',
     'certified oats': 'Grains, Pasta & Canned Goods',
     'scoop vanilla protein powder': 'Other Dry Goods',
-    'strawberries for topping': 'Fruits',
+    'strawberries for topping': 'Fruits', // Legacy compatibility
+    'fresh berries for topping': 'Fruits', // Legacy compatibility
+    'blueberries for topping': 'Fruits', // Legacy compatibility
     'spirulina': 'Other Dry Goods',
     'coriander': 'Fresh Herbs',
     'fresh coriander': 'Fresh Herbs'
@@ -8975,7 +8977,8 @@ function cleanIngredientName(ingredient: string): string {
     /^finely (chopped|diced|sliced)$/i,
     /^roughly (chopped|diced|sliced)$/i,
     /^(extra|additional) .* for (cooking|serving|garnish|topping)$/i,
-    /^for (cooking|serving|garnish|topping)$/i
+    /^for (cooking|serving|garnish|topping)$/i,
+    /^(.+) for topping$/i // Remove "for topping" from ingredients
   ];
   
   for (const pattern of cookingInstructionPatterns) {
