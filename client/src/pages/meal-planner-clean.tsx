@@ -43,6 +43,36 @@ interface ShoppingListResponse {
   categories: string[];
 }
 
+// New persistent shopping list types
+interface PersistentShoppingListItem {
+  id: number;
+  productName: string;
+  quantity: number;
+  unit: string;
+  price: number;
+  category: string;
+  isChecked: boolean;
+  checkedAt: string | null;
+  sortOrder: number;
+  productId?: string;
+  imageUrl?: string;
+  deepLink?: string;
+}
+
+interface PersistentShoppingList {
+  id: number;
+  userId: number;
+  mealPlanId?: number;
+  title: string;
+  listType: string;
+  totalItems: number;
+  checkedItems: number;
+  generatedAt: string;
+  lastUpdated: string;
+  isActive: boolean;
+  items: PersistentShoppingListItem[];
+}
+
 interface RecipeResponse {
   name: string;
   portion: string;
@@ -142,14 +172,47 @@ export default function MealPlanner() {
     return nextSunday.toISOString().split('T')[0];
   };
 
+  // Mutations for shopping list item updates
+  const updateShoppingListItemMutation = useMutation({
+    mutationFn: async ({ itemId, updates }: { itemId: number; updates: { isChecked: boolean } }) => {
+      const response = await apiRequest('PUT', `/api/shopping-lists/0/items/${itemId}`, updates);
+      return response.json();
+    },
+    onSuccess: () => {
+      // Refetch the shopping list to get updated state
+      refetchShoppingList();
+      
+      toast({
+        title: "Item updated",
+        description: "Shopping list item updated successfully",
+      });
+    },
+    onError: (error) => {
+      console.error('Error updating shopping list item:', error);
+      toast({
+        title: "Update failed",
+        description: "Failed to update shopping list item",
+        variant: "destructive",
+      });
+    },
+  });
+
   // Helper functions for shopping list
-  const toggleItemChecked = (itemKey: string) => {
+  const toggleItemChecked = (item: PersistentShoppingListItem) => {
+    const newCheckedState = !item.isChecked;
+    updateShoppingListItemMutation.mutate({
+      itemId: item.id,
+      updates: { isChecked: newCheckedState }
+    });
+    
+    // Optimistically update local state
     setCheckedItems(prev => {
       const newChecked = new Set(prev);
-      if (newChecked.has(itemKey)) {
-        newChecked.delete(itemKey);
-      } else {
+      const itemKey = `${item.category}-${item.productName}`;
+      if (newCheckedState) {
         newChecked.add(itemKey);
+      } else {
+        newChecked.delete(itemKey);
       }
       return newChecked;
     });
@@ -206,11 +269,64 @@ export default function MealPlanner() {
     retry: 1,
   });
 
-  // Fetch shopping list for current meal plan
+  // Persistent shopping list - first try to load saved list, then generate fresh if needed
+  const { data: persistentShoppingList, isLoading: loadingPersistentList, refetch: refetchShoppingList } = useQuery<PersistentShoppingList | null>({
+    queryKey: ['/api/shopping-lists', authUser?.id, selectedMealPlan, language],
+    queryFn: async () => {
+      if (!authUser?.id || !selectedMealPlan) return null;
+      
+      try {
+        // First, try to get existing saved shopping list
+        const savedResponse = await apiRequest('GET', `/api/shopping-lists/${authUser.id}?mealPlanId=${selectedMealPlan}&listType=regular`);
+        const savedData = await savedResponse.json();
+        
+        if (savedData.shoppingList) {
+          console.log('✅ Found saved shopping list with', savedData.shoppingList.items.length, 'items');
+          return savedData.shoppingList;
+        }
+        
+        // No saved list found, generate fresh shopping list
+        console.log('🆕 No saved shopping list found, generating fresh one...');
+        const freshResponse = await fetch(`/api/meal-plans/${selectedMealPlan}/shopping-list?language=${language}`);
+        const freshData: ShoppingListResponse = await freshResponse.json();
+        
+        // Convert fresh shopping list to persistent format and save it
+        const itemsToSave = freshData.shoppingList.map((item, index) => ({
+          productName: item.ingredient,
+          quantity: item.count,
+          unit: item.unit,
+          price: 0,
+          category: item.category,
+          sortOrder: index
+        }));
+        
+        // Save the new shopping list
+        const saveResponse = await apiRequest('POST', '/api/shopping-lists', {
+          userId: authUser.id,
+          mealPlanId: selectedMealPlan,
+          title: `Shopping List - Week ${freshData.weekStart}`,
+          listType: 'regular',
+          items: itemsToSave
+        });
+        
+        const saveData = await saveResponse.json();
+        console.log('💾 Saved new shopping list with', saveData.shoppingList.items.length, 'items');
+        return saveData.shoppingList;
+        
+      } catch (error) {
+        console.error('Error with persistent shopping list:', error);
+        return null;
+      }
+    },
+    enabled: !!authUser?.id && !!selectedMealPlan,
+    staleTime: 0, // Always check for updates
+  });
+
+  // Legacy shopping list query (kept for fallback)
   const { data: shoppingListData, isLoading: loadingShoppingList } = useQuery<ShoppingListResponse>({
     queryKey: ['/api/meal-plans', selectedMealPlan, 'shopping-list', language],
     queryFn: () => fetch(`/api/meal-plans/${selectedMealPlan}/shopping-list?language=${language}`).then(res => res.json()),
-    enabled: !!selectedMealPlan,
+    enabled: false, // Disabled - we use persistent shopping list now
   });
 
   // Fetch Oura data
@@ -794,88 +910,98 @@ export default function MealPlanner() {
                       <DialogTitle>{t.shoppingListHeader}</DialogTitle>
                     </DialogHeader>
                     
-                    {loadingShoppingList ? (
+                    {loadingPersistentList ? (
                       <div className="flex justify-center py-8">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+                        <p className="ml-3 text-gray-600">Loading your shopping list...</p>
                       </div>
-                    ) : shoppingListData ? (
+                    ) : persistentShoppingList ? (
                       <div className="space-y-4">
                         <div className="flex justify-between items-center gap-4 p-4 bg-gray-50 rounded-lg">
                           <div className="flex items-center gap-4">
                             <div>
-                              <h3 className="font-semibold text-gray-900">Shopping List</h3>
+                              <h3 className="font-semibold text-gray-900">{persistentShoppingList.title}</h3>
                               <p className="text-sm text-gray-500">
-                                {formatWeekRange(shoppingListData.weekStart)}
+                                {persistentShoppingList.checkedItems} of {persistentShoppingList.totalItems} items checked
                               </p>
                             </div>
                             <Badge variant="secondary" className="text-sm px-3 py-1">
-                              {shoppingListData.totalItems} items
+                              {persistentShoppingList.totalItems} items
                             </Badge>
                           </div>
-                          {checkedItems.size > 0 && (
+                          <div className="flex gap-2">
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={clearAllChecked}
+                              onClick={refetchShoppingList}
                               className="text-sm"
                             >
-                              Reset List
+                              Refresh
                             </Button>
-                          )}
+                          </div>
                         </div>
                         
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          {shoppingListData.categories?.map(category => (
-                            <div key={category} className="space-y-3">
-                              <h3 className="font-semibold text-foreground border-b border-border pb-2 text-base">
-                                {category}
-                              </h3>
-                              <div className="space-y-2">
-                                {shoppingListData.shoppingList
-                                ?.filter(item => item.category === category)
-                                ?.map((item, index) => {
-                                  const itemKey = getItemKey(item.ingredient, category);
-                                  const isChecked = checkedItems.has(itemKey);
-                                  
-                                  return (
-                                    <div 
-                                      key={index} 
-                                      className={`py-3 px-3 rounded cursor-pointer transition-all duration-200 ${
-                                        isChecked 
-                                          ? 'bg-green-100 border border-green-300' 
-                                          : 'bg-white border border-gray-200 hover:bg-gray-50 hover:border-gray-300'
-                                      }`}
-                                      onClick={() => toggleItemChecked(itemKey)}
-                                    >
-                                      <div className="flex items-center justify-between w-full">
-                                        <span className={`font-medium leading-tight break-words flex-grow text-sm ${
-                                          isChecked 
-                                            ? 'text-green-700 line-through decoration-2' 
-                                            : 'text-gray-800'
-                                        }`}>
-                                          {item.ingredient}
-                                        </span>
-                                        <span className={`font-semibold text-sm ml-3 whitespace-nowrap ${
-                                          isChecked 
-                                            ? 'text-green-600 line-through decoration-2' 
-                                            : 'text-gray-600'
-                                        }`}>
-                                          {item.totalAmount}
-                                        </span>
-                                      </div>
-                                    </div>
-                                  );
-                                })}
-                              </div>
+                        {/* Group items by category */}
+                        {(() => {
+                          const categories = [...new Set(persistentShoppingList.items.map(item => item.category))];
+                          return (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                              {categories.map(category => (
+                                <div key={category} className="space-y-3">
+                                  <h3 className="font-semibold text-foreground border-b border-border pb-2 text-base">
+                                    {category}
+                                  </h3>
+                                  <div className="space-y-2">
+                                    {persistentShoppingList.items
+                                    ?.filter(item => item.category === category)
+                                    ?.sort((a, b) => a.sortOrder - b.sortOrder)
+                                    ?.map((item) => {
+                                      return (
+                                        <div 
+                                          key={item.id} 
+                                          className={`py-3 px-3 rounded cursor-pointer transition-all duration-200 ${
+                                            item.isChecked 
+                                              ? 'bg-green-100 border border-green-300' 
+                                              : 'bg-white border border-gray-200 hover:bg-gray-50 hover:border-gray-300'
+                                          }`}
+                                          onClick={() => toggleItemChecked(item)}
+                                        >
+                                          <div className="flex items-center justify-between w-full">
+                                            <span className={`font-medium leading-tight break-words flex-grow text-sm ${
+                                              item.isChecked 
+                                                ? 'text-green-700 line-through decoration-2' 
+                                                : 'text-gray-800'
+                                            }`}>
+                                              {item.productName}
+                                            </span>
+                                            <span className={`font-semibold text-sm ml-3 whitespace-nowrap ${
+                                              item.isChecked 
+                                                ? 'text-green-600 line-through decoration-2' 
+                                                : 'text-gray-600'
+                                            }`}>
+                                              {item.quantity} {item.unit}
+                                            </span>
+                                          </div>
+                                          {item.isChecked && item.checkedAt && (
+                                            <div className="text-xs text-green-600 mt-1">
+                                              ✓ Checked {new Date(item.checkedAt).toLocaleDateString()}
+                                            </div>
+                                          )}
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              ))}
                             </div>
-                          ))}
-                        </div>
+                          );
+                        })()}
                         
                         {/* Albert Heijn Integration */}
                         <div className="mt-3 pt-3 border-t border-border">
                           <AlbertHeijnIntegration 
-                            ingredients={shoppingListData.shoppingList?.map(item => item.ingredient) || []}
-                            mealPlanId={shoppingListData.mealPlanId}
+                            ingredients={persistentShoppingList.items?.map(item => item.productName) || []}
+                            mealPlanId={persistentShoppingList.mealPlanId || selectedMealPlan}
                           />
                         </div>
                       </div>

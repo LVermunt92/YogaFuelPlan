@@ -335,6 +335,39 @@ export type UpdateUserRecipe = z.infer<typeof updateUserRecipeSchema>;
 
 
 
+// Shopping Lists for persistent storage of shopping list data and crossed-off items
+export const shoppingLists = pgTable("shopping_lists", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id, { onDelete: "cascade" }).notNull(),
+  mealPlanId: integer("meal_plan_id").references(() => mealPlans.id, { onDelete: "cascade" }),
+  title: text("title").notNull().default("Shopping List"),
+  listType: text("list_type").notNull().default("regular"), // 'regular', 'albert_heijn'
+  totalItems: integer("total_items").default(0),
+  checkedItems: integer("checked_items").default(0),
+  generatedAt: timestamp("generated_at").defaultNow(),
+  lastUpdated: timestamp("last_updated").defaultNow(),
+  isActive: boolean("is_active").default(true),
+}, (table) => ({
+  uniqueUserMealPlan: unique().on(table.userId, table.mealPlanId, table.listType),
+}));
+
+export const shoppingListItems = pgTable("shopping_list_items", {
+  id: serial("id").primaryKey(),
+  shoppingListId: integer("shopping_list_id").references(() => shoppingLists.id, { onDelete: "cascade" }).notNull(),
+  productName: text("product_name").notNull(),
+  quantity: real("quantity").default(1),
+  unit: text("unit").default("piece"),
+  price: real("price").default(0),
+  category: text("category").default("Other"),
+  isChecked: boolean("is_checked").default(false),
+  checkedAt: timestamp("checked_at"),
+  sortOrder: integer("sort_order").default(0),
+  // Albert Heijn specific fields
+  productId: text("product_id"), // AH product ID
+  imageUrl: text("image_url"), // AH product image
+  deepLink: text("deep_link"), // AH app deep link
+});
+
 export const passwordResetCodes = pgTable("password_reset_codes", {
   id: serial("id").primaryKey(),
   userId: integer("user_id").notNull().references(() => users.id),
@@ -350,6 +383,34 @@ export const insertPasswordResetCodeSchema = createInsertSchema(passwordResetCod
 
 export type PasswordResetCode = typeof passwordResetCodes.$inferSelect;
 export type InsertPasswordResetCode = z.infer<typeof insertPasswordResetCodeSchema>;
+
+// Shopping List schemas
+export const insertShoppingListSchema = createInsertSchema(shoppingLists).omit({
+  id: true,
+  generatedAt: true,
+  lastUpdated: true,
+});
+
+export const insertShoppingListItemSchema = createInsertSchema(shoppingListItems).omit({
+  id: true,
+  checkedAt: true,
+});
+
+export const updateShoppingListItemSchema = z.object({
+  isChecked: z.boolean(),
+  quantity: z.number().optional(),
+  productName: z.string().optional(),
+});
+
+export type ShoppingList = typeof shoppingLists.$inferSelect;
+export type InsertShoppingList = z.infer<typeof insertShoppingListSchema>;
+export type ShoppingListItem = typeof shoppingListItems.$inferSelect;
+export type InsertShoppingListItem = z.infer<typeof insertShoppingListItemSchema>;
+export type UpdateShoppingListItem = z.infer<typeof updateShoppingListItemSchema>;
+
+export interface ShoppingListWithItems extends ShoppingList {
+  items: ShoppingListItem[];
+}
 
 export interface MealPlanWithMeals extends MealPlan {
   meals: Meal[];

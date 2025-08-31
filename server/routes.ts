@@ -1706,6 +1706,125 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Persistent Shopping Lists API
+  
+  // Get existing shopping list for user and meal plan
+  app.get("/api/shopping-lists/:userId", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const mealPlanId = req.query.mealPlanId ? parseInt(req.query.mealPlanId as string) : undefined;
+      const listType = (req.query.listType as string) || "regular";
+      
+      const shoppingList = await storage.getShoppingList(userId, mealPlanId, listType);
+      
+      if (!shoppingList) {
+        return res.json({ shoppingList: null, message: "No saved shopping list found" });
+      }
+      
+      res.json({ 
+        shoppingList,
+        message: `Found saved shopping list with ${shoppingList.items.length} items`
+      });
+    } catch (error) {
+      console.error("Error retrieving shopping list:", error);
+      res.status(500).json({ message: "Failed to retrieve shopping list" });
+    }
+  });
+  
+  // Create/save a new shopping list
+  app.post("/api/shopping-lists", async (req, res) => {
+    try {
+      const { userId, mealPlanId, title, listType, items } = req.body;
+      
+      if (!userId || !items || !Array.isArray(items)) {
+        return res.status(400).json({ message: "userId and items array are required" });
+      }
+      
+      // Check if a shopping list already exists for this user/meal plan/type
+      const existingList = await storage.getShoppingList(userId, mealPlanId, listType || "regular");
+      
+      let shoppingList;
+      if (existingList) {
+        // Update existing shopping list
+        await storage.clearShoppingListItems(existingList.id);
+        shoppingList = await storage.updateShoppingList(existingList.id, {
+          title: title || existingList.title,
+          totalItems: items.length,
+          checkedItems: 0,
+          lastUpdated: new Date()
+        });
+      } else {
+        // Create new shopping list
+        shoppingList = await storage.createShoppingList({
+          userId,
+          mealPlanId,
+          title: title || "Shopping List",
+          listType: listType || "regular",
+          totalItems: items.length,
+          checkedItems: 0
+        });
+      }
+      
+      // Add all items to the shopping list
+      if (items.length > 0) {
+        await storage.addShoppingListItems(shoppingList.id, items.map((item: any, index: number) => ({
+          productName: item.productName || item.name || item.item,
+          quantity: item.quantity || 1,
+          unit: item.unit || "piece",
+          price: item.price || 0,
+          category: item.category || "Other",
+          sortOrder: index,
+          productId: item.productId,
+          imageUrl: item.imageUrl,
+          deepLink: item.deepLink
+        })));
+      }
+      
+      // Get the complete shopping list with items
+      const completeList = await storage.getShoppingList(userId, mealPlanId, listType || "regular");
+      
+      res.status(201).json({
+        shoppingList: completeList,
+        message: `Shopping list saved with ${items.length} items`
+      });
+    } catch (error) {
+      console.error("Error saving shopping list:", error);
+      res.status(500).json({ message: "Failed to save shopping list" });
+    }
+  });
+  
+  // Update shopping list item (check/uncheck)
+  app.put("/api/shopping-lists/:listId/items/:itemId", async (req, res) => {
+    try {
+      const itemId = parseInt(req.params.itemId);
+      const updates = req.body;
+      
+      const updatedItem = await storage.updateShoppingListItem(itemId, updates);
+      
+      res.json({
+        item: updatedItem,
+        message: `Item ${updates.isChecked ? 'checked' : 'unchecked'}`
+      });
+    } catch (error) {
+      console.error("Error updating shopping list item:", error);
+      res.status(500).json({ message: "Failed to update item" });
+    }
+  });
+  
+  // Delete shopping list
+  app.delete("/api/shopping-lists/:id", async (req, res) => {
+    try {
+      const listId = parseInt(req.params.id);
+      
+      await storage.deleteShoppingList(listId);
+      
+      res.json({ message: "Shopping list deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting shopping list:", error);
+      res.status(500).json({ message: "Failed to delete shopping list" });
+    }
+  });
+
   // Albert Heijn Shopping List Integration
   app.post("/api/shopping-list/albert-heijn", async (req, res) => {
     try {

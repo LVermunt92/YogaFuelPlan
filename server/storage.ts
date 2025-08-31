@@ -6,6 +6,8 @@ import {
   mealHistory,
   mealFavorites,
   userRecipes,
+  shoppingLists,
+  shoppingListItems,
 
   type User, 
   type InsertUser,
@@ -25,6 +27,12 @@ import {
   type UserRecipe,
   type InsertUserRecipe,
   type UpdateUserRecipe,
+  type ShoppingList,
+  type InsertShoppingList,
+  type ShoppingListItem,
+  type InsertShoppingListItem,
+  type UpdateShoppingListItem,
+  type ShoppingListWithItems,
 
   passwordResetCodes,
   type PasswordResetCode,
@@ -70,6 +78,16 @@ export interface IStorage {
   getUserRecipe(id: number, userId: number): Promise<UserRecipe | undefined>;
   updateUserRecipe(id: number, userId: number, updates: UpdateUserRecipe): Promise<UserRecipe>;
   deleteUserRecipe(id: number, userId: number): Promise<void>;
+
+  // Shopping List methods
+  createShoppingList(data: InsertShoppingList): Promise<ShoppingList>;
+  getShoppingList(userId: number, mealPlanId?: number, listType?: string): Promise<ShoppingListWithItems | undefined>;
+  updateShoppingList(id: number, updates: Partial<ShoppingList>): Promise<ShoppingList>;
+  deleteShoppingList(id: number): Promise<void>;
+  addShoppingListItems(shoppingListId: number, items: InsertShoppingListItem[]): Promise<ShoppingListItem[]>;
+  updateShoppingListItem(id: number, updates: UpdateShoppingListItem): Promise<ShoppingListItem>;
+  deleteShoppingListItem(id: number): Promise<void>;
+  clearShoppingListItems(shoppingListId: number): Promise<void>;
 
 }
 
@@ -994,7 +1012,152 @@ export class DatabaseStorage implements IStorage {
       ));
   }
 
+  // Shopping List methods
+  async createShoppingList(data: InsertShoppingList): Promise<ShoppingList> {
+    const [shoppingList] = await db
+      .insert(shoppingLists)
+      .values(data)
+      .returning();
+    return shoppingList;
+  }
 
+  async getShoppingList(userId: number, mealPlanId?: number, listType: string = "regular"): Promise<ShoppingListWithItems | undefined> {
+    // Get the most recent shopping list for this user/meal plan/type
+    const [shoppingList] = await db
+      .select()
+      .from(shoppingLists)
+      .where(and(
+        eq(shoppingLists.userId, userId),
+        mealPlanId ? eq(shoppingLists.mealPlanId, mealPlanId) : undefined,
+        eq(shoppingLists.listType, listType),
+        eq(shoppingLists.isActive, true)
+      ))
+      .orderBy(desc(shoppingLists.generatedAt))
+      .limit(1);
+
+    if (!shoppingList) {
+      return undefined;
+    }
+
+    // Get all items for this shopping list
+    const items = await db
+      .select()
+      .from(shoppingListItems)
+      .where(eq(shoppingListItems.shoppingListId, shoppingList.id))
+      .orderBy(shoppingListItems.sortOrder, shoppingListItems.category);
+
+    return {
+      ...shoppingList,
+      items
+    };
+  }
+
+  async updateShoppingList(id: number, updates: Partial<ShoppingList>): Promise<ShoppingList> {
+    const [shoppingList] = await db
+      .update(shoppingLists)
+      .set({
+        ...updates,
+        lastUpdated: new Date()
+      })
+      .where(eq(shoppingLists.id, id))
+      .returning();
+    return shoppingList;
+  }
+
+  async deleteShoppingList(id: number): Promise<void> {
+    // Hard delete shopping list (items will be deleted by cascade)
+    await db
+      .delete(shoppingLists)
+      .where(eq(shoppingLists.id, id));
+  }
+
+  async addShoppingListItems(shoppingListId: number, items: InsertShoppingListItem[]): Promise<ShoppingListItem[]> {
+    if (items.length === 0) return [];
+    
+    const insertedItems = await db
+      .insert(shoppingListItems)
+      .values(items.map(item => ({
+        ...item,
+        shoppingListId
+      })))
+      .returning();
+    
+    // Update the total items count
+    await db
+      .update(shoppingLists)
+      .set({
+        totalItems: items.length,
+        lastUpdated: new Date()
+      })
+      .where(eq(shoppingLists.id, shoppingListId));
+
+    return insertedItems;
+  }
+
+  async updateShoppingListItem(id: number, updates: UpdateShoppingListItem): Promise<ShoppingListItem> {
+    const updateData: any = { ...updates };
+    
+    // If checking/unchecking an item, set the timestamp
+    if (updates.isChecked !== undefined) {
+      updateData.checkedAt = updates.isChecked ? new Date() : null;
+    }
+
+    const [item] = await db
+      .update(shoppingListItems)
+      .set(updateData)
+      .where(eq(shoppingListItems.id, id))
+      .returning();
+
+    // Update the checked items count in the shopping list
+    if (updates.isChecked !== undefined) {
+      const [shoppingList] = await db
+        .select({ id: shoppingLists.id })
+        .from(shoppingLists)
+        .where(eq(shoppingLists.id, item.shoppingListId));
+
+      if (shoppingList) {
+        const checkedCount = await db
+          .select()
+          .from(shoppingListItems)
+          .where(and(
+            eq(shoppingListItems.shoppingListId, item.shoppingListId),
+            eq(shoppingListItems.isChecked, true)
+          ));
+
+        await db
+          .update(shoppingLists)
+          .set({
+            checkedItems: checkedCount.length,
+            lastUpdated: new Date()
+          })
+          .where(eq(shoppingLists.id, item.shoppingListId));
+      }
+    }
+
+    return item;
+  }
+
+  async deleteShoppingListItem(id: number): Promise<void> {
+    await db
+      .delete(shoppingListItems)
+      .where(eq(shoppingListItems.id, id));
+  }
+
+  async clearShoppingListItems(shoppingListId: number): Promise<void> {
+    await db
+      .delete(shoppingListItems)
+      .where(eq(shoppingListItems.shoppingListId, shoppingListId));
+    
+    // Reset the counts
+    await db
+      .update(shoppingLists)
+      .set({
+        totalItems: 0,
+        checkedItems: 0,
+        lastUpdated: new Date()
+      })
+      .where(eq(shoppingLists.id, shoppingListId));
+  }
 
 }
 
