@@ -126,7 +126,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       "3 large free-range eggs",
       "60g fresh spinach leaves",
       "40g cherry tomatoes (halved)",
-      "30ml fresh parsley (chopped)",
+      "2 tbsp fresh parsley (chopped)",
       "40g red bell pepper (diced)",
       "½ medium avocado (sliced)",
       "5ml extra virgin olive oil",
@@ -703,7 +703,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       "2 bell peppers (strips)",
       "2 sprigs fresh thyme",
       "2 sprigs fresh oregano", 
-      "¼ cup fresh basil (chopped)",
+      "4 tbsp fresh basil (chopped)",
       "3 cloves garlic (minced)",
       "2 tbsp extra virgin olive oil",
       "1 tbsp balsamic vinegar",
@@ -774,7 +774,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       "2 tbsp toasted pine nuts",
       "2 tbsp pumpkin seeds",
       "2 tbsp nutritional yeast",
-      "¼ cup fresh parsley (chopped)"
+      "4 tbsp fresh parsley (chopped)"
     ],
     wholeFoodLevel: "high",
     vegetableContent: {
@@ -1416,7 +1416,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       "1/2 tsp paprika",
       "1/4 tsp chili powder",
       "2 tbsp fresh lime juice",
-      "1/4 cup fresh cilantro (chopped)",
+      "4 tbsp fresh cilantro (chopped)",
       "1 avocado (sliced)"
     ],
     wholeFoodLevel: "high",
@@ -1804,7 +1804,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     ingredients: [
       "1 cup cooked quinoa (cooled)",
       "1 cucumber (diced)",
-      "1/2 cup fresh mint leaves",
+      "8 tbsp fresh mint leaves",
       "1/4 cup coconut flakes",
       "2 tbsp coconut oil",
       "1 lime (juiced)",
@@ -3277,7 +3277,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       "2 tbsp olive oil",
       "2 tbsp lemon juice",
       "2 cloves garlic (minced)",
-      "¼ cup fresh herbs (parsley, basil)",
+      "4 tbsp fresh herbs (parsley, basil)",
       "2 tbsp pine nuts",
       "Salt and pepper to taste"
     ],

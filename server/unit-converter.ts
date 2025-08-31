@@ -100,6 +100,40 @@ export const CONVERSION_RULES: ConversionRule[] = [
     category: 'count'
   },
 
+  // Fresh herb-specific conversions - keep natural units for herbs
+  {
+    pattern: /(\d+(?:\.\d+)?)\s*tbsp\.?\s+(fresh\s+(?:parsley|basil|cilantro|dill|mint|herbs))/i,
+    convert: (amount, unit) => ({ 
+      amount: Math.round(amount), 
+      unit: Math.round(amount) === 1 ? 'tbsp' : 'tbsp' 
+    }),
+    category: 'herb'
+  },
+  {
+    pattern: /(\d+(?:\.\d+)?)\s*tsp\.?\s+(fresh\s+(?:parsley|basil|cilantro|dill|mint|herbs))/i,
+    convert: (amount, unit) => ({ 
+      amount: Math.round(amount), 
+      unit: Math.round(amount) === 1 ? 'tsp' : 'tsp' 
+    }),
+    category: 'herb'
+  },
+  {
+    pattern: /(\d+(?:\.\d+)?)\s*sprigs?\s+(fresh\s+(?:rosemary|thyme|sage|oregano))/i,
+    convert: (amount, unit) => ({ 
+      amount: Math.round(amount), 
+      unit: Math.round(amount) === 1 ? 'sprig' : 'sprigs' 
+    }),
+    category: 'herb'
+  },
+  {
+    pattern: /(\d+(?:\.\d+)?)\s*ml\s+(fresh\s+(?:parsley|basil|cilantro|dill|mint|herbs))/i,
+    convert: (amount, unit) => ({ 
+      amount: Math.max(1, Math.round(amount / 15)), 
+      unit: Math.round(amount / 15) === 1 ? 'tbsp' : 'tbsp' 
+    }),
+    category: 'herb'
+  },
+
   // Tablespoon and teaspoon conversions
   {
     pattern: /(\d+(?:\.\d+)?)\s*tbsp\.?\s+(.*)/i,
