@@ -6831,9 +6831,131 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         "Tahini should be stirred in at the end to maintain its creamy texture"
       ],
       notes: "Comforting creamy mushroom stroganoff that's completely plant-based yet rich and satisfying - perfect for cozy winter evenings"
+    }
+  },
+  {
+    name: "Tomato Mac & Cheese",
+    portion: "1 generous serving (about 300g)",
+    nutrition: {
+      protein: 18,
+      prepTime: 30,
+      calories: 420,
+      carbohydrates: 65,
+      fats: 12,
+      fiber: 6,
+      sugar: 8,
+      sodium: 480,
+      potassium: 680,
+      calcium: 120,
+      iron: 3.2,
+      vitaminC: 22,
+      costEuros: 3.80,
+      proteinPerEuro: 4.7
     },
-    createdAt: new Date('2025-08-31'),
-    active: true
+    category: "dinner",
+    tags: ["vegetarian", "vegan", "dairy-free", "comfort-food", "pasta", "nutritional-yeast", "tomato"],
+    ingredients: [
+      "300g macaroni pasta",
+      "4 cloves garlic (peeled & diced)",
+      "200g cherry tomatoes (halved)",
+      "1 tbsp olive oil",
+      "3.5 tbsp tapioca flour",
+      "1 lemon (juiced)",
+      "50g nutritional yeast",
+      "2 tsp Dijon mustard",
+      "400ml almond milk",
+      "1 large handful fresh basil (chopped)",
+      "Sea salt",
+      "Black pepper"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["garlic", "cherry tomatoes", "basil"],
+      benefits: ["lycopene from tomatoes", "immune-supporting garlic", "B vitamins from nutritional yeast", "antioxidants from fresh basil"]
+    },
+    recipe: {
+      instructions: [
+        "Cook the macaroni pasta according to packet instructions until al dente",
+        "Once cooked, drain pasta and set aside until needed",
+        "Make the white sauce: place tapioca flour, lemon juice, nutritional yeast, Dijon mustard, almond milk and a pinch of salt in a pan over medium heat",
+        "Continuously whisk the mixture to ensure it stays smooth and no lumps form",
+        "Add extra splash of almond milk if the mixture becomes too thick",
+        "In another large pan over medium heat, add olive oil",
+        "Once warm, add diced garlic, halved cherry tomatoes and a sprinkling of salt",
+        "Mix well and cook for 10 minutes until the tomatoes become really soft and begin to bubble",
+        "Mix through the drained pasta, white sauce and chopped basil",
+        "Season with salt and pepper to taste, then serve immediately"
+      ],
+      tips: [
+        "Don't overcook the pasta as it will continue cooking when mixed with the hot sauce",
+        "Whisk the white sauce constantly to prevent lumps from forming",
+        "Cook tomatoes until they're really soft and jammy for best flavor"
+      ],
+      notes: "Comforting vegan mac and cheese with sweet cherry tomatoes and creamy nutritional yeast sauce - perfect for pasta lovers"
+    }
+  },
+  {
+    name: "Tomato Mac & Cheese (Gluten-Free)",
+    portion: "1 generous serving (about 300g)",
+    nutrition: {
+      protein: 17,
+      prepTime: 30,
+      calories: 415,
+      carbohydrates: 63,
+      fats: 12,
+      fiber: 7,
+      sugar: 8,
+      sodium: 480,
+      potassium: 680,
+      calcium: 120,
+      iron: 3.8,
+      vitaminC: 22,
+      costEuros: 4.20,
+      proteinPerEuro: 4.0
+    },
+    category: "dinner",
+    tags: ["vegetarian", "vegan", "dairy-free", "gluten-free", "comfort-food", "pasta", "nutritional-yeast", "tomato"],
+    ingredients: [
+      "300g gluten-free macaroni pasta",
+      "4 cloves garlic (peeled & diced)",
+      "200g cherry tomatoes (halved)",
+      "1 tbsp olive oil",
+      "3.5 tbsp tapioca flour",
+      "1 lemon (juiced)",
+      "50g nutritional yeast",
+      "2 tsp Dijon mustard",
+      "400ml almond milk",
+      "1 large handful fresh basil (chopped)",
+      "Sea salt",
+      "Black pepper"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["garlic", "cherry tomatoes", "basil"],
+      benefits: ["lycopene from tomatoes", "immune-supporting garlic", "B vitamins from nutritional yeast", "antioxidants from fresh basil"]
+    },
+    recipe: {
+      instructions: [
+        "Cook the gluten-free macaroni pasta according to packet instructions until al dente (may take slightly longer than regular pasta)",
+        "Once cooked, drain pasta and set aside until needed",
+        "Make the white sauce: place tapioca flour, lemon juice, nutritional yeast, Dijon mustard, almond milk and a pinch of salt in a pan over medium heat",
+        "Continuously whisk the mixture to ensure it stays smooth and no lumps form",
+        "Add extra splash of almond milk if the mixture becomes too thick",
+        "In another large pan over medium heat, add olive oil",
+        "Once warm, add diced garlic, halved cherry tomatoes and a sprinkling of salt",
+        "Mix well and cook for 10 minutes until the tomatoes become really soft and begin to bubble",
+        "Mix through the drained pasta, white sauce and chopped basil",
+        "Season with salt and pepper to taste, then serve immediately"
+      ],
+      tips: [
+        "Gluten-free pasta can be more delicate, so watch cooking time carefully",
+        "Rinse gluten-free pasta briefly after cooking to remove excess starch",
+        "Whisk the white sauce constantly to prevent lumps from forming"
+      ],
+      notes: "Gluten-free version of the comforting vegan mac and cheese with sweet cherry tomatoes and creamy nutritional yeast sauce"
+    }
   }
 ];
 
