@@ -7765,7 +7765,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'coconut oat milk': 'Plant-Based Alternatives',
     'plant oat milk': 'Plant-Based Alternatives',
     'vegan butter': 'Plant-Based Alternatives',
-    'almond vegan butter': 'Plant-Based Alternatives',
+    'almond butter': 'Plant-Based Alternatives',
     'coconut cream': 'Plant-Based Alternatives',
     'dairy-free sour cream': 'Plant-Based Alternatives',
     
