@@ -8241,10 +8241,12 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
       }
     }
     
-    // Special handling for garlic - preserve clove specification for proper quantities
-    if (normalized.includes('garlic') && !normalized.includes('clove') && !normalized.includes('powder')) {
-      // Convert generic "garlic" to "garlic cloves" for proper quantity display (but not garlic powder)
-      normalized = normalized.replace(/\bgarlic\b/g, 'garlic cloves');
+    // Enhanced garlic consolidation - prevent duplicate rows by standardizing all garlic to "garlic cloves"
+    if (normalized.includes('garlic') && !normalized.includes('powder')) {
+      // Convert all garlic variations to "garlic cloves" for consolidation (except garlic powder)
+      normalized = normalized.replace(/\bgarlic cloves?\b/g, 'garlic cloves')
+                            .replace(/\bgarlic\b/g, 'garlic cloves')
+                            .replace(/\bgarlic cloves cloves\b/g, 'garlic cloves'); // Fix double cloves
     }
     
     // Simplify steel-cut oats variations to just "oats"

@@ -340,7 +340,8 @@ class AlbertHeijnService {
           const product = products[0]; // Take first match
           // Special handling for certain ingredients to normalize different variations
           let productKey = `${product.name}_${product.id}`;
-          if (ingredient.toLowerCase().includes('garlic') || product.name.toLowerCase().includes('knoflook')) {
+          if (ingredient.toLowerCase().includes('garlic') || ingredient.toLowerCase().includes('knoflook') || 
+              product.name.toLowerCase().includes('knoflook') || product.name.toLowerCase().includes('garlic')) {
             productKey = `garlic_consolidated`; // Use unified key for all garlic products
           } else if (ingredient.toLowerCase().includes('lime') || product.name.toLowerCase().includes('limoen')) {
             productKey = `lime_consolidated`; // Use unified key for all lime products
