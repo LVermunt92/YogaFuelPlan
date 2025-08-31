@@ -161,7 +161,8 @@ class AlbertHeijnService {
             // Add as new manual item
             // Determine appropriate category for manual items
             let itemCategory = 'Te zoeken'; // Default fallback
-            if (ingredient.toLowerCase().includes('mushroom') || ingredient.toLowerCase().includes('champignon')) {
+            if (ingredient.toLowerCase().includes('mushroom') || ingredient.toLowerCase().includes('champignon') || 
+                ingredient.toLowerCase().includes('chestnut')) {
               itemCategory = 'Groente & fruit';
             } else if (ingredient.toLowerCase().includes('garlic') || ingredient.toLowerCase().includes('onion') || 
                       ingredient.toLowerCase().includes('tomato') || ingredient.toLowerCase().includes('pepper') ||
