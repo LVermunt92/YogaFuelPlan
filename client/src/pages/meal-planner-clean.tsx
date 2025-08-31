@@ -291,14 +291,33 @@ export default function MealPlanner() {
         const freshData: ShoppingListResponse = await freshResponse.json();
         
         // Convert fresh shopping list to persistent format and save it
-        const itemsToSave = freshData.shoppingList.map((item, index) => ({
-          productName: item.ingredient,
-          quantity: item.count,
-          unit: item.unit,
-          price: 0,
-          category: item.category,
-          sortOrder: index
-        }));
+        const itemsToSave = freshData.shoppingList.map((item, index) => {
+          // Parse quantity and unit from totalAmount (e.g., "200g" -> quantity: 200, unit: "g")
+          const parseQuantityAndUnit = (totalAmount: string): { quantity: number; unit: string } => {
+            if (!totalAmount || totalAmount === '') {
+              return { quantity: 1, unit: '' };
+            }
+            const cleanAmount = totalAmount.trim();
+            const match = cleanAmount.match(/^(\d+(?:\.\d+)?)\s*(.*)/);
+            if (match) {
+              const quantity = parseFloat(match[1]);
+              const unit = match[2].trim();
+              return { quantity, unit };
+            }
+            return { quantity: 1, unit: cleanAmount };
+          };
+
+          const { quantity, unit } = parseQuantityAndUnit(item.totalAmount);
+          
+          return {
+            productName: item.ingredient,
+            quantity: quantity,
+            unit: unit,
+            price: 0,
+            category: item.category,
+            sortOrder: index
+          };
+        });
         
         // Save the new shopping list
         const saveResponse = await apiRequest('POST', '/api/shopping-lists', {
