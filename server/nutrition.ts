@@ -97,7 +97,7 @@ export const MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
-        "In a bowl, whisk together 1/4 cup chia seeds and 1 scoop vanilla protein powder",
+        "In a bowl, whisk together 1/4 cup chia seeds and 1 vanilla protein powder",
         "Gradually add 1 cup almond milk while whisking to prevent clumps",
         "Add 1 tsp vanilla extract and 2 tbsp maple syrup, whisk well",
         "Cover and refrigerate for at least 2 hours or overnight",
@@ -156,7 +156,7 @@ export const MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
-        "In a jar or bowl, combine 1/2 cup rolled oats with 1 scoop vanilla protein powder",
+        "In a jar or bowl, combine 1/2 cup rolled oats with 1 vanilla protein powder",
         "Add 3/4 cup almond milk, 1 tbsp maple syrup, and 1/2 tsp vanilla extract",
         "Add a pinch of cinnamon and mix well to combine",
         "Cover and refrigerate overnight (at least 4 hours)",

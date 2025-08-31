@@ -2548,7 +2548,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     tags: ["viral", "social-media", "high-protein", "gluten-free", "vegetarian", "quick"],
     ingredients: [
       "150g frozen mixed berries",
-      "1 scoop vanilla protein powder",
+      "1 vanilla protein powder",
       "120g Greek yogurt",
       "30ml almond butter",
       "15ml chia seeds",
@@ -2645,7 +2645,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     tags: ["viral", "social-media", "vegetarian", "gluten-free", "high-protein"],
     ingredients: [
       "50g rolled oats",
-      "1 scoop vanilla protein powder", 
+      "1 vanilla protein powder", 
       "1/2 mashed banana",
       "60ml almond milk",
       "15ml almond butter",
@@ -3067,7 +3067,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     category: "breakfast",
     tags: ["vegetarian", "high-protein", "post-workout", "energizing"],
     ingredients: [
-      "1 scoop vanilla protein powder",
+      "1 vanilla protein powder",
       "150g frozen berries",
       "120ml almond milk",
       "60g granola",
@@ -3167,7 +3167,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     tags: ["vegetarian", "high-protein", "weekend-treat"],
     ingredients: [
       "2 eggs",
-      "1 scoop vanilla protein powder",
+      "1 vanilla protein powder",
       "30g oat flour",
       "120ml almond milk",
       "5ml baking powder",
@@ -4181,7 +4181,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     tags: ["vegetarian", "gluten-free", "high-protein", "weekend"],
     ingredients: [
       "3 large eggs",
-      "1 scoop vanilla protein powder",
+      "1 vanilla protein powder",
       "½ cup almond flour",
       "2 tbsp Greek yogurt",
       "1 tsp baking powder",
@@ -8175,7 +8175,8 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'steel-cut certified oats': 'Grains, Pasta & Canned Goods',
     'steel-cut oats': 'Grains, Pasta & Canned Goods',
     'certified oats': 'Grains, Pasta & Canned Goods',
-    'scoop vanilla protein powder': 'Other Dry Goods',
+    'scoop vanilla protein powder': 'Other Dry Goods', // Legacy compatibility
+    'vanilla protein powder': 'Other Dry Goods',
     'strawberries for topping': 'Fruits', // Legacy compatibility
     'fresh berries for topping': 'Fruits', // Legacy compatibility
     'blueberries for topping': 'Fruits', // Legacy compatibility
