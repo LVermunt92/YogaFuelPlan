@@ -8758,7 +8758,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
         
         // Convert amounts to grams using the formatAmount function (split proportionally)
         const proportionalAmount = amounts.totalAmount / separateIngredients.length;
-        const displayAmount = formatAmountWithLanguage(proportionalAmount, amounts.unit, language);
+        const displayAmount = formatAmountWithLanguage(proportionalAmount, amounts.unit, language, separateIngredient);
         
         // For spices and small pantry items, show just the ingredient name
         const shouldShowClean = shouldShowCleanName(separateIngredient, category, proportionalAmount, amounts.unit);
@@ -8797,7 +8797,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
       const category = ingredientCategories[ingredient.toLowerCase()] || 'Other';
       
       // Convert amounts to grams using the formatAmount function
-      const displayAmount = formatAmountWithLanguage(amounts.totalAmount, amounts.unit, language);
+      const displayAmount = formatAmountWithLanguage(amounts.totalAmount, amounts.unit, language, ingredient);
       
       // For spices and small pantry items, show just the ingredient name
       const shouldShowClean = shouldShowCleanName(ingredient, category, amounts.totalAmount, amounts.unit);
@@ -8945,7 +8945,19 @@ function parseEnhancedRecipeIngredients(instructions: string[], ingredientAmount
 }
 
 // Helper function to format amounts with Dutch translation
-function formatAmountWithLanguage(amount: number, unit: string, language: string = 'en'): string {
+function formatAmountWithLanguage(amount: number, unit: string, language: string = 'en', ingredientName?: string): string {
+  // Use the enhanced formatAmount function for herbs and spices
+  if (ingredientName && unit === 'g') {
+    const formatted = formatAmount(amount, unit, ingredientName);
+    if (formatted.includes('tsp') || formatted.includes('tbsp')) {
+      // Convert English abbreviations to Dutch if needed
+      if (language === 'nl') {
+        return formatted.replace('tsp', 'tl').replace('tbsp', 'el');
+      }
+      return formatted;
+    }
+  }
+  
   if (unit === 'ml') {
     if (amount >= 1000) {
       return `${(amount / 1000).toFixed(1)} L`;
@@ -9697,7 +9709,7 @@ function cleanIngredientName(ingredient: string): string {
   return ingredientMappings[cleaned] || cleaned;
 }
 
-function formatAmount(amount: number, unit: string): string {
+function formatAmount(amount: number, unit: string, ingredientName?: string): string {
   // Convert all measurements to grams for consistency, except special cases
   let finalAmount = amount;
   let finalUnit = 'g';
@@ -9729,6 +9741,37 @@ function formatAmount(amount: number, unit: string): string {
     // Default to grams for unknown units
     finalAmount = amount;
     finalUnit = 'g';
+  }
+  
+  // Special handling for herbs and spices - convert small gram amounts to familiar units
+  if (ingredientName && finalUnit === 'g') {
+    const lowerIngredient = ingredientName.toLowerCase();
+    const isHerbOrSpice = lowerIngredient.includes('dried') || lowerIngredient.includes('ground') ||
+      ['oregano', 'basil', 'thyme', 'rosemary', 'sage', 'parsley', 'cilantro', 'mint', 'dill', 'chives',
+       'paprika', 'cumin', 'coriander', 'turmeric', 'cinnamon', 'ginger', 'cardamom', 'nutmeg',
+       'allspice', 'cloves', 'bay leaves', 'fennel', 'mustard seed', 'curry powder', 'chili powder',
+       'garlic powder', 'onion powder', 'black pepper', 'white pepper', 'cayenne', 'smoked paprika',
+       'italian seasoning', 'herbs de provence', 'za\'atar', 'sumac', 'star anise'].some(spice => 
+         lowerIngredient.includes(spice));
+    
+    if (isHerbOrSpice && finalAmount <= 30) { // Convert small amounts of herbs/spices
+      if (finalAmount >= 15) {
+        // 15g+ = tablespoons
+        const tbspAmount = finalAmount / 15;
+        return tbspAmount === 1 ? '1 tbsp' : `${tbspAmount.toFixed(1)} tbsp`;
+      } else if (finalAmount >= 5) {
+        // 5-14g = teaspoons  
+        const tspAmount = finalAmount / 5;
+        return tspAmount === 1 ? '1 tsp' : `${tspAmount.toFixed(1)} tsp`;
+      } else if (finalAmount >= 1) {
+        // 1-4g = fractions of teaspoons
+        const tspAmount = finalAmount / 5;
+        if (tspAmount >= 0.75) return '¾ tsp';
+        if (tspAmount >= 0.5) return '½ tsp';
+        if (tspAmount >= 0.25) return '¼ tsp';
+        return '⅛ tsp';
+      }
+    }
   }
   
   // Format the final amount nicely
