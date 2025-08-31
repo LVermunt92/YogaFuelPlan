@@ -8558,7 +8558,12 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'vegetable stock': 'Baking & Cooking Basics',
     'vegetable stock': 'Baking & Cooking Basics',
     'canned tomatoes': 'Baking & Cooking Basics',
+    'canned diced tomatoes': 'Baking & Cooking Basics',
+    'canned chopped tomatoes': 'Baking & Cooking Basics',
+    'canned crushed tomatoes': 'Baking & Cooking Basics',
+    'canned cherry tomatoes': 'Baking & Cooking Basics',
     'tomato paste': 'Baking & Cooking Basics',
+    'tomato purée': 'Baking & Cooking Basics',
     'avocado oil': 'Pantry Essentials',
     'honey': 'Pantry Essentials',
     'mustard powder': 'Pantry Essentials',
@@ -9439,7 +9444,27 @@ function cleanIngredientName(ingredient: string): string {
              cleaned.includes('tomato puree') || cleaned === 'tomato puree') {
     cleaned = 'tomato purée';
   } 
-  // Consolidate all tomato variations to prevent duplicates
+  // Handle canned tomatoes separately - DO NOT consolidate with fresh tomatoes
+  else if (cleaned.includes('canned tomatoes') || cleaned === 'canned tomatoes' ||
+           cleaned.includes('can tomatoes') || cleaned.includes('tinned tomatoes') ||
+           cleaned.includes('canned chopped tomatoes') || cleaned.includes('canned diced tomatoes') ||
+           cleaned.includes('canned crushed tomatoes') || cleaned.includes('canned cherry tomatoes') ||
+           cleaned.includes('can diced tomatoes') || cleaned.includes('can crushed tomatoes') ||
+           cleaned.includes('can chopped tomatoes') || cleaned.includes('can cherry tomatoes')) {
+    // Determine specific type of canned tomatoes
+    if (cleaned.includes('cherry')) {
+      cleaned = 'canned cherry tomatoes';
+    } else if (cleaned.includes('diced')) {
+      cleaned = 'canned diced tomatoes';
+    } else if (cleaned.includes('crushed')) {
+      cleaned = 'canned crushed tomatoes';
+    } else if (cleaned.includes('chopped')) {
+      cleaned = 'canned chopped tomatoes';
+    } else {
+      cleaned = 'canned tomatoes';
+    }
+  }
+  // Consolidate all fresh tomato variations to prevent duplicates
   else if (cleaned.includes('cherry tomatoes') || cleaned === 'cherry tomatoes' || 
       cleaned.includes('cherry tomato') || cleaned === 'cherry tomato') {
     cleaned = 'cherry tomatoes';
@@ -9450,9 +9475,12 @@ function cleanIngredientName(ingredient: string): string {
     cleaned = 'roma tomatoes';
   } else if (cleaned.includes('tomatoes') || cleaned === 'tomatoes' || 
              cleaned.includes('tomato') || cleaned === 'tomato') {
-    // Generic tomatoes - exclude cherry, sun-dried, roma, plum, paste, and purée varieties already handled above
+    // Generic fresh tomatoes - exclude all processed tomato products already handled above
     if (!cleaned.includes('cherry') && !cleaned.includes('sun-dried') && !cleaned.includes('roma') && 
-        !cleaned.includes('plum') && !cleaned.includes('paste') && !cleaned.includes('purée') && !cleaned.includes('puree')) {
+        !cleaned.includes('plum') && !cleaned.includes('paste') && !cleaned.includes('purée') && 
+        !cleaned.includes('puree') && !cleaned.includes('canned') && !cleaned.includes('can ') && 
+        !cleaned.includes('tinned') && !cleaned.includes('diced') && !cleaned.includes('crushed') && 
+        !cleaned.includes('chopped')) {
       cleaned = 'tomatoes';
     }
   }
