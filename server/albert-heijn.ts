@@ -190,8 +190,12 @@ class AlbertHeijnService {
 
             // Filter out non-grocery items (cooking instructions, temperatures, etc.)
             const nonGroceryPatterns = [
+              // Time and temperature patterns
               /^\d+\s*(minutes?|mins?|hours?|hrs?|seconds?|secs?)/,
               /^\d+\s*°[cf]/,
+              /^\d+\s*degrees?/,
+              
+              // Cooking actions/verbs
               /^heat\s/,
               /^cook\s/,
               /^bake\s/,
@@ -199,6 +203,10 @@ class AlbertHeijnService {
               /^steam\s/,
               /^boil\s/,
               /^fry\s/,
+              /^sauté\s/,
+              /^simmer\s/,
+              /^grill\s/,
+              /^broil\s/,
               /^until\s/,
               /^serve\s/,
               /^season\s/,
@@ -206,9 +214,32 @@ class AlbertHeijnService {
               /^mix\s/,
               /^stir\s/,
               /^blend\s/,
+              /^whisk\s/,
+              /^combine\s/,
+              /^toss\s/,
+              /^sprinkle\s/,
+              /^drizzle\s/,
+              /^garnish\s/,
+              /^top\s/,
+              /^finish\s/,
+              /^adjust\s/,
+              /^taste\s/,
+              /^check\s/,
+              
+              // Preparation methods (standalone)
               /^chop\s/,
               /^dice\s/,
               /^slice\s/,
+              /^mince\s/,
+              /^grate\s/,
+              /^peel\s/,
+              /^trim\s/,
+              /^wash\s/,
+              /^rinse\s/,
+              /^drain\s/,
+              /^pat\s+dry/,
+              
+              // Standalone descriptors that aren't actual ingredients
               /^fresh$/,
               /^dried$/,
               /^ground$/,
@@ -219,17 +250,87 @@ class AlbertHeijnService {
               /^grated$/,
               /^juiced$/,
               /^zested$/,
+              /^peeled$/,
+              /^trimmed$/,
+              /^washed$/,
+              /^rinsed$/,
+              /^drained$/,
+              /^cooked$/,
+              /^raw$/,
+              /^frozen$/,
+              /^thawed$/,
+              /^room\s+temperature$/,
+              /^cold$/,
+              /^warm$/,
+              /^hot$/,
+              
+              // Serving and optional instructions
               /^optional$/,
-              /^to taste$/,
-              /^for serving$/,
-              /^for garnish$/,
+              /^to\s+taste$/,
+              /^for\s+serving$/,
+              /^for\s+garnish$/,
+              /^as\s+needed$/,
+              /^if\s+desired$/,
+              /^if\s+available$/,
+              
+              // Measurements without ingredients
               /^pinch\s*$/,
               /^dash\s*$/,
               /^splash\s*$/,
               /^drizzle\s*$/,
+              /^handful\s*$/,
+              /^bunch\s*$/,
+              /^sprig\s*$/,
+              /^leaf\s*$/,
+              /^leaves\s*$/,
+              
+              // Basic seasonings that are too generic
               /^\s*salt\s*$/,
               /^\s*pepper\s*$/,
-              /^\s*water\s*$/
+              /^\s*water\s*$/,
+              /^\s*ice\s*$/,
+              
+              // Empty or very short non-meaningful entries
+              /^\s*$/,
+              /^.{1,2}$/,
+              
+              // Common cooking equipment or non-food items
+              /^pan$/,
+              /^pot$/,
+              /^bowl$/,
+              /^plate$/,
+              /^dish$/,
+              /^tray$/,
+              /^sheet$/,
+              /^foil$/,
+              /^paper$/,
+              /^plastic$/,
+              /^wrap$/,
+              /^parchment$/,
+              
+              // Units without ingredients
+              /^\d+\s*g\s*$/,
+              /^\d+\s*ml\s*$/,
+              /^\d+\s*tbsp\s*$/,
+              /^\d+\s*tsp\s*$/,
+              /^\d+\s*cup\s*$/,
+              /^\d+\s*piece\s*$/,
+              /^\d+\s*clove\s*$/,
+              
+              // Common leftover preparation text
+              /^preparation$/,
+              /^method$/,
+              /^ingredients$/,
+              /^instructions$/,
+              /^notes$/,
+              /^tips$/,
+              /^serving$/,
+              /^yield$/,
+              /^makes$/,
+              /^serves$/,
+              /^prep\s+time$/,
+              /^cook\s+time$/,
+              /^total\s+time$/
             ];
 
             // Skip this ingredient if it matches non-grocery patterns
