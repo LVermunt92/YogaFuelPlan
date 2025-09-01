@@ -5085,7 +5085,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       "60g gram flour (chickpea flour)",
       "5ml olive oil (for batter)",
       "5ml fine sea salt",
-      "75g potatoes, cut into 1cm pieces",
+      "75g potatoes",
       "Half large red onion, finely chopped",
       "Half sweet red pepper, finely chopped",
       "70g cherry tomatoes, halved",
@@ -5107,6 +5107,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       instructions: [
         "Make pancake batter by whisking gram flour, 5ml olive oil, and salt with 60ml water until combined with no lumps",
         "Set batter aside to rest",
+        "Cut potatoes into 1cm pieces",
         "Heat generous drizzle of olive oil in non-stick frying pan over medium heat",
         "Add potato pieces with pinch of salt, cook stirring frequently until golden brown and tender (about 10 minutes)",
         "Transfer cooked potatoes to plate",
@@ -5157,7 +5158,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       "60g gram flour (chickpea flour, certified gluten-free)",
       "5ml olive oil (for batter)",
       "5ml fine sea salt",
-      "75g potatoes, cut into 1cm pieces",
+      "75g potatoes",
       "Half large red onion, finely chopped",
       "Half sweet red pepper, finely chopped",
       "70g cherry tomatoes, halved",
@@ -5179,6 +5180,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       instructions: [
         "Make pancake batter by whisking certified gluten-free gram flour, 5ml olive oil, and salt with 60ml water until combined with no lumps",
         "Set batter aside to rest",
+        "Cut potatoes into 1cm pieces",
         "Heat generous drizzle of olive oil in non-stick frying pan over medium heat",
         "Add potato pieces with pinch of salt, cook stirring frequently until golden brown and tender (about 10 minutes)",
         "Transfer cooked potatoes to plate",
