@@ -7165,6 +7165,82 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       ],
       notes: "Warming chilli that becomes a favourite all-in-one weeknight meal, packed with plant protein from quinoa, beans and almond butter"
     }
+  },
+  {
+    name: "Harissa-Roasted Vegetable Pancakes with Chickpeas",
+    portion: "2 savory pancakes with vegetables (about 400g)",
+    nutrition: {
+      protein: 25,
+      prepTime: 45,
+      calories: 370,
+      carbohydrates: 45,
+      fats: 12,
+      fiber: 13,
+      sugar: 8,
+      sodium: 580,
+      potassium: 720,
+      calcium: 95,
+      iron: 5.2,
+      vitaminC: 25,
+      costEuros: 3.20,
+      proteinPerEuro: 7.8
+    },
+    category: "dinner",
+    tags: ["vegetarian", "gluten-free", "dairy-free", "high-protein", "mediterranean", "spicy", "one-pan"],
+    ingredients: [
+      "240g canned chickpeas (drained and rinsed)",
+      "1 medium aubergine",
+      "5ml paprika",
+      "6 vine tomatoes",
+      "15ml harissa paste",
+      "100ml almond milk",
+      "Handful fresh parsley (chopped, plus extra for garnish)",
+      "15ml tahini",
+      "1 lemon (juiced)",
+      "Pinch dried red chilli flakes",
+      "Olive oil for drizzling",
+      "Sea salt to taste",
+      "150g gram flour (chickpea flour)",
+      "5ml hot chilli powder",
+      "5ml paprika (for pancakes)",
+      "200ml water",
+      "Black pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["aubergine", "tomatoes", "parsley"],
+      benefits: ["High in antioxidants", "Rich in plant protein", "Supports digestive health", "Anti-inflammatory properties"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 170°C fan",
+        "Cut aubergine into bite-sized chunks",
+        "Arrange drained chickpeas and aubergine chunks on baking tray",
+        "Add 5ml paprika, drizzle olive oil, and pinch of salt to vegetables",
+        "Mix well and cook for 25 minutes",
+        "Cut each tomato into 6 pieces",
+        "Add tomato pieces and cook another 10-15 minutes until aubergine is soft",
+        "Remove vegetables from oven and transfer to large bowl",
+        "Stir through harissa paste, dash of almond milk, chopped parsley, tahini, lemon juice, and salt",
+        "Mix vegetable mixture until everything comes together",
+        "For pancakes: combine gram flour, chilli powder, 5ml paprika, salt, and pepper in bowl",
+        "Mix flour mixture well to remove lumps",
+        "Pour in 200ml water and mix to form thick batter",
+        "Heat large frying pan over medium heat with drizzle of olive oil",
+        "Pour in half the batter and cook 5 minutes until bottom is set",
+        "Flip pancake with spatula and cook 2-3 minutes until cooked through",
+        "Transfer to plate and repeat with remaining batter for second pancake",
+        "Serve pancakes topped with harissa-roasted vegetables",
+        "Garnish with fresh parsley and pinch of chilli flakes"
+      ],
+      tips: [
+        "Use certified gluten-free gram flour for complete celiac safety",
+        "Adjust harissa paste amount to taste preference",
+        "Vegetables can be roasted in advance and reheated"
+      ],
+      notes: "Naturally gluten-free pancakes with Mediterranean flavors and plant-based protein from chickpeas and gram flour"
+    }
   }
 ];
 
