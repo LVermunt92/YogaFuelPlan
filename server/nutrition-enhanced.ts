@@ -9505,6 +9505,19 @@ function cleanIngredientName(ingredient: string): string {
       cleaned.includes('chunked carrots') || cleaned.includes('julienned carrots')) {
     cleaned = 'carrots';
   }
+
+  // Consolidate all potato variations to prevent duplicates and missing ingredients
+  if (cleaned.includes('potato') || cleaned === 'potato' || cleaned === 'potatoes' ||
+      cleaned.includes('large potatoes') || cleaned.includes('medium potatoes') || 
+      cleaned.includes('small potatoes') || cleaned.includes('baby potatoes') ||
+      cleaned.includes('diced potatoes') || cleaned.includes('sliced potatoes') ||
+      cleaned.includes('chunked potatoes') || cleaned.includes('cubed potatoes') ||
+      cleaned.includes('cut into') && cleaned.includes('potato')) {
+    // Make sure it's regular potatoes, not sweet potatoes
+    if (!cleaned.includes('sweet')) {
+      cleaned = 'potatoes';
+    }
+  }
   
   // Consolidate all apple variations to show as pieces
   if (cleaned.includes('apple') || cleaned === 'apple' || cleaned === 'apples' ||
@@ -9609,6 +9622,21 @@ function cleanIngredientName(ingredient: string): string {
     'sliced carrots': 'carrots',
     'chunked carrots': 'carrots',
     'julienned carrots': 'carrots',
+    // Potato consolidation - all potato forms go to "potatoes" (excluding sweet potatoes)
+    'potato': 'potatoes',
+    'potatoes': 'potatoes',
+    'large potatoes': 'potatoes',
+    'medium potatoes': 'potatoes',
+    'small potatoes': 'potatoes',
+    'baby potatoes': 'potatoes',
+    'new potatoes': 'potatoes',
+    'diced potatoes': 'potatoes',
+    'sliced potatoes': 'potatoes',
+    'chunked potatoes': 'potatoes',
+    'cubed potatoes': 'potatoes',
+    'potatoes, cut into 1cm pieces': 'potatoes',
+    'potatoes, cut into pieces': 'potatoes',
+    'potatoes, diced': 'potatoes',
     'lemons': 'lemon',
     'bananas': 'banana',
     'sliced banana': 'banana',
