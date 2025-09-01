@@ -490,7 +490,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 3,
-      vegetables: ["sweet potato", "carrots", "parsnips", "onion"],
+      vegetables: ["sweet potato", "carrots", "parsnips", "red onion"],
       benefits: ["High in beta-carotene", "Rich in fiber", "Supports immune system"]
     },
     recipe: {
@@ -547,7 +547,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 2.5,
-      vegetables: ["spinach", "tomatoes", "onion"],
+      vegetables: ["spinach", "tomatoes", "red onion"],
       benefits: ["High in plant protein", "Rich in healthy fats", "Complete amino acid profile"]
     },
     recipe: {
@@ -602,7 +602,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 3,
-      vegetables: ["sweet potato", "carrots", "parsnips", "onion"],
+      vegetables: ["sweet potato", "carrots", "parsnips", "red onion"],
       benefits: ["High in beta-carotene", "Rich in omega-3 fatty acids", "Supports heart health", "Anti-inflammatory properties"]
     },
     recipe: {
@@ -9438,8 +9438,9 @@ function cleanIngredientName(ingredient: string): string {
   if (cleaned.includes('almond milk') || cleaned === 'almond milk') {
     cleaned = 'almond milk';
   }
+  // Keep red onion distinct - don't consolidate with regular onions
   if (cleaned.includes('red onion') || cleaned === 'red onion') {
-    cleaned = 'onions';
+    cleaned = 'red onion';
   }
   if (cleaned.includes('bell pepper') || cleaned === 'bell pepper') {
     cleaned = 'bell peppers';
@@ -9603,7 +9604,9 @@ function cleanIngredientName(ingredient: string): string {
     'mushrooms': 'mushrooms',
     'garlic': 'garlic',
     'onion': 'onions',
-    'red onion': 'onions',
+    'red onion': 'red onion', // Keep red onion distinct for shopping accuracy
+    'yellow onion': 'yellow onion',
+    'white onion': 'white onion',
     'zucchini': 'zucchini',
     'nuts': 'mixed nuts',
     'almonds': 'mixed nuts',
