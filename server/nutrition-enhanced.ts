@@ -5064,20 +5064,20 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     name: "Chickpea & Potato Pancakes with Warm Veggie Salsa",
     portion: "1 serving (2 medium pancakes with salsa, about 300g)",
     nutrition: {
-      protein: 26,
+      protein: 25,
       prepTime: 25,
-      calories: 420,
-      carbohydrates: 52,
+      calories: 350,
+      carbohydrates: 42,
       fats: 14,
-      fiber: 11,
+      fiber: 9,
       sugar: 9,
-      sodium: 650,
-      potassium: 890,
-      calcium: 120,
-      iron: 4.8,
+      sodium: 590,
+      potassium: 780,
+      calcium: 110,
+      iron: 4.2,
       vitaminC: 45,
-      costEuros: 2.80,
-      proteinPerEuro: 9.3
+      costEuros: 2.40,
+      proteinPerEuro: 10.4
     },
     category: "dinner",
     tags: ["vegetarian", "gluten-free", "hearty", "one-pan", "protein-rich", "mediterranean"],
@@ -5090,7 +5090,6 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       "Half sweet red pepper, finely chopped",
       "70g cherry tomatoes, halved",
       "Handful fresh spinach",
-      "120g cooked chickpeas",
       "30g hemp hearts",
       "60ml water",
       "Pinch sea salt and black pepper",
@@ -5113,7 +5112,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         "Transfer cooked potatoes to plate",
         "Return pan to heat with small drizzle of oil",
         "Spoon pancake batter into pan - make 2 medium pancakes or 1 large",
-        "Sprinkle cooked potato pieces and chickpeas on top",
+        "Sprinkle cooked potato pieces on top",
         "Cook until golden brown on both sides (about 2 minutes per side, add 1-2 minutes if making 1 large pancake)",
         "Transfer pancakes to serving plate",
         "Add another drizzle of oil to pan and add onion, pepper, and tomatoes",
@@ -5128,7 +5127,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         "Let batter rest while preparing vegetables for better texture",
         "Don't overcook the vegetables - they should remain vibrant and juicy"
       ],
-      notes: "Protein-enhanced with chickpeas and hemp hearts, inspired by socca (Southern French chickpea pancakes)"
+      notes: "Inspired by socca (Southern French chickpea pancakes) with hemp hearts for extra protein and nutrition"
     },
     createdAt: new Date('2025-08-30'),
     active: true
@@ -5137,20 +5136,20 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     name: "Chickpea & Potato Pancakes with Warm Veggie Salsa (Gluten-Free)",
     portion: "1 serving (2 medium pancakes with salsa, about 300g)",
     nutrition: {
-      protein: 24,
+      protein: 23,
       prepTime: 25,
-      calories: 395,
-      carbohydrates: 49,
+      calories: 330,
+      carbohydrates: 41,
       fats: 13,
-      fiber: 10,
+      fiber: 8,
       sugar: 8,
-      sodium: 620,
-      potassium: 860,
-      calcium: 110,
-      iron: 4.5,
+      sodium: 570,
+      potassium: 750,
+      calcium: 100,
+      iron: 4.0,
       vitaminC: 45,
-      costEuros: 2.90,
-      proteinPerEuro: 8.3
+      costEuros: 2.50,
+      proteinPerEuro: 9.2
     },
     category: "dinner",
     tags: ["vegetarian", "gluten-free", "hearty", "one-pan", "protein-rich", "mediterranean"],
@@ -5163,7 +5162,6 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       "Half sweet red pepper, finely chopped",
       "70g cherry tomatoes, halved",
       "Handful fresh spinach",
-      "100g cooked lentils",
       "25g hemp hearts",
       "60ml water",
       "Pinch sea salt and black pepper",
@@ -5186,7 +5184,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         "Transfer cooked potatoes to plate",
         "Return pan to heat with small drizzle of oil",
         "Spoon pancake batter into pan - make 2 medium pancakes or 1 large",
-        "Sprinkle cooked potato pieces and lentils on top",
+        "Sprinkle cooked potato pieces on top",
         "Cook until golden brown on both sides (about 2 minutes per side, add 1-2 minutes if making 1 large pancake)",
         "Transfer pancakes to serving plate",
         "Add another drizzle of oil to pan and add onion, pepper, and tomatoes",
@@ -5198,10 +5196,10 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       ],
       tips: [
         "Use certified gluten-free gram flour to ensure safety",
-        "Cooked lentils provide excellent protein and fiber",
+        "Hemp hearts boost protein content and add healthy fats",
         "Gram flour is naturally gluten-free but check certification for celiac safety"
       ],
-      notes: "Gluten-free version using certified chickpea flour with lentils and hemp hearts for protein"
+      notes: "Gluten-free version using certified chickpea flour with hemp hearts for protein and healthy fats"
     },
     createdAt: new Date('2025-08-30'),
     active: true
