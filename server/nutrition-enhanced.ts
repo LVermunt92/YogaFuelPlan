@@ -5062,7 +5062,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   },
   {
     name: "Chickpea & Potato Pancakes with Warm Veggie Salsa",
-    portion: "2 medium pancakes with salsa (about 300g)",
+    portion: "1 serving (2 medium pancakes with salsa, about 300g)",
     nutrition: {
       protein: 26,
       prepTime: 25,
@@ -5135,7 +5135,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   },
   {
     name: "Chickpea & Potato Pancakes with Warm Veggie Salsa (Gluten-Free)",
-    portion: "2 medium pancakes with salsa (about 300g)",
+    portion: "1 serving (2 medium pancakes with salsa, about 300g)",
     nutrition: {
       protein: 24,
       prepTime: 25,
@@ -5208,21 +5208,21 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   },
   {
     name: "High Protein Sweet Potato Traybake with Tahini Mustard Dressing",
-    portion: "1 generous serving (about 350g)",
+    portion: "1 serving (half of traybake, about 175g)",
     nutrition: {
-      protein: 24,
+      protein: 12,
       prepTime: 45,
-      calories: 420,
-      carbohydrates: 48,
-      fats: 16,
-      fiber: 12,
-      sugar: 14,
-      sodium: 580,
-      potassium: 920,
-      calcium: 180,
-      iron: 5.2,
-      vitaminC: 35,
-      costEuros: 3.80,
+      calories: 210,
+      carbohydrates: 24,
+      fats: 8,
+      fiber: 6,
+      sugar: 7,
+      sodium: 290,
+      potassium: 460,
+      calcium: 90,
+      iron: 2.6,
+      vitaminC: 18,
+      costEuros: 1.90,
       proteinPerEuro: 6.3
     },
     category: "dinner",
@@ -5265,9 +5265,9 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         "Add drained black beans and edamame beans to massaged kale and toss to combine",
         "Once sweet potatoes have been cooking for 30 minutes, add kale and bean mixture to tray",
         "Bake for further 10 minutes until kale is slightly crispy",
-        "Remove from oven and serve half portion in bowl",
-        "Drizzle with half of tahini mustard dressing and sprinkle with sesame seeds if desired",
-        "Reserve remainder for lunch on day 7 of meal plan"
+        "Remove from oven and serve in bowl",
+        "Drizzle with tahini mustard dressing and sprinkle with sesame seeds if desired",
+        "Recipe makes 2 servings - store second portion for another meal"
       ],
       tips: [
         "Chopping sweet potato into small 2cm pieces ensures quick cooking",
@@ -5347,21 +5347,21 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   },
   {
     name: "Warming Sweet Potato & Lentil Stew",
-    portion: "1 generous serving (about 400g)",
+    portion: "1 serving (half of stew, about 200g)",
     nutrition: {
-      protein: 20,
+      protein: 10,
       prepTime: 30,
-      calories: 420,
-      carbohydrates: 72,
-      fats: 8,
-      fiber: 16,
-      sugar: 12,
-      sodium: 480,
-      potassium: 950,
-      calcium: 120,
-      iron: 7.2,
-      vitaminC: 25,
-      costEuros: 3.20,
+      calories: 210,
+      carbohydrates: 36,
+      fats: 4,
+      fiber: 8,
+      sugar: 6,
+      sodium: 240,
+      potassium: 475,
+      calcium: 60,
+      iron: 3.6,
+      vitaminC: 13,
+      costEuros: 1.60,
       proteinPerEuro: 6.3
     },
     category: "dinner",
@@ -5400,7 +5400,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       ],
       tips: [
         "Chop sweet potato into small 1cm pieces to ensure speedy cooking",
-        "Once cooked, keep in fridge for up to 3 days - perfect for meal prep",
+        "Recipe makes 2 generous servings - perfect for meal prep",
         "Rose harissa adds warming spice - adjust amount to taste preference"
       ],
       notes: "One-pan wonder similar to dhal in texture and body - quick, easy but flavoursome supper with warming Ayurvedic spices"
@@ -5410,21 +5410,21 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
   },
   {
     name: "Super-Charged Peanut Noodles",
-    portion: "1 generous serving (about 400g)",
+    portion: "1 serving (half of noodles, about 200g)",
     nutrition: {
-      protein: 24,
+      protein: 12,
       prepTime: 30,
-      calories: 485,
-      carbohydrates: 58,
-      fats: 18,
-      fiber: 12,
-      sugar: 14,
-      sodium: 650,
-      potassium: 720,
-      calcium: 95,
-      iron: 4.8,
-      vitaminC: 45,
-      costEuros: 3.80,
+      calories: 243,
+      carbohydrates: 29,
+      fats: 9,
+      fiber: 6,
+      sugar: 7,
+      sodium: 325,
+      potassium: 360,
+      calcium: 48,
+      iron: 2.4,
+      vitaminC: 23,
+      costEuros: 1.90,
       proteinPerEuro: 6.3
     },
     category: "dinner",
@@ -5470,7 +5470,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
         "Add red pepper, cabbage and edamame and cook for 2-3 minutes until tender and reduced",
         "Toss cooked noodles with creamy sauce and vegetables",
         "Ensure all vegetables and noodles are coated in the creamy sauce",
-        "If pan isn't large enough, mix everything in large bowl with boiling water poured away first"
+        "Recipe makes 2 servings - store second portion for another meal"
       ],
       tips: [
         "Soaking cashews makes them blend smoother for creamier sauce",
