@@ -1574,11 +1574,11 @@ export default function MealPlanner() {
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 text-sm">
                   <div>
-                    <span className="text-gray-500">{t.portion}:</span>
-                    <p className="font-medium">{recipeData.portion}</p>
+                    <span className="text-gray-500">Servings:</span>
+                    <p className="font-medium">{recipeData.portion.split(' ')[0] || '1'}</p>
                   </div>
                   <div>
-                    <span className="text-gray-500">{t.protein}:</span>
+                    <span className="text-gray-500">{t.protein}/serving:</span>
                     <p className="font-medium text-emerald-600">{recipeData.nutrition?.protein}g</p>
                   </div>
                   <div>
@@ -1589,15 +1589,15 @@ export default function MealPlanner() {
                     </p>
                   </div>
                   <div>
-                    <span className="text-gray-500">{t.calories}:</span>
+                    <span className="text-gray-500">{t.calories}/serving:</span>
                     <p className="font-medium text-orange-600">{recipeData.nutrition?.calories}</p>
                   </div>
                   <div>
-                    <span className="text-gray-500">{t.carbs}:</span>
+                    <span className="text-gray-500">{t.carbs}/serving:</span>
                     <p className="font-medium text-blue-600">{recipeData.nutrition?.carbohydrates}g</p>
                   </div>
                   <div>
-                    <span className="text-gray-500">Good Fats:</span>
+                    <span className="text-gray-500">Good Fats/serving:</span>
                     <p className="font-medium text-yellow-600">{recipeData.nutrition?.fats || 0}g</p>
                   </div>
                   <div>
