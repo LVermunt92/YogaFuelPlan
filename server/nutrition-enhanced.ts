@@ -1946,9 +1946,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Ayurvedic", "Cooling"],
     ingredients: [
       "1 cup basmati rice",
-      "1 medium zucchini (sliced)",
       "150g fresh green beans (trimmed)",
-      "2 cups fresh spinach leaves",
       "1 medium aubergine (diced)",
       "1/4 cup fresh coconut (grated)",
       "2 tbsp coconut oil",
@@ -1967,7 +1965,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 3,
-      vegetables: ["zucchini", "green beans", "spinach", "aubergine"],
+      vegetables: ["green beans", "aubergine"],
       benefits: ["Cooling green vegetables", "Fresh coconut", "Light steaming preserves nutrients", "Colorful antioxidants"]
     },
     recipe: {
@@ -1976,9 +1974,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Heat coconut oil in large wok or pan",
         "Add grated ginger and chopped garlic, sauté briefly until fragrant",
         "Add diced aubergine and cook until golden brown and soft, about 5 minutes",
-        "Add green beans and cook for 2 minutes", 
-        "Add zucchini, stir-fry for 2 more minutes",
-        "Add spinach in final 30 seconds until just wilted",
+        "Add green beans and cook for 3-4 minutes until tender-crisp",
         "Deglaze with soy sauce and lime juice",
         "Add coriander and fennel seeds, toss for 30 seconds",
         "Remove from heat and drizzle with sesame oil",
