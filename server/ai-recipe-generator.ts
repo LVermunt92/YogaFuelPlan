@@ -166,6 +166,24 @@ Ensure the recipe is practical, nutritious, and aligns with the dietary requirem
           generatedRecipe.nutrition.fiber || 0,
           (generatedRecipe.nutrition.fiber || 0) + fiberEnhancement.fiberIncrease
         );
+        
+        // Add fiber benefits and tips to the generated recipe
+        if (fiberEnhancement.fiberBenefits.length > 0) {
+          const existingBenefits = generatedRecipe.vegetableContent?.benefits || [];
+          generatedRecipe.vegetableContent = {
+            ...generatedRecipe.vegetableContent,
+            benefits: [...existingBenefits, ...fiberEnhancement.fiberBenefits]
+          };
+        }
+        
+        if (fiberEnhancement.fiberTips.length > 0) {
+          const existingTips = generatedRecipe.recipe?.tips || [];
+          generatedRecipe.recipe = {
+            ...generatedRecipe.recipe,
+            tips: [...existingTips, ...fiberEnhancement.fiberTips]
+          };
+        }
+        
         console.log(`✅ Enhanced recipe with ${fiberEnhancement.addedFibers.map(f => f.name).join(', ')} (+${fiberEnhancement.fiberIncrease}g fiber)`);
       }
     }

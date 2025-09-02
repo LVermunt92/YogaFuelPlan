@@ -4,6 +4,49 @@
  * Balances soluble vs insoluble fiber for optimal health benefits
  */
 
+// Fiber health benefits for different sources
+const FIBER_BENEFITS = {
+  soluble: [
+    "Helps stabilize blood sugar levels",
+    "Supports healthy cholesterol levels", 
+    "Promotes satiety and weight management",
+    "Feeds beneficial gut bacteria",
+    "May reduce inflammation"
+  ],
+  insoluble: [
+    "Supports healthy bowel movements",
+    "Promotes digestive regularity", 
+    "Helps prevent constipation",
+    "May reduce risk of colorectal issues",
+    "Adds bulk to stool for easier passage"
+  ],
+  mixed: [
+    "Provides comprehensive digestive support",
+    "Supports both blood sugar and bowel health",
+    "Contributes to overall gut health",
+    "May help with weight management"
+  ]
+};
+
+// Fiber tips for different meal types
+const FIBER_TIPS = {
+  breakfast: [
+    "Start your day with fiber to help control blood sugar throughout the morning",
+    "Soluble fiber from seeds helps you feel full until lunch",
+    "Ground flax and chia provide omega-3s along with fiber"
+  ],
+  lunch: [
+    "Mid-day fiber helps maintain stable energy levels", 
+    "Leafy greens provide insoluble fiber for digestive health",
+    "Beans and legumes offer protein plus cholesterol-lowering soluble fiber"
+  ],
+  dinner: [
+    "Evening fiber supports overnight digestive processes",
+    "Whole grains provide sustained energy and fiber",
+    "Vegetables add fiber while keeping calories in check"
+  ]
+};
+
 interface FiberSource {
   name: string;
   fiberPer100g: number; // grams of fiber per 100g
@@ -341,10 +384,55 @@ export function enhanceRecipeWithFiber(
     console.log(`📊 Fiber balance: ${Math.round(finalSoluble * 10) / 10}g soluble (${solublePct}%) + ${Math.round(finalInsoluble * 10) / 10}g insoluble (${100 - solublePct}%)`);
   }
 
+  // Generate fiber-related tips and benefits for enhanced recipes
+  const fiberTips: string[] = [];
+  const fiberBenefits: string[] = [];
+  
+  if (addedFibers.length > 0) {
+    const finalSoluble = analysis.solubleFiber + addedSoluble;
+    const finalInsoluble = analysis.insolubleFiber + addedInsoluble;
+    const finalTotal = finalSoluble + finalInsoluble;
+    
+    // Add specific benefits based on fiber types enhanced
+    const uniqueFiberTypes = [...new Set(addedFibers.map(f => f.fiberType))];
+    uniqueFiberTypes.forEach(type => {
+      if (type === 'soluble') {
+        fiberBenefits.push(FIBER_BENEFITS.soluble[0]); // Blood sugar
+        fiberBenefits.push(FIBER_BENEFITS.soluble[1]); // Cholesterol
+      } else if (type === 'insoluble') {
+        fiberBenefits.push(FIBER_BENEFITS.insoluble[0]); // Bowel movements
+        fiberBenefits.push(FIBER_BENEFITS.insoluble[1]); // Regularity
+      } else {
+        fiberBenefits.push(FIBER_BENEFITS.mixed[0]); // Comprehensive support
+      }
+    });
+    
+    // Add meal-specific tip
+    if (isBreakfast) {
+      fiberTips.push(FIBER_TIPS.breakfast[0]);
+    } else if (isLunch) {
+      fiberTips.push(FIBER_TIPS.lunch[0]);
+    } else if (isDinner) {
+      fiberTips.push(FIBER_TIPS.dinner[0]);
+    }
+    
+    // Add enhancement-specific tip
+    const addedIngredients = addedFibers.map(f => f.name).join(', ');
+    fiberTips.push(`Enhanced with ${addedIngredients} for ${Math.round(fiberIncrease * 10) / 10}g additional fiber`);
+    
+    // Add balance tip if well-balanced
+    const solublePct = finalTotal > 0 ? finalSoluble / finalTotal : 0;
+    if (solublePct >= 0.3 && solublePct <= 0.7) {
+      fiberTips.push("This recipe provides a balanced mix of soluble and insoluble fiber for optimal digestive health");
+    }
+  }
+
   return {
     enhancedIngredients,
     addedFibers,
-    fiberIncrease: Math.round(fiberIncrease * 10) / 10
+    fiberIncrease: Math.round(fiberIncrease * 10) / 10,
+    fiberTips,
+    fiberBenefits
   };
 }
 
@@ -364,12 +452,28 @@ export function validateAndEnhanceMealsForFiber(meals: any[], targetFiber: numbe
       );
       
       if (enhancement.addedFibers.length > 0) {
+        // Add fiber benefits to existing vegetable content benefits
+        const existingBenefits = meal.vegetableContent?.benefits || [];
+        const newBenefits = [...existingBenefits, ...enhancement.fiberBenefits];
+        
+        // Add fiber tips to existing recipe tips
+        const existingTips = meal.recipe?.tips || [];
+        const newTips = [...existingTips, ...enhancement.fiberTips];
+        
         return {
           ...meal,
           ingredients: enhancement.enhancedIngredients,
           nutrition: {
             ...meal.nutrition,
             fiber: Math.max(meal.nutrition.fiber || 0, (meal.nutrition.fiber || 0) + enhancement.fiberIncrease)
+          },
+          vegetableContent: {
+            ...meal.vegetableContent,
+            benefits: newBenefits
+          },
+          recipe: {
+            ...meal.recipe,
+            tips: newTips
           }
         };
       }

@@ -2255,6 +2255,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
           if (finalNutrition) {
             finalNutrition.fiber = Math.max(finalNutrition.fiber || 0, (finalNutrition.fiber || 0) + fiberEnhancement.fiberIncrease);
           }
+          
+          // Add fiber benefits and tips to user recipe
+          let fiberNotes = '';
+          if (fiberEnhancement.fiberBenefits.length > 0) {
+            fiberNotes += `Fiber benefits: ${fiberEnhancement.fiberBenefits.join(', ')}. `;
+          }
+          if (fiberEnhancement.fiberTips.length > 0) {
+            fiberNotes += fiberEnhancement.fiberTips.join('. ');
+          }
+          
+          // Store fiber enhancement info for later use in recipe data
+          formData.fiberEnhancementNotes = fiberNotes;
+          
           console.log(`✅ Enhanced custom recipe with ${fiberEnhancement.addedFibers.map(f => f.name).join(', ')} (+${fiberEnhancement.fiberIncrease}g fiber)`);
         }
       } else {
@@ -2348,6 +2361,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
             if (finalNutrition) {
               finalNutrition.fiber = Math.max(finalNutrition.fiber || 0, (finalNutrition.fiber || 0) + fiberEnhancement.fiberIncrease);
             }
+            
+            // Add fiber enhancement notes to updated recipe
+            let fiberNotes = '';
+            if (fiberEnhancement.fiberBenefits.length > 0) {
+              fiberNotes += `Fiber benefits: ${fiberEnhancement.fiberBenefits.join(', ')}. `;
+            }
+            if (fiberEnhancement.fiberTips.length > 0) {
+              fiberNotes += fiberEnhancement.fiberTips.join('. ');
+            }
+            
+            updateData.fiberEnhancementNotes = fiberNotes;
+            
             console.log(`✅ Enhanced updated recipe with ${fiberEnhancement.addedFibers.map(f => f.name).join(', ')} (+${fiberEnhancement.fiberIncrease}g fiber)`);
           }
         }
