@@ -29,7 +29,8 @@ export const users = pgTable("users", {
   language: text("language").default("en"), // en, nl
   leftovers: text("leftovers").array().default([]), // current leftovers to use in meal planning
   useOnlyMyRecipes: boolean("use_only_my_recipes").default(false), // preference for meal plan generation
-  cycleSupportRecipes: boolean("cycle_support_recipes").default(false), // enable menstruation-supportive recipes
+  cycleSupportRecipes: boolean("cycle_support_recipes").default(false),
+  longevityFocusedRecipes: boolean("longevity_focused_recipes").default(false), // enable longevity-focused recipes
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });

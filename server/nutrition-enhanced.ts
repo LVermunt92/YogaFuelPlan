@@ -70,7 +70,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 8.2 
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "dairy-free", "high-protein", "anti-inflammatory", "whole30", "ayurvedic"],
+    tags: ["vegetarian", "gluten-free", "dairy-free", "high-protein", "anti-inflammatory", "whole30", "ayurvedic", "longevity"],
     ingredients: [
       "60g steel-cut oats",
       "35g raw almonds and walnuts (chopped)",
@@ -173,7 +173,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.7 
     },
     category: "breakfast",
-    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "dairy-free", "raw", "anti-inflammatory", "ayurvedic"],
+    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "dairy-free", "raw", "anti-inflammatory", "ayurvedic", "longevity"],
     ingredients: [
       "3 tbsp chia seeds",
       "¾ cup unsweetened almond milk",
@@ -224,7 +224,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.8
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "lactose-free", "high-fiber", "make-ahead", "ayurvedic"],
+    tags: ["vegetarian", "gluten-free", "lactose-free", "high-fiber", "make-ahead", "ayurvedic", "longevity"],
     ingredients: [
       "½ cup gluten-free rolled oats",
       "½ cup unsweetened almond milk",
@@ -272,7 +272,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.1
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "lactose-free", "high-protein", "superfood", "ayurvedic"],
+    tags: ["vegetarian", "gluten-free", "lactose-free", "high-protein", "superfood", "ayurvedic", "longevity"],
     ingredients: [
       "½ cup cooked quinoa",
       "½ cup coconut yogurt",
@@ -371,7 +371,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.2
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "lactose-free", "high-fiber", "antioxidant", "ayurvedic", "high-protein"],
+    tags: ["vegetarian", "gluten-free", "lactose-free", "high-fiber", "antioxidant", "ayurvedic", "high-protein", "longevity"],
     ingredients: [
       "1 cup spinach",
       "½ frozen banana",
@@ -426,7 +426,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.7 
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "lactose-free", "probiotic", "fermented", "high-protein", "ayurvedic"],
+    tags: ["vegetarian", "gluten-free", "lactose-free", "probiotic", "fermented", "high-protein", "ayurvedic", "longevity"],
     ingredients: [
       "200ml long-fermented kefir (24+ hours)",
       "¼ cup gluten-free oat granola", 
@@ -476,7 +476,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.3 
     },
     category: "lunch",
-    tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "anti-inflammatory", "high-protein"],
+    tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "anti-inflammatory", "high-protein", "longevity"],
     ingredients: [
       "1 cup red lentils",
       "1 medium sweet potato (diced)",
@@ -532,7 +532,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.0 
     },
     category: "lunch",
-    tags: ["vegetarian", "gluten-free", "high-protein", "quick", "meal-prep"],
+    tags: ["vegetarian", "gluten-free", "high-protein", "quick", "meal-prep", "longevity"],
     ingredients: [
       "1 cup cooked quinoa",
       "½ cup black beans (cooked)",
@@ -589,7 +589,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.1 
     },
     category: "lunch",
-    tags: ["pescatarian", "gluten-free", "dairy-free", "paleo", "anti-inflammatory", "high-protein"],
+    tags: ["pescatarian", "gluten-free", "dairy-free", "paleo", "anti-inflammatory", "high-protein", "longevity"],
     ingredients: [
       "150g wild salmon fillet",
       "1 medium sweet potato (chunked)",
@@ -697,7 +697,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.9 
     },
     category: "lunch",
-    tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "high-protein", "anti-inflammatory", "ayurvedic"],
+    tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "high-protein", "anti-inflammatory", "ayurvedic", "longevity"],
     ingredients: [
       "200g tempeh (sliced)",
       "1 medium zucchini (sliced)",
@@ -760,7 +760,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.4 
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "dairy-free", "high-protein"],
+    tags: ["vegetarian", "gluten-free", "dairy-free", "high-protein", "longevity"],
     ingredients: [
       "2 large portobello mushrooms (stems removed)",
       "200g Brussels sprouts (halved)",
@@ -863,7 +863,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.0 
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "anti-inflammatory", "high-protein"],
+    tags: ["vegetarian", "gluten-free", "anti-inflammatory", "high-protein", "longevity"],
     ingredients: ["quinoa", "mixed wild mushrooms", "fresh herbs (parsley, thyme)", "1 zucchini", "red bell pepper", "carrots", "red onion", "pine nuts", "olive oil", "vegetable stock", "tahini", "lemon juice", "parmesan cheese", "hemp hearts", "pumpkin seeds", "chickpeas", "nutritional yeast"],
     wholeFoodLevel: "high",
     vegetableContent: {
@@ -915,7 +915,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.4 
     },
     category: "dinner",
-    tags: ["pescatarian", "gluten-free", "dairy-free", "mediterranean", "anti-inflammatory"],
+    tags: ["pescatarian", "gluten-free", "dairy-free", "mediterranean", "anti-inflammatory", "longevity"],
     ingredients: ["fresh cod fillet", "200g cherry tomatoes", "1 zucchini", "red onion", "black olives", "fresh basil", "fresh oregano", "olive oil", "lemon", "capers"],
     wholeFoodLevel: "high",
     vegetableContent: {
@@ -9365,8 +9365,23 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
           console.log(`🩸 PRIORITIZED: Moved ${cycleRecipes.length} cycle support recipes to front of selection pool`);
         }
       }
+      
+      // Check if user has longevity-focused recipes enabled and prioritize them
+      if (user?.longevityFocusedRecipes) {
+        console.log(`🧬 LONGEVITY FOCUS: Including longevity-promoting recipes for ${category}`);
+        // Filter longevity-focused recipes from the current meal pool
+        const longevityRecipes = allMeals.filter(meal => meal.tags.includes('longevity'));
+        console.log(`🧬 Found ${longevityRecipes.length} longevity-focused recipes for ${category}`);
+        
+        // Prioritize longevity recipes by placing them at the beginning of the array
+        if (longevityRecipes.length > 0) {
+          const nonLongevityRecipes = allMeals.filter(meal => !meal.tags.includes('longevity'));
+          allMeals = [...longevityRecipes, ...nonLongevityRecipes];
+          console.log(`🧬 PRIORITIZED: Moved ${longevityRecipes.length} longevity-focused recipes to front of selection pool`);
+        }
+      }
     } catch (error) {
-      console.error('Error checking cycle support preference:', error);
+      console.error('Error checking user preferences (cycle support/longevity):', error);
     }
   }
   

@@ -118,7 +118,8 @@ export default function Profile() {
     eatingDaysAtHome: '',
     meatFishMealsPerWeek: '',
     useOnlyMyRecipes: false,
-    cycleSupportRecipes: false
+    cycleSupportRecipes: false,
+    longevityFocusedRecipes: false
   });
 
   // Calculate dynamic protein target based on age, gender, and activity level
@@ -186,7 +187,8 @@ export default function Profile() {
         eatingDaysAtHome: isNewUser ? '' : (user.eatingDaysAtHome?.toString() || ''),
         meatFishMealsPerWeek: isNewUser ? '' : (user.meatFishMealsPerWeek?.toString() || ''),
         useOnlyMyRecipes: user.useOnlyMyRecipes || false,
-        cycleSupportRecipes: user.cycleSupportRecipes || false
+        cycleSupportRecipes: user.cycleSupportRecipes || false,
+        longevityFocusedRecipes: user.longevityFocusedRecipes || false
       });
       setIsFormInitialized(true);
     }
@@ -929,6 +931,23 @@ export default function Profile() {
                   id="cycleSupportRecipes"
                   checked={formData.cycleSupportRecipes}
                   onCheckedChange={(checked) => setFormData(prev => ({ ...prev, cycleSupportRecipes: checked }))}
+                />
+              </div>
+
+              {/* Longevity-Focused Recipes Toggle */}
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label htmlFor="longevityFocusedRecipes" className="text-sm font-medium">
+                    Longevity-focused recipes
+                  </Label>
+                  <p className="text-xs text-gray-500">
+                    Prioritize recipes with scientifically-proven longevity foods like berries, nuts, leafy greens, fish, and Mediterranean ingredients
+                  </p>
+                </div>
+                <Switch
+                  id="longevityFocusedRecipes"
+                  checked={formData.longevityFocusedRecipes}
+                  onCheckedChange={(checked) => setFormData(prev => ({ ...prev, longevityFocusedRecipes: checked }))}
                 />
               </div>
             </div>
