@@ -8509,7 +8509,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.6
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "menstruation", "granola", "protein", "nuts", "seeds", "meal-prep"],
+    tags: ["vegetarian", "gluten-free", "menstruation", "granola", "protein", "nuts", "seeds", "meal-prep", "cycleBased"],
     ingredients: [
       "150g rolled oats",
       "1 scoop vanilla protein powder",
@@ -8568,7 +8568,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.4
     },
     category: "breakfast",
-    tags: ["vegetarian", "vegan", "dairy-free", "gluten-free", "menstruation", "energy-bites", "dates", "no-bake", "iron-rich"],
+    tags: ["vegetarian", "vegan", "dairy-free", "gluten-free", "menstruation", "energy-bites", "dates", "no-bake", "iron-rich", "cycleBased"],
     ingredients: [
       "100g pitted dates",
       "40g rolled oats",
