@@ -1988,7 +1988,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       ],
       tips: [
         "Cook aubergine until properly golden for best texture",
-        "Keep bok choy crisp by not overcooking",
+        "Keep vegetables crisp by not overcooking",
         "Adjust chili to your heat preference"
       ],
       notes: "Asian-inspired coconut rice bowl with savory umami flavors from the soy-sesame dressing"
