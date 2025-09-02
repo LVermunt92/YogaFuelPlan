@@ -7615,6 +7615,348 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-09-01'),
     active: true
+  },
+  {
+    name: "Pre-Workout Protein Smoothie",
+    portion: "1 large smoothie (about 320ml)",
+    nutrition: {
+      protein: 25,
+      prepTime: 5,
+      calories: 295,
+      carbohydrates: 35,
+      fats: 8,
+      fiber: 7,
+      sugar: 22,
+      sodium: 180,
+      potassium: 680,
+      calcium: 320,
+      iron: 2.5,
+      vitaminC: 45,
+      costEuros: 3.20,
+      proteinPerEuro: 7.8
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "vegan", "dairy-free", "gluten-free", "menstruation", "high-protein", "smoothie", "berries", "pre-workout"],
+    ingredients: [
+      "1 scoop vanilla protein powder",
+      "150g mixed berries",
+      "1 medium banana",
+      "200ml almond milk", 
+      "1 tbsp almond butter",
+      "1 tsp chia seeds",
+      "1 tsp maple syrup",
+      "5 ice cubes"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["berries", "banana"],
+      benefits: ["antioxidants from berries", "potassium from banana", "gentle energy boost", "electrolyte replenishment"]
+    },
+    recipe: {
+      instructions: [
+        "Add all ingredients to a high-speed blender",
+        "Blend on high for 60-90 seconds until completely smooth",
+        "Add more almond milk if needed for desired consistency",
+        "Pour into a large glass and serve immediately"
+      ],
+      tips: [
+        "Use frozen berries for a thicker smoothie texture",
+        "Add protein powder last to prevent clumping",
+        "Blend chia seeds well to avoid lumps"
+      ],
+      notes: "Gentle on digestion with stabilizing energy, perfect for replenishing electrolytes during menstruation"
+    },
+    createdAt: new Date('2025-09-02'),
+    active: true
+  },
+  {
+    name: "Protein Churro Bites",
+    portion: "8 bite-sized pieces (about 120g)",
+    nutrition: {
+      protein: 18,
+      prepTime: 25,
+      calories: 245,
+      carbohydrates: 28,
+      fats: 9,
+      fiber: 5,
+      sugar: 8,
+      sodium: 140,
+      potassium: 320,
+      calcium: 80,
+      iron: 2.1,
+      vitaminC: 2,
+      costEuros: 2.80,
+      proteinPerEuro: 6.4
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "gluten-free", "menstruation", "high-protein", "sweet-treat", "cinnamon", "comfort-food"],
+    ingredients: [
+      "80g oat flour",
+      "1 scoop vanilla protein powder", 
+      "15ml ground cinnamon",
+      "5ml baking powder",
+      "2 tbsp almond butter",
+      "60ml almond milk",
+      "1 tbsp maple syrup",
+      "1 tsp vanilla extract",
+      "Pinch sea salt",
+      "15ml coconut oil for cooking"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 0,
+      vegetables: [],
+      benefits: ["complex carbs from oats", "blood sugar stability", "sweet craving satisfaction"]
+    },
+    recipe: {
+      instructions: [
+        "Mix oat flour, protein powder, cinnamon, baking powder and salt in a bowl",
+        "In separate bowl, whisk almond butter, almond milk, maple syrup and vanilla",
+        "Combine wet and dry ingredients until smooth dough forms",
+        "Let rest 10 minutes for oat flour to hydrate",
+        "Roll dough into 8 small balls, then roll into finger shapes",
+        "Heat coconut oil in non-stick pan over medium heat",
+        "Cook churro bites 2-3 minutes per side until golden",
+        "Dust with extra cinnamon while warm"
+      ],
+      tips: [
+        "Don't overmix the dough to keep texture light",
+        "Make sure pan isn't too hot to prevent burning",
+        "Store leftovers in airtight container for 2 days"
+      ],
+      notes: "Satisfies sweet cravings while supporting blood sugar stability and providing protein for muscle recovery"
+    },
+    createdAt: new Date('2025-09-02'),
+    active: true
+  },
+  {
+    name: "Aggie's Dreamy Avocado Brownies",
+    portion: "2 brownies (about 100g)",
+    nutrition: {
+      protein: 15,
+      prepTime: 35,
+      calories: 285,
+      carbohydrates: 32,
+      fats: 16,
+      fiber: 8,
+      sugar: 18,
+      sodium: 120,
+      potassium: 420,
+      calcium: 60,
+      iron: 3.2,
+      vitaminC: 8,
+      costEuros: 4.20,
+      proteinPerEuro: 3.6
+    },
+    category: "breakfast", 
+    tags: ["vegetarian", "vegan", "dairy-free", "gluten-free", "menstruation", "chocolate", "avocado", "comfort-food", "brownies"],
+    ingredients: [
+      "1 large ripe avocado",
+      "40g cocoa powder",
+      "60g almond flour",
+      "1 scoop vanilla protein powder",
+      "60ml maple syrup",
+      "30g dark chocolate chips",
+      "5ml vanilla extract", 
+      "2.5ml baking powder",
+      "Pinch sea salt"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["avocado"],
+      benefits: ["healthy fats from avocado", "magnesium from cocoa", "muscle relaxation support", "mood-boosting antioxidants"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 175°C fan/340°F",
+        "Line a small baking dish with parchment paper",
+        "Mash avocado until completely smooth",
+        "Mix in maple syrup, vanilla extract and protein powder",
+        "In separate bowl, whisk cocoa powder, almond flour, baking powder and salt",
+        "Fold dry ingredients into avocado mixture until just combined",
+        "Fold in chocolate chips gently",
+        "Pour into prepared dish and smooth top",
+        "Bake 22-25 minutes until set but still fudgy",
+        "Cool completely before cutting"
+      ],
+      tips: [
+        "Use very ripe avocado for best texture and sweetness",
+        "Don't overbake - brownies should still be slightly soft in center",
+        "Chill for 2 hours for fudgiest texture"
+      ],
+      notes: "Rich in magnesium for muscle relaxation and mood support, with healthy fats that reduce inflammation during menstruation"
+    },
+    createdAt: new Date('2025-09-02'),
+    active: true
+  },
+  {
+    name: "Protein Cashew Nut Mousse",
+    portion: "1 generous serving (about 180g)",
+    nutrition: {
+      protein: 22,
+      prepTime: 15,
+      calories: 320,
+      carbohydrates: 18,
+      fats: 22,
+      fiber: 4,
+      sugar: 12,
+      sodium: 95,
+      potassium: 380,
+      calcium: 85,
+      iron: 2.8,
+      vitaminC: 3,
+      costEuros: 3.90,
+      proteinPerEuro: 5.6
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "vegan", "dairy-free", "gluten-free", "menstruation", "high-protein", "chocolate", "cashew", "mousse", "comfort-food"],
+    ingredients: [
+      "100g cashews (soaked 2 hours)",
+      "1 scoop vanilla protein powder",
+      "30g cocoa powder",
+      "180ml plant milk",
+      "2 tbsp maple syrup",
+      "5ml vanilla extract",
+      "Pinch sea salt",
+      "15g dark chocolate chips for topping"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 0,
+      vegetables: [],
+      benefits: ["magnesium from cashews and cocoa", "zinc for hormone support", "healthy fats for satiety", "mood-boosting compounds"]
+    },
+    recipe: {
+      instructions: [
+        "Drain and rinse soaked cashews thoroughly",
+        "Add cashews, protein powder, cocoa powder to high-speed blender",
+        "Pour in plant milk, maple syrup, vanilla and salt",
+        "Blend on high 2-3 minutes until completely smooth and creamy",
+        "Taste and adjust sweetness if needed",
+        "Pour into serving glasses and chill 1 hour",
+        "Top with dark chocolate chips before serving"
+      ],
+      tips: [
+        "Soak cashews in hot water for quicker softening (30 minutes)",
+        "Use less plant milk for thicker mousse, more for lighter texture",
+        "Can be made 2 days ahead and stored covered in fridge"
+      ],
+      notes: "Creamy comfort food rich in magnesium and zinc to support muscle relaxation and hormone balance during menstruation"
+    },
+    createdAt: new Date('2025-09-02'),
+    active: true
+  },
+  {
+    name: "Spirulina Protein Smoothie",
+    portion: "1 large smoothie (about 350ml)",
+    nutrition: {
+      protein: 20,
+      prepTime: 5,
+      calories: 245,
+      carbohydrates: 32,
+      fats: 6,
+      fiber: 6,
+      sugar: 24,
+      sodium: 150,
+      potassium: 520,
+      calcium: 280,
+      iron: 4.5,
+      vitaminC: 38,
+      costEuros: 2.95,
+      proteinPerEuro: 6.8
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "vegan", "dairy-free", "gluten-free", "menstruation", "high-protein", "spirulina", "smoothie", "iron-rich", "detox"],
+    ingredients: [
+      "1 scoop vanilla protein powder",
+      "5ml spirulina powder",
+      "1 medium banana",
+      "100g blueberries",
+      "200ml plant milk",
+      "1 tbsp almond butter",
+      "1 tsp maple syrup",
+      "5 ice cubes"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["banana", "blueberries"],
+      benefits: ["iron replenishment from spirulina", "B vitamins for energy", "antioxidants from blueberries", "potassium from banana"]
+    },
+    recipe: {
+      instructions: [
+        "Add plant milk and spirulina powder to blender first",
+        "Blend briefly to dissolve spirulina completely",
+        "Add banana, blueberries, protein powder and almond butter",
+        "Add maple syrup and ice cubes",
+        "Blend on high 90 seconds until smooth and creamy",
+        "Pour into large glass and serve immediately"
+      ],
+      tips: [
+        "Start with less spirulina (2ml) if new to the taste",
+        "Frozen banana makes smoothie thicker and creamier",
+        "Add spirulina first to prevent green clumps"
+      ],
+      notes: "Powerful iron and B vitamin replenishment to combat fatigue, with detoxification support during menstruation"
+    },
+    createdAt: new Date('2025-09-02'),
+    active: true
+  },
+  {
+    name: "Aggie's Matcha Latte",
+    portion: "1 large latte (about 280ml)",
+    nutrition: {
+      protein: 8,
+      prepTime: 5,
+      calories: 125,
+      carbohydrates: 18,
+      fats: 4,
+      fiber: 1,
+      sugar: 16,
+      sodium: 95,
+      potassium: 220,
+      calcium: 280,
+      iron: 0.8,
+      vitaminC: 2,
+      costEuros: 1.85,
+      proteinPerEuro: 4.3
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "dairy-free", "gluten-free", "menstruation", "matcha", "latte", "antioxidants", "energy-boost"],
+    ingredients: [
+      "5ml matcha powder",
+      "250ml plant milk",
+      "2 tbsp honey",
+      "2.5ml vanilla extract",
+      "Pinch sea salt"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 0,
+      vegetables: [],
+      benefits: ["L-theanine for calm focus", "antioxidants from matcha", "gentle caffeine boost", "mood support"]
+    },
+    recipe: {
+      instructions: [
+        "Sift matcha powder into a small bowl to remove lumps",
+        "Add 60ml hot (not boiling) plant milk to matcha",
+        "Whisk vigorously until completely smooth paste forms",
+        "Heat remaining plant milk in saucepan until steaming",
+        "Whisk in honey, vanilla and salt until dissolved",
+        "Pour hot milk into matcha paste, whisking constantly",
+        "Serve immediately in large mug"
+      ],
+      tips: [
+        "Use ceremonial grade matcha for best flavor",
+        "Don't use boiling water - it makes matcha bitter",
+        "Whisk thoroughly to prevent lumps"
+      ],
+      notes: "Provides gentle energy boost with L-theanine for calm focus, perfect for managing energy without caffeine crash during menstruation"
+    },
+    createdAt: new Date('2025-09-02'),
+    active: true
   }
 ];
 
@@ -8296,7 +8638,8 @@ function isWaterIngredient(ingredient: string): boolean {
     'warm water',
     'pasta water',
     'rice water',
-    'barley water'
+    'barley water',
+    'ice cubes'
   ];
   
   return waterKeywords.some(keyword => lowerIngredient === keyword || lowerIngredient.includes(keyword));
@@ -8857,6 +9200,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'gluten-free tortilla': 'Other Dry Goods',
     'chickpea flour': 'Baking & Cooking Basics',
     'coconut flour': 'Baking & Cooking Basics',
+    'oat flour': 'Baking & Cooking Basics',
     'sweet potatoes': 'Vegetables',
     'potatoes': 'Vegetables',
     'olives': 'Other Dry Goods', // Olives belong in dry goods
@@ -9028,6 +9372,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'fresh berries for topping': 'Fruits', // Legacy compatibility
     'blueberries for topping': 'Fruits', // Legacy compatibility
     'spirulina': 'Other Dry Goods',
+    'matcha powder': 'Other Dry Goods',
     'coriander': 'Fresh Herbs',
     'fresh coriander': 'Fresh Herbs'
   };
