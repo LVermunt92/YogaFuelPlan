@@ -167,22 +167,12 @@ Ensure the recipe is practical, nutritious, and aligns with the dietary requirem
           (generatedRecipe.nutrition.fiber || 0) + fiberEnhancement.fiberIncrease
         );
         
-        // Add fiber benefits and tips to the generated recipe
-        if (fiberEnhancement.fiberBenefits.length > 0) {
-          const existingBenefits = generatedRecipe.vegetableContent?.benefits || [];
-          generatedRecipe.vegetableContent = {
-            ...generatedRecipe.vegetableContent,
-            benefits: [...existingBenefits, ...fiberEnhancement.fiberBenefits]
-          };
-        }
-        
-        if (fiberEnhancement.fiberTips.length > 0) {
-          const existingTips = generatedRecipe.recipe?.tips || [];
-          generatedRecipe.recipe = {
-            ...generatedRecipe.recipe,
-            tips: [...existingTips, ...fiberEnhancement.fiberTips]
-          };
-        }
+        // Add fiber enhancement info to recipe tips
+        const existingTips = generatedRecipe.recipe?.tips || [];
+        generatedRecipe.recipe = {
+          ...generatedRecipe.recipe,
+          tips: [...existingTips, "Enhanced with additional fiber sources for better nutrition"]
+        };
         
         console.log(`✅ Enhanced recipe with ${fiberEnhancement.addedFibers.map(f => f.name).join(', ')} (+${fiberEnhancement.fiberIncrease}g fiber)`);
       }
@@ -192,8 +182,12 @@ Ensure the recipe is practical, nutritious, and aligns with the dietary requirem
     
     return generatedRecipe as MealOption;
     
-  } catch (error) {
-    console.error('Failed to generate recipe with AI:', error);
+  } catch (error: any) {
+    if (error.status === 429 || error.code === 'insufficient_quota') {
+      console.warn('OpenAI quota exceeded during recipe generation, using fallback recipe');
+    } else {
+      console.error('Failed to generate recipe with AI:', error);
+    }
     
     // Return a fallback recipe to ensure meal planning doesn't break
     return createFallbackRecipe(request);
@@ -270,8 +264,12 @@ export async function generateMultipleRecipes(
       
       // Add small delay to avoid rate limiting
       await new Promise(resolve => setTimeout(resolve, 500));
-    } catch (error) {
-      console.error(`Failed to generate recipe for ${request.category} with tags ${request.dietaryTags.join(', ')}:`, error);
+    } catch (error: any) {
+      if (error.status === 429 || error.code === 'insufficient_quota') {
+        console.warn(`OpenAI quota exceeded for ${request.category} recipe, skipping AI generation`);
+      } else {
+        console.error(`Failed to generate recipe for ${request.category} with tags ${request.dietaryTags.join(', ')}:`, error);
+      }
       // Continue with next recipe rather than failing completely
     }
   }

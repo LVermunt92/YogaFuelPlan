@@ -75,8 +75,15 @@ Use warm, helpful Dutch language for home cooking advice. Only return the transl
     });
 
     return response.choices[0].message.content?.trim() || text;
-  } catch (error) {
+  } catch (error: any) {
     console.error('AI translation error:', error);
+    
+    // Handle quota errors gracefully
+    if (error.status === 429 || error.code === 'insufficient_quota') {
+      console.warn('OpenAI quota exceeded, falling back to original text');
+      return text; // Return original text instead of crashing
+    }
+    
     throw error;
   }
 }
@@ -118,8 +125,12 @@ export async function translateRecipeEnhanced(
         notes: recipe.notes || [],
         translationMethod: 'ai-enhanced'
       };
-    } catch (error) {
-      console.warn('AI translation failed, falling back to pattern-based:', error instanceof Error ? error.message : String(error));
+    } catch (error: any) {
+      if (error.status === 429 || error.code === 'insufficient_quota') {
+        console.warn('OpenAI quota exceeded during recipe translation, falling back to pattern-based translation');
+      } else {
+        console.warn('AI translation failed, falling back to pattern-based:', error instanceof Error ? error.message : String(error));
+      }
     }
   }
 

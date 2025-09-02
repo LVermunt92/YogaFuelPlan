@@ -61,7 +61,7 @@ function addCyclePhaseTagsToRecipe(recipe: MealOption): MealOption {
     ingredientText.includes('lentils') || ingredientText.includes('beans') || 
     ingredientText.includes('tofu') || ingredientText.includes('dark chocolate') ||
     ingredientText.includes('meat') || ingredientText.includes('chicken') ||
-    ingredientText.includes('quinoa') || nutrition.iron > 3;
+    ingredientText.includes('quinoa') || (nutrition.iron && nutrition.iron > 3);
     
   const hasAntiInflammatory = 
     ingredientText.includes('turmeric') || ingredientText.includes('ginger') ||
@@ -71,7 +71,7 @@ function addCyclePhaseTagsToRecipe(recipe: MealOption): MealOption {
   const hasWarming = 
     ingredientText.includes('ginger') || ingredientText.includes('cinnamon') ||
     ingredientText.includes('cumin') || ingredientText.includes('paprika') ||
-    recipe.tags.includes('warming') || recipe.prepTime > 20;
+    recipe.tags.includes('warming') || (recipe.nutrition && recipe.nutrition.prepTime > 20);
     
   const hasMagnesium = 
     ingredientText.includes('nuts') || ingredientText.includes('seeds') ||
@@ -87,7 +87,7 @@ function addCyclePhaseTagsToRecipe(recipe: MealOption): MealOption {
   const isFresh = 
     ingredientText.includes('fresh') || ingredientText.includes('raw') ||
     ingredientText.includes('salad') || recipe.tags.includes('raw') ||
-    recipe.prepTime < 15;
+    (recipe.nutrition && recipe.nutrition.prepTime < 15);
     
   const isComfort = 
     recipe.tags.includes('comfort-food') || ingredientText.includes('pasta') ||
@@ -102,7 +102,7 @@ function addCyclePhaseTagsToRecipe(recipe: MealOption): MealOption {
   }
   
   // Follicular Phase (fresh, energizing, antioxidants)
-  if (isFresh || hasAntiInflammatory || nutrition.vitaminC > 15) {
+  if (isFresh || hasAntiInflammatory || (nutrition.vitaminC && nutrition.vitaminC > 15)) {
     if (!newTags.includes('Follicular')) newTags.push('Follicular');
   }
   
@@ -10458,15 +10458,12 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'spirulina': 'Other Dry Goods',
     'matcha powder': 'Other Dry Goods',
     'self-raising flour': 'Baking & Cooking Basics',
-    'spring onions': 'Vegetables',
     'holy basil leaves': 'Fresh Herbs',
     'thai chilies': 'Vegetables',
     'fish sauce': 'Pantry Essentials',
     'oyster sauce': 'Pantry Essentials',
     'dark soy sauce': 'Pantry Essentials',
     'desiccated coconut': 'Other Dry Goods',
-    'cream cheese': 'Dairy & Cheese',
-    'fresh dill': 'Fresh Herbs',
     'capers': 'Other Dry Goods',
     'tortilla chips': 'Other Dry Goods',
     'dates': 'Fruits',
