@@ -60,7 +60,6 @@ interface UserProfile {
   useOnlyMyRecipes: boolean;
   cycleSupportRecipes: boolean;
   menstrualPhase: string;
-  longevityFocusedRecipes: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -122,7 +121,6 @@ export default function Profile() {
     useOnlyMyRecipes: false,
     cycleSupportRecipes: false,
     menstrualPhase: 'off',
-    longevityFocusedRecipes: false
   });
 
   // Calculate dynamic protein target based on age, gender, and activity level
@@ -192,7 +190,6 @@ export default function Profile() {
         useOnlyMyRecipes: user.useOnlyMyRecipes || false,
         cycleSupportRecipes: user.cycleSupportRecipes || false,
         menstrualPhase: user.menstrualPhase || 'off',
-        longevityFocusedRecipes: user.longevityFocusedRecipes || false
       });
       setIsFormInitialized(true);
     }
@@ -237,7 +234,6 @@ export default function Profile() {
           useOnlyMyRecipes: updatedData.useOnlyMyRecipes || false,
           cycleSupportRecipes: updatedData.cycleSupportRecipes || false,
           menstrualPhase: updatedData.menstrualPhase || 'off',
-          longevityFocusedRecipes: updatedData.longevityFocusedRecipes || false
         });
       }
       
@@ -303,7 +299,6 @@ export default function Profile() {
       useOnlyMyRecipes: formData.useOnlyMyRecipes,
       cycleSupportRecipes: formData.cycleSupportRecipes,
       menstrualPhase: formData.menstrualPhase,
-      longevityFocusedRecipes: formData.longevityFocusedRecipes
     };
 
     updateProfileMutation.mutate(updateData);
@@ -952,22 +947,6 @@ export default function Profile() {
                 </div>
               )}
 
-              {/* Longevity-Focused Recipes Toggle */}
-              <div className="flex items-center justify-between p-4 border rounded-lg">
-                <div className="space-y-0.5">
-                  <Label htmlFor="longevityFocusedRecipes" className="text-sm font-medium">
-                    Longevity-focused recipes
-                  </Label>
-                  <p className="text-xs text-gray-500">
-                    Prioritize recipes with scientifically-proven longevity foods like berries, nuts, leafy greens, fish, and Mediterranean ingredients
-                  </p>
-                </div>
-                <Switch
-                  id="longevityFocusedRecipes"
-                  checked={formData.longevityFocusedRecipes}
-                  onCheckedChange={(checked) => setFormData(prev => ({ ...prev, longevityFocusedRecipes: checked }))}
-                />
-              </div>
             </div>
           </div>
 

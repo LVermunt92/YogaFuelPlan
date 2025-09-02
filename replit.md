@@ -33,6 +33,8 @@ Preferred communication style: Simple, everyday language.
     - **Unified Recipe Database**: Consolidated all recipe databases into a single unified system.
 
 # Recent Changes (September 2, 2025)
+- **Automatic Longevity Optimization**: Removed longevity toggle from profile and made longevity-focused recipes automatically prioritized for all users, as the goal is that all meal plans should be optimized for longevity by default
+- **Profile Cleanup**: Removed redundant "use only my recipes" toggle from profile since it exists on the recipe page, and removed longevity toggle since longevity is now automatic
 - **Menstrual Cycle Phase Dropdown**: Added comprehensive cycle phase selection with 5 options (off, menstrual, follicular, ovulation, luteal) in profile page, automatically integrated into meal plan generation as dietary tags
 - **Phase-Specific Recipe Prioritization**: Recipes now tagged with specific menstrual phases get automatically prioritized during meal generation when users select their current cycle phase
 - **Simplified Cycle Logic**: Streamlined menstrual support to use existing dietary tag system rather than complex phase-specific filtering, making it more maintainable and extensible

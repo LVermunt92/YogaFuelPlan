@@ -9366,19 +9366,17 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
         }
       }
       
-      // Check if user has longevity-focused recipes enabled and prioritize them
-      if (user?.longevityFocusedRecipes) {
-        console.log(`🧬 LONGEVITY FOCUS: Including longevity-promoting recipes for ${category}`);
-        // Filter longevity-focused recipes from the current meal pool
-        const longevityRecipes = allMeals.filter(meal => meal.tags.includes('longevity'));
-        console.log(`🧬 Found ${longevityRecipes.length} longevity-focused recipes for ${category}`);
-        
-        // Prioritize longevity recipes by placing them at the beginning of the array
-        if (longevityRecipes.length > 0) {
-          const nonLongevityRecipes = allMeals.filter(meal => !meal.tags.includes('longevity'));
-          allMeals = [...longevityRecipes, ...nonLongevityRecipes];
-          console.log(`🧬 PRIORITIZED: Moved ${longevityRecipes.length} longevity-focused recipes to front of selection pool`);
-        }
+      // Always prioritize longevity-focused recipes for all users
+      console.log(`🧬 LONGEVITY FOCUS: Including longevity-promoting recipes for ${category} (automatic)`);
+      // Filter longevity-focused recipes from the current meal pool
+      const longevityRecipes = allMeals.filter(meal => meal.tags.includes('longevity'));
+      console.log(`🧬 Found ${longevityRecipes.length} longevity-focused recipes for ${category}`);
+      
+      // Prioritize longevity recipes by placing them at the beginning of the array
+      if (longevityRecipes.length > 0) {
+        const nonLongevityRecipes = allMeals.filter(meal => !meal.tags.includes('longevity'));
+        allMeals = [...longevityRecipes, ...nonLongevityRecipes];
+        console.log(`🧬 PRIORITIZED: Moved ${longevityRecipes.length} longevity-focused recipes to front of selection pool`);
       }
     } catch (error) {
       console.error('Error checking user preferences (cycle support/longevity):', error);
