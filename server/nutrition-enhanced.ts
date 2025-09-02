@@ -42,6 +42,8 @@ export interface MealOption {
     tips?: string[];
     notes?: string;
   };
+  createdAt?: Date;
+  active?: boolean;
 }
 
 // Enhanced meal database focusing on whole foods and minimal processing
@@ -7239,6 +7241,380 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       ],
       notes: "Naturally gluten-free pancakes with Mediterranean flavors and plant-based protein from chickpeas and gram flour"
     }
+  },
+  {
+    name: "Parmesan Brussels Sprouts",
+    portion: "1 serving (about 250g)",
+    nutrition: {
+      protein: 18,
+      prepTime: 20,
+      calories: 285,
+      carbohydrates: 12,
+      fats: 20,
+      fiber: 8,
+      sugar: 6,
+      sodium: 480,
+      potassium: 650,
+      calcium: 280,
+      iron: 3.2,
+      vitaminC: 95,
+      costEuros: 3.50,
+      proteinPerEuro: 5.1
+    },
+    category: "dinner",
+    tags: ["vegetarian", "gluten-free", "high-protein", "calcium-rich", "menstruation", "anti-inflammatory"],
+    ingredients: [
+      "400g Brussels sprouts, halved",
+      "60g parmesan cheese, grated",
+      "3 cloves garlic, minced",
+      "30ml olive oil",
+      "15ml lemon juice",
+      "Pinch sea salt and black pepper",
+      "5ml dried thyme"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["Brussels sprouts", "garlic"],
+      benefits: ["vitamin C for immunity", "calcium for bones", "fiber for digestion", "antioxidants for inflammation"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 200°C fan / 390°F",
+        "Cut Brussels sprouts in half lengthwise",
+        "Toss halved Brussels sprouts with olive oil, minced garlic, and pinch of salt",
+        "Arrange cut-side down on baking tray",
+        "Roast for 15-18 minutes until edges are golden and crispy",
+        "Remove from oven and sprinkle with grated parmesan",
+        "Return to oven for 3-4 minutes until cheese melts",
+        "Drizzle with lemon juice and sprinkle with thyme",
+        "Season with pepper and serve immediately"
+      ],
+      tips: [
+        "Don't overcrowd the tray - Brussels sprouts need space to crisp up",
+        "Cut-side down ensures better caramelization",
+        "Fresh parmesan works best for melting"
+      ],
+      notes: "Calcium-rich side dish perfect during menstruation, with vitamin C to support iron absorption"
+    },
+    createdAt: new Date('2025-09-01'),
+    active: true
+  },
+  {
+    name: "Sizzle Duck Breast with Herbs",
+    portion: "1 serving (150g duck + vegetables)",
+    nutrition: {
+      protein: 35,
+      prepTime: 25,
+      calories: 420,
+      carbohydrates: 8,
+      fats: 28,
+      fiber: 3,
+      sugar: 5,
+      sodium: 520,
+      potassium: 580,
+      calcium: 45,
+      iron: 8.5,
+      vitaminC: 25,
+      costEuros: 8.50,
+      proteinPerEuro: 4.1
+    },
+    category: "dinner",
+    tags: ["high-protein", "iron-rich", "menstruation", "luxury", "quick"],
+    ingredients: [
+      "150g duck breast, skin scored",
+      "Mixed fresh herbs (rosemary, thyme)",
+      "2 cloves garlic, sliced",
+      "200g mixed vegetables (broccoli, carrots)",
+      "15ml olive oil",
+      "10ml balsamic vinegar",
+      "Sea salt and black pepper"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["broccoli", "carrots", "garlic"],
+      benefits: ["vitamin A from carrots", "vitamin C from broccoli", "antioxidants from herbs"]
+    },
+    recipe: {
+      instructions: [
+        "Score duck skin in crosshatch pattern, season with salt and pepper",
+        "Heat pan over medium heat, place duck skin-side down",
+        "Cook for 8-10 minutes until skin is golden and crispy",
+        "Flip duck and cook 3-4 minutes for medium-rare",
+        "Remove duck and rest for 5 minutes",
+        "Add vegetables to same pan with duck fat",
+        "Sauté with garlic and herbs for 5-6 minutes",
+        "Deglaze with balsamic vinegar",
+        "Slice duck and serve with vegetables"
+      ],
+      tips: [
+        "Start duck skin-side down to render fat properly",
+        "Don't move duck while skin crisps",
+        "Use duck fat to cook vegetables for extra flavor"
+      ],
+      notes: "Rich in heme iron and high-quality protein, perfect for replenishing nutrients during menstruation"
+    },
+    createdAt: new Date('2025-09-01'),
+    active: true
+  },
+  {
+    name: "Coconut Mango Chicken",
+    portion: "1 serving (about 350g with rice)",
+    nutrition: {
+      protein: 32,
+      prepTime: 30,
+      calories: 485,
+      carbohydrates: 45,
+      fats: 18,
+      fiber: 4,
+      sugar: 18,
+      sodium: 620,
+      potassium: 780,
+      calcium: 60,
+      iron: 3.2,
+      vitaminC: 75,
+      costEuros: 5.20,
+      proteinPerEuro: 6.2
+    },
+    category: "dinner",
+    tags: ["high-protein", "tropical", "anti-inflammatory", "menstruation", "comfort-food"],
+    ingredients: [
+      "150g chicken breast, cubed",
+      "100ml coconut milk",
+      "1 ripe mango, diced",
+      "75g jasmine rice",
+      "1 red pepper, sliced",
+      "2 cloves garlic, minced",
+      "10ml fresh ginger, grated",
+      "5ml ground cumin",
+      "5ml turmeric",
+      "15ml olive oil",
+      "Fresh coriander for garnish",
+      "Lime wedges to serve"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["red pepper", "garlic", "ginger"],
+      benefits: ["vitamin A from mango", "vitamin C from pepper", "anti-inflammatory compounds from turmeric"]
+    },
+    recipe: {
+      instructions: [
+        "Cook jasmine rice according to package instructions",
+        "Heat olive oil in large pan over medium-high heat",
+        "Add cubed chicken and cook until golden (5-6 minutes)",
+        "Add minced garlic and grated ginger, cook 1 minute",
+        "Add sliced red pepper, cumin, and turmeric",
+        "Stir in coconut milk and bring to gentle simmer",
+        "Add diced mango and simmer 8-10 minutes until chicken is cooked through",
+        "Season with salt and pepper to taste",
+        "Serve over rice, garnish with fresh coriander and lime"
+      ],
+      tips: [
+        "Use ripe but firm mango for best texture",
+        "Don't overcook mango - it should hold its shape",
+        "Full-fat coconut milk gives richest flavor"
+      ],
+      notes: "Tropical comfort food rich in vitamin C and anti-inflammatory compounds, perfect for period cravings"
+    },
+    createdAt: new Date('2025-09-01'),
+    active: true
+  },
+  {
+    name: "Hearty Beef & Vegetable Stew",
+    portion: "1 serving (about 400g)",
+    nutrition: {
+      protein: 28,
+      prepTime: 90,
+      calories: 380,
+      carbohydrates: 32,
+      fats: 12,
+      fiber: 6,
+      sugar: 8,
+      sodium: 580,
+      potassium: 850,
+      calcium: 65,
+      iron: 6.8,
+      vitaminC: 45,
+      costEuros: 4.80,
+      proteinPerEuro: 5.8
+    },
+    category: "dinner",
+    tags: ["high-protein", "iron-rich", "menstruation", "comfort-food", "hearty", "slow-cooked"],
+    ingredients: [
+      "150g lean beef stewing meat, cubed",
+      "2 medium carrots, chopped",
+      "2 celery stalks, chopped",
+      "1 medium potato, cubed",
+      "1 onion, diced",
+      "2 cloves garlic, minced",
+      "400ml beef stock",
+      "400g canned chopped tomatoes",
+      "5ml dried thyme",
+      "2 bay leaves",
+      "15ml olive oil",
+      "Sea salt and black pepper"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["carrots", "celery", "potato", "onion", "garlic", "tomatoes"],
+      benefits: ["heme iron from beef", "vitamin A from carrots", "vitamin C for iron absorption", "fiber for digestion"]
+    },
+    recipe: {
+      instructions: [
+        "Heat olive oil in heavy-bottomed pot over medium-high heat",
+        "Season beef cubes with salt and pepper",
+        "Brown beef on all sides (5-6 minutes total)",
+        "Add diced onion and cook until softened (5 minutes)",
+        "Add garlic and cook 1 minute until fragrant",
+        "Add chopped carrots, celery, and potato",
+        "Pour in beef stock and canned tomatoes",
+        "Add thyme and bay leaves",
+        "Bring to boil, then reduce heat to low",
+        "Cover and simmer 60-75 minutes until beef is tender",
+        "Remove bay leaves before serving",
+        "Adjust seasoning to taste"
+      ],
+      tips: [
+        "Brown the beef well for deeper flavor",
+        "Don't rush the simmering - tender beef takes time",
+        "Make extra for leftovers - tastes even better next day"
+      ],
+      notes: "Rich in heme iron for optimal absorption, perfect for replenishing iron during menstruation"
+    },
+    createdAt: new Date('2025-09-01'),
+    active: true
+  },
+  {
+    name: "BEA Salad (Bacon, Egg, Avocado)",
+    portion: "1 serving (about 300g)",
+    nutrition: {
+      protein: 24,
+      prepTime: 15,
+      calories: 420,
+      carbohydrates: 8,
+      fats: 32,
+      fiber: 10,
+      sugar: 3,
+      sodium: 680,
+      potassium: 720,
+      calcium: 95,
+      iron: 3.8,
+      vitaminC: 15,
+      costEuros: 4.50,
+      proteinPerEuro: 5.3
+    },
+    category: "lunch",
+    tags: ["high-protein", "keto-friendly", "menstruation", "quick", "satisfying", "healthy-fats"],
+    ingredients: [
+      "2 large eggs",
+      "1 ripe avocado, sliced",
+      "3 strips bacon, chopped",
+      "100g mixed salad greens",
+      "Half cucumber, sliced",
+      "10 cherry tomatoes, halved",
+      "15ml olive oil",
+      "10ml lemon juice",
+      "Sea salt and black pepper"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["salad greens", "cucumber", "tomatoes"],
+      benefits: ["healthy fats from avocado", "complete protein from eggs", "potassium for muscle function"]
+    },
+    recipe: {
+      instructions: [
+        "Bring water to boil in small saucepan",
+        "Gently lower eggs into boiling water",
+        "Cook for 6-7 minutes for soft-boiled, 8-9 for medium",
+        "Transfer eggs to cold water to stop cooking",
+        "Cook bacon in dry pan until crispy (4-5 minutes)",
+        "Arrange mixed greens in serving bowl",
+        "Add sliced cucumber and halved cherry tomatoes",
+        "Peel and slice avocado, arrange on top",
+        "Carefully peel soft-boiled eggs and halve",
+        "Place egg halves on salad",
+        "Sprinkle with crispy bacon pieces",
+        "Drizzle with olive oil and lemon juice, season to taste"
+      ],
+      tips: [
+        "Use very fresh eggs for perfect soft-boiled texture",
+        "Don't overdress - let the ingredients shine",
+        "Serve immediately while eggs are warm"
+      ],
+      notes: "Protein and healthy fat powerhouse with choline for hormone support during menstruation"
+    },
+    createdAt: new Date('2025-09-01'),
+    active: true
+  },
+  {
+    name: "Tempeh Fiesta Bowl",
+    portion: "1 serving (about 350g)",
+    nutrition: {
+      protein: 26,
+      prepTime: 25,
+      calories: 445,
+      carbohydrates: 42,
+      fats: 18,
+      fiber: 12,
+      sugar: 8,
+      sodium: 620,
+      potassium: 780,
+      calcium: 140,
+      iron: 5.2,
+      vitaminC: 35,
+      costEuros: 3.80,
+      proteinPerEuro: 6.8
+    },
+    category: "dinner",
+    tags: ["vegetarian", "gluten-free", "high-protein", "plant-based", "menstruation", "mexican-inspired", "fiber-rich"],
+    ingredients: [
+      "100g tempeh, cubed",
+      "75g quinoa",
+      "120g black beans, drained",
+      "1 red pepper, diced",
+      "1 small avocado, sliced",
+      "50g sweetcorn",
+      "2 cloves garlic, minced",
+      "5ml ground cumin",
+      "5ml smoked paprika",
+      "15ml olive oil",
+      "Half lime, juiced",
+      "Fresh coriander for garnish",
+      "Sea salt and pepper"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["red pepper", "garlic", "avocado"],
+      benefits: ["plant-based iron from tempeh", "magnesium from quinoa", "folate from black beans", "potassium from avocado"]
+    },
+    recipe: {
+      instructions: [
+        "Cook quinoa according to package instructions",
+        "Heat olive oil in large pan over medium heat",
+        "Add cubed tempeh and cook until golden (6-8 minutes)",
+        "Add minced garlic, cumin, and paprika",
+        "Cook 1 minute until fragrant",
+        "Add diced red pepper and sweetcorn",
+        "Cook 4-5 minutes until pepper softens",
+        "Stir in black beans and heat through (2 minutes)",
+        "Season with salt, pepper, and lime juice",
+        "Serve over quinoa with sliced avocado",
+        "Garnish with fresh coriander"
+      ],
+      tips: [
+        "Marinate tempeh beforehand for deeper flavor",
+        "Don't break up tempeh too much while cooking",
+        "Add avocado just before serving to prevent browning"
+      ],
+      notes: "Plant-based iron and magnesium from tempeh and quinoa, ideal for supporting energy during menstruation"
+    },
+    createdAt: new Date('2025-09-01'),
+    active: true
   }
 ];
 
@@ -8421,7 +8797,6 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'coconut oat milk': 'Plant-Based Alternatives',
     'plant oat milk': 'Plant-Based Alternatives',
     'vegan butter': 'Plant-Based Alternatives',
-    'almond butter': 'Plant-Based Alternatives',
     'coconut cream': 'Plant-Based Alternatives',
     'dairy-free sour cream': 'Plant-Based Alternatives',
     
@@ -8496,7 +8871,6 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'sweetener': 'Pantry Essentials',
     'half sweet red pepper': 'Vegetables',
     'plant-based protein': 'Other Dry Goods', // Consolidate all protein powders in same category
-    'soy milk': 'Plant-Based Alternatives', // Ensure it stays in Plant-Based
     'gluten-free granola': 'Other Dry Goods',
     'red lentils': 'Grains, Pasta & Canned Goods',
     'green lentils': 'Grains, Pasta & Canned Goods',
@@ -8577,7 +8951,6 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     // Additional ingredients for the new categories
     'rice noodles': 'Grains, Pasta & Canned Goods',
     'pasta': 'Grains, Pasta & Canned Goods',
-    'gluten-free pasta': 'Grains, Pasta & Canned Goods', // Same category for gluten-free
     'couscous': 'Grains, Pasta & Canned Goods',
     'basmati rice': 'Grains, Pasta & Canned Goods',
     'sushi rice': 'Grains, Pasta & Canned Goods',
@@ -8632,7 +9005,6 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'mung bean noodles': 'Grains, Pasta & Canned Goods',
     'plain flour': 'Baking & Cooking Basics',
     'vegetable stock': 'Baking & Cooking Basics',
-    'vegetable stock': 'Baking & Cooking Basics',
     'canned tomatoes': 'Baking & Cooking Basics',
     'canned diced tomatoes': 'Baking & Cooking Basics',
     'canned chopped tomatoes': 'Baking & Cooking Basics',
@@ -8652,7 +9024,6 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'steel-cut oats': 'Grains, Pasta & Canned Goods',
     'certified oats': 'Grains, Pasta & Canned Goods',
     'scoop vanilla protein powder': 'Other Dry Goods', // Legacy compatibility
-    'vanilla protein powder': 'Other Dry Goods',
     'strawberries for topping': 'Fruits', // Legacy compatibility
     'fresh berries for topping': 'Fruits', // Legacy compatibility
     'blueberries for topping': 'Fruits', // Legacy compatibility
