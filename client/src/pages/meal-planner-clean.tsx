@@ -661,8 +661,8 @@ export default function MealPlanner() {
                     </div>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
-                    <p className="font-semibold mb-1">Why Protein Matters</p>
-                    <p className="text-sm">Essential for muscle maintenance, immune function, and satiety. Helps preserve lean muscle mass during weight management and supports recovery from exercise.</p>
+                    <p className="font-semibold mb-1">{t.whyProteinMatters}</p>
+                    <p className="text-sm">{t.proteinTooltip}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -702,8 +702,8 @@ export default function MealPlanner() {
                     </div>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
-                    <p className="font-semibold mb-1">Why Healthy Fats Matter</p>
-                    <p className="text-sm">Support brain health, hormone production, and nutrient absorption. Omega-3s reduce inflammation and support heart health. Essential for optimal cellular function.</p>
+                    <p className="font-semibold mb-1">{t.whyHealthyFatsMatters}</p>
+                    <p className="text-sm">{t.fatsTooltip}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -743,8 +743,8 @@ export default function MealPlanner() {
                     </div>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
-                    <p className="font-semibold mb-1">Why Vegetables Matter</p>
-                    <p className="text-sm">Provide essential vitamins, minerals, and antioxidants. High fiber content supports digestive health and helps maintain stable blood sugar levels. Key for disease prevention.</p>
+                    <p className="font-semibold mb-1">{t.whyVegetablesMatters}</p>
+                    <p className="text-sm">{t.vegetablesTooltip}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -785,9 +785,9 @@ export default function MealPlanner() {
                     </div>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
-                    <p className="font-semibold mb-1">Why Fiber Matters</p>
-                    <p className="text-sm mb-2">Supports digestive health, stabilizes blood sugar, and helps lower cholesterol. Essential for healthy gut bacteria and weight management.</p>
-                    <p className="text-xs text-amber-600 font-medium">⚠️ Increase gradually over 2-3 weeks to avoid digestive discomfort</p>
+                    <p className="font-semibold mb-1">{t.whyFiberMatters}</p>
+                    <p className="text-sm mb-2">{t.fiberTooltip}</p>
+                    <p className="text-xs text-amber-200 font-medium">{t.fiberWarning}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>

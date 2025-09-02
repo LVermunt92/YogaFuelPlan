@@ -43,6 +43,17 @@ export const translations = {
     vegetables: "Vegetables",
     fruitsStarches: "Fruits/Starches",
     
+    // Nutrition Tooltips
+    whyProteinMatters: "Why Protein Matters",
+    proteinTooltip: "Essential for muscle maintenance, immune function, and satiety. Helps preserve lean muscle mass during weight management and supports recovery from exercise.",
+    whyHealthyFatsMatters: "Why Healthy Fats Matter", 
+    fatsTooltip: "Support brain health, hormone production, and nutrient absorption. Omega-3s reduce inflammation and support heart health. Essential for optimal cellular function.",
+    whyVegetablesMatters: "Why Vegetables Matter",
+    vegetablesTooltip: "Provide essential vitamins, minerals, and antioxidants. High fiber content supports digestive health and helps maintain stable blood sugar levels. Key for disease prevention.",
+    whyFiberMatters: "Why Fiber Matters",
+    fiberTooltip: "Supports digestive health, stabilizes blood sugar, and helps lower cholesterol. Essential for healthy gut bacteria and weight management.",
+    fiberWarning: "⚠️ Increase gradually over 2-3 weeks to avoid digestive discomfort",
+    
     // Shopping List
     generateShoppingList: "Grocery List",
     totalItems: "Total Items",
@@ -491,6 +502,17 @@ export const translations = {
     vegetableContent: "Groente Inhoud", 
     vegetables: "Groenten",
     healthBenefits: "Gezondheidsvoordelen",
+    
+    // Nutrition Tooltips
+    whyProteinMatters: "Waarom Eiwit Belangrijk Is",
+    proteinTooltip: "Essentieel voor spieronderhoud, immuunfunctie en verzadiging. Helpt spiermassa behouden tijdens gewichtsbeheersing en ondersteunt herstel na inspanning.",
+    whyHealthyFatsMatters: "Waarom Gezonde Vetten Belangrijk Zijn", 
+    fatsTooltip: "Ondersteunen hersengezondheid, hormoonproductie en nutriëntenopname. Omega-3-vetten verminderen ontstekingen en ondersteunen hartgezondheid. Essentieel voor optimale celfunctie.",
+    whyVegetablesMatters: "Waarom Groenten Belangrijk Zijn",
+    vegetablesTooltip: "Bieden essentiële vitaminen, mineralen en antioxidanten. Hoog vezelgehalte ondersteunt spijsvertering en helpt stabiele bloedsuikerspiegel behouden. Cruciaal voor ziektepreventie.",
+    whyFiberMatters: "Waarom Vezels Belangrijk Zijn",
+    fiberTooltip: "Ondersteunen spijsvertering, stabiliseren bloedsuiker en helpen cholesterol verlagen. Essentieel voor gezonde darmbacteriën en gewichtsbeheersing.",
+    fiberWarning: "⚠️ Verhoog geleidelijk over 2-3 weken om spijsverteringsproblemen te voorkomen",
     min: "min",
     
     // Shopping List
