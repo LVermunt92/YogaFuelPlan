@@ -418,6 +418,7 @@ export const translations = {
     // Additional missing translations for meal planner
     recipeDetails: "Recipe Details",
     vegetableContent: "Vegetable Content",
+    recipeBenefits: "Recipe Benefits",
     healthBenefits: "Health Benefits", 
     recipeNotAvailable: "Recipe not available",
     min: "min",
@@ -570,6 +571,7 @@ export const translations = {
     recipeDetails: "Recept Details",
     recipeNotAvailable: "Recept niet beschikbaar voor deze maaltijd.",
     vegetableContent: "Groente Inhoud", 
+    recipeBenefits: "Recept Voordelen",
     vegetables: "Groenten",
     healthBenefits: "Gezondheidsvoordelen",
     

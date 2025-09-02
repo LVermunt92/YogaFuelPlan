@@ -38,6 +38,7 @@ export interface MealOption {
     vegetables: string[];
     benefits: string[];
   };
+  recipeBenefits?: string[]; // Comprehensive benefits for the entire recipe
   recipe?: {
     instructions: string[];
     tips?: string[];

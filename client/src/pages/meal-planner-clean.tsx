@@ -1555,6 +1555,30 @@ export default function MealPlanner() {
                   </div>
                 )}
 
+                {/* Recipe Benefits */}
+                {(recipeData.recipeBenefits?.length > 0 || recipeData.vegetableContent?.benefits?.length > 0) && (
+                  <div className="bg-green-50 rounded-lg p-4">
+                    <h4 className="font-semibold text-green-900 mb-3 flex items-center gap-2">
+                      ✨ {t.recipeBenefits || 'Recipe Benefits'}
+                    </h4>
+                    <div className="grid grid-cols-1 gap-4">
+                      {recipeData.recipeBenefits?.length > 0 && (
+                        <div>
+                          <p className="text-sm font-medium text-green-700 mb-1">{t.healthBenefits || 'Health Benefits'}:</p>
+                          <ul className="space-y-1">
+                            {recipeData.recipeBenefits.map((benefit, index) => (
+                              <li key={index} className="flex gap-2 text-sm text-green-600">
+                                <span className="text-green-500">•</span>
+                                {benefit}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 {/* Vegetable Content */}
                 {recipeData.vegetableContent && (
                   <div className="bg-green-50 rounded-lg p-4">
@@ -1579,19 +1603,6 @@ export default function MealPlanner() {
                           </div>
                         )}
                       </div>
-                      {recipeData?.vegetableContent?.benefits?.length > 0 && (
-                        <div>
-                          <p className="text-sm font-medium text-green-700 mb-1">{t.healthBenefits}:</p>
-                          <ul className="space-y-1">
-                            {recipeData?.vegetableContent?.benefits?.map((benefit, index) => (
-                              <li key={index} className="flex gap-2 text-sm text-green-600">
-                                <span className="text-green-500">•</span>
-                                {benefit}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
                     </div>
                   </div>
                 )}

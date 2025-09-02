@@ -12,6 +12,7 @@ import { z } from "zod";
 import { albertHeijnService, type ShoppingListExport } from "./albert-heijn";
 import { translateRecipe, translateMealPlan, translateShoppingList } from './recipe-translator';
 import { translateRecipeEnhanced, getTranslationStatus } from './ai-enhanced-translator';
+import { getTopRecipeBenefits } from './recipe-benefits-analyzer';
 import { adminRouter } from './admin-routes';
 import { calculateNutritionTargets, type NutritionProfile } from './nutrition-calculator';
 import { analyzeRecipeNutrition } from './ai-nutrition-analyzer';
@@ -1269,7 +1270,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
           proteinPerEuro: mealOption.nutrition?.proteinPerEuro
         },
         tags: mealOption.tags || [],
-        vegetableContent: mealOption.vegetableContent || { servings: 0, vegetables: [], benefits: [] }
+        vegetableContent: mealOption.vegetableContent || { servings: 0, vegetables: [], benefits: [] },
+        recipeBenefits: getTopRecipeBenefits(
+          finalIngredients,
+          mealOption.nutrition,
+          mealOption.tags || [],
+          6
+        )
       });
     } catch (error) {
       console.error("Error getting meal recipe:", error);
