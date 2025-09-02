@@ -1208,7 +1208,7 @@ export default function MealPlanner() {
                             className="font-medium text-foreground cursor-pointer hover:text-primary"
                             onClick={() => setSelectedMealPlan(plan.id)}
                           >
-                            {plan.planName || `Meal Plan ${index + 1}`}
+                            {plan.planName || `Meal Plan ${mealPlans.length - index}`}
                           </h4>
                           <div className="flex items-center gap-2">
                             <Button

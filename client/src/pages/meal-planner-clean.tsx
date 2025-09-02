@@ -1099,7 +1099,7 @@ export default function MealPlanner() {
                     >
                       <div className="flex justify-between items-center">
                         <div>
-                          <h4 className="font-medium">{plan.planName || `Meal Plan ${index + 1}`}</h4>
+                          <h4 className="font-medium">{plan.planName || `Meal Plan ${mealPlans.length - index}`}</h4>
                           <p className="text-sm text-gray-500">{t.weekOf} {formatWeekRange(plan.weekStart)}</p>
                         </div>
                         <div className="flex items-center gap-3">
