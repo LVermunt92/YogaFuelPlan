@@ -49,7 +49,7 @@ function Navigation() {
   
   const navItems = [
     { path: "/", label: t.mealPlanner, icon: Utensils },
-    { path: "/my-recipes", label: "My Recipes", icon: ChefHat },
+    { path: "/my-recipes", label: t.myRecipes, icon: ChefHat },
     { path: "/profile", label: t.profile, icon: User },
     { path: "/about", label: t.about, icon: Info },
     ...(isAdmin ? [{ path: "/admin", label: "Admin", icon: Settings }] : [])
@@ -121,7 +121,7 @@ function Navigation() {
                   className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors duration-200"
                 >
                   <LogOut className="mr-2 h-4 w-4" />
-                  Logout
+                  {t.logout}
                 </button>
               </>
             )}
@@ -201,7 +201,7 @@ function Navigation() {
                   className="flex items-center text-gray-600 hover:text-gray-800"
                 >
                   <LogOut className="mr-2 h-4 w-4" />
-                  Logout
+                  {t.logout}
                 </button>
               </div>
             </div>

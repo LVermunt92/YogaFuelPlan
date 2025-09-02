@@ -470,11 +470,11 @@ export function validateAndEnhanceMealsForFiber(meals: any[], targetFiber: numbe
       if (enhancement.addedFibers.length > 0) {
         // Add fiber benefits to existing vegetable content benefits
         const existingBenefits = meal.vegetableContent?.benefits || [];
-        const newBenefits = [...existingBenefits, ...enhancement.fiberBenefits];
+        const newBenefits = [...existingBenefits, ...(enhancement as any).fiberBenefits];
         
         // Add fiber tips to existing recipe tips
         const existingTips = meal.recipe?.tips || [];
-        const newTips = [...existingTips, ...enhancement.fiberTips];
+        const newTips = [...existingTips, ...(enhancement as any).fiberTips];
         
         return {
           ...meal,

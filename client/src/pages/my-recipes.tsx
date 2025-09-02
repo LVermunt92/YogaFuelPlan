@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/useAuth';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { useTranslations } from '@/lib/translations';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -64,6 +66,8 @@ type RecipeFormData = z.infer<typeof recipeFormSchema>;
 
 export default function MyRecipes() {
   const { user } = useAuth();
+  const { language } = useLanguage();
+  const t = useTranslations(language);
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -264,7 +268,7 @@ export default function MyRecipes() {
 
 
   if (isLoading) {
-    return <div className="p-6">Loading your recipes...</div>;
+    return <div className="p-6">{t.loadingRecipes}</div>;
   }
 
   return (
@@ -272,8 +276,8 @@ export default function MyRecipes() {
       <div className="mb-6">
         <div className="flex justify-between items-center mb-4">
           <div>
-            <h1 className="text-3xl font-bold">My Recipes</h1>
-            <p className="text-gray-600">Create and manage your personal recipe collection</p>
+            <h1 className="text-3xl font-bold">{t.myRecipes}</h1>
+            <p className="text-gray-600">{t.createPersonalRecipes}</p>
           </div>
           
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -284,13 +288,13 @@ export default function MyRecipes() {
                 disabled={!user}
               >
                 <Plus className="h-4 w-4" />
-                Add Recipe
+                {t.addRecipe}
               </Button>
             </DialogTrigger>
             
             <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
-                <DialogTitle>{editingRecipe ? 'Edit Recipe' : 'Add New Recipe'}</DialogTitle>
+                <DialogTitle>{editingRecipe ? t.editRecipe : t.addNewRecipe}</DialogTitle>
               </DialogHeader>
               
               <Form {...form}>
@@ -303,9 +307,9 @@ export default function MyRecipes() {
                         name="name"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Recipe Name</FormLabel>
+                            <FormLabel>{t.recipeName}</FormLabel>
                             <FormControl>
-                              <Input placeholder="Enter recipe name" {...field} />
+                              <Input placeholder={t.enterRecipeName} {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -317,7 +321,7 @@ export default function MyRecipes() {
                         name="prepTime"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Total Time (min)</FormLabel>
+                            <FormLabel>{t.prepTime} (min)</FormLabel>
                             <FormControl>
                               <Input 
                                 type="number" 
@@ -336,7 +340,7 @@ export default function MyRecipes() {
                         name="servings"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Servings</FormLabel>
+                            <FormLabel>{t.servings}</FormLabel>
                             <FormControl>
                               <Input 
                                 type="number" 
@@ -359,7 +363,7 @@ export default function MyRecipes() {
                         name="mealTypes"
                         render={() => (
                           <FormItem>
-                            <FormLabel>Meal Types</FormLabel>
+                            <FormLabel>{t.mealTypes}</FormLabel>
                             <div className="flex gap-4">
                               {['breakfast', 'lunch', 'dinner'].map((type) => (
                                 <FormField
@@ -411,10 +415,10 @@ export default function MyRecipes() {
                         name="notes"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Notes (optional)</FormLabel>
+                            <FormLabel>{t.additionalNotes}</FormLabel>
                             <FormControl>
                               <Textarea 
-                                placeholder="Any additional notes about this recipe..."
+                                placeholder={t.enterNotes}
                                 {...field} 
                               />
                             </FormControl>
@@ -430,9 +434,9 @@ export default function MyRecipes() {
                     <div className="flex items-start gap-2">
                       <div className="text-blue-600 mt-0.5">🤖</div>
                       <div>
-                        <h4 className="font-medium text-blue-900 text-sm">AI Nutrition Analysis</h4>
+                        <h4 className="font-medium text-blue-900 text-sm">{t.aiNutritionAnalysis}</h4>
                         <p className="text-blue-700 text-xs mt-1">
-                          Nutrition data (protein, calories, carbs, fats, etc.) will be automatically calculated from your ingredients list using AI. No manual entry needed!
+                          {t.nutritionAutoCalculated}
                         </p>
                       </div>
                     </div>
@@ -440,7 +444,7 @@ export default function MyRecipes() {
                   
                   {/* Ingredients */}
                   <div>
-                    <FormLabel className="text-base font-medium">Ingredients</FormLabel>
+                    <FormLabel className="text-base font-medium">{t.ingredients}</FormLabel>
                     <div className="space-y-2 mt-2">
                       {form.watch('ingredients').map((_, index) => (
                         <div key={index} className="flex gap-2">
@@ -451,7 +455,7 @@ export default function MyRecipes() {
                               <FormItem className="flex-1">
                                 <FormControl>
                                   <Input 
-                                    placeholder="e.g., 200g chicken breast, 1 tbsp olive oil"
+                                    placeholder={t.enterIngredient}
                                     {...field} 
                                   />
                                 </FormControl>
@@ -478,14 +482,14 @@ export default function MyRecipes() {
                         className="mt-2"
                       >
                         <Plus className="h-4 w-4 mr-2" />
-                        Add Ingredient
+                        {t.addIngredientStep}
                       </Button>
                     </div>
                   </div>
                   
                   {/* Instructions */}
                   <div>
-                    <FormLabel className="text-base font-medium">Instructions</FormLabel>
+                    <FormLabel className="text-base font-medium">{t.instructions}</FormLabel>
                     <div className="space-y-2 mt-2">
                       {form.watch('instructions').map((_, index) => (
                         <div key={index} className="flex gap-2">
@@ -499,7 +503,7 @@ export default function MyRecipes() {
                               <FormItem className="flex-1">
                                 <FormControl>
                                   <Textarea 
-                                    placeholder="Describe this step..."
+                                    placeholder={t.enterInstruction}
                                     {...field} 
                                   />
                                 </FormControl>
@@ -527,14 +531,14 @@ export default function MyRecipes() {
                         className="mt-2"
                       >
                         <Plus className="h-4 w-4 mr-2" />
-                        Add Step
+                        {t.addInstructionStep}
                       </Button>
                     </div>
                   </div>
                   
                   {/* Tips (optional) */}
                   <div>
-                    <FormLabel className="text-base font-medium">Tips (optional)</FormLabel>
+                    <FormLabel className="text-base font-medium">{t.tips} {t.optional}</FormLabel>
                     <div className="space-y-2 mt-2">
                       {form.watch('tips').map((_, index) => (
                         <div key={index} className="flex gap-2">
@@ -545,7 +549,7 @@ export default function MyRecipes() {
                               <FormItem className="flex-1">
                                 <FormControl>
                                   <Input 
-                                    placeholder="Share a helpful tip..."
+                                    placeholder={t.enterTip}
                                     {...field} 
                                   />
                                 </FormControl>
@@ -571,7 +575,7 @@ export default function MyRecipes() {
                         className="mt-2"
                       >
                         <Plus className="h-4 w-4 mr-2" />
-                        Add Tip
+                        {t.addTipStep}
                       </Button>
                     </div>
                   </div>
@@ -587,7 +591,7 @@ export default function MyRecipes() {
                         form.reset();
                       }}
                     >
-                      Cancel
+                      {t.cancel}
                     </Button>
                     <Button
                       type="submit"
@@ -596,11 +600,11 @@ export default function MyRecipes() {
                       {createMutation.isPending || updateMutation.isPending ? (
                         <>
                           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                          {editingRecipe ? 'Updating...' : 'Creating...'}
+                          {editingRecipe ? t.updatingRecipe : t.creatingRecipe}
                         </>
                       ) : (
                         <>
-                          {editingRecipe ? 'Update Recipe' : 'Create Recipe'}
+                          {editingRecipe ? t.editRecipe : t.addRecipe}
                         </>
                       )}
                     </Button>
@@ -617,7 +621,7 @@ export default function MyRecipes() {
             <div className="flex items-center space-x-2">
               <Settings className="h-4 w-4 text-gray-600" />
               <Label htmlFor="recipe-source" className="text-sm font-medium">
-                Use only my recipes for meal plans
+                {t.useOnlyMyRecipes}
               </Label>
             </div>
             <Switch
@@ -628,8 +632,7 @@ export default function MyRecipes() {
             />
           </div>
           <p className="text-xs text-gray-500 mb-2">
-            Prioritize your personal recipes when generating meal plans. If you don't have enough variety for a full week, 
-            the system will fill gaps with curated recipes that match your dietary preferences.
+            {t.useOnlyMyRecipesDesc}
           </p>
           <div className="text-xs">
             {useOnlyMyRecipes 
@@ -656,15 +659,15 @@ export default function MyRecipes() {
       {recipes.length === 0 ? (
         <div className="text-center py-12">
           <ChefHat className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No recipes yet</h3>
-          <p className="text-gray-500 mb-4">Create your first recipe to get started</p>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">{t.noRecipesYet}</h3>
+          <p className="text-gray-500 mb-4">{t.startAddingRecipes}</p>
           <Button 
             onClick={openCreateDialog} 
             className="flex items-center gap-2 mx-auto"
             disabled={!user}
           >
             <Plus className="h-4 w-4" />
-            Add Your First Recipe
+            {t.addRecipe}
           </Button>
         </div>
       ) : (
