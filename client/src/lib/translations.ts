@@ -460,6 +460,7 @@ export const translations = {
     calories: "Calorieën",
     carbs: "Koolhydraten",
     fats: "Vetten",
+    goodFats: "Gezonde Vetten",
     fiber: "Vezels",
     sugar: "Suiker",
     sodium: "Natrium",

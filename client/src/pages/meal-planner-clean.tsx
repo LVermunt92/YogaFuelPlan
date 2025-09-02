@@ -656,7 +656,7 @@ export default function MealPlanner() {
                           </div>
                         </div>
                       </div>
-                      <h3 className="text-xs font-semibold text-emerald-600">Protein</h3>
+                      <h3 className="text-xs font-semibold text-emerald-600">{t.protein}</h3>
                       <p className="text-xs text-gray-500">75%</p>
                     </div>
                   </TooltipTrigger>
@@ -697,7 +697,7 @@ export default function MealPlanner() {
                           </div>
                         </div>
                       </div>
-                      <h3 className="text-xs font-semibold text-yellow-600">Good Fats</h3>
+                      <h3 className="text-xs font-semibold text-yellow-600">{t.goodFats || 'Good Fats'}</h3>
                       <p className="text-xs text-gray-500">{kpiData.goodFats.percentage}%</p>
                     </div>
                   </TooltipTrigger>
@@ -738,7 +738,7 @@ export default function MealPlanner() {
                           </div>
                         </div>
                       </div>
-                      <h3 className="text-xs font-semibold text-green-600">Vegetables</h3>
+                      <h3 className="text-xs font-semibold text-green-600">{t.vegetables}</h3>
                       <p className="text-xs text-gray-500">{Math.min(kpiData.vegetables.percentage, 100)}%</p>
                     </div>
                   </TooltipTrigger>
@@ -780,7 +780,7 @@ export default function MealPlanner() {
                           </div>
                         </div>
                       </div>
-                      <h3 className="text-xs font-semibold text-orange-600">Fiber</h3>
+                      <h3 className="text-xs font-semibold text-orange-600">{t.fiber}</h3>
                       <p className="text-xs text-gray-500">{Math.min(kpiData.fiber.percentage, 100)}%</p>
                     </div>
                   </TooltipTrigger>
