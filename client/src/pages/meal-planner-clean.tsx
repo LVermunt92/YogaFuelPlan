@@ -14,6 +14,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Calendar, Clock, Target, Eye, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages, Users, Minus, Trash2, Euro, TrendingUp, Droplet, Apple, Leaf, Check, Wheat } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Separator } from "@/components/ui/separator";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useTranslations, translateDietaryTags, translateDietaryTag } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Textarea } from "@/components/ui/textarea";
@@ -626,129 +627,170 @@ export default function MealPlanner() {
             <div className="flex justify-center mb-6">
               <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg max-w-4xl w-full">
               {/* Protein Chart - First position */}
-              <div className="text-center">
-                <div className="relative w-20 h-20 mx-auto mb-1">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={[
-                          { value: 75, fill: "#10b981" },
-                          { value: 25, fill: "#f3f4f6" }
-                        ]}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={20}
-                        outerRadius={35}
-                        startAngle={90}
-                        endAngle={450}
-                        dataKey="value"
-                      >
-                      </Pie>
-                    </PieChart>
-                  </ResponsiveContainer>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="text-sm font-bold text-emerald-600">{currentMealPlan?.totalProtein ? Math.round(currentMealPlan.totalProtein) : 0}g</div>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="text-center cursor-help">
+                      <div className="relative w-20 h-20 mx-auto mb-1">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <PieChart>
+                            <Pie
+                              data={[
+                                { value: 75, fill: "#10b981" },
+                                { value: 25, fill: "#f3f4f6" }
+                              ]}
+                              cx="50%"
+                              cy="50%"
+                              innerRadius={20}
+                              outerRadius={35}
+                              startAngle={90}
+                              endAngle={450}
+                              dataKey="value"
+                            >
+                            </Pie>
+                          </PieChart>
+                        </ResponsiveContainer>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="text-center">
+                            <div className="text-sm font-bold text-emerald-600">{currentMealPlan?.totalProtein ? Math.round(currentMealPlan.totalProtein) : 0}g</div>
+                          </div>
+                        </div>
+                      </div>
+                      <h3 className="text-xs font-semibold text-emerald-600">Protein</h3>
+                      <p className="text-xs text-gray-500">75%</p>
                     </div>
-                  </div>
-                </div>
-                <h3 className="text-xs font-semibold text-emerald-600">Protein</h3>
-                <p className="text-xs text-gray-500">75%</p>
-              </div>
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p className="font-semibold mb-1">Why Protein Matters</p>
+                    <p className="text-sm">Essential for muscle maintenance, immune function, and satiety. Helps preserve lean muscle mass during weight management and supports recovery from exercise.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
 
               {/* Good Fats */}
-              <div className="text-center">
-                <div className="relative w-20 h-20 mx-auto mb-1">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={[
-                          { value: kpiData.goodFats.percentage, fill: "#eab308" },
-                          { value: 100 - kpiData.goodFats.percentage, fill: "#f3f4f6" }
-                        ]}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={20}
-                        outerRadius={35}
-                        startAngle={90}
-                        endAngle={450}
-                        dataKey="value"
-                      >
-                      </Pie>
-                    </PieChart>
-                  </ResponsiveContainer>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="text-sm font-bold text-yellow-600">{kpiData.goodFats.value}g</div>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="text-center cursor-help">
+                      <div className="relative w-20 h-20 mx-auto mb-1">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <PieChart>
+                            <Pie
+                              data={[
+                                { value: kpiData.goodFats.percentage, fill: "#eab308" },
+                                { value: 100 - kpiData.goodFats.percentage, fill: "#f3f4f6" }
+                              ]}
+                              cx="50%"
+                              cy="50%"
+                              innerRadius={20}
+                              outerRadius={35}
+                              startAngle={90}
+                              endAngle={450}
+                              dataKey="value"
+                            >
+                            </Pie>
+                          </PieChart>
+                        </ResponsiveContainer>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="text-center">
+                            <div className="text-sm font-bold text-yellow-600">{kpiData.goodFats.value}g</div>
+                          </div>
+                        </div>
+                      </div>
+                      <h3 className="text-xs font-semibold text-yellow-600">Good Fats</h3>
+                      <p className="text-xs text-gray-500">{kpiData.goodFats.percentage}%</p>
                     </div>
-                  </div>
-                </div>
-                <h3 className="text-xs font-semibold text-yellow-600">Good Fats</h3>
-                <p className="text-xs text-gray-500">{kpiData.goodFats.percentage}%</p>
-              </div>
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p className="font-semibold mb-1">Why Healthy Fats Matter</p>
+                    <p className="text-sm">Support brain health, hormone production, and nutrient absorption. Omega-3s reduce inflammation and support heart health. Essential for optimal cellular function.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
 
               {/* Vegetables */}
-              <div className="text-center">
-                <div className="relative w-20 h-20 mx-auto mb-1">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={[
-                          { value: Math.min(kpiData.vegetables.percentage, 100), fill: "#22c55e" },
-                          { value: Math.max(100 - kpiData.vegetables.percentage, 0), fill: "#f3f4f6" }
-                        ]}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={20}
-                        outerRadius={35}
-                        startAngle={90}
-                        endAngle={450}
-                        dataKey="value"
-                      >
-                      </Pie>
-                    </PieChart>
-                  </ResponsiveContainer>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="text-sm font-bold text-green-600">{kpiData.vegetables.value}g</div>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="text-center cursor-help">
+                      <div className="relative w-20 h-20 mx-auto mb-1">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <PieChart>
+                            <Pie
+                              data={[
+                                { value: Math.min(kpiData.vegetables.percentage, 100), fill: "#22c55e" },
+                                { value: Math.max(100 - kpiData.vegetables.percentage, 0), fill: "#f3f4f6" }
+                              ]}
+                              cx="50%"
+                              cy="50%"
+                              innerRadius={20}
+                              outerRadius={35}
+                              startAngle={90}
+                              endAngle={450}
+                              dataKey="value"
+                            >
+                            </Pie>
+                          </PieChart>
+                        </ResponsiveContainer>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="text-center">
+                            <div className="text-sm font-bold text-green-600">{kpiData.vegetables.value}g</div>
+                          </div>
+                        </div>
+                      </div>
+                      <h3 className="text-xs font-semibold text-green-600">Vegetables</h3>
+                      <p className="text-xs text-gray-500">{Math.min(kpiData.vegetables.percentage, 100)}%</p>
                     </div>
-                  </div>
-                </div>
-                <h3 className="text-xs font-semibold text-green-600">Vegetables</h3>
-                <p className="text-xs text-gray-500">{Math.min(kpiData.vegetables.percentage, 100)}%</p>
-              </div>
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p className="font-semibold mb-1">Why Vegetables Matter</p>
+                    <p className="text-sm">Provide essential vitamins, minerals, and antioxidants. High fiber content supports digestive health and helps maintain stable blood sugar levels. Key for disease prevention.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
 
 
               {/* Fiber */}
-              <div className="text-center">
-                <div className="relative w-20 h-20 mx-auto mb-1">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={[
-                          { value: Math.min(kpiData.fiber.percentage, 100), fill: "#f97316" },
-                          { value: Math.max(100 - kpiData.fiber.percentage, 0), fill: "#f3f4f6" }
-                        ]}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={20}
-                        outerRadius={35}
-                        startAngle={90}
-                        endAngle={450}
-                        dataKey="value"
-                      >
-                      </Pie>
-                    </PieChart>
-                  </ResponsiveContainer>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="text-sm font-bold text-orange-600">{kpiData.fiber.value}g</div>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="text-center cursor-help">
+                      <div className="relative w-20 h-20 mx-auto mb-1">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <PieChart>
+                            <Pie
+                              data={[
+                                { value: Math.min(kpiData.fiber.percentage, 100), fill: "#f97316" },
+                                { value: Math.max(100 - kpiData.fiber.percentage, 0), fill: "#f3f4f6" }
+                              ]}
+                              cx="50%"
+                              cy="50%"
+                              innerRadius={20}
+                              outerRadius={35}
+                              startAngle={90}
+                              endAngle={450}
+                              dataKey="value"
+                            >
+                            </Pie>
+                          </PieChart>
+                        </ResponsiveContainer>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="text-center">
+                            <div className="text-sm font-bold text-orange-600">{kpiData.fiber.value}g</div>
+                          </div>
+                        </div>
+                      </div>
+                      <h3 className="text-xs font-semibold text-orange-600">Fiber</h3>
+                      <p className="text-xs text-gray-500">{Math.min(kpiData.fiber.percentage, 100)}%</p>
                     </div>
-                  </div>
-                </div>
-                <h3 className="text-xs font-semibold text-orange-600">Fiber</h3>
-                <p className="text-xs text-gray-500">{Math.min(kpiData.fiber.percentage, 100)}%</p>
-              </div>
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p className="font-semibold mb-1">Why Fiber Matters</p>
+                    <p className="text-sm mb-2">Supports digestive health, stabilizes blood sugar, and helps lower cholesterol. Essential for healthy gut bacteria and weight management.</p>
+                    <p className="text-xs text-amber-600 font-medium">⚠️ Increase gradually over 2-3 weeks to avoid digestive discomfort</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
 
               </div>
             </div>

@@ -44,6 +44,11 @@ const FIBER_TIPS = {
     "Evening fiber supports overnight digestive processes",
     "Whole grains provide sustained energy and fiber",
     "Vegetables add fiber while keeping calories in check"
+  ],
+  gradual: [
+    "⚠️ IMPORTANT: Increase fiber gradually over 2-3 weeks to avoid bloating, gas, or digestive discomfort",
+    "Start with small amounts and drink plenty of water when increasing fiber intake",
+    "If you experience digestive issues, slow down the increase and let your gut adjust"
   ]
 };
 
@@ -419,6 +424,11 @@ export function enhanceRecipeWithFiber(
     // Add enhancement-specific tip
     const addedIngredients = addedFibers.map(f => f.name).join(', ');
     fiberTips.push(`Enhanced with ${addedIngredients} for ${Math.round(fiberIncrease * 10) / 10}g additional fiber`);
+    
+    // Add gradual transition warning for fiber increases > 5g
+    if (fiberIncrease >= 5) {
+      fiberTips.push(FIBER_TIPS.gradual[0]); // Gradual increase warning
+    }
     
     // Add balance tip if well-balanced
     const solublePct = finalTotal > 0 ? finalSoluble / finalTotal : 0;
