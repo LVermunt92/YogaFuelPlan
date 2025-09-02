@@ -33,11 +33,14 @@ Preferred communication style: Simple, everyday language.
     - **Unified Recipe Database**: Consolidated all recipe databases into a single unified system.
 
 # Recent Changes (September 2, 2025)
-- **Automatic Longevity Optimization**: Removed longevity toggle from profile and made longevity-focused recipes automatically prioritized for all users, as the goal is that all meal plans should be optimized for longevity by default
-- **Profile Cleanup**: Removed redundant "use only my recipes" toggle from profile since it exists on the recipe page, and removed longevity toggle since longevity is now automatic
-- **Menstrual Cycle Phase Dropdown**: Added comprehensive cycle phase selection with 5 options (off, menstrual, follicular, ovulation, luteal) in profile page, automatically integrated into meal plan generation as dietary tags
+- **Streamlined Profile Interface**: Removed redundant toggles and simplified profile to focus on essential settings
+  - Removed "use only my recipes" toggle (exists on recipe page)
+  - Removed "include menstrual cycle support" toggle (dropdown includes "off" option)
+  - Removed longevity toggle (now automatic for all users)
+- **Automatic Longevity Optimization**: Made longevity-focused recipes automatically prioritized for all users, as the goal is that all meal plans should be optimized for longevity by default
+- **Simplified Menstrual Cycle Selection**: Always show cycle phase dropdown with 5 options including "Don't include cycle-specific optimization" - no separate toggle needed
 - **Phase-Specific Recipe Prioritization**: Recipes now tagged with specific menstrual phases get automatically prioritized during meal generation when users select their current cycle phase
-- **Simplified Cycle Logic**: Streamlined menstrual support to use existing dietary tag system rather than complex phase-specific filtering, making it more maintainable and extensible
+- **Streamlined Backend Logic**: Simplified cycle and longevity support to work automatically without requiring separate toggle checks
 
 # Previous Changes (August 30, 2025)
 - **Resistant Starch Weight Loss Logic**: Integrated intelligent resistant starch preference system that prioritizes meals containing beans, lentils, oats, brown rice, green bananas, and potatoes for users with weight loss goals or BMI >25, enhancing metabolic benefits and satiety

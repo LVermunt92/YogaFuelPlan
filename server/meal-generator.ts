@@ -736,8 +736,8 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   let totalWeeklyProtein = 0;
   let dietaryTags = request.dietaryTags || [];
   
-  // Add menstrual phase as a dietary tag if cycle support is enabled
-  if (user?.cycleSupportRecipes && user?.menstrualPhase && user.menstrualPhase !== 'off') {
+  // Add menstrual phase as a dietary tag if user has selected a phase (not 'off')
+  if (user?.menstrualPhase && user.menstrualPhase !== 'off') {
     dietaryTags = [...dietaryTags, user.menstrualPhase];
     console.log(`🩸 Added menstrual phase "${user.menstrualPhase}" to dietary tags: [${dietaryTags.join(', ')}]`);
   }

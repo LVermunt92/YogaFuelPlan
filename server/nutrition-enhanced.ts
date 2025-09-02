@@ -9352,18 +9352,17 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
     try {
       const { storage } = await import('./storage');
       const user = await storage.getUser(userId);
-      if (user?.cycleSupportRecipes) {
-        console.log(`🩸 CYCLE SUPPORT: Including menstruation-supportive recipes for ${category}`);
-        // Filter cycle-based recipes from the current meal pool
-        const cycleRecipes = allMeals.filter(meal => meal.tags.includes('cycleBased'));
-        console.log(`🩸 Found ${cycleRecipes.length} cycle support recipes for ${category}`);
-        
-        // Prioritize cycle recipes by placing them at the beginning of the array
-        if (cycleRecipes.length > 0) {
-          const nonCycleRecipes = allMeals.filter(meal => !meal.tags.includes('cycleBased'));
-          allMeals = [...cycleRecipes, ...nonCycleRecipes];
-          console.log(`🩸 PRIORITIZED: Moved ${cycleRecipes.length} cycle support recipes to front of selection pool`);
-        }
+      // Always include menstruation-supportive recipes (user can control via phase selection)
+      console.log(`🩸 CYCLE SUPPORT: Including menstruation-supportive recipes for ${category}`);
+      // Filter cycle-based recipes from the current meal pool
+      const cycleRecipes = allMeals.filter(meal => meal.tags.includes('cycleBased'));
+      console.log(`🩸 Found ${cycleRecipes.length} cycle support recipes for ${category}`);
+      
+      // Prioritize cycle recipes by placing them at the beginning of the array
+      if (cycleRecipes.length > 0) {
+        const nonCycleRecipes = allMeals.filter(meal => !meal.tags.includes('cycleBased'));
+        allMeals = [...cycleRecipes, ...nonCycleRecipes];
+        console.log(`🩸 PRIORITIZED: Moved ${cycleRecipes.length} cycle support recipes to front of selection pool`);
       }
       
       // Always prioritize longevity-focused recipes for all users

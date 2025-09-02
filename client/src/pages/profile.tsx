@@ -58,7 +58,6 @@ interface UserProfile {
   eatingDaysAtHome: number;
   meatFishMealsPerWeek: number;
   useOnlyMyRecipes: boolean;
-  cycleSupportRecipes: boolean;
   menstrualPhase: string;
   createdAt: string;
   updatedAt: string;
@@ -119,7 +118,6 @@ export default function Profile() {
     eatingDaysAtHome: '',
     meatFishMealsPerWeek: '',
     useOnlyMyRecipes: false,
-    cycleSupportRecipes: false,
     menstrualPhase: 'off',
   });
 
@@ -188,7 +186,6 @@ export default function Profile() {
         eatingDaysAtHome: isNewUser ? '' : (user.eatingDaysAtHome?.toString() || ''),
         meatFishMealsPerWeek: isNewUser ? '' : (user.meatFishMealsPerWeek?.toString() || ''),
         useOnlyMyRecipes: user.useOnlyMyRecipes || false,
-        cycleSupportRecipes: user.cycleSupportRecipes || false,
         menstrualPhase: user.menstrualPhase || 'off',
       });
       setIsFormInitialized(true);
@@ -232,7 +229,6 @@ export default function Profile() {
           eatingDaysAtHome: updatedData.eatingDaysAtHome?.toString() || '7',
           meatFishMealsPerWeek: updatedData.meatFishMealsPerWeek?.toString() || '0',
           useOnlyMyRecipes: updatedData.useOnlyMyRecipes || false,
-          cycleSupportRecipes: updatedData.cycleSupportRecipes || false,
           menstrualPhase: updatedData.menstrualPhase || 'off',
         });
       }
@@ -297,7 +293,6 @@ export default function Profile() {
       eatingDaysAtHome: formData.eatingDaysAtHome ? parseInt(formData.eatingDaysAtHome) : 7,
       meatFishMealsPerWeek: formData.meatFishMealsPerWeek ? parseInt(formData.meatFishMealsPerWeek) : 0,
       useOnlyMyRecipes: formData.useOnlyMyRecipes,
-      cycleSupportRecipes: formData.cycleSupportRecipes,
       menstrualPhase: formData.menstrualPhase,
     };
 
@@ -903,49 +898,30 @@ export default function Profile() {
             </div>
             
             <div className="space-y-6">
-              {/* Cycle Support Recipes Toggle */}
-              <div className="flex items-center justify-between p-4 border rounded-lg">
-                <div className="flex-1">
-                  <Label htmlFor="cycleSupportRecipes" className="text-sm font-medium text-foreground">
-                    Include menstrual cycle support recipes
-                  </Label>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Add iron-rich and hormone-balancing recipes to support your menstrual cycle
-                  </p>
-                </div>
-                <Switch
-                  id="cycleSupportRecipes"
-                  checked={formData.cycleSupportRecipes}
-                  onCheckedChange={(checked) => setFormData(prev => ({ ...prev, cycleSupportRecipes: checked }))}
-                />
-              </div>
-
               {/* Menstrual Cycle Phase */}
-              {formData.cycleSupportRecipes && (
-                <div className="p-4 border rounded-lg bg-pink-50 border-pink-200">
-                  <Label htmlFor="menstrualPhase" className="text-sm font-medium text-foreground mb-2 block">
-                    Current menstrual cycle phase
-                  </Label>
-                  <p className="text-xs text-muted-foreground mb-3">
-                    Select your current cycle phase to optimize meal recommendations with phase-specific nutrients
-                  </p>
-                  <Select
-                    value={formData.menstrualPhase}
-                    onValueChange={(value) => setFormData(prev => ({ ...prev, menstrualPhase: value }))}
-                  >
-                    <SelectTrigger className="input-clean">
-                      <SelectValue placeholder="Select your current phase" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="off">Don't include cycle-specific optimization</SelectItem>
-                      <SelectItem value="menstrual">Menstrual - Days 1-5 (bleeding phase)</SelectItem>
-                      <SelectItem value="follicular">Follicular - Days 1-13 (post-menstruation)</SelectItem>
-                      <SelectItem value="ovulation">Ovulation - Days 12-16 (ovulatory phase)</SelectItem>
-                      <SelectItem value="luteal">Luteal - Days 15-28 (pre-menstruation)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
+              <div className="p-4 border rounded-lg bg-pink-50 border-pink-200">
+                <Label htmlFor="menstrualPhase" className="text-sm font-medium text-foreground mb-2 block">
+                  Current menstrual cycle phase
+                </Label>
+                <p className="text-xs text-muted-foreground mb-3">
+                  Select your current cycle phase to optimize meal recommendations with phase-specific nutrients
+                </p>
+                <Select
+                  value={formData.menstrualPhase}
+                  onValueChange={(value) => setFormData(prev => ({ ...prev, menstrualPhase: value }))}
+                >
+                  <SelectTrigger className="input-clean">
+                    <SelectValue placeholder="Select your current phase" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="off">Don't include cycle-specific optimization</SelectItem>
+                    <SelectItem value="menstrual">Menstrual - Days 1-5 (bleeding phase)</SelectItem>
+                    <SelectItem value="follicular">Follicular - Days 1-13 (post-menstruation)</SelectItem>
+                    <SelectItem value="ovulation">Ovulation - Days 12-16 (ovulatory phase)</SelectItem>
+                    <SelectItem value="luteal">Luteal - Days 15-28 (pre-menstruation)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
             </div>
           </div>
