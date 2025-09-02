@@ -399,7 +399,7 @@ export function enhanceRecipeWithFiber(
     const finalTotal = finalSoluble + finalInsoluble;
     
     // Add specific benefits based on fiber types enhanced
-    const uniqueFiberTypes = [...new Set(addedFibers.map(f => f.fiberType))];
+    const uniqueFiberTypes = Array.from(new Set(addedFibers.map(f => f.fiberType)));
     uniqueFiberTypes.forEach(type => {
       if (type === 'soluble') {
         fiberBenefits.push(FIBER_BENEFITS.soluble[0]); // Blood sugar
@@ -443,6 +443,12 @@ export function enhanceRecipeWithFiber(
     fiberIncrease: Math.round(fiberIncrease * 10) / 10,
     fiberTips,
     fiberBenefits
+  } as {
+    enhancedIngredients: string[];
+    addedFibers: FiberSource[];
+    fiberIncrease: number;
+    fiberTips: string[];
+    fiberBenefits: string[];
   };
 }
 
