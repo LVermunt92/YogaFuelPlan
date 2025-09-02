@@ -59,6 +59,8 @@ interface UserProfile {
   meatFishMealsPerWeek: number;
   useOnlyMyRecipes: boolean;
   cycleSupportRecipes: boolean;
+  menstrualPhase: string;
+  longevityFocusedRecipes: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -119,6 +121,7 @@ export default function Profile() {
     meatFishMealsPerWeek: '',
     useOnlyMyRecipes: false,
     cycleSupportRecipes: false,
+    menstrualPhase: 'off',
     longevityFocusedRecipes: false
   });
 
@@ -188,6 +191,7 @@ export default function Profile() {
         meatFishMealsPerWeek: isNewUser ? '' : (user.meatFishMealsPerWeek?.toString() || ''),
         useOnlyMyRecipes: user.useOnlyMyRecipes || false,
         cycleSupportRecipes: user.cycleSupportRecipes || false,
+        menstrualPhase: user.menstrualPhase || 'off',
         longevityFocusedRecipes: user.longevityFocusedRecipes || false
       });
       setIsFormInitialized(true);
@@ -231,7 +235,9 @@ export default function Profile() {
           eatingDaysAtHome: updatedData.eatingDaysAtHome?.toString() || '7',
           meatFishMealsPerWeek: updatedData.meatFishMealsPerWeek?.toString() || '0',
           useOnlyMyRecipes: updatedData.useOnlyMyRecipes || false,
-          cycleSupportRecipes: updatedData.cycleSupportRecipes || false
+          cycleSupportRecipes: updatedData.cycleSupportRecipes || false,
+          menstrualPhase: updatedData.menstrualPhase || 'off',
+          longevityFocusedRecipes: updatedData.longevityFocusedRecipes || false
         });
       }
       
@@ -295,7 +301,9 @@ export default function Profile() {
       eatingDaysAtHome: formData.eatingDaysAtHome ? parseInt(formData.eatingDaysAtHome) : 7,
       meatFishMealsPerWeek: formData.meatFishMealsPerWeek ? parseInt(formData.meatFishMealsPerWeek) : 0,
       useOnlyMyRecipes: formData.useOnlyMyRecipes,
-      cycleSupportRecipes: formData.cycleSupportRecipes
+      cycleSupportRecipes: formData.cycleSupportRecipes,
+      menstrualPhase: formData.menstrualPhase,
+      longevityFocusedRecipes: formData.longevityFocusedRecipes
     };
 
     updateProfileMutation.mutate(updateData);
@@ -934,8 +942,35 @@ export default function Profile() {
                 />
               </div>
 
+              {/* Menstrual Cycle Phase */}
+              {formData.cycleSupportRecipes && (
+                <div className="p-4 border rounded-lg bg-pink-50 border-pink-200">
+                  <Label htmlFor="menstrualPhase" className="text-sm font-medium text-foreground mb-2 block">
+                    Current menstrual cycle phase
+                  </Label>
+                  <p className="text-xs text-muted-foreground mb-3">
+                    Select your current cycle phase to optimize meal recommendations with phase-specific nutrients
+                  </p>
+                  <Select
+                    value={formData.menstrualPhase}
+                    onValueChange={(value) => setFormData(prev => ({ ...prev, menstrualPhase: value }))}
+                  >
+                    <SelectTrigger className="input-clean">
+                      <SelectValue placeholder="Select your current phase" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="off">Don't include cycle-specific optimization</SelectItem>
+                      <SelectItem value="menstrual">Menstrual - Days 1-5 (bleeding phase)</SelectItem>
+                      <SelectItem value="follicular">Follicular - Days 1-13 (post-menstruation)</SelectItem>
+                      <SelectItem value="ovulation">Ovulation - Days 12-16 (ovulatory phase)</SelectItem>
+                      <SelectItem value="luteal">Luteal - Days 15-28 (pre-menstruation)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+
               {/* Longevity-Focused Recipes Toggle */}
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between p-4 border rounded-lg">
                 <div className="space-y-0.5">
                   <Label htmlFor="longevityFocusedRecipes" className="text-sm font-medium">
                     Longevity-focused recipes

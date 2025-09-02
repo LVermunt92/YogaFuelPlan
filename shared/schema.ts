@@ -30,6 +30,7 @@ export const users = pgTable("users", {
   leftovers: text("leftovers").array().default([]), // current leftovers to use in meal planning
   useOnlyMyRecipes: boolean("use_only_my_recipes").default(false), // preference for meal plan generation
   cycleSupportRecipes: boolean("cycle_support_recipes").default(false),
+  menstrualPhase: text("menstrual_phase").default("off"), // off, menstrual, follicular, ovulation, luteal
   longevityFocusedRecipes: boolean("longevity_focused_recipes").default(false), // enable longevity-focused recipes
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
@@ -225,6 +226,8 @@ export const updateUserProfileSchema = createInsertSchema(users).pick({
   language: true,
   leftovers: true,
   useOnlyMyRecipes: true,
+  cycleSupportRecipes: true,
+  menstrualPhase: true,
 }).partial();
 
 export const insertMealPlanSchema = createInsertSchema(mealPlans).omit({
