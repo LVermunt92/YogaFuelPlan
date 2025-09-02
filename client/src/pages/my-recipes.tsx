@@ -109,11 +109,11 @@ export default function MyRecipes() {
       queryClient.invalidateQueries({ queryKey: ['/api/users', user?.id, 'profile'] });
       toast({ 
         title: useOnlyMyRecipes 
-          ? "Now using only your recipes with smart fallback" 
-          : "Now mixing your recipes with curated database",
+          ? "Now using ONLY your personal recipes" 
+          : "Now using main recipe database",
         description: useOnlyMyRecipes 
-          ? "Your recipes will be prioritized, with curated options filling gaps"
-          : "All recipes will be used equally for meal plans"
+          ? `Meal plans will use only your ${recipes.length} personal recipes`
+          : "All meal plans will use the main curated recipe database"
       });
     },
     onError: (error: any) => {
@@ -134,6 +134,17 @@ export default function MyRecipes() {
       console.error('No user ID found for preference update');
       return;
     }
+    
+    // Check minimum recipe requirement
+    if (checked && recipes.length < 5) {
+      toast({
+        title: "Need more recipes",
+        description: `You need at least 5 personal recipes to use only your own database. You currently have ${recipes.length}. Add ${5 - recipes.length} more recipe${5 - recipes.length > 1 ? 's' : ''} first.`,
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setUseOnlyMyRecipes(checked);
     updatePreferenceMutation.mutate(checked);
   };
@@ -628,17 +639,45 @@ export default function MyRecipes() {
               id="recipe-source"
               checked={useOnlyMyRecipes}
               onCheckedChange={handlePreferenceChange}
-              disabled={updatePreferenceMutation.isPending || !user}
+              disabled={updatePreferenceMutation.isPending || !user || recipes.length < 5}
             />
           </div>
           <p className="text-xs text-gray-500 mb-2">
-            {t.useOnlyMyRecipesDesc}
+            When enabled, meal plans will use ONLY your personal recipes (no main database). You need at least 5 recipes to enable this.
           </p>
-          <div className="text-xs">
-            {useOnlyMyRecipes 
-              ? <span className="text-emerald-600 bg-emerald-100 px-2 py-1 rounded">✓ Using your recipes with smart fallback</span>
-              : <span className="text-gray-600 bg-gray-100 px-2 py-1 rounded">Using mixed recipe sources</span>
-            }
+          <div className="text-xs space-y-1">
+            <div>
+              {useOnlyMyRecipes 
+                ? <span className="text-emerald-600 bg-emerald-100 px-2 py-1 rounded">✓ Using ONLY your {recipes.length} personal recipes</span>
+                : <span className="text-gray-600 bg-gray-100 px-2 py-1 rounded">Using main recipe database</span>
+              }
+            </div>
+            {recipes.length < 5 && (
+              <div className="text-amber-600 bg-amber-50 px-2 py-1 rounded border border-amber-200">
+                Need {5 - recipes.length} more recipe{5 - recipes.length > 1 ? 's' : ''} to enable personal database
+              </div>
+            )}
+          </div>
+        </div>
+        
+        {/* Nutrition Enhancement Tips */}
+        <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <div className="flex items-start gap-3">
+            <div className="text-blue-600 mt-0.5">💡</div>
+            <div>
+              <h3 className="font-medium text-blue-900 text-sm mb-2">Boost Your Recipe Nutrition</h3>
+              <div className="text-blue-700 text-sm space-y-2">
+                <div>
+                  <span className="font-medium">Add More Protein:</span> Hemp hearts (10g/30ml), protein powder (20-25g), Greek yogurt, quinoa, lentils, chickpeas, tofu, nuts & seeds
+                </div>
+                <div>
+                  <span className="font-medium">Increase Fiber:</span> Chia seeds (5g/15ml), ground flaxseeds, beans, oats, berries, vegetables, whole grains, avocado
+                </div>
+                <div>
+                  <span className="font-medium">Easy Swaps:</span> Replace white rice → brown rice/quinoa, regular pasta → lentil pasta, flour → almond/oat flour blend
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         

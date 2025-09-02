@@ -895,32 +895,14 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
     
     console.log(`📊 User recipes found: ${userBreakfastOptions.length} breakfast, ${userLunchOptions.length} lunch, ${userDinnerOptions.length} dinner`);
     
-    // Smart fallback: If user doesn't have enough variety, supplement with curated recipes
-    const minVarietyThreshold = 3; // Need at least 3 options per meal type for good variety
+    // Use ONLY user recipes (no fallback mixing)
+    console.log('🔒 Using ONLY personal recipes (no curated database mixing)');
     
     breakfastOptions = userBreakfastOptions;
     lunchOptions = userLunchOptions;
     dinnerOptions = userDinnerOptions;
     
-    if (breakfastOptions.length < minVarietyThreshold) {
-      console.log(`🔄 Smart fallback: Adding curated breakfast recipes (user has ${breakfastOptions.length}, need ${minVarietyThreshold})`);
-      const curatedBreakfast = await getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags, user?.id);
-      breakfastOptions = [...breakfastOptions, ...curatedBreakfast.slice(0, minVarietyThreshold - breakfastOptions.length)];
-    }
-    
-    if (lunchOptions.length < minVarietyThreshold) {
-      console.log(`🔄 Smart fallback: Adding curated lunch recipes (user has ${lunchOptions.length}, need ${minVarietyThreshold})`);
-      const curatedLunch = await getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags, user?.id);
-      lunchOptions = [...lunchOptions, ...curatedLunch.slice(0, minVarietyThreshold - lunchOptions.length)];
-    }
-    
-    if (dinnerOptions.length < minVarietyThreshold) {
-      console.log(`🔄 Smart fallback: Adding curated dinner recipes (user has ${dinnerOptions.length}, need ${minVarietyThreshold})`);
-      const curatedDinner = await getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags, user?.id);
-      dinnerOptions = [...dinnerOptions, ...curatedDinner.slice(0, minVarietyThreshold - dinnerOptions.length)];
-    }
-    
-    console.log(`📊 Final recipe counts with fallback: ${breakfastOptions.length} breakfast, ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
+    console.log(`📊 Using ONLY user recipes: ${breakfastOptions.length} breakfast, ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
   } else {
     // Fast recipe loading: Use existing database for maximum speed + custom recipes
     console.log('🚀 Fast recipe loading using existing database + custom recipes');
@@ -1475,23 +1457,18 @@ async function generateMealPrepPlan(
     // Smart fallback: If user doesn't have enough variety, supplement with curated recipes
     const minVarietyThreshold = 3; // Meal prep needs at least 3 options per meal type for good variety
     
-    // Use streamlined approach: load all recipes (custom + curated) in unified pool
-    console.log(`🎯 MEAL PREP: Using streamlined approach for unified recipe loading`);
-    lunchOptions = await getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags, user?.id);
-    console.log(`🎯 MEAL PREP: Loaded ${lunchOptions.length} total lunch options (custom + curated)`);
-    console.log(`🎯 MEAL PREP: Custom lunch recipes in pool: ${lunchOptions.filter(m => m.tags.includes('custom')).map(m => m.name).join(', ')}`);
-    console.log(`🎯 MEAL PREP: Curated lunch recipes in pool: ${lunchOptions.filter(m => !m.tags.includes('custom')).map(m => m.name).join(', ')}`);
+    // Check if user wants ONLY their recipes for meal prep
+    if (finalUseOnlyMyRecipes && userRecipes.length >= 5) {
+      console.log(`🔒 MEAL PREP: Using ONLY user's ${userRecipes.length} personal recipes`);
+      lunchOptions = userLunchOptions;
+      dinnerOptions = userDinnerOptions;
+    } else {
+      console.log(`🎯 MEAL PREP: Using main curated database`);
+      lunchOptions = await getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
+      dinnerOptions = await getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
+    }
     
-    // Note: Custom recipes are already prioritized by being added first in the unified pool
-    
-    dinnerOptions = await getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags, user?.id);
-    console.log(`🎯 MEAL PREP: Loaded ${dinnerOptions.length} total dinner options (custom + curated)`);
-    console.log(`🎯 MEAL PREP: Custom dinner recipes in pool: ${dinnerOptions.filter(m => m.tags.includes('custom')).map(m => m.name).join(', ')}`);
-    console.log(`🎯 MEAL PREP: Curated dinner recipes in pool: ${dinnerOptions.filter(m => !m.tags.includes('custom')).map(m => m.name).join(', ')}`);
-    
-    // Note: Custom recipes are automatically prioritized by the unified pool approach
-    
-    console.log(`📊 Final meal prep recipe counts with custom + fallback: ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
+    console.log(`📊 Meal prep recipe counts: ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
   } else {
     // No custom recipes found - use only curated database
     console.log('🔧 No custom recipes found, using curated database only');
