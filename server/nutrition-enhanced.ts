@@ -7957,6 +7957,943 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-09-02'),
     active: true
+  },
+  {
+    name: "Breakfast Muffins",
+    portion: "2 muffins (about 140g)",
+    nutrition: {
+      protein: 16,
+      prepTime: 30,
+      calories: 285,
+      carbohydrates: 22,
+      fats: 16,
+      fiber: 4,
+      sugar: 6,
+      sodium: 320,
+      potassium: 280,
+      calcium: 180,
+      iron: 2.4,
+      vitaminC: 12,
+      costEuros: 2.95,
+      proteinPerEuro: 5.4
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "menstruation", "eggs", "vegetables", "muffins", "meal-prep"],
+    ingredients: [
+      "3 eggs",
+      "60g grated cheese",
+      "50g spinach",
+      "1 small red pepper",
+      "30g spring onions",
+      "60ml milk",
+      "80g self-raising flour",
+      "15ml olive oil",
+      "Salt and pepper"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["spinach", "red pepper", "spring onions"],
+      benefits: ["B vitamins from eggs", "calcium from cheese", "iron from spinach", "vitamin C from peppers"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 190°C fan/375°F",
+        "Grease 6-cup muffin tin or line with cases",
+        "Beat eggs in large bowl, whisk in milk and olive oil",
+        "Add flour, salt and pepper, mix until just combined",
+        "Fold in grated cheese and chopped vegetables",
+        "Divide mixture between muffin cases",
+        "Bake 18-20 minutes until golden and set",
+        "Cool in tin 5 minutes before turning out"
+      ],
+      tips: [
+        "Don't overmix batter to keep muffins light",
+        "Drain spinach well to prevent soggy muffins",
+        "Store covered in fridge for up to 3 days"
+      ],
+      notes: "Easy energy boost with stable blood sugar support, perfect grab-and-go breakfast during menstruation"
+    },
+    createdAt: new Date('2025-09-02'),
+    active: true
+  },
+  {
+    name: "Pork & Holy Basil",
+    portion: "1 serving (about 220g)",
+    nutrition: {
+      protein: 32,
+      prepTime: 20,
+      calories: 385,
+      carbohydrates: 8,
+      fats: 26,
+      fiber: 2,
+      sugar: 4,
+      sodium: 680,
+      potassium: 420,
+      calcium: 45,
+      iron: 3.8,
+      vitaminC: 18,
+      costEuros: 5.20,
+      proteinPerEuro: 6.2
+    },
+    category: "lunch",
+    tags: ["menstruation", "pork", "Thai", "spicy", "iron-rich", "zinc"],
+    ingredients: [
+      "200g ground pork",
+      "40g fresh holy basil leaves",
+      "3 cloves garlic",
+      "2 Thai chilies",
+      "2 tbsp fish sauce",
+      "1 tbsp oyster sauce",
+      "1 tsp dark soy sauce",
+      "1 tsp sugar",
+      "2 tbsp vegetable oil",
+      "1 egg for topping",
+      "Steamed jasmine rice for serving"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["garlic", "chilies", "holy basil"],
+      benefits: ["zinc from pork", "iron replenishment", "anti-inflammatory basil", "hormone support"]
+    },
+    recipe: {
+      instructions: [
+        "Heat oil in wok or large pan over high heat",
+        "Add minced garlic and chilies, stir-fry 30 seconds",
+        "Add ground pork, breaking up with spoon",
+        "Cook 5-6 minutes until pork is browned and cooked through",
+        "Add fish sauce, oyster sauce, soy sauce and sugar",
+        "Stir-fry 2 minutes until well combined",
+        "Add holy basil leaves, toss until wilted",
+        "Serve over rice topped with fried egg"
+      ],
+      tips: [
+        "Holy basil has stronger flavor than Thai basil",
+        "Don't overcook basil - add at the very end",
+        "Adjust chili to taste preference"
+      ],
+      notes: "Traditional Thai dish rich in zinc and iron, perfect for restoring minerals and reducing inflammation during menstruation"
+    },
+    createdAt: new Date('2025-09-02'),
+    active: true
+  },
+  {
+    name: "High Protein Flatbread",
+    portion: "1 flatbread (about 180g)",
+    nutrition: {
+      protein: 24,
+      prepTime: 25,
+      calories: 320,
+      carbohydrates: 28,
+      fats: 14,
+      fiber: 5,
+      sugar: 8,
+      sodium: 480,
+      potassium: 380,
+      calcium: 220,
+      iron: 2.6,
+      vitaminC: 15,
+      costEuros: 3.40,
+      proteinPerEuro: 7.1
+    },
+    category: "lunch",
+    tags: ["vegetarian", "menstruation", "flatbread", "eggs", "yogurt", "probiotics", "tomato"],
+    ingredients: [
+      "2 eggs",
+      "120g Greek yogurt",
+      "100g self-raising flour",
+      "2 tbsp olive oil",
+      "200g cherry tomatoes",
+      "50g mixed herbs (basil, oregano)",
+      "30g mozzarella cheese",
+      "2 cloves garlic",
+      "Salt and pepper"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["tomatoes", "garlic", "herbs"],
+      benefits: ["probiotics from yogurt", "lycopene from tomatoes", "easy-to-digest protein", "gut health support"]
+    },
+    recipe: {
+      instructions: [
+        "Mix eggs, yogurt, flour and 1 tbsp olive oil into smooth dough",
+        "Knead lightly, rest 10 minutes",
+        "Roll out to 25cm circle on floured surface",
+        "Heat remaining oil in large oven-safe pan",
+        "Cook flatbread 3-4 minutes until golden underneath",
+        "Top with halved tomatoes, garlic, herbs and cheese",
+        "Transfer pan to 200°C oven for 8-10 minutes",
+        "Finish with fresh herbs and black pepper"
+      ],
+      tips: [
+        "Don't roll dough too thin or it will break",
+        "Use cast iron pan for best results",
+        "Serve immediately while cheese is melted"
+      ],
+      notes: "Easy-to-digest protein with probiotics for gut health, providing stable energy during menstruation"
+    },
+    createdAt: new Date('2025-09-02'),
+    active: true
+  },
+  {
+    name: "Coconut Meatballs",
+    portion: "5 meatballs (about 200g)",
+    nutrition: {
+      protein: 28,
+      prepTime: 30,
+      calories: 365,
+      carbohydrates: 12,
+      fats: 24,
+      fiber: 4,
+      sugar: 6,
+      sodium: 520,
+      potassium: 420,
+      calcium: 65,
+      iron: 4.2,
+      vitaminC: 8,
+      costEuros: 4.80,
+      proteinPerEuro: 5.8
+    },
+    category: "dinner",
+    tags: ["menstruation", "meatballs", "coconut", "iron-rich", "ground meat", "herbs"],
+    ingredients: [
+      "300g ground beef",
+      "40g desiccated coconut",
+      "1 egg",
+      "2 cloves garlic",
+      "30g fresh herbs (parsley, mint)",
+      "5ml ground cumin",
+      "5ml ground coriander",
+      "2 tbsp coconut oil",
+      "Salt and pepper"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["garlic", "herbs"],
+      benefits: ["heme iron from beef", "healthy fats from coconut", "protein for energy", "herbs for digestion"]
+    },
+    recipe: {
+      instructions: [
+        "Mix ground beef, coconut, egg, minced garlic and herbs in bowl",
+        "Add cumin, coriander, salt and pepper",
+        "Mix gently with hands until just combined",
+        "Roll into 10 equal meatballs",
+        "Heat coconut oil in large pan over medium heat",
+        "Cook meatballs 12-15 minutes, turning every 3-4 minutes",
+        "Cook until golden brown and cooked through",
+        "Serve with steamed vegetables or rice"
+      ],
+      tips: [
+        "Don't overmix meat or meatballs will be tough",
+        "Make sure oil is hot before adding meatballs",
+        "Test one meatball first to check seasoning"
+      ],
+      notes: "Iron-rich meatballs with healthy coconut fats for long-lasting energy and reduced cravings during menstruation"
+    },
+    createdAt: new Date('2025-09-02'),
+    active: true
+  },
+  {
+    name: "Chicken Crust Casserole",
+    portion: "1 generous serving (about 250g)",
+    nutrition: {
+      protein: 35,
+      prepTime: 40,
+      calories: 420,
+      carbohydrates: 15,
+      fats: 26,
+      fiber: 3,
+      sugar: 8,
+      sodium: 580,
+      potassium: 520,
+      calcium: 280,
+      iron: 2.8,
+      vitaminC: 25,
+      costEuros: 4.60,
+      proteinPerEuro: 7.6
+    },
+    category: "dinner",
+    tags: ["menstruation", "chicken", "casserole", "high-protein", "eggs", "cheese", "vegetables"],
+    ingredients: [
+      "250g ground chicken",
+      "2 eggs",
+      "100g grated cheddar cheese",
+      "150g mixed vegetables (bell peppers, zucchini)",
+      "2 cloves garlic",
+      "120ml heavy cream",
+      "30g parmesan cheese",
+      "15ml olive oil",
+      "Fresh herbs (thyme, rosemary)",
+      "Salt and pepper"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["bell peppers", "zucchini", "garlic"],
+      benefits: ["complete protein from chicken and eggs", "calcium from cheese", "B vitamins for energy", "vitamin C from vegetables"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 180°C fan/355°F",
+        "Brown ground chicken in olive oil until cooked through",
+        "Beat eggs with cream, half the cheddar and seasonings",
+        "Layer chicken and vegetables in greased baking dish",
+        "Pour egg mixture over, top with remaining cheese",
+        "Sprinkle with parmesan and fresh herbs",
+        "Bake 25-30 minutes until set and golden",
+        "Rest 5 minutes before serving"
+      ],
+      tips: [
+        "Drain excess liquid from vegetables before layering",
+        "Don't overbake or eggs will become rubbery",
+        "Can be made ahead and reheated"
+      ],
+      notes: "High protein casserole supporting muscle recovery and stable blood sugar, with calcium for hormone health during menstruation"
+    },
+    createdAt: new Date('2025-09-02'),
+    active: true
+  },
+  {
+    name: "Protein Pancakes",
+    portion: "3 pancakes (about 150g)",
+    nutrition: {
+      protein: 26,
+      prepTime: 15,
+      calories: 295,
+      carbohydrates: 32,
+      fats: 8,
+      fiber: 6,
+      sugar: 12,
+      sodium: 180,
+      potassium: 420,
+      calcium: 120,
+      iron: 2.2,
+      vitaminC: 8,
+      costEuros: 2.60,
+      proteinPerEuro: 10.0
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "menstruation", "pancakes", "oats", "eggs", "protein", "banana", "high-fiber"],
+    ingredients: [
+      "2 eggs",
+      "1 scoop vanilla protein powder",
+      "50g rolled oats",
+      "1 medium banana",
+      "60ml milk",
+      "5ml baking powder",
+      "5ml cinnamon",
+      "1 tsp vanilla extract",
+      "Coconut oil for cooking"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["banana"],
+      benefits: ["potassium from banana", "fiber from oats", "complete protein", "blood sugar regulation"]
+    },
+    recipe: {
+      instructions: [
+        "Blend oats in blender until flour-like consistency",
+        "Mash banana in bowl until smooth",
+        "Beat eggs, add mashed banana, protein powder, milk and vanilla",
+        "Mix in oat flour, baking powder, cinnamon and pinch salt",
+        "Let batter rest 5 minutes to thicken",
+        "Heat coconut oil in non-stick pan over medium heat",
+        "Pour 1/3 cup batter per pancake",
+        "Cook 2-3 minutes until bubbles form, flip and cook 2 minutes more"
+      ],
+      tips: [
+        "Don't flip too early or pancakes will break",
+        "Keep cooked pancakes warm in low oven",
+        "Serve with fresh berries and maple syrup"
+      ],
+      notes: "Energy-boosting pancakes that satisfy cravings while regulating digestion and blood sugar during menstruation"
+    },
+    createdAt: new Date('2025-09-02'),
+    active: true
+  },
+  {
+    name: "Beetroot Hummus",
+    portion: "1 generous serving (about 120g)",
+    nutrition: {
+      protein: 12,
+      prepTime: 15,
+      calories: 185,
+      carbohydrates: 20,
+      fats: 8,
+      fiber: 7,
+      sugar: 8,
+      sodium: 280,
+      potassium: 380,
+      calcium: 65,
+      iron: 3.5,
+      vitaminC: 12,
+      costEuros: 2.20,
+      proteinPerEuro: 5.5
+    },
+    category: "lunch", 
+    tags: ["vegetarian", "vegan", "dairy-free", "gluten-free", "menstruation", "beetroot", "hummus", "iron-rich", "folate"],
+    ingredients: [
+      "150g cooked chickpeas",
+      "100g cooked beetroot",
+      "2 tbsp tahini",
+      "2 cloves garlic",
+      "1 lemon (juiced)",
+      "30ml olive oil",
+      "5ml ground cumin",
+      "Salt and pepper",
+      "Fresh herbs for garnish"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["beetroot", "garlic"],
+      benefits: ["iron from beetroot", "folate for blood health", "fiber for digestion", "detoxification support"]
+    },
+    recipe: {
+      instructions: [
+        "Drain chickpeas and reserve liquid",
+        "Peel and roughly chop cooked beetroot",
+        "Add chickpeas, beetroot, tahini, garlic to food processor",
+        "Add lemon juice, olive oil, cumin, salt and pepper",
+        "Process until smooth, adding chickpea liquid as needed",
+        "Taste and adjust seasoning",
+        "Transfer to bowl, drizzle with olive oil",
+        "Garnish with fresh herbs and serve with vegetables"
+      ],
+      tips: [
+        "Use gloves when handling beetroot to avoid staining",
+        "Roast fresh beetroot wrapped in foil at 200°C for 45 minutes",
+        "Store covered in fridge for up to 5 days"
+      ],
+      notes: "Iron and folate-rich hummus supporting blood health and detoxification, perfect for replenishing during menstruation"
+    },
+    createdAt: new Date('2025-09-02'),
+    active: true
+  },
+  {
+    name: "Protein Truffle Bites",
+    portion: "4 truffle bites (about 80g)",
+    nutrition: {
+      protein: 16,
+      prepTime: 20,
+      calories: 220,
+      carbohydrates: 18,
+      fats: 12,
+      fiber: 5,
+      sugar: 8,
+      sodium: 45,
+      potassium: 280,
+      calcium: 85,
+      iron: 2.4,
+      vitaminC: 2,
+      costEuros: 2.85,
+      proteinPerEuro: 5.6
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "vegan", "dairy-free", "gluten-free", "menstruation", "protein", "chocolate", "truffle", "no-bake"],
+    ingredients: [
+      "1 scoop vanilla protein powder",
+      "30g rolled oats",
+      "2 tbsp almond butter",
+      "20g cocoa powder",
+      "1 tbsp maple syrup",
+      "1 tbsp chia seeds",
+      "15ml coconut oil (melted)",
+      "Pinch sea salt",
+      "Cocoa powder for rolling"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 0,
+      vegetables: [],
+      benefits: ["magnesium from cocoa", "healthy fats for satiety", "fiber from oats", "natural energy"]
+    },
+    recipe: {
+      instructions: [
+        "Mix protein powder, oats, cocoa powder, chia seeds and salt in bowl",
+        "In separate bowl, mix almond butter, maple syrup and melted coconut oil",
+        "Combine wet and dry ingredients until mixture holds together",
+        "Add water 1 tsp at a time if too dry",
+        "Chill mixture 15 minutes until firm",
+        "Roll into 8 small balls with damp hands",
+        "Roll each ball in cocoa powder to coat",
+        "Store in fridge until ready to eat"
+      ],
+      tips: [
+        "Chill mixture if too soft to roll",
+        "Use damp hands to prevent sticking",
+        "Store in airtight container for up to 1 week"
+      ],
+      notes: "Curbs sugar cravings while providing protein and magnesium for muscle relaxation during menstruation"
+    },
+    createdAt: new Date('2025-09-02'),
+    active: true
+  },
+  {
+    name: "Peanut Butter Cups",
+    portion: "2 cups (about 60g)",
+    nutrition: {
+      protein: 12,
+      prepTime: 25,
+      calories: 245,
+      carbohydrates: 14,
+      fats: 18,
+      fiber: 4,
+      sugar: 10,
+      sodium: 85,
+      potassium: 220,
+      calcium: 45,
+      iron: 1.8,
+      vitaminC: 1,
+      costEuros: 2.40,
+      proteinPerEuro: 5.0
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "gluten-free", "menstruation", "peanut-butter", "chocolate", "no-bake", "comfort-food"],
+    ingredients: [
+      "60g dark chocolate",
+      "3 tbsp natural peanut butter",
+      "2 tbsp coconut oil",
+      "1 tbsp maple syrup",
+      "Pinch sea salt",
+      "Mini muffin cases"
+    ],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 0,
+      vegetables: [],
+      benefits: ["magnesium from dark chocolate", "healthy fats from peanut butter", "mood-boosting compounds", "craving satisfaction"]
+    },
+    recipe: {
+      instructions: [
+        "Line 6 mini muffin cases in tin",
+        "Melt 40g chocolate with 1 tbsp coconut oil gently",
+        "Spoon thin layer into each case, chill 10 minutes",
+        "Mix peanut butter with maple syrup and salt",
+        "Spoon peanut mixture over chocolate layer",
+        "Melt remaining chocolate with remaining coconut oil",
+        "Top each cup with final chocolate layer",
+        "Chill 20 minutes until set"
+      ],
+      tips: [
+        "Don't overheat chocolate or it will seize",
+        "Use natural peanut butter without added sugar",
+        "Store in fridge and eat within 5 days"
+      ],
+      notes: "Natural chocolate treats providing magnesium for muscle relaxation and mood support during menstruation"
+    },
+    createdAt: new Date('2025-09-02'),
+    active: true
+  },
+  {
+    name: "Protein Granola",
+    portion: "1 serving (about 60g)",
+    nutrition: {
+      protein: 18,
+      prepTime: 45,
+      calories: 285,
+      carbohydrates: 24,
+      fats: 16,
+      fiber: 6,
+      sugar: 8,
+      sodium: 120,
+      potassium: 320,
+      calcium: 95,
+      iron: 2.6,
+      vitaminC: 3,
+      costEuros: 3.20,
+      proteinPerEuro: 5.6
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "gluten-free", "menstruation", "granola", "protein", "nuts", "seeds", "meal-prep"],
+    ingredients: [
+      "150g rolled oats",
+      "1 scoop vanilla protein powder",
+      "50g mixed nuts",
+      "30g pumpkin seeds",
+      "20g chia seeds",
+      "3 tbsp honey",
+      "2 tbsp coconut oil",
+      "5ml cinnamon",
+      "Pinch sea salt"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 0,
+      vegetables: [],
+      benefits: ["zinc from seeds", "fiber for stable blood sugar", "healthy fats for satiety", "long-lasting energy"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 150°C fan/300°F",
+        "Mix oats, protein powder, nuts, seeds, cinnamon and salt",
+        "Warm honey and coconut oil until liquid",
+        "Pour over dry ingredients and mix well",
+        "Spread evenly on lined baking tray",
+        "Bake 25-30 minutes, stirring every 10 minutes",
+        "Cool completely before storing",
+        "Serve with milk or yogurt"
+      ],
+      tips: [
+        "Stir regularly to prevent burning",
+        "Granola continues cooking after removal from oven",
+        "Store in airtight container for up to 2 weeks"
+      ],
+      notes: "Mineral-rich granola supporting stable blood sugar and providing long-lasting energy during menstruation"
+    },
+    createdAt: new Date('2025-09-02'),
+    active: true
+  },
+  {
+    name: "Energy Bites",
+    portion: "3 energy bites (about 60g)",
+    nutrition: {
+      protein: 8,
+      prepTime: 15,
+      calories: 165,
+      carbohydrates: 22,
+      fats: 7,
+      fiber: 4,
+      sugar: 14,
+      sodium: 25,
+      potassium: 280,
+      calcium: 45,
+      iron: 2.8,
+      vitaminC: 2,
+      costEuros: 1.80,
+      proteinPerEuro: 4.4
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "vegan", "dairy-free", "gluten-free", "menstruation", "energy-bites", "dates", "no-bake", "iron-rich"],
+    ingredients: [
+      "100g pitted dates",
+      "40g rolled oats",
+      "2 tbsp almond butter",
+      "1 tbsp chia seeds",
+      "1 tbsp hemp hearts",
+      "5ml cinnamon",
+      "Pinch sea salt"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 0,
+      vegetables: [],
+      benefits: ["iron from dates", "natural carbs for quick energy", "fiber for digestion", "magnesium from seeds"]
+    },
+    recipe: {
+      instructions: [
+        "Soak dates in warm water for 10 minutes if very dry",
+        "Add dates to food processor, pulse until paste forms",
+        "Add oats, pulse until roughly chopped",
+        "Add almond butter, chia seeds, hemp hearts, cinnamon and salt",
+        "Process until mixture holds together when pressed",
+        "Roll into 12 small balls with damp hands",
+        "Chill 30 minutes until firm",
+        "Store in fridge up to 1 week"
+      ],
+      tips: [
+        "If mixture too wet, add more oats",
+        "If too dry, add 1 tsp water or more nut butter",
+        "Roll in coconut or cocoa powder for variety"
+      ],
+      notes: "Natural iron and fiber providing gentle, quick energy that's easy on digestion during menstruation"
+    },
+    createdAt: new Date('2025-09-02'),
+    active: true
+  },
+  {
+    name: "Egg & Beef Protein Bowl",
+    portion: "1 large bowl (about 280g)",
+    nutrition: {
+      protein: 38,
+      prepTime: 20,
+      calories: 485,
+      carbohydrates: 12,
+      fats: 32,
+      fiber: 8,
+      sugar: 6,
+      sodium: 420,
+      potassium: 680,
+      calcium: 85,
+      iron: 6.2,
+      vitaminC: 28,
+      costEuros: 5.80,
+      proteinPerEuro: 6.6
+    },
+    category: "lunch",
+    tags: ["menstruation", "beef", "eggs", "high-protein", "iron-rich", "spinach", "avocado", "keto-friendly"],
+    ingredients: [
+      "150g lean ground beef",
+      "2 eggs",
+      "100g fresh spinach",
+      "1 small avocado",
+      "2 cloves garlic",
+      "15ml olive oil",
+      "5ml paprika",
+      "5ml ground cumin",
+      "Salt and pepper"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["spinach", "avocado", "garlic"],
+      benefits: ["heme iron from beef", "B vitamins from eggs", "potassium from avocado", "folate from spinach"]
+    },
+    recipe: {
+      instructions: [
+        "Heat olive oil in large pan over medium-high heat",
+        "Add ground beef, cook 5-6 minutes breaking up with spoon",
+        "Add minced garlic, paprika, cumin, salt and pepper",
+        "Cook 2 minutes until beef is browned and cooked through",
+        "Push beef to one side, add spinach to pan",
+        "Cook until wilted, about 2 minutes",
+        "Crack eggs into pan, scramble with beef and spinach",
+        "Serve in bowl topped with sliced avocado"
+      ],
+      tips: [
+        "Don't overcook eggs - they continue cooking in hot pan",
+        "Use grass-fed beef for better nutrition",
+        "Add avocado just before serving"
+      ],
+      notes: "Powerhouse of heme iron and complete protein to restore energy and support hormone health during menstruation"
+    },
+    createdAt: new Date('2025-09-02'),
+    active: true
+  },
+  {
+    name: "Guacamole & Chips",
+    portion: "1 serving (about 150g)",
+    nutrition: {
+      protein: 8,
+      prepTime: 10,
+      calories: 285,
+      carbohydrates: 28,
+      fats: 18,
+      fiber: 12,
+      sugar: 6,
+      sodium: 380,
+      potassium: 580,
+      calcium: 45,
+      iron: 1.8,
+      vitaminC: 22,
+      costEuros: 3.20,
+      proteinPerEuro: 2.5
+    },
+    category: "lunch",
+    tags: ["vegetarian", "vegan", "dairy-free", "gluten-free", "menstruation", "guacamole", "avocado", "potassium", "healthy-fats"],
+    ingredients: [
+      "2 ripe avocados",
+      "1 lime (juiced)",
+      "1 small tomato",
+      "2 cloves garlic",
+      "30g red onion",
+      "15ml olive oil",
+      "Fresh coriander",
+      "Sea salt",
+      "40g tortilla chips"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["avocados", "tomato", "garlic", "red onion"],
+      benefits: ["potassium for muscle function", "healthy fats for hormone production", "fiber for bloating relief", "vitamin C from lime"]
+    },
+    recipe: {
+      instructions: [
+        "Mash avocados in bowl with fork until desired texture",
+        "Add lime juice immediately to prevent browning",
+        "Finely dice tomato, removing seeds and excess juice",
+        "Mince garlic and finely dice red onion",
+        "Mix in tomato, garlic, onion and olive oil",
+        "Season with salt and taste",
+        "Garnish with fresh coriander",
+        "Serve immediately with tortilla chips"
+      ],
+      tips: [
+        "Choose ripe but firm avocados",
+        "Remove tomato seeds to prevent watery guacamole",
+        "Cover with plastic wrap touching surface to prevent browning"
+      ],
+      notes: "Potassium-rich healthy fats supporting muscle relaxation and stable energy, reduces bloating during menstruation"
+    },
+    createdAt: new Date('2025-09-02'),
+    active: true
+  },
+  {
+    name: "Salmon Cucumber Bites",
+    portion: "6 bites (about 120g)",
+    nutrition: {
+      protein: 18,
+      prepTime: 15,
+      calories: 185,
+      carbohydrates: 4,
+      fats: 12,
+      fiber: 1,
+      sugar: 2,
+      sodium: 420,
+      potassium: 280,
+      calcium: 65,
+      iron: 1.2,
+      vitaminC: 8,
+      costEuros: 4.20,
+      proteinPerEuro: 4.3
+    },
+    category: "lunch",
+    tags: ["menstruation", "salmon", "omega-3", "cucumber", "cream-cheese", "anti-inflammatory", "protein"],
+    ingredients: [
+      "80g smoked salmon",
+      "1 large cucumber",
+      "60g cream cheese",
+      "1 tbsp fresh dill",
+      "1 tsp lemon juice",
+      "Black pepper",
+      "Capers for garnish"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["cucumber", "dill"],
+      benefits: ["omega-3 for anti-inflammatory", "vitamin D from salmon", "hydration from cucumber", "protein for satiety"]
+    },
+    recipe: {
+      instructions: [
+        "Slice cucumber into 1cm thick rounds",
+        "Mix cream cheese with chopped dill, lemon juice and pepper",
+        "Using small spoon, top each cucumber slice with cream cheese",
+        "Arrange smoked salmon pieces on top",
+        "Garnish with capers and extra dill",
+        "Chill until ready to serve",
+        "Serve within 2 hours for best texture"
+      ],
+      tips: [
+        "Choose firm cucumber for best bite",
+        "Pat salmon dry before arranging",
+        "Make just before serving to prevent soggy cucumber"
+      ],
+      notes: "Anti-inflammatory omega-3 fats supporting mood and hormone balance during menstruation"
+    },
+    createdAt: new Date('2025-09-02'),
+    active: true
+  },
+  {
+    name: "Garlic Butter Chicken",
+    portion: "1 serving (about 200g)",
+    nutrition: {
+      protein: 42,
+      prepTime: 25,
+      calories: 485,
+      carbohydrates: 6,
+      fats: 32,
+      fiber: 1,
+      sugar: 2,
+      sodium: 580,
+      potassium: 520,
+      calcium: 45,
+      iron: 2.8,
+      vitaminC: 12,
+      costEuros: 4.90,
+      proteinPerEuro: 8.6
+    },
+    category: "dinner",
+    tags: ["menstruation", "chicken", "garlic", "butter", "herbs", "high-protein", "zinc", "B-vitamins"],
+    ingredients: [
+      "200g chicken breast",
+      "4 cloves garlic",
+      "3 tbsp butter",
+      "30ml white wine",
+      "Fresh thyme sprigs",
+      "Fresh rosemary",
+      "1 lemon (juiced)",
+      "Salt and pepper"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["garlic", "herbs"],
+      benefits: ["complete protein from chicken", "zinc for hormone support", "B vitamins for energy", "immune support from garlic"]
+    },
+    recipe: {
+      instructions: [
+        "Season chicken breast with salt and pepper",
+        "Heat 1 tbsp butter in pan over medium-high heat",
+        "Cook chicken 6-7 minutes per side until golden and cooked through",
+        "Remove chicken, rest under foil",
+        "Add remaining butter and minced garlic to pan",
+        "Cook 1 minute until fragrant",
+        "Add wine, thyme, rosemary and lemon juice",
+        "Simmer 2 minutes, pour over sliced chicken"
+      ],
+      tips: [
+        "Don't move chicken too early or it won't brown",
+        "Use meat thermometer - internal temp should reach 75°C",
+        "Rest chicken 5 minutes before slicing"
+      ],
+      notes: "High-protein chicken supporting energy levels and hormone balance with zinc and B vitamins during menstruation"
+    },
+    createdAt: new Date('2025-09-02'),
+    active: true
+  },
+  {
+    name: "Protein Mug Cake",
+    portion: "1 mug cake (about 100g)",
+    nutrition: {
+      protein: 22,
+      prepTime: 5,
+      calories: 185,
+      carbohydrates: 12,
+      fats: 8,
+      fiber: 4,
+      sugar: 6,
+      sodium: 180,
+      potassium: 220,
+      calcium: 120,
+      iron: 2.2,
+      vitaminC: 1,
+      costEuros: 1.95,
+      proteinPerEuro: 11.3
+    },
+    category: "breakfast",
+    tags: ["vegetarian", "gluten-free", "menstruation", "mug-cake", "protein", "chocolate", "quick", "comfort-food"],
+    ingredients: [
+      "1 scoop vanilla protein powder",
+      "20g cocoa powder",
+      "1 egg",
+      "60ml almond milk",
+      "1 tbsp almond butter",
+      "5ml baking powder",
+      "1 tsp vanilla extract",
+      "Pinch sea salt"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 0,
+      vegetables: [],
+      benefits: ["quick protein boost", "magnesium from cocoa", "comfort food satisfaction", "muscle support"]
+    },
+    recipe: {
+      instructions: [
+        "Mix protein powder, cocoa powder, baking powder and salt in microwave-safe mug",
+        "In small bowl, whisk egg, almond milk, almond butter and vanilla",
+        "Pour wet ingredients into mug with dry ingredients",
+        "Stir well until smooth batter forms",
+        "Microwave 90 seconds, check doneness",
+        "If needed, microwave additional 15-30 seconds",
+        "Let cool 2 minutes before eating",
+        "Top with berries if desired"
+      ],
+      tips: [
+        "Don't overmix or cake will be tough",
+        "Microwave power varies - check after 90 seconds",
+        "Let cool slightly as mug will be very hot"
+      ],
+      notes: "Quick comfort food providing protein and magnesium to reduce cravings and support muscles during menstruation"
+    },
+    createdAt: new Date('2025-09-02'),
+    active: true
   }
 ];
 
@@ -8409,6 +9346,29 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
   
   // Start with curated database meals
   let allMeals: MealOption[] = getEnhancedMealsByCategory(category);
+  
+  // Check if user has cycle support recipes enabled and prioritize them
+  if (userId) {
+    try {
+      const { storage } = await import('./storage');
+      const user = await storage.getUser(userId);
+      if (user?.cycleSupportRecipes) {
+        console.log(`🩸 CYCLE SUPPORT: Including menstruation-supportive recipes for ${category}`);
+        // Filter cycle-based recipes from the current meal pool
+        const cycleRecipes = allMeals.filter(meal => meal.tags.includes('cycleBased'));
+        console.log(`🩸 Found ${cycleRecipes.length} cycle support recipes for ${category}`);
+        
+        // Prioritize cycle recipes by placing them at the beginning of the array
+        if (cycleRecipes.length > 0) {
+          const nonCycleRecipes = allMeals.filter(meal => !meal.tags.includes('cycleBased'));
+          allMeals = [...cycleRecipes, ...nonCycleRecipes];
+          console.log(`🩸 PRIORITIZED: Moved ${cycleRecipes.length} cycle support recipes to front of selection pool`);
+        }
+      }
+    } catch (error) {
+      console.error('Error checking cycle support preference:', error);
+    }
+  }
   
   // Add custom recipes to the unified pool with "custom" tag
   if (userId) {
@@ -9373,6 +10333,20 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'blueberries for topping': 'Fruits', // Legacy compatibility
     'spirulina': 'Other Dry Goods',
     'matcha powder': 'Other Dry Goods',
+    'self-raising flour': 'Baking & Cooking Basics',
+    'spring onions': 'Vegetables',
+    'holy basil leaves': 'Fresh Herbs',
+    'thai chilies': 'Vegetables',
+    'fish sauce': 'Pantry Essentials',
+    'oyster sauce': 'Pantry Essentials',
+    'dark soy sauce': 'Pantry Essentials',
+    'desiccated coconut': 'Other Dry Goods',
+    'cream cheese': 'Dairy & Cheese',
+    'fresh dill': 'Fresh Herbs',
+    'capers': 'Other Dry Goods',
+    'tortilla chips': 'Other Dry Goods',
+    'dates': 'Fruits',
+    'pitted dates': 'Fruits',
     'coriander': 'Fresh Herbs',
     'fresh coriander': 'Fresh Herbs'
   };

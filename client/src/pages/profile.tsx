@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
@@ -57,6 +58,7 @@ interface UserProfile {
   eatingDaysAtHome: number;
   meatFishMealsPerWeek: number;
   useOnlyMyRecipes: boolean;
+  cycleSupportRecipes: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -115,7 +117,8 @@ export default function Profile() {
     cookingDaysPerWeek: '7',
     eatingDaysAtHome: '7',
     meatFishMealsPerWeek: '0',
-    useOnlyMyRecipes: false
+    useOnlyMyRecipes: false,
+    cycleSupportRecipes: false
   });
 
   // Calculate dynamic protein target based on age, gender, and activity level
@@ -182,7 +185,8 @@ export default function Profile() {
         cookingDaysPerWeek: isNewUser ? '7' : (user.cookingDaysPerWeek?.toString() || '7'),
         eatingDaysAtHome: isNewUser ? '7' : (user.eatingDaysAtHome?.toString() || '7'),
         meatFishMealsPerWeek: isNewUser ? '0' : (user.meatFishMealsPerWeek?.toString() || '0'),
-        useOnlyMyRecipes: user.useOnlyMyRecipes || false
+        useOnlyMyRecipes: user.useOnlyMyRecipes || false,
+        cycleSupportRecipes: user.cycleSupportRecipes || false
       });
       setIsFormInitialized(true);
     }
@@ -224,7 +228,8 @@ export default function Profile() {
           cookingDaysPerWeek: updatedData.cookingDaysPerWeek?.toString() || '7',
           eatingDaysAtHome: updatedData.eatingDaysAtHome?.toString() || '7',
           meatFishMealsPerWeek: updatedData.meatFishMealsPerWeek?.toString() || '0',
-          useOnlyMyRecipes: updatedData.useOnlyMyRecipes || false
+          useOnlyMyRecipes: updatedData.useOnlyMyRecipes || false,
+          cycleSupportRecipes: updatedData.cycleSupportRecipes || false
         });
       }
       
@@ -286,7 +291,9 @@ export default function Profile() {
       householdSize: formData.householdSize ? parseInt(formData.householdSize) : 1,
       cookingDaysPerWeek: formData.cookingDaysPerWeek ? parseInt(formData.cookingDaysPerWeek) : 7,
       eatingDaysAtHome: formData.eatingDaysAtHome ? parseInt(formData.eatingDaysAtHome) : 7,
-      meatFishMealsPerWeek: formData.meatFishMealsPerWeek ? parseInt(formData.meatFishMealsPerWeek) : 0
+      meatFishMealsPerWeek: formData.meatFishMealsPerWeek ? parseInt(formData.meatFishMealsPerWeek) : 0,
+      useOnlyMyRecipes: formData.useOnlyMyRecipes,
+      cycleSupportRecipes: formData.cycleSupportRecipes
     };
 
     updateProfileMutation.mutate(updateData);
@@ -591,7 +598,7 @@ export default function Profile() {
             <div className="card-clean">
               <div className="mb-6">
                 <h2 className="text-xl font-semibold text-foreground mb-2">
-                  {'nutritionTargets' in t ? t.nutritionTargets : 'Nutrition Targets'}
+                  {t.nutritionTargets || 'Nutrition Targets'}
                 </h2>
                 <p className="text-sm text-gray-500">
                   Daily targets calculated based on your activity level, age, and physiology
@@ -879,7 +886,53 @@ export default function Profile() {
             )}
           </div>
 
+          {/* Recipe Preferences */}
+          <div className="card-clean">
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-foreground mb-2">
+                Recipe Preferences
+              </h2>
+              <p className="text-sm text-gray-500">
+                Customize your meal plan recommendations
+              </p>
+            </div>
+            
+            <div className="space-y-6">
+              {/* Use Only My Recipes Toggle */}
+              <div className="flex items-center justify-between p-4 border rounded-lg">
+                <div className="flex-1">
+                  <Label htmlFor="useOnlyMyRecipes" className="text-sm font-medium text-foreground">
+                    Only use my custom recipes
+                  </Label>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Generate meal plans using only your personal recipe collection
+                  </p>
+                </div>
+                <Switch
+                  id="useOnlyMyRecipes"
+                  checked={formData.useOnlyMyRecipes}
+                  onCheckedChange={(checked) => setFormData(prev => ({ ...prev, useOnlyMyRecipes: checked }))}
+                />
+              </div>
 
+              {/* Cycle Support Recipes Toggle */}
+              <div className="flex items-center justify-between p-4 border rounded-lg">
+                <div className="flex-1">
+                  <Label htmlFor="cycleSupportRecipes" className="text-sm font-medium text-foreground">
+                    Include menstrual cycle support recipes
+                  </Label>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Add iron-rich and hormone-balancing recipes to support your menstrual cycle
+                  </p>
+                </div>
+                <Switch
+                  id="cycleSupportRecipes"
+                  checked={formData.cycleSupportRecipes}
+                  onCheckedChange={(checked) => setFormData(prev => ({ ...prev, cycleSupportRecipes: checked }))}
+                />
+              </div>
+            </div>
+          </div>
 
           {/* Save Button */}
           <div className="flex justify-end">
