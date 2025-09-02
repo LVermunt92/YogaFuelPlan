@@ -19,6 +19,7 @@ Preferred communication style: Simple, everyday language.
     - **Meal Generation**: Calculates protein targets, selects meals from a nutrition database, generates 7-day plans with variety, and creates shopping lists. Includes smart AI recipe generation and comprehensive ingredient specification, with recipes being alcohol-free. Features a comprehensive automatic protein source validation system, AI recipe generator protein requirements, and custom recipe protein auto-enhancement.
     - **Universal Meal Prep Engine**: Adapts to user cooking schedules, supporting batch cooking, proper meal distribution, and intelligent dietary fallbacks. Weekday meals (Mon-Fri) are limited to ≤45 minutes prep time; weekends have no time restrictions.
     - **Ayurvedic Integration**: Supports Ayurvedic dietary tags and seasonal adaptation.
+    - **Menstrual Cycle Support**: Complete cycle phase tracking with dropdown selection (menstrual, follicular, ovulation, luteal phases) that automatically prioritizes phase-appropriate recipes during meal generation.
     - **Meal Plan Management**: Meal plans persist across browser sessions with automatic loading and cleanup (max 3 plans). Users can delete individual saved meal plans with confirmation dialog and automatic selection handling. All meal plans automatically normalize to Sunday as the week start date. Meal plan generation is limited to the current and next week only.
     - **Recipe Management**: Automated recipe updates for trending recipes, Dutch translation system for recipes, and comprehensive metric unit conversion for all measurements. Includes intelligent ingredient-based recipe matching, automatic ingredient substitution based on dietary restrictions, smart vegetarian filtering, and an enhanced high-protein meal database.
     - **Shopping List Features**: Consolidated shopping list generation with supermarket-ordered categories, detailed dry goods separation, and comprehensive lemon standardization. Features comprehensive ingredient normalization, smart milk specification (oat milk), automatic cooking method removal, smart garlic quantity display, complete onion categorization, enhanced seed & nut categorization, enhanced nut preparation normalization, comprehensive pasta & rice categorization, and water ingredient filtering.
@@ -31,7 +32,12 @@ Preferred communication style: Simple, everyday language.
     - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, favorite meals, and user-created custom recipes.
     - **Unified Recipe Database**: Consolidated all recipe databases into a single unified system.
 
-# Recent Changes (August 30, 2025)
+# Recent Changes (September 2, 2025)
+- **Menstrual Cycle Phase Dropdown**: Added comprehensive cycle phase selection with 5 options (off, menstrual, follicular, ovulation, luteal) in profile page, automatically integrated into meal plan generation as dietary tags
+- **Phase-Specific Recipe Prioritization**: Recipes now tagged with specific menstrual phases get automatically prioritized during meal generation when users select their current cycle phase
+- **Simplified Cycle Logic**: Streamlined menstrual support to use existing dietary tag system rather than complex phase-specific filtering, making it more maintainable and extensible
+
+# Previous Changes (August 30, 2025)
 - **Resistant Starch Weight Loss Logic**: Integrated intelligent resistant starch preference system that prioritizes meals containing beans, lentils, oats, brown rice, green bananas, and potatoes for users with weight loss goals or BMI >25, enhancing metabolic benefits and satiety
 - **Chocolate Overnight Oats Addition**: Added "Chocolate Overnight Oats with Dark Chocolate Crumble" with 31g protein from cocoa protein powder, featuring layered construction with yogurt middle and crunchy rice cake chocolate topping for indulgent meal prep breakfast
 - **Earl Grey Tea-Infused Quinoa Porridge Addition**: Added "Earl Grey Tea-Infused Quinoa Porridge with Caramelized Persimmon" with 22g protein, featuring tea-infused quinoa and oats with bergamot notes, topped with caramelized persimmon for elegant winter breakfast

@@ -734,7 +734,13 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   
   const meals: InsertMeal[] = [];
   let totalWeeklyProtein = 0;
-  const dietaryTags = request.dietaryTags || [];
+  let dietaryTags = request.dietaryTags || [];
+  
+  // Add menstrual phase as a dietary tag if cycle support is enabled
+  if (user?.cycleSupportRecipes && user?.menstrualPhase && user.menstrualPhase !== 'off') {
+    dietaryTags = [...dietaryTags, user.menstrualPhase];
+    console.log(`🩸 Added menstrual phase "${user.menstrualPhase}" to dietary tags: [${dietaryTags.join(', ')}]`);
+  }
   
   // Get ingredients to use up from user profile
   const ingredientsToUseUp = getIngredientsToUseUp(user);

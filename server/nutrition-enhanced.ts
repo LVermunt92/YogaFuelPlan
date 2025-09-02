@@ -70,7 +70,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 8.2 
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "dairy-free", "high-protein", "anti-inflammatory", "whole30", "ayurvedic", "longevity"],
+    tags: ["vegetarian", "gluten-free", "dairy-free", "high-protein", "anti-inflammatory", "whole30", "ayurvedic", "longevity", "follicular", "ovulation"],
     ingredients: [
       "60g steel-cut oats",
       "35g raw almonds and walnuts (chopped)",
@@ -173,7 +173,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.7 
     },
     category: "breakfast",
-    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "dairy-free", "raw", "anti-inflammatory", "ayurvedic", "longevity"],
+    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "dairy-free", "raw", "anti-inflammatory", "ayurvedic", "longevity", "follicular", "ovulation"],
     ingredients: [
       "3 tbsp chia seeds",
       "¾ cup unsweetened almond milk",
@@ -8509,7 +8509,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.6
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "menstruation", "granola", "protein", "nuts", "seeds", "meal-prep", "cycleBased"],
+    tags: ["vegetarian", "gluten-free", "menstruation", "granola", "protein", "nuts", "seeds", "meal-prep", "cycleBased", "menstrual", "luteal"],
     ingredients: [
       "150g rolled oats",
       "1 scoop vanilla protein powder",
@@ -8568,7 +8568,7 @@ export const ENHANCED_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.4
     },
     category: "breakfast",
-    tags: ["vegetarian", "vegan", "dairy-free", "gluten-free", "menstruation", "energy-bites", "dates", "no-bake", "iron-rich", "cycleBased"],
+    tags: ["vegetarian", "vegan", "dairy-free", "gluten-free", "menstruation", "energy-bites", "dates", "no-bake", "iron-rich", "cycleBased", "menstrual", "luteal"],
     ingredients: [
       "100g pitted dates",
       "40g rolled oats",
@@ -9347,80 +9347,18 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
   // Start with curated database meals
   let allMeals: MealOption[] = getEnhancedMealsByCategory(category);
   
-  // Check if user has cycle support recipes enabled and prioritize them based on current phase
+  // Check if user has cycle support recipes enabled and prioritize them
   if (userId) {
     try {
       const { storage } = await import('./storage');
       const user = await storage.getUser(userId);
-      if (user?.cycleSupportRecipes && user?.menstrualPhase && user.menstrualPhase !== 'off') {
-        console.log(`🩸 CYCLE SUPPORT: Including phase-specific recipes for ${category} (${user.menstrualPhase} phase)`);
-        
-        // Phase-specific recipe prioritization
-        let phaseSpecificRecipes: any[] = [];
-        let generalCycleRecipes: any[] = [];
-        
-        switch (user.menstrualPhase) {
-          case 'menstrual':
-            // Iron-rich foods for blood loss, magnesium for cramps, warming foods
-            phaseSpecificRecipes = allMeals.filter(meal => 
-              meal.tags.some(tag => ['iron-rich', 'magnesium', 'anti-inflammatory', 'warming'].includes(tag)) ||
-              meal.name.toLowerCase().includes('iron') ||
-              meal.name.toLowerCase().includes('spinach') ||
-              meal.name.toLowerCase().includes('lentil')
-            );
-            break;
-            
-          case 'follicular':
-            // Light, detoxifying foods, cruciferous vegetables, probiotics
-            phaseSpecificRecipes = allMeals.filter(meal => 
-              meal.tags.some(tag => ['detox', 'probiotic', 'light', 'fresh'].includes(tag)) ||
-              meal.vegetableContent.vegetables.some(veg => 
-                ['broccoli', 'cauliflower', 'kale', 'cabbage'].includes(veg.toLowerCase())
-              )
-            );
-            break;
-            
-          case 'ovulation':
-            // Anti-inflammatory foods, omega-3s, antioxidant-rich
-            phaseSpecificRecipes = allMeals.filter(meal => 
-              meal.tags.some(tag => ['anti-inflammatory', 'omega-3', 'antioxidant'].includes(tag)) ||
-              meal.vegetableContent.vegetables.some(veg => 
-                ['berries', 'salmon', 'avocado'].includes(veg.toLowerCase())
-              )
-            );
-            break;
-            
-          case 'luteal':
-            // Complex carbs for mood, B vitamins, magnesium for PMS
-            phaseSpecificRecipes = allMeals.filter(meal => 
-              meal.tags.some(tag => ['complex-carbs', 'b-vitamins', 'mood-supporting'].includes(tag)) ||
-              meal.name.toLowerCase().includes('quinoa') ||
-              meal.name.toLowerCase().includes('sweet potato') ||
-              meal.name.toLowerCase().includes('dark chocolate')
-            );
-            break;
-        }
-        
-        // Get general cycle-based recipes as backup
-        generalCycleRecipes = allMeals.filter(meal => meal.tags.includes('cycleBased'));
-        
-        console.log(`🩸 Found ${phaseSpecificRecipes.length} ${user.menstrualPhase}-phase recipes and ${generalCycleRecipes.length} general cycle support recipes for ${category}`);
-        
-        // Prioritize: phase-specific first, then general cycle recipes, then everything else
-        if (phaseSpecificRecipes.length > 0 || generalCycleRecipes.length > 0) {
-          const nonCycleRecipes = allMeals.filter(meal => 
-            !phaseSpecificRecipes.includes(meal) && 
-            !generalCycleRecipes.includes(meal)
-          );
-          allMeals = [...phaseSpecificRecipes, ...generalCycleRecipes, ...nonCycleRecipes];
-          console.log(`🩸 PRIORITIZED: ${user.menstrualPhase} phase recipes first, then general cycle support, then others`);
-        }
-      } else if (user?.cycleSupportRecipes) {
-        // Fallback to general cycle support if phase not specified
-        console.log(`🩸 CYCLE SUPPORT: Including general menstruation-supportive recipes for ${category}`);
+      if (user?.cycleSupportRecipes) {
+        console.log(`🩸 CYCLE SUPPORT: Including menstruation-supportive recipes for ${category}`);
+        // Filter cycle-based recipes from the current meal pool
         const cycleRecipes = allMeals.filter(meal => meal.tags.includes('cycleBased'));
         console.log(`🩸 Found ${cycleRecipes.length} cycle support recipes for ${category}`);
         
+        // Prioritize cycle recipes by placing them at the beginning of the array
         if (cycleRecipes.length > 0) {
           const nonCycleRecipes = allMeals.filter(meal => !meal.tags.includes('cycleBased'));
           allMeals = [...cycleRecipes, ...nonCycleRecipes];
