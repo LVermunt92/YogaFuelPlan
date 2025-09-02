@@ -1958,6 +1958,11 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "Fresh mint leaves",
       "Fresh cilantro",
       "1 lime (juiced)",
+      "2 tbsp soy sauce or tamari",
+      "1 tsp fresh ginger (grated)",
+      "1 clove garlic (finely chopped)",
+      "1 tsp sesame oil",
+      "1/2 red chili or chili flakes (to taste)",
       "Sea salt to taste"
     ],
     wholeFoodLevel: "high",
@@ -1969,21 +1974,25 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     recipe: {
       instructions: [
         "Steam basmati rice until fluffy",
-        "Steam green beans and diced aubergine for 4 minutes until tender-crisp",
-        "Add zucchini and bok choy, steam for 2 more minutes",
+        "Heat coconut oil in large wok or pan",
+        "Add grated ginger and chopped garlic, sauté briefly until fragrant",
+        "Add diced aubergine and cook until golden brown and soft, about 5 minutes",
+        "Add green beans and cook for 2 minutes",
+        "Add zucchini and bok choy, stir-fry for 2 more minutes",
         "Add spinach in final 30 seconds until just wilted",
-        "Heat coconut oil gently, add fennel seeds until fragrant",
-        "Add coriander powder and cook 30 seconds",
-        "Toss steamed vegetables with spiced oil",
+        "Deglaze with soy sauce and lime juice",
+        "Add coriander and fennel seeds, toss for 30 seconds",
+        "Remove from heat and drizzle with sesame oil",
         "Mix in fresh coconut and herbs",
-        "Serve over rice with lime juice",
-        "Garnish with fresh mint for cooling effect"
+        "Serve over steamed rice",
+        "Garnish with fresh mint and chili flakes to taste"
       ],
       tips: [
-        "Steam vegetables minimally to preserve cooling qualities",
-        "Serve at moderate temperature, not hot"
+        "Cook aubergine until properly golden for best texture",
+        "Keep bok choy crisp by not overcooking",
+        "Adjust chili to your heat preference"
       ],
-      notes: "Authentic summer Ayurvedic preparation emphasizing cooling and fresh ingredients"
+      notes: "Asian-inspired coconut rice bowl with savory umami flavors from the soy-sesame dressing"
     }
   },
 
