@@ -1549,7 +1549,11 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "2 cups cooked brown rice (day-old preferred)",
       "200g firm tofu (cubed)",
       "2 eggs or flax eggs for vegan option",
-      "1 cup frozen mixed vegetables",
+      "100g carrots (diced small)",
+      "150g sugar snap peas (trimmed)",
+      "1 red bell pepper (diced)",
+      "100g baby corn (halved lengthwise)",
+      "80g fresh bean sprouts",
       "2 green onions (chopped)",
       "2 cloves garlic (minced)",
       "1 tsp fresh ginger (grated)",
@@ -1560,9 +1564,9 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     ],
     wholeFoodLevel: "moderate",
     vegetableContent: {
-      servings: 2,
-      vegetables: ["mixed vegetables", "green onions"],
-      benefits: ["Balanced nutrition", "Quick energy", "Good source of fiber"]
+      servings: 3,
+      vegetables: ["carrots", "sugar snap peas", "bell pepper", "baby corn", "bean sprouts", "green onions"],
+      benefits: ["Balanced nutrition", "Quick energy", "Good source of fiber", "Authentic Asian flavors", "Variety of textures"]
     },
     recipe: {
       instructions: [
@@ -1571,7 +1575,9 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Push tofu to one side, scramble eggs on other side",
         "Add garlic and ginger, cook 30 seconds",
         "Add day-old rice, breaking up clumps",
-        "Stir in frozen vegetables and cook 3 minutes",
+        "Add carrots and baby corn, stir-fry for 2 minutes",
+        "Add bell pepper and sugar snap peas, cook 2 minutes more",
+        "Add bean sprouts in final 30 seconds for crunch",
         "Add soy sauce, remaining sesame oil, and rice vinegar",
         "Toss everything together for 2 minutes",
         "Garnish with green onions and sesame seeds"
