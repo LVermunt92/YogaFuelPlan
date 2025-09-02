@@ -552,6 +552,9 @@ export default function MealPlanner() {
     const vegetableEstimate = Math.max(300, avgCarbsPerDay * 1.2); // Realistic daily vegetable intake
     const fruitStarchEstimate = avgCarbsPerDay * 0.6; // Estimate for fruits/starches
 
+    // Calculate fiber estimate based on vegetables, fruits, and whole grains
+    const fiberEstimate = Math.max(20, (vegetableEstimate * 0.03) + (fruitStarchEstimate * 0.04) + 8); // Realistic daily fiber intake
+
     return {
       goodFats: {
         value: Math.round(avgFatsPerDay),
@@ -567,6 +570,11 @@ export default function MealPlanner() {
         value: Math.round(fruitStarchEstimate),
         percentage: Math.round(Math.min((fruitStarchEstimate / 60) * 100, 100)), // 60g target
         target: '45-60g/day'
+      },
+      fiber: {
+        value: Math.round(fiberEstimate),
+        percentage: Math.round(Math.min((fiberEstimate / 35) * 100, 100)), // 35g target for optimal health
+        target: '25-35g/day'
       }
     };
   };
@@ -610,7 +618,7 @@ export default function MealPlanner() {
           {/* 2. Compact Nutrition Charts */}
           {currentMealPlan && kpiData && (
             <div className="flex justify-center mb-6">
-              <div className="responsive-grid-4 bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg max-w-4xl w-full">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg max-w-5xl w-full">
               {/* Protein Chart - First position */}
               <div className="text-center">
                 <div className="relative w-20 h-20 mx-auto mb-1">
@@ -735,6 +743,36 @@ export default function MealPlanner() {
                 <p className="text-xs text-gray-500">{Math.min(kpiData.fruitsStarches.percentage, 100)}%</p>
               </div>
 
+              {/* Fiber */}
+              <div className="text-center">
+                <div className="relative w-20 h-20 mx-auto mb-1">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={[
+                          { value: Math.min(kpiData.fiber.percentage, 100), fill: "#f97316" },
+                          { value: Math.max(100 - kpiData.fiber.percentage, 0), fill: "#f3f4f6" }
+                        ]}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={20}
+                        outerRadius={35}
+                        startAngle={90}
+                        endAngle={450}
+                        dataKey="value"
+                      >
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="text-sm font-bold text-orange-600">{kpiData.fiber.value}g</div>
+                    </div>
+                  </div>
+                </div>
+                <h3 className="text-xs font-semibold text-orange-600">Fiber</h3>
+                <p className="text-xs text-gray-500">{Math.min(kpiData.fiber.percentage, 100)}%</p>
+              </div>
 
               </div>
             </div>
