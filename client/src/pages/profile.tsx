@@ -908,23 +908,6 @@ export default function Profile() {
             </div>
             
             <div className="space-y-6">
-              {/* Use Only My Recipes Toggle */}
-              <div className="flex items-center justify-between p-4 border rounded-lg">
-                <div className="flex-1">
-                  <Label htmlFor="useOnlyMyRecipes" className="text-sm font-medium text-foreground">
-                    Only use my custom recipes
-                  </Label>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Generate meal plans using only your personal recipe collection
-                  </p>
-                </div>
-                <Switch
-                  id="useOnlyMyRecipes"
-                  checked={formData.useOnlyMyRecipes}
-                  onCheckedChange={(checked) => setFormData(prev => ({ ...prev, useOnlyMyRecipes: checked }))}
-                />
-              </div>
-
               {/* Cycle Support Recipes Toggle */}
               <div className="flex items-center justify-between p-4 border rounded-lg">
                 <div className="flex-1">
