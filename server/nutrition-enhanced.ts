@@ -1942,7 +1942,10 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Ayurvedic", "Cooling"],
     ingredients: [
       "1 cup basmati rice",
-      "2 cups mixed green vegetables (zucchini, green beans, spinach)",
+      "1 medium zucchini (sliced)",
+      "150g fresh green beans (trimmed)",
+      "2 cups fresh spinach leaves",
+      "1 red bell pepper (sliced)",
       "1/4 cup fresh coconut (grated)",
       "2 tbsp coconut oil",
       "1/2 tsp ground coriander",
@@ -1954,15 +1957,17 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     ],
     wholeFoodLevel: "high",
     vegetableContent: {
-      servings: 2,
-      vegetables: ["zucchini", "green beans", "spinach"],
-      benefits: ["Cooling green vegetables", "Fresh coconut", "Light steaming preserves nutrients"]
+      servings: 3,
+      vegetables: ["zucchini", "green beans", "spinach", "bell pepper"],
+      benefits: ["Cooling green vegetables", "Fresh coconut", "Light steaming preserves nutrients", "Colorful antioxidants"]
     },
     recipe: {
       instructions: [
         "Steam basmati rice until fluffy",
-        "Steam vegetables lightly to retain cooling properties",
-        "Heat coconut oil gently, add fennel seeds",
+        "Steam green beans for 4 minutes until tender-crisp",
+        "Add zucchini and bell pepper, steam for 2 more minutes",
+        "Add spinach in final 30 seconds until just wilted",
+        "Heat coconut oil gently, add fennel seeds until fragrant",
         "Add coriander powder and cook 30 seconds",
         "Toss steamed vegetables with spiced oil",
         "Mix in fresh coconut and herbs",
