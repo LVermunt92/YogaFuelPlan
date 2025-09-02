@@ -267,16 +267,19 @@ function adjustMealPortion(originalPortion: string, adjustmentFactor: number, se
     portionText = `${servingMultiplier}x ${originalPortion}`;
   }
   
-  // Add caloric adjustment if needed
+  // Add caloric adjustment if needed  
   if (adjustmentFactor !== 1.0) {
     const note = adjustmentFactor > 1.05 ? ' (larger portions)' : 
                  adjustmentFactor < 0.95 ? ' (smaller portions)' : '';
-    if (adjustmentFactor !== 1.0 && servingMultiplier > 1) {
-      portionText += ` (adjusted for goals)`;
+    if (servingMultiplier > 1) {
+      // For meal prep mode, just show the multiplier and size note (no "adjusted for goals")
+      portionText += note;
     } else if (adjustmentFactor > 1) {
       portionText = `${adjustmentFactor.toFixed(1)}x ${portionText}`;
+      portionText += note;
+    } else {
+      portionText += note;
     }
-    portionText += note;
   }
   
   return portionText;
