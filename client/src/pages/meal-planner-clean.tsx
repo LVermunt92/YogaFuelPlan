@@ -1104,7 +1104,7 @@ export default function MealPlanner() {
                         </div>
                         <div className="flex items-center gap-3">
                           <div className="text-right">
-                            <p className="text-sm text-gray-400">{plan.totalProtein.toFixed(0)}g protein/day</p>
+                            <p className="text-sm text-emerald-600">{plan.totalProtein.toFixed(0)}g protein/day</p>
                             <p className="text-xs text-gray-400">{plan.createdAt ? new Date(plan.createdAt).toLocaleDateString() : ''}</p>
                           </div>
                           <Button
@@ -1170,7 +1170,7 @@ export default function MealPlanner() {
                             <div className="flex items-center gap-2">
                               <span className="text-gray-900">{dayNames[day - 1]}</span>
                             </div>
-                            <span className="text-gray-600">{Math.round(dailyProtein)}g protein</span>
+                            <span className="text-emerald-600">{Math.round(dailyProtein)}g protein</span>
                           </div>
                           
                           {/* Individual meal rows - Sunday only shows dinner, other days show all meals */}
@@ -1207,7 +1207,7 @@ export default function MealPlanner() {
                                   )}
                                 </div>
                                 <div className="text-sm font-medium text-gray-900 mb-1">{dinner.foodDescription.replace(' (leftover)', '').replace(/\s*\(incorporating leftover.*?\)/g, '')}</div>
-                                <div className="text-sm text-gray-600">{dinner.protein}g protein • {dinner.prepTime} min</div>
+                                <div className="text-sm text-gray-600"><span className="text-emerald-600">{dinner.protein}g protein</span> • {dinner.prepTime} min</div>
                               </div>
                             )
                           ) : (
@@ -1246,7 +1246,7 @@ export default function MealPlanner() {
                                     )}
                                   </div>
                                   <div className="text-sm font-medium text-gray-900 mb-1">{breakfast.foodDescription.replace(' (leftover)', '').replace(/\s*\(incorporating leftover.*?\)/g, '')}</div>
-                                  <div className="text-sm text-gray-600">{breakfast.protein}g protein • {breakfast.prepTime} min</div>
+                                  <div className="text-sm text-gray-600"><span className="text-emerald-600">{breakfast.protein}g protein</span> • {breakfast.prepTime} min</div>
                                 </div>
                               )}
                               
@@ -1283,7 +1283,7 @@ export default function MealPlanner() {
                                     )}
                                   </div>
                                   <div className="text-sm font-medium text-gray-900 mb-1">{lunch.foodDescription.replace(' (leftover)', '').replace(/\s*\(incorporating leftover.*?\)/g, '')}</div>
-                                  <div className="text-sm text-gray-600">{lunch.protein}g protein • {lunch.prepTime} min</div>
+                                  <div className="text-sm text-gray-600"><span className="text-emerald-600">{lunch.protein}g protein</span> • {lunch.prepTime} min</div>
                                 </div>
                               )}
                               
@@ -1320,7 +1320,7 @@ export default function MealPlanner() {
                                     )}
                                   </div>
                                   <div className="text-sm font-medium text-gray-900 mb-1">{dinner.foodDescription.replace(' (leftover)', '').replace(/\s*\(incorporating leftover.*?\)/g, '')}</div>
-                                  <div className="text-sm text-gray-600">{dinner.protein}g protein • {dinner.prepTime} min</div>
+                                  <div className="text-sm text-gray-600"><span className="text-emerald-600">{dinner.protein}g protein</span> • {dinner.prepTime} min</div>
                                 </div>
                               )}
                             </>
@@ -1375,7 +1375,7 @@ export default function MealPlanner() {
                                         onClick={() => setSelectedMealId(breakfast.id)}
                                       >
                                         <div className="text-xs font-medium text-gray-900 mb-1 line-clamp-3">{breakfast.foodDescription}</div>
-                                        <div className="text-xs text-gray-500">{breakfast.protein}g • {breakfast.prepTime}min</div>
+                                        <div className="text-xs text-gray-500"><span className="text-emerald-600">{breakfast.protein}g</span> • {breakfast.prepTime}min</div>
                                       </div>
                                     )}
                                   </td>
@@ -1388,7 +1388,7 @@ export default function MealPlanner() {
                                         onClick={() => setSelectedMealId(lunch.id)}
                                       >
                                         <div className="text-xs font-medium text-gray-900 mb-1 line-clamp-3">{lunch.foodDescription}</div>
-                                        <div className="text-xs text-gray-500">{lunch.protein}g • {lunch.prepTime}min</div>
+                                        <div className="text-xs text-gray-500"><span className="text-emerald-600">{lunch.protein}g</span> • {lunch.prepTime}min</div>
                                       </div>
                                     )}
                                   </td>
@@ -1401,12 +1401,12 @@ export default function MealPlanner() {
                                         onClick={() => setSelectedMealId(dinner.id)}
                                       >
                                         <div className="text-xs font-medium text-gray-900 mb-1 line-clamp-3">{dinner.foodDescription}</div>
-                                        <div className="text-xs text-gray-500">{dinner.protein}g • {dinner.prepTime}min</div>
+                                        <div className="text-xs text-gray-500"><span className="text-emerald-600">{dinner.protein}g</span> • {dinner.prepTime}min</div>
                                       </div>
                                     )}
                                   </td>
                                   <td className="px-2 py-4 text-center">
-                                    <div className="text-xs font-bold text-purple-600">{Math.round(dailyProtein)}g</div>
+                                    <div className="text-xs font-bold text-emerald-600">{Math.round(dailyProtein)}g</div>
                                   </td>
                                 </tr>
                               );
