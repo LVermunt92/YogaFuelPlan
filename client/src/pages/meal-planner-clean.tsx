@@ -1455,55 +1455,63 @@ export default function MealPlanner() {
               </div>
             ) : recipeData ? (
               <div className="space-y-6">
-                {/* Comprehensive Recipe KPIs */}
-                <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-2 p-3 bg-gray-50 rounded-lg">
-                  {/* Basic Info */}
+                {/* Basic Recipe Info */}
+                <div className="grid grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg">
                   <div className="text-center">
-                    <Timer className="w-4 h-4 text-gray-600 mx-auto mb-0.5" />
-                    <p className="text-xs text-gray-500 font-medium">{t.prepTime}</p>
-                    <p className="text-sm font-bold text-gray-800">{recipeData.prepTime} {t.min}</p>
+                    <Timer className="w-5 h-5 text-gray-600 mx-auto mb-1" />
+                    <p className="text-sm text-gray-500 font-medium">{t.prepTime}</p>
+                    <p className="text-lg font-bold text-gray-800">{recipeData.prepTime} {t.min}</p>
                   </div>
                   <div className="text-center">
-                    <Users className="w-4 h-4 text-gray-600 mx-auto mb-0.5" />
-                    <p className="text-xs text-gray-500 font-medium">{t.servings}</p>
-                    <p className="text-sm font-bold text-gray-800">{extractServingNumber(recipeData.portion)}</p>
+                    <Users className="w-5 h-5 text-gray-600 mx-auto mb-1" />
+                    <p className="text-sm text-gray-500 font-medium">{t.servings}</p>
+                    <p className="text-lg font-bold text-gray-800">{extractServingNumber(recipeData.portion)}</p>
                   </div>
-                  <div className="text-center">
-                    <Activity className="w-4 h-4 text-orange-600 mx-auto mb-0.5" />
-                    <p className="text-xs text-gray-500 font-medium">{t.calories}</p>
-                    <p className="text-sm font-bold text-gray-800">{Math.round(recipeData.nutrition.calories)}</p>
-                  </div>
-                  <div className="text-center">
-                    <Euro className="w-4 h-4 text-gray-600 mx-auto mb-0.5" />
-                    <p className="text-xs text-gray-500 font-medium">{t.cost}</p>
-                    <p className="text-sm font-bold text-gray-800">€{recipeData.nutrition.costEuros?.toFixed(2) || '0.00'}</p>
-                  </div>
-                  <div className="text-center">
-                    <TrendingUp className="w-4 h-4 text-gray-600 mx-auto mb-0.5" />
-                    <p className="text-xs text-gray-500 font-medium">{t.proteinPerEuro}</p>
-                    <p className="text-sm font-bold text-gray-800">{recipeData.nutrition.proteinPerEuro?.toFixed(1) || '0.0'}g/€</p>
+                </div>
+
+                {/* Nutrition Information Box */}
+                <div className="border border-gray-200 rounded-lg p-4 bg-white">
+                  <div className="text-center mb-3">
+                    <h3 className="text-lg font-semibold text-gray-800">Nutrition Information</h3>
+                    <p className="text-xs text-gray-500 italic">All values are per serving</p>
                   </div>
                   
-                  {/* Nutrition Info */}
-                  <div className="text-center">
-                    <Target className="w-4 h-4 text-emerald-600 mx-auto mb-0.5" />
-                    <p className="text-xs text-gray-500 font-medium">{t.protein}</p>
-                    <p className="text-sm font-bold text-gray-800">{Math.round(recipeData.nutrition.protein)}g</p>
-                  </div>
-                  <div className="text-center">
-                    <Droplet className="w-4 h-4 text-yellow-600 mx-auto mb-0.5" />
-                    <p className="text-xs text-gray-500 font-medium">Good Fats</p>
-                    <p className="text-sm font-bold text-gray-800">{Math.round(recipeData.nutrition.fats || 0)}g</p>
-                  </div>
-                  <div className="text-center">
-                    <Leaf className="w-4 h-4 text-blue-600 mx-auto mb-0.5" />
-                    <p className="text-xs text-gray-500 font-medium">{t.vegetables || 'Vegetables'}</p>
-                    <p className="text-sm font-bold text-gray-800">{Math.round((recipeData.vegetableContent?.servings || 0) * 80)}g</p>
-                  </div>
-                  <div className="text-center">
-                    <Apple className="w-4 h-4 text-blue-600 mx-auto mb-0.5" />
-                    <p className="text-xs text-gray-500 font-medium">Fruits/Starches</p>
-                    <p className="text-sm font-bold text-gray-800">{Math.round(recipeData.nutrition.carbohydrates || 0)}g</p>
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-3">
+                    <div className="text-center">
+                      <Activity className="w-4 h-4 text-orange-600 mx-auto mb-0.5" />
+                      <p className="text-xs text-gray-500 font-medium">{t.calories}</p>
+                      <p className="text-sm font-bold text-gray-800">{Math.round(recipeData.nutrition.calories)}</p>
+                    </div>
+                    <div className="text-center">
+                      <Target className="w-4 h-4 text-emerald-600 mx-auto mb-0.5" />
+                      <p className="text-xs text-gray-500 font-medium">{t.protein}</p>
+                      <p className="text-sm font-bold text-gray-800">{Math.round(recipeData.nutrition.protein)}g</p>
+                    </div>
+                    <div className="text-center">
+                      <Droplet className="w-4 h-4 text-yellow-600 mx-auto mb-0.5" />
+                      <p className="text-xs text-gray-500 font-medium">Good Fats</p>
+                      <p className="text-sm font-bold text-gray-800">{Math.round(recipeData.nutrition.fats || 0)}g</p>
+                    </div>
+                    <div className="text-center">
+                      <Leaf className="w-4 h-4 text-blue-600 mx-auto mb-0.5" />
+                      <p className="text-xs text-gray-500 font-medium">{t.vegetables || 'Vegetables'}</p>
+                      <p className="text-sm font-bold text-gray-800">{Math.round((recipeData.vegetableContent?.servings || 0) * 80)}g</p>
+                    </div>
+                    <div className="text-center">
+                      <Apple className="w-4 h-4 text-blue-600 mx-auto mb-0.5" />
+                      <p className="text-xs text-gray-500 font-medium">Fruits/Starches</p>
+                      <p className="text-sm font-bold text-gray-800">{Math.round(recipeData.nutrition.carbohydrates || 0)}g</p>
+                    </div>
+                    <div className="text-center">
+                      <Euro className="w-4 h-4 text-gray-600 mx-auto mb-0.5" />
+                      <p className="text-xs text-gray-500 font-medium">{t.cost}</p>
+                      <p className="text-sm font-bold text-gray-800">€{recipeData.nutrition.costEuros?.toFixed(2) || '0.00'}</p>
+                    </div>
+                    <div className="text-center">
+                      <TrendingUp className="w-4 h-4 text-gray-600 mx-auto mb-0.5" />
+                      <p className="text-xs text-gray-500 font-medium">{t.proteinPerEuro}</p>
+                      <p className="text-sm font-bold text-gray-800">{recipeData.nutrition.proteinPerEuro?.toFixed(1) || '0.0'}g/€</p>
+                    </div>
                   </div>
                 </div>
 
