@@ -695,7 +695,11 @@ export default function MyRecipes() {
                 </div>
                 
                 <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <span>{recipe.portion}</span>
+                  <span>{(() => {
+                    if (!recipe.portion) return '1';
+                    const numberMatch = recipe.portion.match(/(\d+(?:\.\d+)?)/);
+                    return numberMatch ? numberMatch[1] : '1';
+                  })()} servings</span>
                 </div>
               </CardHeader>
               

@@ -141,6 +141,12 @@ export default function MealPlanner() {
   const t = useTranslations(language);
 
   // Helper functions
+  const extractServingNumber = (portion: string): string => {
+    if (!portion) return '1';
+    const numberMatch = portion.match(/(\d+(?:\.\d+)?)/);
+    return numberMatch ? numberMatch[1] : '1';
+  };
+
   const formatWeekRange = (weekStart: string) => {
     const start = new Date(weekStart);
     const end = new Date(start);
@@ -1460,7 +1466,7 @@ export default function MealPlanner() {
                   <div className="text-center">
                     <Users className="w-4 h-4 text-gray-600 mx-auto mb-0.5" />
                     <p className="text-xs text-gray-500 font-medium">{t.servings}</p>
-                    <p className="text-sm font-bold text-gray-800">{recipeData.portion}</p>
+                    <p className="text-sm font-bold text-gray-800">{extractServingNumber(recipeData.portion)}</p>
                   </div>
                   <div className="text-center">
                     <Activity className="w-4 h-4 text-orange-600 mx-auto mb-0.5" />

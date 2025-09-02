@@ -362,7 +362,11 @@ export default function MyRecipes() {
                     {recipe.difficulty}
                   </span>
                   <span>•</span>
-                  <span>{recipe.portion}</span>
+                  <span>{(() => {
+                    if (!recipe.portion) return '1';
+                    const numberMatch = recipe.portion.match(/(\d+(?:\.\d+)?)/);
+                    return numberMatch ? numberMatch[1] : '1';
+                  })()} servings</span>
                 </div>
               </CardHeader>
               
@@ -385,7 +389,11 @@ export default function MyRecipes() {
                     </div>
                   </div>
                   
-                  <p className="text-gray-600 text-sm line-clamp-2">{recipe.portion}</p>
+                  <p className="text-gray-600 text-sm line-clamp-2">Serves {(() => {
+                    if (!recipe.portion) return '1';
+                    const numberMatch = recipe.portion.match(/(\d+(?:\.\d+)?)/);
+                    return numberMatch ? numberMatch[1] : '1';
+                  })()}</p>
                   
                   {recipe.notes && (
                     <p className="text-gray-500 text-xs italic line-clamp-2">{recipe.notes}</p>
@@ -762,7 +770,11 @@ export default function MyRecipes() {
                     </div>
                   </div>
                   
-                  <p className="text-gray-600 text-sm line-clamp-2">{recipe.portion}</p>
+                  <p className="text-gray-600 text-sm line-clamp-2">Serves {(() => {
+                    if (!recipe.portion) return '1';
+                    const numberMatch = recipe.portion.match(/(\d+(?:\.\d+)?)/);
+                    return numberMatch ? numberMatch[1] : '1';
+                  })()}</p>
                   
                   {recipe.notes && (
                     <p className="text-gray-500 text-xs italic line-clamp-2">{recipe.notes}</p>
