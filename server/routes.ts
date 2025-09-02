@@ -16,6 +16,7 @@ import { adminRouter } from './admin-routes';
 import { calculateNutritionTargets, type NutritionProfile } from './nutrition-calculator';
 import { analyzeRecipeNutrition } from './ai-nutrition-analyzer';
 import { hasAdequateProteinSource, enhanceRecipeWithProtein } from './protein-validator';
+import { hasAdequateFiberSource, enhanceRecipeWithFiber } from './fiber-validator';
 import cron from 'node-cron';
 import { normalizeToSunday, getNextSunday, getCurrentWeekSunday, isValidWeekStart, getAllowedWeekStarts } from './date-utils';
 
@@ -2233,6 +2234,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log(`✅ Custom recipe "${formData.name}" has adequate protein (${proteinAnalysis.estimatedProtein}g)`);
       }
       
+      // AUTOMATIC FIBER VALIDATION: Ensure user recipe has adequate fiber content (after protein enhancement)
+      console.log('🌾 VALIDATING FIBER SOURCES: Checking custom recipe for adequate fiber content');
+      const targetFiber = 10; // Target 10g fiber per meal
+      const fiberAnalysis = hasAdequateFiberSource(finalIngredients, targetFiber);
+      
+      if (!fiberAnalysis.hasFiber) {
+        console.log(`⚠️ Custom recipe "${formData.name}" has insufficient fiber (${fiberAnalysis.estimatedFiber}g < ${targetFiber}g). Auto-enhancing...`);
+        
+        const fiberEnhancement = enhanceRecipeWithFiber(
+          formData.name,
+          finalIngredients,
+          formData.tags || [],
+          targetFiber
+        );
+        
+        if (fiberEnhancement.addedFibers.length > 0) {
+          finalIngredients = fiberEnhancement.enhancedIngredients;
+          // Update fiber in nutrition if enhanced
+          if (finalNutrition) {
+            finalNutrition.fiber = Math.max(finalNutrition.fiber || 0, (finalNutrition.fiber || 0) + fiberEnhancement.fiberIncrease);
+          }
+          console.log(`✅ Enhanced custom recipe with ${fiberEnhancement.addedFibers.map(f => f.name).join(', ')} (+${fiberEnhancement.fiberIncrease}g fiber)`);
+        }
+      } else {
+        console.log(`✅ Custom recipe "${formData.name}" has adequate fiber (${fiberAnalysis.estimatedFiber}g)`);
+      }
+      
       // Combine form data with AI-generated nutrition and protein validation
       const recipeData = {
         ...formData,
@@ -2300,7 +2328,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         }
         
-        // Include AI-generated nutrition and protein validation in update
+        // AUTOMATIC FIBER VALIDATION: Ensure updated recipe has adequate fiber content (after protein enhancement)
+        console.log('🌾 VALIDATING FIBER SOURCES: Re-checking updated recipe for adequate fiber content');
+        const targetFiber = 10; // Target 10g fiber per meal
+        const fiberAnalysis = hasAdequateFiberSource(finalIngredients, targetFiber);
+        
+        if (!fiberAnalysis.hasFiber) {
+          console.log(`⚠️ Updated recipe has insufficient fiber (${fiberAnalysis.estimatedFiber}g < ${targetFiber}g). Auto-enhancing...`);
+          
+          const fiberEnhancement = enhanceRecipeWithFiber(
+            updateData.name || "Updated recipe",
+            finalIngredients,
+            updateData.tags || [],
+            targetFiber
+          );
+          
+          if (fiberEnhancement.addedFibers.length > 0) {
+            finalIngredients = fiberEnhancement.enhancedIngredients;
+            if (finalNutrition) {
+              finalNutrition.fiber = Math.max(finalNutrition.fiber || 0, (finalNutrition.fiber || 0) + fiberEnhancement.fiberIncrease);
+            }
+            console.log(`✅ Enhanced updated recipe with ${fiberEnhancement.addedFibers.map(f => f.name).join(', ')} (+${fiberEnhancement.fiberIncrease}g fiber)`);
+          }
+        }
+        
+        // Include AI-generated nutrition and protein/fiber validation in update
         const dataWithNutrition = {
           ...updateData,
           ...nutritionAnalysis,

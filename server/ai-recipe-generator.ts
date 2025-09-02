@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import { hasAdequateProteinSource, enhanceRecipeWithProtein } from './protein-validator';
+import { hasAdequateFiberSource, enhanceRecipeWithFiber } from './fiber-validator';
 import { MealOption } from './nutrition-enhanced';
 
 // Initialize OpenAI - will use environment variable OPENAI_API_KEY
@@ -142,7 +143,34 @@ Ensure the recipe is practical, nutritious, and aligns with the dietary requirem
       }
     }
     
-    console.log(`✨ AI generated recipe: "${generatedRecipe.name}" (${generatedRecipe.nutrition.protein}g protein, ${generatedRecipe.nutrition.prepTime}min)`);
+    // Validate fiber content and enhance if needed (after protein enhancement)
+    const targetFiber = 10; // Target 10g fiber per meal
+    const { hasFiber, estimatedFiber } = hasAdequateFiberSource(
+      generatedRecipe.ingredients,
+      targetFiber
+    );
+    
+    if (!hasFiber) {
+      console.log(`⚠️ AI recipe "${generatedRecipe.name}" has insufficient fiber (${estimatedFiber}g < ${targetFiber}g). Enhancing...`);
+      
+      const fiberEnhancement = enhanceRecipeWithFiber(
+        generatedRecipe.name,
+        generatedRecipe.ingredients,
+        request.dietaryTags,
+        targetFiber
+      );
+      
+      if (fiberEnhancement.addedFibers.length > 0) {
+        generatedRecipe.ingredients = fiberEnhancement.enhancedIngredients;
+        generatedRecipe.nutrition.fiber = Math.max(
+          generatedRecipe.nutrition.fiber || 0,
+          (generatedRecipe.nutrition.fiber || 0) + fiberEnhancement.fiberIncrease
+        );
+        console.log(`✅ Enhanced recipe with ${fiberEnhancement.addedFibers.map(f => f.name).join(', ')} (+${fiberEnhancement.fiberIncrease}g fiber)`);
+      }
+    }
+    
+    console.log(`✨ AI generated recipe: "${generatedRecipe.name}" (${generatedRecipe.nutrition.protein}g protein, ${generatedRecipe.nutrition.fiber || 0}g fiber, ${generatedRecipe.nutrition.prepTime}min)`);
     
     return generatedRecipe as MealOption;
     

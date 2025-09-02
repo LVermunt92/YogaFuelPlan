@@ -5,6 +5,7 @@ import { specifyIngredients, validateIngredientSpecificity, updateRecipeIngredie
 import { standardizePortion } from './portion-standardizer';
 import { convertAllRecipeUnits } from './bulk-unit-converter';
 import { validateAndEnhanceMealDatabase } from './protein-validator';
+import { validateAndEnhanceMealsForFiber } from './fiber-validator';
 
 export interface NutritionInfo {
   protein: number;
@@ -9591,7 +9592,19 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
     console.log(`🥩 PROTEIN ENHANCEMENT: Enhanced ${proteinValidatedMeals.length - filteredMeals.length} meals with additional protein sources`);
   }
   
-  return proteinValidatedMeals;
+  // AUTOMATIC FIBER VALIDATION: Ensure all meals have adequate fiber content (after protein enhancement)
+  console.log(`🌾 VALIDATING FIBER SOURCES: Checking ${proteinValidatedMeals.length} meals for adequate fiber content`);
+  const fiberValidatedMeals = validateAndEnhanceMealsForFiber(proteinValidatedMeals, 10); // Target 10g fiber per meal
+  
+  const enhancedCount = fiberValidatedMeals.filter((meal, index) => 
+    meal.ingredients.length !== proteinValidatedMeals[index].ingredients.length
+  ).length;
+  
+  if (enhancedCount > 0) {
+    console.log(`🌾 FIBER ENHANCEMENT: Enhanced ${enhancedCount} meals with additional fiber sources`);
+  }
+  
+  return fiberValidatedMeals;
 }
 
 // Function to identify water-related ingredients that should be excluded from shopping lists
