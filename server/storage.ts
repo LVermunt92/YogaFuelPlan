@@ -147,7 +147,7 @@ export class MemStorage implements IStorage {
       targetDate: "2025-12-31",
       activityLevel: "high",
       proteinTarget: 120,
-      dietaryTags: ["vegetarian"],
+      dietaryTags: ["Vegetarian"],
       householdSize: 2,
       cookingDaysPerWeek: 5,
       eatingDaysAtHome: 6,

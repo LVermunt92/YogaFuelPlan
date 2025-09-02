@@ -17,21 +17,21 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 // Available dietary tags for user selection
 const DIETARY_TAGS = [
-  "vegetarian",
-  "vegan", 
-  "gluten-free",
-  "lactose-free",
-  "dairy-free",
-  "nut-free",
-  "soy-free",
-  "low-carb",
-  "keto",
-  "paleo",
-  "mediterranean",
-  "whole30",
-  "raw",
-  "pescatarian",
-  "ayurvedic"
+  "Vegetarian",
+  "Vegan", 
+  "Gluten-Free",
+  "Lactose-Free",
+  "Dairy-Free",
+  "Nut-Free",
+  "Soy-Free",
+  "Low-Carb",
+  "Keto",
+  "Paleo",
+  "Mediterranean",
+  "Whole30",
+  "Raw",
+  "Pescatarian",
+  "Ayurvedic"
 ] as const;
 
 interface UserProfile {

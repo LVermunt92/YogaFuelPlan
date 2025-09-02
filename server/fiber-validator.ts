@@ -223,14 +223,14 @@ export function enhanceRecipeWithFiber(
 
   // Find compatible fiber sources based on dietary tags
   const compatibleFibers = FIBER_SOURCES.filter(fiber => {
-    if (dietaryTags.includes('vegan') || dietaryTags.includes('plant-based')) {
-      return fiber.dietaryCompatibility.includes('vegan');
+    if (dietaryTags.includes('Vegan') || dietaryTags.includes('Plant-Based')) {
+      return fiber.dietaryCompatibility.includes('Vegan');
     }
-    if (dietaryTags.includes('vegetarian')) {
-      return fiber.dietaryCompatibility.includes('vegetarian') || fiber.dietaryCompatibility.includes('vegan');
+    if (dietaryTags.includes('Vegetarian')) {
+      return fiber.dietaryCompatibility.includes('Vegetarian') || fiber.dietaryCompatibility.includes('Vegan');
     }
-    if (dietaryTags.includes('gluten-free')) {
-      return fiber.dietaryCompatibility.includes('gluten-free');
+    if (dietaryTags.includes('Gluten-Free')) {
+      return fiber.dietaryCompatibility.includes('Gluten-Free');
     }
     return true; // No dietary restrictions
   });

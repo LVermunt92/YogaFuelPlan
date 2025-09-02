@@ -156,31 +156,31 @@ function analyzeNutritionBenefits(nutrition: NutritionInfo): string[] {
 function analyzeDietaryBenefits(tags: string[]): string[] {
   const benefits: string[] = [];
   
-  if (tags.includes('gluten-free')) {
+  if (tags.includes('Gluten-Free')) {
     benefits.push('Suitable for gluten sensitivity and celiac disease');
   }
   
-  if (tags.includes('lactose-free')) {
+  if (tags.includes('Lactose-Free')) {
     benefits.push('Gentle on lactose-sensitive digestive systems');
   }
   
-  if (tags.includes('vegan')) {
+  if (tags.includes('Vegan')) {
     benefits.push('Plant-based nutrition supports environmental sustainability');
   }
   
-  if (tags.includes('vegetarian')) {
+  if (tags.includes('Vegetarian')) {
     benefits.push('Vegetarian protein sources with lower environmental impact');
   }
   
-  if (tags.includes('keto')) {
+  if (tags.includes('Keto')) {
     benefits.push('Low carb approach supports ketosis and fat burning');
   }
   
-  if (tags.includes('high-fiber')) {
+  if (tags.includes('High-Fiber')) {
     benefits.push('Supports healthy cholesterol levels and blood sugar control');
   }
   
-  if (tags.includes('longevity')) {
+  if (tags.includes('Longevity')) {
     benefits.push('Nutrient-dense ingredients support healthy aging');
   }
   

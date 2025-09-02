@@ -98,31 +98,31 @@ function addCyclePhaseTagsToRecipe(recipe: MealOption): MealOption {
   
   // Menstrual Phase (iron, anti-inflammatory, warming)
   if (hasIronRich || hasAntiInflammatory || hasWarming) {
-    if (!newTags.includes('menstrual')) newTags.push('menstrual');
+    if (!newTags.includes('Menstrual')) newTags.push('Menstrual');
   }
   
   // Follicular Phase (fresh, energizing, antioxidants)
   if (isFresh || hasAntiInflammatory || nutrition.vitaminC > 15) {
-    if (!newTags.includes('follicular')) newTags.push('follicular');
+    if (!newTags.includes('Follicular')) newTags.push('Follicular');
   }
   
   // Ovulation Phase (light, fresh, high-energy)
-  if (isFresh || nutrition.protein > 20 || recipe.tags.includes('high-protein')) {
-    if (!newTags.includes('ovulation')) newTags.push('ovulation');
+  if (isFresh || nutrition.protein > 20 || recipe.tags.includes('High-Protein')) {
+    if (!newTags.includes('Ovulation')) newTags.push('Ovulation');
   }
   
   // Luteal Phase (magnesium, complex carbs, comfort foods)
   if (hasMagnesium || hasComplexCarbs || isComfort) {
-    if (!newTags.includes('luteal')) newTags.push('luteal');
+    if (!newTags.includes('Luteal')) newTags.push('Luteal');
   }
   
   // Ensure every recipe has at least one cycle tag (default to all phases for general recipes)
-  const cyclePhases = ['menstrual', 'follicular', 'ovulation', 'luteal'];
+  const cyclePhases = ['Menstrual', 'Follicular', 'Ovulation', 'Luteal'];
   const hasCycleTags = cyclePhases.some(phase => newTags.includes(phase));
   
   if (!hasCycleTags) {
     // Add all phases for general healthy recipes
-    newTags.push('menstrual', 'follicular', 'ovulation', 'luteal');
+    newTags.push('Menstrual', 'Follicular', 'Ovulation', 'Luteal');
   }
   
   return { ...recipe, tags: newTags };
@@ -152,7 +152,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 8.2 
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "dairy-free", "high-protein", "anti-inflammatory", "whole30", "ayurvedic", "longevity", "follicular", "ovulation"],
+    tags: ["Vegetarian", "Gluten-Free", "Dairy-Free", "High-Protein", "Anti-Inflammatory", "Whole30", "Ayurvedic", "Longevity", "Follicular", "Ovulation"],
     ingredients: [
       "60g steel-cut oats",
       "35g raw almonds and walnuts (chopped)",
@@ -205,7 +205,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.9 
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "lactose-free", "keto", "paleo", "high-protein"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "Keto", "Paleo", "High-Protein"],
     ingredients: [
       "3 large free-range eggs",
       "60g fresh spinach leaves",
@@ -255,7 +255,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.7 
     },
     category: "breakfast",
-    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "dairy-free", "raw", "anti-inflammatory", "ayurvedic", "longevity", "follicular", "ovulation"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "Raw", "Anti-Inflammatory", "Ayurvedic", "Longevity", "Follicular", "Ovulation"],
     ingredients: [
       "3 tbsp chia seeds",
       "¾ cup unsweetened almond milk",
@@ -306,7 +306,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.8
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "lactose-free", "high-fiber", "make-ahead", "ayurvedic", "longevity"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Fiber", "Make-Ahead", "Ayurvedic", "Longevity"],
     ingredients: [
       "½ cup gluten-free rolled oats",
       "½ cup unsweetened almond milk",
@@ -354,7 +354,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.1
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "lactose-free", "high-protein", "superfood", "ayurvedic", "longevity"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Protein", "Superfood", "Ayurvedic", "Longevity"],
     ingredients: [
       "½ cup cooked quinoa",
       "½ cup coconut yogurt",
@@ -403,7 +403,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.8
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "lactose-free", "high-protein", "low-carb"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Protein", "Low-Carb"],
     ingredients: [
       "¼ cup coconut flour",
       "1 scoop plant protein powder",
@@ -453,7 +453,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.2
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "lactose-free", "high-fiber", "antioxidant", "ayurvedic", "high-protein", "longevity"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Fiber", "Antioxidant", "Ayurvedic", "High-Protein", "Longevity"],
     ingredients: [
       "1 cup spinach",
       "½ frozen banana",
@@ -508,7 +508,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.7 
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "lactose-free", "probiotic", "fermented", "high-protein", "ayurvedic", "longevity"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "Probiotic", "Fermented", "High-Protein", "Ayurvedic", "Longevity"],
     ingredients: [
       "200ml long-fermented kefir (24+ hours)",
       "¼ cup gluten-free oat granola", 
@@ -558,7 +558,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.3 
     },
     category: "lunch",
-    tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "anti-inflammatory", "high-protein", "longevity"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Anti-Inflammatory", "High-Protein", "Longevity"],
     ingredients: [
       "1 cup red lentils",
       "1 medium sweet potato (diced)",
@@ -614,7 +614,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.0 
     },
     category: "lunch",
-    tags: ["vegetarian", "gluten-free", "high-protein", "quick", "meal-prep", "longevity"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Quick", "meal-prep", "Longevity"],
     ingredients: [
       "1 cup cooked quinoa",
       "½ cup black beans (cooked)",
@@ -671,7 +671,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.1 
     },
     category: "lunch",
-    tags: ["pescatarian", "gluten-free", "dairy-free", "paleo", "anti-inflammatory", "high-protein", "longevity"],
+    tags: ["pescatarian", "Gluten-Free", "Dairy-Free", "Paleo", "Anti-Inflammatory", "High-Protein", "Longevity"],
     ingredients: [
       "150g wild salmon fillet",
       "1 medium sweet potato (chunked)",
@@ -723,7 +723,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.9 
     },
     category: "lunch",
-    tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "ayurvedic", "anti-inflammatory"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Ayurvedic", "Anti-Inflammatory"],
     ingredients: [
       "¾ cup green lentils",
       "½ cup brown rice", 
@@ -779,7 +779,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.9 
     },
     category: "lunch",
-    tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "high-protein", "anti-inflammatory", "ayurvedic", "longevity"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "High-Protein", "Anti-Inflammatory", "Ayurvedic", "Longevity"],
     ingredients: [
       "200g tempeh (sliced)",
       "1 medium zucchini (sliced)",
@@ -842,7 +842,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.4 
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "dairy-free", "high-protein", "longevity"],
+    tags: ["Vegetarian", "Gluten-Free", "Dairy-Free", "High-Protein", "Longevity"],
     ingredients: [
       "2 large portobello mushrooms (stems removed)",
       "200g Brussels sprouts (halved)",
@@ -901,7 +901,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.8 
     },
     category: "dinner",
-    tags: ["non-vegetarian", "gluten-free", "dairy-free", "paleo", "high-protein"],
+    tags: ["non-vegetarian", "Gluten-Free", "Dairy-Free", "Paleo", "High-Protein"],
     ingredients: ["free-range chicken thighs", "Brussels sprouts", "sweet potato", "red onion", "fresh sage", "fresh thyme", "fresh rosemary", "olive oil", "lemon", "garlic", "toasted almonds", "sea salt"],
     wholeFoodLevel: "high",
     vegetableContent: {
@@ -945,7 +945,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.0 
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "anti-inflammatory", "high-protein", "longevity"],
+    tags: ["Vegetarian", "Gluten-Free", "Anti-Inflammatory", "High-Protein", "Longevity"],
     ingredients: ["quinoa", "mixed wild mushrooms", "fresh herbs (parsley, thyme)", "1 zucchini", "red bell pepper", "carrots", "red onion", "pine nuts", "olive oil", "vegetable stock", "tahini", "lemon juice", "parmesan cheese", "hemp hearts", "pumpkin seeds", "chickpeas", "nutritional yeast"],
     wholeFoodLevel: "high",
     vegetableContent: {
@@ -997,7 +997,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.4 
     },
     category: "dinner",
-    tags: ["pescatarian", "gluten-free", "dairy-free", "mediterranean", "anti-inflammatory", "longevity"],
+    tags: ["pescatarian", "Gluten-Free", "Dairy-Free", "mediterranean", "Anti-Inflammatory", "Longevity"],
     ingredients: ["fresh cod fillet", "200g cherry tomatoes", "1 zucchini", "red onion", "black olives", "fresh basil", "fresh oregano", "olive oil", "lemon", "capers"],
     wholeFoodLevel: "high",
     vegetableContent: {
@@ -1045,7 +1045,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.9 
     },
     category: "lunch",
-    tags: ["vegetarian", "gluten-free", "viral", "social-media", "anti-inflammatory", "keto"],
+    tags: ["Vegetarian", "Gluten-Free", "viral", "social-media", "Anti-Inflammatory", "Keto"],
     ingredients: ["mixed greens", "cucumber", "avocado", "hemp seeds", "pumpkin seeds", "tahini", "lemon", "fresh herbs", "olive oil", "nutritional yeast"],
     wholeFoodLevel: "high",
     vegetableContent: {
@@ -1088,7 +1088,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 10.6 
     },
     category: "breakfast",
-    tags: ["vegetarian", "viral", "social-media", "high-protein", "probiotic", "dairy"],
+    tags: ["Vegetarian", "viral", "social-media", "High-Protein", "Probiotic", "dairy"],
     ingredients: ["cottage cheese", "fresh berries", "honey", "granola", "chia seeds", "cinnamon", "vanilla extract"],
     wholeFoodLevel: "moderate",
     vegetableContent: {
@@ -1130,7 +1130,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.8 
     },
     category: "dinner",
-    tags: ["vegetarian", "viral", "social-media", "high-protein", "comfort-food"],
+    tags: ["Vegetarian", "viral", "social-media", "High-Protein", "comfort-food"],
     ingredients: ["king oyster mushrooms", "100g pasta", "30g sun-dried tomatoes", "cashew cream", "nutritional yeast", "garlic", "herbs", "vegetable stock"],
     wholeFoodLevel: "moderate",
     vegetableContent: {
@@ -1173,7 +1173,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.0 
     },
     category: "lunch",
-    tags: ["vegetarian", "gluten-free", "viral", "social-media", "protein-rich", "refreshing"],
+    tags: ["Vegetarian", "Gluten-Free", "viral", "social-media", "protein-rich", "refreshing"],
     ingredients: [
       "2 large cucumbers (sliced)",
       "80g cooked edamame beans", 
@@ -1226,7 +1226,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 13.3 
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "viral", "social-media", "keto", "low-carb"],
+    tags: ["Vegetarian", "Gluten-Free", "viral", "social-media", "Keto", "Low-Carb"],
     ingredients: ["eggs", "cream cheese", "baking powder", "salt"],
     wholeFoodLevel: "minimal",
     vegetableContent: {
@@ -1265,7 +1265,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.3 
     },
     category: "lunch",
-    tags: ["non-vegetarian", "gluten-free", "dairy-free", "paleo", "high-protein"],
+    tags: ["non-vegetarian", "Gluten-Free", "Dairy-Free", "Paleo", "High-Protein"],
     ingredients: ["free-range chicken breast", "mixed vegetables", "fresh rosemary", "fresh thyme", "fresh sage", "garlic", "olive oil", "lemon", "toasted pine nuts", "sea salt", "black pepper"],
     wholeFoodLevel: "high",
     vegetableContent: {
@@ -1311,7 +1311,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.2 
     },
     category: "dinner",
-    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "quick", "colorful", "high-protein"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Quick", "colorful", "High-Protein"],
     ingredients: [
       "200g rice noodles",
       "200g firm tofu (cubed)",
@@ -1374,7 +1374,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.8 
     },
     category: "dinner",
-    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "quick", "protein-rich"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Quick", "protein-rich"],
     ingredients: [
       "1 cup quinoa",
       "1 can (400g) chickpeas (drained)",
@@ -1431,7 +1431,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.5 
     },
     category: "dinner",
-    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "mediterranean", "colorful"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "mediterranean", "colorful"],
     ingredients: [
       "1 cup quinoa",
       "1 zucchini (diced)",
@@ -1488,7 +1488,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.3 
     },
     category: "dinner",
-    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "quick", "high-fiber"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Quick", "High-Fiber"],
     ingredients: [
       "1 large sweet potato (cubed)",
       "1 can (400g) black beans (drained)",
@@ -1544,7 +1544,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.5 
     },
     category: "dinner",
-    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "quick", "asian"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Quick", "asian"],
     ingredients: [
       "2 cups cooked brown rice (day-old preferred)",
       "200g firm tofu (cubed)",
@@ -1601,7 +1601,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.9 
     },
     category: "dinner",
-    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "ayurvedic", "quick", "warming"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Ayurvedic", "Quick", "warming"],
     ingredients: [
       "1 cup red lentils (masoor dal)",
       "1/2 cup basmati rice",
@@ -1657,7 +1657,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.6 
     },
     category: "lunch",
-    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "ayurvedic", "digestive", "warming"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Ayurvedic", "digestive", "warming"],
     ingredients: [
       "1/2 cup split mung beans (moong dal)",
       "1/2 cup basmati rice",
@@ -1713,7 +1713,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.8 
     },
     category: "dinner",
-    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "ayurvedic", "warming", "grounding"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Ayurvedic", "warming", "grounding"],
     ingredients: [
       "1 cup quinoa",
       "1 large sweet potato (cubed)",
@@ -1770,7 +1770,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.9 
     },
     category: "lunch",
-    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "ayurvedic", "quick", "digestive"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Ayurvedic", "Quick", "digestive"],
     ingredients: [
       "1 cup whole mung beans (soaked overnight)",
       "1 zucchini (diced)",
@@ -1826,7 +1826,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.7 
     },
     category: "dinner",
-    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "ayurvedic", "quick", "warming"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Ayurvedic", "Quick", "warming"],
     ingredients: [
       "1 cup cooked brown rice",
       "1 bell pepper (sliced)",
@@ -1884,7 +1884,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.0 
     },
     category: "lunch",
-    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "ayurvedic", "cooling", "quick"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Ayurvedic", "Cooling", "Quick"],
     ingredients: [
       "1 cup cooked quinoa (cooled)",
       "1 cucumber (diced)",
@@ -1939,7 +1939,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.1 
     },
     category: "dinner",
-    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "ayurvedic", "cooling"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Ayurvedic", "Cooling"],
     ingredients: [
       "1 cup basmati rice",
       "2 cups mixed green vegetables (zucchini, green beans, spinach)",
@@ -1993,7 +1993,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.3 
     },
     category: "dinner",
-    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "ayurvedic", "cooling", "quick"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Ayurvedic", "Cooling", "Quick"],
     ingredients: [
       "1 cup whole mung beans (soaked 4 hours)",
       "1 zucchini (diced)",
@@ -2049,7 +2049,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.6
     },
     category: 'lunch',
-    tags: ['vegetarian', 'vegan', 'gluten-free', 'lactose-free', 'ayurvedic', 'cooling', 'quick', 'high-protein'],
+    tags: ['Vegetarian', 'Vegan', 'Gluten-Free', 'Lactose-Free', 'Ayurvedic', 'Cooling', 'Quick', 'High-Protein'],
     ingredients: [
       '1 cup mixed summer vegetables (zucchini, cucumber, fresh corn)',
       '1/2 cup coconut milk',
@@ -2105,7 +2105,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.4
     },
     category: 'lunch',
-    tags: ['vegetarian', 'gluten-free', 'lactose-free', 'ayurvedic', 'cooling', 'quick'],
+    tags: ['Vegetarian', 'Gluten-Free', 'Lactose-Free', 'Ayurvedic', 'Cooling', 'Quick'],
     ingredients: [
       '1 large cucumber, diced',
       '1/2 cup cooked quinoa',
@@ -2159,7 +2159,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.6
     },
     category: 'dinner',
-    tags: ['vegetarian', 'vegan', 'gluten-free', 'lactose-free', 'ayurvedic', 'cooling'],
+    tags: ['Vegetarian', 'Vegan', 'Gluten-Free', 'Lactose-Free', 'Ayurvedic', 'Cooling'],
     ingredients: [
       '1/2 cup cooked quinoa',
       '1/2 cup fresh seasonal fruit (melon, pear, berries)',
@@ -2213,7 +2213,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.2
     },
     category: 'dinner',
-    tags: ['vegetarian', 'vegan', 'gluten-free', 'lactose-free', 'ayurvedic', 'cooling', 'quick', 'high-protein'],
+    tags: ['Vegetarian', 'Vegan', 'Gluten-Free', 'Lactose-Free', 'Ayurvedic', 'Cooling', 'Quick', 'High-Protein'],
     ingredients: [
       '2 oz rice noodles',
       '80g tempeh (cubed)',
@@ -2269,7 +2269,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.9
     },
     category: 'lunch',
-    tags: ['vegetarian', 'vegan', 'gluten-free', 'lactose-free', 'ayurvedic', 'cooling', 'high-protein'],
+    tags: ['Vegetarian', 'Vegan', 'Gluten-Free', 'Lactose-Free', 'Ayurvedic', 'Cooling', 'High-Protein'],
     ingredients: [
       '1/2 cup pearl barley',
       '1/2 cup cooked white cannellini beans',
@@ -2327,7 +2327,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.8
     },
     category: "dinner",
-    tags: ["viral", "social-media", "high-protein", "comfort-food", "instagram-inspired"],
+    tags: ["viral", "social-media", "High-Protein", "comfort-food", "instagram-inspired"],
     ingredients: [
       "lasagna sheets", "chicken stock", "cottage cheese", "light cream cheese", 
       "mozzarella", "parmesan", "chicken breast", "mushrooms", "broccoli", 
@@ -2378,7 +2378,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.8
     },
     category: "dinner", 
-    tags: ["viral", "social-media", "high-protein", "italian-inspired", "instagram-inspired"],
+    tags: ["viral", "social-media", "High-Protein", "italian-inspired", "instagram-inspired"],
     ingredients: [
       "chicken breast mince", "brown onion", "basil pesto", "broccoli", "spinach",
       "cottage cheese", "skim milk", "garlic cloves", "lasagna sheets", "mozzarella", "salt"
@@ -2428,7 +2428,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.8
     },
     category: "dinner",
-    tags: ["viral", "social-media", "vegetarian", "italian-inspired", "instagram-inspired", "creamy"],
+    tags: ["viral", "social-media", "Vegetarian", "italian-inspired", "instagram-inspired", "creamy"],
     ingredients: [
       "200g pasta", "zucchini", "burrata cheese", "mozzarella", "garlic cloves",
       "olive oil", "pine nuts", "fresh basil", "salt", "pepper"
@@ -2479,7 +2479,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.5
     },
     category: "dinner",
-    tags: ["viral", "social-media", "vegetarian", "lactose-free", "dairy-free", "high-protein", "comfort-food", "instagram-inspired"],
+    tags: ["viral", "social-media", "Vegetarian", "Lactose-Free", "Dairy-Free", "High-Protein", "comfort-food", "instagram-inspired"],
     ingredients: [
       "lasagna sheets", "vegetable stock", "cashew cream", "nutritional yeast", 
       "firm tofu", "mushrooms", "broccoli", "spinach", "zucchini",
@@ -2530,7 +2530,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.1
     },
     category: "dinner", 
-    tags: ["viral", "social-media", "vegetarian", "lactose-free", "dairy-free", "high-protein", "italian-inspired", "instagram-inspired"],
+    tags: ["viral", "social-media", "Vegetarian", "Lactose-Free", "Dairy-Free", "High-Protein", "italian-inspired", "instagram-inspired"],
     ingredients: [
       "cooked green lentils", "brown onion", "dairy-free basil pesto", "broccoli", "spinach",
       "cashew cream", "unsweetened plant milk", "garlic cloves", "lasagna sheets", "nutritional yeast", "salt"
@@ -2581,7 +2581,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.5
     },
     category: "dinner",
-    tags: ["viral", "social-media", "vegetarian", "lactose-free", "dairy-free", "italian-inspired", "instagram-inspired", "creamy"],
+    tags: ["viral", "social-media", "Vegetarian", "Lactose-Free", "Dairy-Free", "italian-inspired", "instagram-inspired", "creamy"],
     ingredients: [
       "200g pasta", "zucchini", "cashew cheese", "nutritional yeast", "garlic cloves",
       "olive oil", "pine nuts", "fresh basil", "salt", "pepper", "lemon juice"
@@ -2629,7 +2629,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 8.8 
     },
     category: "breakfast",
-    tags: ["viral", "social-media", "high-protein", "gluten-free", "vegetarian", "quick"],
+    tags: ["viral", "social-media", "High-Protein", "Gluten-Free", "Vegetarian", "Quick"],
     ingredients: [
       "150g frozen mixed berries",
       "1 vanilla protein powder",
@@ -2678,7 +2678,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.7 
     },
     category: "breakfast",
-    tags: ["viral", "social-media", "vegetarian", "gluten-free", "low-carb", "keto-friendly"],
+    tags: ["viral", "social-media", "Vegetarian", "Gluten-Free", "Low-Carb", "keto-friendly"],
     ingredients: [
       "3 egg whites",
       "30ml cream cheese",
@@ -2726,7 +2726,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.3 
     },
     category: "breakfast",
-    tags: ["viral", "social-media", "vegetarian", "gluten-free", "high-protein"],
+    tags: ["viral", "social-media", "Vegetarian", "Gluten-Free", "High-Protein"],
     ingredients: [
       "50g rolled oats",
       "1 vanilla protein powder", 
@@ -2778,7 +2778,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.5 
     },
     category: "dinner",
-    tags: ["viral", "social-media", "gluten-free", "high-protein", "omega-3"],
+    tags: ["viral", "social-media", "Gluten-Free", "High-Protein", "omega-3"],
     ingredients: [
       "150g salmon fillet",
       "160g cooked sushi rice",
@@ -2839,7 +2839,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.9 
     },
     category: "breakfast",
-    tags: ["vegetarian", "vegan", "gluten-free", "lactose-free", "high-protein", "overnight"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "High-Protein", "overnight"],
     ingredients: [
       "45ml chia seeds",
       "240ml almond milk",
@@ -2890,7 +2890,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.3 
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "high-protein", "mediterranean"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "mediterranean"],
     ingredients: [
       "6 large eggs",
       "80g spinach",
@@ -2945,7 +2945,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.2 
     },
     category: "lunch",
-    tags: ["viral", "social-media", "vegetarian", "gluten-free", "quick", "high-protein"],
+    tags: ["viral", "social-media", "Vegetarian", "Gluten-Free", "Quick", "High-Protein"],
     ingredients: [
       "120g mixed greens",
       "100g black beans",
@@ -2997,7 +2997,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.1 
     },
     category: "dinner",
-    tags: ["viral", "social-media", "vegetarian", "vegan", "gluten-free", "high-protein"],
+    tags: ["viral", "social-media", "Vegetarian", "Vegan", "Gluten-Free", "High-Protein"],
     ingredients: [
       "120g chickpeas (cooked)",
       "150g diced tomatoes",
@@ -3049,7 +3049,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.0 
     },
     category: "breakfast",
-    tags: ["viral", "social-media", "vegetarian", "gluten-free", "refreshing", "high-protein"],
+    tags: ["viral", "social-media", "Vegetarian", "Gluten-Free", "refreshing", "High-Protein"],
     ingredients: [
       "150g fresh blueberries",
       "30ml pomegranate seeds",
@@ -3098,7 +3098,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.0 
     },
     category: "lunch",
-    tags: ["viral", "social-media", "vegetarian", "crispy", "snack"],
+    tags: ["viral", "social-media", "Vegetarian", "crispy", "snack"],
     ingredients: [
       "300g cooked pasta (any shape)",
       "30ml olive oil",
@@ -3149,7 +3149,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.6 
     },
     category: "breakfast",
-    tags: ["vegetarian", "high-protein", "post-workout", "energizing"],
+    tags: ["Vegetarian", "High-Protein", "post-workout", "energizing"],
     ingredients: [
       "1 vanilla protein powder",
       "150g frozen berries",
@@ -3198,7 +3198,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.0 
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "high-protein", "savory"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "savory"],
     ingredients: [
       "80g quinoa",
       "2 eggs",
@@ -3248,7 +3248,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 8.6 
     },
     category: "breakfast",
-    tags: ["vegetarian", "high-protein", "weekend-treat"],
+    tags: ["Vegetarian", "High-Protein", "weekend-treat"],
     ingredients: [
       "2 eggs",
       "1 vanilla protein powder",
@@ -3300,7 +3300,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.5 
     },
     category: "lunch",
-    tags: ["vegetarian", "vegan", "gluten-free", "high-protein", "quick", "asian-inspired"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "High-Protein", "Quick", "asian-inspired"],
     ingredients: [
       "150g firm tofu (cubed)",
       "½ cup cooked quinoa",
@@ -3352,7 +3352,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.9 
     },
     category: "lunch",
-    tags: ["vegetarian", "vegan", "gluten-free", "high-protein", "quick", "mediterranean"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "High-Protein", "Quick", "mediterranean"],
     ingredients: [
       "1 can (400g) white beans (drained)",
       "200g fresh spinach",
@@ -3404,7 +3404,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.7 
     },
     category: "dinner",
-    tags: ["vegetarian", "vegan", "gluten-free", "high-protein", "quick", "indian-inspired"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "High-Protein", "Quick", "indian-inspired"],
     ingredients: [
       "1 can (400g) chickpeas (drained)",
       "1 medium sweet potato (cubed)",
@@ -3457,7 +3457,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 8.2 
     },
     category: "lunch",
-    tags: ["vegetarian", "vegan", "gluten-free", "high-protein", "quick", "comfort-food"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "High-Protein", "Quick", "comfort-food"],
     ingredients: [
       "1 cup red lentils",
       "1 carrot (diced)",
@@ -3510,7 +3510,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.2 
     },
     category: "dinner",
-    tags: ["vegetarian", "vegan", "high-protein", "quick", "asian-inspired"],
+    tags: ["Vegetarian", "Vegan", "High-Protein", "Quick", "asian-inspired"],
     ingredients: [
       "150g tempeh (sliced)",
       "100g rice noodles",
@@ -3563,7 +3563,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.6 
     },
     category: "dinner",
-    tags: ["vegetarian", "vegan", "gluten-free", "high-protein", "mediterranean"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "High-Protein", "mediterranean"],
     ingredients: [
       "2 large bell peppers (halved and seeded)",
       "½ cup cooked quinoa",
@@ -3618,7 +3618,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.5 
     },
     category: "breakfast",
-    tags: ["keto", "gluten-free", "high-protein", "low-carb"],
+    tags: ["Keto", "Gluten-Free", "High-Protein", "Low-Carb"],
     ingredients: [
       "2 large avocados (halved, pitted)",
       "4 eggs",
@@ -3669,7 +3669,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.4 
     },
     category: "breakfast",
-    tags: ["keto", "gluten-free", "vegetarian", "low-carb"],
+    tags: ["Keto", "Gluten-Free", "Vegetarian", "Low-Carb"],
     ingredients: [
       "¼ cup coconut flour",
       "4 eggs",
@@ -3721,7 +3721,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.6 
     },
     category: "breakfast",
-    tags: ["keto", "gluten-free", "vegetarian", "vegan", "low-carb", "overnight"],
+    tags: ["Keto", "Gluten-Free", "Vegetarian", "Vegan", "Low-Carb", "overnight"],
     ingredients: [
       "3 tbsp chia seeds",
       "200ml coconut milk (full-fat)",
@@ -3771,7 +3771,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.7 
     },
     category: "lunch",
-    tags: ["keto", "gluten-free", "high-protein", "low-carb"],
+    tags: ["Keto", "Gluten-Free", "High-Protein", "Low-Carb"],
     ingredients: [
       "150g chicken breast",
       "4 cups romaine lettuce (chopped)",
@@ -3825,7 +3825,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.8 
     },
     category: "lunch",
-    tags: ["keto", "gluten-free", "high-protein", "low-carb"],
+    tags: ["Keto", "Gluten-Free", "High-Protein", "Low-Carb"],
     ingredients: [
       "2 medium zucchini (halved lengthwise)",
       "200g ground beef (80/20)",
@@ -3881,7 +3881,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.8 
     },
     category: "lunch",
-    tags: ["keto", "gluten-free", "high-protein", "omega-3", "low-carb"],
+    tags: ["Keto", "Gluten-Free", "High-Protein", "omega-3", "Low-Carb"],
     ingredients: [
       "150g salmon fillet",
       "1 large avocado (sliced)",
@@ -3937,7 +3937,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 8.3 
     },
     category: "dinner",
-    tags: ["keto", "gluten-free", "high-protein", "low-carb", "quick"],
+    tags: ["Keto", "Gluten-Free", "High-Protein", "Low-Carb", "Quick"],
     ingredients: [
       "200g beef sirloin (sliced thin)",
       "3 cups broccoli florets",
@@ -3993,7 +3993,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.8 
     },
     category: "dinner",
-    tags: ["keto", "gluten-free", "high-protein", "low-carb"],
+    tags: ["Keto", "Gluten-Free", "High-Protein", "Low-Carb"],
     ingredients: [
       "2 large bell peppers (tops cut, seeds removed)",
       "200g ground turkey",
@@ -4051,7 +4051,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 10.0 
     },
     category: "dinner",
-    tags: ["keto", "gluten-free", "high-protein", "low-carb"],
+    tags: ["Keto", "Gluten-Free", "High-Protein", "Low-Carb"],
     ingredients: [
       "4 chicken thighs (bone-in, skin-on)",
       "2 lemons (juiced and zested)",
@@ -4106,7 +4106,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.4 
     },
     category: "dinner",
-    tags: ["keto", "gluten-free", "vegetarian", "low-carb", "comfort-food"],
+    tags: ["Keto", "Gluten-Free", "Vegetarian", "Low-Carb", "comfort-food"],
     ingredients: [
       "1 large head cauliflower (cut into florets)",
       "1 cup sharp cheddar cheese (shredded)",
@@ -4162,7 +4162,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 10.0 
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "high-protein", "quick", "probiotic"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Quick", "Probiotic"],
     ingredients: [
       "1 cup Greek yogurt (2% fat)",
       "2 tbsp almond butter",
@@ -4212,7 +4212,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 13.6 
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "high-protein", "keto", "quick"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Keto", "Quick"],
     ingredients: [
       "3 large eggs",
       "½ cup cottage cheese",
@@ -4262,7 +4262,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 8.0 
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "high-protein", "weekend"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "weekend"],
     ingredients: [
       "3 large eggs",
       "1 vanilla protein powder",
@@ -4316,7 +4316,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 10.0 
     },
     category: "lunch",
-    tags: ["gluten-free", "high-protein", "meal-prep"],
+    tags: ["Gluten-Free", "High-Protein", "meal-prep"],
     ingredients: [
       "150g ground turkey (93% lean)",
       "¾ cup cooked green lentils",
@@ -4373,7 +4373,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 9.2 
     },
     category: "lunch",
-    tags: ["vegetarian", "high-protein", "meal-prep", "quick"],
+    tags: ["Vegetarian", "High-Protein", "meal-prep", "Quick"],
     ingredients: [
       "1 can (400g) chickpeas (drained, mashed)",
       "2 tbsp hemp hearts",
@@ -4429,7 +4429,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.6 
     },
     category: "dinner",
-    tags: ["pescatarian", "gluten-free", "high-protein", "omega-3"],
+    tags: ["pescatarian", "Gluten-Free", "High-Protein", "omega-3"],
     ingredients: [
       "180g salmon fillet",
       "¾ cup cooked quinoa",
@@ -4484,7 +4484,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 8.4 
     },
     category: "dinner",
-    tags: ["gluten-free", "high-protein", "meal-prep", "comfort-food"],
+    tags: ["Gluten-Free", "High-Protein", "meal-prep", "comfort-food"],
     ingredients: [
       "200g lean ground beef (93/7)",
       "1 can (400g) black beans (drained)",
@@ -4542,7 +4542,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.9 
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "mediterranean", "colorful"],
+    tags: ["Vegetarian", "Gluten-Free", "mediterranean", "colorful"],
     ingredients: [
       "200g gluten-free pasta (rice or chickpea)",
       "2 cups mixed vegetables (zucchini, bell peppers, cherry tomatoes)",
@@ -4594,7 +4594,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.8 
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "lactose-free", "comfort-food"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "comfort-food"],
     ingredients: [
       "180g gluten-free pasta",
       "200ml coconut cream",
@@ -4646,7 +4646,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.0 
     },
     category: "lunch",
-    tags: ["vegetarian", "gluten-free", "mediterranean", "fresh", "make-ahead"],
+    tags: ["Vegetarian", "Gluten-Free", "mediterranean", "fresh", "Make-Ahead"],
     ingredients: [
       "180g gluten-free pasta (small shapes)",
       "1 cup cherry tomatoes (halved)",
@@ -4699,7 +4699,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 10.0 
     },
     category: "dinner",
-    tags: ["vegetarian", "high-protein", "meal-prep", "comfort-food"],
+    tags: ["Vegetarian", "High-Protein", "meal-prep", "comfort-food"],
     ingredients: [
       "1 cup red lentils (dried)",
       "100g whole wheat pasta",
@@ -4762,7 +4762,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 8.4
     },
     category: "dinner",
-    tags: ["vegetarian", "comfort-food", "baked", "italian", "high-protein"],
+    tags: ["Vegetarian", "comfort-food", "baked", "italian", "High-Protein"],
     ingredients: [
       "400g penne pasta",
       "2 slices sourdough bread (for breadcrumbs)",
@@ -4835,7 +4835,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.7
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "comfort-food", "baked", "italian"],
+    tags: ["Vegetarian", "Gluten-Free", "comfort-food", "baked", "italian"],
     ingredients: [
       "400g gluten-free penne pasta",
       "2 slices gluten-free bread (for breadcrumbs)",
@@ -4910,7 +4910,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 10.0
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "high-protein", "quick", "wholesome"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Quick", "wholesome"],
     ingredients: [
       "30ml quinoa (uncooked)",
       "30g porridge oats",
@@ -4968,7 +4968,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.7
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "one-pan", "indian", "aromatic", "high-protein"],
+    tags: ["Vegetarian", "Gluten-Free", "one-pan", "indian", "aromatic", "High-Protein"],
     ingredients: [
       "300g chestnut mushrooms, halved",
       "60ml coconut yogurt",
@@ -5037,7 +5037,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 8.8
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "high-protein", "spicy", "north-african", "hearty", "ayurvedic", "warming"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "spicy", "north-african", "hearty", "Ayurvedic", "warming"],
     ingredients: [
       "15ml toasted sesame oil",
       "5ml ground cumin",
@@ -5106,7 +5106,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 9.2
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "high-protein", "quick", "wholesome", "winter", "ayurvedic"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Quick", "wholesome", "winter", "Ayurvedic"],
     ingredients: [
       "30ml cooked quinoa",
       "30g porridge oats",
@@ -5164,7 +5164,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 10.4
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "hearty", "one-pan", "protein-rich", "mediterranean"],
+    tags: ["Vegetarian", "Gluten-Free", "hearty", "one-pan", "protein-rich", "mediterranean"],
     ingredients: [
       "60g gram flour (chickpea flour)",
       "5ml olive oil (for batter)",
@@ -5236,7 +5236,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 9.2
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "hearty", "one-pan", "protein-rich", "mediterranean"],
+    tags: ["Vegetarian", "Gluten-Free", "hearty", "one-pan", "protein-rich", "mediterranean"],
     ingredients: [
       "60g gram flour (chickpea flour, certified gluten-free)",
       "5ml olive oil (for batter)",
@@ -5308,7 +5308,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.3
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "high-protein", "colorful", "meal-prep", "traybake"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "colorful", "meal-prep", "traybake"],
     ingredients: [
       "130g sweet potato, cut into 2cm cubes",
       "5ml ground cumin",
@@ -5381,7 +5381,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.1
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "high-protein", "curry-style", "creamy", "wholesome", "ayurvedic"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "curry-style", "creamy", "wholesome", "Ayurvedic"],
     ingredients: [
       "75g brown rice (per serving)",
       "1 medium white onion, finely sliced",
@@ -5447,7 +5447,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.3
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "high-protein", "one-pan", "warming", "ayurvedic", "hearty"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "one-pan", "warming", "Ayurvedic", "hearty"],
     ingredients: [
       "1 medium white onion, finely chopped",
       "2 cloves garlic, minced",
@@ -5510,7 +5510,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.3
     },
     category: "dinner",
-    tags: ["vegetarian", "dairy-free", "high-protein", "asian-fusion", "quick", "one-pan", "nutritious"],
+    tags: ["Vegetarian", "Dairy-Free", "High-Protein", "asian-fusion", "Quick", "one-pan", "nutritious"],
     ingredients: [
       "120g cashews",
       "60g sunflower seeds", 
@@ -5584,7 +5584,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.2
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "high-protein", "dutch-fusion", "comfort-food", "wholesome"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "dutch-fusion", "comfort-food", "wholesome"],
     ingredients: [
       "400g sweet potatoes, cut into thick fries",
       "15ml olive oil",
@@ -5652,7 +5652,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.8
     },
     category: "dinner",
-    tags: ["high-protein", "gluten-free", "dutch-fusion", "comfort-food", "lean-protein", "wholesome"],
+    tags: ["High-Protein", "Gluten-Free", "dutch-fusion", "comfort-food", "lean-protein", "wholesome"],
     ingredients: [
       "400g sweet potatoes, cut into thick fries",
       "15ml olive oil",
@@ -5724,7 +5724,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.7
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "high-protein", "thai", "curry", "one-pan", "batch-cooking", "warming", "ayurvedic"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "thai", "curry", "one-pan", "batch-cooking", "warming", "Ayurvedic"],
     ingredients: [
       "30ml olive oil",
       "2 cloves garlic, finely chopped",
@@ -5792,7 +5792,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.8
     },
     category: "dinner",
-    tags: ["vegetarian", "lactose-free", "dairy-free", "gluten-free", "high-protein", "dutch-fusion", "comfort-food", "wholesome"],
+    tags: ["Vegetarian", "Lactose-Free", "Dairy-Free", "Gluten-Free", "High-Protein", "dutch-fusion", "comfort-food", "wholesome"],
     ingredients: [
       "400g sweet potatoes, cut into thick fries",
       "15ml olive oil",
@@ -5858,7 +5858,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.3 
     },
     category: "lunch",
-    tags: ["pescatarian", "dairy-free", "low-carb", "high-protein", "fresh", "asian"],
+    tags: ["pescatarian", "Dairy-Free", "Low-Carb", "High-Protein", "fresh", "asian"],
     ingredients: [
       "450g fresh salmon fillet, cubed small",
       "8 rice paper wraps",
@@ -5920,7 +5920,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.5 
     },
     category: "lunch",
-    tags: ["vegetarian", "dairy-free", "high-protein", "fresh", "asian", "umami"],
+    tags: ["Vegetarian", "Dairy-Free", "High-Protein", "fresh", "asian", "umami"],
     ingredients: [
       "300g extra-firm tofu, cubed and marinated",
       "200g shiitake mushrooms, sliced and marinated",
@@ -5984,7 +5984,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.6 
     },
     category: "dinner",
-    tags: ["vegetarian", "high-protein", "mediterranean", "crispy", "comfort-food"],
+    tags: ["Vegetarian", "High-Protein", "mediterranean", "crispy", "comfort-food"],
     ingredients: [
       "2 large aubergines, sliced lengthwise",
       "120ml oat milk",
@@ -6048,7 +6048,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.8 
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "high-protein", "mediterranean", "crispy", "comfort-food"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "mediterranean", "crispy", "comfort-food"],
     ingredients: [
       "2 large aubergines, sliced lengthwise",
       "120ml oat milk",
@@ -6110,7 +6110,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.4 
     },
     category: "dinner",
-    tags: ["non-vegetarian", "dairy-free", "high-protein", "indonesian", "spicy", "coconut", "weekend-cooking"],
+    tags: ["non-vegetarian", "Dairy-Free", "High-Protein", "indonesian", "spicy", "coconut", "weekend-cooking"],
     ingredients: [
       "600g beef chuck or shin, cubed",
       "400ml coconut milk (full-fat)",
@@ -6179,7 +6179,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.3 
     },
     category: "dinner",
-    tags: ["vegan", "dairy-free", "high-protein", "indonesian", "spicy", "coconut", "weekend-cooking"],
+    tags: ["Vegan", "Dairy-Free", "High-Protein", "indonesian", "spicy", "coconut", "weekend-cooking"],
     ingredients: [
       "2 cans (800g) young green jackfruit in brine, drained",
       "400ml coconut milk (full-fat)",
@@ -6253,7 +6253,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.6 
     },
     category: "dinner",
-    tags: ["non-vegetarian", "high-protein", "crispy", "comfort-food", "herb-crusted"],
+    tags: ["non-vegetarian", "High-Protein", "crispy", "comfort-food", "herb-crusted"],
     ingredients: [
       "500g chicken breast, cut into chunks",
       "120ml whole milk",
@@ -6315,7 +6315,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.6 
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "lactose-free", "high-protein", "crispy", "plant-based"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Protein", "crispy", "plant-based"],
     ingredients: [
       "400g vegetarische kipstuckjes (plant-based chicken pieces)",
       "120ml oat milk",
@@ -6384,7 +6384,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.2
     },
     category: "dinner",
-    tags: ["vegetarian", "dairy-free", "gluten-free", "high-protein", "thai", "curry", "crispy-tofu", "aromatic", "ayurvedic"],
+    tags: ["Vegetarian", "Dairy-Free", "Gluten-Free", "High-Protein", "thai", "curry", "crispy-tofu", "aromatic", "Ayurvedic"],
     ingredients: [
       "200g firm tofu, cut into cubes",
       "30g cornstarch",
@@ -6456,7 +6456,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.1
     },
     category: "dinner",
-    tags: ["high-protein", "gluten-free", "keto", "low-carb", "mediterranean", "lean-protein", "fresh"],
+    tags: ["High-Protein", "Gluten-Free", "Keto", "Low-Carb", "mediterranean", "lean-protein", "fresh"],
     ingredients: [
       "400g cauliflower, cut into florets (or 300g pre-made cauliflower rice)",
       "200g chicken breast, diced",
@@ -6526,7 +6526,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.8
     },
     category: "dinner",
-    tags: ["vegetarian", "dairy-free", "gluten-free", "keto", "low-carb", "mediterranean", "plant-based", "fresh"],
+    tags: ["Vegetarian", "Dairy-Free", "Gluten-Free", "Keto", "Low-Carb", "mediterranean", "plant-based", "fresh"],
     ingredients: [
       "400g cauliflower, cut into florets (or 300g pre-made cauliflower rice)",
       "150g Beyond Meat crumbles",
@@ -6597,7 +6597,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.0
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "keto", "low-carb", "mediterranean", "traditional", "fresh"],
+    tags: ["Vegetarian", "Gluten-Free", "Keto", "Low-Carb", "mediterranean", "traditional", "fresh"],
     ingredients: [
       "400g cauliflower, cut into florets (or 300g pre-made cauliflower rice)",
       "240g canned chickpeas, drained and rinsed",
@@ -6668,7 +6668,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.1
     },
     category: "dinner",
-    tags: ["vegetarian", "lactose-free", "dairy-free", "gluten-free", "keto", "low-carb", "mediterranean", "fresh"],
+    tags: ["Vegetarian", "Lactose-Free", "Dairy-Free", "Gluten-Free", "Keto", "Low-Carb", "mediterranean", "fresh"],
     ingredients: [
       "400g cauliflower, cut into florets (or 300g pre-made cauliflower rice)",
       "240g canned chickpeas, drained and rinsed",
@@ -6739,7 +6739,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.9
     },
     category: "breakfast",
-    tags: ["vegetarian", "high-protein", "warming", "wholesome", "ayurvedic", "winter-comfort", "meal-prep", "tea-infused"],
+    tags: ["Vegetarian", "High-Protein", "warming", "wholesome", "Ayurvedic", "winter-comfort", "meal-prep", "tea-infused"],
     ingredients: [
       "40g rolled oats",
       "40g quinoa, rinsed",
@@ -6809,7 +6809,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 12.9
     },
     category: "breakfast",
-    tags: ["vegetarian", "high-protein", "meal-prep", "overnight-oats", "chocolate", "wholesome", "make-ahead"],
+    tags: ["Vegetarian", "High-Protein", "meal-prep", "overnight-oats", "chocolate", "wholesome", "Make-Ahead"],
     ingredients: [
       "40g quick oats",
       "20g cocoa protein powder",
@@ -6873,7 +6873,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.2
     },
     category: "dinner",
-    tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "comfort-food", "warming", "mushroom", "umami", "ayurvedic"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "comfort-food", "warming", "mushroom", "umami", "Ayurvedic"],
     ingredients: [
       "1 tbsp olive oil",
       "1 onion",
@@ -6937,7 +6937,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.7
     },
     category: "dinner",
-    tags: ["vegetarian", "vegan", "dairy-free", "comfort-food", "pasta", "nutritional-yeast", "tomato"],
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "comfort-food", "pasta", "nutritional-yeast", "tomato"],
     ingredients: [
       "300g macaroni pasta",
       "4 cloves garlic (peeled & diced)",
@@ -6999,7 +6999,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.0
     },
     category: "dinner",
-    tags: ["vegetarian", "vegan", "dairy-free", "gluten-free", "comfort-food", "pasta", "nutritional-yeast", "tomato"],
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Gluten-Free", "comfort-food", "pasta", "nutritional-yeast", "tomato"],
     ingredients: [
       "300g gluten-free macaroni pasta",
       "4 cloves garlic (peeled & diced)",
@@ -7061,7 +7061,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.3
     },
     category: "dinner",
-    tags: ["vegetarian", "vegan", "dairy-free", "comfort-food", "aubergine", "cashew", "bake", "Italian", "tomato"],
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "comfort-food", "aubergine", "cashew", "bake", "Italian", "tomato"],
     ingredients: [
       "100g cashews",
       "145g silken tofu (drained)",
@@ -7130,7 +7130,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.7
     },
     category: "dinner",
-    tags: ["vegetarian", "vegan", "dairy-free", "gluten-free", "comfort-food", "aubergine", "cashew", "bake", "Italian", "tomato"],
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Gluten-Free", "comfort-food", "aubergine", "cashew", "bake", "Italian", "tomato"],
     ingredients: [
       "100g cashews",
       "145g silken tofu (drained)",
@@ -7199,7 +7199,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.2
     },
     category: "dinner",
-    tags: ["vegetarian", "vegan", "gluten-free", "dairy-free", "warming", "quinoa", "beans", "chilli", "one-pot", "weeknight", "ayurvedic"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "warming", "quinoa", "beans", "chilli", "one-pot", "weeknight", "Ayurvedic"],
     ingredients: [
       "1 large red onion (peeled & finely chopped)",
       "3 cloves garlic (peeled & finely chopped)",
@@ -7268,7 +7268,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.8
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "dairy-free", "high-protein", "mediterranean", "spicy", "one-pan"],
+    tags: ["Vegetarian", "Gluten-Free", "Dairy-Free", "High-Protein", "mediterranean", "spicy", "one-pan"],
     ingredients: [
       "240g canned chickpeas (drained and rinsed)",
       "1 medium aubergine",
@@ -7344,7 +7344,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.1
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "high-protein", "calcium-rich", "menstruation", "anti-inflammatory"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "calcium-rich", "menstruation", "Anti-Inflammatory"],
     ingredients: [
       "400g Brussels sprouts, halved",
       "60g parmesan cheese, grated",
@@ -7402,7 +7402,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.1
     },
     category: "dinner",
-    tags: ["high-protein", "iron-rich", "menstruation", "luxury", "quick"],
+    tags: ["High-Protein", "iron-rich", "menstruation", "luxury", "Quick"],
     ingredients: [
       "150g duck breast, skin scored",
       "Mixed fresh herbs (rosemary, thyme)",
@@ -7460,7 +7460,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.2
     },
     category: "dinner",
-    tags: ["high-protein", "tropical", "anti-inflammatory", "menstruation", "comfort-food"],
+    tags: ["High-Protein", "tropical", "Anti-Inflammatory", "menstruation", "comfort-food"],
     ingredients: [
       "150g chicken breast, cubed",
       "100ml coconut milk",
@@ -7523,7 +7523,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.8
     },
     category: "dinner",
-    tags: ["high-protein", "iron-rich", "menstruation", "comfort-food", "hearty", "slow-cooked"],
+    tags: ["High-Protein", "iron-rich", "menstruation", "comfort-food", "hearty", "slow-cooked"],
     ingredients: [
       "150g lean beef stewing meat, cubed",
       "2 medium carrots, chopped",
@@ -7589,7 +7589,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.3
     },
     category: "lunch",
-    tags: ["high-protein", "keto-friendly", "menstruation", "quick", "satisfying", "healthy-fats"],
+    tags: ["High-Protein", "keto-friendly", "menstruation", "Quick", "satisfying", "healthy-fats"],
     ingredients: [
       "2 large eggs",
       "1 ripe avocado, sliced",
@@ -7652,7 +7652,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.8
     },
     category: "dinner",
-    tags: ["vegetarian", "gluten-free", "high-protein", "plant-based", "menstruation", "mexican-inspired", "fiber-rich"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "plant-based", "menstruation", "mexican-inspired", "fiber-rich"],
     ingredients: [
       "100g tempeh, cubed",
       "75g quinoa",
@@ -7718,7 +7718,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.8
     },
     category: "breakfast",
-    tags: ["vegetarian", "vegan", "dairy-free", "gluten-free", "menstruation", "high-protein", "smoothie", "berries", "pre-workout"],
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Gluten-Free", "menstruation", "High-Protein", "smoothie", "berries", "pre-workout"],
     ingredients: [
       "1 scoop vanilla protein powder",
       "150g mixed berries",
@@ -7772,7 +7772,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.4
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "menstruation", "high-protein", "sweet-treat", "cinnamon", "comfort-food"],
+    tags: ["Vegetarian", "Gluten-Free", "menstruation", "High-Protein", "sweet-treat", "cinnamon", "comfort-food"],
     ingredients: [
       "80g oat flour",
       "1 scoop vanilla protein powder", 
@@ -7832,7 +7832,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.6
     },
     category: "breakfast", 
-    tags: ["vegetarian", "vegan", "dairy-free", "gluten-free", "menstruation", "chocolate", "avocado", "comfort-food", "brownies"],
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Gluten-Free", "menstruation", "chocolate", "avocado", "comfort-food", "brownies"],
     ingredients: [
       "1 large ripe avocado",
       "40g cocoa powder",
@@ -7893,7 +7893,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.6
     },
     category: "breakfast",
-    tags: ["vegetarian", "vegan", "dairy-free", "gluten-free", "menstruation", "high-protein", "chocolate", "cashew", "mousse", "comfort-food"],
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Gluten-Free", "menstruation", "High-Protein", "chocolate", "cashew", "mousse", "comfort-food"],
     ingredients: [
       "100g cashews (soaked 2 hours)",
       "1 scoop vanilla protein powder",
@@ -7950,7 +7950,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.8
     },
     category: "breakfast",
-    tags: ["vegetarian", "vegan", "dairy-free", "gluten-free", "menstruation", "high-protein", "spirulina", "smoothie", "iron-rich", "detox"],
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Gluten-Free", "menstruation", "High-Protein", "spirulina", "smoothie", "iron-rich", "detox"],
     ingredients: [
       "1 scoop vanilla protein powder",
       "5ml spirulina powder",
@@ -8006,7 +8006,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.3
     },
     category: "breakfast",
-    tags: ["vegetarian", "dairy-free", "gluten-free", "menstruation", "matcha", "latte", "antioxidants", "energy-boost"],
+    tags: ["Vegetarian", "Dairy-Free", "Gluten-Free", "menstruation", "matcha", "latte", "antioxidants", "energy-boost"],
     ingredients: [
       "5ml matcha powder",
       "250ml plant milk",
@@ -8060,7 +8060,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.4
     },
     category: "breakfast",
-    tags: ["vegetarian", "menstruation", "eggs", "vegetables", "muffins", "meal-prep"],
+    tags: ["Vegetarian", "menstruation", "eggs", "vegetables", "muffins", "meal-prep"],
     ingredients: [
       "3 eggs",
       "60g grated cheese",
@@ -8180,7 +8180,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.1
     },
     category: "lunch",
-    tags: ["vegetarian", "menstruation", "flatbread", "eggs", "yogurt", "probiotics", "tomato"],
+    tags: ["Vegetarian", "menstruation", "flatbread", "eggs", "yogurt", "probiotics", "tomato"],
     ingredients: [
       "2 eggs",
       "120g Greek yogurt",
@@ -8298,7 +8298,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.6
     },
     category: "dinner",
-    tags: ["menstruation", "chicken", "casserole", "high-protein", "eggs", "cheese", "vegetables"],
+    tags: ["menstruation", "chicken", "casserole", "High-Protein", "eggs", "cheese", "vegetables"],
     ingredients: [
       "250g ground chicken",
       "2 eggs",
@@ -8358,7 +8358,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 10.0
     },
     category: "breakfast",
-    tags: ["vegetarian", "menstruation", "pancakes", "oats", "eggs", "protein", "banana", "high-fiber"],
+    tags: ["Vegetarian", "menstruation", "pancakes", "oats", "eggs", "protein", "banana", "High-Fiber"],
     ingredients: [
       "2 eggs",
       "1 scoop vanilla protein powder",
@@ -8417,7 +8417,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.5
     },
     category: "lunch", 
-    tags: ["vegetarian", "vegan", "dairy-free", "gluten-free", "menstruation", "beetroot", "hummus", "iron-rich", "folate"],
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Gluten-Free", "menstruation", "beetroot", "hummus", "iron-rich", "folate"],
     ingredients: [
       "150g cooked chickpeas",
       "100g cooked beetroot",
@@ -8476,7 +8476,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.6
     },
     category: "breakfast",
-    tags: ["vegetarian", "vegan", "dairy-free", "gluten-free", "menstruation", "protein", "chocolate", "truffle", "no-bake"],
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Gluten-Free", "menstruation", "protein", "chocolate", "truffle", "no-bake"],
     ingredients: [
       "1 scoop vanilla protein powder",
       "30g rolled oats",
@@ -8535,7 +8535,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.0
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "menstruation", "peanut-butter", "chocolate", "no-bake", "comfort-food"],
+    tags: ["Vegetarian", "Gluten-Free", "menstruation", "peanut-butter", "chocolate", "no-bake", "comfort-food"],
     ingredients: [
       "60g dark chocolate",
       "3 tbsp natural peanut butter",
@@ -8591,7 +8591,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.6
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "menstruation", "granola", "protein", "nuts", "seeds", "meal-prep", "cycleBased", "menstrual", "luteal"],
+    tags: ["Vegetarian", "Gluten-Free", "menstruation", "granola", "protein", "nuts", "seeds", "meal-prep", "cycleBased", "Menstrual", "Luteal"],
     ingredients: [
       "150g rolled oats",
       "1 scoop vanilla protein powder",
@@ -8650,7 +8650,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.4
     },
     category: "breakfast",
-    tags: ["vegetarian", "vegan", "dairy-free", "gluten-free", "menstruation", "energy-bites", "dates", "no-bake", "iron-rich", "cycleBased", "menstrual", "luteal"],
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Gluten-Free", "menstruation", "energy-bites", "dates", "no-bake", "iron-rich", "cycleBased", "Menstrual", "Luteal"],
     ingredients: [
       "100g pitted dates",
       "40g rolled oats",
@@ -8707,7 +8707,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.6
     },
     category: "lunch",
-    tags: ["menstruation", "beef", "eggs", "high-protein", "iron-rich", "spinach", "avocado", "keto-friendly"],
+    tags: ["menstruation", "beef", "eggs", "High-Protein", "iron-rich", "spinach", "avocado", "keto-friendly"],
     ingredients: [
       "150g lean ground beef",
       "2 eggs",
@@ -8766,7 +8766,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 2.5
     },
     category: "lunch",
-    tags: ["vegetarian", "vegan", "dairy-free", "gluten-free", "menstruation", "guacamole", "avocado", "potassium", "healthy-fats"],
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Gluten-Free", "menstruation", "guacamole", "avocado", "potassium", "healthy-fats"],
     ingredients: [
       "2 ripe avocados",
       "1 lime (juiced)",
@@ -8825,7 +8825,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.3
     },
     category: "lunch",
-    tags: ["menstruation", "salmon", "omega-3", "cucumber", "cream-cheese", "anti-inflammatory", "protein"],
+    tags: ["menstruation", "salmon", "omega-3", "cucumber", "cream-cheese", "Anti-Inflammatory", "protein"],
     ingredients: [
       "80g smoked salmon",
       "1 large cucumber",
@@ -8881,7 +8881,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 8.6
     },
     category: "dinner",
-    tags: ["menstruation", "chicken", "garlic", "butter", "herbs", "high-protein", "zinc", "B-vitamins"],
+    tags: ["menstruation", "chicken", "garlic", "butter", "herbs", "High-Protein", "zinc", "B-vitamins"],
     ingredients: [
       "200g chicken breast",
       "4 cloves garlic",
@@ -8939,7 +8939,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 11.3
     },
     category: "breakfast",
-    tags: ["vegetarian", "gluten-free", "menstruation", "mug-cake", "protein", "chocolate", "quick", "comfort-food"],
+    tags: ["Vegetarian", "Gluten-Free", "menstruation", "mug-cake", "protein", "chocolate", "Quick", "comfort-food"],
     ingredients: [
       "1 scoop vanilla protein powder",
       "20g cocoa powder",
@@ -8985,8 +8985,8 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
   
   for (const recipe of recipes) {
     // Skip if already a variant (to avoid infinite loops)
-    if (recipe.name.toLowerCase().includes('gluten-free') || 
-        recipe.name.toLowerCase().includes('lactose-free') || 
+    if (recipe.name.toLowerCase().includes('Gluten-Free') || 
+        recipe.name.toLowerCase().includes('Lactose-Free') || 
         recipe.name.toLowerCase().includes('vegetarian version')) {
       continue;
     }
@@ -8995,10 +8995,10 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
     
     // 1. GLUTEN-FREE VERSION - Only if recipe contains gluten ingredients
     const hasGlutenIngredients = recipe.ingredients?.some(ing => 
-      (ing.toLowerCase().includes('pasta') && !ing.toLowerCase().includes('gluten-free')) ||
-      (ing.toLowerCase().includes('flour') && !ing.toLowerCase().includes('gluten-free')) ||
-      (ing.toLowerCase().includes('bread') && !ing.toLowerCase().includes('gluten-free')) ||
-      (ing.toLowerCase().includes('soy sauce') && !ing.toLowerCase().includes('gluten-free')) ||
+      (ing.toLowerCase().includes('pasta') && !ing.toLowerCase().includes('Gluten-Free')) ||
+      (ing.toLowerCase().includes('flour') && !ing.toLowerCase().includes('Gluten-Free')) ||
+      (ing.toLowerCase().includes('bread') && !ing.toLowerCase().includes('Gluten-Free')) ||
+      (ing.toLowerCase().includes('soy sauce') && !ing.toLowerCase().includes('Gluten-Free')) ||
       ing.toLowerCase().includes('wheat')
     );
     
@@ -9009,23 +9009,23 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
       glutenFreeVersion = {
         ...recipe,
         name: `${recipe.name} (Gluten-Free)`,
-        tags: [...recipe.tags.filter(tag => tag !== 'wheat'), 'gluten-free'],
+        tags: [...recipe.tags.filter(tag => tag !== 'wheat'), 'Gluten-Free'],
         ingredients: recipe.ingredients?.map(ingredient => {
           // Convert gluten-containing ingredients
-          if (ingredient.toLowerCase().includes('pasta') && !ingredient.toLowerCase().includes('gluten-free')) {
+          if (ingredient.toLowerCase().includes('pasta') && !ingredient.toLowerCase().includes('Gluten-Free')) {
             // For wheat pasta or similar, replace entirely with gluten-free version
             if (ingredient.toLowerCase().includes('wheat')) {
               return ingredient.replace(/.*pasta/gi, 'gluten-free pasta (rice or chickpea)');
             }
             return ingredient.replace('pasta', 'gluten-free pasta (rice or chickpea)');
           }
-          if (ingredient.toLowerCase().includes('flour') && !ingredient.toLowerCase().includes('gluten-free')) {
+          if (ingredient.toLowerCase().includes('flour') && !ingredient.toLowerCase().includes('Gluten-Free')) {
             return ingredient.replace('flour', 'gluten-free flour blend');
           }
-          if (ingredient.toLowerCase().includes('bread') && !ingredient.toLowerCase().includes('gluten-free')) {
+          if (ingredient.toLowerCase().includes('bread') && !ingredient.toLowerCase().includes('Gluten-Free')) {
             return ingredient.replace('bread', 'gluten-free bread');
           }
-          if (ingredient.toLowerCase().includes('soy sauce') && !ingredient.toLowerCase().includes('gluten-free')) {
+          if (ingredient.toLowerCase().includes('soy sauce') && !ingredient.toLowerCase().includes('Gluten-Free')) {
             return ingredient.replace('soy sauce', 'gluten-free tamari');
           }
           if (ingredient.toLowerCase().includes('wheat')) {
@@ -9048,7 +9048,7 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
       // Recipe is naturally gluten-free - just add the tag
       glutenFreeVersion = {
         ...recipe,
-        tags: [...recipe.tags, 'gluten-free']
+        tags: [...recipe.tags, 'Gluten-Free']
       };
     }
     
@@ -9057,7 +9057,7 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
       (ing.toLowerCase().includes('milk') && !ing.toLowerCase().includes('almond') && !ing.toLowerCase().includes('coconut') && !ing.toLowerCase().includes('oat')) ||
       (ing.toLowerCase().includes('cream') && !ing.toLowerCase().includes('coconut')) ||
       (ing.toLowerCase().includes('butter') && !ing.toLowerCase().includes('nut') && !ing.toLowerCase().includes('peanut')) ||
-      (ing.toLowerCase().includes('cheese') && !ing.toLowerCase().includes('vegan')) ||
+      (ing.toLowerCase().includes('cheese') && !ing.toLowerCase().includes('Vegan')) ||
       (ing.toLowerCase().includes('yogurt') && !ing.toLowerCase().includes('coconut')) ||
       ing.toLowerCase().includes('parmesan')
     );
@@ -9069,7 +9069,7 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
       lactoseFreeVersion = {
         ...recipe,
         name: `${recipe.name} (Lactose-Free)`,
-        tags: [...recipe.tags, 'lactose-free', 'dairy-free'],
+        tags: [...recipe.tags, 'Lactose-Free', 'dairy-free'],
         ingredients: recipe.ingredients?.map(ingredient => {
           // Convert dairy ingredients
           if (ingredient.toLowerCase().includes('milk') && !ingredient.toLowerCase().includes('almond') && !ingredient.toLowerCase().includes('coconut') && !ingredient.toLowerCase().includes('oat')) {
@@ -9086,7 +9086,7 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
               !ingredient.toLowerCase().includes('coconut')) {
             return ingredient.replace(/butter/gi, 'vegan butter');
           }
-          if (ingredient.toLowerCase().includes('cheese') && !ingredient.toLowerCase().includes('vegan')) {
+          if (ingredient.toLowerCase().includes('cheese') && !ingredient.toLowerCase().includes('Vegan')) {
             return ingredient.replace(/cheese/gi, 'vegan cheese');
           }
           if (ingredient.toLowerCase().includes('yogurt') && !ingredient.toLowerCase().includes('coconut')) {
@@ -9112,7 +9112,7 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
       // Recipe is naturally lactose-free - just add the tag
       lactoseFreeVersion = {
         ...recipe,
-        tags: [...recipe.tags, 'lactose-free', 'dairy-free']
+        tags: [...recipe.tags, 'Lactose-Free', 'dairy-free']
       };
     }
     
@@ -9139,11 +9139,11 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
       ing.toLowerCase().includes('halibut')
     );
     
-    if (hasMeat && !hasFish && !recipe.tags.includes('vegetarian')) {
+    if (hasMeat && !hasFish && !recipe.tags.includes('Vegetarian')) {
       const vegetarianVersion: MealOption = {
         ...recipe,
         name: `${recipe.name} (Vegetarian)`,
-        tags: [...recipe.tags.filter(tag => !['non-vegetarian'].includes(tag)), 'vegetarian'],
+        tags: [...recipe.tags.filter(tag => !['Non-Vegetarian'].includes(tag)), 'Vegetarian'],
         ingredients: recipe.ingredients?.map(ingredient => {
           // Convert meat ingredients using Dutch vegetarian substitutes
           if (ingredient.toLowerCase().includes('chicken')) {
@@ -9183,10 +9183,10 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
     }
     
     // Add all applicable variants (but only if they're different from the original)
-    if (hasGlutenIngredients || !recipe.tags.includes('gluten-free')) {
+    if (hasGlutenIngredients || !recipe.tags.includes('Gluten-Free')) {
       variants.push(glutenFreeVersion);
     }
-    if (hasDairyIngredients || !recipe.tags.includes('lactose-free')) {
+    if (hasDairyIngredients || !recipe.tags.includes('Lactose-Free')) {
       variants.push(lactoseFreeVersion);
     }
   }
@@ -9320,10 +9320,10 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
   // For users with no dietary restrictions, prioritize non-vegetarian options
   if (dietaryTags.length === 0) {
     const nonVegetarianMeals = meals.filter(meal => 
-      meal.tags.includes('non-vegetarian') || meal.tags.includes('pescatarian')
+      meal.tags.includes('Non-Vegetarian') || meal.tags.includes('Pescatarian')
     );
     const vegetarianMeals = meals.filter(meal => 
-      meal.tags.includes('vegetarian') && !meal.tags.includes('non-vegetarian') && !meal.tags.includes('pescatarian')
+      meal.tags.includes('Vegetarian') && !meal.tags.includes('Non-Vegetarian') && !meal.tags.includes('Pescatarian')
     );
     
     // Return balanced mix: 70% meat/fish, 30% vegetarian for variety
@@ -9340,15 +9340,15 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
   
   return meals.filter(meal => {
     // Handle critical dietary restrictions that must be enforced
-    const criticalTags = ['vegetarian', 'vegan', 'gluten-free', 'lactose-free', 'dairy-free'];
+    const criticalTags = ['Vegetarian', 'Vegan', 'Gluten-Free', 'Lactose-Free', 'dairy-free'];
     const userCriticalTags = dietaryTags.filter(tag => criticalTags.includes(tag));
     
     // SMART VEGETARIAN FILTERING: Include meals that either:
     // 1. Are tagged as vegetarian/vegan, OR
     // 2. Don't contain any meat/fish ingredients (naturally vegetarian - like pancakes)
-    if (dietaryTags.includes('vegetarian') || dietaryTags.includes('vegan')) {
+    if (dietaryTags.includes('Vegetarian') || dietaryTags.includes('Vegan')) {
       // Always exclude explicitly non-vegetarian tagged meals
-      if (meal.tags.includes('non-vegetarian') || meal.tags.includes('pescatarian')) {
+      if (meal.tags.includes('Non-Vegetarian') || meal.tags.includes('Pescatarian')) {
         console.log(`🚫 SMART VEGETARIAN: "${meal.name}" excluded - tagged as non-vegetarian`);
         return false;
       }
@@ -9367,7 +9367,7 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
       }
       
       // If meal doesn't contain meat and isn't tagged as vegetarian, include it (naturally vegetarian)
-      if (!meal.tags.includes('vegetarian') && !meal.tags.includes('vegan') && !hasMeat) {
+      if (!meal.tags.includes('Vegetarian') && !meal.tags.includes('Vegan') && !hasMeat) {
         console.log(`✅ SMART VEGETARIAN: "${meal.name}" included - no meat/fish found, naturally vegetarian`);
       }
     }
@@ -9385,31 +9385,31 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
       );
       
       // For lactose-free requirement, check if meal has lactose-free tag OR doesn't contain dairy
-      const lactoseFreeRequirement = dietaryTags.includes('lactose-free');
+      const lactoseFreeRequirement = dietaryTags.includes('Lactose-Free');
       const lactoseFreeSatisfied = !lactoseFreeRequirement || 
-        meal.tags.includes('lactose-free') || 
+        meal.tags.includes('Lactose-Free') || 
         meal.tags.includes('dairy-free') || 
         !hasDairyIngredients;
       
       // Check other critical tags (vegetarian, gluten-free, etc.)
-      const otherCriticalTags = userCriticalTags.filter(tag => tag !== 'lactose-free');
+      const otherCriticalTags = userCriticalTags.filter(tag => tag !== 'Lactose-Free');
       
       // Smart gluten-free filtering: include meals that don't contain gluten ingredients
       let glutenFreeSatisfied = true;
-      if (dietaryTags.includes('gluten-free')) {
+      if (dietaryTags.includes('Gluten-Free')) {
         const hasGlutenIngredients = meal.ingredients && meal.ingredients.some(ingredient => 
-          ingredient.toLowerCase().includes('flour') && !ingredient.toLowerCase().includes('gluten-free') ||
+          ingredient.toLowerCase().includes('flour') && !ingredient.toLowerCase().includes('Gluten-Free') ||
           ingredient.toLowerCase().includes('wheat') ||
-          ingredient.toLowerCase().includes('bread') && !ingredient.toLowerCase().includes('gluten-free') ||
-          ingredient.toLowerCase().includes('pasta') && !ingredient.toLowerCase().includes('gluten-free') ||
-          ingredient.toLowerCase().includes('soy sauce') && !ingredient.toLowerCase().includes('gluten-free')
+          ingredient.toLowerCase().includes('bread') && !ingredient.toLowerCase().includes('Gluten-Free') ||
+          ingredient.toLowerCase().includes('pasta') && !ingredient.toLowerCase().includes('Gluten-Free') ||
+          ingredient.toLowerCase().includes('soy sauce') && !ingredient.toLowerCase().includes('Gluten-Free')
         );
         
-        glutenFreeSatisfied = meal.tags.includes('gluten-free') || !hasGlutenIngredients;
+        glutenFreeSatisfied = meal.tags.includes('Gluten-Free') || !hasGlutenIngredients;
       }
       
       // Check other critical tags (but allow smart gluten-free logic)
-      const remainingCriticalTags = otherCriticalTags.filter(tag => tag !== 'gluten-free');
+      const remainingCriticalTags = otherCriticalTags.filter(tag => tag !== 'Gluten-Free');
       const otherCriticalSatisfied = remainingCriticalTags.every(tag => meal.tags.includes(tag));
       
       if (!lactoseFreeSatisfied || !glutenFreeSatisfied || !otherCriticalSatisfied) {
@@ -9455,12 +9455,12 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
       // Always prioritize longevity-focused recipes for all users
       console.log(`🧬 LONGEVITY FOCUS: Including longevity-promoting recipes for ${category} (automatic)`);
       // Filter longevity-focused recipes from the current meal pool
-      const longevityRecipes = allMeals.filter(meal => meal.tags.includes('longevity'));
+      const longevityRecipes = allMeals.filter(meal => meal.tags.includes('Longevity'));
       console.log(`🧬 Found ${longevityRecipes.length} longevity-focused recipes for ${category}`);
       
       // Prioritize longevity recipes by placing them at the beginning of the array
       if (longevityRecipes.length > 0) {
-        const nonLongevityRecipes = allMeals.filter(meal => !meal.tags.includes('longevity'));
+        const nonLongevityRecipes = allMeals.filter(meal => !meal.tags.includes('Longevity'));
         allMeals = [...longevityRecipes, ...nonLongevityRecipes];
         console.log(`🧬 PRIORITIZED: Moved ${longevityRecipes.length} longevity-focused recipes to front of selection pool`);
       }
@@ -9551,11 +9551,11 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
   // For custom recipes, apply more lenient filtering (assume user knows their dietary needs)
   let filteredCustomMeals = customRecipesBeforeFiltering.filter(meal => {
     // Only exclude custom recipes if they explicitly conflict with critical dietary restrictions
-    if (dietaryTags.includes('vegetarian') && meal.tags.includes('non-vegetarian')) {
+    if (dietaryTags.includes('Vegetarian') && meal.tags.includes('Non-Vegetarian')) {
       console.log(`🚫 CUSTOM EXCLUDED: "${meal.name}" - explicitly non-vegetarian`);
       return false;
     }
-    if (dietaryTags.includes('vegan') && meal.tags.includes('non-vegan')) {
+    if (dietaryTags.includes('Vegan') && meal.tags.includes('non-vegan')) {
       console.log(`🚫 CUSTOM EXCLUDED: "${meal.name}" - explicitly non-vegan`);
       return false;
     }
@@ -9573,14 +9573,14 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
   }
   
   // Apply smart ingredient substitutions for dietary restrictions
-  if (dietaryTags.some(tag => ['lactose-free', 'dairy-free', 'gluten-free'].includes(tag))) {
-    console.log(`🔄 Applying dietary substitutions for: ${dietaryTags.filter(tag => ['lactose-free', 'dairy-free', 'gluten-free'].includes(tag)).join(', ')}`);
+  if (dietaryTags.some(tag => ['Lactose-Free', 'dairy-free', 'Gluten-Free'].includes(tag))) {
+    console.log(`🔄 Applying dietary substitutions for: ${dietaryTags.filter(tag => ['Lactose-Free', 'dairy-free', 'Gluten-Free'].includes(tag)).join(', ')}`);
     filteredMeals = filteredMeals.map(meal => applyDietarySubstitutions(meal, dietaryTags));
   }
   
   
   // Apply seasonal adaptations for ayurvedic meals
-  if (dietaryTags.includes('ayurvedic') && filteredMeals.length > 0) {
+  if (dietaryTags.includes('Ayurvedic') && filteredMeals.length > 0) {
     const currentSeason = getCurrentAyurvedicSeason(new Date(), 'europe');
     const seasonalGuidance = getCurrentSeasonalGuidance(new Date(), 'europe');
     
@@ -9589,7 +9589,7 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
     if (currentSeason === 'grishma') {
       const originalCount = filteredMeals.length;
       filteredMeals = filteredMeals.filter(meal => {
-        if (!meal.tags.includes('ayurvedic')) return true; // Keep non-ayurvedic meals
+        if (!meal.tags.includes('Ayurvedic')) return true; // Keep non-ayurvedic meals
         
         const hasWarmingTags = meal.tags.includes('warming');
         const hasHeatingSpices = meal.ingredients.some(ingredient => 
@@ -9614,7 +9614,7 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
     }
     
     filteredMeals = filteredMeals.map(meal => {
-      if (meal.tags.includes('ayurvedic')) {
+      if (meal.tags.includes('Ayurvedic')) {
         const adaptedMeal = adaptRecipeForSeason(meal, currentSeason);
         // Add seasonal context to the portion for display, keep original name for recipe lookup
         adaptedMeal.portion = `${meal.portion} (${seasonalGuidance.season} season)`;
@@ -9629,7 +9629,7 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
     console.log(`No ${category} meals found for dietary tags: ${dietaryTags.join(', ')}. Attempting smart fallback.`);
     
     // Define critical dietary restrictions that should never be violated
-    const criticalTags = ['vegetarian', 'vegan', 'kosher', 'halal'];
+    const criticalTags = ['Vegetarian', 'Vegan', 'kosher', 'halal'];
     const criticalUserTags = dietaryTags.filter(tag => criticalTags.includes(tag));
     
     // If user has critical dietary restrictions, only respect those in fallback
@@ -9639,14 +9639,14 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
         console.log(`Fallback: Found ${criticalFilteredMeals.length} ${category} meals respecting critical dietary restrictions: ${criticalUserTags.join(', ')}`);
         
         // Additional safety check: Verify no non-vegetarian meals for vegetarian users
-        if (criticalUserTags.includes('vegetarian')) {
+        if (criticalUserTags.includes('Vegetarian')) {
           const safetyFilteredMeals = criticalFilteredMeals.filter(meal => {
             const containsFish = meal.name.toLowerCase().includes('cod') || 
                                meal.name.toLowerCase().includes('salmon') || 
                                meal.name.toLowerCase().includes('tuna') || 
                                meal.name.toLowerCase().includes('fish') ||
-                               meal.tags.includes('pescatarian') ||
-                               meal.tags.includes('non-vegetarian');
+                               meal.tags.includes('Pescatarian') ||
+                               meal.tags.includes('Non-Vegetarian');
             if (containsFish) {
               console.error(`🚨 CRITICAL SAFETY BLOCK: Prevented ${meal.name} from being served to vegetarian user (contains fish/meat)`);
               return false;
@@ -9666,7 +9666,7 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
   }
   
   // Protein optimization is now handled automatically based on activity level targets
-  // No special "high-protein" tag filtering needed
+  // No special "High-Protein" tag filtering needed
   
   console.log(`🔄 ABOUT TO RETURN: ${filteredMeals.length} filtered meals`);
   
@@ -10608,7 +10608,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     let finalIngredient = ingredient;
     
     // Handle vegan egg alternatives
-    if (ingredient === 'eggs' && dietaryTags.includes('vegan')) {
+    if (ingredient === 'eggs' && dietaryTags.includes('Vegan')) {
       finalIngredient = 'vegan egg substitute (flax eggs or aquafaba)';
     }
     
@@ -11049,8 +11049,8 @@ function cleanIngredientName(ingredient: string): string {
   }
   
   // PRESERVE DIETARY QUALIFIERS before specification
-  const hasGlutenFree = cleaned.includes('gluten-free') || cleaned.includes('gluten free');
-  const hasLactoseFree = cleaned.includes('lactose-free') || cleaned.includes('lactose free');
+  const hasGlutenFree = cleaned.includes('Gluten-Free') || cleaned.includes('gluten free');
+  const hasLactoseFree = cleaned.includes('Lactose-Free') || cleaned.includes('lactose free');
   const hasDairyFree = cleaned.includes('dairy-free') || cleaned.includes('dairy free');
   const hasOrganic = cleaned.includes('organic');
   
@@ -11063,10 +11063,10 @@ function cleanIngredientName(ingredient: string): string {
   }
   
   // RESTORE DIETARY QUALIFIERS after specification 
-  if (hasGlutenFree && !cleaned.includes('gluten-free') && !cleaned.includes('gluten free')) {
+  if (hasGlutenFree && !cleaned.includes('Gluten-Free') && !cleaned.includes('gluten free')) {
     cleaned = 'gluten-free ' + cleaned;
   }
-  if (hasLactoseFree && !cleaned.includes('lactose-free') && !cleaned.includes('lactose free')) {
+  if (hasLactoseFree && !cleaned.includes('Lactose-Free') && !cleaned.includes('lactose free')) {
     cleaned = 'lactose-free ' + cleaned;
   }
   if (hasDairyFree && !cleaned.includes('dairy-free') && !cleaned.includes('dairy free')) {
@@ -11193,7 +11193,7 @@ function cleanIngredientName(ingredient: string): string {
     // Remove descriptive words and parenthetical content (only if not a specific bean type)
     cleaned = cleaned.replace(/\s*\([^)]*\)/g, ''); // Remove (content in parentheses)
     cleaned = cleaned.replace(/\b(free-range|organic|fresh|raw|toasted|chopped|sliced|diced|minced|halved|cooked|long-fermented)\b/g, '');
-    // FIXED: Removed "gluten-free" from removal regex to preserve dietary qualifiers
+    // FIXED: Removed "Gluten-Free" from removal regex to preserve dietary qualifiers
     cleaned = cleaned.replace(/\b(extra virgin|sea|black|white|ground|mixed|frozen|unsweetened|pure)\b/g, '');
   }
   // Enhanced removal of vague quantity terms (this was already there but let's expand it)
