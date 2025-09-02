@@ -11,7 +11,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
 import { getCurrentWeekSunday, formatWeekDisplay } from '../lib/date-utils';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Calendar, Clock, Target, Eye, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages, Users, Minus, Trash2, Euro, TrendingUp, Droplet, Apple, Leaf, Check } from "lucide-react";
+import { Calendar, Clock, Target, Eye, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages, Users, Minus, Trash2, Euro, TrendingUp, Droplet, Apple, Leaf, Check, Wheat } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Separator } from "@/components/ui/separator";
 import { useTranslations, translateDietaryTags, translateDietaryTag } from "@/lib/translations";
@@ -1446,7 +1446,7 @@ export default function MealPlanner() {
                     <p className="text-xs text-gray-500 italic">All values are per serving</p>
                   </div>
                   
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-3">
+                  <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
                     <div className="text-center">
                       <Activity className="w-4 h-4 text-orange-600 mx-auto mb-0.5" />
                       <p className="text-xs text-gray-500 font-medium">{t.calories}</p>
@@ -1461,6 +1461,11 @@ export default function MealPlanner() {
                       <Droplet className="w-4 h-4 text-yellow-600 mx-auto mb-0.5" />
                       <p className="text-xs text-gray-500 font-medium">Good Fats</p>
                       <p className="text-sm font-bold text-gray-800">{Math.round(recipeData.nutrition.fats || 0)}g</p>
+                    </div>
+                    <div className="text-center">
+                      <Wheat className="w-4 h-4 text-orange-600 mx-auto mb-0.5" />
+                      <p className="text-xs text-gray-500 font-medium">{t.fiber}</p>
+                      <p className="text-sm font-bold text-gray-800">{Math.round(recipeData.nutrition.fiber || 0)}g</p>
                     </div>
                     <div className="text-center">
                       <Leaf className="w-4 h-4 text-blue-600 mx-auto mb-0.5" />
