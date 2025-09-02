@@ -579,8 +579,8 @@ export default function MealPlanner() {
       },
       fiber: {
         value: Math.round(fiberEstimate),
-        percentage: Math.round(Math.min((fiberEstimate / 35) * 100, 100)), // 35g target for optimal health
-        target: '25-35g/day'
+        percentage: Math.round(Math.min((fiberEstimate / 30) * 100, 100)), // 30g target for optimal health
+        target: '30-35g/day'
       }
     };
   };
