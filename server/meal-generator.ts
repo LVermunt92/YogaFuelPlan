@@ -231,16 +231,55 @@ function calculateCaloricAdjustment(user: User): number {
 }
 
 /**
- * Adjust meal portion based on caloric needs
+ * Calculate serving multiplier based on cooking vs eating frequency
  */
-function adjustMealPortion(originalPortion: string, adjustmentFactor: number): string {
-  if (adjustmentFactor === 1.0) return originalPortion;
+function calculateServingMultiplier(user?: User): number {
+  if (!user) return 1.0;
   
-  const multiplier = adjustmentFactor > 1 ? `${adjustmentFactor.toFixed(1)}x ` : '';
-  const note = adjustmentFactor > 1.05 ? ' (larger portions)' : 
-               adjustmentFactor < 0.95 ? ' (smaller portions)' : '';
+  const cookingDays = user.cookingDaysPerWeek || 7;
+  const eatingDays = user.eatingDaysAtHome || 7;
   
-  return `${multiplier}${originalPortion}${note}`;
+  // If cooking every day they eat, no multiplier needed
+  if (cookingDays >= eatingDays) return 1.0;
+  
+  // Calculate how many eating days each cooking session needs to cover
+  const servingMultiplier = Math.ceil(eatingDays / cookingDays);
+  
+  console.log(`🍽️ SERVING CALCULATION: ${cookingDays} cooking days for ${eatingDays} eating days = ${servingMultiplier}x servings per recipe`);
+  
+  // Cap at reasonable limits (max 4 servings per recipe)
+  return Math.min(servingMultiplier, 4);
+}
+
+/**
+ * Adjust meal portion based on caloric needs and serving multiplier
+ */
+function adjustMealPortion(originalPortion: string, adjustmentFactor: number, servingMultiplier: number = 1): string {
+  const totalMultiplier = adjustmentFactor * servingMultiplier;
+  
+  if (totalMultiplier === 1.0) return originalPortion;
+  
+  // Build portion description
+  let portionText = originalPortion;
+  
+  // Add serving multiplier info if > 1
+  if (servingMultiplier > 1) {
+    portionText = `${servingMultiplier}x ${originalPortion}`;
+  }
+  
+  // Add caloric adjustment if needed
+  if (adjustmentFactor !== 1.0) {
+    const note = adjustmentFactor > 1.05 ? ' (larger portions)' : 
+                 adjustmentFactor < 0.95 ? ' (smaller portions)' : '';
+    if (adjustmentFactor !== 1.0 && servingMultiplier > 1) {
+      portionText += ` (adjusted for goals)`;
+    } else if (adjustmentFactor > 1) {
+      portionText = `${adjustmentFactor.toFixed(1)}x ${portionText}`;
+    }
+    portionText += note;
+  }
+  
+  return portionText;
 }
 
 /**
@@ -756,6 +795,9 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   // Calculate caloric adjustment based on user goals
   const caloricAdjustment = user ? calculateCaloricAdjustment(user) : 1.0;
   
+  // Calculate serving multiplier based on cooking vs eating frequency
+  const servingMultiplier = calculateServingMultiplier(user);
+  
   // Use direct user settings for meal prep mode decision
   const userCookingDays = user?.cookingDaysPerWeek || 7;
   const userEatingDays = user?.eatingDaysAtHome || 7;
@@ -778,7 +820,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
     }
     
     console.log(`🚀 ABOUT TO CALL generateMealPrepPlan...`);
-    const result = await generateMealPrepPlan(request, user, caloricAdjustment, ingredientsToUseUp, dailyProteinTarget);
+    const result = await generateMealPrepPlan(request, user, caloricAdjustment, servingMultiplier, ingredientsToUseUp, dailyProteinTarget);
     console.log(`🚀 MEAL PREP RESULT RECEIVED, meal count: ${result.meals.length}`);
     return result;
   } else {
@@ -1243,7 +1285,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         portionMultiplier *= user.householdSize;
       }
       
-      const adjustedPortion = adjustMealPortion(selectedMeal.portion, portionMultiplier);
+      const adjustedPortion = adjustMealPortion(selectedMeal.portion, portionMultiplier, servingMultiplier);
       const adjustedProtein = Math.round(selectedMeal.nutrition.protein * portionMultiplier);
       const prepTimeForDay = isLeftover ? 5 : selectedMeal.nutrition.prepTime;
       
@@ -1306,6 +1348,7 @@ async function generateMealPrepPlan(
   request: MealPlanRequest, 
   user: User | undefined, 
   caloricAdjustment: number,
+  servingMultiplier: number,
   fridgeIngredients: string[] = [],
   dailyProteinTarget: number
 ): Promise<GeneratedMealPlan> {
@@ -1753,12 +1796,12 @@ async function generateMealPrepPlan(
       if (selectedBreakfast) {
         console.log(`Day ${day} (${isWeekend ? 'weekend' : 'weekday'}) breakfast: ${selectedBreakfast.name} (prep: ${selectedBreakfast.nutrition.prepTime}min)`);
         const householdSize = user?.householdSize || 1;
-        let adjustedPortion = adjustMealPortion(selectedBreakfast.portion, caloricAdjustment);
+        let adjustedPortion = adjustMealPortion(selectedBreakfast.portion, caloricAdjustment, servingMultiplier);
         let adjustedProtein = Math.round(selectedBreakfast.nutrition.protein * caloricAdjustment);
         
         // Apply household size multiplier
         if (householdSize > 1) {
-          adjustedPortion = adjustMealPortion(selectedBreakfast.portion, caloricAdjustment * householdSize);
+          adjustedPortion = adjustMealPortion(selectedBreakfast.portion, caloricAdjustment * householdSize, servingMultiplier);
           adjustedProtein = Math.round(selectedBreakfast.nutrition.protein * caloricAdjustment * householdSize);
         }
         
@@ -1821,13 +1864,13 @@ async function generateMealPrepPlan(
       
       if (lunchMeal) {
         const householdSize = user?.householdSize || 1;
-        let adjustedPortion = adjustMealPortion(lunchMeal.portion, caloricAdjustment);
+        let adjustedPortion = adjustMealPortion(lunchMeal.portion, caloricAdjustment, servingMultiplier);
         let adjustedProtein = Math.round(lunchMeal.nutrition.protein * caloricAdjustment);
         const prepTime = isLunchLeftover ? 5 : lunchMeal.nutrition.prepTime;
         
         // Apply household size multiplier for fresh meals
         if (householdSize > 1 && !isLunchLeftover) {
-          adjustedPortion = adjustMealPortion(lunchMeal.portion, caloricAdjustment * householdSize);
+          adjustedPortion = adjustMealPortion(lunchMeal.portion, caloricAdjustment * householdSize, servingMultiplier);
           adjustedProtein = Math.round(lunchMeal.nutrition.protein * caloricAdjustment * householdSize);
         }
         
@@ -1949,7 +1992,7 @@ async function generateMealPrepPlan(
                                (day === 4 && daysWithMeals.includes(5)) || // Wednesday dinner → Thursday lunch
                                (day === 5 && daysWithMeals.includes(6));   // Thursday dinner → Friday lunch
         
-        let adjustedPortion = adjustMealPortion(dinnerMeal.portion, caloricAdjustment);
+        let adjustedPortion = adjustMealPortion(dinnerMeal.portion, caloricAdjustment, servingMultiplier);
         let adjustedProtein = Math.round(dinnerMeal.nutrition.protein * caloricAdjustment);
         const prepTime = isDinnerLeftover ? 5 : dinnerMeal.nutrition.prepTime;
         
@@ -1964,7 +2007,7 @@ async function generateMealPrepPlan(
         
         // Apply total portion multiplier
         if (totalPortions > 1 && !isDinnerLeftover) {
-          adjustedPortion = adjustMealPortion(dinnerMeal.portion, caloricAdjustment * totalPortions);
+          adjustedPortion = adjustMealPortion(dinnerMeal.portion, caloricAdjustment * totalPortions, servingMultiplier);
           adjustedProtein = Math.round(dinnerMeal.nutrition.protein * caloricAdjustment * totalPortions);
         }
         
