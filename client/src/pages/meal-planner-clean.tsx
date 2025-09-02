@@ -1543,6 +1543,47 @@ export default function MealPlanner() {
                   </div>
                 )}
 
+                {/* Vegetable Content */}
+                {recipeData.vegetableContent && (
+                  <div className="bg-green-50 rounded-lg p-4">
+                    <h4 className="font-semibold text-green-900 mb-3 flex items-center gap-2">
+                      🥬 {t.vegetableContent}
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <p className="text-sm text-green-700 mb-2">
+                          <span className="font-medium">{t.servings}:</span> {recipeData.vegetableContent.servings}
+                        </p>
+                        {recipeData.vegetableContent.vegetables.length > 0 && (
+                          <div>
+                            <p className="text-sm font-medium text-green-700 mb-1">{t.vegetables}:</p>
+                            <div className="flex flex-wrap gap-1">
+                              {recipeData?.vegetableContent?.vegetables?.map((veg, index) => (
+                                <Badge key={index} variant="secondary" className="bg-green-100 text-green-800 text-xs">
+                                  {veg}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      {recipeData?.vegetableContent?.benefits?.length > 0 && (
+                        <div>
+                          <p className="text-sm font-medium text-green-700 mb-1">{t.healthBenefits}:</p>
+                          <ul className="space-y-1">
+                            {recipeData?.vegetableContent?.benefits?.map((benefit, index) => (
+                              <li key={index} className="flex gap-2 text-sm text-green-600">
+                                <span className="text-green-500">•</span>
+                                {benefit}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 <Separator />
 
                 {/* Ingredients */}
