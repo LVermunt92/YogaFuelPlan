@@ -1528,7 +1528,7 @@ export default function MealPlanner() {
                     </div>
                     <div className="text-center">
                       <Apple className="w-4 h-4 text-blue-600 mx-auto mb-0.5" />
-                      <p className="text-xs text-gray-500 font-medium">Fruits/Starches</p>
+                      <p className="text-xs text-gray-500 font-medium">{t.fruitsStarches || 'Fruits/Starches'}</p>
                       <p className="text-sm font-bold text-gray-800">{Math.round(recipeData.nutrition.carbohydrates || 0)}g</p>
                     </div>
                     <div className="text-center">

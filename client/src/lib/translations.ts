@@ -462,6 +462,7 @@ export const translations = {
     fats: "Vetten",
     goodFats: "Gezonde Vetten",
     fiber: "Vezels",
+    fruitsStarches: "Fruit/Zetmeel",
     sugar: "Suiker",
     sodium: "Natrium",
     cost: "Kosten",
