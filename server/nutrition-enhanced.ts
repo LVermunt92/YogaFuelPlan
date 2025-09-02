@@ -1550,7 +1550,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "200g firm tofu (cubed)",
       "2 eggs or flax eggs for vegan option",
       "150g sugar snap peas (trimmed)",
-      "100g baby corn (halved lengthwise)",
+      "150g broccoli (cut into small florets)",
       "80g fresh bean sprouts",
       "2 green onions (chopped)",
       "2 cloves garlic (minced)",
@@ -1563,7 +1563,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     wholeFoodLevel: "moderate",
     vegetableContent: {
       servings: 3,
-      vegetables: ["sugar snap peas", "baby corn", "bean sprouts", "green onions"],
+      vegetables: ["sugar snap peas", "broccoli", "bean sprouts", "green onions"],
       benefits: ["Balanced nutrition", "Quick energy", "Good source of fiber", "Authentic Asian flavors", "Variety of textures"]
     },
     recipe: {
@@ -1573,7 +1573,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Push tofu to one side, scramble eggs on other side",
         "Add garlic and ginger, cook 30 seconds",
         "Add day-old rice, breaking up clumps",
-        "Add baby corn, stir-fry for 2 minutes", 
+        "Add broccoli florets, stir-fry for 2 minutes until bright green", 
         "Add sugar snap peas, cook 2 minutes more",
         "Add bean sprouts in final 30 seconds for crunch",
         "Add soy sauce, remaining sesame oil, and rice vinegar",
