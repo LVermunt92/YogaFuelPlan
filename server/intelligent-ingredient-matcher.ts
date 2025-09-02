@@ -3,7 +3,7 @@
  * Finds recipes that naturally contain ingredients the user wants to use up
  */
 
-import { MealOption, ENHANCED_MEAL_DATABASE } from './nutrition-enhanced';
+import { MealOption, getCompleteEnhancedMealDatabase } from './nutrition-enhanced';
 import { generateRecipeWithAI } from './ai-recipe-generator';
 
 interface IngredientMatch {
@@ -27,7 +27,8 @@ export function findRecipesWithIngredients(
   console.log(`🔍 INTELLIGENT MATCHING: Looking for ${category} recipes containing: ${ingredientsToUse.join(', ')}`);
 
   // Filter recipes by category and dietary requirements
-  const categoryRecipes = ENHANCED_MEAL_DATABASE.filter(recipe => 
+  const allRecipes = getCompleteEnhancedMealDatabase();
+  const categoryRecipes = allRecipes.filter(recipe => 
     recipe.category === category && 
     (dietaryTags.length === 0 || dietaryTags.every(tag => recipe.tags.includes(tag)))
   );
