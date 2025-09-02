@@ -1549,9 +1549,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "2 cups cooked brown rice (day-old preferred)",
       "200g firm tofu (cubed)",
       "2 eggs or flax eggs for vegan option",
-      "100g carrots (diced small)",
       "150g sugar snap peas (trimmed)",
-      "1 red bell pepper (diced)",
       "100g baby corn (halved lengthwise)",
       "80g fresh bean sprouts",
       "2 green onions (chopped)",
@@ -1565,7 +1563,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     wholeFoodLevel: "moderate",
     vegetableContent: {
       servings: 3,
-      vegetables: ["carrots", "sugar snap peas", "bell pepper", "baby corn", "bean sprouts", "green onions"],
+      vegetables: ["sugar snap peas", "baby corn", "bean sprouts", "green onions"],
       benefits: ["Balanced nutrition", "Quick energy", "Good source of fiber", "Authentic Asian flavors", "Variety of textures"]
     },
     recipe: {
@@ -1575,8 +1573,8 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Push tofu to one side, scramble eggs on other side",
         "Add garlic and ginger, cook 30 seconds",
         "Add day-old rice, breaking up clumps",
-        "Add carrots and baby corn, stir-fry for 2 minutes",
-        "Add bell pepper and sugar snap peas, cook 2 minutes more",
+        "Add baby corn, stir-fry for 2 minutes", 
+        "Add sugar snap peas, cook 2 minutes more",
         "Add bean sprouts in final 30 seconds for crunch",
         "Add soy sauce, remaining sesame oil, and rice vinegar",
         "Toss everything together for 2 minutes",
@@ -1951,7 +1949,8 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "1 medium zucchini (sliced)",
       "150g fresh green beans (trimmed)",
       "2 cups fresh spinach leaves",
-      "1 red bell pepper (sliced)",
+      "150g bok choy (chopped)",
+      "1 medium aubergine (diced)",
       "1/4 cup fresh coconut (grated)",
       "2 tbsp coconut oil",
       "1/2 tsp ground coriander",
@@ -1964,14 +1963,14 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 3,
-      vegetables: ["zucchini", "green beans", "spinach", "bell pepper"],
+      vegetables: ["zucchini", "green beans", "spinach", "bok choy", "aubergine"],
       benefits: ["Cooling green vegetables", "Fresh coconut", "Light steaming preserves nutrients", "Colorful antioxidants"]
     },
     recipe: {
       instructions: [
         "Steam basmati rice until fluffy",
-        "Steam green beans for 4 minutes until tender-crisp",
-        "Add zucchini and bell pepper, steam for 2 more minutes",
+        "Steam green beans and diced aubergine for 4 minutes until tender-crisp",
+        "Add zucchini and bok choy, steam for 2 more minutes",
         "Add spinach in final 30 seconds until just wilted",
         "Heat coconut oil gently, add fennel seeds until fragrant",
         "Add coriander powder and cook 30 seconds",
