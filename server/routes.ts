@@ -1289,6 +1289,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const id = parseInt(req.params.id);
       const language = (req.query.language as 'en' | 'nl') || 'en';
+      console.log(`🌐 SHOPPING LIST: Received language parameter: "${language}" (from query: ${req.query.language})`);
       const mealPlan = await storage.getMealPlanWithMeals(id);
       
       if (!mealPlan) {
@@ -1353,7 +1354,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       };
       
       // Translate shopping list if Dutch is requested
+      console.log(`🌐 SHOPPING LIST TRANSLATION: Applying language "${language}" to shopping list`);
       const translatedResponse = translateShoppingList(shoppingListResponse, language);
+      console.log(`🌐 SHOPPING LIST RESULT: Translated ${translatedResponse.categories?.length || 0} categories for language "${language}"`);
       
       res.json(translatedResponse);
     } catch (error) {
@@ -1879,6 +1882,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = parseInt(req.params.userId);
       const mealPlanId = req.query.mealPlanId ? parseInt(req.query.mealPlanId as string) : undefined;
       const listType = (req.query.listType as string) || "regular";
+      const language = (req.query.language as 'en' | 'nl') || 'en';
+      console.log(`🌐 SAVED SHOPPING LIST: Received language parameter: "${language}" for user ${userId}`);
       
       const shoppingList = await storage.getShoppingList(userId, mealPlanId, listType);
       
@@ -1886,10 +1891,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.json({ shoppingList: null, message: "No saved shopping list found" });
       }
       
-      res.json({ 
-        shoppingList,
-        message: `Found saved shopping list with ${shoppingList.items.length} items`
-      });
+      // Translate shopping list categories and item names if Dutch is requested
+      if (language === 'nl') {
+        console.log(`🌐 SAVED LIST TRANSLATION: Translating saved shopping list with ${shoppingList.items.length} items`);
+        
+        // Transform the saved list format to match the translation function expected format
+        const translationFormat = {
+          shoppingList: shoppingList.items.map(item => ({
+            ingredient: item.productName,
+            category: item.category,
+            totalAmount: `${item.quantity}${item.unit}`,
+            isChecked: item.isChecked
+          })),
+          categories: [...new Set(shoppingList.items.map(item => item.category))]
+        };
+        
+        const translatedList = translateShoppingList(translationFormat, language);
+        
+        // Transform back to the saved list format with translated data
+        const translatedItems = shoppingList.items.map((item, index) => ({
+          ...item,
+          productName: translatedList.shoppingList[index]?.ingredient || item.productName,
+          category: translatedList.shoppingList[index]?.category || item.category
+        }));
+        
+        console.log(`🌐 SAVED LIST RESULT: Translated ${translatedList.categories?.length || 0} categories`);
+        
+        res.json({ 
+          shoppingList: {
+            ...shoppingList,
+            items: translatedItems
+          },
+          message: `Found saved shopping list with ${shoppingList.items.length} items (translated to Dutch)`
+        });
+      } else {
+        res.json({ 
+          shoppingList,
+          message: `Found saved shopping list with ${shoppingList.items.length} items`
+        });
+      }
     } catch (error) {
       console.error("Error retrieving shopping list:", error);
       res.status(500).json({ message: "Failed to retrieve shopping list" });

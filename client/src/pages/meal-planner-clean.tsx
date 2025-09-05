@@ -275,7 +275,8 @@ export default function MealPlanner() {
       
       try {
         // First, try to get existing saved shopping list
-        const savedResponse = await apiRequest('GET', `/api/shopping-lists/${authUser.id}?mealPlanId=${selectedMealPlan}&listType=regular`);
+        console.log(`🌐 FRONTEND: Requesting saved shopping list with language: "${language}"`);
+        const savedResponse = await apiRequest('GET', `/api/shopping-lists/${authUser.id}?mealPlanId=${selectedMealPlan}&listType=regular&language=${language}`);
         const savedData = await savedResponse.json();
         
         if (savedData.shoppingList) {
@@ -285,6 +286,7 @@ export default function MealPlanner() {
         
         // No saved list found, generate fresh shopping list
         console.log('🆕 No saved shopping list found, generating fresh one...');
+        console.log(`🌐 FRONTEND: Requesting shopping list with language: "${language}"`);
         const freshResponse = await fetch(`/api/meal-plans/${selectedMealPlan}/shopping-list?language=${language}`);
         const freshData: ShoppingListResponse = await freshResponse.json();
         
