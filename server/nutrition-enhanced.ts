@@ -9143,6 +9143,78 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       ],
       notes: "Complete plant-based gluten-free meal with jackfruit providing meaty texture, sweet potatoes for complex carbs, and hemp hearts for complete protein"
     }
+  },
+
+  // Tofu & Kimchi Fried Rice - Asian-Fusion High-Protein Bowl
+  {
+    name: "Tofu & Kimchi Fried Rice with Crunchy Vegetables",
+    portion: "1 serving",
+    nutrition: { 
+      protein: 27, 
+      prepTime: 25, 
+      calories: 640,
+      carbohydrates: 62,
+      fats: 25,
+      fiber: 11,
+      sugar: 8,
+      sodium: 1400,
+      costEuros: 3.20, 
+      proteinPerEuro: 8.4 
+    },
+    category: "dinner",
+    tags: ["Vegetarian", "Vegan", "High-Protein", "Asian", "Fermented", "Quick", "One-Pan"],
+    ingredients: [
+      "50g day-old basmati rice (or 125g pre-cooked rice)",
+      "150g organic silken tofu (drained and cubed)",
+      "1 tbsp sesame oil",
+      "1 large garlic clove (grated)",
+      "7.5g fresh ginger (grated)",
+      "100g button mushrooms (halved)",
+      "50g curly kale leaves (thick stems removed, sliced)",
+      "1 medium carrot (grated, about 60g)",
+      "100g frozen edamame beans (defrosted)",
+      "80g vegan napa cabbage kimchi (drained)",
+      "1 tbsp gluten-free tamari",
+      "1 red Thai chili (8g), finely sliced (optional)",
+      "1 spring onion (finely sliced)",
+      "10g toasted sesame seeds",
+      "¼ lime (cut into wedges)",
+      "Sea salt and black pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3.5,
+      vegetables: ["garlic", "ginger", "button mushrooms", "kale", "carrots", "spring onions", "kimchi"],
+      benefits: ["Fermented kimchi for gut health", "High protein from tofu and edamame", "Antioxidant-rich vegetables", "Complete amino acids"]
+    },
+    recipe: {
+      instructions: [
+        "If cooking fresh rice: cook basmati rice according to packet instructions, drain and spread on plate to cool completely (ideally overnight)",
+        "Pat silken tofu dry with kitchen paper and cut into 1cm cubes",
+        "Drain kimchi well in a sieve, pressing out excess liquid to prevent soggy rice",
+        "Heat sesame oil in large frying pan or wok over medium-high heat",
+        "Add grated garlic, ginger and halved mushrooms, cook 5 minutes stirring frequently until golden",
+        "Cook until most mushroom liquid has evaporated and edges are caramelized",
+        "Add cubed tofu and cook for 2-3 minutes, turning gently to brown lightly",
+        "Add day-old rice to pan, breaking up any clumps with spatula",
+        "Stir-fry rice for 2-3 minutes until heated through and slightly crispy",
+        "Add sliced kale, grated carrots, and edamame beans",
+        "Stir-fry for 3-4 minutes until kale wilts but still has bite",
+        "Add drained kimchi and tamari sauce, toss everything together",
+        "Cook 1-2 minutes more to heat kimchi through",
+        "Taste and adjust seasoning with salt, pepper, or extra tamari",
+        "Transfer to serving bowl",
+        "Garnish with sliced Thai chili, spring onions, toasted sesame seeds and lime wedges"
+      ],
+      tips: [
+        "Day-old rice works best - fresh rice can become mushy. Cool cooked rice completely before using",
+        "Drain kimchi well to prevent the dish becoming watery",
+        "Don't overcook the kale - it should retain some crunch",
+        "High heat is key for good wok hei (breath of the wok) flavor",
+        "Pre-toast sesame seeds in dry pan for 2-3 minutes for extra nutty flavor"
+      ],
+      notes: "Authentic Korean-Asian fusion with fermented kimchi providing probiotics and umami. Day-old rice creates the perfect texture while silken tofu adds protein without heaviness."
+    }
   }
 ];
 
