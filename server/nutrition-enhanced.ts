@@ -8990,6 +8990,155 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-09-02'),
     active: true
+  },
+
+  // Jackfruit Burger Complete Meal - Regular Version
+  {
+    name: "Spiced Jackfruit Burgers with Roasted Sweet Potato and Mixed Greens",
+    portion: "2 burgers with sides",
+    nutrition: { 
+      protein: 22, 
+      prepTime: 75, 
+      calories: 620,
+      carbohydrates: 85,
+      fats: 18,
+      fiber: 16,
+      sugar: 12,
+      sodium: 680,
+      costEuros: 5.20, 
+      proteinPerEuro: 4.2 
+    },
+    category: "dinner",
+    tags: ["Vegetarian", "Vegan", "High-Protein", "High-Fiber", "Warming", "Spiced", "Complete-Meal"],
+    ingredients: [
+      "2 whole wheat burger buns",
+      "450g canned jackfruit (drained)",
+      "1 large red onion (chopped)",
+      "3 cloves garlic (minced)",
+      "1 tbsp sunflower oil",
+      "1 tsp ground cumin",
+      "1 tsp hot chili powder",
+      "1 tsp paprika",
+      "2 tbsp tomato purée",
+      "2 tbsp harissa paste",
+      "2 medium sweet potatoes (cubed)",
+      "2 tbsp olive oil",
+      "4 cups mixed salad greens",
+      "1 large tomato (sliced)",
+      "4 lettuce leaves",
+      "2 tbsp hemp hearts",
+      "1 tbsp tahini",
+      "1 tbsp lemon juice",
+      "Sea salt and black pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["red onion", "garlic", "sweet potatoes", "salad greens", "tomato", "lettuce"],
+      benefits: ["High in fiber", "Rich in beta-carotene", "Antioxidant-rich spices", "Complete protein from hemp hearts"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 200°C for sweet potatoes",
+        "Drain and rinse jackfruit, then shred with fork into chunks",
+        "Cube sweet potatoes, toss with 1 tbsp olive oil, salt and pepper, roast for 30-35 minutes",
+        "Heat sunflower oil in large pan over medium heat",
+        "Add chopped onion and minced garlic, cook 10 minutes until soft",
+        "Add cumin, chili powder, and paprika, cook 3 minutes until fragrant",
+        "Stir in tomato purée and harissa paste, cook 5 minutes",
+        "Add shredded jackfruit, mix well to coat with spices",
+        "Season with salt and cook 20-25 minutes, stirring regularly until tender",
+        "Mash jackfruit with fork until it has pulled texture",
+        "Cool slightly, then shape into 8 patties (2 per person)",
+        "Refrigerate patties 30 minutes to firm up",
+        "Pan-fry patties 3-4 minutes each side until golden brown",
+        "Toast burger buns lightly",
+        "Make tahini dressing: mix tahini, lemon juice, and 1 tbsp water",
+        "Assemble: bun bottom, lettuce, 2 jackfruit patties, tomato slice, tahini drizzle, bun top",
+        "Serve with roasted sweet potatoes and mixed greens topped with hemp hearts"
+      ],
+      tips: [
+        "Let patties chill to prevent falling apart when cooking",
+        "Adjust harissa to your heat preference",
+        "Sweet potatoes should be tender and slightly caramelized"
+      ],
+      notes: "Complete plant-based meal with jackfruit providing meaty texture, sweet potatoes for complex carbs, and hemp hearts for complete protein"
+    }
+  },
+
+  // Jackfruit Burger Complete Meal - Gluten-Free Version  
+  {
+    name: "Spiced Jackfruit Burgers with Roasted Sweet Potato and Mixed Greens (Gluten-Free)",
+    portion: "2 burgers with sides",
+    nutrition: { 
+      protein: 22, 
+      prepTime: 75, 
+      calories: 615,
+      carbohydrates: 82,
+      fats: 18,
+      fiber: 16,
+      sugar: 12,
+      sodium: 680,
+      costEuros: 5.60, 
+      proteinPerEuro: 3.9 
+    },
+    category: "dinner",
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "High-Protein", "High-Fiber", "Warming", "Spiced", "Complete-Meal"],
+    ingredients: [
+      "2 gluten-free burger buns (or large portobello mushroom caps)",
+      "450g canned jackfruit (drained)",
+      "1 large red onion (chopped)",
+      "3 cloves garlic (minced)",
+      "1 tbsp sunflower oil",
+      "1 tsp ground cumin",
+      "1 tsp hot chili powder",
+      "1 tsp paprika",
+      "2 tbsp tomato purée",
+      "2 tbsp harissa paste",
+      "2 medium sweet potatoes (cubed)",
+      "2 tbsp olive oil",
+      "4 cups mixed salad greens",
+      "1 large tomato (sliced)",
+      "4 lettuce leaves",
+      "2 tbsp hemp hearts",
+      "1 tbsp tahini",
+      "1 tbsp lemon juice",
+      "Sea salt and black pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["red onion", "garlic", "sweet potatoes", "salad greens", "tomato", "lettuce"],
+      benefits: ["High in fiber", "Rich in beta-carotene", "Antioxidant-rich spices", "Complete protein from hemp hearts", "Naturally gluten-free"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 200°C for sweet potatoes",
+        "Drain and rinse jackfruit, then shred with fork into chunks",
+        "Cube sweet potatoes, toss with 1 tbsp olive oil, salt and pepper, roast for 30-35 minutes",
+        "Heat sunflower oil in large pan over medium heat",
+        "Add chopped onion and minced garlic, cook 10 minutes until soft",
+        "Add cumin, chili powder, and paprika, cook 3 minutes until fragrant",
+        "Stir in tomato purée and harissa paste, cook 5 minutes",
+        "Add shredded jackfruit, mix well to coat with spices",
+        "Season with salt and cook 20-25 minutes, stirring regularly until tender",
+        "Mash jackfruit with fork until it has pulled texture",
+        "Cool slightly, then shape into 8 patties (2 per person)",
+        "Refrigerate patties 30 minutes to firm up",
+        "Pan-fry patties 3-4 minutes each side until golden brown",
+        "If using gluten-free buns, toast lightly. If using mushroom caps, grill 2-3 minutes per side",
+        "Make tahini dressing: mix tahini, lemon juice, and 1 tbsp water",
+        "Assemble: bun/mushroom bottom, lettuce, 2 jackfruit patties, tomato slice, tahini drizzle, bun/mushroom top",
+        "Serve with roasted sweet potatoes and mixed greens topped with hemp hearts"
+      ],
+      tips: [
+        "Let patties chill to prevent falling apart when cooking",
+        "Adjust harissa to your heat preference",
+        "Portobello caps make excellent gluten-free bun alternative",
+        "Check harissa paste is gluten-free certified"
+      ],
+      notes: "Complete plant-based gluten-free meal with jackfruit providing meaty texture, sweet potatoes for complex carbs, and hemp hearts for complete protein"
+    }
   }
 ];
 
