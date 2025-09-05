@@ -252,6 +252,56 @@ function calculateServingMultiplier(user?: User): number {
 }
 
 /**
+ * Filter meals based on serving size requirements
+ * Excludes single-serving recipes when user wants multiple servings
+ */
+function filterMealsByServingRequirements(meals: MealOption[], servingMultiplier: number): MealOption[] {
+  // If serving multiplier is 1, no filtering needed
+  if (servingMultiplier <= 1) {
+    return meals;
+  }
+  
+  // Filter out recipes that are clearly for single servings when we need multiple servings
+  const filteredMeals = meals.filter(meal => {
+    if (!meal.portion) {
+      return true; // Allow meals without portion info to pass through
+    }
+    
+    const portion = meal.portion.toLowerCase().trim();
+    
+    // More comprehensive patterns for single serving detection
+    const singleServingPatterns = [
+      /^1\s*serving/,           // "1 serving", "1serving" 
+      /serves?\s*1\b/,          // "serves 1", "serve 1"
+      /^1\s*person/,            // "1 person"
+      /^1\s*pers\b/,            // "1 pers"
+      /single\s+serving/,       // "single serving"
+      /one\s+serving/,          // "one serving"
+      /^1\s*portie/,            // Dutch: "1 portie"
+      /^1\s*porci[oó]n/,        // Spanish: "1 porción"
+      /^1\s*portion\b/          // German/French: "1 Portion"
+    ];
+    
+    const isOnlyOneServing = singleServingPatterns.some(pattern => pattern.test(portion));
+    
+    if (isOnlyOneServing) {
+      console.log(`🚫 SERVING FILTER: Excluding "${meal.name}" (${meal.portion}) - needs ${servingMultiplier}x servings`);
+      return false;
+    }
+    return true;
+  });
+  
+  // Fallback: if filtering removes too many options, allow some back to ensure variety
+  if (filteredMeals.length < Math.max(3, meals.length * 0.3)) {
+    console.log(`⚠️ SERVING FILTER: Too few meals remaining (${filteredMeals.length}), using original list to ensure variety`);
+    return meals;
+  }
+  
+  console.log(`🍽️ SERVING FILTER: ${meals.length} → ${filteredMeals.length} meals after filtering for ${servingMultiplier}x servings`);
+  return filteredMeals;
+}
+
+/**
  * Adjust meal portion based on caloric needs and serving multiplier
  */
 function adjustMealPortion(originalPortion: string, adjustmentFactor: number, servingMultiplier: number = 1): string {
@@ -906,9 +956,14 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   } else {
     // Fast recipe loading: Use existing database for maximum speed + custom recipes
     console.log('🚀 Fast recipe loading using existing database + custom recipes');
-    breakfastOptions = await getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags, user?.id);
-    lunchOptions = await getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags, user?.id);
-    dinnerOptions = await getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags, user?.id);
+    const rawBreakfastOptions = await getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags, user?.id);
+    const rawLunchOptions = await getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags, user?.id);
+    const rawDinnerOptions = await getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags, user?.id);
+    
+    // Filter meals based on serving requirements
+    breakfastOptions = filterMealsByServingRequirements(rawBreakfastOptions, servingMultiplier);
+    lunchOptions = filterMealsByServingRequirements(rawLunchOptions, servingMultiplier);
+    dinnerOptions = filterMealsByServingRequirements(rawDinnerOptions, servingMultiplier);
   }
   
   console.log(`📊 Available recipes: ${breakfastOptions.length} breakfast, ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
@@ -1464,16 +1519,24 @@ async function generateMealPrepPlan(
       dinnerOptions = userDinnerOptions;
     } else {
       console.log(`🎯 MEAL PREP: Using main curated database`);
-      lunchOptions = await getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
-      dinnerOptions = await getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
+      const rawLunchOptions = await getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
+      const rawDinnerOptions = await getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
+      
+      // Filter meals based on serving requirements
+      lunchOptions = filterMealsByServingRequirements(rawLunchOptions, servingMultiplier);
+      dinnerOptions = filterMealsByServingRequirements(rawDinnerOptions, servingMultiplier);
     }
     
     console.log(`📊 Meal prep recipe counts: ${lunchOptions.length} lunch, ${dinnerOptions.length} dinner`);
   } else {
     // No custom recipes found - use only curated database
     console.log('🔧 No custom recipes found, using curated database only');
-    lunchOptions = await getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags, user?.id);
-    dinnerOptions = await getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags, user?.id);
+    const rawLunchOptions = await getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags, user?.id);
+    const rawDinnerOptions = await getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags, user?.id);
+    
+    // Filter meals based on serving requirements
+    lunchOptions = filterMealsByServingRequirements(rawLunchOptions, servingMultiplier);
+    dinnerOptions = filterMealsByServingRequirements(rawDinnerOptions, servingMultiplier);
     
     console.log(`🔍 CURATED ONLY: Found ${lunchOptions.length} curated lunch, ${dinnerOptions.length} curated dinner meals for tags: ${dietaryTags.join(', ')}`);
   }
@@ -1542,13 +1605,15 @@ async function generateMealPrepPlan(
   // Smart fallback: Always ensure minimum variety for meal prep
   if (lunchOptions.length < 3) {
     console.log(`🔄 Smart fallback: Adding more curated lunch recipes (current: ${lunchOptions.length}, target: 3+)`);
-    const extraCuratedLunch = await getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
+    const rawExtraCuratedLunch = await getEnhancedMealsForCategoryAndDiet('lunch', dietaryTags);
+    const extraCuratedLunch = filterMealsByServingRequirements(rawExtraCuratedLunch, servingMultiplier);
     lunchOptions = [...lunchOptions, ...extraCuratedLunch.slice(0, 3 - lunchOptions.length)];
   }
   
   if (dinnerOptions.length < 3) {
     console.log(`🔄 Smart fallback: Adding more curated dinner recipes (current: ${dinnerOptions.length}, target: 3+)`);
-    const extraCuratedDinner = await getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
+    const rawExtraCuratedDinner = await getEnhancedMealsForCategoryAndDiet('dinner', dietaryTags);
+    const extraCuratedDinner = filterMealsByServingRequirements(rawExtraCuratedDinner, servingMultiplier);
     dinnerOptions = [...dinnerOptions, ...extraCuratedDinner.slice(0, 3 - dinnerOptions.length)];
   }
 
@@ -1662,8 +1727,9 @@ async function generateMealPrepPlan(
 
 
   // Generate meals for all 7 days (breakfast always included) - using streamlined approach
-  let breakfastOptions = await getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags, user?.id);
-  console.log(`✓ Breakfast variety: Found ${breakfastOptions.length} breakfast options for dietary tags: ${dietaryTags.join(', ')}`);
+  const rawBreakfastOptions = await getEnhancedMealsForCategoryAndDiet('breakfast', dietaryTags, user?.id);
+  let breakfastOptions = filterMealsByServingRequirements(rawBreakfastOptions, servingMultiplier);
+  console.log(`✓ Breakfast variety: Found ${breakfastOptions.length} breakfast options for dietary tags: ${dietaryTags.join(', ')} (filtered for ${servingMultiplier}x servings)`);
   
   // Smart fallback for breakfast variety - prioritize meal variety for better user experience
   if (breakfastOptions.length < 4) {
