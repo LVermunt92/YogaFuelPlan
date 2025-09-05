@@ -1,0 +1,46 @@
+{
+  "name": "Meal Planner - Personalized Nutrition",
+  "short_name": "Meal Planner",
+  "description": "Personalized meal planning application with nutrition tracking and shopping lists",
+  "theme_color": "#f5f3f0",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/attached_assets/761640F5-088E-47F9-90A7-57D23D83E5A3_1755541756148.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/pwa-512x512.png", 
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["health", "food", "lifestyle"],
+  "shortcuts": [
+    {
+      "name": "Generate Meal Plan",
+      "short_name": "New Plan",
+      "description": "Create a new personalized meal plan",
+      "url": "/meal-plans",
+      "icons": [{ "src": "/pwa-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Shopping List",
+      "short_name": "Shopping",
+      "description": "View current shopping list",
+      "url": "/shopping-list",
+      "icons": [{ "src": "/pwa-192x192.png", "sizes": "192x192" }]
+    }
+  ]
+}
