@@ -130,6 +130,8 @@ function addCyclePhaseTagsToRecipe(recipe: MealOption): MealOption {
 
 // Enhanced meal database focusing on whole foods and minimal processing
 // Note: All recipes in this database are automatically validated for protein content
+// IMPORTANT: Never use vague ingredient names like "mixed greens", "mixed vegetables", "salad mix"
+// Always specify exact vegetables: "spinach", "rocket", "romaine lettuce", etc.
 const RAW_MEAL_DATABASE: MealOption[] = [
   // Breakfast options - Whole Foods Focus
   {
@@ -8994,7 +8996,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
 
   // Jackfruit Burger Complete Meal - Regular Version
   {
-    name: "Spiced Jackfruit Burgers with Roasted Sweet Potato and Mixed Greens",
+    name: "Spiced Jackfruit Burgers with Roasted Sweet Potato and Spinach-Rocket Salad",
     portion: "2 burgers with sides",
     nutrition: { 
       protein: 22, 
@@ -9023,7 +9025,8 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "2 tbsp harissa paste",
       "2 medium sweet potatoes (cubed)",
       "2 tbsp olive oil",
-      "4 cups mixed salad greens",
+      "200g baby spinach leaves",
+      "100g rocket/arugula",
       "1 large tomato (sliced)",
       "4 lettuce leaves",
       "2 tbsp hemp hearts",
@@ -9034,7 +9037,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 4,
-      vegetables: ["red onion", "garlic", "sweet potatoes", "salad greens", "tomato", "lettuce"],
+      vegetables: ["red onion", "garlic", "sweet potatoes", "spinach", "rocket", "tomato", "lettuce"],
       benefits: ["High in fiber", "Rich in beta-carotene", "Antioxidant-rich spices", "Complete protein from hemp hearts"]
     },
     recipe: {
@@ -9055,7 +9058,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Toast burger buns lightly",
         "Make tahini dressing: mix tahini, lemon juice, and 1 tbsp water",
         "Assemble: bun bottom, lettuce, 2 jackfruit patties, tomato slice, tahini drizzle, bun top",
-        "Serve with roasted sweet potatoes and mixed greens topped with hemp hearts"
+        "Serve with roasted sweet potatoes and spinach-rocket salad topped with hemp hearts"
       ],
       tips: [
         "Let patties chill to prevent falling apart when cooking",
@@ -9068,7 +9071,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
 
   // Jackfruit Burger Complete Meal - Gluten-Free Version  
   {
-    name: "Spiced Jackfruit Burgers with Roasted Sweet Potato and Mixed Greens (Gluten-Free)",
+    name: "Spiced Jackfruit Burgers with Roasted Sweet Potato and Spinach-Rocket Salad (Gluten-Free)",
     portion: "2 burgers with sides",
     nutrition: { 
       protein: 22, 
@@ -9097,7 +9100,8 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "2 tbsp harissa paste",
       "2 medium sweet potatoes (cubed)",
       "2 tbsp olive oil",
-      "4 cups mixed salad greens",
+      "200g baby spinach leaves",
+      "100g rocket/arugula",
       "1 large tomato (sliced)",
       "4 lettuce leaves",
       "2 tbsp hemp hearts",
@@ -9108,7 +9112,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 4,
-      vegetables: ["red onion", "garlic", "sweet potatoes", "salad greens", "tomato", "lettuce"],
+      vegetables: ["red onion", "garlic", "sweet potatoes", "spinach", "rocket", "tomato", "lettuce"],
       benefits: ["High in fiber", "Rich in beta-carotene", "Antioxidant-rich spices", "Complete protein from hemp hearts", "Naturally gluten-free"]
     },
     recipe: {
@@ -9129,7 +9133,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "If using gluten-free buns, toast lightly. If using mushroom caps, grill 2-3 minutes per side",
         "Make tahini dressing: mix tahini, lemon juice, and 1 tbsp water",
         "Assemble: bun/mushroom bottom, lettuce, 2 jackfruit patties, tomato slice, tahini drizzle, bun/mushroom top",
-        "Serve with roasted sweet potatoes and mixed greens topped with hemp hearts"
+        "Serve with roasted sweet potatoes and spinach-rocket salad topped with hemp hearts"
       ],
       tips: [
         "Let patties chill to prevent falling apart when cooking",

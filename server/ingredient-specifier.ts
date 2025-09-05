@@ -19,6 +19,10 @@ export const INGREDIENT_SPECIFICATIONS: IngredientSpecification[] = [
   { generic: 'seasonal vegetables', specific: ['bell peppers', 'zucchini', 'cherry tomatoes', 'spinach'], category: 'vegetables' },
   { generic: 'root vegetables', specific: ['carrots', 'sweet potatoes', 'onions'], category: 'vegetables' },
   { generic: 'leafy greens', specific: ['spinach', 'kale', 'arugula'], category: 'vegetables' },
+  { generic: 'mixed salad greens', specific: ['spinach', 'rocket', 'romaine lettuce'], category: 'vegetables' },
+  { generic: 'mixed greens', specific: ['spinach', 'rocket', 'romaine lettuce'], category: 'vegetables' },
+  { generic: 'salad greens', specific: ['spinach', 'rocket', 'romaine lettuce'], category: 'vegetables' },
+  { generic: 'salad mix', specific: ['spinach', 'rocket', 'romaine lettuce'], category: 'vegetables' },
   { generic: 'vegetables', specific: ['bell peppers', 'zucchini', 'spinach'], category: 'vegetables' },
 
   // Fruits  
