@@ -671,7 +671,7 @@ export default function MyRecipes() {
                   <span className="font-medium">Add More Protein:</span> Hemp hearts (10g/30ml), protein powder (20-25g), Greek yogurt, quinoa, lentils, chickpeas, tofu, nuts & seeds
                 </div>
                 <div>
-                  <span className="font-medium">Increase Fiber:</span> Chia seeds (5g/15ml), ground flaxseeds, beans, oats, berries, vegetables, whole grains, avocado
+                  <span className="font-medium">Increase Fiber:</span> Chia seeds (5g/15ml), ground flaxseeds, beans, oats, berries, vegetables, whole grains, ripe avocado
                 </div>
                 <div>
                   <span className="font-medium">Easy Swaps:</span> Replace white rice → brown rice/quinoa, regular pasta → lentil pasta, flour → almond/oat flour blend

@@ -76,7 +76,7 @@ function addCyclePhaseTagsToRecipe(recipe: MealOption): MealOption {
   const hasMagnesium = 
     ingredientText.includes('nuts') || ingredientText.includes('seeds') ||
     ingredientText.includes('almonds') || ingredientText.includes('hemp') ||
-    ingredientText.includes('dark chocolate') || ingredientText.includes('avocado') ||
+    ingredientText.includes('dark chocolate') || ingredientText.includes('ripe avocado') || ingredientText.includes('avocado') ||
     ingredientText.includes('spinach');
     
   const hasComplexCarbs = 
@@ -188,7 +188,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     }
   },
   {
-    name: "Fresh vegetable and herb scrambled eggs with avocado",
+    name: "Fresh vegetable and herb scrambled eggs with ripe avocado",
     portion: "1 serving",
     nutrition: { 
       protein: 24, 
@@ -214,7 +214,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "40g cherry tomatoes (halved)",
       "2 tbsp fresh parsley (chopped)",
       "40g red bell pepper (diced)",
-      "½ medium avocado (sliced)",
+      "½ medium ripe avocado (sliced)",
       "5ml extra virgin olive oil",
       "Pinch of sea salt and black pepper"
     ],
@@ -232,7 +232,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Whisk 3 eggs with salt and pour into pan",
         "Gently scramble, stirring frequently for 3-4 minutes",
         "Remove from heat when still slightly creamy",
-        "Top with fresh herbs and serve with 75g sliced avocado"
+        "Top with fresh herbs and serve with 75g sliced ripe avocado"
       ],
       tips: [
         "Use the freshest eggs possible for best flavour",
@@ -620,7 +620,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     ingredients: [
       "1 cup cooked quinoa",
       "½ cup black beans (cooked)",
-      "½ avocado (sliced)",
+      "½ ripe avocado (sliced)",
       "¼ cup hemp seeds",
       "1 cup fresh spinach",
       "½ cup cherry tomatoes (halved)",
@@ -642,16 +642,16 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Rinse and drain black beans if using canned",
         "Wash and dry spinach leaves thoroughly",
         "Halve cherry tomatoes and dice red onion",
-        "Slice avocado just before serving",
+        "Slice ripe avocado just before serving",
         "In a bowl, layer quinoa as the base",
         "Top with fresh spinach, black beans, and vegetables",
-        "Add sliced avocado and sprinkle hemp seeds on top",
+        "Add sliced ripe avocado and sprinkle hemp seeds on top",
         "Whisk tahini with lemon juice and olive oil for dressing",
         "Drizzle dressing over bowl and season with salt and pepper"
       ],
       tips: [
         "Prepare quinoa and beans in advance for quick assembly",
-        "Add avocado just before eating to prevent browning",
+        "Add ripe avocado just before eating to prevent browning",
         "Double the recipe to meal prep for tomorrow's lunch"
       ],
       notes: "Perfect balance of plant proteins, healthy fats, and complex carbohydrates"
@@ -1048,7 +1048,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     category: "lunch",
     tags: ["Vegetarian", "Gluten-Free", "viral", "social-media", "Anti-Inflammatory", "Keto"],
-    ingredients: ["mixed greens", "cucumber", "avocado", "hemp seeds", "pumpkin seeds", "tahini", "lemon", "fresh herbs", "olive oil", "nutritional yeast"],
+    ingredients: ["mixed greens", "cucumber", "ripe avocado", "hemp seeds", "pumpkin seeds", "tahini", "lemon", "fresh herbs", "olive oil", "nutritional yeast"],
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 3,
@@ -1060,7 +1060,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Make viral green goddess dressing: blend tahini, lemon juice, herbs, olive oil, garlic",
         "Arrange mixed greens as base in photogenic bowl",
         "Add sliced cucumber in rows for visual appeal",
-        "Fan out avocado slices artistically",
+        "Fan out ripe avocado slices artistically",
         "Sprinkle hemp seeds and pumpkin seeds generously",
         "Drizzle green goddess dressing in Instagram-worthy pattern",
         "Finish with nutritional yeast for umami flavor"
@@ -1503,7 +1503,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "1/4 tsp chili powder",
       "2 tbsp fresh lime juice",
       "4 tbsp fresh cilantro (chopped)",
-      "1 avocado (sliced)"
+      "1 ripe avocado (sliced)"
     ],
     wholeFoodLevel: "high",
     vegetableContent: {
@@ -1519,7 +1519,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Add garlic, cumin, paprika, and chili powder - cook 1 minute",
         "Add drained black beans and cook 5 minutes until heated",
         "Season with salt, pepper, and lime juice",
-        "Garnish with fresh cilantro and sliced avocado",
+        "Garnish with fresh cilantro and sliced ripe avocado",
         "Serve immediately while hot"
       ],
       tips: [
@@ -2798,7 +2798,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     ingredients: [
       "150g salmon fillet",
       "160g cooked sushi rice",
-      "1/2 avocado (sliced)",
+      "1/2 ripe avocado (sliced)",
       "60g cucumber (diced)",
       "30ml soy sauce",
       "15ml mayo",
@@ -2810,7 +2810,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 1,
-      vegetables: ["avocado", "cucumber"],
+      vegetables: ["ripe avocado", "cucumber"],
       benefits: ["Viral for umami flavor combo", "Restaurant-quality at home", "Perfect macro balance"]
     },
     recipe: {
@@ -2820,7 +2820,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Flake salmon into bite-sized pieces",
         "Mix soy sauce, mayo, sriracha for viral sauce",
         "Place warm rice in bowl as base",
-        "Top with flaked salmon and avocado slices",
+        "Top with flaked salmon and ripe avocado slices",
         "Add diced cucumber for crunch",
         "Drizzle with sauce and sesame oil",
         "Garnish with sesame seeds and nori strips"
@@ -8728,7 +8728,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "150g lean ground beef",
       "2 eggs",
       "100g fresh spinach",
-      "1 small avocado",
+      "1 small ripe avocado",
       "2 cloves garlic",
       "15ml olive oil",
       "5ml paprika",
@@ -8738,8 +8738,8 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 3,
-      vegetables: ["spinach", "avocado", "garlic"],
-      benefits: ["heme iron from beef", "B vitamins from eggs", "potassium from avocado", "folate from spinach"]
+      vegetables: ["spinach", "ripe avocado", "garlic"],
+      benefits: ["heme iron from beef", "B vitamins from eggs", "potassium from ripe avocado", "folate from spinach"]
     },
     recipe: {
       instructions: [
@@ -8750,12 +8750,12 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Push beef to one side, add spinach to pan",
         "Cook until wilted, about 2 minutes",
         "Crack eggs into pan, scramble with beef and spinach",
-        "Serve in bowl topped with sliced avocado"
+        "Serve in bowl topped with sliced ripe avocado"
       ],
       tips: [
         "Don't overcook eggs - they continue cooking in hot pan",
         "Use grass-fed beef for better nutrition",
-        "Add avocado just before serving"
+        "Add ripe avocado just before serving"
       ],
       notes: "Powerhouse of heme iron and complete protein to restore energy and support hormone health during menstruation"
     },
@@ -8782,7 +8782,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 2.5
     },
     category: "lunch",
-    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Gluten-Free", "menstruation", "guacamole", "avocado", "potassium", "healthy-fats"],
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Gluten-Free", "menstruation", "guacamole", "ripe avocado", "potassium", "healthy-fats"],
     ingredients: [
       "2 ripe avocados",
       "1 lime (juiced)",
@@ -8797,12 +8797,12 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 3,
-      vegetables: ["avocados", "tomato", "garlic", "red onion"],
+      vegetables: ["ripe avocados", "tomato", "garlic", "red onion"],
       benefits: ["potassium for muscle function", "healthy fats for hormone production", "fiber for bloating relief", "vitamin C from lime"]
     },
     recipe: {
       instructions: [
-        "Mash avocados in bowl with fork until desired texture",
+        "Mash ripe avocados in bowl with fork until desired texture",
         "Add lime juice immediately to prevent browning",
         "Finely dice tomato, removing seeds and excess juice",
         "Mince garlic and finely dice red onion",
@@ -10398,7 +10398,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'diced apple': 'Fruits',
     'sliced apple': 'Fruits',
     'chopped apple': 'Fruits',
-    'avocado': 'Fruits',
+    'ripe avocado': 'Fruits',
     'lime': 'Fruits',
     'mango': 'Fruits',
     'frozen berries': 'Fruits',
@@ -11098,7 +11098,7 @@ export function getDefaultPortion(ingredient: string): { amount: number; unit: s
     'banana': { amount: 1, unit: 'piece' }, // 1 medium banana
     'apples': { amount: 3, unit: 'pieces' }, // 3 medium apples  
     'apple': { amount: 1, unit: 'piece' }, // 1 medium apple
-    'avocado': { amount: 1, unit: 'piece' }, // 1 medium avocado
+    'ripe avocado': { amount: 1, unit: 'piece' }, // 1 medium ripe avocado
     'lemon': { amount: 1, unit: 'piece' }, // 1 lemon
     'lemons': { amount: 2, unit: 'pieces' }, // 2 lemons
     'quinoa': { amount: 85, unit: 'g' }, // 0.5 cup dry = ~85g
@@ -11669,7 +11669,7 @@ function cleanIngredientName(ingredient: string): string {
     'bell pepper': 'bell peppers',
     'cherry tomatoes': 'cherry tomatoes',
     'herbs': 'fresh herbs',
-    'avocado': 'avocado',
+    'ripe avocado': 'ripe avocado',
     'olive oil': 'olive oil',
     'salt': 'salt',
     'sea salt': 'salt',
