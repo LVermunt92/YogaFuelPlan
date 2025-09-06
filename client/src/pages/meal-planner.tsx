@@ -990,9 +990,7 @@ export default function MealPlanner() {
                 <h2 className="text-xl font-semibold text-foreground mb-2">
                   {t.generateMealPlan}
                 </h2>
-                <p className="text-sm text-gray-500">
-                  {t.createPersonalizedMealPlan}
-                </p>
+{t.createPersonalizedMealPlan && <p className="text-sm text-gray-500">{t.createPersonalizedMealPlan}</p>}
               </div>
               <div className="p-4 space-y-4">
 

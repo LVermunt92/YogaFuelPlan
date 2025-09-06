@@ -621,7 +621,7 @@ export default function MealPlanner() {
             <h1 className="text-3xl font-bold text-foreground mb-2">
               {t.welcomeBack} {userProfile?.firstName || userProfile?.username || ''}
             </h1>
-            <p className="text-lg text-gray-600">{t.createPersonalizedMealPlan || 'Create personalized meal plans based on your activity level'}</p>
+{t.createPersonalizedMealPlan && <p className="text-lg text-gray-600">{t.createPersonalizedMealPlan}</p>}
           </div>
 
           {/* 2. Compact Nutrition Charts */}
@@ -953,7 +953,7 @@ export default function MealPlanner() {
                   ? (language === 'nl' 
                       ? `Gebruikt automatisch je ${latestOuraData.activityLevel === 'high' ? 'hoge' : 'lage'} activiteitsniveau van Oura Ring data`
                       : `Will automatically use your ${latestOuraData.activityLevel} activity level from Oura Ring data`)
-                  : (t.createPersonalizedMealPlan || 'Create personalized meal plan based on your activity level')
+                  : t.createPersonalizedMealPlan
                 }
               </p>
 

@@ -69,7 +69,7 @@ export const MEAL_DATABASE: MealOption[] = [
     recipe: {
       instructions: [
         "Add 1 cup almond milk to blender",
-        "Add 1 scoop (30g) pea protein powder",
+        "Add 30g pea protein powder",
         "Add 2 cups fresh spinach leaves",
         "Add 1 ripe banana and 1/2 cup frozen berries",
         "Add 1 tbsp ground flax seeds",
@@ -674,7 +674,7 @@ export const MEAL_DATABASE: MealOption[] = [
       instructions: [
         "Freeze banana slices night before for thick consistency",
         "Blend 2 cups spinach, 1/2 avocado, frozen banana, and 1 cup coconut water",
-        "Add 1 scoop pea protein powder and 1/2 tsp spirulina",
+        "Add 30g pea protein powder and 1/2 tsp spirulina",
         "Blend until completely smooth and creamy",
         "Add fresh mint leaves and lime juice, blend briefly",
         "Pour into bowl and let sit 2 minutes to thicken",
