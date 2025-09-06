@@ -7736,7 +7736,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     category: "breakfast",
     tags: ["Vegetarian", "Vegan", "Dairy-Free", "Gluten-Free", "menstruation", "High-Protein", "smoothie", "berries", "pre-workout"],
     ingredients: [
-      "1 scoop vanilla protein powder",
+      "1 vanilla protein powder",
       "150g mixed berries",
       "1 medium banana",
       "200ml almond milk", 
@@ -7791,7 +7791,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Vegetarian", "Gluten-Free", "menstruation", "High-Protein", "sweet-treat", "cinnamon", "comfort-food"],
     ingredients: [
       "80g oat flour",
-      "1 scoop vanilla protein powder", 
+      "1 vanilla protein powder", 
       "15ml ground cinnamon",
       "5ml baking powder",
       "2 tbsp almond butter",
@@ -7853,7 +7853,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "1 large ripe avocado",
       "40g cocoa powder",
       "60g almond flour",
-      "1 scoop vanilla protein powder",
+      "1 vanilla protein powder",
       "60ml maple syrup",
       "30g dark chocolate chips",
       "5ml vanilla extract", 
@@ -7912,7 +7912,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Vegetarian", "Vegan", "Dairy-Free", "Gluten-Free", "menstruation", "High-Protein", "chocolate", "cashew", "mousse", "comfort-food"],
     ingredients: [
       "100g cashews (soaked 2 hours)",
-      "1 scoop vanilla protein powder",
+      "1 vanilla protein powder",
       "30g cocoa powder",
       "180ml plant milk",
       "2 tbsp maple syrup",
@@ -7968,7 +7968,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     category: "breakfast",
     tags: ["Vegetarian", "Vegan", "Dairy-Free", "Gluten-Free", "menstruation", "High-Protein", "spirulina", "smoothie", "iron-rich", "detox"],
     ingredients: [
-      "1 scoop vanilla protein powder",
+      "1 vanilla protein powder",
       "5ml spirulina powder",
       "1 medium banana",
       "100g blueberries",
@@ -8377,7 +8377,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Vegetarian", "menstruation", "pancakes", "oats", "eggs", "protein", "banana", "High-Fiber"],
     ingredients: [
       "2 eggs",
-      "1 scoop vanilla protein powder",
+      "1 vanilla protein powder",
       "50g rolled oats",
       "1 medium banana",
       "60ml milk",
@@ -8494,7 +8494,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     category: "breakfast",
     tags: ["Vegetarian", "Vegan", "Dairy-Free", "Gluten-Free", "menstruation", "protein", "chocolate", "truffle", "no-bake"],
     ingredients: [
-      "1 scoop vanilla protein powder",
+      "1 vanilla protein powder",
       "30g rolled oats",
       "2 tbsp almond butter",
       "20g cocoa powder",
@@ -8610,7 +8610,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Vegetarian", "Gluten-Free", "menstruation", "granola", "protein", "nuts", "seeds", "meal-prep", "cycleBased", "Menstrual", "Luteal"],
     ingredients: [
       "150g rolled oats",
-      "1 scoop vanilla protein powder",
+      "1 vanilla protein powder",
       "50g mixed nuts",
       "30g pumpkin seeds",
       "20g chia seeds",
@@ -8957,7 +8957,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     category: "breakfast",
     tags: ["Vegetarian", "Gluten-Free", "menstruation", "mug-cake", "protein", "chocolate", "Quick", "comfort-food"],
     ingredients: [
-      "1 scoop vanilla protein powder",
+      "1 vanilla protein powder",
       "20g cocoa powder",
       "1 egg",
       "60ml almond milk",
@@ -10680,7 +10680,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'steel-cut certified oats': 'Grains, Pasta & Canned Goods',
     'steel-cut oats': 'Grains, Pasta & Canned Goods',
     'certified oats': 'Grains, Pasta & Canned Goods',
-    'scoop vanilla protein powder': 'Other Dry Goods', // Legacy compatibility
+    'vanilla protein powder': 'Other Dry Goods',
     'strawberries for topping': 'Fruits', // Legacy compatibility
     'fresh berries for topping': 'Fruits', // Legacy compatibility
     'blueberries for topping': 'Fruits', // Legacy compatibility
