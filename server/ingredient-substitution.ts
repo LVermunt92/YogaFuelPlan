@@ -17,6 +17,7 @@ const LACTOSE_FREE_SUBSTITUTIONS: IngredientSubstitution[] = [
   { original: 'whole milk', substitute: 'oat milk', ratio: 1.0 },
   { original: 'skim milk', substitute: 'almond milk', ratio: 1.0 },
   { original: '2% milk', substitute: 'oat milk', ratio: 1.0 },
+  { original: 'sweet potato milk', substitute: 'sweet potato milk', ratio: 1.0, note: 'Naturally lactose-free plant milk' },
   
   // Cheese substitutions (allow aged cheeses which are naturally lactose-free)
   { original: 'cheddar cheese', substitute: 'dairy-free cheddar cheese', ratio: 1.0 },

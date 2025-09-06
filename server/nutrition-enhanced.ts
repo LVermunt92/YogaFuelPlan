@@ -81,7 +81,7 @@ function addCyclePhaseTagsToRecipe(recipe: MealOption): MealOption {
     
   const hasComplexCarbs = 
     ingredientText.includes('oats') || ingredientText.includes('quinoa') ||
-    ingredientText.includes('sweet potato') || ingredientText.includes('brown rice') ||
+    (ingredientText.includes('sweet potato') || ingredientText.includes('sweet potatoes')) || ingredientText.includes('brown rice') ||
     ingredientText.includes('whole grain');
     
   const isFresh = 
@@ -10387,7 +10387,8 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'green onions': 'Vegetables',
     'scallions': 'Vegetables',
     'spring onions': 'Vegetables',
-    'sweet potato': 'Vegetables',
+    'sweet potatoes': 'Vegetables',
+    'sweet potato milk': 'Dairy Alternatives',
     
     // Fruits (Fresh Produce section 2)
     'banana': 'Fruits',
@@ -11119,7 +11120,8 @@ export function getDefaultPortion(ingredient: string): { amount: number; unit: s
     'sugarsnaps': { amount: 150, unit: 'g' }, // Sugar snap peas in grams (alternative name)
     'zucchini': { amount: 1, unit: 'piece' }, // 1 medium zucchini
     'brussels sprouts': { amount: 150, unit: 'g' }, // 1 cup = ~150g
-    'sweet potato': { amount: 200, unit: 'g' }, // 1 medium sweet potato
+    'sweet potatoes': { amount: 200, unit: 'g' }, // 1 medium sweet potato
+    'sweet potato milk': { amount: 1000, unit: 'ml' }, // 1 liter carton
     'cashew cream': { amount: 60, unit: 'g' }, // 1/4 cup = ~60g
     'sun-dried tomatoes': { amount: 30, unit: 'g' }, // 2 tbsp = ~30g
     'pasta': { amount: 100, unit: 'g' }, // 1 serving dry pasta

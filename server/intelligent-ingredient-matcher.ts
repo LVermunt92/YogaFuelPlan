@@ -222,7 +222,8 @@ function ingredientsMatch(ingredient1: string, ingredient2: string): boolean {
     'cauliflower': ['cauliflower florets', 'fresh cauliflower', 'cauliflower rice'],
     'tofu': ['firm tofu', 'extra firm tofu', 'silken tofu', 'tofu cubes', 'cubed tofu'],
     'rice': ['brown rice', 'white rice', 'jasmine rice', 'basmati rice', 'cauliflower rice', 'cooked rice'],
-    'herbs': ['fresh herbs', 'parsley', 'cilantro', 'basil', 'thyme', 'rosemary']
+    'herbs': ['fresh herbs', 'parsley', 'cilantro', 'basil', 'thyme', 'rosemary'],
+    'sweet potatoes': ['sweet potato', 'roasted sweet potato', 'sweet potato cubes', 'sweet potato chunks']
   };
 
   // Check variations

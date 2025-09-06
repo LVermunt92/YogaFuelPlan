@@ -11,7 +11,7 @@ export interface ConversionRule {
 export const CONVERSION_RULES: ConversionRule[] = [
   // Liquid conversions - prioritize milliliters for European users
   {
-    pattern: /(\d+(?:\.\d+)?)\s*cups?\s+(milk|almond milk|coconut milk|oat milk|soy milk|plant milk)/i,
+    pattern: /(\d+(?:\.\d+)?)\s*cups?\s+(milk|almond milk|coconut milk|oat milk|soy milk|plant milk|sweet potato milk)/i,
     convert: (amount, unit) => ({ amount: Math.round(amount * 240), unit: 'ml' }),
     category: 'liquid'
   },

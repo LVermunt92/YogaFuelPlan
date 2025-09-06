@@ -120,6 +120,8 @@ const ingredientTranslations: Record<string, string> = {
   'mushrooms': 'champignons',
   'avocado': 'avocado',
   'sweet potato': 'zoete aardappel',
+  'sweet potatoes': 'zoete aardappelen',
+  'sweet potato milk': 'zoete aardappel melk',
   'potato': 'aardappel',
   'potatoes': 'aardappelen',
   'lettuce': 'sla',

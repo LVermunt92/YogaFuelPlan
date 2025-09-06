@@ -860,7 +860,7 @@ export function generateShoppingList(meals: { foodDescription: string }[], langu
     'gluten-free pasta': 'Grains & Starches',
     'gluten-free tortilla': 'Grains & Starches',
     'chickpea flour': 'Grains & Starches',
-    'sweet potato': 'Grains & Starches',
+    'sweet potatoes': 'Grains & Starches',
     
     // Nuts & Seeds
     'almond butter': 'Nuts & Seeds',
@@ -1091,7 +1091,7 @@ export function generateShoppingList(meals: { foodDescription: string }[], langu
     'gluten-free pasta': { amount: 500, unit: 'g' },
     'gluten-free tortilla': { amount: 8, unit: 'pieces' },
     'chickpea flour': { amount: 500, unit: 'g' },
-    'sweet potato': { amount: 1000, unit: 'g' },
+    'sweet potatoes': { amount: 1000, unit: 'g' },
     
     // Nuts & Seeds
     'almond butter': { amount: 500, unit: 'g' },

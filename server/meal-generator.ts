@@ -33,7 +33,7 @@ const RESISTANT_STARCH_SOURCES = {
   'oats': { resistantStarchPer100g: 3.6, weightLossBenefit: 'high', tags: ['grain', 'fiber', 'beta-glucan'] },
   'potatoes': { resistantStarchPer100g: 3.6, weightLossBenefit: 'medium', tags: ['starchy-vegetable', 'potassium'] },
   // Additional resistant starch sources
-  'sweet potato': { resistantStarchPer100g: 2.8, weightLossBenefit: 'medium', tags: ['starchy-vegetable', 'beta-carotene'] },
+  'sweet potatoes': { resistantStarchPer100g: 2.8, weightLossBenefit: 'medium', tags: ['starchy-vegetable', 'beta-carotene'] },
   'quinoa': { resistantStarchPer100g: 2.9, weightLossBenefit: 'high', tags: ['grain', 'complete-protein'] },
   'chickpeas': { resistantStarchPer100g: 3.1, weightLossBenefit: 'high', tags: ['legume', 'fiber', 'protein'] },
   'black beans': { resistantStarchPer100g: 3.8, weightLossBenefit: 'high', tags: ['legume', 'fiber', 'protein'] }
