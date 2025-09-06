@@ -78,7 +78,7 @@ function enhanceWithProtein(meal: MealOption): MealOption {
   // Create enhanced meal
   const enhancedMeal: MealOption = {
     ...meal,
-    name: `${meal.name} (protein-enhanced)`,
+    name: meal.name,
     nutrition: {
       ...meal.nutrition,
       protein: potentialProtein,

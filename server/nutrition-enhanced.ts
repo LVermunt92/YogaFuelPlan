@@ -2476,7 +2476,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
 
   // Dairy-free/lactose-free and vegetarian versions of viral recipes
   {
-    name: "Herb-infused vegetable lasagna with avocado oil drizzle (Plant-Based)",
+    name: "Herb-infused vegetable lasagna with avocado oil drizzle",
     portion: "1 generous serving (250g)",
     nutrition: {
       protein: 22,
@@ -2527,7 +2527,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
   },
 
   {
-    name: "Lentil and basil pesto lasagna with cashew cream sauce (Dairy-Free)",
+    name: "Lentil and basil pesto lasagna with cashew cream sauce",
     portion: "1 serving (280g)",
     nutrition: {
       protein: 28,
@@ -2578,7 +2578,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
   },
 
   {
-    name: "Pasta with roasted zucchini cream and cashew cheese topping (Dairy-Free)",
+    name: "Pasta with roasted zucchini cream and cashew cheese topping",
     portion: "200g pasta + toppings",
     nutrition: {
       protein: 18,
@@ -4832,7 +4832,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     active: true
   },
   {
-    name: "Rustic Tomato Pasta Bake with Herbed Breadcrumbs (Gluten-Free)",
+    name: "Rustic Tomato Pasta Bake with Herbed Breadcrumbs",
     portion: "1 generous serving (about 350g)",
     nutrition: {
       protein: 28,
@@ -5233,7 +5233,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     active: true
   },
   {
-    name: "Chickpea & Potato Pancakes with Warm Veggie Salsa (Gluten-Free)",
+    name: "Chickpea & Potato Pancakes with Warm Veggie Salsa",
     portion: "1 serving (2 medium pancakes with salsa, about 300g)",
     nutrition: {
       protein: 23,
@@ -6996,7 +6996,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     }
   },
   {
-    name: "Tomato Mac & Cheese (Gluten-Free)",
+    name: "Tomato Mac & Cheese",
     portion: "1 generous serving (about 300g)",
     nutrition: {
       protein: 17,
@@ -7127,7 +7127,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     }
   },
   {
-    name: "Aubergine Parmigiana (Gluten-Free)",
+    name: "Aubergine Parmigiana",
     portion: "1 generous serving (about 280g)",
     nutrition: {
       protein: 19,
@@ -9071,7 +9071,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
 
   // Jackfruit Burger Complete Meal - Gluten-Free Version  
   {
-    name: "Spiced Jackfruit Burgers with Roasted Sweet Potato and Spinach-Rocket Salad (Gluten-Free)",
+    name: "Spiced Jackfruit Burgers with Roasted Sweet Potato and Spinach-Rocket Salad",
     portion: "2 burgers with sides",
     nutrition: { 
       protein: 22, 
@@ -9247,7 +9247,7 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
       // Create modified version for recipes with gluten
       glutenFreeVersion = {
         ...recipe,
-        name: `${recipe.name} (Gluten-Free)`,
+        name: recipe.name,
         tags: [...recipe.tags.filter(tag => tag !== 'wheat'), 'Gluten-Free'],
         ingredients: recipe.ingredients?.map(ingredient => {
           // Convert gluten-containing ingredients
@@ -9307,7 +9307,7 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
       // Create modified version for recipes with dairy
       lactoseFreeVersion = {
         ...recipe,
-        name: `${recipe.name} (Lactose-Free)`,
+        name: recipe.name,
         tags: [...recipe.tags, 'Lactose-Free', 'dairy-free'],
         ingredients: recipe.ingredients?.map(ingredient => {
           // Convert dairy ingredients
