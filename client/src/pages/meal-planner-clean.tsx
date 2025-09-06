@@ -1072,7 +1072,7 @@ export default function MealPlanner() {
           {/* 5. Saved Meal Plans */}
           {mealPlans.length > 0 && (
             <Card className="w-full lg:max-w-5xl lg:mx-auto">
-              <CardHeader className="pb-2">
+              <CardHeader className="pb-1">
                 <CardTitle className="flex items-center gap-2">
                   <History className="h-6 w-6" />
                   {t.savedMealPlans || 'Saved Meal Plans'} ({mealPlans.length})
@@ -1082,11 +1082,11 @@ export default function MealPlanner() {
                 </p>
               </CardHeader>
               <CardContent className="pt-0">
-                <div className="space-y-1">
+                <div className="space-y-0.5">
                   {mealPlans.map((plan, index) => (
                     <div 
                       key={plan.id}
-                      className={`p-3 border rounded-lg cursor-pointer transition-colors w-full ${
+                      className={`p-2 border rounded-lg cursor-pointer transition-colors w-full ${
                         selectedMealPlan === plan.id 
                           ? 'border-primary bg-primary/5' 
                           : 'border-border hover:border-primary/50'
