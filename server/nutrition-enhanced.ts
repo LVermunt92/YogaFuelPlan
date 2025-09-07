@@ -2004,59 +2004,65 @@ const RAW_MEAL_DATABASE: MealOption[] = [
   },
 
   {
-    name: "Mediterranean quinoa bowl with roasted vegetables",
+    name: "Mediterranean Quinoa with Chickpeas and Vegetables",
     portion: "2 servings",
     nutrition: { 
-      protein: 16, 
-      prepTime: 30, 
-      calories: 440,
-      carbohydrates: 58,
-      fats: 18,
-      fiber: 10,
-      sugar: 14,
-      sodium: 320,
-      costEuros: 4.60, 
-      proteinPerEuro: 3.5 
+      protein: 22, 
+      prepTime: 25, 
+      calories: 480,
+      carbohydrates: 52,
+      fats: 20,
+      fiber: 12,
+      sugar: 8,
+      sodium: 380,
+      costEuros: 5.20, 
+      proteinPerEuro: 4.2 
     },
     category: "dinner",
-    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "mediterranean", "colorful"],
+    tags: ["Vegetarian", "Gluten-Free", "Mediterranean", "High-Protein", "colorful"],
     ingredients: [
-      "1 cup quinoa",
+      "150g quinoa (uncooked)",
+      "1 can (400g) chickpeas (drained and rinsed)",
       "1 zucchini (diced)",
       "1 red bell pepper (diced)",
-      "1 red onion (sliced)",
-      "150g cherry tomatoes (halved)",
-      "3 tbsp olive oil",
-      "2 tbsp tahini",
-      "1 lemon (juiced)",
-      "2 cloves garlic (minced)",
-      "1/4 cup pine nuts",
-      "2 tbsp fresh parsley (chopped)",
-      "1 tsp oregano"
+      "2 carrots (thinly sliced)",
+      "200g mushrooms (sliced)",
+      "1 onion (chopped)",
+      "2 tbsp olive oil",
+      "2 tbsp pine nuts (toasted)",
+      "30g parmesan cheese (shaved or grated)",
+      "Fresh parsley (handful, chopped)",
+      "1 tsp dried thyme",
+      "Juice of ½ lemon",
+      "Salt and black pepper to taste"
     ],
     wholeFoodLevel: "high",
     vegetableContent: {
-      servings: 3,
-      vegetables: ["zucchini", "bell pepper", "onion", "tomatoes"],
-      benefits: ["High in antioxidants", "Rich in vitamin C", "Heart healthy"]
+      servings: 4,
+      vegetables: ["zucchini", "bell pepper", "carrots", "mushrooms", "onion"],
+      benefits: ["High in antioxidants", "Rich in vitamin C", "Heart healthy", "High in beta-carotene"]
     },
     recipe: {
       instructions: [
-        "Preheat oven to 200°C",
-        "Cook quinoa in 2 cups water for 15 minutes",
-        "Toss diced vegetables with 2 tbsp olive oil, salt, and oregano",
-        "Roast vegetables for 20 minutes until tender",
-        "Whisk tahini, lemon juice, garlic, and remaining olive oil",
-        "Toast pine nuts in dry pan for 2 minutes",
-        "Fluff cooked quinoa and mix with roasted vegetables",
-        "Drizzle with tahini dressing",
-        "Top with toasted pine nuts and fresh parsley"
+        "Rinse quinoa under cold water until water runs clear",
+        "Cook quinoa in 2× its volume of water with a pinch of salt for about 15 minutes, then fluff and set aside",
+        "Heat 1 tbsp olive oil in a large pan over medium heat",
+        "Add onion, carrots, and bell pepper - sauté for 5 minutes",
+        "Add zucchini and mushrooms - cook another 5-7 minutes until tender",
+        "Season vegetables with thyme, salt, and pepper",
+        "Stir in chickpeas and cook for 2 minutes to warm through",
+        "Add a squeeze of lemon juice to the vegetables",
+        "Toast pine nuts in a dry pan for 2-3 minutes until golden",
+        "Combine cooked quinoa with the vegetable-chickpea mixture",
+        "Drizzle remaining 1 tbsp olive oil on top",
+        "Sprinkle with toasted pine nuts, parmesan shavings, and fresh parsley"
       ],
       tips: [
         "Cut vegetables evenly for consistent cooking",
-        "Don't overcrowd the roasting pan"
+        "Toast pine nuts separately to prevent burning",
+        "Add vegetables in stages for perfect texture"
       ],
-      notes: "Fresh Mediterranean flavors in 30 minutes"
+      notes: "Classic Mediterranean bowl with chickpeas for 22g protein. The step-by-step sautéing method ensures perfectly cooked vegetables while parmesan and pine nuts add authentic Mediterranean richness."
     }
   },
 
