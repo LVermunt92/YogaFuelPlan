@@ -949,25 +949,43 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   let wednesdayDinnerMeal: MealOption | null = null;
   let thursdayDinnerMeal: MealOption | null = null;
   
+  // Get user settings for meal planning
+  const eatingDaysAtHome = user?.eatingDaysAtHome || 7;
+  const mealsPerDay = user?.mealsPerDay || 2; // 2 = lunch+dinner, 3 = breakfast+lunch+dinner
+  
+  console.log(`🎯 USER SETTINGS: ${eatingDaysAtHome} eating days, ${mealsPerDay} meals/day`);
+  
   // Loop through days 1-7 (Sunday through Saturday)
+  // Only generate meals for consecutive days based on eatingDaysAtHome
   // Day 1 = Sunday, Day 2 = Monday, Day 3 = Tuesday, Day 4 = Wednesday, Day 5 = Thursday, Day 6 = Friday, Day 7 = Saturday
   for (let day = 1; day <= 7; day++) {
     let dailyProtein = 0;
     
+    // Check if this day should have meals (consecutive days starting from Sunday)
+    const shouldHaveMeals = day <= eatingDaysAtHome;
+    
     // Determine which meals to generate for this day
     let mealsToGenerate: ('breakfast' | 'lunch' | 'dinner')[] = [];
+    
+    if (!shouldHaveMeals) {
+      // Skip days beyond eating days count
+      console.log(`🌅 Day ${day}: SKIPPED (beyond ${eatingDaysAtHome} eating days)`);
+      continue;
+    }
+    
     if (day === 1) {
       // Day 1: Sunday evening - only dinner (start of meal plan)
       mealsToGenerate = ['dinner'];
       console.log(`🌅 Day ${day} (Sunday evening): ONLY dinner`);
-    } else if (day === 7) {
-      // Day 7: Saturday - eating out options
-      mealsToGenerate = ['breakfast', 'lunch', 'dinner'];
-      console.log(`🌅 Day ${day} (Saturday): all meals`);
     } else {
-      // Days 2-6: Monday through Friday - full meal planning
-      mealsToGenerate = ['breakfast', 'lunch', 'dinner'];
-      console.log(`🌅 Day ${day}: all meals`);
+      // Other days: Generate meals based on mealsPerDay setting
+      if (mealsPerDay === 3) {
+        mealsToGenerate = ['breakfast', 'lunch', 'dinner'];
+        console.log(`🌅 Day ${day}: all 3 meals (breakfast, lunch, dinner)`);
+      } else {
+        mealsToGenerate = ['lunch', 'dinner'];
+        console.log(`🌅 Day ${day}: 2 meals (lunch, dinner)`);
+      }
     }
 
     for (const mealCategory of mealsToGenerate) {
