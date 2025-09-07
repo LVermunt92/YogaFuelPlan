@@ -146,6 +146,12 @@ function checkNaturalIngredientUsage(meal: MealOption, leftovers: string[]): str
   for (const leftoverIngredient of leftovers) {
     const normalizedLeftover = leftoverIngredient.toLowerCase().trim();
     
+    // Safety check for meal ingredients
+    if (!meal.ingredients || !Array.isArray(meal.ingredients)) {
+      console.warn(`⚠️ Meal "${meal.name}" has no ingredients array, skipping natural ingredient check`);
+      continue;
+    }
+    
     // Check if any ingredient in the meal naturally matches the leftover
     const hasIngredient = meal.ingredients.some(ingredient => {
       const normalizedIngredient = ingredient.toLowerCase();
@@ -1430,13 +1436,25 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         console.log(`🔍 MEAL SELECTION DEBUG: Day ${day} ${mealCategory} - mealSelection:`, mealSelection?.meal?.name || 'undefined');
         console.log(`🔍 MEAL SELECTION DEBUG: mealsToSelectFrom.length = ${mealsToSelectFrom.length}`);
         
-        selectedMeal = mealSelection.meal;
-        const intelligentlyUsedIngredients = mealSelection.usedIngredients;
+        // Robust meal selection with multiple fallbacks
+        selectedMeal = mealSelection?.meal;
+        const intelligentlyUsedIngredients = mealSelection?.usedIngredients || [];
         
         // Emergency check for undefined selectedMeal 
-        if (!selectedMeal && mealsToSelectFrom.length > 0) {
-          console.error(`❌ EMERGENCY: selectedMeal is undefined, using first available meal as fallback`);
-          selectedMeal = mealsToSelectFrom[0];
+        if (!selectedMeal) {
+          console.error(`❌ EMERGENCY: selectedMeal is undefined, using fallback selection`);
+          if (mealsToSelectFrom.length > 0) {
+            selectedMeal = mealsToSelectFrom[0];
+            console.log(`🚨 Using first meal from mealsToSelectFrom: ${selectedMeal.name}`);
+          } else if (mealCategory === 'lunch' && lunchOptions && lunchOptions.length > 0) {
+            selectedMeal = lunchOptions[0];
+            console.log(`🚨 Using first lunch option: ${selectedMeal.name}`);
+          } else if (mealCategory === 'dinner' && dinnerOptions && dinnerOptions.length > 0) {
+            selectedMeal = dinnerOptions[0];
+            console.log(`🚨 Using first dinner option: ${selectedMeal.name}`);
+          } else {
+            throw new Error(`No meals available for ${mealCategory} on day ${day}`);
+          }
         }
         
         // Log freshness analysis for the selected meal
@@ -1490,6 +1508,27 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
       let portionMultiplier = caloricAdjustment;
       if (user?.householdSize && user.householdSize > 1) {
         portionMultiplier *= user.householdSize;
+      }
+      
+      // Final safety check right before accessing meal properties
+      if (!selectedMeal || !selectedMeal.nutrition) {
+        console.error(`❌ FINAL SAFETY: selectedMeal is still undefined at portion calculation`);
+        // Create a minimal fallback meal to prevent crash
+        selectedMeal = {
+          name: "Simple Protein Bowl",
+          portion: "1 serving",
+          nutrition: { protein: 25, calories: 400, carbohydrates: 40, fats: 15, prepTime: 15 },
+          ingredients: ["protein", "vegetables"],
+          tags: ["quick"],
+          category: mealCategory,
+          wholeFoodLevel: 'moderate' as const,
+          vegetableContent: {
+            servings: 2,
+            vegetables: ["mixed vegetables"],
+            benefits: ["nutrition", "fiber"]
+          }
+        };
+        console.log(`🚨 Using emergency fallback meal: ${selectedMeal.name}`);
       }
       
       const adjustedPortion = adjustMealPortion(selectedMeal.portion, portionMultiplier, servingMultiplier);
