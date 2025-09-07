@@ -56,6 +56,7 @@ interface UserProfile {
   householdSize: number;
   cookingDaysPerWeek: number;
   eatingDaysAtHome: number;
+  mealsPerDay: number;
   meatFishMealsPerWeek: number;
   useOnlyMyRecipes: boolean;
   menstrualPhase: string;
@@ -116,6 +117,7 @@ export default function Profile() {
     householdSize: '',
     cookingDaysPerWeek: '',
     eatingDaysAtHome: '',
+    mealsPerDay: '',
     meatFishMealsPerWeek: '',
     useOnlyMyRecipes: false,
     menstrualPhase: 'off',
@@ -184,6 +186,7 @@ export default function Profile() {
         householdSize: isNewUser ? '' : (user.householdSize?.toString() || ''),
         cookingDaysPerWeek: isNewUser ? '' : (user.cookingDaysPerWeek?.toString() || ''),
         eatingDaysAtHome: isNewUser ? '' : (user.eatingDaysAtHome?.toString() || ''),
+        mealsPerDay: isNewUser ? '' : (user.mealsPerDay?.toString() || ''),
         meatFishMealsPerWeek: isNewUser ? '' : (user.meatFishMealsPerWeek?.toString() || ''),
         useOnlyMyRecipes: user.useOnlyMyRecipes || false,
         menstrualPhase: user.menstrualPhase || 'off',
@@ -227,6 +230,7 @@ export default function Profile() {
           householdSize: updatedData.householdSize?.toString() || '1',
           cookingDaysPerWeek: updatedData.cookingDaysPerWeek?.toString() || '7',
           eatingDaysAtHome: updatedData.eatingDaysAtHome?.toString() || '7',
+          mealsPerDay: updatedData.mealsPerDay?.toString() || '2',
           meatFishMealsPerWeek: updatedData.meatFishMealsPerWeek?.toString() || '0',
           useOnlyMyRecipes: updatedData.useOnlyMyRecipes || false,
           menstrualPhase: updatedData.menstrualPhase || 'off',
@@ -291,6 +295,7 @@ export default function Profile() {
       householdSize: formData.householdSize ? parseInt(formData.householdSize) : 1,
       cookingDaysPerWeek: formData.cookingDaysPerWeek ? parseInt(formData.cookingDaysPerWeek) : 7,
       eatingDaysAtHome: formData.eatingDaysAtHome ? parseInt(formData.eatingDaysAtHome) : 7,
+      mealsPerDay: formData.mealsPerDay ? parseInt(formData.mealsPerDay) : 2,
       meatFishMealsPerWeek: formData.meatFishMealsPerWeek ? parseInt(formData.meatFishMealsPerWeek) : 0,
       useOnlyMyRecipes: formData.useOnlyMyRecipes,
       menstrualPhase: formData.menstrualPhase,
@@ -801,6 +806,25 @@ export default function Profile() {
                 />
                 <p className="text-xs text-gray-400 mt-1">
                   {t.eatingDaysHelp}
+                </p>
+              </div>
+
+              <div>
+                <Label htmlFor="mealsPerDay" className="text-sm font-medium text-foreground mb-2 block">
+                  {t.mealsPerDay}
+                </Label>
+                <Input
+                  id="mealsPerDay"
+                  type="number"
+                  min="2"
+                  max="3"
+                  value={formData.mealsPerDay}
+                  onChange={(e) => setFormData(prev => ({ ...prev, mealsPerDay: e.target.value }))}
+                  className="input-clean"
+                  placeholder="2"
+                />
+                <p className="text-xs text-gray-400 mt-1">
+                  {t.mealsPerDayHelp}
                 </p>
               </div>
 
