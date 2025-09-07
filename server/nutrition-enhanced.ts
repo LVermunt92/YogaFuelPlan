@@ -905,6 +905,137 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       notes: "Wild salmon provides superior nutrition compared to farmed varieties"
     }
   },
+  // Zonderzooi.com Lunch Versions (same recipes for lunch/dinner flexibility)
+  {
+    name: "Red Lentil Hummus Power Bowl - Lunch (Zonderzooi)",
+    portion: "1 serving (320g)",
+    nutrition: { 
+      protein: 24, 
+      prepTime: 20, 
+      calories: 395,
+      carbohydrates: 48,
+      fats: 14,
+      fiber: 16,
+      sugar: 8,
+      sodium: 350,
+      potassium: 820,
+      calcium: 160,
+      iron: 6.2,
+      vitaminC: 25,
+      costEuros: 3.20, 
+      proteinPerEuro: 7.5 
+    },
+    category: "lunch",
+    tags: ["Vegan", "Gluten-Free", "Dairy-Free", "High-Protein", "Anti-Inflammatory", "Ayurvedic", "Whole30", "Longevity", "Follicular", "Ovulation", "Luteal"],
+    ingredients: [
+      "150g red lentils (cooked)",
+      "60ml tahini",
+      "2 garlic cloves",
+      "Juice of 1 lemon (30ml)",
+      "15ml olive oil",
+      "5ml cumin powder",
+      "2.5ml cayenne pepper",
+      "5ml salt",
+      "2.5ml paprika powder",
+      "60g fresh spinach leaves",
+      "80g cherry tomatoes (halved)",
+      "40g cucumber (diced)",
+      "15ml hemp hearts",
+      "Fresh herbs (parsley, mint)"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["spinach", "tomatoes", "cucumber"],
+      benefits: ["Exceptionally high plant protein", "Easier to digest than chickpeas", "Rich in folate and iron", "Anti-inflammatory compounds"]
+    },
+    recipe: {
+      instructions: [
+        "Cook red lentils in boiling water for 12-15 minutes until very soft and mushy",
+        "Drain lentils and let cool slightly",
+        "Blend cooked lentils, tahini, garlic, lemon juice, olive oil, cumin, and salt in food processor until creamy",
+        "Add water if needed for desired consistency",
+        "Taste and adjust with more lemon, salt, or cayenne",
+        "Arrange spinach in bowl as base",
+        "Add large dollop of red lentil hummus in center",
+        "Arrange cherry tomatoes and cucumber around hummus",
+        "Sprinkle with hemp hearts, paprika, and fresh herbs",
+        "Drizzle with extra olive oil and serve with vegetable sticks or flatbread"
+      ],
+      tips: [
+        "Perfect for meal prep - hummus keeps 5 days in fridge",
+        "Add extra vegetables like bell peppers or radishes for crunch",
+        "Can be served with gluten-free crackers or veggie sticks",
+        "Great for workplace lunches"
+      ],
+      notes: "This red lentil hummus provides more protein than traditional chickpea hummus and is perfect for satisfying midday nutrition needs."
+    }
+  },
+  
+  {
+    name: "Asian Mango Noodle Salad - Lunch (Zonderzooi)",
+    portion: "1 serving (350g)",
+    nutrition: { 
+      protein: 22, 
+      prepTime: 20, 
+      calories: 440,
+      carbohydrates: 58,
+      fats: 16,
+      fiber: 8,
+      sugar: 18,
+      sodium: 620,
+      potassium: 520,
+      calcium: 85,
+      iron: 3.2,
+      vitaminC: 65,
+      costEuros: 3.80, 
+      proteinPerEuro: 5.8 
+    },
+    category: "lunch",
+    tags: ["Vegan", "High-Protein", "Anti-Inflammatory", "Asian-Fusion", "Gluten-Free-Option", "Longevity", "Follicular", "Ovulation"],
+    ingredients: [
+      "90g soba noodles (or rice noodles for GF)",
+      "1 cucumber (julienned)",
+      "1 winter carrot (julienned)",
+      "½ ripe mango (diced)",
+      "30g unsalted peanuts",
+      "Fresh mint sprigs",
+      "Fresh cilantro sprigs",
+      "30ml natural peanut butter",
+      "60ml water",
+      "2.5ml sambal oelek (chili paste)",
+      "10ml soy sauce (or tamari for GF)",
+      "10ml maple syrup",
+      "15ml hemp hearts"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["cucumber", "carrot", "mango"],
+      benefits: ["High vitamin C from mango", "Cooling properties for Pitta dosha", "Digestive enzymes from fresh herbs", "Energizing for afternoon"]
+    },
+    recipe: {
+      instructions: [
+        "Cook soba noodles according to package directions, rinse with cold water, drain well",
+        "Julienne cucumber and carrot into thin matchsticks",
+        "Dice mango into small cubes",
+        "Make peanut dressing: whisk peanut butter, water, sambal oelek, soy sauce, and maple syrup until smooth",
+        "Divide noodles between serving bowls",
+        "Top with cucumber, carrot, and mango in separate sections",
+        "Sprinkle with peanuts, hemp hearts, fresh mint, and cilantro",
+        "Drizzle with peanut dressing just before serving",
+        "Toss gently and serve immediately"
+      ],
+      tips: [
+        "Perfect portable lunch - pack dressing separately",
+        "Prep vegetables on Sunday for quick weekday assembly",
+        "Use tamari and rice noodles for completely gluten-free version",
+        "Add edamame for extra protein boost"
+      ],
+      notes: "This refreshing lunch provides sustained energy from complex carbs and plant protein while cooling Pitta dosha with fresh vegetables and herbs."
+    }
+  },
+
   {
     name: "Lentil and fresh vegetable curry with brown rice",
     portion: "2 servings",
@@ -1024,6 +1155,265 @@ const RAW_MEAL_DATABASE: MealOption[] = [
   },
 
   // Dinner options - Whole Foods Focus
+  
+  // Zonderzooi.com High-Protein Lunch/Dinner Recipes
+  {
+    name: "Red Lentil Hummus Power Bowl (Zonderzooi)",
+    portion: "1 serving (320g)",
+    nutrition: { 
+      protein: 24, 
+      prepTime: 20, 
+      calories: 395,
+      carbohydrates: 48,
+      fats: 14,
+      fiber: 16,
+      sugar: 8,
+      sodium: 350,
+      potassium: 820,
+      calcium: 160,
+      iron: 6.2,
+      vitaminC: 25,
+      costEuros: 3.20, 
+      proteinPerEuro: 7.5 
+    },
+    category: "dinner",
+    tags: ["Vegan", "Gluten-Free", "Dairy-Free", "High-Protein", "Anti-Inflammatory", "Ayurvedic", "Whole30", "Longevity", "Follicular", "Ovulation", "Luteal"],
+    ingredients: [
+      "150g red lentils (cooked)",
+      "60ml tahini",
+      "2 garlic cloves",
+      "Juice of 1 lemon (30ml)",
+      "15ml olive oil",
+      "5ml cumin powder",
+      "2.5ml cayenne pepper",
+      "5ml salt",
+      "2.5ml paprika powder",
+      "60g fresh spinach leaves",
+      "80g cherry tomatoes (halved)",
+      "40g cucumber (diced)",
+      "15ml hemp hearts",
+      "Fresh herbs (parsley, mint)"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["spinach", "tomatoes", "cucumber"],
+      benefits: ["Exceptionally high plant protein", "Easier to digest than chickpeas", "Rich in folate and iron", "Anti-inflammatory compounds"]
+    },
+    recipe: {
+      instructions: [
+        "Cook red lentils in boiling water for 12-15 minutes until very soft and mushy",
+        "Drain lentils and let cool slightly",
+        "Blend cooked lentils, tahini, garlic, lemon juice, olive oil, cumin, and salt in food processor until creamy",
+        "Add water if needed for desired consistency",
+        "Taste and adjust with more lemon, salt, or cayenne",
+        "Arrange spinach in bowl as base",
+        "Add large dollop of red lentil hummus in center",
+        "Arrange cherry tomatoes and cucumber around hummus",
+        "Sprinkle with hemp hearts, paprika, and fresh herbs",
+        "Drizzle with extra olive oil and serve with vegetable sticks or flatbread"
+      ],
+      tips: [
+        "Red lentils create exceptionally creamy texture when fully cooked",
+        "Store hummus covered in fridge for up to 5 days",
+        "Can be made as traditional hummus or served as power bowl",
+        "Add extra protein with hemp hearts or pumpkin seeds"
+      ],
+      notes: "This red lentil hummus provides more protein per serving than traditional chickpea hummus, plus it's easier to digest according to Ayurvedic principles."
+    }
+  },
+  
+  {
+    name: "Quinoa Salad with Roasted Vegetables and Feta (Zonderzooi)",
+    portion: "1 serving (380g)",
+    nutrition: { 
+      protein: 26, 
+      prepTime: 25, 
+      calories: 465,
+      carbohydrates: 52,
+      fats: 18,
+      fiber: 14,
+      sugar: 12,
+      sodium: 420,
+      potassium: 680,
+      calcium: 280,
+      iron: 4.8,
+      vitaminC: 45,
+      costEuros: 4.80, 
+      proteinPerEuro: 5.4 
+    },
+    category: "dinner",
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Anti-Inflammatory", "Ayurvedic", "Mediterranean", "Longevity", "Follicular", "Ovulation", "Luteal"],
+    ingredients: [
+      "100g quinoa",
+      "150g frozen peas",
+      "60g fresh spinach",
+      "120g feta cheese (or vegan white cheese)",
+      "80g pecan nuts (roughly chopped)",
+      "Fresh mint leaves",
+      "Juice of 2 limes (60ml)",
+      "15ml maple syrup",
+      "15ml olive oil",
+      "15ml hemp hearts",
+      "Sea salt to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2.5,
+      vegetables: ["peas", "spinach", "mint"],
+      benefits: ["Complete amino acid profile from quinoa", "High in plant protein and healthy fats", "Rich in folate and vitamin K", "Anti-inflammatory omega-3s from nuts"]
+    },
+    recipe: {
+      instructions: [
+        "Cook quinoa according to package directions with salt, let cool completely",
+        "Cook frozen peas in boiling water for 2-3 minutes, drain and cool",
+        "Roughly chop pecan nuts",
+        "Whisk lime juice, maple syrup, and olive oil for dressing",
+        "In large bowl, combine cooled quinoa, peas, and fresh spinach",
+        "Crumble feta cheese over salad",
+        "Add chopped pecans and fresh mint leaves",
+        "Drizzle with lime dressing and hemp hearts",
+        "Toss gently and let marinate 10 minutes before serving",
+        "Serve at room temperature or chilled"
+      ],
+      tips: [
+        "Toast pecans lightly for extra flavor depth",
+        "Use vegan white cheese for dairy-free version",
+        "This salad keeps well for 2-3 days in the fridge",
+        "Add extra mint just before serving for best flavor"
+      ],
+      notes: "This protein-rich quinoa salad combines complete proteins from quinoa and feta with healthy fats from pecans. Perfect for meal prep and suitable for both lunch and dinner."
+    }
+  },
+  
+  {
+    name: "Asian Mango Noodle Salad with Peanut Dressing (Zonderzooi)",
+    portion: "1 serving (350g)",
+    nutrition: { 
+      protein: 22, 
+      prepTime: 20, 
+      calories: 440,
+      carbohydrates: 58,
+      fats: 16,
+      fiber: 8,
+      sugar: 18,
+      sodium: 620,
+      potassium: 520,
+      calcium: 85,
+      iron: 3.2,
+      vitaminC: 65,
+      costEuros: 3.80, 
+      proteinPerEuro: 5.8 
+    },
+    category: "dinner",
+    tags: ["Vegan", "High-Protein", "Anti-Inflammatory", "Asian-Fusion", "Gluten-Free-Option", "Longevity", "Follicular", "Ovulation"],
+    ingredients: [
+      "90g soba noodles (or rice noodles for GF)",
+      "1 cucumber (julienned)",
+      "1 winter carrot (julienned)",
+      "½ ripe mango (diced)",
+      "30g unsalted peanuts",
+      "Fresh mint sprigs",
+      "Fresh cilantro sprigs",
+      "30ml natural peanut butter",
+      "60ml water",
+      "2.5ml sambal oelek (chili paste)",
+      "10ml soy sauce (or tamari for GF)",
+      "10ml maple syrup",
+      "15ml hemp hearts"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["cucumber", "carrot", "mango"],
+      benefits: ["High vitamin C from mango", "Cooling properties for Pitta dosha", "Digestive enzymes from fresh herbs", "Antioxidant-rich vegetables"]
+    },
+    recipe: {
+      instructions: [
+        "Cook soba noodles according to package directions, rinse with cold water, drain well",
+        "Julienne cucumber and carrot into thin matchsticks",
+        "Dice mango into small cubes",
+        "Make peanut dressing: whisk peanut butter, water, sambal oelek, soy sauce, and maple syrup until smooth",
+        "Divide noodles between serving bowls",
+        "Top with cucumber, carrot, and mango in separate sections",
+        "Sprinkle with peanuts, hemp hearts, fresh mint, and cilantro",
+        "Drizzle with peanut dressing just before serving",
+        "Toss gently and serve immediately"
+      ],
+      tips: [
+        "For gluten-free version, use rice noodles and tamari instead of soy sauce",
+        "Prep all vegetables ahead but dress just before serving to maintain crunch",
+        "Add extra chili paste for more heat if desired",
+        "This transports well for packed lunches"
+      ],
+      notes: "This refreshing Asian-inspired salad provides plant protein from peanuts and hemp hearts while delivering cooling properties perfect for warm weather or balancing Pitta dosha."
+    }
+  },
+  
+  {
+    name: "Asian Mango Noodle Salad - Gluten-Free (Zonderzooi)",
+    portion: "1 serving (350g)",
+    nutrition: { 
+      protein: 21, 
+      prepTime: 20, 
+      calories: 425,
+      carbohydrates: 56,
+      fats: 16,
+      fiber: 7,
+      sugar: 18,
+      sodium: 580,
+      potassium: 520,
+      calcium: 85,
+      iron: 2.8,
+      vitaminC: 65,
+      costEuros: 4.20, 
+      proteinPerEuro: 5.0 
+    },
+    category: "dinner",
+    tags: ["Vegan", "Gluten-Free", "High-Protein", "Anti-Inflammatory", "Asian-Fusion", "Longevity", "Follicular", "Ovulation"],
+    ingredients: [
+      "90g rice noodles (100% rice)",
+      "1 cucumber (julienned)",
+      "1 winter carrot (julienned)",
+      "½ ripe mango (diced)",
+      "30g unsalted peanuts",
+      "Fresh mint sprigs",
+      "Fresh cilantro sprigs",
+      "30ml natural peanut butter",
+      "60ml water",
+      "2.5ml sambal oelek (chili paste)",
+      "10ml tamari (gluten-free soy sauce)",
+      "10ml maple syrup",
+      "15ml hemp hearts"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["cucumber", "carrot", "mango"],
+      benefits: ["Completely gluten-free", "High vitamin C from mango", "Cooling and anti-inflammatory", "Easy digestion"]
+    },
+    recipe: {
+      instructions: [
+        "Cook rice noodles according to package directions, rinse with cold water, drain well",
+        "Julienne cucumber and carrot into thin matchsticks",
+        "Dice mango into small cubes",
+        "Make gluten-free peanut dressing: whisk peanut butter, water, sambal oelek, tamari, and maple syrup until smooth",
+        "Divide noodles between serving bowls",
+        "Top with cucumber, carrot, and mango in separate sections",
+        "Sprinkle with peanuts, hemp hearts, fresh mint, and cilantro",
+        "Drizzle with tamari-based dressing just before serving",
+        "Toss gently and serve immediately"
+      ],
+      tips: [
+        "Rice noodles are naturally gluten-free and easier to digest",
+        "Always check tamari label to ensure it's certified gluten-free",
+        "This version is suitable for those with gluten sensitivity or celiac disease",
+        "Maintains all the fresh Asian flavors of the original"
+      ],
+      notes: "This gluten-free version uses rice noodles and tamari to create the same delicious Asian flavors while being completely safe for those avoiding gluten."
+    }
+  },
+
   {
     name: "Herb-crusted stuffed portobello mushrooms with Brussels sprouts and sweet potato",
     portion: "2 large mushrooms + vegetables",
