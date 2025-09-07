@@ -288,52 +288,104 @@ function adjustMealPortion(originalPortion: string, adjustmentFactor: number, se
 }
 
 /**
+ * Translate Dutch ingredient to English for better matching
+ */
+function translateDutchIngredientToEnglish(dutchIngredient: string): string {
+  const translations: Record<string, string> = {
+    'bleekselderij': 'celery',
+    'spinazie': 'spinach',
+    'zoete aardappel': 'sweet potato',
+    'erwten': 'peas',
+    'wortel': 'carrot',
+    'ui': 'onion',
+    'knoflook': 'garlic',
+    'tomaat': 'tomato',
+    'courgette': 'zucchini',
+    'aubergine': 'eggplant',
+    'paprika': 'bell pepper',
+    'broccoli': 'broccoli',
+    'bloemkool': 'cauliflower',
+    'champignons': 'mushrooms',
+    'rode kool': 'red cabbage',
+    'witte kool': 'white cabbage',
+    'boerenkool': 'kale',
+    'rucola': 'arugula',
+    'basilicum': 'basil',
+    'peterselie': 'parsley',
+    'tijm': 'thyme',
+    'rozemarijn': 'rosemary'
+  };
+  
+  const lower = dutchIngredient.toLowerCase().trim();
+  return translations[lower] || dutchIngredient;
+}
+
+/**
  * Calculate compatibility score between leftover ingredient and meal
  */
 function calculateIngredientCompatibility(leftoverIngredient: string, meal: MealOption): number {
   const leftoverLower = leftoverIngredient.toLowerCase();
   const mealIngredients = meal.ingredients.map(i => i.toLowerCase());
   const mealName = meal.name.toLowerCase();
+  
+  // Translate Dutch ingredient to English for better matching
+  const englishEquivalent = translateDutchIngredientToEnglish(leftoverLower);
+  const englishLower = englishEquivalent.toLowerCase();
+  
   let score = 0;
   
-  // Direct ingredient match (highest score)
-  if (mealIngredients.some(ing => ing.includes(leftoverLower) || leftoverLower.includes(ing))) {
+  console.log(`🔍 INGREDIENT MATCH: Checking "${leftoverIngredient}" (English: "${englishEquivalent}") against meal "${meal.name}"`);
+  
+  // Direct ingredient match (highest score) - check both original and translated
+  const hasDirectMatch = mealIngredients.some(ing => 
+    ing.includes(leftoverLower) || leftoverLower.includes(ing) ||
+    ing.includes(englishLower) || englishLower.includes(ing) ||
+    mealName.includes(leftoverLower) || mealName.includes(englishLower)
+  );
+  
+  if (hasDirectMatch) {
     score += 10;
+    console.log(`✅ DIRECT MATCH: Found "${leftoverIngredient}" in "${meal.name}" (score +10)`);
   }
   
-  // Cuisine and cooking style compatibility
+  // Cuisine and cooking style compatibility - check both original and translated
   const cuisineMatches = {
     'spinach': ['mediterranean', 'italian', 'greek', 'pasta', 'lasagna', 'curry', 'stir'],
-    'spinazie': ['mediterranean', 'italian', 'greek', 'pasta', 'lasagna', 'curry', 'stir'],
+    'celery': ['soup', 'stew', 'broth', 'base', 'mirepoix', 'aromatics'],
+    'sweet potato': ['roasted', 'baked', 'mash', 'curry', 'african', 'autumn'],
+    'peas': ['asian', 'stir', 'curry', 'fresh', 'spring', 'snap'],
     'cauliflower': ['indian', 'curry', 'roasted', 'mash', 'rice', 'keto', 'low-carb'],
-    'bloemkool': ['indian', 'curry', 'roasted', 'mash', 'rice', 'keto', 'low-carb'],
-    'sugar snap': ['asian', 'stir', 'chinese', 'thai', 'steam', 'crisp'],
-    'sugarsnap': ['asian', 'stir', 'chinese', 'thai', 'steam', 'crisp']
+    'sugar snap': ['asian', 'stir', 'chinese', 'thai', 'steam', 'crisp']
   };
   
-  // Check cuisine compatibility
+  // Check cuisine compatibility using translated ingredient
   for (const [ingredient, cuisines] of Object.entries(cuisineMatches)) {
-    if (leftoverLower.includes(ingredient)) {
+    if (englishLower.includes(ingredient) || leftoverLower.includes(ingredient)) {
       for (const cuisine of cuisines) {
         if (mealName.includes(cuisine) || mealIngredients.some(ing => ing.includes(cuisine))) {
           score += 3;
+          console.log(`🍽️ CUISINE MATCH: "${leftoverIngredient}" matches "${cuisine}" cuisine (score +3)`);
         }
       }
     }
   }
   
-  // Cooking method compatibility
+  // Cooking method compatibility - check both original and translated
   const cookingMethodMatches = {
     'spinach': ['sauté', 'steam', 'wilt', 'fresh', 'raw'],
+    'celery': ['sauté', 'soup', 'stew', 'braise', 'aromatics'],
+    'sweet potato': ['roast', 'bake', 'mash', 'cube', 'dice'],
+    'peas': ['steam', 'stir', 'fresh', 'snap', 'quick'],
     'cauliflower': ['roast', 'steam', 'mash', 'rice', 'grain'],
     'sugar snap': ['stir', 'steam', 'crisp', 'crunch', 'fresh']
   };
   
   for (const [ingredient, methods] of Object.entries(cookingMethodMatches)) {
-    if (leftoverLower.includes(ingredient)) {
+    if (englishLower.includes(ingredient) || leftoverLower.includes(ingredient)) {
       for (const method of methods) {
         if (mealName.includes(method) || mealIngredients.some(ing => ing.includes(method))) {
           score += 2;
+          console.log(`👨‍🍳 COOKING MATCH: "${leftoverIngredient}" matches "${method}" method (score +2)`);
         }
       }
     }
