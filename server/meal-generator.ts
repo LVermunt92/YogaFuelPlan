@@ -293,28 +293,64 @@ function adjustMealPortion(originalPortion: string, adjustmentFactor: number, se
  */
 function translateDutchIngredientToEnglish(dutchIngredient: string): string {
   const translations: Record<string, string> = {
+    // Your original 4 ingredients
     'bleekselderij': 'celery',
-    'spinazie': 'spinach',
+    'spinazie': 'spinach', 
     'zoete aardappel': 'sweet potato',
     'erwten': 'peas',
+    
+    // Expanded vegetable translations
     'wortel': 'carrot',
+    'wortels': 'carrots',
     'ui': 'onion',
+    'uien': 'onions',
     'knoflook': 'garlic',
     'tomaat': 'tomato',
+    'tomaten': 'tomatoes',
     'courgette': 'zucchini',
     'aubergine': 'eggplant',
     'paprika': 'bell pepper',
+    
+    // Leafy greens
+    'sla': 'lettuce',
+    'ijsbergsla': 'iceberg lettuce',
+    'rucola': 'arugula',
+    'boerenkool': 'kale',
+    'andijvie': 'endive',
+    'veldsla': 'lamb lettuce',
+    
+    // Cabbage family
+    'rode kool': 'red cabbage',
+    'witte kool': 'white cabbage', 
     'broccoli': 'broccoli',
     'bloemkool': 'cauliflower',
+    'spruitjes': 'brussels sprouts',
+    'chinese kool': 'bok choy',
+    
+    // Mushrooms and fungi
     'champignons': 'mushrooms',
-    'rode kool': 'red cabbage',
-    'witte kool': 'white cabbage',
-    'boerenkool': 'kale',
-    'rucola': 'arugula',
+    'kastanjechampignons': 'chestnut mushrooms',
+    'shiitake': 'shiitake mushrooms',
+    
+    // Herbs and aromatics  
     'basilicum': 'basil',
     'peterselie': 'parsley',
     'tijm': 'thyme',
-    'rozemarijn': 'rosemary'
+    'rozemarijn': 'rosemary',
+    'oregano': 'oregano',
+    'dille': 'dill',
+    'bieslook': 'chives',
+    'koriander': 'cilantro',
+    'verse munt': 'fresh mint',
+    
+    // Cooking variations
+    'gehakte ui': 'chopped onion',
+    'gesneden ui': 'sliced onion',
+    'verse spinazie': 'fresh spinach',
+    'bevroren erwten': 'frozen peas',
+    'doperwten': 'green peas',
+    'sugarsnaps': 'sugar snap peas',
+    'peultjes': 'snow peas'
   };
   
   const lower = dutchIngredient.toLowerCase().trim();
@@ -334,67 +370,141 @@ function calculateIngredientCompatibility(leftoverIngredient: string, meal: Meal
   const englishLower = englishEquivalent.toLowerCase();
   
   let score = 0;
+  let matchDetails: string[] = [];
   
   console.log(`🔍 INGREDIENT MATCH: Checking "${leftoverIngredient}" (English: "${englishEquivalent}") against meal "${meal.name}"`);
+  console.log(`🥗 MEAL INGREDIENTS: ${meal.ingredients.join(', ')}`);
   
-  // Direct ingredient match (highest score) - check both original and translated
-  const hasDirectMatch = mealIngredients.some(ing => 
-    ing.includes(leftoverLower) || leftoverLower.includes(ing) ||
-    ing.includes(englishLower) || englishLower.includes(ing) ||
-    mealName.includes(leftoverLower) || mealName.includes(englishLower)
-  );
-  
-  if (hasDirectMatch) {
-    score += 10;
-    console.log(`✅ DIRECT MATCH: Found "${leftoverIngredient}" in "${meal.name}" (score +10)`);
-  }
-  
-  // Cuisine and cooking style compatibility - check both original and translated
-  const cuisineMatches = {
-    'spinach': ['mediterranean', 'italian', 'greek', 'pasta', 'lasagna', 'curry', 'stir'],
-    'celery': ['soup', 'stew', 'broth', 'base', 'mirepoix', 'aromatics'],
-    'sweet potato': ['roasted', 'baked', 'mash', 'curry', 'african', 'autumn'],
-    'peas': ['asian', 'stir', 'curry', 'fresh', 'spring', 'snap'],
-    'cauliflower': ['indian', 'curry', 'roasted', 'mash', 'rice', 'keto', 'low-carb'],
-    'sugar snap': ['asian', 'stir', 'chinese', 'thai', 'steam', 'crisp']
+  // Helper function for flexible word matching
+  const hasWordMatch = (searchTerm: string, targetText: string): boolean => {
+    const searchWords = searchTerm.split(/\s+/);
+    const targetWords = targetText.split(/\s+/);
+    
+    // Check if any search word appears in target
+    return searchWords.some(searchWord => 
+      targetWords.some(targetWord => 
+        targetWord.includes(searchWord) || searchWord.includes(targetWord)
+      )
+    );
   };
   
-  // Check cuisine compatibility using translated ingredient
+  // 1. EXACT INGREDIENT MATCH (highest score)
+  const exactMatch = mealIngredients.find(ing => 
+    ing.includes(leftoverLower) || leftoverLower.includes(ing) ||
+    ing.includes(englishLower) || englishLower.includes(ing)
+  );
+  
+  if (exactMatch) {
+    score += 15;
+    matchDetails.push(`EXACT: "${exactMatch}"`);
+    console.log(`✅ EXACT INGREDIENT MATCH: Found "${leftoverIngredient}" in ingredient "${exactMatch}" (score +15)`);
+  }
+  
+  // 2. RECIPE NAME MATCH (high score)
+  if (mealName.includes(leftoverLower) || mealName.includes(englishLower)) {
+    score += 12;
+    matchDetails.push(`NAME: "${meal.name}"`);
+    console.log(`✅ RECIPE NAME MATCH: Found "${leftoverIngredient}" in recipe name "${meal.name}" (score +12)`);
+  }
+  
+  // 3. WORD-LEVEL INGREDIENT MATCH (medium-high score)
+  const wordMatchIngredient = mealIngredients.find(ing => 
+    hasWordMatch(leftoverLower, ing) || hasWordMatch(englishLower, ing)
+  );
+  
+  if (wordMatchIngredient && !exactMatch) {
+    score += 8;
+    matchDetails.push(`WORD: "${wordMatchIngredient}"`);
+    console.log(`✅ WORD-LEVEL MATCH: Found "${leftoverIngredient}" as word in "${wordMatchIngredient}" (score +8)`);
+  }
+  
+  // 4. PARTIAL INGREDIENT MATCH (medium score)
+  if (!exactMatch && !wordMatchIngredient) {
+    const partialMatch = mealIngredients.find(ing => {
+      const searchTerms = [leftoverLower, englishLower];
+      return searchTerms.some(term => {
+        const termParts = term.split(/\s+/);
+        return termParts.some(part => part.length >= 4 && ing.includes(part));
+      });
+    });
+    
+    if (partialMatch) {
+      score += 5;
+      matchDetails.push(`PARTIAL: "${partialMatch}"`);
+      console.log(`✅ PARTIAL MATCH: Found part of "${leftoverIngredient}" in "${partialMatch}" (score +5)`);
+    }
+  }
+  
+  // 5. CUISINE AND COOKING STYLE COMPATIBILITY
+  const cuisineMatches = {
+    'spinach': ['mediterranean', 'italian', 'greek', 'pasta', 'lasagna', 'curry', 'stir', 'saute', 'wilted', 'fresh'],
+    'celery': ['soup', 'stew', 'broth', 'base', 'mirepoix', 'aromatics', 'chinese', 'asian', 'stirfry'],
+    'sweet potato': ['roasted', 'baked', 'mash', 'curry', 'african', 'autumn', 'hash', 'traybake', 'bowl'],
+    'peas': ['asian', 'stir', 'curry', 'fresh', 'spring', 'snap', 'rice', 'risotto', 'pasta'],
+    'cauliflower': ['indian', 'curry', 'roasted', 'mash', 'rice', 'keto', 'low-carb', 'mediterranean'],
+    'sugar snap': ['asian', 'stir', 'chinese', 'thai', 'steam', 'crisp'],
+    
+    // Add aliases for better matching
+    'bleekselderij': ['soup', 'stew', 'broth', 'base', 'mirepoix', 'aromatics', 'chinese', 'asian', 'stirfry'],
+    'spinazie': ['mediterranean', 'italian', 'greek', 'pasta', 'lasagna', 'curry', 'stir', 'saute', 'wilted', 'fresh'],
+    'zoete aardappel': ['roasted', 'baked', 'mash', 'curry', 'african', 'autumn', 'hash', 'traybake', 'bowl'],
+    'erwten': ['asian', 'stir', 'curry', 'fresh', 'spring', 'snap', 'rice', 'risotto', 'pasta']
+  };
+  
+  // Check cuisine compatibility using both original and translated ingredients
   for (const [ingredient, cuisines] of Object.entries(cuisineMatches)) {
-    if (englishLower.includes(ingredient) || leftoverLower.includes(ingredient)) {
+    if (englishLower.includes(ingredient) || leftoverLower.includes(ingredient) || 
+        ingredient.includes(englishLower) || ingredient.includes(leftoverLower)) {
       for (const cuisine of cuisines) {
         if (mealName.includes(cuisine) || mealIngredients.some(ing => ing.includes(cuisine))) {
           score += 3;
+          matchDetails.push(`CUISINE: "${cuisine}"`);
           console.log(`🍽️ CUISINE MATCH: "${leftoverIngredient}" matches "${cuisine}" cuisine (score +3)`);
         }
       }
     }
   }
   
-  // Cooking method compatibility - check both original and translated
+  // 6. COOKING METHOD COMPATIBILITY
   const cookingMethodMatches = {
-    'spinach': ['sauté', 'steam', 'wilt', 'fresh', 'raw'],
-    'celery': ['sauté', 'soup', 'stew', 'braise', 'aromatics'],
-    'sweet potato': ['roast', 'bake', 'mash', 'cube', 'dice'],
-    'peas': ['steam', 'stir', 'fresh', 'snap', 'quick'],
-    'cauliflower': ['roast', 'steam', 'mash', 'rice', 'grain'],
-    'sugar snap': ['stir', 'steam', 'crisp', 'crunch', 'fresh']
+    'spinach': ['sauté', 'steam', 'wilt', 'fresh', 'raw', 'salad', 'green'],
+    'celery': ['sauté', 'soup', 'stew', 'braise', 'aromatics', 'base', 'mirepoix'],
+    'sweet potato': ['roast', 'bake', 'mash', 'cube', 'dice', 'hash', 'fries'],
+    'peas': ['steam', 'stir', 'fresh', 'snap', 'quick', 'tender'],
+    'cauliflower': ['roast', 'steam', 'mash', 'rice', 'grain', 'florets'],
+    'sugar snap': ['stir', 'steam', 'crisp', 'crunch', 'fresh'],
+    
+    // Add Dutch versions
+    'bleekselderij': ['sauté', 'soup', 'stew', 'braise', 'aromatics', 'base', 'mirepoix'],
+    'spinazie': ['sauté', 'steam', 'wilt', 'fresh', 'raw', 'salad', 'green'],
+    'zoete aardappel': ['roast', 'bake', 'mash', 'cube', 'dice', 'hash', 'fries'],
+    'erwten': ['steam', 'stir', 'fresh', 'snap', 'quick', 'tender']
   };
   
   for (const [ingredient, methods] of Object.entries(cookingMethodMatches)) {
-    if (englishLower.includes(ingredient) || leftoverLower.includes(ingredient)) {
+    if (englishLower.includes(ingredient) || leftoverLower.includes(ingredient) ||
+        ingredient.includes(englishLower) || ingredient.includes(leftoverLower)) {
       for (const method of methods) {
         if (mealName.includes(method) || mealIngredients.some(ing => ing.includes(method))) {
           score += 2;
+          matchDetails.push(`METHOD: "${method}"`);
           console.log(`👨‍🍳 COOKING MATCH: "${leftoverIngredient}" matches "${method}" method (score +2)`);
         }
       }
     }
   }
   
-  // Nutritional profile compatibility
-  if (mealIngredients.some(ing => ing.includes('vegetable') || ing.includes('green'))) {
+  // 7. NUTRITIONAL PROFILE COMPATIBILITY
+  if (mealIngredients.some(ing => ing.includes('vegetable') || ing.includes('green') || ing.includes('fresh'))) {
     score += 1;
+    matchDetails.push('NUTRITION: vegetables/greens');
+  }
+  
+  // Log final result
+  if (score > 0) {
+    console.log(`🎯 TOTAL SCORE: "${leftoverIngredient}" vs "${meal.name}" = ${score} points [${matchDetails.join(', ')}]`);
+  } else {
+    console.log(`❌ NO MATCH: "${leftoverIngredient}" vs "${meal.name}" = 0 points`);
   }
   
   return score;
