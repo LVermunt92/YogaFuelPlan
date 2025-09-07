@@ -871,7 +871,17 @@ async function selectUnusedMealIntelligently(
     
     // Use intelligent selection after reset
     const selectedMeals = selectMealsWithBetterVariety(extraShuffled, 1);
-    const selectedMeal = selectedMeals[0] || extraShuffled[0];
+    const selectedMeal = selectedMeals?.[0] || extraShuffled?.[0] || availableMeals?.[0];
+    
+    // Critical safety check - ensure we have a valid meal object
+    if (!selectedMeal) {
+      console.error(`❌ CRITICAL: No meal available after all selection attempts`);
+      console.error(`❌ DEBUG: availableMeals.length = ${availableMeals.length}`);
+      console.error(`❌ DEBUG: extraShuffled.length = ${extraShuffled?.length || 0}`);
+      console.error(`❌ DEBUG: selectedMeals = ${selectedMeals?.length || 0}`);
+      throw new Error('No meals available for selection');
+    }
+    
     console.log(`📋 Reset and selected with enhanced randomization: ${selectedMeal.name} (from ${resetCandidates.length} filtered options)`);
     return { meal: selectedMeal, usedIngredients: [] };
   } else {
@@ -1417,8 +1427,17 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         
         const mealSelection = await selectUnusedMealIntelligently(mealsToSelectFrom, mealCategory === 'lunch' ? usedLunchMeals : usedDinnerMeals, allSelectedMealNames, false, remainingIngredientsToUseUp, mealCategory as 'lunch' | 'dinner', dietaryTags, dailyProteinTarget, user?.id);
         
+        console.log(`🔍 MEAL SELECTION DEBUG: Day ${day} ${mealCategory} - mealSelection:`, mealSelection?.meal?.name || 'undefined');
+        console.log(`🔍 MEAL SELECTION DEBUG: mealsToSelectFrom.length = ${mealsToSelectFrom.length}`);
+        
         selectedMeal = mealSelection.meal;
         const intelligentlyUsedIngredients = mealSelection.usedIngredients;
+        
+        // Emergency check for undefined selectedMeal 
+        if (!selectedMeal && mealsToSelectFrom.length > 0) {
+          console.error(`❌ EMERGENCY: selectedMeal is undefined, using first available meal as fallback`);
+          selectedMeal = mealsToSelectFrom[0];
+        }
         
         // Log freshness analysis for the selected meal
         logMealFreshnessAnalysis(selectedMeal.name, selectedMeal.ingredients || []);
@@ -1452,11 +1471,17 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         console.error(`❌ CRITICAL: selectedMeal is undefined for day ${day}, ${mealCategory}`);
         console.error(`❌ FALLBACK: Using first available meal to prevent crash`);
         // Emergency fallback - use first available meal from the original pool
-        if (mealCategory === 'lunch' && lunchOptions.length > 0) {
+        if (mealCategory === 'lunch' && lunchOptions && lunchOptions.length > 0) {
           selectedMeal = lunchOptions[0];
-        } else if (mealCategory === 'dinner' && dinnerOptions.length > 0) {
+          console.log(`🚨 EMERGENCY FALLBACK: Using lunch meal "${selectedMeal.name}"`);
+        } else if (mealCategory === 'dinner' && dinnerOptions && dinnerOptions.length > 0) {
           selectedMeal = dinnerOptions[0];
+          console.log(`🚨 EMERGENCY FALLBACK: Using dinner meal "${selectedMeal.name}"`);
+        } else if (mealCategory === 'breakfast' && breakfastOptions && breakfastOptions.length > 0) {
+          selectedMeal = breakfastOptions[0];
+          console.log(`🚨 EMERGENCY FALLBACK: Using breakfast meal "${selectedMeal.name}"`);
         } else {
+          console.error(`❌ NO MEALS AVAILABLE: No ${mealCategory} options found at all`);
           throw new Error(`No fallback meal available for ${mealCategory} on day ${day}`);
         }
       }
