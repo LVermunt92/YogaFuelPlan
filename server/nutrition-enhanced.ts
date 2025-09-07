@@ -135,9 +135,9 @@ function addCyclePhaseTagsToRecipe(recipe: MealOption): MealOption {
 const RAW_MEAL_DATABASE: MealOption[] = [
   // Breakfast options - Whole Foods Focus
   
-  // Zonderzooi.com Ayurvedic Recipes
+  // Ayurvedic Recipes
   {
-    name: "Ayurvedic Havermoutpap met Gebakken Nectarine en Kokos",
+    name: "Ayurvedic Oat Porridge with Sautéed Nectarine and Coconut",
     portion: "1 serving (300g)",
     nutrition: { 
       protein: 22, 
@@ -303,7 +303,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     }
   },
   {
-    name: "Gezonde Chocolade Muffins (Vegan en Glutenvrij)",
+    name: "Healthy Chocolate Muffins",
     portion: "1 muffin (85g)",
     nutrition: { 
       protein: 23, 
@@ -419,7 +419,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
 
   // Additional gluten-free, lactose-free, vegetarian breakfast options
   {
-    name: "Overnight gluten-free oats with almond milk and berries",
+    name: "Overnight oats with almond milk and berries",
     portion: "1 serving",
     nutrition: {
       protein: 15,
@@ -617,7 +617,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
   },
 
   {
-    name: "Fermented kefir bowl with gluten-free granola and berries",
+    name: "Fermented kefir bowl with granola and berries",
     portion: "1 serving",
     nutrition: { 
       protein: 20, 
@@ -905,9 +905,9 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       notes: "Wild salmon provides superior nutrition compared to farmed varieties"
     }
   },
-  // Zonderzooi.com Lunch Versions (same recipes for lunch/dinner flexibility)
+  // Lunch Versions (same recipes for lunch/dinner flexibility)
   {
-    name: "Red Lentil Hummus Power Bowl - Lunch (Zonderzooi)",
+    name: "Red Lentil Hummus Power Bowl - Lunch",
     portion: "1 serving (320g)",
     nutrition: { 
       protein: 24, 
@@ -973,7 +973,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
   },
   
   {
-    name: "Asian Mango Noodle Salad - Lunch (Zonderzooi)",
+    name: "Asian Mango Noodle Salad - Lunch",
     portion: "1 serving (350g)",
     nutrition: { 
       protein: 22, 
@@ -1156,9 +1156,9 @@ const RAW_MEAL_DATABASE: MealOption[] = [
 
   // Dinner options - Whole Foods Focus
   
-  // Zonderzooi.com High-Protein Lunch/Dinner Recipes
+  // High-Protein Lunch/Dinner Recipes
   {
-    name: "Red Lentil Hummus Power Bowl (Zonderzooi)",
+    name: "Red Lentil Hummus Power Bowl",
     portion: "1 serving (320g)",
     nutrition: { 
       protein: 24, 
@@ -1224,7 +1224,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
   },
   
   {
-    name: "Quinoa Salad with Roasted Vegetables and Feta (Zonderzooi)",
+    name: "Quinoa Salad with Roasted Vegetables and Feta",
     portion: "1 serving (380g)",
     nutrition: { 
       protein: 26, 
@@ -1287,7 +1287,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
   },
   
   {
-    name: "Asian Mango Noodle Salad with Peanut Dressing (Zonderzooi)",
+    name: "Asian Mango Noodle Salad with Peanut Dressing",
     portion: "1 serving (350g)",
     nutrition: { 
       protein: 22, 
@@ -1351,7 +1351,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
   },
   
   {
-    name: "Asian Mango Noodle Salad - Gluten-Free (Zonderzooi)",
+    name: "Asian Mango Noodle Salad",
     portion: "1 serving (350g)",
     nutrition: { 
       protein: 21, 
