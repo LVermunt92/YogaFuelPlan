@@ -2,6 +2,9 @@
 // Translates recipe names, ingredients, and instructions from English to Dutch
 import { processRecipeIngredients, convertIngredientUnits } from './unit-converter';
 
+// Reverse translation map (Dutch -> English) for ingredient matching
+let dutchToEnglishMap: Record<string, string> | null = null;
+
 export interface TranslatedRecipe {
   name: string;
   ingredients: string[];
@@ -358,6 +361,52 @@ function translateIngredient(ingredient: string): string {
   
   // Capitalize first letter
   return translated.charAt(0).toUpperCase() + translated.slice(1);
+}
+
+/**
+ * Create reverse translation map (Dutch -> English) for ingredient matching
+ */
+function createDutchToEnglishMap(): Record<string, string> {
+  if (dutchToEnglishMap === null) {
+    dutchToEnglishMap = {};
+    
+    // Create reverse mapping from Dutch back to English
+    for (const [english, dutch] of Object.entries(ingredientTranslations)) {
+      dutchToEnglishMap[dutch.toLowerCase()] = english.toLowerCase();
+    }
+    
+    console.log(`📖 TRANSLATION MAP: Created reverse map with ${Object.keys(dutchToEnglishMap).length} Dutch->English translations`);
+  }
+  
+  return dutchToEnglishMap;
+}
+
+/**
+ * Translate Dutch ingredient to English for ingredient matching
+ * @param dutchIngredient - ingredient name in Dutch
+ * @returns English equivalent or original if no translation found
+ */
+export function translateDutchToEnglish(dutchIngredient: string): string {
+  const map = createDutchToEnglishMap();
+  const normalized = dutchIngredient.toLowerCase().trim();
+  
+  // Direct translation lookup
+  if (map[normalized]) {
+    console.log(`🔄 TRANSLATE: "${dutchIngredient}" -> "${map[normalized]}"`);
+    return map[normalized];
+  }
+  
+  // Partial matching for compound ingredients
+  for (const [dutch, english] of Object.entries(map)) {
+    if (normalized.includes(dutch) || dutch.includes(normalized)) {
+      console.log(`🔄 PARTIAL TRANSLATE: "${dutchIngredient}" -> "${english}" (via "${dutch}")`);
+      return english;
+    }
+  }
+  
+  // No translation found, return original
+  console.log(`❓ NO TRANSLATION: "${dutchIngredient}" - keeping original`);
+  return dutchIngredient;
 }
 
 // Enhanced cooking instruction translations (English -> Dutch)

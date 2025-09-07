@@ -5,6 +5,7 @@
 
 import { MealOption, getCompleteEnhancedMealDatabase } from './nutrition-enhanced';
 import { generateRecipeWithAI } from './ai-recipe-generator';
+import { translateDutchToEnglish } from './recipe-translator';
 
 interface IngredientMatch {
   recipe: MealOption;
@@ -41,7 +42,9 @@ export function findRecipesWithIngredients(
 
     // Check each ingredient the user wants to use up
     for (const userIngredient of ingredientsToUse) {
-      const normalizedUserIngredient = normalizeIngredient(userIngredient);
+      // First translate Dutch ingredients to English for matching
+      const translatedUserIngredient = translateDutchToEnglish(userIngredient);
+      const normalizedUserIngredient = normalizeIngredient(translatedUserIngredient);
       
       // Check if this ingredient appears in the recipe
       for (const recipeIngredient of recipe.ingredients) {
