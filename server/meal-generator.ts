@@ -2131,6 +2131,22 @@ async function generateMealPrepPlan(
   
   console.log(`🥩 Protein calculation: ${totalWeeklyProtein}g total / ${totalDaysWithMeals} full meal days = ${averageProteinPerDay.toFixed(1)}g per day`);
 
+  // Log which leftover ingredients were successfully used
+  const usedIngredients = ingredientsToUseUp.filter(ingredient => {
+    const englishEquivalent = translateDutchIngredientToEnglish(ingredient.toLowerCase());
+    return meals.some(meal => {
+      const mealLower = meal.foodDescription.toLowerCase();
+      return mealLower.includes(ingredient.toLowerCase()) || 
+             mealLower.includes(englishEquivalent.toLowerCase());
+    });
+  });
+  
+  if (usedIngredients.length > 0) {
+    console.log(`✅ LEFTOVER INGREDIENTS USED: ${usedIngredients.join(', ')} were incorporated into your meal plan!`);
+  } else if (ingredientsToUseUp.length > 0) {
+    console.log(`⚠️ LEFTOVER INGREDIENTS: None of your ingredients (${ingredientsToUseUp.join(', ')}) were used this time. Try adjusting your dietary preferences for better matches.`);
+  }
+
   const mealPlan: InsertMealPlan = {
     userId: request.userId || 1,
     weekStart: normalizedWeekStart,
