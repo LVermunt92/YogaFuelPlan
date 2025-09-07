@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
@@ -30,12 +31,13 @@ export default function Auth() {
   const [newPassword, setNewPassword] = useState("");
   const [resetCode, setResetCode] = useState("");
   const [email, setEmail] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [location, navigate] = useLocation();
   const { toast } = useToast();
   const { login } = useAuth();
 
   const loginMutation = useMutation({
-    mutationFn: async (data: { username: string; password: string }) => {
+    mutationFn: async (data: { username: string; password: string; rememberMe?: boolean }) => {
       const response = await apiRequest('POST', '/api/auth/login', data);
       return response.json();
     },
@@ -171,7 +173,7 @@ export default function Auth() {
         }
       } else if (isLogin) {
         const validatedData = loginSchema.parse({ username, password });
-        loginMutation.mutate(validatedData);
+        loginMutation.mutate({ ...validatedData, rememberMe });
       } else {
         const validatedData = registerSchema.parse({ 
           username, 
@@ -285,6 +287,20 @@ export default function Auth() {
                   autoComplete={isLogin ? "current-password" : "new-password"}
                   required
                 />
+              </div>
+            )}
+            
+            {/* Remember Me checkbox - only for login */}
+            {isLogin && !isForgotPassword && (
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="rememberMe"
+                  checked={rememberMe}
+                  onCheckedChange={(checked) => setRememberMe(checked === true)}
+                />
+                <Label htmlFor="rememberMe" className="text-sm">
+                  Remember me for 30 days
+                </Label>
               </div>
             )}
             
