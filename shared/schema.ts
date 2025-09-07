@@ -224,6 +224,7 @@ export const updateUserProfileSchema = createInsertSchema(users).pick({
   householdSize: true,
   cookingDaysPerWeek: true,
   eatingDaysAtHome: true,
+  mealsPerDay: true,
   meatFishMealsPerWeek: true,
   language: true,
   leftovers: true,
