@@ -186,6 +186,7 @@ function selectUnusedMeal(
 export interface GeneratedMealPlan {
   mealPlan: InsertMealPlan;
   meals: InsertMeal[];
+  usedLeftoverIngredients?: string[];
 }
 
 /**
@@ -2154,7 +2155,7 @@ async function generateMealPrepPlan(
     totalProtein: Math.round(averageProteinPerDay), // Average daily protein for days with meals
   };
 
-  return { mealPlan, meals };
+  return { mealPlan, meals, usedLeftoverIngredients: usedIngredients };
 }
 
 export function formatMealPlanForNotion(mealPlan: InsertMealPlan, meals: InsertMeal[]) {

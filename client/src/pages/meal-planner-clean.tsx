@@ -1139,6 +1139,74 @@ export default function MealPlanner() {
                   {t.weekOf} {formatWeekRange(currentMealPlan.weekStart)}
                 </p>
               )}
+              
+              {/* Show which leftover ingredients were used */}
+              {currentMealPlan && userProfile?.leftovers && userProfile.leftovers.length > 0 && (
+                <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+                  {(() => {
+                    // Function to check if an ingredient is used
+                    const isIngredientUsed = (ingredient: string) => {
+                      if (!currentMealPlan?.meals) return false;
+                      
+                      const translations: Record<string, string> = {
+                        'bleekselderij': 'celery',
+                        'spinazie': 'spinach',
+                        'zoete aardappel': 'sweet potato',
+                        'erwten': 'peas',
+                        'wortel': 'carrot',
+                        'ui': 'onion',
+                        'knoflook': 'garlic',
+                        'tomaat': 'tomato',
+                        'courgette': 'zucchini'
+                      };
+                      
+                      const englishEquivalent = translations[ingredient.toLowerCase()] || ingredient;
+                      
+                      return currentMealPlan.meals.some(meal => {
+                        const mealLower = meal.foodDescription.toLowerCase();
+                        return mealLower.includes(ingredient.toLowerCase()) || 
+                               mealLower.includes(englishEquivalent.toLowerCase());
+                      });
+                    };
+                    
+                    const usedIngredients = userProfile.leftovers.filter(isIngredientUsed);
+                    const unusedIngredients = userProfile.leftovers.filter(ingredient => !isIngredientUsed(ingredient));
+                    
+                    return (
+                      <div>
+                        {usedIngredients.length > 0 && (
+                          <div className="mb-2">
+                            <p className="text-sm font-medium text-green-800 mb-1">
+                              ✅ {language === 'nl' ? 'Gebruikte restjes:' : 'Used leftovers:'}
+                            </p>
+                            <div className="flex flex-wrap gap-1">
+                              {usedIngredients.map((ingredient, index) => (
+                                <span key={index} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                  {ingredient}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        {unusedIngredients.length > 0 && (
+                          <div>
+                            <p className="text-sm font-medium text-yellow-800 mb-1">
+                              ⏳ {language === 'nl' ? 'Nog te gebruiken:' : 'Still to use:'}
+                            </p>
+                            <div className="flex flex-wrap gap-1">
+                              {unusedIngredients.map((ingredient, index) => (
+                                <span key={index} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                  {ingredient}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
+                </div>
+              )}
             </CardHeader>
             <CardContent className="px-2 sm:px-6">
               {loadingCurrentPlan ? (
