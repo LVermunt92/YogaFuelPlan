@@ -11106,7 +11106,6 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'chickpea flour': 'Baking & Cooking Basics',
     'coconut flour': 'Baking & Cooking Basics',
     'oat flour': 'Baking & Cooking Basics',
-    'sweet potatoes': 'Vegetables',
     'potatoes': 'Vegetables',
     'olives': 'Other Dry Goods', // Olives belong in dry goods
     'raisins': 'Other Dry Goods', // Dried fruit
@@ -11272,7 +11271,6 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
     'steel-cut certified oats': 'Grains, Pasta & Canned Goods',
     'steel-cut oats': 'Grains, Pasta & Canned Goods',
     'certified oats': 'Grains, Pasta & Canned Goods',
-    'vanilla protein powder': 'Other Dry Goods',
     'strawberries for topping': 'Fruits', // Legacy compatibility
     'fresh berries for topping': 'Fruits', // Legacy compatibility
     'blueberries for topping': 'Fruits', // Legacy compatibility
