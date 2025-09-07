@@ -91,8 +91,12 @@ export async function generateRecipeForIngredients(
   try {
     console.log(`🤖 AI GENERATION: Creating ${category} recipe to use up: ${ingredientsToUse.join(', ')}`);
 
+    // Translate Dutch ingredients to English for AI prompt
+    const translatedIngredients = ingredientsToUse.map(ingredient => translateDutchToEnglish(ingredient));
+    console.log(`🔄 AI TRANSLATION: ${ingredientsToUse.join(', ')} -> ${translatedIngredients.join(', ')}`);
+
     // Create specific prompt to incorporate the ingredients
-    const ingredientPrompt = `Create a delicious ${category} recipe that specifically incorporates these ingredients that need to be used up: ${ingredientsToUse.join(', ')}. The recipe should make good use of these ingredients as key components, not just minor additions.`;
+    const ingredientPrompt = `Create a delicious ${category} recipe that specifically incorporates these ingredients that need to be used up: ${translatedIngredients.join(', ')}. The recipe should make good use of these ingredients as key components, not just minor additions.`;
 
     const aiRecipe = await generateRecipeWithAI({
       category: category,
