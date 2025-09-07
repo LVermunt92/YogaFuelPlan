@@ -247,7 +247,7 @@ export default function Auth() {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter your username"
+                placeholder={t.enterUsername || "Enter your username"}
                 autoComplete="username"
                 required
               />
@@ -262,7 +262,7 @@ export default function Auth() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
+                  placeholder={t.enterEmail || "Enter your email"}
                   autoComplete="email"
                 />
               </div>
@@ -272,13 +272,13 @@ export default function Auth() {
               <>
                 {resetStep === "verify" && (
                   <div className="space-y-2">
-                    <Label htmlFor="resetCode">Reset Code</Label>
+                    <Label htmlFor="resetCode">{t.resetCode || 'Reset Code'}</Label>
                     <Input
                       id="resetCode"
                       type="text"
                       value={resetCode}
                       onChange={(e) => setResetCode(e.target.value)}
-                      placeholder="Enter 6-digit reset code"
+                      placeholder={t.enterResetCode || "Enter 6-digit reset code"}
                       maxLength={6}
                       required
                     />
@@ -286,13 +286,13 @@ export default function Auth() {
                 )}
                 {resetStep === "verify" && (
                   <div className="space-y-2">
-                    <Label htmlFor="newPassword">New Password</Label>
+                    <Label htmlFor="newPassword">{t.newPassword || 'New Password'}</Label>
                     <Input
                       id="newPassword"
                       type="password"
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
-                      placeholder="Enter your new password"
+                      placeholder={t.enterNewPassword || "Enter your new password"}
                       required
                     />
                   </div>
@@ -307,7 +307,7 @@ export default function Auth() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
+                  placeholder={t.enterPassword || "Enter your password"}
                   autoComplete={isLogin ? "current-password" : "new-password"}
                   required
                 />
@@ -355,7 +355,7 @@ export default function Auth() {
                     onClick={() => setResetStep("request")}
                     className="text-sm text-muted-foreground hover:text-foreground underline block"
                   >
-                    Didn't receive code? Try again
+                    {t.didntReceiveCode || "Didn't receive code? Try again"}
                   </button>
                 )}
                 <button
@@ -369,7 +369,7 @@ export default function Auth() {
                   }}
                   className="text-sm text-muted-foreground hover:text-foreground underline block"
                 >
-                  Back to login
+                  {t.backToLogin || "Back to login"}
                 </button>
               </div>
             ) : (
@@ -379,7 +379,7 @@ export default function Auth() {
                   onClick={() => setIsLogin(!isLogin)}
                   className="text-sm text-muted-foreground hover:text-foreground underline block"
                 >
-                  {isLogin ? "Don't have an account? Create one" : "Already have an account? Log in"}
+                  {isLogin ? (t.dontHaveAccountCreate || "Don't have an account? Create one") : (t.alreadyHaveAccountLogin || "Already have an account? Log in")}
                 </button>
                 {isLogin && (
                   <button
@@ -392,7 +392,7 @@ export default function Auth() {
                     }}
                     className="text-sm text-muted-foreground hover:text-foreground underline block"
                   >
-                    Forgot your password?
+                    {t.forgotPassword || "Forgot your password?"}
                   </button>
                 )}
               </>
