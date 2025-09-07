@@ -77,7 +77,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/auth/login", async (req, res) => {
     try {
-      const { username, password } = authLoginSchema.parse(req.body);
+      const { username, password, rememberMe } = authLoginSchema.parse(req.body);
       
       const user = await storage.authenticateUser(username, password);
       
@@ -87,7 +87,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Set session for authenticated user
       req.session.userId = user.id;
-      console.log('Session set for user:', user.id);
+      
+      // Set session duration based on rememberMe preference
+      if (rememberMe) {
+        // 30 days for "remember me"
+        req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;
+        console.log('Session set for user:', user.id, '(30 days)');
+      } else {
+        // 1 day for regular login
+        req.session.cookie.maxAge = 24 * 60 * 60 * 1000;
+        console.log('Session set for user:', user.id, '(1 day)');
+      }
 
       // Don't return password in response
       const { password: _, ...userWithoutPassword } = user;

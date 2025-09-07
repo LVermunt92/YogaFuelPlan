@@ -199,6 +199,7 @@ export const authRegisterSchema = createInsertSchema(users).pick({
 export const authLoginSchema = z.object({
   username: z.string(),
   password: z.string(),
+  rememberMe: z.boolean().optional(),
 });
 
 export const updateUserProfileSchema = createInsertSchema(users).pick({
