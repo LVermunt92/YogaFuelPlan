@@ -303,6 +303,71 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     }
   },
   {
+    name: "Gezonde Chocolade Muffins (Vegan en Glutenvrij)",
+    portion: "1 muffin (85g)",
+    nutrition: { 
+      protein: 23, 
+      prepTime: 40, 
+      calories: 295,
+      carbohydrates: 32,
+      fats: 15,
+      fiber: 6,
+      sugar: 18,
+      sodium: 120,
+      potassium: 380,
+      calcium: 75,
+      iron: 3.2,
+      vitaminC: 4,
+      costEuros: 1.20, 
+      proteinPerEuro: 19.2 
+    },
+    category: "breakfast",
+    tags: ["Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Protein", "Anti-Inflammatory", "Whole30", "Ayurvedic", "Longevity", "Menstrual", "Follicular"],
+    ingredients: [
+      "125g oat flour (or ground oats)",
+      "45g raw cacao powder",
+      "60ml coconut oil (melted)",
+      "150ml oat milk",
+      "150ml maple syrup",
+      "15ml chia seeds",
+      "45ml water",
+      "5ml natural vinegar",
+      "5ml baking soda",
+      "20g raw hazelnuts (chopped)",
+      "40g frozen raspberries",
+      "15g hemp hearts (for extra protein)",
+      "2.5ml vanilla extract",
+      "Pinch of sea salt"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 0.5,
+      vegetables: ["raspberries"],
+      benefits: ["Rich in antioxidants from cacao", "Omega-3 fatty acids from chia", "Anti-inflammatory properties", "Supports mood with natural compounds"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 180°C and line muffin tin with paper cases",
+        "Mix chia seeds with water in small bowl, let sit 5 minutes to form gel",
+        "Combine oat flour, cacao powder, and salt in large bowl",
+        "In separate bowl, whisk melted coconut oil, oat milk, maple syrup, vanilla, and chia gel",
+        "Mix vinegar and baking soda in small glass - it will foam briefly",
+        "Pour wet ingredients into dry ingredients, add vinegar mixture",
+        "Fold in hemp hearts, then gently add raspberries and hazelnuts",
+        "Fill muffin cases 3/4 full and bake 25-30 minutes until toothpick comes out clean",
+        "Cool for 30 minutes before removing from tin"
+      ],
+      tips: [
+        "Make oat flour by grinding rolled oats in food processor until fine",
+        "Don't overmix the batter to keep muffins light and fluffy",
+        "Store in airtight container for up to 5 days",
+        "Can be frozen for up to 3 months"
+      ],
+      notes: "These vegan muffins are rich in plant protein from hemp hearts and provide sustained energy from complex carbs. The cacao contains natural mood-boosting compounds."
+    }
+  },
+  
+  {
     name: "Homemade chia pudding with fresh fruit and raw nuts",
     portion: "1 serving",
     nutrition: { 
@@ -657,6 +722,76 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       notes: "Red lentils provide complete protein and cook quickly for meal prep"
     }
   },
+  {
+    name: "Buddha Bowl Salade met Tahini Dressing", 
+    portion: "1 serving (400g)",
+    nutrition: { 
+      protein: 26, 
+      prepTime: 25, 
+      calories: 485,
+      carbohydrates: 52,
+      fats: 24,
+      fiber: 16,
+      sugar: 14,
+      sodium: 380,
+      potassium: 950,
+      calcium: 220,
+      iron: 5.8,
+      vitaminC: 95,
+      costEuros: 4.20, 
+      proteinPerEuro: 6.2 
+    },
+    category: "lunch",
+    tags: ["Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Protein", "Anti-Inflammatory", "Whole30", "Raw", "Ayurvedic", "Longevity", "Follicular", "Ovulation", "Luteal"],
+    ingredients: [
+      "1 winter carrot (spiralized or julienned)",
+      "½ cucumber (sliced)",
+      "1 ripe avocado (sliced)",
+      "125g kidney beans (cooked and drained)",
+      "2 sweet red bell peppers (sliced)",
+      "1 medium sweet potato (thinly sliced)",
+      "10ml pumpkin seeds",
+      "10ml hemp seeds",
+      "60g fresh spinach leaves",
+      "Fresh parsley or cilantro (handful)",
+      "30ml tahini (sesame paste)",
+      "10ml soy sauce",
+      "10ml sesame oil",
+      "10ml natural vinegar",
+      "30ml water"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["carrot", "cucumber", "bell peppers", "sweet potato", "spinach"],
+      benefits: ["Complete rainbow nutrition", "Rich in vitamins A, C, K", "High fiber content", "Healthy fats from avocado", "Plant-based protein from legumes"]
+    },
+    recipe: {
+      instructions: [
+        "Slice sweet potato into very thin rounds using mandoline or sharp knife",
+        "Cook in air fryer at 170°C for 20 minutes until crispy (or oven at 220°C for 35-40 minutes)",
+        "Spiralize carrot into long thin strands, or julienne with knife",
+        "Slice cucumber and red bell peppers into thin strips",
+        "Halve avocado, remove pit, and slice into thin crescents",
+        "Rinse and drain kidney beans thoroughly",
+        "Make tahini dressing by whisking together tahini, soy sauce, sesame oil, vinegar, and water",
+        "Add more water if thinner consistency desired",
+        "Arrange spinach in large bowl as base",
+        "Arrange all vegetables and beans in separate sections over spinach",
+        "Place avocado slices in center",
+        "Sprinkle with pumpkin seeds, hemp seeds, and fresh herbs",
+        "Drizzle with tahini dressing just before serving"
+      ],
+      tips: [
+        "Prep vegetables ahead for quick assembly during busy weekdays",
+        "Tahini dressing keeps in fridge for up to 5 days",
+        "Can substitute feta cheese for avocado if preferred",
+        "Use any seasonal vegetables for variation"
+      ],
+      notes: "This 'eat the rainbow' bowl provides complete nutrition with plant-based protein, healthy fats, and maximum vitamin diversity. Perfect for mindful eating."
+    }
+  },
+  
   {
     name: "Simple protein bowl",
     portion: "1 serving",
