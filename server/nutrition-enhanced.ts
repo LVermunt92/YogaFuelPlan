@@ -134,6 +134,67 @@ function addCyclePhaseTagsToRecipe(recipe: MealOption): MealOption {
 // Always specify exact vegetables: "spinach", "rocket", "romaine lettuce", etc.
 const RAW_MEAL_DATABASE: MealOption[] = [
   // Breakfast options - Whole Foods Focus
+  
+  // Zonderzooi.com Ayurvedic Recipes
+  {
+    name: "Ayurvedic Havermoutpap met Gebakken Nectarine en Kokos",
+    portion: "1 serving (300g)",
+    nutrition: { 
+      protein: 22, 
+      prepTime: 10, 
+      calories: 385,
+      carbohydrates: 45,
+      fats: 18,
+      fiber: 8,
+      sugar: 16,
+      sodium: 15,
+      potassium: 420,
+      calcium: 180,
+      iron: 3.8,
+      vitaminC: 8,
+      costEuros: 2.80, 
+      proteinPerEuro: 7.9 
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "Gluten-Free", "Dairy-Free", "Ayurvedic", "Pitta-Balancing", "Anti-Inflammatory", "Whole30", "Longevity", "Follicular", "Ovulation", "Luteal"],
+    ingredients: [
+      "40g steel-cut oats",
+      "200ml oat milk", 
+      "1 ripe nectarine (150g), sliced",
+      "15ml coconut chips",
+      "2.5ml fennel seeds",
+      "Fresh mint leaves for garnish",
+      "5ml olive oil or coconut oil",
+      "15g hemp hearts (for extra protein)",
+      "10ml ground flaxseed"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["nectarine", "mint"],
+      benefits: ["Cooling and anti-inflammatory", "Rich in antioxidants", "Supports digestive health", "Balances Pitta dosha"]
+    },
+    recipe: {
+      instructions: [
+        "Toast coconut chips in a dry pan over low heat for 2-3 minutes until golden brown, set aside",
+        "Halve the nectarine, remove pit, and slice into small pieces", 
+        "Combine oats, oat milk, and fennel seeds in a small saucepan",
+        "Bring to a boil, then reduce heat and simmer 3-5 minutes, stirring occasionally until thick",
+        "If mixture becomes too dry, add more oat milk",
+        "Heat oil in a small pan and sauté nectarine pieces for 3-5 minutes until warm and soft",
+        "Stir hemp hearts and flaxseed into finished oatmeal",
+        "Serve in bowl topped with sautéed nectarine, toasted coconut chips, and fresh mint"
+      ],
+      tips: [
+        "For authentic Ayurvedic preparation, always cook fruit rather than eating raw with grains",
+        "Fennel seeds aid digestion and add subtle sweetness",
+        "This recipe is especially good for Pitta types during summer months",
+        "Can be made vegan by using plant-based milk"
+      ],
+      notes: "This Ayurvedic breakfast balances Pitta dosha with cooling ingredients like nectarine and coconut. The warm preparation aids digestion according to Ayurvedic principles."
+    }
+  },
+  
   {
     name: "Steel-cut oats with raw nuts, fresh berries, and ground flax",
     portion: "1 serving",
