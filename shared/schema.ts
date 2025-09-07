@@ -25,6 +25,7 @@ export const users = pgTable("users", {
   householdSize: integer("household_size").default(1),
   cookingDaysPerWeek: integer("cooking_days_per_week").default(7),
   eatingDaysAtHome: integer("eating_days_at_home").default(7),
+  mealsPerDay: integer("meals_per_day").default(2), // 2 = lunch+dinner, 3 = breakfast+lunch+dinner
   meatFishMealsPerWeek: integer("meat_fish_meals_per_week").default(0),
   language: text("language").default("en"), // en, nl
   leftovers: text("leftovers").array().default([]), // current leftovers to use in meal planning
