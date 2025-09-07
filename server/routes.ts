@@ -87,16 +87,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Set session for authenticated user
       req.session.userId = user.id;
+      req.session.rememberMe = rememberMe; // Store preference for rolling sessions
       
       // Set session duration based on rememberMe preference
       if (rememberMe) {
         // 30 days for "remember me"
         req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;
-        console.log('Session set for user:', user.id, '(30 days)');
+        console.log('Session set for user:', user.id, '(30 days, rolling)');
       } else {
         // 1 day for regular login
         req.session.cookie.maxAge = 24 * 60 * 60 * 1000;
-        console.log('Session set for user:', user.id, '(1 day)');
+        console.log('Session set for user:', user.id, '(1 day, rolling)');
       }
 
       // Don't return password in response
@@ -189,6 +190,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       if (!req.session?.userId) {
         return res.status(401).json({ message: "Not authenticated" });
+      }
+      
+      // Rolling session: extend session duration on each authenticated request
+      if (req.session.rememberMe) {
+        req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // Reset to 30 days
+      } else {
+        req.session.cookie.maxAge = 24 * 60 * 60 * 1000; // Reset to 1 day
       }
       
       const user = await storage.getUser(req.session.userId);
