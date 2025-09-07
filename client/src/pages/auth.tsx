@@ -217,10 +217,12 @@ export default function Auth() {
               <Label htmlFor="username">Username</Label>
               <Input
                 id="username"
+                name="username"
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="Enter your username"
+                autoComplete="username"
                 required
               />
             </div>
@@ -230,10 +232,12 @@ export default function Auth() {
                 <Label htmlFor="email">Email (optional)</Label>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
+                  autoComplete="email"
                 />
               </div>
             )}
@@ -273,10 +277,12 @@ export default function Auth() {
                 <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
+                  name="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
+                  autoComplete={isLogin ? "current-password" : "new-password"}
                   required
                 />
               </div>
