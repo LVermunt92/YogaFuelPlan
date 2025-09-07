@@ -1475,7 +1475,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
       }
       
       // For leftover meals or when no intelligent matching occurred, check natural ingredient usage  
-      if (isLeftover && remainingIngredientsToUseUp.length > 0) {
+      if (isLeftover && remainingIngredientsToUseUp.length > 0 && selectedMeal && selectedMeal.ingredients) {
         const naturallyUsedIngredients = checkNaturalIngredientUsage(selectedMeal, remainingIngredientsToUseUp);
         if (naturallyUsedIngredients.length > 0) {
           // Remove used ingredients from the list
