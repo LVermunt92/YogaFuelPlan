@@ -768,7 +768,7 @@ async function selectUnusedMealIntelligently(
       if (intelligentRecommendation) {
         const { recipe: candidateMeal, usedIngredients } = intelligentRecommendation;
         
-        // Check if this meal is available - more strict checking
+        // Check if this meal is available - less restrictive for intelligent matches
         const isUsed = usedMeals.has(candidateMeal.name);
         const isSimilarToGlobal = allSelectedMeals && Array.from(allSelectedMeals).some(selectedMeal => 
           areMealsSimilar(candidateMeal.name, selectedMeal));
@@ -776,7 +776,10 @@ async function selectUnusedMealIntelligently(
         
         console.log(`🔍 Availability check for "${candidateMeal.name}": used=${isUsed}, similar=${isSimilarToGlobal}, available=${isInAvailableList}`);
         
-        const isAvailable = !isUsed && !isSimilarToGlobal && isInAvailableList;
+        // For intelligent ingredient matches, prioritize using ingredients over availability restrictions
+        // Only reject if already used or too similar, allow even if not in pre-filtered list
+        const isAvailable = !isUsed && !isSimilarToGlobal;
+        console.log(`🎯 INTELLIGENT PRIORITY: Allowing ingredient match even if not in filtered list (available=${isInAvailableList})`);
             
         if (isAvailable) {
           console.log(`🎯✨ Selected intelligent match: "${candidateMeal.name}" using ingredients: [${usedIngredients.join(', ')}]`);
