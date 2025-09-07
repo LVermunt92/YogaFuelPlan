@@ -1518,7 +1518,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     }
   },
   {
-    name: "Wild mushroom and herb quinoa with roasted vegetables",
+    name: "Middle Eastern Style Wild Mushroom Quinoa with Roasted Vegetables",
     portion: "2 servings",
     nutrition: { 
       protein: 32, 
@@ -1533,8 +1533,8 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.0 
     },
     category: "dinner",
-    tags: ["Vegetarian", "Gluten-Free", "Anti-Inflammatory", "High-Protein", "Longevity"],
-    ingredients: ["quinoa", "mixed wild mushrooms", "fresh herbs (parsley, thyme)", "1 zucchini", "red bell pepper", "carrots", "red onion", "pine nuts", "olive oil", "vegetable stock", "tahini", "lemon juice", "parmesan cheese", "hemp hearts", "pumpkin seeds", "chickpeas", "nutritional yeast"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Anti-Inflammatory", "High-Protein", "Longevity", "Middle-Eastern"],
+    ingredients: ["quinoa", "mixed wild mushrooms", "fresh herbs (parsley, thyme)", "1 zucchini", "red bell pepper", "carrots", "red onion", "olive oil", "vegetable stock", "tahini", "lemon juice", "hemp hearts", "pumpkin seeds", "chickpeas", "nutritional yeast"],
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 4,
@@ -1551,13 +1551,13 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Drain and rinse 1 can chickpeas, pat dry",
         "Toss vegetables and chickpeas with 2 tbsp olive oil, salt, and pepper",
         "Roast vegetables and chickpeas at 200°C for 25 minutes until tender and slightly caramelized",
-        "Toast pine nuts and pumpkin seeds in dry pan for 2-3 minutes until golden",
+        "Toast pumpkin seeds in dry pan for 2-3 minutes until golden",
         "Make protein-rich tahini dressing: whisk 2 tbsp tahini, 2 tbsp lemon juice, 1 tbsp olive oil, 1 tbsp nutritional yeast, and 2-3 tbsp water until smooth",
         "Fluff cooked quinoa and mix with extra 1 tbsp olive oil and 2 tbsp hemp hearts",
         "Stir in mushrooms, fresh herbs, and half the tahini dressing",
-        "Top with roasted vegetables, chickpeas, toasted pine nuts and pumpkin seeds",
+        "Top with roasted vegetables, chickpeas, and toasted pumpkin seeds",
         "Drizzle with remaining tahini dressing and extra olive oil",
-        "Finish with freshly grated parmesan cheese and extra nutritional yeast to taste"
+        "Finish with extra nutritional yeast to taste and fresh herbs"
       ],
       tips: [
         "Use a variety of mushrooms for complex flavour",
@@ -1566,7 +1566,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Hemp hearts and nutritional yeast boost protein while adding nutty flavor",
         "Roasted chickpeas add satisfying crunch and substantial protein"
       ],
-      notes: "This protein-enhanced version delivers 32g protein through quinoa, chickpeas, hemp hearts, tahini, and parmesan. The tahini dressing prevents quinoa from being dry while adding healthy fats. Nutritional yeast provides B-vitamins and umami depth. The combination creates a deeply satisfying and appetizing meal."
+      notes: "This Middle Eastern inspired recipe delivers 30g protein through quinoa, chickpeas, hemp hearts, and tahini. The tahini dressing prevents quinoa from being dry while adding healthy fats. Nutritional yeast provides B-vitamins and umami depth, creating a completely plant-based, deeply satisfying meal."
     }
   },
   {
