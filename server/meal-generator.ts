@@ -980,12 +980,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
     console.log(`🔍 CALLING MEAL PREP with user: ${user?.id}, useOnlyMyRecipes: ${user?.useOnlyMyRecipes}`);
     console.log(`🔍 MEAL PREP USER OBJECT:`, JSON.stringify(user, null, 2));
     
-    // Force custom recipe mode for User 2 for testing
-    if (user && user.id === 2) {
-      console.log(`🎯 FORCING useOnlyMyRecipes=true for User 2 testing`);
-      user.useOnlyMyRecipes = true;
-      console.log(`🎯 User after forcing:`, JSON.stringify(user, null, 2));
-    }
+    // User recipe preference controlled by profile settings
     
     console.log(`🚀 ABOUT TO CALL generateMealPrepPlan...`);
     const result = await generateMealPrepPlan(request, user, caloricAdjustment, servingMultiplier, ingredientsToUseUp, dailyProteinTarget);
@@ -1452,6 +1447,20 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         }
       }
 
+      // Safety check to prevent undefined meal errors
+      if (!selectedMeal) {
+        console.error(`❌ CRITICAL: selectedMeal is undefined for day ${day}, ${mealCategory}`);
+        console.error(`❌ FALLBACK: Using first available meal to prevent crash`);
+        // Emergency fallback - use first available meal from the original pool
+        if (mealCategory === 'lunch' && lunchOptions.length > 0) {
+          selectedMeal = lunchOptions[0];
+        } else if (mealCategory === 'dinner' && dinnerOptions.length > 0) {
+          selectedMeal = dinnerOptions[0];
+        } else {
+          throw new Error(`No fallback meal available for ${mealCategory} on day ${day}`);
+        }
+      }
+      
       // Adjust portion based on caloric goals and household size
       let portionMultiplier = caloricAdjustment;
       if (user?.householdSize && user.householdSize > 1) {
