@@ -6,6 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslations } from "@/lib/translations";
+import { Languages } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
@@ -35,6 +39,8 @@ export default function Auth() {
   const [location, navigate] = useLocation();
   const { toast } = useToast();
   const { login } = useAuth();
+  const { language, setLanguage } = useLanguage();
+  const t = useTranslations(language);
 
   const loginMutation = useMutation({
     mutationFn: async (data: { username: string; password: string; rememberMe?: boolean }) => {
@@ -199,24 +205,42 @@ export default function Auth() {
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
+          <div className="flex justify-between items-start mb-4">
+            <div></div>
+            <div className="flex items-center gap-2">
+              <Languages className="h-4 w-4 text-muted-foreground" />
+              <Select value={language} onValueChange={(value) => {
+                setLanguage(value as 'en' | 'nl');
+                localStorage.setItem('preferred_language', value);
+              }}>
+                <SelectTrigger className="w-20 h-8 text-xs">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="en">EN</SelectItem>
+                  <SelectItem value="nl">NL</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
           <CardTitle className="text-2xl font-light tracking-wider" style={{ fontFamily: 'Times, "Times New Roman", serif' }}>
-            Meal Planner
+            {t.mealPlanner || 'Meal Planner'}
           </CardTitle>
           <CardDescription>
             {isForgotPassword 
               ? resetStep === "request"
-                ? "Enter your username to receive a reset code"
-                : "Enter the reset code sent to your email and your new password"
+                ? (t.enterUsernameForReset || "Enter your username to receive a reset code")
+                : (t.enterResetCodeAndPassword || "Enter the reset code sent to your email and your new password")
               : isLogin 
-                ? "Welcome back to your personal meal planner" 
-                : "Create your account to get started"
+                ? (t.welcomeBackPersonal || "Welcome back to your personal meal planner")
+                : (t.createAccountToStart || "Create your account to get started")
             }
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="username">{t.username || 'Username'}</Label>
               <Input
                 id="username"
                 name="username"
@@ -231,7 +255,7 @@ export default function Auth() {
             
             {!isLogin && !isForgotPassword && (
               <div className="space-y-2">
-                <Label htmlFor="email">Email (optional)</Label>
+                <Label htmlFor="email">{t.email || 'Email'} (optional)</Label>
                 <Input
                   id="email"
                   name="email"
@@ -276,7 +300,7 @@ export default function Auth() {
               </>
             ) : (
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t.password || 'Password'}</Label>
                 <Input
                   id="password"
                   name="password"
@@ -299,7 +323,7 @@ export default function Auth() {
                   onCheckedChange={(checked) => setRememberMe(checked === true)}
                 />
                 <Label htmlFor="rememberMe" className="text-sm">
-                  Remember me for 30 days
+                  {t.rememberMe || 'Remember me'}
                 </Label>
               </div>
             )}
@@ -310,14 +334,14 @@ export default function Auth() {
               disabled={isLoading}
             >
               {isLoading 
-                ? "Please wait..." 
+                ? (t.pleaseWait || "Please wait...") 
                 : isForgotPassword 
                   ? resetStep === "request"
-                    ? "Send Reset Code"
-                    : "Reset Password"
+                    ? (t.sendResetCode || "Send Reset Code")
+                    : (t.resetPassword || "Reset Password")
                   : isLogin 
-                    ? "Log In" 
-                    : "Create Account"
+                    ? (t.logIn || "Log In") 
+                    : (t.createAccount || "Create Account")
               }
             </Button>
           </form>
