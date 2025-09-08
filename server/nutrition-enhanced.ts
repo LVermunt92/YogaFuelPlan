@@ -9971,9 +9971,24 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
     );
     
     if (hasMeat && !hasFish && !recipe.tags.includes('Vegetarian')) {
+      // Create a proper vegetarian name by replacing meat terms
+      let vegetarianName = recipe.name
+        .replace(/free-range chicken thighs/gi, 'plant-based protein pieces')
+        .replace(/chicken thighs/gi, 'plant-based protein pieces')
+        .replace(/chicken breast/gi, 'plant-based protein fillets')
+        .replace(/chicken/gi, 'plant-based protein')
+        .replace(/beef/gi, 'plant-based meat')
+        .replace(/ground beef/gi, 'plant-based mince')
+        .replace(/pork/gi, 'plant-based protein')
+        .replace(/bacon/gi, 'plant-based bacon')
+        .replace(/ham/gi, 'plant-based ham')
+        .replace(/sausage/gi, 'plant-based sausage')
+        .replace(/turkey/gi, 'plant-based protein')
+        .replace(/lamb/gi, 'plant-based protein');
+      
       const vegetarianVersion: MealOption = {
         ...recipe,
-        name: `${recipe.name} (Vegetarian)`,
+        name: vegetarianName,
         tags: [...recipe.tags.filter(tag => !['Non-Vegetarian'].includes(tag)), 'Vegetarian'],
         ingredients: recipe.ingredients?.map(ingredient => {
           // Convert meat ingredients using Dutch vegetarian substitutes
