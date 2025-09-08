@@ -7419,7 +7419,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     category: "breakfast",
     tags: ["Vegetarian", "High-Protein", "meal-prep", "overnight-oats", "chocolate", "wholesome", "Make-Ahead"],
     ingredients: [
-      "40g quick oats",
+      "40g oats",
       "20g cocoa protein powder",
       "80ml soy milk (or any plant milk)",
       "8ml flax seeds",
