@@ -9970,7 +9970,12 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
       ing.toLowerCase().includes('halibut')
     );
     
-    if (hasMeat && !hasFish && !recipe.tags.includes('Vegetarian')) {
+    // Skip vegetarian versions for recipes that don't work well as vegetarian
+    const skipVegetarianVersions = [
+      "Free-range chicken thighs with herb crust and roasted vegetables"
+    ];
+    
+    if (hasMeat && !hasFish && !recipe.tags.includes('Vegetarian') && !skipVegetarianVersions.includes(recipe.name)) {
       // Create a proper vegetarian name by replacing meat terms
       let vegetarianName = recipe.name
         .replace(/free-range chicken thighs/gi, 'plant-based protein pieces')
