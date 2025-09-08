@@ -5970,7 +5970,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     active: true
   },
   {
-    name: "Creamy Black-Eyed Beans & Mushrooms",
+    name: "Creamy Black-Eyed Peas & Mushrooms",
     portion: "1 generous serving (about 400g with rice)",
     nutrition: {
       protein: 22,
