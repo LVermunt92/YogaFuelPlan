@@ -11821,6 +11821,15 @@ function cleanIngredientName(ingredient: string): string {
   const originalInput = ingredient; // Store original input for logging
   let cleaned = ingredient.toLowerCase().trim();
   
+  // EARLY REMOVAL: Remove cooking instructions from parentheses before general cleanup
+  // This prevents "coconut oil (melted)" from leaving "melted" as a standalone ingredient
+  cleaned = cleaned.replace(/\s*\(([^)]*\bdrained\b[^)]*)\)/gi, ''); // Remove (drained) and variations
+  cleaned = cleaned.replace(/\s*\(([^)]*\bmelted\b[^)]*)\)/gi, ''); // Remove (melted) and variations
+  cleaned = cleaned.replace(/\s*\(([^)]*\bchopped\b[^)]*)\)/gi, ''); // Remove (chopped) and variations  
+  cleaned = cleaned.replace(/\s*\(([^)]*\bdiced\b[^)]*)\)/gi, ''); // Remove (diced) and variations
+  cleaned = cleaned.replace(/\s*\(([^)]*\bsliced\b[^)]*)\)/gi, ''); // Remove (sliced) and variations
+  cleaned = cleaned.replace(/\s*\(([^)]*\bminced\b[^)]*)\)/gi, ''); // Remove (minced) and variations
+  
   // Remove leading measurements and quantities (including fractions, numbers, and decimals)
   // Updated to catch decimal amounts like ".5ml", "0.5ml", "2.5g", etc.
   cleaned = cleaned.replace(/^[\d\.\/½¼¾⅓⅔⅛⅜⅝⅞]+\s*(cup|cups|tbsp|tsp|tablespoons?|teaspoons?|g|grams?|lb|lbs|pounds?|oz|ounces?|pieces?|slices?|cloves?|sprigs?|medium|large|small|ml|mL)\s*of\s*/i, '');
