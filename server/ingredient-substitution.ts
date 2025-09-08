@@ -46,7 +46,56 @@ const LACTOSE_FREE_SUBSTITUTIONS: IngredientSubstitution[] = [
   // Other dairy
   { original: 'buttermilk', substitute: 'oat milk + 15ml lemon juice', ratio: 1.0, note: 'Let mixture sit 5 minutes before using' },
   { original: 'ricotta', substitute: 'dairy-free ricotta', ratio: 1.0 },
-  { original: 'cottage cheese', substitute: 'dairy-free cottage cheese', ratio: 1.0 }
+  { original: 'cottage cheese', substitute: 'dairy-free cottage cheese', ratio: 1.0 },
+  
+  // Additional comprehensive dairy substitutions
+  { original: 'cow milk', substitute: 'oat milk', ratio: 1.0 },
+  { original: 'dairy milk', substitute: 'oat milk', ratio: 1.0 },
+  { original: 'semi-skimmed milk', substitute: 'oat milk', ratio: 1.0 },
+  { original: 'full-fat milk', substitute: 'oat milk', ratio: 1.0 },
+  { original: 'low-fat milk', substitute: 'almond milk', ratio: 1.0 },
+  { original: 'fresh milk', substitute: 'oat milk', ratio: 1.0 },
+  { original: 'organic milk', substitute: 'organic oat milk', ratio: 1.0 },
+  
+  // Cheese variations
+  { original: 'fresh mozzarella', substitute: 'dairy-free mozzarella', ratio: 1.0 },
+  { original: 'goat cheese', substitute: 'dairy-free soft cheese', ratio: 1.0 },
+  { original: 'goats cheese', substitute: 'dairy-free soft cheese', ratio: 1.0 },
+  { original: 'brie', substitute: 'dairy-free brie', ratio: 1.0 },
+  { original: 'camembert', substitute: 'dairy-free soft cheese', ratio: 1.0 },
+  { original: 'halloumi', substitute: 'dairy-free halloumi', ratio: 1.0 },
+  { original: 'mascarpone', substitute: 'dairy-free cream cheese', ratio: 1.0 },
+  { original: 'fresh cheese', substitute: 'dairy-free cheese', ratio: 1.0 },
+  
+  // Cream variations  
+  { original: 'double cream', substitute: 'coconut cream', ratio: 1.0 },
+  { original: 'single cream', substitute: 'oat cooking cream', ratio: 1.0 },
+  { original: 'whipping cream', substitute: 'coconut whipping cream', ratio: 1.0 },
+  { original: 'cooking cream', substitute: 'oat cooking cream', ratio: 1.0 },
+  { original: 'fresh cream', substitute: 'coconut cream', ratio: 1.0 },
+  
+  // Yogurt variations
+  { original: 'natural yogurt', substitute: 'unsweetened coconut yogurt', ratio: 1.0 },
+  { original: 'greek style yogurt', substitute: 'coconut greek style yogurt', ratio: 1.0 },
+  { original: 'thick yogurt', substitute: 'thick coconut yogurt', ratio: 1.0 },
+  { original: 'bio yogurt', substitute: 'probiotic coconut yogurt', ratio: 1.0 },
+  { original: 'organic yogurt', substitute: 'organic coconut yogurt', ratio: 1.0 },
+  
+  // Butter variations
+  { original: 'salted butter', substitute: 'vegan salted butter', ratio: 1.0 },
+  { original: 'unsalted butter', substitute: 'vegan unsalted butter', ratio: 1.0 },
+  { original: 'organic butter', substitute: 'organic vegan butter', ratio: 1.0 },
+  { original: 'grass-fed butter', substitute: 'vegan butter', ratio: 1.0 },
+  
+  // Ice cream and frozen dairy
+  { original: 'ice cream', substitute: 'dairy-free ice cream', ratio: 1.0 },
+  { original: 'vanilla ice cream', substitute: 'dairy-free vanilla ice cream', ratio: 1.0 },
+  { original: 'chocolate ice cream', substitute: 'dairy-free chocolate ice cream', ratio: 1.0 },
+  
+  // Condensed and evaporated milk
+  { original: 'condensed milk', substitute: 'coconut condensed milk', ratio: 1.0 },
+  { original: 'evaporated milk', substitute: 'coconut milk', ratio: 1.0 },
+  { original: 'sweetened condensed milk', substitute: 'dairy-free condensed milk', ratio: 1.0 }
 ];
 
 // Gluten-free substitutions
