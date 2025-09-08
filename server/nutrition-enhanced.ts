@@ -5136,9 +5136,9 @@ const RAW_MEAL_DATABASE: MealOption[] = [
 
   {
     name: "Gluten-free pasta with roasted vegetables and pesto",
-    portion: "2 cups pasta with vegetables",
+    portion: "2 cups pasta with vegetables (per serving)",
     nutrition: { 
-      protein: 22, 
+      protein: 32, 
       prepTime: 30, 
       calories: 450,
       carbohydrates: 65,
@@ -5147,34 +5147,34 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       sugar: 8,
       sodium: 420,
       costEuros: 4.50, 
-      proteinPerEuro: 4.9 
+      proteinPerEuro: 7.1 
     },
     category: "dinner",
     tags: ["Vegetarian", "Gluten-Free", "mediterranean", "colorful"],
     ingredients: [
-      "200g gluten-free pasta (rice or chickpea)",
-      "2 cups mixed vegetables (zucchini, bell peppers, cherry tomatoes)",
-      "3 tbsp basil pesto (dairy-free)",
+      "200g chickpea or lentil pasta (uncooked weight)",
+      "1 medium zucchini (150g)",
+      "1 red bell pepper (120g)",
+      "100g broccoli florets",
+      "100g mushrooms",
+      "1 cup fresh spinach (30g)",
+      "3 tbsp pesto (or to taste)",
       "2 tbsp pine nuts",
-      "2 tbsp nutritional yeast",
-      "45ml olive oil",
-      "2 cloves garlic (minced)",
-      "1 cup fresh spinach",
       "Salt and pepper to taste"
     ],
     wholeFoodLevel: "high",
     vegetableContent: {
-      servings: 2,
-      vegetables: ["zucchini", "bell peppers", "tomatoes", "spinach"],
-      benefits: ["Vitamin C", "Folate", "Antioxidants"]
+      servings: 3,
+      vegetables: ["zucchini", "red bell pepper", "broccoli", "mushrooms", "spinach"],
+      benefits: ["Vitamin C", "Folate", "Antioxidants", "Fiber", "Iron"]
     },
     recipe: {
       instructions: [
-        "Cook gluten-free pasta according to package instructions",
+        "Cook chickpea or lentil pasta according to package instructions",
         "Heat olive oil in large pan over medium-high heat",
-        "Add garlic and mixed vegetables, roast for 8-10 minutes",
+        "Add zucchini, bell pepper, broccoli and mushrooms, roast for 8-10 minutes",
         "Add cooked pasta to pan with vegetables",
-        "Stir in pesto, pine nuts, and nutritional yeast",
+        "Stir in pesto and pine nuts",
         "Add fresh spinach until wilted",
         "Season with salt and pepper"
       ],
