@@ -7462,6 +7462,78 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     active: true
   },
   {
+    name: "Caramelized Fig & Pistachio Breakfast Bowl",
+    portion: "1 serving (about 300g)",
+    nutrition: {
+      protein: 18,
+      prepTime: 15,
+      calories: 420,
+      carbohydrates: 58,
+      fats: 16,
+      fiber: 8,
+      sugar: 42,
+      sodium: 95,
+      potassium: 620,
+      calcium: 220,
+      iron: 2.8,
+      vitaminC: 8,
+      costEuros: 3.50,
+      proteinPerEuro: 5.1
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "Seasonal", "Autumn", "Figs", "Warming", "Natural-Sugars", "Antioxidants", "Cinnamon", "Wholesome", "Comfort-Food"],
+    ingredients: [
+      "2 medium fresh figs, halved",
+      "1 tbsp butter",
+      "1/2 tsp ground cinnamon",
+      "1 tbsp honey",
+      "1/3 cup (30g) rolled oats",
+      "1 small handful (15g) unsalted pistachios",
+      "150ml Greek yogurt",
+      "Extra honey for drizzling (optional)"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1.5,
+      vegetables: ["figs"],
+      benefits: ["Natural Sugars", "Fiber", "Potassium", "Antioxidants", "Beta-Carotene"]
+    },
+    recipeBenefits: [
+      "High fiber content supports digestive health",
+      "Natural sugars from figs provide sustained energy",
+      "Pistachios offer healthy fats and protein",
+      "Cinnamon helps regulate blood sugar",
+      "Probiotics from yogurt support gut health",
+      "Seasonal autumn fruit provides antioxidants"
+    ],
+    recipe: {
+      instructions: [
+        "Begin by slicing the figs in half (or quarters if you prefer larger pieces)",
+        "Heat a medium frying pan over medium-low heat",
+        "Melt the butter and cinnamon in the pan, stirring to combine",
+        "Drizzle the honey into the butter mixture and stir with a wooden spoon",
+        "Gently place the fig halves cut-side down in the pan",
+        "Leave for 3-4 minutes to slowly caramelize without stirring",
+        "Once the figs are nicely soft and jammy, remove from pan and set aside on a plate",
+        "Using the same pan with the remaining juices, add the oats and pistachios",
+        "Stir continuously and cook for 2-3 minutes until the oats have toasted and browned nicely",
+        "Place the Greek yogurt in a serving bowl",
+        "Top the yogurt with the toasted oat and pistachio mixture",
+        "Arrange the caramelized figs on top of the granola mix",
+        "Drizzle with extra honey if desired and serve immediately"
+      ],
+      tips: [
+        "Choose figs that are ripe but still firm - they'll caramelize better without falling apart",
+        "Don't move the figs while caramelizing to get a beautiful golden color",
+        "Save the pan juices to toast the oats - they add incredible flavor",
+        "This recipe works beautifully with any type of yogurt you prefer"
+      ],
+      notes: "A stunning autumn breakfast that celebrates fresh figs at their peak, with warm spices and crunchy pistachios creating the perfect seasonal start to your day"
+    },
+    createdAt: new Date('2025-09-08'),
+    active: true
+  },
+  {
     name: "Creamy Mushroom Stroganoff",
     portion: "1 generous serving with rice (about 350g)",
     nutrition: {
