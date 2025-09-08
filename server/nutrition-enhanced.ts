@@ -11852,6 +11852,9 @@ function cleanIngredientName(ingredient: string): string {
   if (cleaned.startsWith(' brown rice') || cleaned.includes(' brown rice')) {
     cleaned = 'brown rice';
   }
+  if (cleaned.startsWith('s spinach') || cleaned === 's spinach') {
+    cleaned = 'spinach';
+  }
   if (cleaned.startsWith('scoop plant protein') || cleaned.includes('scoop plant protein')) {
     cleaned = 'plant protein powder';
   }
