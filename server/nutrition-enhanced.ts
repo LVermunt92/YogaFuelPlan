@@ -7817,6 +7817,214 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     active: true
   },
   {
+    name: "Strawberry Protein Smoothie",
+    portion: "1 large serving (about 500ml)",
+    nutrition: {
+      protein: 28,
+      prepTime: 5,
+      calories: 380,
+      carbohydrates: 42,
+      fats: 12,
+      fiber: 10,
+      sugar: 22,
+      sodium: 95,
+      potassium: 620,
+      calcium: 180,
+      iron: 3.2,
+      vitaminC: 85,
+      costEuros: 3.20,
+      proteinPerEuro: 8.8
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "High-Protein", "Gluten-Free", "Quick", "Post-Workout", "Antioxidants", "Omega-3", "Energy"],
+    ingredients: [
+      "250ml cashew milk (unsweetened)",
+      "1 medium banana (frozen)",
+      "150g frozen strawberries",
+      "30g rolled oats",
+      "1 tbsp chia seeds",
+      "1 tbsp hemp hearts",
+      "1 tbsp fresh lime juice",
+      "1 scoop vanilla protein powder (25g)",
+      "1 tsp vanilla extract",
+      "1 tbsp almond butter",
+      "1 tsp maple syrup (optional)"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1.5,
+      vegetables: ["strawberries"],
+      benefits: ["Vitamin C", "Antioxidants", "Natural Sugars", "Folate"]
+    },
+    recipeBenefits: [
+      "High protein from protein powder and hemp hearts",
+      "Vitamin C from strawberries supports immune function",
+      "Omega-3 fatty acids from chia seeds and hemp hearts",
+      "Complex carbohydrates from oats provide sustained energy",
+      "Potassium from banana supports muscle function"
+    ],
+    recipe: {
+      instructions: [
+        "Add cashew milk, frozen banana, and frozen strawberries to blender",
+        "Add rolled oats, chia seeds, and hemp hearts",
+        "Pour in fresh lime juice and vanilla extract",
+        "Add protein powder and almond butter",
+        "Add maple syrup if extra sweetness is desired",
+        "Blend on high speed for 60-90 seconds until completely smooth",
+        "Stop and scrape down sides if needed",
+        "Blend again until creamy and no chunks remain",
+        "Pour into large glass and serve immediately"
+      ],
+      tips: [
+        "Use frozen fruit for the best thick, creamy texture",
+        "Let oats soak in the liquid for 2-3 minutes before blending for smoother texture",
+        "Adjust sweetness with more banana or maple syrup as needed",
+        "Add ice cubes for an even thicker consistency"
+      ],
+      notes: "Protein-packed smoothie perfect for post-workout recovery or energizing breakfast with triple superfood seeds"
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
+  },
+  {
+    name: "Matcha Cloud Smoothie",
+    portion: "1 serving (about 400ml)",
+    nutrition: {
+      protein: 24,
+      prepTime: 5,
+      calories: 320,
+      carbohydrates: 28,
+      fats: 14,
+      fiber: 6,
+      sugar: 18,
+      sodium: 110,
+      potassium: 580,
+      calcium: 220,
+      iron: 2.8,
+      vitaminC: 12,
+      costEuros: 3.80,
+      proteinPerEuro: 6.3
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "High-Protein", "Gluten-Free", "Antioxidants", "Energy", "Green", "Matcha", "Japanese"],
+    ingredients: [
+      "200ml coconut milk (full-fat)",
+      "150ml Greek yogurt",
+      "50g fresh spinach (packed)",
+      "1 medium banana (frozen)",
+      "1 tsp ceremonial grade matcha powder",
+      "1 scoop vanilla protein powder (25g)",
+      "1 tbsp almond butter",
+      "1 tbsp honey or maple syrup",
+      "1/2 tsp vanilla extract",
+      "1 cup ice cubes"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["spinach"],
+      benefits: ["Iron", "Folate", "Vitamin K", "Antioxidants"]
+    },
+    recipeBenefits: [
+      "Matcha provides sustained energy without caffeine crash",
+      "Spinach adds iron and folate without affecting taste",
+      "High protein supports muscle recovery and satiety",
+      "Antioxidants from matcha and spinach fight inflammation",
+      "Probiotics from yogurt support digestive health"
+    ],
+    recipe: {
+      instructions: [
+        "Add coconut milk and Greek yogurt to blender first",
+        "Add fresh spinach leaves, packing them down",
+        "Add frozen banana and ice cubes",
+        "Sift matcha powder to remove any lumps, then add to blender",
+        "Add protein powder, almond butter, honey, and vanilla extract",
+        "Blend on low speed first to break down spinach",
+        "Increase to high speed and blend for 90 seconds until completely smooth",
+        "The color should be a beautiful pale green",
+        "Pour into glass and serve immediately"
+      ],
+      tips: [
+        "Use ceremonial grade matcha for the best flavor and color",
+        "Sift matcha powder to prevent lumps in your smoothie",
+        "Start blending on low to properly break down the spinach",
+        "Frozen banana gives the smoothie a creamy, cloud-like texture"
+      ],
+      notes: "Elegant green smoothie with subtle matcha flavor and hidden vegetables - like drinking a nutritious cloud"
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
+  },
+  {
+    name: "Very Berry Smoothie",
+    portion: "1 serving (about 450ml)",
+    nutrition: {
+      protein: 18,
+      prepTime: 5,
+      calories: 350,
+      carbohydrates: 38,
+      fats: 16,
+      fiber: 12,
+      sugar: 24,
+      sodium: 75,
+      potassium: 520,
+      calcium: 160,
+      iron: 2.5,
+      vitaminC: 95,
+      costEuros: 2.90,
+      proteinPerEuro: 6.2
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Antioxidants", "High-Protein", "Berry", "Quick"],
+    ingredients: [
+      "250ml almond milk (unsweetened)",
+      "1 medium banana (frozen)",
+      "100g frozen strawberries",
+      "80g frozen blueberries",
+      "2 tbsp almond butter",
+      "1 tbsp chia seeds",
+      "1 tbsp hemp hearts",
+      "1 tsp vanilla extract",
+      "1 tbsp maple syrup",
+      "1/2 cup ice cubes"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["strawberries", "blueberries"],
+      benefits: ["Vitamin C", "Antioxidants", "Anthocyanins", "Natural Sugars"]
+    },
+    recipeBenefits: [
+      "Mixed berries provide powerful antioxidants and vitamin C",
+      "Almond butter and seeds offer plant-based protein and healthy fats",
+      "High fiber content supports digestive health",
+      "Natural sugars provide quick energy for active mornings",
+      "Anthocyanins from blueberries support brain health"
+    ],
+    recipe: {
+      instructions: [
+        "Add almond milk to blender first",
+        "Add frozen banana, strawberries, and blueberries",
+        "Add almond butter, chia seeds, and hemp hearts",
+        "Pour in vanilla extract and maple syrup",
+        "Add ice cubes for extra thickness",
+        "Blend on high speed for 60-90 seconds until completely smooth",
+        "The smoothie should be thick and creamy with a beautiful purple color",
+        "Taste and adjust sweetness with more maple syrup if needed",
+        "Pour into glass and serve immediately"
+      ],
+      tips: [
+        "Use a mix of frozen berries for the best texture and flavor",
+        "Let chia seeds sit in the liquid for a minute before blending for smoother texture",
+        "Add a handful of ice for an extra thick, milkshake-like consistency",
+        "Garnish with fresh berries and a sprinkle of chia seeds"
+      ],
+      notes: "Classic berry smoothie with a protein boost - naturally sweet and packed with antioxidants for a healthy start to your day"
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
+  },
+  {
     name: "Creamy Mushroom Stroganoff",
     portion: "1 generous serving with rice (about 350g)",
     nutrition: {
