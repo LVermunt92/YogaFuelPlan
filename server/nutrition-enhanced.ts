@@ -10677,74 +10677,76 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     }
   },
 
-  // FILLED PORTOBELLO MUSHROOMS WITH HOMEMADE PESTO
+  // FILLED PORTOBELLO MUSHROOMS WITH PROTEIN-ENHANCED PESTO
   {
-    name: "Filled Portobello Mushrooms with Homemade Pesto",
+    name: "Filled Portobello Mushrooms with Protein-Enhanced Pesto",
     portion: "1 serving (2 stuffed mushrooms)",
     nutrition: {
-      protein: 18,
+      protein: 25,
       prepTime: 30,
-      calories: 420,
-      carbohydrates: 12,
+      calories: 485,
+      carbohydrates: 18,
       fats: 38,
-      fiber: 6,
+      fiber: 9,
       sugar: 8,
       sodium: 520,
-      potassium: 680,
-      calcium: 280,
-      iron: 3.2,
+      potassium: 780,
+      calcium: 290,
+      iron: 4.8,
       vitaminC: 15,
-      costEuros: 5.80,
-      proteinPerEuro: 3.1
+      costEuros: 6.20,
+      proteinPerEuro: 4.0
     },
     category: "lunch",
-    tags: ["Vegetarian", "Gluten-Free", "Italian", "Baked", "High-Protein", "Mushroom", "Pesto", "Comfort-Food"],
+    tags: ["Vegetarian", "Gluten-Free", "Italian", "Baked", "High-Protein", "Mushroom", "Pesto", "Comfort-Food", "Plant-Protein"],
     ingredients: [
       "2 large portobello mushrooms",
-      "10g sundried tomatoes (finely chopped)",
+      "10g sundried tomatoes",
       "10g arugula",
       "7.5g sundried tomato tapenade",
-      "10g grated Parmesan cheese",
-      "75g fresh basil leaves (for pesto)",
+      "10g Parmesan cheese (grated)",
+      "50g cooked lentils",
+      "50g fresh basil leaves (for pesto)",
       "10g arugula (for pesto)",
       "17.5g Parmesan cheese (for pesto)",
       "75ml olive oil",
-      "25g roasted pistachios"
+      "25g roasted pistachios",
+      "50g silken tofu (for pesto)"
     ],
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 2,
       vegetables: ["portobello mushrooms", "arugula", "basil", "sundried tomatoes"],
-      benefits: ["Antioxidants from basil and arugula", "Vitamin K", "Folate", "Umami from sundried tomatoes"]
+      benefits: ["Antioxidants from basil and arugula", "Vitamin K", "Folate", "Umami from sundried tomatoes", "Plant protein from lentils"]
     },
     recipeBenefits: [
       "Portobello mushrooms provide meaty texture and B vitamins",
-      "Fresh basil pesto offers antioxidants and healthy fats",
-      "Pistachios add protein and healthy omega-3 fatty acids",
-      "Sundried tomatoes provide concentrated lycopene",
-      "Complete vegetarian protein from cheese and nuts"
+      "Silken tofu creates extra creamy pesto with added protein",
+      "Cooked lentils boost protein and fiber content significantly",
+      "Pistachios add healthy fats and complete amino acids",
+      "Sundried tomatoes provide concentrated lycopene and umami"
     ],
     recipe: {
       instructions: [
         "Preheat the oven to 200°C",
-        "For the pesto: put basil, arugula, pistachios, and Parmesan cheese in a food processor",
-        "Add olive oil gradually while processing until it has a nice, thick texture",
+        "For the protein-enhanced pesto: blend basil, arugula, pistachios, Parmesan, and silken tofu in a food processor",
+        "Add olive oil gradually while blending until smooth and creamy",
         "Taste pesto and season with salt if needed",
-        "Clean the portobello mushrooms and remove the stems carefully",
-        "Mix the sundried tomatoes, arugula, Parmesan cheese, and 30-45g pesto (2-3 tablespoons)",
-        "Divide the mixture evenly over the mushroom caps",
+        "Clean the portobello mushrooms and remove stems carefully to create cavities",
+        "Mix sundried tomatoes, arugula, Parmesan cheese, cooked lentils, and 30-45g pesto",
+        "Divide the lentil-pesto mixture evenly over the mushroom caps",
         "Place stuffed mushrooms in an oven dish",
-        "Bake the stuffed mushrooms in the oven for about 20 minutes until tender",
+        "Bake for 20 minutes at 200°C until mushrooms are tender",
         "Serve immediately while hot"
       ],
       tips: [
-        "Choose firm, fresh portobello mushrooms without dark spots",
-        "Remove stems carefully to create a deep cavity for filling",
-        "Extra pesto can be stored in refrigerator for up to 1 week",
-        "Drizzle any remaining pesto over the finished dish for extra flavor",
-        "Can be served with a simple green salad for a complete meal"
+        "Use well-drained silken tofu for the creamiest pesto texture",
+        "Cooked lentils can be from a can (drained and rinsed) or pre-cooked",
+        "Extra protein pesto keeps well in refrigerator for up to 1 week",
+        "The silken tofu makes the pesto extra creamy without dairy",
+        "Serve with extra pesto drizzled on top for maximum flavor"
       ],
-      notes: "Rich Italian-inspired dish with homemade pesto that's both satisfying and nutritious. The combination of mushrooms, cheese, and nuts provides complete protein."
+      notes: "Protein-packed version of classic stuffed mushrooms with lentils and silken tofu pesto. This creates a complete, satisfying meal with exceptional nutritional value."
     },
     createdAt: new Date('2025-09-09'),
     active: true
