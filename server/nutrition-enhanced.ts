@@ -11120,6 +11120,78 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-09-09'),
     active: true
+  },
+
+  // SWEET POTATO BOWL WITH FALAFEL (LACTOSE-FREE)
+  {
+    name: "Sweet Potato Bowl with Falafel (Lactose-Free)",
+    portion: "1 serving",
+    nutrition: {
+      protein: 21,
+      prepTime: 30,
+      calories: 510,
+      carbohydrates: 48,
+      fats: 26,
+      fiber: 9,
+      sugar: 14,
+      sodium: 820,
+      potassium: 920,
+      calcium: 380,
+      iron: 3.8,
+      vitaminC: 120,
+      costEuros: 5.80,
+      proteinPerEuro: 3.6
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Lactose-Free", "Mediterranean", "High-Protein", "Roasted", "Bowl", "Dairy-Free", "Sweet-Potato"],
+    ingredients: [
+      "200g medium sweet potato (1 potato)",
+      "75g falafel (4-5 small pieces)",
+      "75g lactose-free feta",
+      "75g red bell pepper (½ pepper)",
+      "75g cucumber (¼ cucumber)", 
+      "75g lactose-free Greek yogurt",
+      "7.5ml olive oil",
+      "Salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2.5,
+      vegetables: ["sweet potato", "red bell pepper", "cucumber"],
+      benefits: ["Beta-carotene from sweet potato", "High vitamin C from red bell pepper", "Hydration from cucumber", "Probiotics from lactose-free yogurt"]
+    },
+    recipeBenefits: [
+      "Lactose-free options suitable for dairy sensitivities",
+      "Sweet potato provides complex carbohydrates and vitamin A",
+      "Falafel offers plant-based protein and Middle Eastern flavors",
+      "Red bell pepper delivers exceptional vitamin C content",
+      "Lactose-free yogurt maintains probiotics without dairy"
+    ],
+    recipe: {
+      instructions: [
+        "Preheat oven to 200°C",
+        "Peel and cube the sweet potato into 2cm pieces",
+        "Spread sweet potato cubes on a baking tray lined with baking paper",
+        "Drizzle with olive oil and season with salt and pepper",
+        "Roast in preheated oven for about 25 minutes until golden and tender",
+        "Meanwhile, cut the red bell pepper and cucumber into cubes",
+        "Heat falafel briefly in a pan or oven according to package instructions",
+        "Arrange roasted sweet potatoes in serving bowl",
+        "Add warmed falafel, red bell pepper cubes, cucumber, and crumbled lactose-free feta",
+        "Top with a generous spoonful of lactose-free Greek yogurt",
+        "Season with salt and pepper to taste"
+      ],
+      tips: [
+        "Red bell pepper adds extra sweetness and vitamin C compared to other peppers",
+        "Lactose-free feta has similar texture and taste to regular feta",
+        "For extra protein, consider using unsweetened soy yogurt instead",
+        "Roast sweet potatoes until edges are caramelized for maximum flavor",
+        "This version is perfect for those with lactose intolerance"
+      ],
+      notes: "Dairy-free Mediterranean bowl that doesn't compromise on flavor or nutrition. The lactose-free alternatives maintain the creamy textures and tangy flavors of the original."
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
   }
 ];
 
