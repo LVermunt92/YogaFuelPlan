@@ -8025,6 +8025,311 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     active: true
   },
   {
+    name: "The Mexican Bowl",
+    portion: "1 large serving (about 450g)",
+    nutrition: {
+      protein: 24,
+      prepTime: 25,
+      calories: 520,
+      carbohydrates: 68,
+      fats: 18,
+      fiber: 16,
+      sugar: 12,
+      sodium: 420,
+      potassium: 980,
+      calcium: 180,
+      iron: 6.2,
+      vitaminC: 65,
+      costEuros: 4.50,
+      proteinPerEuro: 5.3
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Mexican", "Spicy", "Colorful", "High-Protein", "Fiber"],
+    ingredients: [
+      "100g fresh spinach",
+      "150g cooked brown rice",
+      "120g black beans (cooked or canned)",
+      "100g roasted sweet potato (cubed)",
+      "60g sweetcorn kernels",
+      "1/2 ripe avocado (mashed)",
+      "100g cherry tomatoes (halved)",
+      "1 fresh jalapeño (sliced)",
+      "15g fresh cilantro (chopped)",
+      "2 tbsp green habanero dressing",
+      "1 lime wedge",
+      "1 tsp smoked paprika"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3.5,
+      vegetables: ["spinach", "sweet potato", "tomatoes", "jalapeño", "cilantro", "corn"],
+      benefits: ["Beta-Carotene", "Vitamin C", "Fiber", "Folate", "Antioxidants"]
+    },
+    recipeBenefits: [
+      "Black beans provide plant-based protein and fiber",
+      "Sweet potato offers beta-carotene and complex carbohydrates",
+      "Avocado provides healthy monounsaturated fats",
+      "Spinach delivers iron and folate",
+      "Colorful vegetables supply diverse antioxidants"
+    ],
+    recipe: {
+      instructions: [
+        "Preheat oven to 200°C and cube sweet potato into 2cm pieces",
+        "Toss sweet potato with olive oil, smoked paprika, salt and pepper",
+        "Roast for 20-25 minutes until tender and slightly caramelized",
+        "Cook brown rice according to package instructions and let cool slightly",
+        "Rinse and drain black beans, season with salt and lime juice",
+        "Mash half the avocado with a fork, adding lime juice and salt",
+        "Arrange fresh spinach as the base in serving bowl",
+        "Add warm brown rice on one side of the bowl",
+        "Add seasoned black beans, roasted sweet potato, and corn",
+        "Top with halved cherry tomatoes and sliced jalapeño",
+        "Add a dollop of avocado smash",
+        "Drizzle with green habanero dressing",
+        "Garnish with fresh cilantro and lime wedge"
+      ],
+      tips: [
+        "Roast sweet potato until edges are caramelized for extra flavor",
+        "Warm the rice slightly to contrast with cool vegetables",
+        "Adjust spice level by removing jalapeño seeds",
+        "Make components ahead for quick assembly during the week"
+      ],
+      notes: "Vibrant Mexican-inspired bowl with perfect balance of plant protein, healthy fats, and colorful vegetables"
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
+  },
+  {
+    name: "Tokyo Greens Bowl",
+    portion: "1 serving (about 400g)",
+    nutrition: {
+      protein: 22,
+      prepTime: 20,
+      calories: 420,
+      carbohydrates: 48,
+      fats: 16,
+      fiber: 12,
+      sugar: 8,
+      sodium: 680,
+      potassium: 720,
+      calcium: 160,
+      iron: 4.8,
+      vitaminC: 85,
+      costEuros: 5.20,
+      proteinPerEuro: 4.2
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Gluten-Free", "Japanese", "Green", "Umami", "High-Protein", "Asian"],
+    ingredients: [
+      "80g fresh spinach",
+      "60g kale (stems removed, chopped)",
+      "100g roasted broccoli florets",
+      "80g cucumber (sliced)",
+      "80g edamame beans (shelled)",
+      "1/2 ripe avocado (sliced)",
+      "1 soft-boiled egg",
+      "150g cooked brown rice",
+      "2 tbsp miso dressing",
+      "20g sliced almonds",
+      "1 tsp furikake seasoning",
+      "1 tsp sesame seeds"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["spinach", "kale", "broccoli", "cucumber", "edamame"],
+      benefits: ["Vitamin K", "Vitamin C", "Iron", "Folate", "Fiber"]
+    },
+    recipeBenefits: [
+      "Dark leafy greens provide iron and vitamin K",
+      "Edamame offers complete plant protein",
+      "Miso dressing adds probiotics and umami depth",
+      "Variety of greens ensures diverse nutrient profile",
+      "Soft-boiled egg provides high-quality protein"
+    ],
+    recipe: {
+      instructions: [
+        "Preheat oven to 200°C for roasting broccoli",
+        "Cut broccoli into bite-sized florets and toss with olive oil and salt",
+        "Roast broccoli for 15-18 minutes until edges are crispy",
+        "Bring water to boil for soft-boiled eggs (6-7 minutes for runny yolk)",
+        "Cook brown rice according to package instructions",
+        "Remove kale stems and massage leaves with a pinch of salt",
+        "Steam edamame beans for 3-4 minutes until bright green",
+        "Arrange spinach and massaged kale as base in serving bowl",
+        "Add warm brown rice to one section",
+        "Top with roasted broccoli, sliced cucumber, and edamame",
+        "Add sliced avocado and halved soft-boiled egg",
+        "Drizzle with miso dressing",
+        "Sprinkle with sliced almonds, furikake, and sesame seeds"
+      ],
+      tips: [
+        "Massage kale with salt to break down tough fibers",
+        "Roast broccoli until edges are crispy for best texture",
+        "Time the soft-boiled egg perfectly - 6.5 minutes for creamy yolk",
+        "Toast almonds and sesame seeds for extra crunch"
+      ],
+      notes: "Japanese-inspired power bowl with umami-rich miso dressing and perfectly balanced green vegetables"
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
+  },
+  {
+    name: "Salmon Taco Bowl",
+    portion: "1 serving (about 450g)",
+    nutrition: {
+      protein: 32,
+      prepTime: 25,
+      calories: 540,
+      carbohydrates: 52,
+      fats: 22,
+      fiber: 14,
+      sugar: 10,
+      sodium: 520,
+      potassium: 1120,
+      calcium: 180,
+      iron: 4.5,
+      vitaminC: 55,
+      costEuros: 7.50,
+      proteinPerEuro: 4.3
+    },
+    category: "dinner",
+    tags: ["Pescatarian", "Gluten-Free", "Mexican", "High-Protein", "Omega-3", "Colorful", "Spicy"],
+    ingredients: [
+      "150g salmon fillet (skin removed)",
+      "80g fresh spinach",
+      "150g cooked brown rice",
+      "120g black beans (cooked)",
+      "100g roasted sweet potato (cubed)",
+      "100g cherry tomatoes (halved)",
+      "1/2 ripe avocado (sliced)",
+      "40g red cabbage (shredded)",
+      "1 lime (juiced)",
+      "15g fresh cilantro",
+      "2 tbsp green habanero dressing",
+      "1 tsp cumin",
+      "1/2 tsp smoked paprika",
+      "Salt and pepper"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["spinach", "sweet potato", "tomatoes", "cabbage", "cilantro"],
+      benefits: ["Beta-Carotene", "Vitamin C", "Fiber", "Antioxidants", "Folate"]
+    },
+    recipeBenefits: [
+      "Salmon provides high-quality protein and omega-3 fatty acids",
+      "Black beans offer plant protein and fiber",
+      "Sweet potato delivers complex carbohydrates and beta-carotene",
+      "Colorful vegetables provide diverse antioxidants",
+      "Healthy fats support nutrient absorption"
+    ],
+    recipe: {
+      instructions: [
+        "Preheat oven to 200°C for sweet potato and salmon",
+        "Cube sweet potato and roast with olive oil and smoked paprika for 20 minutes",
+        "Season salmon with cumin, paprika, salt, and pepper",
+        "Pan-sear salmon for 3-4 minutes per side until just cooked through",
+        "Let salmon rest for 2 minutes, then flake into bite-sized pieces",
+        "Cook brown rice according to package instructions",
+        "Rinse and season black beans with lime juice and salt",
+        "Arrange fresh spinach as base in serving bowl",
+        "Add warm brown rice, seasoned black beans, and roasted sweet potato",
+        "Top with flaked salmon, halved cherry tomatoes, and avocado slices",
+        "Add shredded red cabbage for crunch and color",
+        "Drizzle with green habanero dressing and fresh lime juice",
+        "Garnish with fresh cilantro and serve immediately"
+      ],
+      tips: [
+        "Don't overcook salmon - it should flake easily but still be moist",
+        "Roast sweet potato until edges are caramelized",
+        "Add red cabbage for crunch and vibrant color contrast",
+        "Serve immediately while salmon and sweet potato are still warm"
+      ],
+      notes: "Mexican-inspired salmon bowl with perfect balance of protein, healthy fats, and colorful vegetables"
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
+  },
+  {
+    name: "Miso Bowl",
+    portion: "1 serving (about 420g)",
+    nutrition: {
+      protein: 28,
+      prepTime: 22,
+      calories: 480,
+      carbohydrates: 45,
+      fats: 20,
+      fiber: 10,
+      sugar: 8,
+      sodium: 720,
+      potassium: 890,
+      calcium: 140,
+      iron: 3.8,
+      vitaminC: 70,
+      costEuros: 6.80,
+      proteinPerEuro: 4.1
+    },
+    category: "dinner",
+    tags: ["Pescatarian", "Gluten-Free", "Japanese", "Umami", "High-Protein", "Omega-3", "Asian"],
+    ingredients: [
+      "120g kale (stems removed, chopped)",
+      "150g cooked brown rice",
+      "60g red cabbage (shredded)",
+      "80g cucumber (sliced)",
+      "100g roasted aubergine (eggplant cubes)",
+      "100g roasted broccoli florets",
+      "20g sliced almonds",
+      "1 tsp furikake seasoning",
+      "150g salmon fillet",
+      "2 tbsp miso dressing",
+      "1 tsp sesame oil",
+      "1 tsp sesame seeds"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 4,
+      vegetables: ["kale", "cabbage", "cucumber", "aubergine", "broccoli"],
+      benefits: ["Vitamin K", "Vitamin C", "Fiber", "Antioxidants", "Folate"]
+    },
+    recipeBenefits: [
+      "Miso provides probiotics and umami depth",
+      "Salmon offers omega-3 fatty acids and complete protein",
+      "Variety of vegetables ensures diverse nutrient profile",
+      "Kale provides exceptional vitamin K and iron",
+      "Roasted vegetables add satisfying texture and flavor"
+    ],
+    recipe: {
+      instructions: [
+        "Preheat oven to 200°C for roasting vegetables",
+        "Cube aubergine into 2cm pieces, salt lightly and let sit 10 minutes",
+        "Pat aubergine dry and toss with olive oil, roast for 20 minutes",
+        "Cut broccoli into florets, toss with oil and roast for 15 minutes",
+        "Season salmon with salt and pepper",
+        "Pan-sear salmon for 3-4 minutes per side until cooked through",
+        "Let salmon rest, then slice into thick pieces",
+        "Cook brown rice according to package instructions",
+        "Remove kale stems and massage leaves with sesame oil and salt",
+        "Arrange massaged kale as base in serving bowl",
+        "Add warm brown rice to one section of the bowl",
+        "Top with roasted aubergine, roasted broccoli, and sliced cucumber",
+        "Add shredded red cabbage for color and crunch",
+        "Place sliced salmon on top",
+        "Drizzle generously with miso dressing",
+        "Sprinkle with sliced almonds, furikake, and sesame seeds"
+      ],
+      tips: [
+        "Salt aubergine and let sit to remove bitterness",
+        "Massage kale with oil to break down tough fibers",
+        "Roast vegetables until edges are golden for best flavor",
+        "Warm the rice slightly to contrast with cool vegetables"
+      ],
+      notes: "Japanese-inspired bowl with umami-rich miso dressing, perfectly cooked salmon, and a rainbow of roasted vegetables"
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
+  },
+  {
     name: "Creamy Mushroom Stroganoff",
     portion: "1 generous serving with rice (about 350g)",
     nutrition: {
