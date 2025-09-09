@@ -11192,6 +11192,153 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-09-09'),
     active: true
+  },
+
+  // BURGERS WITH SWEET POTATO FRIES AND SALAD
+  {
+    name: "Burgers with Sweet Potato Fries and Grilled Vegetables",
+    portion: "1 serving",
+    nutrition: {
+      protein: 32,
+      prepTime: 35,
+      calories: 680,
+      carbohydrates: 52,
+      fats: 36,
+      fiber: 8,
+      sugar: 12,
+      sodium: 920,
+      potassium: 850,
+      calcium: 180,
+      iron: 4.2,
+      vitaminC: 45,
+      costEuros: 6.80,
+      proteinPerEuro: 4.7
+    },
+    category: "dinner",
+    tags: ["High-Protein", "Comfort-Food", "Grilled", "American", "Burger", "Sweet-Potato", "Satisfying"],
+    ingredients: [
+      "200g sweet potatoes (1-1.5 potatoes)",
+      "1 burger bun",
+      "150g beef burger patty",
+      "½ egg (beaten)",
+      "10g breadcrumbs",
+      "½ garlic clove (finely chopped)",
+      "100g small eggplant (sliced)",
+      "100g zucchini (sliced)",
+      "25g bean sprouts",
+      "7.5ml olive oil",
+      "1 handful mixed salad or lettuce"
+    ],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["sweet potatoes", "eggplant", "zucchini", "bean sprouts", "mixed salad"],
+      benefits: ["Beta-carotene from sweet potato", "Fiber from grilled vegetables", "Fresh crunch from bean sprouts", "Balanced nutrition with protein and vegetables"]
+    },
+    recipeBenefits: [
+      "High-quality beef provides complete protein and iron",
+      "Sweet potato fries offer healthier alternative to regular fries",
+      "Grilled vegetables add fiber and micronutrients",
+      "Balanced meal combining protein, carbs, and vegetables",
+      "Satisfying comfort food with nutritious upgrades"
+    ],
+    recipe: {
+      instructions: [
+        "Preheat oven to 200°C",
+        "Cut sweet potatoes into wedges, toss with olive oil, salt, and pepper",
+        "Roast sweet potato wedges for about 25 minutes until golden and tender",
+        "If using fresh mince: mix beef with garlic, beaten egg, and breadcrumbs, then shape into patty",
+        "If using pre-made burger: season lightly with garlic and cook directly",
+        "Grill or pan-fry the burger patty until cooked through (internal temp 70°C)",
+        "Meanwhile, grill eggplant and zucchini slices until tender and slightly charred",
+        "Toast or warm the burger bun",
+        "Assemble burger with patty, grilled vegetables, bean sprouts, and fresh salad",
+        "Serve with roasted sweet potato fries on the side"
+      ],
+      tips: [
+        "Don't press down on burger while cooking - it releases juices",
+        "Let burger rest for 2-3 minutes after cooking for better texture",
+        "Sweet potato wedges get crispier if not overcrowded on the tray",
+        "Grill vegetables until they have nice char marks for extra flavor",
+        "Toast bun lightly for better texture and to prevent sogginess"
+      ],
+      notes: "Classic comfort food elevated with sweet potato fries and grilled vegetables. The combination provides complete nutrition while satisfying burger cravings."
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
+  },
+
+  // BEYOND MEAT BURGERS (GLUTEN-FREE & LACTOSE-FREE)
+  {
+    name: "Beyond Meat Burgers with Sweet Potato Fries (Gluten-Free & Lactose-Free)",
+    portion: "1 serving",
+    nutrition: {
+      protein: 28,
+      prepTime: 35,
+      calories: 620,
+      carbohydrates: 55,
+      fats: 32,
+      fiber: 12,
+      sugar: 12,
+      sodium: 780,
+      potassium: 920,
+      calcium: 150,
+      iron: 5.8,
+      vitaminC: 45,
+      costEuros: 7.50,
+      proteinPerEuro: 3.7
+    },
+    category: "dinner",
+    tags: ["Vegetarian", "Plant-Based", "Gluten-Free", "Lactose-Free", "High-Protein", "Comfort-Food", "Burger", "Sweet-Potato"],
+    ingredients: [
+      "200g sweet potatoes (1-1.5 potatoes)",
+      "1 gluten-free burger bun",
+      "113g Beyond Meat burger patty",
+      "10g gluten-free breadcrumbs (optional)",
+      "½ garlic clove (finely chopped)",
+      "100g small eggplant (sliced)",
+      "100g zucchini (sliced)",
+      "25g bean sprouts",
+      "7.5ml olive oil",
+      "1 handful mixed salad or lettuce"
+    ],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["sweet potatoes", "eggplant", "zucchini", "bean sprouts", "mixed salad"],
+      benefits: ["Beta-carotene from sweet potato", "Plant fiber from grilled vegetables", "Fresh enzymes from bean sprouts", "Complete plant-based nutrition"]
+    },
+    recipeBenefits: [
+      "Beyond Meat provides complete plant-based protein",
+      "Gluten-free bun suitable for celiac and gluten sensitivities",
+      "Higher fiber content than traditional burger meals",
+      "Plant-based option with familiar burger satisfaction",
+      "Environmentally sustainable protein choice"
+    ],
+    recipe: {
+      instructions: [
+        "Preheat oven to 200°C",
+        "Cut sweet potatoes into wedges, toss with olive oil, salt, and pepper",
+        "Roast sweet potato wedges for about 25 minutes until golden and tender",
+        "If using Beyond Meat mince: mix with garlic and gluten-free breadcrumbs, shape into patty",
+        "If using pre-made Beyond Meat patty: cook directly",
+        "Cook Beyond Meat patty in a pan with a little oil until golden and heated through",
+        "Meanwhile, grill eggplant and zucchini slices until tender",
+        "Toast the gluten-free bun until lightly golden",
+        "Assemble burger with Beyond Meat patty, grilled vegetables, bean sprouts, and salad",
+        "Serve with roasted sweet potato fries"
+      ],
+      tips: [
+        "Beyond Meat patties cook faster than beef - don't overcook",
+        "Gluten-free buns can be more delicate - toast gently",
+        "Let Beyond Meat patty rest briefly after cooking for best texture",
+        "Bean sprouts add fresh crunch - add them just before serving",
+        "This version provides excellent plant-based protein satisfaction"
+      ],
+      notes: "Plant-based burger that delivers on taste and nutrition. Beyond Meat provides complete protein while accommodating gluten-free and lactose-free dietary needs."
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
   }
 ];
 
