@@ -10823,6 +10823,91 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-09-09'),
     active: true
+  },
+
+  // VEGETARIAN SPRING ROLLS WITH DIPPING SAUCE
+  {
+    name: "Vegetarian Spring Rolls with Asian Dipping Sauce",
+    portion: "1 serving (4 spring rolls)",
+    nutrition: {
+      protein: 19,
+      prepTime: 30,
+      calories: 320,
+      carbohydrates: 28,
+      fats: 16,
+      fiber: 7,
+      sugar: 8,
+      sodium: 890,
+      potassium: 420,
+      calcium: 150,
+      iron: 3.8,
+      vitaminC: 85,
+      costEuros: 4.50,
+      proteinPerEuro: 4.2
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Asian", "Fresh", "Raw", "High-Protein", "Colorful", "Vietnamese", "Gluten-Free", "Plant-Based"],
+    ingredients: [
+      "100g firm tofu",
+      "4 rice paper sheets",
+      "35g carrot (julienned)",
+      "35g cucumber (julienned)", 
+      "35g red bell pepper (julienned)",
+      "20g fresh basil leaves",
+      "12g fresh mint leaves",
+      "12g fresh coriander leaves",
+      "25g cooked edamame beans",
+      "15g spring onions (sliced)",
+      "15ml Japanese soy sauce (for dipping sauce)",
+      "7.5ml lime juice",
+      "7.5ml sesame oil",
+      "7.5ml rice vinegar",
+      "2.5g white sugar",
+      "½ small garlic clove (minced)",
+      "Oil for frying tofu"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["carrot", "cucumber", "red bell pepper", "basil", "mint", "coriander", "spring onions"],
+      benefits: ["Raw vegetables preserve maximum nutrients", "Fresh herbs aid digestion", "Colorful vegetables provide diverse antioxidants", "High water content for hydration"]
+    },
+    recipeBenefits: [
+      "Fresh, uncooked vegetables retain maximum vitamin content",
+      "Tofu and edamame provide complete plant protein",
+      "Fresh herbs support digestion and metabolism",
+      "Rice paper wraps are naturally gluten-free",
+      "Light yet satisfying with beautiful presentation"
+    ],
+    recipe: {
+      instructions: [
+        "Make the dipping sauce first: mix soy sauce, lime juice, sesame oil, rice vinegar, sugar, and minced garlic in a small bowl until sugar dissolves. Set aside",
+        "Slice tofu into strips about 1cm thick",
+        "Heat a little oil in a non-stick pan over medium-high heat",
+        "Fry tofu strips until golden brown on all sides, about 2-3 minutes per side",
+        "Season lightly with a splash of soy sauce while cooking. Set aside to cool",
+        "Prepare all vegetables: julienne carrot, cucumber, and red bell pepper into thin strips",
+        "Wash and dry all fresh herbs, removing any thick stems",
+        "Slice spring onions thinly",
+        "Fill a large shallow dish with warm water",
+        "Dip each rice paper sheet briefly in the warm water until it starts to soften (about 10-15 seconds)",
+        "Place softened rice paper on a clean, damp surface",
+        "In the lower third of the rice paper, arrange tofu strips, edamame, vegetables, and herbs in a neat line",
+        "Fold the bottom edge over the filling, fold in the sides, then roll up tightly",
+        "Repeat with remaining rice papers and filling",
+        "Serve immediately with the dipping sauce"
+      ],
+      tips: [
+        "Don't over-soak rice paper - it continues to soften after removing from water",
+        "Work with one rice paper at a time to prevent them from sticking together",
+        "Keep finished rolls under a damp cloth if not serving immediately",
+        "Arrange colorful vegetables to create beautiful rainbow rolls",
+        "For easier rolling, place herbs on top so they show through the rice paper"
+      ],
+      notes: "Fresh Vietnamese-style spring rolls packed with crispy tofu and colorful vegetables. The combination of textures and the tangy dipping sauce makes this a refreshing and nutritious meal."
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
   }
 ];
 
