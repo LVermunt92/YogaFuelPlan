@@ -11339,6 +11339,76 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-09-09'),
     active: true
+  },
+
+  // PLANT-BASED CHOCOLATE MOUSSE DESSERT
+  {
+    name: "Plant-Based Chocolate Mousse with Rice Cakes",
+    portion: "1 serving",
+    nutrition: {
+      protein: 27,
+      prepTime: 10,
+      calories: 230,
+      carbohydrates: 15,
+      fats: 5,
+      fiber: 9,
+      sugar: 4,
+      sodium: 180,
+      potassium: 420,
+      calcium: 120,
+      iron: 2.8,
+      vitaminC: 2,
+      costEuros: 3.20,
+      proteinPerEuro: 8.4
+    },
+    category: "dessert",
+    tags: ["Vegan", "Plant-Based", "High-Protein", "Low-Calorie", "No-Bake", "Chocolate", "Quick", "Dessert", "Healthy-Sweet"],
+    ingredients: [
+      "2 rice or corn cakes",
+      "50ml espresso (or 1 tsp instant coffee in hot water)",
+      "30g tiramisu or vanilla protein powder",
+      "5g psyllium husk",
+      "100ml unsweetened plant milk",
+      "15g raw cacao powder",
+      "15g cacao nibs"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 0,
+      vegetables: [],
+      benefits: ["Antioxidants from raw cacao", "Fiber from psyllium husk", "Complete plant protein", "Low glycemic impact"]
+    },
+    recipeBenefits: [
+      "Exceptionally high protein content for a dessert (27g)",
+      "Raw cacao provides antioxidants and natural mood enhancers",
+      "Psyllium husk creates lasting satiety and digestive health",
+      "No baking or blending required - simple assembly",
+      "Low calorie but surprisingly filling and satisfying"
+    ],
+    recipe: {
+      instructions: [
+        "Prepare espresso or dissolve 1 tsp instant coffee in 50ml hot water",
+        "Soak both rice cakes in the espresso until softened but not falling apart",
+        "In a bowl, mix protein powder, raw cacao powder, and psyllium husk",
+        "Gradually add unsweetened plant milk while whisking until mixture becomes mousse-thick",
+        "Let mousse sit for 2-3 minutes to allow psyllium to thicken further",
+        "Place first espresso-soaked rice cake in serving bowl or glass",
+        "Spread half the chocolate mousse over the first rice cake",
+        "Add second rice cake on top",
+        "Top with remaining mousse",
+        "Sprinkle cacao nibs generously on top for crunch and extra antioxidants"
+      ],
+      tips: [
+        "Don't over-soak rice cakes - they should hold their shape but be coffee-infused",
+        "Psyllium husk continues to thicken, so work quickly once mixed",
+        "For extra richness, use slightly warm plant milk",
+        "Cacao nibs add essential crunch - don't skip them",
+        "Can be made 30 minutes ahead and chilled for firmer texture"
+      ],
+      notes: "Revolutionary plant-based dessert that delivers restaurant-quality satisfaction with incredible nutrition stats. The rice cake base soaked in espresso creates an unexpected tiramisu-like experience."
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
   }
 ];
 
