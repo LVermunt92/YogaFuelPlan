@@ -10675,6 +10675,154 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       ],
       notes: "Authentic Korean-Asian fusion with fermented kimchi providing probiotics and umami. Day-old rice creates the perfect texture while silken tofu adds protein without heaviness."
     }
+  },
+
+  // FILLED PORTOBELLO MUSHROOMS WITH HOMEMADE PESTO
+  {
+    name: "Filled Portobello Mushrooms with Homemade Pesto",
+    portion: "1 serving (2 stuffed mushrooms)",
+    nutrition: {
+      protein: 18,
+      prepTime: 30,
+      calories: 420,
+      carbohydrates: 12,
+      fats: 38,
+      fiber: 6,
+      sugar: 8,
+      sodium: 520,
+      potassium: 680,
+      calcium: 280,
+      iron: 3.2,
+      vitaminC: 15,
+      costEuros: 5.80,
+      proteinPerEuro: 3.1
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Gluten-Free", "Italian", "Baked", "High-Protein", "Mushroom", "Pesto", "Comfort-Food"],
+    ingredients: [
+      "2 large portobello mushrooms",
+      "10g sundried tomatoes (finely chopped)",
+      "10g arugula",
+      "7.5g sundried tomato tapenade",
+      "10g grated Parmesan cheese",
+      "75g fresh basil leaves (for pesto)",
+      "10g arugula (for pesto)",
+      "17.5g Parmesan cheese (for pesto)",
+      "75ml olive oil",
+      "25g roasted pistachios"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["portobello mushrooms", "arugula", "basil", "sundried tomatoes"],
+      benefits: ["Antioxidants from basil and arugula", "Vitamin K", "Folate", "Umami from sundried tomatoes"]
+    },
+    recipeBenefits: [
+      "Portobello mushrooms provide meaty texture and B vitamins",
+      "Fresh basil pesto offers antioxidants and healthy fats",
+      "Pistachios add protein and healthy omega-3 fatty acids",
+      "Sundried tomatoes provide concentrated lycopene",
+      "Complete vegetarian protein from cheese and nuts"
+    ],
+    recipe: {
+      instructions: [
+        "Preheat the oven to 200°C",
+        "For the pesto: put basil, arugula, pistachios, and Parmesan cheese in a food processor",
+        "Add olive oil gradually while processing until it has a nice, thick texture",
+        "Taste pesto and season with salt if needed",
+        "Clean the portobello mushrooms and remove the stems carefully",
+        "Mix the sundried tomatoes, arugula, Parmesan cheese, and 30-45g pesto (2-3 tablespoons)",
+        "Divide the mixture evenly over the mushroom caps",
+        "Place stuffed mushrooms in an oven dish",
+        "Bake the stuffed mushrooms in the oven for about 20 minutes until tender",
+        "Serve immediately while hot"
+      ],
+      tips: [
+        "Choose firm, fresh portobello mushrooms without dark spots",
+        "Remove stems carefully to create a deep cavity for filling",
+        "Extra pesto can be stored in refrigerator for up to 1 week",
+        "Drizzle any remaining pesto over the finished dish for extra flavor",
+        "Can be served with a simple green salad for a complete meal"
+      ],
+      notes: "Rich Italian-inspired dish with homemade pesto that's both satisfying and nutritious. The combination of mushrooms, cheese, and nuts provides complete protein."
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
+  },
+
+  // STEAMED JASMINE RICE WITH GRILLED EGGPLANT SALAD
+  {
+    name: "Steamed Jasmine Rice with Grilled Eggplant Salad",
+    portion: "1 serving",
+    nutrition: {
+      protein: 8,
+      prepTime: 30,
+      calories: 410,
+      carbohydrates: 55,
+      fats: 18,
+      fiber: 8,
+      sugar: 12,
+      sodium: 680,
+      potassium: 450,
+      calcium: 45,
+      iron: 2.1,
+      vitaminC: 25,
+      costEuros: 3.20,
+      proteinPerEuro: 2.5
+    },
+    category: "lunch",
+    tags: ["Vegan", "Thai", "Asian", "Gluten-Free", "Fresh", "Colorful", "Plant-Based", "Dairy-Free"],
+    ingredients: [
+      "150g medium eggplant (½ eggplant)",
+      "15ml sunflower oil",
+      "15ml Thai soy sauce",
+      "7.5g palm sugar",
+      "7.5ml lime juice",
+      "1 spring onion",
+      "¼ red chili pepper",
+      "2.5g fresh coriander",
+      "50g cherry tomatoes",
+      "60g jasmine rice"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2.5,
+      vegetables: ["eggplant", "spring onions", "chili", "coriander", "cherry tomatoes"],
+      benefits: ["Fiber from eggplant", "Vitamin C from chili and tomatoes", "Fresh herbs for digestion", "Antioxidants from colorful vegetables"]
+    },
+    recipeBenefits: [
+      "Eggplant provides fiber and antioxidants",
+      "Thai flavors aid digestion and metabolism",
+      "Jasmine rice offers sustained energy",
+      "Fresh herbs provide vitamins and minerals",
+      "Light yet satisfying Asian-inspired meal"
+    ],
+    recipe: {
+      instructions: [
+        "Cook jasmine rice according to package instructions until tender",
+        "Preheat the oven to 200°C or heat a grill pan over medium-high heat",
+        "Slice eggplant into 0.5cm thick slices",
+        "Place eggplant slices on a tray or grill pan",
+        "Brush eggplant with sunflower oil on both sides",
+        "Roast in oven for 20 minutes or grill for a few minutes per side until golden and tender",
+        "For the dressing: mix soy sauce, palm sugar, and lime juice until sugar dissolves completely",
+        "Finely slice spring onions, chili, and roughly chop coriander",
+        "Halve the cherry tomatoes",
+        "Add spring onions, chili, coriander, and cherry tomatoes to the dressing",
+        "Add warm eggplant slices to the dressing and toss gently to coat",
+        "Serve the eggplant salad alongside the steamed jasmine rice"
+      ],
+      tips: [
+        "Don't slice eggplant too thin or it will become mushy when cooked",
+        "Salt eggplant slices lightly and let sit 10 minutes before cooking to remove bitterness",
+        "Palm sugar can be substituted with brown sugar if unavailable",
+        "Adjust chili amount to your heat preference",
+        "Serve immediately while eggplant is still warm for best flavor"
+      ],
+      notes: "Fresh Thai-inspired salad with perfectly grilled eggplant and aromatic jasmine rice. The sweet and sour dressing brings all the flavors together beautifully."
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
   }
 ];
 
