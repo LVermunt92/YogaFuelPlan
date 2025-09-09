@@ -751,6 +751,78 @@ async function selectUnusedMealIntelligently(
     console.log(`🔍 SIMILARITY DEBUG: No selected meals to check against yet`);
   }
   
+  // BLOOD SUGAR OPTIMIZATION: Prioritize blood sugar-friendly meals for lunch
+  if (category === 'lunch' && unusedMeals.length > 1) {
+    console.log(`🩸 BLOOD SUGAR: Applying blood sugar-friendly filtering for lunch meals (${unusedMeals.length} candidates)`);
+    
+    // Score meals based on blood sugar stability factors
+    const bloodSugarScoredMeals = unusedMeals.map(meal => {
+      let score = 0;
+      const nutrition = meal.nutrition;
+      
+      // Lower carbohydrates get higher scores (target < 30g for lunch)
+      if (nutrition.carbohydrates <= 20) {
+        score += 3; // Very low carb
+      } else if (nutrition.carbohydrates <= 30) {
+        score += 2; // Moderate carb
+      } else if (nutrition.carbohydrates <= 40) {
+        score += 1; // Slightly higher carb
+      }
+      // Higher carb meals get 0 points
+      
+      // High fiber helps stabilize blood sugar (target > 5g)
+      if (nutrition.fiber >= 10) {
+        score += 3; // Excellent fiber
+      } else if (nutrition.fiber >= 7) {
+        score += 2; // Good fiber
+      } else if (nutrition.fiber >= 5) {
+        score += 1; // Moderate fiber
+      }
+      
+      // Good protein content for satiety (target > 20g)
+      if (nutrition.protein >= 25) {
+        score += 2; // High protein
+      } else if (nutrition.protein >= 20) {
+        score += 1; // Good protein
+      }
+      
+      // Healthy fats for sustained energy (target > 10g)
+      if (nutrition.fats >= 15) {
+        score += 2; // Good fat content
+      } else if (nutrition.fats >= 10) {
+        score += 1; // Moderate fat content
+      }
+      
+      // Bonus for blood sugar-friendly tags
+      if (meal.tags.includes('Low-Carb') || meal.tags.includes('Keto')) {
+        score += 2;
+      }
+      if (meal.tags.includes('High-Fiber')) {
+        score += 1;
+      }
+      if (meal.tags.includes('Protein-Rich') || meal.tags.includes('High-Protein')) {
+        score += 1;
+      }
+      
+      return { meal, score, carbs: nutrition.carbohydrates, fiber: nutrition.fiber };
+    });
+    
+    // Sort by score (highest first) and log the top candidates
+    bloodSugarScoredMeals.sort((a, b) => b.score - a.score);
+    
+    console.log(`🩸 BLOOD SUGAR RANKINGS (Top 5):`);
+    bloodSugarScoredMeals.slice(0, 5).forEach((item, index) => {
+      console.log(`  ${index + 1}. ${item.meal.name} (Score: ${item.score}, Carbs: ${item.carbs}g, Fiber: ${item.fiber}g)`);
+    });
+    
+    // Use top 50% of blood sugar-friendly meals for final selection
+    const topCandidatesCount = Math.max(1, Math.ceil(bloodSugarScoredMeals.length * 0.5));
+    const bloodSugarFriendlyMeals = bloodSugarScoredMeals.slice(0, topCandidatesCount).map(item => item.meal);
+    
+    console.log(`🩸 BLOOD SUGAR: Selected top ${bloodSugarFriendlyMeals.length} blood sugar-friendly meals for lunch`);
+    unusedMeals = bloodSugarFriendlyMeals;
+  }
+  
   // Try intelligent ingredient matching first if we have ingredients to use up
   // But only if we still have unused meals available for variety
   if (ingredientsToUseUp.length > 0 && unusedMeals.length > 2) {
