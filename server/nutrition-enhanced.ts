@@ -7534,6 +7534,289 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     active: true
   },
   {
+    name: "Coconut Chia Pudding",
+    portion: "1 serving (about 250ml)",
+    nutrition: {
+      protein: 14,
+      prepTime: 5,
+      calories: 280,
+      carbohydrates: 22,
+      fats: 18,
+      fiber: 12,
+      sugar: 8,
+      sodium: 45,
+      potassium: 380,
+      calcium: 150,
+      iron: 3.2,
+      vitaminC: 12,
+      costEuros: 2.80,
+      proteinPerEuro: 5.0
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Meal-Prep", "Make-Ahead", "High-Protein", "Omega-3", "Superfood"],
+    ingredients: [
+      "200ml coconut milk (full-fat)",
+      "30g chia seeds",
+      "1 tbsp maple syrup",
+      "1/2 tsp vanilla extract",
+      "20g mixed nuts (almonds, walnuts)",
+      "50g mixed berries (fresh or frozen)",
+      "15g coconut flakes (unsweetened)",
+      "Pinch of sea salt"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 0.5,
+      vegetables: ["berries"],
+      benefits: ["Antioxidants", "Vitamin C", "Natural Sugars"]
+    },
+    recipeBenefits: [
+      "High in omega-3 fatty acids from chia seeds",
+      "Complete protein from chia and nuts",
+      "Rich in fiber for digestive health",
+      "Antioxidants from berries support immune system",
+      "Healthy fats from coconut and nuts for satiety"
+    ],
+    recipe: {
+      instructions: [
+        "In a bowl or jar, whisk together coconut milk, maple syrup, vanilla extract, and sea salt",
+        "Add chia seeds and whisk thoroughly to prevent clumping",
+        "Let sit for 5 minutes, then whisk again to break up any seed clusters",
+        "Cover and refrigerate for at least 2 hours or overnight until thickened to pudding consistency",
+        "When ready to serve, give the pudding a good stir",
+        "Layer in serving glass or bowl",
+        "Top with mixed nuts, fresh berries, and coconut flakes",
+        "Serve chilled"
+      ],
+      tips: [
+        "Whisk the chia seeds twice to prevent them from clumping together",
+        "Make multiple portions at once for easy grab-and-go breakfasts",
+        "Add toppings just before serving to maintain texture",
+        "Can be stored in fridge for up to 5 days"
+      ],
+      notes: "Creamy, satisfying pudding packed with omega-3s and fiber - perfect for meal prep and customizable with any seasonal toppings"
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
+  },
+  {
+    name: "Power Oats",
+    portion: "1 generous serving (about 350ml)",
+    nutrition: {
+      protein: 22,
+      prepTime: 10,
+      calories: 420,
+      carbohydrates: 48,
+      fats: 16,
+      fiber: 14,
+      sugar: 12,
+      sodium: 85,
+      potassium: 520,
+      calcium: 120,
+      iron: 4.5,
+      vitaminC: 8,
+      costEuros: 2.50,
+      proteinPerEuro: 8.8
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "High-Protein", "Omega-3", "Superfood", "Energy", "Post-Workout"],
+    ingredients: [
+      "50g rolled oats",
+      "1 tbsp chia seeds",
+      "1 tbsp hemp hearts",
+      "1 tbsp ground flax seeds",
+      "300ml water",
+      "2 tbsp almond butter",
+      "1 medium banana (sliced)",
+      "40g mixed berries",
+      "1 tbsp pumpkin seeds",
+      "1 tbsp sunflower seeds",
+      "1 tsp cinnamon",
+      "Pinch of sea salt"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["berries"],
+      benefits: ["Antioxidants", "Vitamin C", "Natural Sugars", "Fiber"]
+    },
+    recipeBenefits: [
+      "Triple seed power provides omega-3, protein, and minerals",
+      "Complex carbohydrates for sustained energy release",
+      "High fiber content supports digestive health",
+      "Natural protein from seeds and nut butter",
+      "Antioxidants from berries boost immune function"
+    ],
+    recipe: {
+      instructions: [
+        "In a small saucepan, bring water to a boil with a pinch of salt",
+        "Add rolled oats and reduce heat to medium-low",
+        "Simmer for 5-7 minutes, stirring occasionally until creamy",
+        "Stir in chia seeds, hemp hearts, and ground flax seeds",
+        "Cook for another 2 minutes until seeds are well incorporated",
+        "Remove from heat and stir in cinnamon",
+        "Transfer to serving bowl",
+        "Top with almond butter, sliced banana, and mixed berries",
+        "Sprinkle with pumpkin seeds and sunflower seeds",
+        "Serve hot"
+      ],
+      tips: [
+        "Don't skip the double-seed stirring to ensure even distribution",
+        "Add seeds near the end to preserve their nutritional value",
+        "Customize with seasonal fruits and different nut butters",
+        "Make overnight oats version by soaking everything cold"
+      ],
+      notes: "Powerhouse breakfast combining three superseeds with hearty oats for sustained energy and complete nutrition"
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
+  },
+  {
+    name: "Superfood Breakfast Bowl",
+    portion: "1 serving (about 400ml)",
+    nutrition: {
+      protein: 16,
+      prepTime: 8,
+      calories: 350,
+      carbohydrates: 45,
+      fats: 14,
+      fiber: 12,
+      sugar: 28,
+      sodium: 65,
+      potassium: 680,
+      calcium: 140,
+      iron: 3.8,
+      vitaminC: 45,
+      costEuros: 4.20,
+      proteinPerEuro: 3.8
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Antioxidants", "Superfood", "Energy", "Post-Workout", "Tropical"],
+    ingredients: [
+      "2 medium bananas (frozen)",
+      "50g frozen açai puree",
+      "80g mixed frozen berries (blueberries, strawberries)",
+      "50ml coconut milk",
+      "2 tbsp almond butter",
+      "30g granola",
+      "1 kiwi (sliced)",
+      "15g goji berries",
+      "1 tbsp coconut flakes",
+      "1 tbsp chia seeds",
+      "5 mint leaves"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["berries", "kiwi", "açai"],
+      benefits: ["Antioxidants", "Vitamin C", "Potassium", "Natural Sugars", "Beta-Carotene"]
+    },
+    recipeBenefits: [
+      "Açai provides powerful antioxidants and anti-inflammatory compounds",
+      "High vitamin C content supports immune system",
+      "Natural sugars from fruits provide quick energy",
+      "Fiber and healthy fats for sustained satiety",
+      "Potassium supports heart health and muscle function"
+    ],
+    recipe: {
+      instructions: [
+        "Add frozen bananas, açai puree, and mixed frozen berries to a high-speed blender",
+        "Add coconut milk and 1 tbsp almond butter",
+        "Blend until thick and smooth, like soft-serve ice cream consistency",
+        "You may need to stop and scrape down sides several times",
+        "The mixture should be thick enough to eat with a spoon",
+        "Transfer to a chilled bowl",
+        "Top with granola, sliced kiwi, and goji berries",
+        "Drizzle with remaining almond butter",
+        "Sprinkle with coconut flakes, chia seeds, and mint leaves",
+        "Serve immediately"
+      ],
+      tips: [
+        "Use frozen fruit for the best thick, creamy texture",
+        "Don't add too much liquid - you want a thick smoothie base",
+        "Arrange toppings in rows for an Instagram-worthy presentation",
+        "Eat immediately as the base will start to melt"
+      ],
+      notes: "Vibrant superfood bowl packed with antioxidants and natural energy - like a healthy ice cream sundae for breakfast"
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
+  },
+  {
+    name: "Cacao Granola",
+    portion: "1 serving (about 60g)",
+    nutrition: {
+      protein: 12,
+      prepTime: 45,
+      calories: 320,
+      carbohydrates: 38,
+      fats: 14,
+      fiber: 8,
+      sugar: 12,
+      sodium: 125,
+      potassium: 420,
+      calcium: 85,
+      iron: 3.5,
+      vitaminC: 2,
+      costEuros: 2.20,
+      proteinPerEuro: 5.5
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Meal-Prep", "Bake", "Chocolate", "Crunchy", "Make-Ahead"],
+    ingredients: [
+      "200g rolled oats",
+      "30g raw cacao powder",
+      "60g mixed seeds (pumpkin, sunflower, sesame)",
+      "40g chopped almonds",
+      "40g chopped walnuts",
+      "60ml maple syrup",
+      "40ml melted coconut oil",
+      "1 tsp vanilla extract",
+      "1/2 tsp sea salt",
+      "1/2 tsp cinnamon",
+      "30g dark chocolate chips (85% cocoa)",
+      "20g coconut flakes"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 0,
+      vegetables: [],
+      benefits: ["Antioxidants from cacao", "healthy fats from nuts and seeds", "complex carbohydrates from oats"]
+    },
+    recipeBenefits: [
+      "Raw cacao provides antioxidants and natural mood boosters",
+      "Healthy fats from nuts and seeds support brain function",
+      "Complex carbohydrates provide sustained energy",
+      "High fiber content supports digestive health",
+      "Homemade control over sugar and quality ingredients"
+    ],
+    recipe: {
+      instructions: [
+        "Preheat oven to 160°C (140°C fan)",
+        "Line a large baking tray with parchment paper",
+        "In a large bowl, mix oats, cacao powder, mixed seeds, chopped nuts, salt, and cinnamon",
+        "In a separate bowl, whisk together maple syrup, melted coconut oil, and vanilla extract",
+        "Pour wet ingredients over dry ingredients and mix thoroughly",
+        "Ensure everything is well coated and mixture holds together when squeezed",
+        "Spread evenly on prepared baking tray in a single layer",
+        "Bake for 35-40 minutes, stirring every 10-12 minutes to prevent burning",
+        "Granola is ready when it's golden and crispy",
+        "Remove from oven and immediately sprinkle with dark chocolate chips",
+        "Let cool completely on the tray (it will continue to crisp up)",
+        "Once cool, stir in coconut flakes and store in airtight container"
+      ],
+      tips: [
+        "Don't skip the stirring during baking to ensure even browning",
+        "Let cool completely before storing to maintain crispiness",
+        "Add chocolate chips while granola is still warm so they soften slightly",
+        "Store in airtight container for up to 2 weeks"
+      ],
+      notes: "Rich, chocolatey granola that's naturally sweetened and perfect for topping yogurt, smoothie bowls, or eating with milk"
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
+  },
+  {
     name: "Creamy Mushroom Stroganoff",
     portion: "1 generous serving with rice (about 350g)",
     nutrition: {
