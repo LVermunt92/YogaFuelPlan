@@ -760,24 +760,52 @@ async function selectUnusedMealIntelligently(
       let score = 0;
       const nutrition = meal.nutrition;
       
-      // Lower carbohydrates get higher scores (target < 30g for lunch)
-      if (nutrition.carbohydrates <= 20) {
+      // SLOW CARBS PRIORITY: Check for slow-release carbohydrate sources
+      const slowCarbIngredients = meal.ingredients.some(ingredient => {
+        const ingredientLower = ingredient.toLowerCase();
+        return ingredientLower.includes('quinoa') || 
+               ingredientLower.includes('brown rice') || 
+               ingredientLower.includes('oats') || 
+               ingredientLower.includes('sweet potato') || 
+               ingredientLower.includes('beans') || 
+               ingredientLower.includes('lentils') || 
+               ingredientLower.includes('chickpeas') || 
+               ingredientLower.includes('black-eyed peas') || 
+               ingredientLower.includes('whole grain') || 
+               ingredientLower.includes('steel-cut');
+      });
+      
+      if (slowCarbIngredients) {
+        score += 3; // Major bonus for slow carbs
+        console.log(`  ✅ Slow carbs detected in: ${meal.name}`);
+      }
+      
+      // CARB AMOUNT with emphasis on slow carbs
+      if (nutrition.carbohydrates <= 25 && slowCarbIngredients) {
+        score += 4; // Perfect: low carbs AND slow carbs
+      } else if (nutrition.carbohydrates <= 20) {
         score += 3; // Very low carb
+      } else if (nutrition.carbohydrates <= 30 && slowCarbIngredients) {
+        score += 3; // Moderate carbs but slow release
       } else if (nutrition.carbohydrates <= 30) {
         score += 2; // Moderate carb
+      } else if (nutrition.carbohydrates <= 40 && slowCarbIngredients) {
+        score += 2; // Higher carbs but slow release
       } else if (nutrition.carbohydrates <= 40) {
         score += 1; // Slightly higher carb
       }
-      // Higher carb meals get 0 points
       
-      // High fiber helps stabilize blood sugar (target > 5g)
-      if (nutrition.fiber >= 10) {
+      // FIBER CONTENT - critical for blood sugar stability
+      if (nutrition.fiber >= 12) {
+        score += 4; // Exceptional fiber
+      } else if (nutrition.fiber >= 10) {
         score += 3; // Excellent fiber
       } else if (nutrition.fiber >= 7) {
         score += 2; // Good fiber
       } else if (nutrition.fiber >= 5) {
         score += 1; // Moderate fiber
       }
+      // Below 5g fiber gets 0 points
       
       // Good protein content for satiety (target > 20g)
       if (nutrition.protein >= 25) {

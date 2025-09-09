@@ -11361,7 +11361,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       costEuros: 3.20,
       proteinPerEuro: 8.4
     },
-    category: "dessert",
+    category: "breakfast",
     tags: ["Vegan", "Plant-Based", "High-Protein", "Low-Calorie", "No-Bake", "Chocolate", "Quick", "Dessert", "Healthy-Sweet"],
     ingredients: [
       "2 rice or corn cakes",
@@ -11406,6 +11406,154 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Can be made 30 minutes ahead and chilled for firmer texture"
       ],
       notes: "Revolutionary plant-based dessert that delivers restaurant-quality satisfaction with incredible nutrition stats. The rice cake base soaked in espresso creates an unexpected tiramisu-like experience."
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
+  },
+
+  // ENHANCED SLOW CARB & HIGH FIBER RECIPES
+  {
+    name: "Blood Sugar Friendly Buddha Bowl with Quinoa",
+    portion: "1 serving",
+    nutrition: {
+      protein: 26,
+      prepTime: 25,
+      calories: 485,
+      carbohydrates: 28,
+      fats: 18,
+      fiber: 15,
+      sugar: 8,
+      sodium: 340,
+      potassium: 820,
+      calcium: 180,
+      iron: 4.2,
+      vitaminC: 45,
+      costEuros: 4.50,
+      proteinPerEuro: 5.8
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "High-Fiber", "Low-Carb", "High-Protein", "Blood-Sugar-Friendly", "Quinoa", "Buddha-Bowl"],
+    ingredients: [
+      "80g quinoa (uncooked)",
+      "100g black beans (cooked)",
+      "150g roasted sweet potato cubes",
+      "100g steamed broccoli",
+      "50g baby spinach",
+      "1/2 avocado (80g)",
+      "30g hemp hearts",
+      "15g chia seeds",
+      "2 tbsp tahini",
+      "1 tbsp apple cider vinegar",
+      "1 tsp olive oil",
+      "1/2 lemon (juiced)",
+      "1 clove garlic (minced)",
+      "Salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["sweet potato", "broccoli", "spinach", "avocado"],
+      benefits: ["Complex carbs from quinoa", "Fiber from black beans", "Beta-carotene from sweet potato", "Iron from spinach", "Healthy fats from avocado and hemp hearts"]
+    },
+    recipeBenefits: [
+      "Optimized for blood sugar stability with slow-release carbs",
+      "15g fiber aids digestion and glucose management",
+      "Complete protein from quinoa and hemp hearts combination",
+      "Sustained energy from healthy fats and complex carbohydrates",
+      "Rich in antioxidants and micronutrients"
+    ],
+    recipe: {
+      instructions: [
+        "Rinse quinoa and cook in 160ml water for 15 minutes until fluffy",
+        "Roast sweet potato cubes at 200°C for 20 minutes until tender",
+        "Steam broccoli for 5 minutes until bright green",
+        "Warm black beans and season with salt and pepper",
+        "Make dressing by whisking tahini, lemon juice, apple cider vinegar, garlic, and olive oil",
+        "Arrange quinoa as base in bowl",
+        "Top with black beans, roasted sweet potato, steamed broccoli, and fresh spinach",
+        "Add sliced avocado and sprinkle with hemp hearts and chia seeds",
+        "Drizzle with tahini dressing and serve immediately"
+      ],
+      tips: [
+        "Cook quinoa with a bay leaf for extra flavor",
+        "Chia seeds add crunch and additional fiber",
+        "Sweet potato provides slow-releasing natural sugars",
+        "This meal keeps blood sugar stable for 4-5 hours"
+      ],
+      notes: "Specifically designed for blood sugar management with slow carbs, high fiber, and optimal protein-fat balance for sustained energy."
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
+  },
+
+  {
+    name: "Slow Carb Lentil & Brown Rice Power Bowl",
+    portion: "1 serving",
+    nutrition: {
+      protein: 24,
+      prepTime: 35,
+      calories: 520,
+      carbohydrates: 32,
+      fats: 16,
+      fiber: 18,
+      sugar: 6,
+      sodium: 285,
+      potassium: 940,
+      calcium: 120,
+      iron: 5.8,
+      vitaminC: 35,
+      costEuros: 3.80,
+      proteinPerEuro: 6.3
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "High-Fiber", "Slow-Carb", "High-Protein", "Blood-Sugar-Friendly", "Lentils", "Brown-Rice"],
+    ingredients: [
+      "60g brown rice (uncooked)",
+      "80g green lentils (cooked)",
+      "100g roasted Brussels sprouts",
+      "80g steamed kale",
+      "50g grated carrots",
+      "30g sunflower seeds",
+      "15g ground flaxseed",
+      "2 tbsp olive oil",
+      "1 tbsp balsamic vinegar",
+      "1 tsp Dijon mustard",
+      "1/2 tsp turmeric",
+      "1 clove garlic (minced)",
+      "Fresh herbs (parsley or cilantro)"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["Brussels sprouts", "kale", "carrots"],
+      benefits: ["Slow-release carbs from brown rice", "Complete protein from lentils", "Cruciferous vegetables for detox support", "High fiber for digestive health"]
+    },
+    recipeBenefits: [
+      "18g fiber promotes healthy blood sugar and digestion",
+      "Brown rice and lentils provide sustained energy release",
+      "Rich in plant-based protein and essential amino acids",
+      "Anti-inflammatory compounds from turmeric and olive oil",
+      "Nutrient-dense vegetables support overall health"
+    ],
+    recipe: {
+      instructions: [
+        "Cook brown rice in 120ml water for 30-35 minutes until tender",
+        "Halve Brussels sprouts and roast at 200°C for 20 minutes until crispy",
+        "Steam kale for 3-4 minutes until wilted but still bright green",
+        "Warm cooked lentils with turmeric and garlic",
+        "Make dressing by whisking olive oil, balsamic vinegar, and Dijon mustard",
+        "Layer brown rice as base in bowl",
+        "Arrange lentils, roasted Brussels sprouts, steamed kale, and grated carrots",
+        "Sprinkle with sunflower seeds and ground flaxseed",
+        "Drizzle with dressing and garnish with fresh herbs"
+      ],
+      tips: [
+        "Toast sunflower seeds lightly for extra flavor and crunch",
+        "Ground flaxseed adds omega-3s and extra fiber",
+        "Brown rice takes longer to cook but provides superior nutrition",
+        "This combination provides 6+ hours of sustained energy"
+      ],
+      notes: "Perfect slow carb meal designed to prevent blood sugar spikes while delivering exceptional fiber and plant-based protein."
     },
     createdAt: new Date('2025-09-09'),
     active: true
