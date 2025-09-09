@@ -10910,6 +10910,144 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-09-09'),
     active: true
+  },
+
+  // PASTA WITH AVOCADO SAUCE
+  {
+    name: "Pasta with Creamy Avocado Sauce",
+    portion: "1 serving",
+    nutrition: {
+      protein: 18,
+      prepTime: 25,
+      calories: 650,
+      carbohydrates: 68,
+      fats: 35,
+      fiber: 12,
+      sugar: 8,
+      sodium: 420,
+      potassium: 920,
+      calcium: 380,
+      iron: 2.8,
+      vitaminC: 25,
+      costEuros: 4.80,
+      proteinPerEuro: 3.8
+    },
+    category: "dinner",
+    tags: ["Vegetarian", "Italian", "Creamy", "Avocado", "Comfort-Food", "Roasted-Vegetables"],
+    ingredients: [
+      "125g cherry tomatoes",
+      "1 ripe avocado",
+      "125g pasta",
+      "125ml cooking cream",
+      "62g mozzarella",
+      "15ml olive oil",
+      "Salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["cherry tomatoes", "avocado"],
+      benefits: ["Lycopene from roasted tomatoes", "Healthy fats from avocado", "Potassium and fiber", "Natural creaminess without heavy sauces"]
+    },
+    recipeBenefits: [
+      "Avocado provides healthy monounsaturated fats and fiber",
+      "Roasted cherry tomatoes concentrate flavor and lycopene",
+      "Fresh mozzarella adds protein and calcium",
+      "Creamy sauce without artificial additives",
+      "Quick and satisfying comfort food"
+    ],
+    recipe: {
+      instructions: [
+        "Preheat oven to 200°C",
+        "Place cherry tomatoes in an oven dish with olive oil, salt, and pepper",
+        "Roast tomatoes for 15-20 minutes until soft and slightly caramelized",
+        "Cook pasta according to package instructions until al dente",
+        "While pasta cooks, blend ripe avocado with cooking cream, salt, and pepper until smooth",
+        "Drain pasta and mix immediately with the creamy avocado sauce",
+        "Serve topped with roasted cherry tomatoes and torn fresh mozzarella",
+        "Season with additional salt and pepper if needed"
+      ],
+      tips: [
+        "Choose perfectly ripe avocados for the creamiest sauce",
+        "Roast tomatoes until they start to burst for maximum flavor",
+        "Mix avocado sauce with hot pasta immediately to prevent browning",
+        "Add a squeeze of lemon juice to avocado sauce to prevent oxidation",
+        "Fresh basil leaves make an excellent garnish"
+      ],
+      notes: "Creamy, nutritious pasta featuring healthy avocado instead of heavy cream-based sauces. The roasted tomatoes add sweetness and depth to this satisfying meal."
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
+  },
+
+  // GLUTEN-FREE PASTA WITH ENHANCED AVOCADO SAUCE
+  {
+    name: "Gluten-Free Lentil Pasta with Protein-Enhanced Avocado Sauce",
+    portion: "1 serving",
+    nutrition: {
+      protein: 24,
+      prepTime: 25,
+      calories: 680,
+      carbohydrates: 72,
+      fats: 32,
+      fiber: 14,
+      sugar: 8,
+      sodium: 380,
+      potassium: 1020,
+      calcium: 350,
+      iron: 4.2,
+      vitaminC: 25,
+      costEuros: 5.20,
+      proteinPerEuro: 4.6
+    },
+    category: "dinner",
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Protein", "Plant-Based", "Italian", "Creamy", "Avocado", "Lentil-Pasta"],
+    ingredients: [
+      "125g cherry tomatoes",
+      "1 ripe avocado",
+      "125g gluten-free lentil pasta",
+      "100ml lactose-free cream",
+      "62g lactose-free mozzarella",
+      "50g cooked edamame beans",
+      "15ml olive oil",
+      "Salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["cherry tomatoes", "avocado", "edamame"],
+      benefits: ["Lycopene from roasted tomatoes", "Healthy fats from avocado", "Complete protein from lentil pasta and edamame", "High fiber content for satiation"]
+    },
+    recipeBenefits: [
+      "Lentil pasta doubles protein and fiber compared to regular pasta",
+      "Edamame adds complete amino acids and extra protein",
+      "Lactose-free options suitable for dairy sensitivities",
+      "Gluten-free for celiac and gluten-sensitive individuals",
+      "Plant-based protein powerhouse with excellent nutrition profile"
+    ],
+    recipe: {
+      instructions: [
+        "Preheat oven to 200°C",
+        "Place cherry tomatoes in an oven dish with olive oil, salt, and pepper",
+        "Roast tomatoes for 15-20 minutes until soft and slightly caramelized",
+        "Cook lentil pasta according to package instructions (usually 8-10 minutes)",
+        "While pasta cooks, blend ripe avocado with lactose-free cream, salt, and pepper until smooth",
+        "Drain pasta and mix immediately with the creamy avocado sauce",
+        "Fold in cooked edamame beans for extra protein and texture",
+        "Serve topped with roasted cherry tomatoes and lactose-free mozzarella",
+        "Season with additional salt and pepper to taste"
+      ],
+      tips: [
+        "Lentil pasta can become mushy if overcooked - check frequently",
+        "Edamame can be frozen (thawed) or fresh cooked",
+        "The avocado sauce will be slightly thicker with lactose-free cream",
+        "Add nutritional yeast for extra umami if desired",
+        "This version provides exceptional protein content for plant-based eaters"
+      ],
+      notes: "Protein-packed, allergen-friendly pasta featuring lentil pasta and edamame for exceptional nutrition. Perfect for those avoiding gluten and dairy while maximizing protein intake."
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
   }
 ];
 
