@@ -11048,6 +11048,78 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-09-09'),
     active: true
+  },
+
+  // SWEET POTATO BOWL WITH FALAFEL AND FETA
+  {
+    name: "Sweet Potato Bowl with Falafel and Feta",
+    portion: "1 serving",
+    nutrition: {
+      protein: 22,
+      prepTime: 30,
+      calories: 520,
+      carbohydrates: 45,
+      fats: 28,
+      fiber: 8,
+      sugar: 12,
+      sodium: 890,
+      potassium: 850,
+      calcium: 420,
+      iron: 3.5,
+      vitaminC: 35,
+      costEuros: 5.50,
+      proteinPerEuro: 4.0
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Mediterranean", "High-Protein", "Roasted", "Bowl", "Comfort-Food", "Greek", "Sweet-Potato"],
+    ingredients: [
+      "200g medium sweet potato (1 potato)",
+      "75g falafel (4-5 small pieces)",
+      "75g feta cheese",
+      "75g cucumber (¼ cucumber)",
+      "½ bell pepper (75g)",
+      "75g Greek yogurt",
+      "7.5ml olive oil",
+      "Salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2.5,
+      vegetables: ["sweet potato", "cucumber", "bell pepper"],
+      benefits: ["Beta-carotene from sweet potato", "Hydration from cucumber", "Vitamin C from bell pepper", "Probiotics from Greek yogurt"]
+    },
+    recipeBenefits: [
+      "Sweet potato provides complex carbohydrates and beta-carotene",
+      "Falafel offers plant-based protein and fiber",
+      "Feta cheese adds calcium and tangy Mediterranean flavor",
+      "Greek yogurt provides probiotics and additional protein",
+      "Colorful vegetables ensure diverse micronutrient intake"
+    ],
+    recipe: {
+      instructions: [
+        "Preheat oven to 200°C",
+        "Peel and cube the sweet potato into 2cm pieces",
+        "Spread sweet potato cubes on a baking tray lined with baking paper",
+        "Drizzle with olive oil and season with salt and pepper",
+        "Roast in preheated oven for about 25 minutes until golden and tender",
+        "Meanwhile, cut the bell pepper and cucumber into cubes",
+        "Heat falafel briefly in a pan or oven according to package instructions",
+        "Arrange roasted sweet potatoes in serving bowl",
+        "Add warmed falafel, bell pepper cubes, cucumber, and crumbled feta cheese",
+        "Top with a generous spoonful of Greek yogurt",
+        "Season with extra salt and pepper to taste"
+      ],
+      tips: [
+        "Cut sweet potato into uniform pieces for even roasting",
+        "Don't overcrowd the baking tray - sweet potatoes need space to caramelize",
+        "Store-bought falafel works perfectly, or use homemade if preferred",
+        "Crumble feta rather than cutting for better distribution",
+        "Serve immediately while sweet potatoes are still warm"
+      ],
+      notes: "Mediterranean-inspired bowl combining roasted sweet potatoes with protein-rich falafel and creamy feta. The Greek yogurt adds probiotics and balances the flavors beautifully."
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
   }
 ];
 
