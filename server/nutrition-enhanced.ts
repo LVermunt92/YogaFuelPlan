@@ -11557,6 +11557,79 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-09-09'),
     active: true
+  },
+
+  // USER CUSTOM RECIPE
+  {
+    name: "Brussels Sprouts with Sweet Potato",
+    portion: "1 serving (4 total servings)",
+    nutrition: {
+      protein: 15,
+      prepTime: 40,
+      calories: 574,
+      carbohydrates: 70,
+      fats: 27,
+      fiber: 13,
+      sugar: 22,
+      sodium: 320,
+      potassium: 1200,
+      calcium: 180,
+      iron: 3.2,
+      vitaminC: 85,
+      costEuros: 3.25,
+      proteinPerEuro: 4.6
+    },
+    category: "dinner",
+    tags: ["Vegetarian", "Comfort-Food", "High-Fiber", "Sweet-Potato", "Brussels-Sprouts", "Cheese", "Walnuts", "Slow-Carb"],
+    ingredients: [
+      "250g sweet potatoes (per serving from 1kg total)",
+      "150g Brussels sprouts (per serving from 600g total)", 
+      "17.5g old cheese (per serving from 70g total)",
+      "12.5g walnuts (per serving from 50g total)",
+      "1.5 tbsp mustard (per serving from 2 tbsp total)",
+      "25ml oat milk (per serving from 100ml total)",
+      "1 small onion (50g, diced)",
+      "1 tbsp olive oil",
+      "Salt and pepper to taste",
+      "Optional: sun-dried tomatoes for garnish"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["sweet potatoes", "Brussels sprouts", "onion"],
+      benefits: ["Complex carbs from sweet potato", "Cruciferous vegetables for antioxidants", "High fiber for digestive health", "Healthy fats from walnuts"]
+    },
+    recipeBenefits: [
+      "Sweet potatoes provide slow-release complex carbohydrates",
+      "Brussels sprouts are rich in vitamin C and fiber",
+      "Walnuts add healthy omega-3 fatty acids and protein",
+      "Old cheese provides calcium and protein",
+      "High fiber content supports digestive health"
+    ],
+    recipe: {
+      instructions: [
+        "Clean the Brussels sprouts and remove outer leaves, then blanch them in boiling water for 3-4 minutes",
+        "Peel sweet potatoes, cut into chunks, and cook in boiling salted water until tender (15-20 minutes)",
+        "Meanwhile, dice the onion and heat olive oil in a large pan over medium heat",
+        "Fry the diced onion until softened, then add the blanched Brussels sprouts",
+        "Season Brussels sprouts and onion with salt and pepper, cook for 5-8 minutes until lightly browned",
+        "In a dry pan, lightly roast the walnuts for 2-3 minutes until fragrant",
+        "Drain the sweet potatoes and mash until smooth, gradually adding oat milk and mustard",
+        "Season the mashed sweet potatoes with salt and pepper to taste",
+        "Fold the sautéed Brussels sprouts and onion into the mashed sweet potatoes",
+        "Serve topped with crumbled old cheese and roasted walnuts",
+        "Optional: garnish with chopped sun-dried tomatoes for extra flavor"
+      ],
+      tips: [
+        "Don't overcook Brussels sprouts - they should retain some bite",
+        "Roasting the walnuts enhances their nutty flavor significantly",
+        "The mustard adds a nice tangy depth to the mashed sweet potatoes",
+        "Can be made ahead and reheated - add cheese and walnuts just before serving"
+      ],
+      notes: "Hearty comfort food combining the sweetness of mashed sweet potatoes with the earthy flavor of Brussels sprouts, topped with creamy cheese and crunchy walnuts."
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
   }
 ];
 
