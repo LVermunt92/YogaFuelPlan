@@ -11708,6 +11708,88 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-09-09'),
     active: true
+  },
+
+  // VEGETARIAN VERSION OF TUNA POKE BOWL
+  {
+    name: "Vegetarian Protein Poke Bowl with Marinated Tofu",
+    portion: "1 serving",
+    nutrition: {
+      protein: 28,
+      prepTime: 20,
+      calories: 445,
+      carbohydrates: 22,
+      fats: 24,
+      fiber: 10,
+      sugar: 6,
+      sodium: 520,
+      potassium: 750,
+      calcium: 140,
+      iron: 4.2,
+      vitaminC: 12,
+      costEuros: 4.20,
+      proteinPerEuro: 6.7
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Vegan", "High-Protein", "Low-Carb", "Blood-Sugar-Friendly", "Tofu", "Edamame", "Quick", "Fresh", "Poke-Bowl"],
+    ingredients: [
+      "120g firm tofu (cubed)",
+      "100g edamame beans (shelled)",
+      "100g cucumber (sliced)",
+      "1/2 avocado (80g)",
+      "2 sheets nori seaweed (torn into pieces)",
+      "30g crispy rice or rice cakes (broken into pieces)",
+      "15g hemp hearts",
+      "1 tbsp soy sauce (low sodium)",
+      "1 tsp sesame oil",
+      "1/2 tsp rice vinegar",
+      "1/4 tsp sesame seeds",
+      "1/2 tsp ginger (minced)",
+      "1/4 tsp garlic powder",
+      "Salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["cucumber", "edamame", "avocado"],
+      benefits: ["Complete protein from tofu and edamame", "Hydrating cucumber", "Healthy fats from avocado and hemp hearts", "Iodine from nori seaweed", "Omega-3s from hemp hearts"]
+    },
+    recipeBenefits: [
+      "Tofu provides complete plant-based protein with all essential amino acids",
+      "Edamame offers additional protein, iron, and calcium",
+      "Hemp hearts add omega-3 fatty acids and extra protein",
+      "Avocado delivers healthy monounsaturated fats and potassium",
+      "Nori seaweed is a natural source of iodine and vitamin A",
+      "Cucumber provides hydration with minimal calories",
+      "Low carb and blood sugar friendly with sustained energy",
+      "Rich in plant-based nutrients and fiber"
+    ],
+    recipe: {
+      instructions: [
+        "Press tofu to remove excess water, then cube into bite-sized pieces",
+        "Marinate tofu cubes in soy sauce, ginger, and garlic powder for 10 minutes",
+        "Steam or boil edamame beans for 3-4 minutes if frozen, then shell them",
+        "Slice cucumber into rounds or half-moons",
+        "Cut avocado in half, remove pit, and slice",
+        "Break rice cakes into bite-sized crispy pieces",
+        "Tear nori sheets into smaller pieces",
+        "Make dressing by whisking sesame oil, remaining soy sauce, and rice vinegar",
+        "Arrange all ingredients in a bowl: marinated tofu, edamame, cucumber, and avocado",
+        "Top with crispy rice pieces, torn nori, and hemp hearts",
+        "Drizzle with dressing and sprinkle with sesame seeds",
+        "Season with salt and pepper to taste, serve immediately"
+      ],
+      tips: [
+        "Press tofu for 15 minutes before marinating for better texture",
+        "You can pan-fry the marinated tofu for 2-3 minutes for extra flavor",
+        "Hemp hearts add a nutty flavor and boost the omega-3 content",
+        "Edamame can be prepared in advance and stored in the fridge",
+        "This bowl is perfect for meal prep - keep dressing separate until serving"
+      ],
+      notes: "Plant-based version of the nutritious poke bowl with marinated tofu providing complete protein, enhanced with hemp hearts for omega-3s and additional fiber from edamame."
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
   }
 ];
 
