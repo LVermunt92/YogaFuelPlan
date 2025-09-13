@@ -11790,6 +11790,159 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-09-09'),
     active: true
+  },
+
+  // HIGH-PROTEIN NUTRIENT POWER BOWL WITH LEAN BEEF
+  {
+    name: "High-Protein Power Bowl with Lean Beef & Sweet Potato",
+    portion: "1 serving",
+    nutrition: {
+      protein: 35,
+      prepTime: 25,
+      calories: 520,
+      carbohydrates: 24,
+      fats: 22,
+      fiber: 9,
+      sugar: 8,
+      sodium: 380,
+      potassium: 920,
+      calcium: 180,
+      iron: 4.8,
+      vitaminC: 28,
+      costEuros: 5.80,
+      proteinPerEuro: 6.0
+    },
+    category: "lunch",
+    tags: ["High-Protein", "Low-Carb", "Blood-Sugar-Friendly", "Beef", "Cottage-Cheese", "Sweet-Potato", "Nutrient-Dense", "Power-Bowl"],
+    ingredients: [
+      "120g lean beef (sirloin or tenderloin, cubed)",
+      "100g cottage cheese",
+      "1/2 avocado (80g, sliced)",
+      "150g sweet potato (cubed and roasted)",
+      "1 tsp olive oil",
+      "1/2 tsp paprika",
+      "1/4 tsp garlic powder",
+      "1/4 tsp black pepper",
+      "1/2 tsp sea salt",
+      "Fresh herbs (parsley or chives) for garnish"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["sweet potato", "avocado"],
+      benefits: ["Complete protein from beef and cottage cheese", "Slow-release carbs from sweet potato", "Healthy fats from avocado", "High calcium from cottage cheese", "Iron and zinc from lean beef"]
+    },
+    recipeBenefits: [
+      "35g complete protein supports muscle health and satiety",
+      "Lean beef provides iron, zinc, and vitamin B12",
+      "Cottage cheese delivers calcium and casein protein",
+      "Sweet potato offers fiber, potassium, and beta-carotene",
+      "Avocado provides healthy monounsaturated fats",
+      "Low carb with slow-releasing energy for blood sugar stability",
+      "Rich in vitamins and minerals for energy and health"
+    ],
+    recipe: {
+      instructions: [
+        "Preheat oven to 200°C and line a baking tray",
+        "Cube sweet potato and toss with half the olive oil, salt, and paprika",
+        "Roast sweet potato for 20-25 minutes until tender and lightly caramelized",
+        "Season beef cubes with garlic powder, black pepper, and remaining salt",
+        "Heat remaining olive oil in a pan over medium-high heat",
+        "Cook beef cubes for 6-8 minutes, turning to brown all sides",
+        "Let beef rest for 2 minutes to retain juices",
+        "Slice avocado and arrange in serving bowl",
+        "Add cottage cheese to one section of the bowl",
+        "Place roasted sweet potato and cooked beef in separate sections",
+        "Garnish with fresh herbs and serve immediately"
+      ],
+      tips: [
+        "Choose lean cuts like sirloin or tenderloin for best protein-to-fat ratio",
+        "Don't overcook the beef - aim for medium for optimal tenderness",
+        "Sweet potato can be batch-cooked and reheated throughout the week",
+        "Full-fat cottage cheese provides better satiety and nutrient absorption"
+      ],
+      notes: "Nutrient-dense power bowl emphasizing vitamins and minerals alongside optimal macros for sustained energy and health."
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
+  },
+
+  // VEGETARIAN VERSION WITH PLANT-BASED PROTEIN
+  {
+    name: "Vegetarian High-Protein Power Bowl with Tofu & Sweet Potato",
+    portion: "1 serving",
+    nutrition: {
+      protein: 28,
+      prepTime: 25,
+      calories: 485,
+      carbohydrates: 26,
+      fats: 24,
+      fiber: 11,
+      sugar: 9,
+      sodium: 340,
+      potassium: 850,
+      calcium: 220,
+      iron: 4.2,
+      vitaminC: 28,
+      costEuros: 4.50,
+      proteinPerEuro: 6.2
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Vegan", "High-Protein", "Low-Carb", "Blood-Sugar-Friendly", "Tofu", "Cottage-Cheese", "Sweet-Potato", "Nutrient-Dense", "Power-Bowl"],
+    ingredients: [
+      "120g extra-firm tofu (cubed and pressed)",
+      "100g cottage cheese (or plant-based alternative)",
+      "1/2 avocado (80g, sliced)",
+      "150g sweet potato (cubed and roasted)",
+      "15g hemp hearts",
+      "1 tsp olive oil",
+      "1/2 tsp paprika",
+      "1/4 tsp garlic powder",
+      "1/4 tsp turmeric",
+      "1/4 tsp black pepper",
+      "1/2 tsp sea salt",
+      "Fresh herbs (parsley or chives) for garnish"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["sweet potato", "avocado"],
+      benefits: ["Complete plant protein from tofu and hemp hearts", "Slow-release carbs from sweet potato", "Healthy fats from avocado and hemp hearts", "High calcium from cottage cheese and tofu", "Extra fiber for digestive health"]
+    },
+    recipeBenefits: [
+      "28g plant-based protein with all essential amino acids",
+      "Tofu provides isoflavones and plant-based calcium",
+      "Hemp hearts add omega-3 fatty acids and extra protein",
+      "Sweet potato offers fiber, potassium, and beta-carotene",
+      "Avocado provides healthy monounsaturated fats",
+      "Higher fiber content supports blood sugar stability",
+      "Rich in plant-based vitamins and minerals for sustained energy"
+    ],
+    recipe: {
+      instructions: [
+        "Press tofu for 15 minutes to remove excess water, then cube",
+        "Preheat oven to 200°C and line a baking tray",
+        "Cube sweet potato and toss with half the olive oil, salt, and paprika",
+        "Roast sweet potato for 20-25 minutes until tender and lightly caramelized",
+        "Season tofu cubes with garlic powder, turmeric, black pepper, and remaining salt",
+        "Heat remaining olive oil in a pan over medium-high heat",
+        "Cook tofu cubes for 8-10 minutes, turning to golden all sides",
+        "Slice avocado and arrange in serving bowl",
+        "Add cottage cheese to one section of the bowl",
+        "Place roasted sweet potato and golden tofu in separate sections",
+        "Sprinkle hemp hearts over the entire bowl",
+        "Garnish with fresh herbs and serve immediately"
+      ],
+      tips: [
+        "Press tofu well for better texture and flavor absorption",
+        "Turmeric adds anti-inflammatory benefits and golden color",
+        "Hemp hearts boost protein and add pleasant nutty flavor",
+        "Choose full-fat plant-based cottage cheese alternative if avoiding dairy"
+      ],
+      notes: "Plant-based power bowl maximizing vitamins, minerals, and fiber while delivering complete protein for sustained energy and health."
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
   }
 ];
 
