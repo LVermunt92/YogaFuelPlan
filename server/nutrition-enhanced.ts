@@ -11630,6 +11630,84 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-09-09'),
     active: true
+  },
+
+  // USER CUSTOM RECIPE FROM IMAGE
+  {
+    name: "Nutritious Tuna Poke Bowl with Edamame",
+    portion: "1 serving",
+    nutrition: {
+      protein: 32,
+      prepTime: 15,
+      calories: 465,
+      carbohydrates: 18,
+      fats: 22,
+      fiber: 8,
+      sugar: 4,
+      sodium: 580,
+      potassium: 890,
+      calcium: 85,
+      iron: 3.8,
+      vitaminC: 12,
+      costEuros: 6.50,
+      proteinPerEuro: 4.9
+    },
+    category: "lunch",
+    tags: ["High-Protein", "Omega-3", "Low-Carb", "Blood-Sugar-Friendly", "Tuna", "Edamame", "Quick", "Fresh", "Poke-Bowl"],
+    ingredients: [
+      "120g fresh tuna (sashimi grade or cooked)",
+      "80g edamame beans (shelled)",
+      "100g cucumber (sliced)",
+      "1/2 avocado (80g)",
+      "2 sheets nori seaweed (torn into pieces)",
+      "30g crispy rice or rice cakes (broken into pieces)",
+      "1 tsp sesame oil",
+      "1 tsp soy sauce (low sodium)",
+      "1/2 tsp rice vinegar",
+      "1/4 tsp sesame seeds",
+      "Salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["cucumber", "edamame", "avocado"],
+      benefits: ["High omega-3 from tuna", "Complete protein from edamame", "Hydrating cucumber", "Healthy fats from avocado", "Iodine from nori seaweed"]
+    },
+    recipeBenefits: [
+      "Tuna provides high-quality protein and omega-3 fatty acids",
+      "Rich in vitamin D and B12 from tuna",
+      "Edamame offers complete plant protein with iron and calcium",
+      "Avocado delivers healthy monounsaturated fats and potassium",
+      "Nori seaweed is a natural source of iodine and vitamin A",
+      "Cucumber provides hydration with minimal calories",
+      "Low carb and blood sugar friendly with sustained energy"
+    ],
+    recipe: {
+      instructions: [
+        "If using raw tuna, ensure it's sashimi-grade and cut into cubes",
+        "If using cooked tuna, flake or cube the tuna and set aside",
+        "Steam or boil edamame beans for 3-4 minutes if frozen, then shell them",
+        "Slice cucumber into rounds or half-moons",
+        "Cut avocado in half, remove pit, and slice",
+        "Break rice cakes into bite-sized crispy pieces",
+        "Tear nori sheets into smaller pieces",
+        "Make dressing by whisking sesame oil, soy sauce, and rice vinegar",
+        "Arrange all ingredients in a bowl: tuna, edamame, cucumber, and avocado",
+        "Top with crispy rice pieces and torn nori",
+        "Drizzle with dressing and sprinkle with sesame seeds",
+        "Season with salt and pepper to taste, serve immediately"
+      ],
+      tips: [
+        "Use sashimi-grade tuna for the freshest flavor if eating raw",
+        "Edamame can be prepared in advance and stored in the fridge",
+        "Rice cakes add great texture - you can also use puffed rice",
+        "Nori adds umami flavor and important minerals",
+        "This bowl is perfect for meal prep - keep dressing separate until serving"
+      ],
+      notes: "Nutrient-dense poke-style bowl combining high-quality protein from tuna with plant-based protein from edamame, healthy fats from avocado, and the mineral benefits of sea vegetables."
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
   }
 ];
 
