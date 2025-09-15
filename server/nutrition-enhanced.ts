@@ -12091,6 +12091,94 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-09-09'),
     active: true
+  },
+
+  // ASIAN-INSPIRED CRISPY TOFU BOWL WITH GREEN CASHEW SAUCE
+  {
+    name: "Crispy Tofu Bowl with Roasted Pumpkin & Green Cashew Sauce",
+    portion: "1 serving",
+    nutrition: {
+      protein: 20,
+      prepTime: 45,
+      calories: 485,
+      carbohydrates: 28,
+      fats: 32,
+      fiber: 11,
+      sugar: 8,
+      sodium: 420,
+      potassium: 880,
+      calcium: 180,
+      iron: 4.5,
+      vitaminC: 35,
+      costEuros: 4.80,
+      proteinPerEuro: 4.2
+    },
+    category: "lunch",
+    tags: ["Vegan", "Plant-Based", "High-Protein", "Blood-Sugar-Friendly", "Tofu", "Pumpkin", "Cashew-Sauce", "Asian-Inspired", "Nutrient-Dense", "Gluten-Free"],
+    ingredients: [
+      "100g firm tofu (pressed and cubed)",
+      "120g pumpkin (cubed)",
+      "80g eggplant (cubed, about 1/2 small)",
+      "30g spinach (1 handful)",
+      "40g bok choy (2-3 leaves)",
+      "40g cashews (soaked 1-2 hours)",
+      "1 tbsp cornstarch (maizena)",
+      "1 tsp soy sauce",
+      "1/2 tsp sesame oil",
+      "1.5 tsp coconut oil (divided)",
+      "1 tsp olive oil",
+      "1/4 tsp turmeric powder",
+      "1/4 tsp coriander powder",
+      "1/2 clove garlic (minced)",
+      "1/4 lime (juiced)",
+      "1 tbsp coconut milk",
+      "Small handful fresh basil or kemangi leaves",
+      "1 tsp crispy fried shallots",
+      "Salt to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["pumpkin", "eggplant", "spinach", "bok choy"],
+      benefits: ["Beta-carotene from pumpkin", "Fiber from eggplant", "Iron from spinach", "Vitamin K from bok choy", "Healthy fats from cashews"]
+    },
+    recipeBenefits: [
+      "High-quality plant protein from tofu with complete amino acids",
+      "Slow-release carbohydrates from roasted pumpkin support stable energy",
+      "Cashews provide healthy monounsaturated fats and magnesium",
+      "Turmeric offers anti-inflammatory compounds",
+      "High fiber content aids digestion and blood sugar stability",
+      "Rich in vitamins A, C, K and folate from diverse vegetables",
+      "Asian spices provide antioxidants and digestive benefits"
+    ],
+    recipe: {
+      instructions: [
+        "Soak cashews in water for 1-2 hours to soften",
+        "Press tofu to remove excess water, then cut into cubes",
+        "Toss tofu with soy sauce and sesame oil, let rest for 10 minutes",
+        "Preheat oven to 200°C and line a baking tray",
+        "Cube pumpkin and eggplant, toss with 1 tsp coconut oil, turmeric, coriander, and salt",
+        "Roast vegetables for 20-25 minutes until tender and lightly browned",
+        "Coat marinated tofu with cornstarch and a pinch of salt",
+        "Heat olive oil in a pan and pan-fry tofu cubes until golden and crispy (5-6 minutes)",
+        "In the same pan, heat remaining coconut oil and sauté minced garlic",
+        "Add spinach and bok choy, stir-fry quickly until just wilted",
+        "For green sauce: blend soaked cashews, lime juice, coconut milk, olive oil, basil, salt, and 1-2 tbsp water until creamy",
+        "Assemble bowl: layer roasted pumpkin and eggplant as base",
+        "Add sautéed greens, top with crispy tofu",
+        "Drizzle with green cashew sauce and garnish with fried shallots and fresh basil"
+      ],
+      tips: [
+        "Press tofu well for crispier results - use a clean kitchen towel",
+        "Don't overcrowd the pan when frying tofu for maximum crispiness",
+        "Soak cashews overnight for ultra-smooth sauce texture",
+        "Roasted vegetables can be made ahead and reheated",
+        "Green sauce keeps in fridge for 2-3 days"
+      ],
+      notes: "Vibrant Asian-inspired bowl featuring crispy tofu with aromatic roasted vegetables and a creamy herb-cashew sauce. Perfect balance of protein, healthy fats, and slow carbs."
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
   }
 ];
 
