@@ -11943,6 +11943,154 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-09-09'),
     active: true
+  },
+
+  // GLUTEN-FREE PURPLE SWEET POTATO TOAST - VEGETARIAN VERSION
+  {
+    name: "Purple Sweet Potato Toast with Vegan Feta & Scrambled Eggs",
+    portion: "1 serving (2 slices)",
+    nutrition: {
+      protein: 22,
+      prepTime: 10,
+      calories: 485,
+      carbohydrates: 42,
+      fats: 26,
+      fiber: 12,
+      sugar: 8,
+      sodium: 520,
+      potassium: 780,
+      calcium: 160,
+      iron: 3.8,
+      vitaminC: 18,
+      costEuros: 4.20,
+      proteinPerEuro: 5.2
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "Gluten-Free", "High-Fiber", "Meal-Prep", "Purple-Sweet-Potato", "Vegan-Feta", "Avocado", "Eggs", "Nutrient-Dense"],
+    ingredients: [
+      "2 slices gluten-free purple sweet potato bread (pre-made)",
+      "1/2 avocado (80g, mashed)",
+      "2 eggs (scrambled)",
+      "40g vegan feta (pre-made)",
+      "100g sautéed spinach and peas mix",
+      "1 tbsp roasted pumpkin seeds",
+      "1 tsp black sesame seeds",
+      "1/2 lemon (juiced)",
+      "1 tsp olive oil",
+      "Salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["purple sweet potato", "avocado", "spinach", "peas"],
+      benefits: ["Anthocyanins from purple sweet potato", "Healthy fats from avocado", "Iron from spinach", "Plant protein from peas", "Probiotics from fermented vegan feta"]
+    },
+    recipeBenefits: [
+      "Purple sweet potato provides antioxidants and slow-release carbs",
+      "High fiber content supports digestive health and blood sugar stability",
+      "Complete protein from eggs with plant-based support from peas",
+      "Healthy fats from avocado aid nutrient absorption",
+      "Gluten-free and suitable for celiac dietary needs",
+      "Meal-prep friendly with components made in advance",
+      "Rich in vitamins A, C, K and folate"
+    ],
+    recipe: {
+      instructions: [
+        "Toast 2 slices of pre-made purple sweet potato bread until golden",
+        "While toasting, scramble 2 eggs with a pinch of salt and pepper",
+        "Mash half an avocado with lemon juice and a pinch of salt",
+        "Quickly warm the pre-made sautéed spinach and peas mixture",
+        "Spread mashed avocado evenly on both toast slices",
+        "Layer the warm spinach and peas mixture on top",
+        "Add the scrambled eggs as the next layer",
+        "Crumble vegan feta over the eggs",
+        "Sprinkle with roasted pumpkin seeds and black sesame seeds",
+        "Serve immediately while toast is still warm"
+      ],
+      tips: [
+        "Keep bread slices frozen - they toast perfectly from frozen",
+        "Pre-made vegan feta keeps 5-7 days in the fridge",
+        "Warm the greens mixture to prevent cooling down the toast",
+        "Assembly takes under 5 minutes with prep components ready"
+      ],
+      notes: "Meal-prep friendly breakfast toast showcasing purple sweet potato's antioxidants with complete protein and healthy fats. Perfect for busy mornings!"
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
+  },
+
+  // GLUTEN-FREE PURPLE SWEET POTATO TOAST - VEGAN VERSION
+  {
+    name: "Vegan Purple Sweet Potato Toast with Chickpea Scramble",
+    portion: "1 serving (2 slices)",
+    nutrition: {
+      protein: 18,
+      prepTime: 10,
+      calories: 465,
+      carbohydrates: 48,
+      fats: 22,
+      fiber: 14,
+      sugar: 9,
+      sodium: 480,
+      potassium: 720,
+      calcium: 140,
+      iron: 4.2,
+      vitaminC: 18,
+      costEuros: 3.80,
+      proteinPerEuro: 4.7
+    },
+    category: "breakfast",
+    tags: ["Vegan", "Plant-Based", "Gluten-Free", "High-Fiber", "Meal-Prep", "Purple-Sweet-Potato", "Vegan-Feta", "Chickpea", "Avocado", "Nutrient-Dense"],
+    ingredients: [
+      "2 slices gluten-free purple sweet potato bread (pre-made)",
+      "1/2 avocado (80g, mashed)",
+      "80g chickpea scramble (pre-made with turmeric)",
+      "40g vegan feta (pre-made)",
+      "100g sautéed spinach and peas mix",
+      "1 tbsp roasted pumpkin seeds",
+      "1 tsp black sesame seeds",
+      "1/2 lemon (juiced)",
+      "1 tsp olive oil",
+      "Salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["purple sweet potato", "avocado", "spinach", "peas"],
+      benefits: ["Anthocyanins from purple sweet potato", "Complete plant protein from chickpeas and peas", "Iron from spinach and chickpeas", "Healthy fats from avocado", "High fiber for digestive health"]
+    },
+    recipeBenefits: [
+      "Purple sweet potato provides antioxidants and complex carbohydrates",
+      "Exceptionally high fiber content (14g) supports blood sugar stability",
+      "Complete plant-based protein from chickpea and pea combination",
+      "Turmeric in chickpea scramble provides anti-inflammatory benefits",
+      "Healthy fats from avocado and seeds aid nutrient absorption",
+      "Completely vegan and gluten-free for multiple dietary needs",
+      "Meal-prep components can be prepared days in advance"
+    ],
+    recipe: {
+      instructions: [
+        "Toast 2 slices of pre-made purple sweet potato bread until golden",
+        "Gently warm the pre-made chickpea scramble in a pan",
+        "Mash half an avocado with lemon juice and a pinch of salt",
+        "Quickly warm the pre-made sautéed spinach and peas mixture",
+        "Spread mashed avocado evenly on both toast slices",
+        "Layer the warm spinach and peas mixture on top",
+        "Add the warmed chickpea scramble as the protein layer",
+        "Crumble vegan feta generously over the scramble",
+        "Sprinkle with roasted pumpkin seeds and black sesame seeds",
+        "Serve immediately while all components are warm"
+      ],
+      tips: [
+        "Chickpea scramble reheats best with a splash of plant milk",
+        "The turmeric in the scramble provides beautiful golden color",
+        "All prep components can be made 2-3 days ahead",
+        "Purple sweet potato bread freezes excellently sliced"
+      ],
+      notes: "Completely plant-based breakfast toast featuring antioxidant-rich purple sweet potato with high-protein chickpea scramble. Perfect for vegan meal prep!"
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
   }
 ];
 
