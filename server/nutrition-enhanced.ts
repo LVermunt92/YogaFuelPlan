@@ -12179,6 +12179,84 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-09-09'),
     active: true
+  },
+
+  // HIGH-PROTEIN SOURDOUGH TOAST WITH BABA GANOUSH & MULTIPLE PROTEINS
+  {
+    name: "High-Protein Sourdough Toast with Baba Ganoush, Eggs & Tofu",
+    portion: "1 serving",
+    nutrition: {
+      protein: 40,
+      prepTime: 15,
+      calories: 765,
+      carbohydrates: 54,
+      fats: 31,
+      fiber: 8,
+      sugar: 6,
+      sodium: 680,
+      potassium: 650,
+      calcium: 180,
+      iron: 5.2,
+      vitaminC: 8,
+      costEuros: 5.20,
+      proteinPerEuro: 7.7
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "High-Protein", "Sourdough", "Baba-Ganoush", "Eggs", "Tofu", "Mushrooms", "Hearty", "Protein-Power"],
+    ingredients: [
+      "1 thick slice sourdough bread",
+      "3-4 tbsp baba ganoush",
+      "3 eggs (poached or boiled)",
+      "100g mixed mushrooms (sliced)",
+      "90g firm tofu (crumbled or sliced)",
+      "1 tsp olive oil",
+      "1 tsp lemon juice (optional)",
+      "1 tsp fresh herbs (dill or parsley, chopped)",
+      "1 tbsp mixed seeds (sesame, sunflower, pumpkin)",
+      "Salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["mushrooms", "eggplant (in baba ganoush)"],
+      benefits: ["Complete protein from eggs and tofu", "Healthy fats from baba ganoush", "B vitamins from mushrooms", "Fiber from sourdough", "Healthy fats and minerals from mixed seeds"]
+    },
+    recipeBenefits: [
+      "Exceptional 40g protein from multiple high-quality sources",
+      "Sourdough provides beneficial probiotics and easier digestion",
+      "Baba ganoush delivers healthy fats and Mediterranean flavors",
+      "Mushrooms provide umami, B vitamins, and selenium",
+      "Tofu adds plant-based protein and isoflavones",
+      "Mixed seeds contribute healthy fats, fiber, and minerals",
+      "Perfect balance of animal and plant proteins for sustained energy"
+    ],
+    recipe: {
+      instructions: [
+        "Heat olive oil in a pan over medium heat",
+        "Add sliced mushrooms, season with salt and pepper",
+        "Sauté mushrooms until golden brown and caramelized (5-7 minutes)",
+        "Finish mushrooms with lemon juice if desired, then set aside",
+        "In the same pan, either crumble tofu for a scramble-like texture or slice and sear until golden on both sides",
+        "Meanwhile, poach or boil 3 eggs to your preferred doneness",
+        "Toast the sourdough bread slice until golden and crispy",
+        "Spread 3-4 tablespoons of baba ganoush generously on the toast",
+        "Layer the sautéed mushrooms and tofu on top of the baba ganoush",
+        "Carefully place the cooked eggs on top",
+        "Sprinkle with fresh chopped herbs and mixed seeds",
+        "Season with a final pinch of salt and pepper if needed",
+        "Serve immediately while toast is still warm"
+      ],
+      tips: [
+        "Use a variety of mushrooms (shiitake, cremini, oyster) for complex flavor",
+        "Don't overcrowd mushrooms in the pan - cook in batches if needed",
+        "Crumbled tofu gives a scrambled texture, sliced gives more distinct protein layers",
+        "Choose thick-cut sourdough for better structural support",
+        "Mixed seeds can be lightly toasted for extra flavor and crunch"
+      ],
+      notes: "Protein powerhouse breakfast combining the tangy richness of baba ganoush with multiple protein sources. Perfect for those needing sustained energy and muscle support."
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
   }
 ];
 
