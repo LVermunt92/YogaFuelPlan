@@ -11,7 +11,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
 import { getCurrentWeekSunday, formatWeekDisplay } from '../lib/date-utils';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Calendar, Clock, Target, Eye, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages, Users, Minus, Trash2, Euro, TrendingUp, Droplet, Apple, Leaf, Check, Wheat } from "lucide-react";
+import { Calendar, Clock, Target, Eye, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages, Users, Minus, Trash2, Euro, TrendingUp, Droplet, Apple, Leaf, Check, Wheat, Settings } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Separator } from "@/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -140,6 +140,42 @@ export default function MealPlanner() {
   // Get language and translations
   const { language } = useLanguage();
   const t = useTranslations(language);
+
+  // Check if user is admin and should bypass meal planning requirements
+  const isAdmin = authUser?.username === 'admin' || authUser?.email?.includes('admin');
+
+  // Admin users should go directly to admin panel instead of meal planning
+  if (isAdmin) {
+    return (
+      <div className="min-h-screen bg-background px-2 py-4">
+        <div className="max-w-4xl mx-auto">
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Settings className="h-5 w-5" />
+                Admin Account Detected
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600 mb-4">
+                You're logged in as an administrator. The meal planning interface is designed for regular users.
+              </p>
+              <p className="text-gray-600 mb-6">
+                To access the admin panel with system statistics and management tools, click the button below:
+              </p>
+              <Button 
+                onClick={() => window.location.href = '/admin'}
+                className="w-full bg-blue-600 hover:bg-blue-700"
+              >
+                <Settings className="h-4 w-4 mr-2" />
+                Go to Admin Panel
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
 
   // Helper functions
   const extractServingNumber = (portion: string): string => {
