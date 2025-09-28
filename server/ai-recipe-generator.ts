@@ -2,6 +2,7 @@ import OpenAI from "openai";
 import { hasAdequateProteinSource, enhanceRecipeWithProtein } from './protein-validator';
 import { hasAdequateFiberSource, enhanceRecipeWithFiber } from './fiber-validator';
 import { MealOption } from './nutrition-enhanced';
+import { cleanRecipeData } from './ingredient-cleaner';
 
 // Initialize OpenAI - will use environment variable OPENAI_API_KEY
 const openai = new OpenAI({ 
@@ -37,6 +38,7 @@ RECIPE REQUIREMENTS:
 - Include practical tips
 - Calculate realistic European pricing
 - CRITICAL: Use ONLY metric measurements (grams for dry ingredients, milliliters for liquids, kilograms for large amounts). NEVER use cups, tablespoons, teaspoons, ounces, or pounds. Examples: "120g oats", "240ml milk", "15ml olive oil", "5ml vanilla", "2.5ml salt"
+- IMPORTANT: Ingredients must be clean and simple. DO NOT include cooking method descriptions in parentheses like "(sliced)", "(diced)", "(chopped)", "(minced)", etc. Use only the ingredient name with quantity. Examples: "150g nectarine" NOT "150g nectarine (sliced)", "100g onion" NOT "100g onion (diced)"
 - IMPORTANT: Include a sauce or topping that makes the dish feel more indulgent or satisfying while remaining healthy and made from whole foods (examples: roasted pepper sauce with tomato paste and nuts, tahini-based dressings, herb-infused oils, nut-based creams, or vegetable-based salsas)
 - MANDATORY PROTEIN REQUIREMENT: Every recipe MUST include adequate protein sources to meet the target protein goal. Include at least one high-quality protein source such as:
   * For plant-based: lentils, chickpeas, tofu, tempeh, hemp hearts, nuts, protein powder, quinoa
@@ -180,7 +182,11 @@ Ensure the recipe is practical, nutritious, and aligns with the dietary requirem
     
     console.log(`✨ AI generated recipe: "${generatedRecipe.name}" (${generatedRecipe.nutrition.protein}g protein, ${generatedRecipe.nutrition.fiber || 0}g fiber, ${generatedRecipe.nutrition.prepTime}min)`);
     
-    return generatedRecipe as MealOption;
+    // Clean the recipe to remove parenthetical descriptions and standardize portion
+    const cleanedRecipe = cleanRecipeData(generatedRecipe);
+    console.log(`🧹 Applied recipe cleaning to standardize portion and remove parenthetical descriptions`);
+    
+    return cleanedRecipe as MealOption;
     
   } catch (error: any) {
     if (error.status === 429 || error.code === 'insufficient_quota') {
