@@ -1378,19 +1378,22 @@ function AdminPanelMain() {
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-base font-semibold">Recipe Name</Label>
                   <div className="w-full">
-                    <Input
+                    <textarea
                       id="name"
                       value={editingRecipe.name}
                       onChange={(e) => setEditingRecipe({...editingRecipe, name: e.target.value})}
                       placeholder="Recipe name"
-                      className="w-full text-base p-3 min-h-[44px]"
+                      className="w-full text-base p-3 min-h-[60px] max-h-[120px] border border-gray-300 rounded-md resize-y focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       style={{ 
                         fontSize: '16px', // Prevents zoom on iOS
-                        WebkitAppearance: 'none' 
+                        WebkitAppearance: 'none',
+                        fontFamily: 'inherit',
+                        lineHeight: '1.5'
                       }}
+                      rows={2}
                     />
                     <p className="text-xs text-gray-500 mt-1">
-                      Characters: {editingRecipe.name.length}
+                      Characters: {editingRecipe.name.length} • Click and drag to resize vertically
                     </p>
                   </div>
                 </div>
