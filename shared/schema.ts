@@ -423,3 +423,34 @@ export interface ShoppingListWithItems extends ShoppingList {
 export interface MealPlanWithMeals extends MealPlan {
   meals: Meal[];
 }
+
+// Editable page content for admin management
+export const editableContent = pgTable("editable_content", {
+  id: serial("id").primaryKey(),
+  contentKey: text("content_key").notNull().unique(), // e.g., 'aboutSubtitle', 'philosophyStatement'
+  contentEn: text("content_en").notNull(), // English content
+  contentNl: text("content_nl").notNull(), // Dutch content
+  contentType: text("content_type").default("text"), // 'text', 'title', 'description'
+  pageSection: text("page_section").default("about"), // 'about', 'header', 'features', etc.
+  updatedBy: integer("updated_by").references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Editable content schemas
+export const insertEditableContentSchema = createInsertSchema(editableContent).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const updateEditableContentSchema = createInsertSchema(editableContent).omit({
+  id: true,
+  contentKey: true,
+  createdAt: true,
+  updatedAt: true,
+}).partial();
+
+export type EditableContent = typeof editableContent.$inferSelect;
+export type InsertEditableContent = z.infer<typeof insertEditableContentSchema>;
+export type UpdateEditableContent = z.infer<typeof updateEditableContentSchema>;
