@@ -1034,13 +1034,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "Meal not found" });
       }
 
-      // Find recipe by ID using enhanced meal database
+      // Find recipe by ID using enhanced meal database with modifications
       const { getCompleteEnhancedMealDatabase, findRecipeByName } = await import("./nutrition-enhanced");
       
       console.log(`Looking for recipe for meal: "${targetMeal.foodDescription}"`);
       
-      // Use the new ID-based lookup function
-      const mealOption = findRecipeByName(targetMeal.foodDescription);
+      // First check for admin modifications
+      let mealOption = null;
+      const modifiedRecipes = getModifiedRecipeDatabase();
+      mealOption = modifiedRecipes.find(recipe => 
+        recipe.name === targetMeal.foodDescription || recipe.id === targetMeal.foodDescription
+      );
+      
+      // Fallback to original database if not found in modifications
+      if (!mealOption) {
+        mealOption = findRecipeByName(targetMeal.foodDescription);
+      }
       
       console.log(`Recipe found: ${mealOption ? 'YES' : 'NO'}`);
       if (!mealOption) {
