@@ -6,6 +6,7 @@ import { standardizePortion } from './portion-standardizer';
 import { convertAllRecipeUnits } from './bulk-unit-converter';
 import { validateAndEnhanceMealDatabase } from './protein-validator';
 import { validateAndEnhanceMealsForFiber } from './fiber-validator';
+import { cleanRecipeData } from './ingredient-cleaner';
 
 export interface NutritionInfo {
   protein: number;
@@ -12498,8 +12499,8 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
 
 // Function to get complete unified meal database (now contains all recipes in one place)
 export function getCompleteEnhancedMealDatabase(): MealOption[] {
-  // Get base recipes
-  const baseRecipes = [...RAW_MEAL_DATABASE];
+  // Get base recipes and clean them (remove parenthetical descriptions from ingredients and normalize portions)
+  const baseRecipes = RAW_MEAL_DATABASE.map(recipe => cleanRecipeData(recipe));
   
   // Auto-generate dietary variants for EVERY recipe (gluten-free, lactose-free, vegetarian versions)
   const dietaryVariants = generateDietaryVariants(baseRecipes);
