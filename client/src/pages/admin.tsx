@@ -122,11 +122,11 @@ interface UsersResponse {
 function AccessDenied() {
   return (
     <div className="container mx-auto px-4 py-8">
-      <Card className="max-w-md mx-auto">
-        <CardContent className="pt-6 text-center">
-          <AlertTriangle className="h-12 w-12 text-yellow-500 mx-auto mb-4" />
-          <h2 className="text-xl font-bold mb-2">Access Denied</h2>
-          <p className="text-gray-600">Admin privileges required to access this panel.</p>
+      <Card className="max-w-sm mx-auto">
+        <CardContent className="pt-6 pb-6 text-center">
+          <AlertTriangle className="h-10 w-10 sm:h-12 sm:w-12 text-yellow-500 mx-auto mb-4" />
+          <h2 className="text-lg sm:text-xl font-bold mb-2">Access Denied</h2>
+          <p className="text-gray-600 text-sm sm:text-base">Admin privileges required to access this panel.</p>
         </CardContent>
       </Card>
     </div>
@@ -346,21 +346,21 @@ function AdminPanelMain() {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
       <div className="max-w-6xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">Admin Panel</h1>
-          <p className="text-gray-600">Manage nutrition calculations, system settings, and monitor application performance</p>
+        <div className="mb-4 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">Admin Panel</h1>
+          <p className="text-gray-600 text-sm sm:text-base">Manage nutrition calculations, system settings, and monitor application performance</p>
         </div>
 
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="nutrition">Nutrition Logic</TabsTrigger>
-            <TabsTrigger value="config">Configuration</TabsTrigger>
-            <TabsTrigger value="recipes" className="bg-green-100">Recipes</TabsTrigger>
-            <TabsTrigger value="users">Users</TabsTrigger>
-            <TabsTrigger value="system">System</TabsTrigger>
+        <Tabs defaultValue="overview" className="space-y-4 sm:space-y-6">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-1 h-auto p-1">
+            <TabsTrigger value="overview" className="text-xs sm:text-sm py-2 px-2">Overview</TabsTrigger>
+            <TabsTrigger value="nutrition" className="text-xs sm:text-sm py-2 px-2">Nutrition</TabsTrigger>
+            <TabsTrigger value="config" className="text-xs sm:text-sm py-2 px-2">Config</TabsTrigger>
+            <TabsTrigger value="recipes" className="bg-green-100 text-xs sm:text-sm py-2 px-2">Recipes</TabsTrigger>
+            <TabsTrigger value="users" className="text-xs sm:text-sm py-2 px-2">Users</TabsTrigger>
+            <TabsTrigger value="system" className="text-xs sm:text-sm py-2 px-2">System</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -773,9 +773,9 @@ function AdminPanelMain() {
               </CardHeader>
               <CardContent className="space-y-4">
                 {/* Search and Filter Controls */}
-                <div className="flex flex-wrap gap-4">
-                  <div className="flex items-center space-x-2 min-w-[300px]">
-                    <Search className="h-4 w-4 text-gray-400" />
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                  <div className="flex items-center space-x-2 flex-1 min-w-0">
+                    <Search className="h-4 w-4 text-gray-400 flex-shrink-0" />
                     <Input
                       placeholder="Search recipes by name or ingredient..."
                       value={searchTerm}
@@ -784,31 +784,33 @@ function AdminPanelMain() {
                     />
                   </div>
                   
-                  <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-                    <SelectTrigger className="w-[150px]">
-                      <SelectValue placeholder="Category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all-categories">All Categories</SelectItem>
-                      <SelectItem value="breakfast">Breakfast</SelectItem>
-                      <SelectItem value="lunch">Lunch</SelectItem>
-                      <SelectItem value="dinner">Dinner</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <div className="flex gap-2 sm:gap-3">
+                    <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                      <SelectTrigger className="flex-1 sm:w-[130px]">
+                        <SelectValue placeholder="Category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all-categories">All Categories</SelectItem>
+                        <SelectItem value="breakfast">Breakfast</SelectItem>
+                        <SelectItem value="lunch">Lunch</SelectItem>
+                        <SelectItem value="dinner">Dinner</SelectItem>
+                      </SelectContent>
+                    </Select>
 
-                  <Select value={tagsFilter} onValueChange={setTagsFilter}>
-                    <SelectTrigger className="w-[150px]">
-                      <SelectValue placeholder="Dietary Tags" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all-tags">All Tags</SelectItem>
-                      <SelectItem value="vegetarian">Vegetarian</SelectItem>
-                      <SelectItem value="vegan">Vegan</SelectItem>
-                      <SelectItem value="gluten-free">Gluten-Free</SelectItem>
-                      <SelectItem value="lactose-free">Lactose-Free</SelectItem>
-                      <SelectItem value="high-protein">High Protein</SelectItem>
-                    </SelectContent>
-                  </Select>
+                    <Select value={tagsFilter} onValueChange={setTagsFilter}>
+                      <SelectTrigger className="flex-1 sm:w-[130px]">
+                        <SelectValue placeholder="Diet Tags" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all-tags">All Tags</SelectItem>
+                        <SelectItem value="vegetarian">Vegetarian</SelectItem>
+                        <SelectItem value="vegan">Vegan</SelectItem>
+                        <SelectItem value="gluten-free">Gluten-Free</SelectItem>
+                        <SelectItem value="lactose-free">Lactose-Free</SelectItem>
+                        <SelectItem value="high-protein">High Protein</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
 
                 {/* Bulk Actions */}
@@ -1029,12 +1031,12 @@ function AdminPanelMain() {
           </TabsContent>
 
           {/* Users Tab */}
-          <TabsContent value="users" className="space-y-6">
+          <TabsContent value="users" className="space-y-4">
             <Card>
-              <CardHeader>
-                <div className="flex justify-between items-start">
+              <CardHeader className="pb-4">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
                   <div>
-                    <CardTitle className="flex items-center gap-2">
+                    <CardTitle className="flex items-center gap-2 text-lg">
                       <Users className="h-5 w-5" />
                       User Management
                     </CardTitle>
@@ -1042,97 +1044,164 @@ function AdminPanelMain() {
                       View and manage all registered users
                     </p>
                   </div>
-                  <div className="text-sm text-gray-500">
+                  <div className="text-sm text-gray-500 font-medium">
                     Total Users: {usersData?.users?.length || 0}
                   </div>
                 </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-3 sm:p-6">
                 {usersLoading ? (
-                  <div className="p-8 text-center text-gray-500">
+                  <div className="py-8 text-center text-gray-500">
                     Loading users...
                   </div>
                 ) : usersData?.users?.length === 0 ? (
-                  <div className="p-8 text-center text-gray-500">
+                  <div className="py-8 text-center text-gray-500">
                     No users found.
                   </div>
                 ) : (
-                  <div className="border rounded-lg overflow-x-auto">
-                    <table className="w-full">
-                      <thead className="border-b bg-gray-50">
-                        <tr>
-                          <th className="p-3 text-left">ID</th>
-                          <th className="p-3 text-left">Username</th>
-                          <th className="p-3 text-left">Email</th>
-                          <th className="p-3 text-left">Name</th>
-                          <th className="p-3 text-left">Activity Level</th>
-                          <th className="p-3 text-left">Weight</th>
-                          <th className="p-3 text-left">Protein Target</th>
-                          <th className="p-3 text-left">Dietary Tags</th>
-                          <th className="p-3 text-left">Created</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {usersData?.users.map((user) => (
-                          <tr key={user.id} className="border-b hover:bg-gray-50">
-                            <td className="p-3 font-mono text-sm">{user.id}</td>
-                            <td className="p-3 font-medium">{user.username}</td>
-                            <td className="p-3 text-sm">{user.email || 'N/A'}</td>
-                            <td className="p-3 text-sm">
-                              {user.firstName && user.lastName 
-                                ? `${user.firstName} ${user.lastName}` 
-                                : user.firstName || user.lastName || 'N/A'
-                              }
-                            </td>
-                            <td className="p-3">
-                              {user.activityLevel ? (
-                                <Badge variant="outline" className="capitalize">
+                  <>
+                    {/* Mobile Card View */}
+                    <div className="block sm:hidden space-y-3">
+                      {usersData?.users.map((user) => (
+                        <Card key={user.id} className="p-4">
+                          <div className="space-y-2">
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <p className="font-medium text-base">{user.username}</p>
+                                <p className="text-sm text-gray-600">ID: {user.id}</p>
+                              </div>
+                              {user.activityLevel && (
+                                <Badge variant="outline" className="capitalize text-xs">
                                   {user.activityLevel}
                                 </Badge>
-                              ) : (
-                                <span className="text-gray-400">N/A</span>
                               )}
-                            </td>
-                            <td className="p-3 text-sm">
-                              {user.weight ? `${user.weight} kg` : 'N/A'}
-                              {user.goalWeight && (
-                                <div className="text-xs text-gray-500">
-                                  Goal: {user.goalWeight} kg
-                                </div>
+                            </div>
+                            
+                            {user.email && (
+                              <p className="text-sm text-gray-700">{user.email}</p>
+                            )}
+                            
+                            {(user.firstName || user.lastName) && (
+                              <p className="text-sm text-gray-700">
+                                {user.firstName && user.lastName 
+                                  ? `${user.firstName} ${user.lastName}` 
+                                  : user.firstName || user.lastName
+                                }
+                              </p>
+                            )}
+                            
+                            <div className="flex flex-wrap gap-2 text-xs">
+                              {user.weight && (
+                                <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                                  {user.weight} kg
+                                  {user.goalWeight && ` → ${user.goalWeight} kg`}
+                                </span>
                               )}
-                            </td>
-                            <td className="p-3 text-sm font-medium">
-                              {user.proteinTarget ? `${user.proteinTarget}g` : 'N/A'}
-                            </td>
-                            <td className="p-3">
-                              {user.dietaryTags && user.dietaryTags.length > 0 ? (
-                                <div className="flex flex-wrap gap-1">
-                                  {user.dietaryTags.slice(0, 2).map((tag, index) => (
-                                    <Badge key={index} variant="secondary" className="text-xs">
-                                      {tag}
-                                    </Badge>
-                                  ))}
-                                  {user.dietaryTags.length > 2 && (
-                                    <Badge variant="secondary" className="text-xs">
-                                      +{user.dietaryTags.length - 2}
-                                    </Badge>
-                                  )}
-                                </div>
-                              ) : (
-                                <span className="text-gray-400">None</span>
+                              {user.proteinTarget && (
+                                <span className="bg-green-100 text-green-800 px-2 py-1 rounded">
+                                  {user.proteinTarget}g protein
+                                </span>
                               )}
-                            </td>
-                            <td className="p-3 text-sm text-gray-500">
-                              {user.createdAt 
-                                ? new Date(user.createdAt).toLocaleDateString()
-                                : 'N/A'
-                              }
-                            </td>
+                            </div>
+                            
+                            {user.dietaryTags && user.dietaryTags.length > 0 && (
+                              <div className="flex flex-wrap gap-1">
+                                {user.dietaryTags.map((tag, index) => (
+                                  <Badge key={index} variant="secondary" className="text-xs">
+                                    {tag}
+                                  </Badge>
+                                ))}
+                              </div>
+                            )}
+                            
+                            {user.createdAt && (
+                              <p className="text-xs text-gray-500">
+                                Joined: {new Date(user.createdAt).toLocaleDateString()}
+                              </p>
+                            )}
+                          </div>
+                        </Card>
+                      ))}
+                    </div>
+
+                    {/* Desktop Table View */}
+                    <div className="hidden sm:block border rounded-lg overflow-x-auto">
+                      <table className="w-full">
+                        <thead className="border-b bg-gray-50">
+                          <tr>
+                            <th className="p-3 text-left font-medium">ID</th>
+                            <th className="p-3 text-left font-medium">Username</th>
+                            <th className="p-3 text-left font-medium">Email</th>
+                            <th className="p-3 text-left font-medium">Name</th>
+                            <th className="p-3 text-left font-medium">Activity</th>
+                            <th className="p-3 text-left font-medium">Weight</th>
+                            <th className="p-3 text-left font-medium">Protein</th>
+                            <th className="p-3 text-left font-medium">Diet Tags</th>
+                            <th className="p-3 text-left font-medium">Created</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                        </thead>
+                        <tbody>
+                          {usersData?.users.map((user) => (
+                            <tr key={user.id} className="border-b hover:bg-gray-50">
+                              <td className="p-3 font-mono text-sm">{user.id}</td>
+                              <td className="p-3 font-medium">{user.username}</td>
+                              <td className="p-3 text-sm">{user.email || 'N/A'}</td>
+                              <td className="p-3 text-sm">
+                                {user.firstName && user.lastName 
+                                  ? `${user.firstName} ${user.lastName}` 
+                                  : user.firstName || user.lastName || 'N/A'
+                                }
+                              </td>
+                              <td className="p-3">
+                                {user.activityLevel ? (
+                                  <Badge variant="outline" className="capitalize text-xs">
+                                    {user.activityLevel}
+                                  </Badge>
+                                ) : (
+                                  <span className="text-gray-400">N/A</span>
+                                )}
+                              </td>
+                              <td className="p-3 text-sm">
+                                {user.weight ? `${user.weight} kg` : 'N/A'}
+                                {user.goalWeight && (
+                                  <div className="text-xs text-gray-500">
+                                    Goal: {user.goalWeight} kg
+                                  </div>
+                                )}
+                              </td>
+                              <td className="p-3 text-sm font-medium">
+                                {user.proteinTarget ? `${user.proteinTarget}g` : 'N/A'}
+                              </td>
+                              <td className="p-3">
+                                {user.dietaryTags && user.dietaryTags.length > 0 ? (
+                                  <div className="flex flex-wrap gap-1">
+                                    {user.dietaryTags.slice(0, 2).map((tag, index) => (
+                                      <Badge key={index} variant="secondary" className="text-xs">
+                                        {tag}
+                                      </Badge>
+                                    ))}
+                                    {user.dietaryTags.length > 2 && (
+                                      <Badge variant="secondary" className="text-xs">
+                                        +{user.dietaryTags.length - 2}
+                                      </Badge>
+                                    )}
+                                  </div>
+                                ) : (
+                                  <span className="text-gray-400">None</span>
+                                )}
+                              </td>
+                              <td className="p-3 text-sm text-gray-500">
+                                {user.createdAt 
+                                  ? new Date(user.createdAt).toLocaleDateString()
+                                  : 'N/A'
+                                }
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </>
                 )}
               </CardContent>
             </Card>
