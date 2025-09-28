@@ -1367,22 +1367,36 @@ function AdminPanelMain() {
         {/* Recipe Edit Modal */}
         {editingRecipe && (
           <Dialog open={!!editingRecipe} onOpenChange={() => setEditingRecipe(null)}>
-            <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle>Edit Recipe: {editingRecipe.name}</DialogTitle>
+            <DialogContent className="w-[95vw] max-w-4xl h-[90vh] max-h-[90vh] overflow-hidden flex flex-col">
+              <DialogHeader className="flex-shrink-0">
+                <DialogTitle className="text-lg sm:text-xl pr-8 break-words">
+                  Edit Recipe: {editingRecipe.name}
+                </DialogTitle>
               </DialogHeader>
-              <div className="space-y-4">
-                {/* Basic Information */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="name">Recipe Name</Label>
+              <div className="flex-1 overflow-y-auto space-y-4 pr-2">
+                {/* Recipe Name - Full Width Priority */}
+                <div className="space-y-2">
+                  <Label htmlFor="name" className="text-base font-semibold">Recipe Name</Label>
+                  <div className="w-full">
                     <Input
                       id="name"
                       value={editingRecipe.name}
                       onChange={(e) => setEditingRecipe({...editingRecipe, name: e.target.value})}
                       placeholder="Recipe name"
+                      className="w-full text-base p-3 min-h-[44px]"
+                      style={{ 
+                        fontSize: '16px', // Prevents zoom on iOS
+                        WebkitAppearance: 'none' 
+                      }}
                     />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Characters: {editingRecipe.name.length}
+                    </p>
                   </div>
+                </div>
+
+                {/* Other Basic Information */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="portion">Portion Size</Label>
                     <Input
@@ -1390,7 +1404,12 @@ function AdminPanelMain() {
                       value={editingRecipe.portion}
                       onChange={(e) => setEditingRecipe({...editingRecipe, portion: e.target.value})}
                       placeholder="e.g., 1 serving"
+                      className="w-full"
+                      style={{ fontSize: '16px' }}
                     />
+                  </div>
+                  <div className="sm:col-span-1">
+                    {/* This ensures proper spacing on mobile */}
                   </div>
                 </div>
 
