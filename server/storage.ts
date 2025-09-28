@@ -37,6 +37,11 @@ import {
   passwordResetCodes,
   type PasswordResetCode,
   type InsertPasswordResetCode,
+  
+  editableContent,
+  type EditableContent,
+  type InsertEditableContent,
+  type UpdateEditableContent,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, gte, lte, desc } from "drizzle-orm";
@@ -88,6 +93,11 @@ export interface IStorage {
   updateShoppingListItem(id: number, updates: UpdateShoppingListItem): Promise<ShoppingListItem>;
   deleteShoppingListItem(id: number): Promise<void>;
   clearShoppingListItems(shoppingListId: number): Promise<void>;
+
+  // Editable Content methods
+  getEditableContent(contentKey?: string): Promise<EditableContent[]>;
+  updateEditableContent(contentKey: string, updates: UpdateEditableContent): Promise<EditableContent>;
+  createEditableContent(data: InsertEditableContent): Promise<EditableContent>;
 
 }
 
@@ -1157,6 +1167,39 @@ export class DatabaseStorage implements IStorage {
         lastUpdated: new Date()
       })
       .where(eq(shoppingLists.id, shoppingListId));
+  }
+
+  // Editable Content methods
+  async getEditableContent(contentKey?: string): Promise<EditableContent[]> {
+    const query = db.select().from(editableContent);
+    
+    if (contentKey) {
+      return await query.where(eq(editableContent.contentKey, contentKey));
+    }
+    
+    return await query;
+  }
+
+  async updateEditableContent(contentKey: string, updates: UpdateEditableContent): Promise<EditableContent> {
+    const [updated] = await db
+      .update(editableContent)
+      .set({
+        ...updates,
+        updatedAt: new Date()
+      })
+      .where(eq(editableContent.contentKey, contentKey))
+      .returning();
+
+    return updated;
+  }
+
+  async createEditableContent(data: InsertEditableContent): Promise<EditableContent> {
+    const [created] = await db
+      .insert(editableContent)
+      .values(data)
+      .returning();
+
+    return created;
   }
 
 }

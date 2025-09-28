@@ -2525,6 +2525,62 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to calculate nutrition targets" });
     }
   });
+
+  // Editable Content routes
+  // Get all editable content
+  app.get("/api/editable-content", async (req, res) => {
+    try {
+      const content = await storage.getEditableContent();
+      res.json(content);
+    } catch (error) {
+      console.error("Error fetching editable content:", error);
+      res.status(500).json({ message: "Failed to fetch editable content" });
+    }
+  });
+
+  // Get specific editable content by key
+  app.get("/api/editable-content/:contentKey", async (req, res) => {
+    try {
+      const contentKey = req.params.contentKey;
+      const content = await storage.getEditableContent(contentKey);
+      
+      if (content.length === 0) {
+        return res.status(404).json({ message: "Content not found" });
+      }
+      
+      res.json(content[0]);
+    } catch (error) {
+      console.error("Error fetching editable content:", error);
+      res.status(500).json({ message: "Failed to fetch editable content" });
+    }
+  });
+
+  // Update editable content (admin only)
+  app.put("/api/editable-content/:contentKey", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+
+      // Check if user is admin
+      const user = await storage.getUser(req.session.userId);
+      const isAdmin = user?.username === 'admin' || user?.email?.includes('admin');
+      
+      if (!isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const contentKey = req.params.contentKey;
+      const updates = req.body;
+      updates.updatedBy = req.session.userId;
+
+      const updatedContent = await storage.updateEditableContent(contentKey, updates);
+      res.json(updatedContent);
+    } catch (error) {
+      console.error("Error updating editable content:", error);
+      res.status(500).json({ message: "Failed to update editable content" });
+    }
+  });
   
   const httpServer = createServer(app);
   return httpServer;
