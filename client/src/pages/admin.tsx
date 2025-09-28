@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
@@ -1069,6 +1070,430 @@ function AdminPanelMain() {
                   {updateConfigMutation.isPending ? "Saving..." : "Save Changes"}
                 </Button>
               </div>
+            </DialogContent>
+          </Dialog>
+        )}
+
+        {/* Recipe View Modal */}
+        {viewingRecipe && (
+          <Dialog open={!!viewingRecipe} onOpenChange={() => setViewingRecipe(null)}>
+            <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>Recipe Details: {viewingRecipe.name}</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4">
+                {/* Basic Info */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label className="font-semibold">Category</Label>
+                    <Badge variant="outline" className="ml-2 capitalize">
+                      {viewingRecipe.category}
+                    </Badge>
+                  </div>
+                  <div>
+                    <Label className="font-semibold">Portion</Label>
+                    <p className="text-sm mt-1">{viewingRecipe.portion}</p>
+                  </div>
+                </div>
+
+                {/* Nutrition */}
+                <div>
+                  <Label className="font-semibold">Nutrition Information</Label>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2 text-sm">
+                    <div>Protein: <strong>{viewingRecipe.nutrition.protein}g</strong></div>
+                    <div>Calories: <strong>{viewingRecipe.nutrition.calories}</strong></div>
+                    <div>Carbs: <strong>{viewingRecipe.nutrition.carbohydrates}g</strong></div>
+                    <div>Fats: <strong>{viewingRecipe.nutrition.fats}g</strong></div>
+                    <div>Fiber: <strong>{viewingRecipe.nutrition.fiber}g</strong></div>
+                    <div>Sugar: <strong>{viewingRecipe.nutrition.sugar}g</strong></div>
+                    <div>Sodium: <strong>{viewingRecipe.nutrition.sodium}mg</strong></div>
+                    <div>Prep Time: <strong>{viewingRecipe.nutrition.prepTime} min</strong></div>
+                  </div>
+                </div>
+
+                {/* Tags */}
+                <div>
+                  <Label className="font-semibold">Dietary Tags</Label>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {viewingRecipe.tags.map((tag) => (
+                      <Badge key={tag} variant="secondary">{tag}</Badge>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Ingredients */}
+                <div>
+                  <Label className="font-semibold">Ingredients</Label>
+                  <ul className="list-disc list-inside mt-2 space-y-1 text-sm">
+                    {viewingRecipe.ingredients.map((ingredient, index) => (
+                      <li key={index}>{ingredient}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Recipe Instructions */}
+                {viewingRecipe.recipe?.instructions && (
+                  <div>
+                    <Label className="font-semibold">Instructions</Label>
+                    <ol className="list-decimal list-inside mt-2 space-y-2 text-sm">
+                      {viewingRecipe.recipe.instructions.map((instruction, index) => (
+                        <li key={index}>{instruction}</li>
+                      ))}
+                    </ol>
+                  </div>
+                )}
+
+                {/* Recipe Tips */}
+                {viewingRecipe.recipe?.tips && viewingRecipe.recipe.tips.length > 0 && (
+                  <div>
+                    <Label className="font-semibold">Tips</Label>
+                    <ul className="list-disc list-inside mt-2 space-y-1 text-sm">
+                      {viewingRecipe.recipe.tips.map((tip, index) => (
+                        <li key={index}>{tip}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Vegetable Content */}
+                <div>
+                  <Label className="font-semibold">Vegetable Content ({viewingRecipe.vegetableContent.servings} servings)</Label>
+                  <div className="mt-2">
+                    <p className="text-sm"><strong>Vegetables:</strong> {viewingRecipe.vegetableContent.vegetables.join(", ")}</p>
+                    <p className="text-sm mt-1"><strong>Benefits:</strong> {viewingRecipe.vegetableContent.benefits.join(", ")}</p>
+                  </div>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
+        )}
+
+        {/* Recipe Edit Modal */}
+        {editingRecipe && (
+          <Dialog open={!!editingRecipe} onOpenChange={() => setEditingRecipe(null)}>
+            <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>Edit Recipe: {editingRecipe.name}</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4">
+                {/* Basic Information */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="name">Recipe Name</Label>
+                    <Input
+                      id="name"
+                      value={editingRecipe.name}
+                      onChange={(e) => setEditingRecipe({...editingRecipe, name: e.target.value})}
+                      placeholder="Recipe name"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="portion">Portion Size</Label>
+                    <Input
+                      id="portion"
+                      value={editingRecipe.portion}
+                      onChange={(e) => setEditingRecipe({...editingRecipe, portion: e.target.value})}
+                      placeholder="e.g., 1 serving"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="category">Category</Label>
+                    <Select 
+                      value={editingRecipe.category}
+                      onValueChange={(value) => setEditingRecipe({...editingRecipe, category: value as Recipe['category']})}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="breakfast">Breakfast</SelectItem>
+                        <SelectItem value="lunch">Lunch</SelectItem>
+                        <SelectItem value="dinner">Dinner</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="wholeFoodLevel">Whole Food Level</Label>
+                    <Select 
+                      value={editingRecipe.wholeFoodLevel}
+                      onValueChange={(value) => setEditingRecipe({...editingRecipe, wholeFoodLevel: value as Recipe['wholeFoodLevel']})}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="minimal">Minimal</SelectItem>
+                        <SelectItem value="moderate">Moderate</SelectItem>
+                        <SelectItem value="high">High</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                {/* Nutrition Information */}
+                <div>
+                  <Label className="text-base font-semibold">Nutrition Information</Label>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-2">
+                    <div>
+                      <Label htmlFor="protein">Protein (g)</Label>
+                      <Input
+                        id="protein"
+                        type="number"
+                        step="0.1"
+                        value={editingRecipe.nutrition.protein}
+                        onChange={(e) => setEditingRecipe({
+                          ...editingRecipe, 
+                          nutrition: {...editingRecipe.nutrition, protein: parseFloat(e.target.value) || 0}
+                        })}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="calories">Calories</Label>
+                      <Input
+                        id="calories"
+                        type="number"
+                        value={editingRecipe.nutrition.calories}
+                        onChange={(e) => setEditingRecipe({
+                          ...editingRecipe, 
+                          nutrition: {...editingRecipe.nutrition, calories: parseFloat(e.target.value) || 0}
+                        })}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="carbohydrates">Carbs (g)</Label>
+                      <Input
+                        id="carbohydrates"
+                        type="number"
+                        step="0.1"
+                        value={editingRecipe.nutrition.carbohydrates}
+                        onChange={(e) => setEditingRecipe({
+                          ...editingRecipe, 
+                          nutrition: {...editingRecipe.nutrition, carbohydrates: parseFloat(e.target.value) || 0}
+                        })}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="fats">Fats (g)</Label>
+                      <Input
+                        id="fats"
+                        type="number"
+                        step="0.1"
+                        value={editingRecipe.nutrition.fats}
+                        onChange={(e) => setEditingRecipe({
+                          ...editingRecipe, 
+                          nutrition: {...editingRecipe.nutrition, fats: parseFloat(e.target.value) || 0}
+                        })}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="fiber">Fiber (g)</Label>
+                      <Input
+                        id="fiber"
+                        type="number"
+                        step="0.1"
+                        value={editingRecipe.nutrition.fiber}
+                        onChange={(e) => setEditingRecipe({
+                          ...editingRecipe, 
+                          nutrition: {...editingRecipe.nutrition, fiber: parseFloat(e.target.value) || 0}
+                        })}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="sugar">Sugar (g)</Label>
+                      <Input
+                        id="sugar"
+                        type="number"
+                        step="0.1"
+                        value={editingRecipe.nutrition.sugar}
+                        onChange={(e) => setEditingRecipe({
+                          ...editingRecipe, 
+                          nutrition: {...editingRecipe.nutrition, sugar: parseFloat(e.target.value) || 0}
+                        })}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="sodium">Sodium (mg)</Label>
+                      <Input
+                        id="sodium"
+                        type="number"
+                        value={editingRecipe.nutrition.sodium}
+                        onChange={(e) => setEditingRecipe({
+                          ...editingRecipe, 
+                          nutrition: {...editingRecipe.nutrition, sodium: parseFloat(e.target.value) || 0}
+                        })}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="prepTime">Prep Time (min)</Label>
+                      <Input
+                        id="prepTime"
+                        type="number"
+                        value={editingRecipe.nutrition.prepTime}
+                        onChange={(e) => setEditingRecipe({
+                          ...editingRecipe, 
+                          nutrition: {...editingRecipe.nutrition, prepTime: parseInt(e.target.value) || 0}
+                        })}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Tags */}
+                <div>
+                  <Label htmlFor="tags">Dietary Tags (comma-separated)</Label>
+                  <Input
+                    id="tags"
+                    value={editingRecipe.tags.join(", ")}
+                    onChange={(e) => setEditingRecipe({
+                      ...editingRecipe, 
+                      tags: e.target.value.split(",").map(tag => tag.trim()).filter(Boolean)
+                    })}
+                    placeholder="vegetarian, gluten-free, high-protein"
+                  />
+                </div>
+
+                {/* Ingredients */}
+                <div>
+                  <Label htmlFor="ingredients">Ingredients (one per line)</Label>
+                  <Textarea
+                    id="ingredients"
+                    rows={5}
+                    value={editingRecipe.ingredients.join("\n")}
+                    onChange={(e) => setEditingRecipe({
+                      ...editingRecipe, 
+                      ingredients: e.target.value.split("\n").filter(Boolean)
+                    })}
+                    placeholder="200g chicken breast&#10;1 tbsp olive oil&#10;100g brown rice"
+                  />
+                </div>
+
+                {/* Active Status */}
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="active"
+                    checked={editingRecipe.active !== false}
+                    onCheckedChange={(checked) => setEditingRecipe({
+                      ...editingRecipe, 
+                      active: Boolean(checked)
+                    })}
+                  />
+                  <Label htmlFor="active">Recipe is active and available for meal generation</Label>
+                </div>
+              </div>
+
+              <DialogFooter className="flex gap-2">
+                <Button variant="outline" onClick={() => setEditingRecipe(null)}>
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={() => updateRecipeMutation.mutate(editingRecipe)}
+                  disabled={updateRecipeMutation.isPending}
+                >
+                  {updateRecipeMutation.isPending ? "Saving..." : "Save Changes"}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        )}
+
+        {/* Recipe Create Modal */}
+        {showCreateRecipe && (
+          <Dialog open={showCreateRecipe} onOpenChange={setShowCreateRecipe}>
+            <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>Create New Recipe</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div className="text-sm text-gray-600">
+                  Create a new recipe with nutrition information and dietary tags.
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="new-name">Recipe Name</Label>
+                    <Input
+                      id="new-name"
+                      placeholder="Enter recipe name"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="new-portion">Portion Size</Label>
+                    <Input
+                      id="new-portion"
+                      placeholder="e.g., 1 serving"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="new-category">Category</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="breakfast">Breakfast</SelectItem>
+                        <SelectItem value="lunch">Lunch</SelectItem>
+                        <SelectItem value="dinner">Dinner</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="new-wholeFoodLevel">Whole Food Level</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select level" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="minimal">Minimal</SelectItem>
+                        <SelectItem value="moderate">Moderate</SelectItem>
+                        <SelectItem value="high">High</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="new-ingredients">Ingredients (one per line)</Label>
+                  <Textarea
+                    id="new-ingredients"
+                    rows={4}
+                    placeholder="200g chicken breast&#10;1 tbsp olive oil&#10;100g brown rice"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="new-tags">Dietary Tags (comma-separated)</Label>
+                  <Input
+                    id="new-tags"
+                    placeholder="vegetarian, gluten-free, high-protein"
+                  />
+                </div>
+
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <p className="text-sm text-blue-700">
+                    <strong>Note:</strong> Nutrition values will be automatically calculated from the ingredients using AI.
+                    You can always edit them manually after creation.
+                  </p>
+                </div>
+              </div>
+
+              <DialogFooter className="flex gap-2">
+                <Button variant="outline" onClick={() => setShowCreateRecipe(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={() => {
+                  // For now, just close the modal - full implementation would create the recipe
+                  toast({ title: "Info", description: "Recipe creation form ready - full implementation in progress" });
+                  setShowCreateRecipe(false);
+                }}>
+                  Create Recipe
+                </Button>
+              </DialogFooter>
             </DialogContent>
           </Dialog>
         )}
