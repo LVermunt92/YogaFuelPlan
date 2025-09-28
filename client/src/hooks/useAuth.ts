@@ -58,14 +58,41 @@ export function useAuth() {
     setIsLoading(false);
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('userId');
-    localStorage.removeItem('username');
-    // Clear any cached meal plan data
-    localStorage.removeItem('selectedMealPlan');
-    // Force a page refresh to ensure complete logout
-    window.location.href = '/';
+  const logout = async () => {
+    try {
+      // Call server logout endpoint to destroy session
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include'
+      });
+      
+      if (response.ok) {
+        // Server logout successful, clear client state
+        setUser(null);
+        localStorage.removeItem('userId');
+        localStorage.removeItem('username');
+        // Clear any cached meal plan data
+        localStorage.removeItem('selectedMealPlan');
+        // Force a page refresh to ensure complete logout
+        window.location.href = '/';
+      } else {
+        console.error('Server logout failed, forcing client logout');
+        // Even if server logout fails, still clear client state
+        setUser(null);
+        localStorage.removeItem('userId');
+        localStorage.removeItem('username');
+        localStorage.removeItem('selectedMealPlan');
+        window.location.href = '/';
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+      // If network error, still clear client state
+      setUser(null);
+      localStorage.removeItem('userId');
+      localStorage.removeItem('username');
+      localStorage.removeItem('selectedMealPlan');
+      window.location.href = '/';
+    }
   };
 
   return {
