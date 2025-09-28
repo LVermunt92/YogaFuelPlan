@@ -5,7 +5,7 @@ import { storage } from "./storage";
 import { generateWeeklyMealPlan } from "./meal-generator";
 import { mealPlanRequestSchema } from "@shared/schema";
 
-import { generateEnhancedShoppingList, updateAllRecipesWithSpecificIngredients, validateAllRecipeIngredients, getDefaultPortion } from "./nutrition-enhanced";
+import { generateEnhancedShoppingList, updateAllRecipesWithSpecificIngredients, validateAllRecipeIngredients, getDefaultPortion, getCompleteEnhancedMealDatabase, type MealOption } from "./nutrition-enhanced";
 import { OuraService } from "./oura";
 import { updateUserProfileSchema, authRegisterSchema, authLoginSchema } from "@shared/schema";
 import { z } from "zod";
@@ -2579,6 +2579,386 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error updating editable content:", error);
       res.status(500).json({ message: "Failed to update editable content" });
+    }
+  });
+
+  // ============================================
+  // RECIPE MANAGEMENT API ENDPOINTS (ADMIN ONLY)
+  // ============================================
+
+  // In-memory storage for recipe modifications (until we implement persistence)
+  let recipeModifications: Map<string, MealOption> = new Map();
+  let deletedRecipes: Set<string> = new Set();
+  let nextRecipeId = 10000; // Start custom recipe IDs at 10000
+
+  // Helper function to get modified recipe database
+  function getModifiedRecipeDatabase(): MealOption[] {
+    const baseRecipes = getCompleteEnhancedMealDatabase();
+    
+    // Apply modifications and filter out deleted recipes
+    return baseRecipes
+      .filter(recipe => !deletedRecipes.has(recipe.id || recipe.name))
+      .map(recipe => {
+        const id = recipe.id || recipe.name;
+        return recipeModifications.has(id) ? recipeModifications.get(id)! : recipe;
+      })
+      .concat(
+        Array.from(recipeModifications.values()).filter(recipe => 
+          recipe.id && parseInt(recipe.id) >= 10000 && !deletedRecipes.has(recipe.id)
+        )
+      );
+  }
+
+  // Helper function to check admin access
+  async function isAdminUser(userId: number): Promise<boolean> {
+    const user = await storage.getUser(userId);
+    return user?.username === 'admin' || user?.email?.includes('admin') || false;
+  }
+
+  // GET /api/recipes - List all recipes with optional search and filtering
+  app.get("/api/recipes", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+
+      const isAdmin = await isAdminUser(req.session.userId);
+      if (!isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const {
+        search = '',
+        category = '',
+        tags = '',
+        minProtein = '',
+        maxProtein = '',
+        minPrepTime = '',
+        maxPrepTime = '',
+        page = '1',
+        limit = '50'
+      } = req.query;
+
+      let recipes = getModifiedRecipeDatabase();
+
+      // Apply filters
+      if (search) {
+        const searchTerm = search.toString().toLowerCase();
+        recipes = recipes.filter(recipe => 
+          recipe.name.toLowerCase().includes(searchTerm) ||
+          recipe.ingredients.some(ing => ing.toLowerCase().includes(searchTerm))
+        );
+      }
+
+      if (category) {
+        recipes = recipes.filter(recipe => recipe.category === category);
+      }
+
+      if (tags) {
+        const tagList = tags.toString().split(',').map(tag => tag.trim());
+        recipes = recipes.filter(recipe => 
+          tagList.every(tag => recipe.tags.includes(tag))
+        );
+      }
+
+      if (minProtein) {
+        recipes = recipes.filter(recipe => recipe.nutrition.protein >= parseInt(minProtein.toString()));
+      }
+
+      if (maxProtein) {
+        recipes = recipes.filter(recipe => recipe.nutrition.protein <= parseInt(maxProtein.toString()));
+      }
+
+      if (minPrepTime) {
+        recipes = recipes.filter(recipe => recipe.nutrition.prepTime >= parseInt(minPrepTime.toString()));
+      }
+
+      if (maxPrepTime) {
+        recipes = recipes.filter(recipe => recipe.nutrition.prepTime <= parseInt(maxPrepTime.toString()));
+      }
+
+      // Pagination
+      const pageNum = parseInt(page.toString());
+      const limitNum = parseInt(limit.toString());
+      const startIndex = (pageNum - 1) * limitNum;
+      const paginatedRecipes = recipes.slice(startIndex, startIndex + limitNum);
+
+      res.json({
+        recipes: paginatedRecipes,
+        total: recipes.length,
+        page: pageNum,
+        limit: limitNum,
+        totalPages: Math.ceil(recipes.length / limitNum)
+      });
+    } catch (error) {
+      console.error("Error fetching recipes:", error);
+      res.status(500).json({ message: "Failed to fetch recipes" });
+    }
+  });
+
+  // GET /api/recipes/:id - Get a specific recipe by ID
+  app.get("/api/recipes/:id", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+
+      const isAdmin = await isAdminUser(req.session.userId);
+      if (!isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const recipeId = req.params.id;
+      const recipes = getModifiedRecipeDatabase();
+      const recipe = recipes.find(r => (r.id || r.name) === recipeId);
+
+      if (!recipe) {
+        return res.status(404).json({ message: "Recipe not found" });
+      }
+
+      res.json(recipe);
+    } catch (error) {
+      console.error("Error fetching recipe:", error);
+      res.status(500).json({ message: "Failed to fetch recipe" });
+    }
+  });
+
+  // PUT /api/recipes/:id - Update a recipe
+  app.put("/api/recipes/:id", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+
+      const isAdmin = await isAdminUser(req.session.userId);
+      if (!isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const recipeId = req.params.id;
+      const updates = req.body;
+
+      // Validate the updates (basic validation)
+      if (!updates.name || !updates.category || !updates.ingredients || !updates.nutrition) {
+        return res.status(400).json({ message: "Missing required fields" });
+      }
+
+      const recipes = getModifiedRecipeDatabase();
+      const existingRecipe = recipes.find(r => (r.id || r.name) === recipeId);
+
+      if (!existingRecipe) {
+        return res.status(404).json({ message: "Recipe not found" });
+      }
+
+      // Create updated recipe
+      const updatedRecipe: MealOption = {
+        ...existingRecipe,
+        ...updates,
+        id: existingRecipe.id || existingRecipe.name
+      };
+
+      // Store the modification
+      recipeModifications.set(recipeId, updatedRecipe);
+
+      res.json(updatedRecipe);
+    } catch (error) {
+      console.error("Error updating recipe:", error);
+      res.status(500).json({ message: "Failed to update recipe" });
+    }
+  });
+
+  // POST /api/recipes - Create a new recipe
+  app.post("/api/recipes", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+
+      const isAdmin = await isAdminUser(req.session.userId);
+      if (!isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const recipeData = req.body;
+
+      // Validate required fields
+      if (!recipeData.name || !recipeData.category || !recipeData.ingredients || !recipeData.nutrition) {
+        return res.status(400).json({ message: "Missing required fields" });
+      }
+
+      // Create new recipe with generated ID
+      const newRecipe: MealOption = {
+        id: (nextRecipeId++).toString(),
+        name: recipeData.name,
+        portion: recipeData.portion || "1 serving",
+        nutrition: recipeData.nutrition,
+        category: recipeData.category,
+        tags: recipeData.tags || [],
+        ingredients: recipeData.ingredients,
+        wholeFoodLevel: recipeData.wholeFoodLevel || "moderate",
+        vegetableContent: recipeData.vegetableContent || {
+          servings: 0,
+          vegetables: [],
+          benefits: []
+        },
+        recipeBenefits: recipeData.recipeBenefits || [],
+        recipe: recipeData.recipe,
+        createdAt: new Date(),
+        active: recipeData.active !== false
+      };
+
+      // Store the new recipe
+      recipeModifications.set(newRecipe.id, newRecipe);
+
+      res.status(201).json(newRecipe);
+    } catch (error) {
+      console.error("Error creating recipe:", error);
+      res.status(500).json({ message: "Failed to create recipe" });
+    }
+  });
+
+  // DELETE /api/recipes/:id - Delete a recipe
+  app.delete("/api/recipes/:id", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+
+      const isAdmin = await isAdminUser(req.session.userId);
+      if (!isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const recipeId = req.params.id;
+      const recipes = getModifiedRecipeDatabase();
+      const recipe = recipes.find(r => (r.id || r.name) === recipeId);
+
+      if (!recipe) {
+        return res.status(404).json({ message: "Recipe not found" });
+      }
+
+      // Mark recipe as deleted
+      deletedRecipes.add(recipeId);
+      
+      // Remove from modifications if it was a custom recipe
+      if (recipeModifications.has(recipeId)) {
+        recipeModifications.delete(recipeId);
+      }
+
+      res.status(204).send();
+    } catch (error) {
+      console.error("Error deleting recipe:", error);
+      res.status(500).json({ message: "Failed to delete recipe" });
+    }
+  });
+
+  // POST /api/recipes/bulk-update - Bulk update multiple recipes
+  app.post("/api/recipes/bulk-update", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+
+      const isAdmin = await isAdminUser(req.session.userId);
+      if (!isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const { recipeIds, updates } = req.body;
+
+      if (!recipeIds || !Array.isArray(recipeIds) || !updates) {
+        return res.status(400).json({ message: "Invalid bulk update data" });
+      }
+
+      const recipes = getModifiedRecipeDatabase();
+      const updatedRecipes: MealOption[] = [];
+
+      for (const recipeId of recipeIds) {
+        const recipe = recipes.find(r => (r.id || r.name) === recipeId);
+        if (recipe) {
+          const updatedRecipe = { ...recipe, ...updates };
+          recipeModifications.set(recipeId, updatedRecipe);
+          updatedRecipes.push(updatedRecipe);
+        }
+      }
+
+      res.json({
+        message: `Updated ${updatedRecipes.length} recipes`,
+        recipes: updatedRecipes
+      });
+    } catch (error) {
+      console.error("Error bulk updating recipes:", error);
+      res.status(500).json({ message: "Failed to bulk update recipes" });
+    }
+  });
+
+  // GET /api/recipes/export - Export all recipes as JSON
+  app.get("/api/recipes/export", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+
+      const isAdmin = await isAdminUser(req.session.userId);
+      if (!isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const recipes = getModifiedRecipeDatabase();
+      
+      res.setHeader('Content-Type', 'application/json');
+      res.setHeader('Content-Disposition', 'attachment; filename="recipes-export.json"');
+      res.json({
+        exportDate: new Date().toISOString(),
+        totalRecipes: recipes.length,
+        recipes: recipes
+      });
+    } catch (error) {
+      console.error("Error exporting recipes:", error);
+      res.status(500).json({ message: "Failed to export recipes" });
+    }
+  });
+
+  // GET /api/recipes/stats - Get recipe statistics
+  app.get("/api/recipes/stats", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+
+      const isAdmin = await isAdminUser(req.session.userId);
+      if (!isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const recipes = getModifiedRecipeDatabase();
+      
+      const stats = {
+        total: recipes.length,
+        byCategory: {
+          breakfast: recipes.filter(r => r.category === 'breakfast').length,
+          lunch: recipes.filter(r => r.category === 'lunch').length,
+          dinner: recipes.filter(r => r.category === 'dinner').length
+        },
+        byTags: recipes.reduce((acc, recipe) => {
+          recipe.tags.forEach(tag => {
+            acc[tag] = (acc[tag] || 0) + 1;
+          });
+          return acc;
+        }, {} as Record<string, number>),
+        proteinRange: {
+          min: Math.min(...recipes.map(r => r.nutrition.protein)),
+          max: Math.max(...recipes.map(r => r.nutrition.protein)),
+          average: recipes.reduce((sum, r) => sum + r.nutrition.protein, 0) / recipes.length
+        },
+        modifications: recipeModifications.size,
+        deleted: deletedRecipes.size
+      };
+
+      res.json(stats);
+    } catch (error) {
+      console.error("Error getting recipe stats:", error);
+      res.status(500).json({ message: "Failed to get recipe statistics" });
     }
   });
   
