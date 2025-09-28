@@ -20,6 +20,7 @@ import { hasAdequateProteinSource, enhanceRecipeWithProtein } from './protein-va
 import { hasAdequateFiberSource, enhanceRecipeWithFiber } from './fiber-validator';
 import cron from 'node-cron';
 import { normalizeToSunday, getNextSunday, getCurrentWeekSunday, isValidWeekStart, getAllowedWeekStarts } from './date-utils';
+import { isExemptFromMealPlanRequirements } from '@shared/admin-utils';
 
 // Helper function to parse quantity and unit from totalAmount string (e.g., "200g" -> {quantity: 200, unit: "g"})
 function parseQuantityAndUnit(totalAmount: string): { quantity: number; unit: string } {
@@ -337,6 +338,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Fetch user data for meal prep logic and caloric adjustments
       const user = await storage.getUser(request.userId);
+      
+      // Check if user is admin and exempt from meal plan requirements
+      if (isExemptFromMealPlanRequirements(user)) {
+        console.log('🔧 Admin user detected - generating meal plan with basic defaults');
+        // For admin users, create a simple meal plan without complex profile requirements
+        const adminRequest = {
+          ...request,
+          activityLevel: request.activityLevel || 'moderate',
+          dietaryTags: request.dietaryTags || ['Vegetarian'], // Safe default
+          leftovers: request.leftovers || []
+        };
+        const generated = await generateWeeklyMealPlan(adminRequest, null); // Pass null user for admin
+        
+        // Save to storage and return immediately without shopping list generation
+        const savedMealPlan = await storage.createMealPlan(generated.mealPlan);
+        const savedMeals = await storage.createMeals(savedMealPlan.id, generated.meals);
+        
+        return res.json({
+          mealPlan: savedMealPlan,
+          meals: savedMeals,
+          adminMode: true
+        });
+      }
       
       const generated = await generateWeeklyMealPlan(request, user);
       
