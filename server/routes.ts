@@ -2696,6 +2696,49 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // GET /api/recipes/stats - Get recipe statistics
+  app.get("/api/recipes/stats", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+
+      const isAdmin = await isAdminUser(req.session.userId);
+      if (!isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const recipes = getModifiedRecipeDatabase();
+      
+      const stats = {
+        total: recipes.length,
+        byCategory: {
+          breakfast: recipes.filter(r => r.category === 'breakfast').length,
+          lunch: recipes.filter(r => r.category === 'lunch').length,
+          dinner: recipes.filter(r => r.category === 'dinner').length
+        },
+        byTags: recipes.reduce((acc, recipe) => {
+          recipe.tags.forEach(tag => {
+            acc[tag] = (acc[tag] || 0) + 1;
+          });
+          return acc;
+        }, {} as Record<string, number>),
+        proteinRange: {
+          min: Math.min(...recipes.map(r => r.nutrition.protein)),
+          max: Math.max(...recipes.map(r => r.nutrition.protein)),
+          average: recipes.reduce((sum, r) => sum + r.nutrition.protein, 0) / recipes.length
+        },
+        modifications: recipeModifications.size,
+        deleted: deletedRecipes.size
+      };
+
+      res.json(stats);
+    } catch (error) {
+      console.error("Error getting recipe stats:", error);
+      res.status(500).json({ message: "Failed to get recipe statistics" });
+    }
+  });
+
   // GET /api/recipes/:id - Get a specific recipe by ID
   app.get("/api/recipes/:id", async (req, res) => {
     try {
@@ -2919,49 +2962,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // GET /api/recipes/stats - Get recipe statistics
-  app.get("/api/recipes/stats", async (req, res) => {
-    try {
-      if (!req.session?.userId) {
-        return res.status(401).json({ message: "Not authenticated" });
-      }
-
-      const isAdmin = await isAdminUser(req.session.userId);
-      if (!isAdmin) {
-        return res.status(403).json({ message: "Admin access required" });
-      }
-
-      const recipes = getModifiedRecipeDatabase();
-      
-      const stats = {
-        total: recipes.length,
-        byCategory: {
-          breakfast: recipes.filter(r => r.category === 'breakfast').length,
-          lunch: recipes.filter(r => r.category === 'lunch').length,
-          dinner: recipes.filter(r => r.category === 'dinner').length
-        },
-        byTags: recipes.reduce((acc, recipe) => {
-          recipe.tags.forEach(tag => {
-            acc[tag] = (acc[tag] || 0) + 1;
-          });
-          return acc;
-        }, {} as Record<string, number>),
-        proteinRange: {
-          min: Math.min(...recipes.map(r => r.nutrition.protein)),
-          max: Math.max(...recipes.map(r => r.nutrition.protein)),
-          average: recipes.reduce((sum, r) => sum + r.nutrition.protein, 0) / recipes.length
-        },
-        modifications: recipeModifications.size,
-        deleted: deletedRecipes.size
-      };
-
-      res.json(stats);
-    } catch (error) {
-      console.error("Error getting recipe stats:", error);
-      res.status(500).json({ message: "Failed to get recipe statistics" });
-    }
-  });
-  
   const httpServer = createServer(app);
   return httpServer;
 }
