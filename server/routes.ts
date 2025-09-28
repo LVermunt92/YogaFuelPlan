@@ -2624,6 +2624,99 @@ export async function registerRoutes(app: Express): Promise<Server> {
     return user?.username === 'admin' || user?.email?.includes('admin') || false;
   }
 
+  // Get current in-memory modifications (admin only)
+  app.get("/api/admin/recipe-modifications", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+
+      const isAdmin = await isAdminUser(req.session.userId);
+      if (!isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const modifications = Array.from(recipeModifications.entries()).map(([id, recipe]) => ({
+        id,
+        recipe: {
+          name: recipe.name,
+          ingredients: recipe.ingredients,
+          instructions: recipe.recipe?.instructions || [],
+          nutrition: recipe.nutrition
+        }
+      }));
+
+      const deleted = Array.from(deletedRecipes);
+
+      res.json({
+        modifications: modifications,
+        deletedRecipes: deleted,
+        totalModifications: modifications.length,
+        totalDeleted: deleted.length
+      });
+    } catch (error) {
+      console.error("Error getting recipe modifications:", error);
+      res.status(500).json({ message: "Failed to get modifications" });
+    }
+  });
+
+  // Save current modifications to database permanently (admin only)
+  app.post("/api/admin/save-recipe-modifications", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+
+      const isAdmin = await isAdminUser(req.session.userId);
+      if (!isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      let savedCount = 0;
+      let deletedCount = 0;
+
+      // Save all current modifications to database
+      for (const [recipeId, recipe] of recipeModifications.entries()) {
+        try {
+          await storage.saveRecipeModification(recipeId, {
+            name: recipe.name,
+            ingredients: recipe.ingredients,
+            instructions: recipe.recipe?.instructions || [],
+            nutrition: recipe.nutrition,
+            category: recipe.category,
+            tags: recipe.tags,
+            portion: recipe.portion,
+            modifiedBy: req.session.userId,
+            modifiedAt: new Date()
+          });
+          savedCount++;
+        } catch (error) {
+          console.error(`Failed to save modification for recipe ${recipeId}:`, error);
+        }
+      }
+
+      // Save deleted recipes to database
+      for (const recipeId of deletedRecipes) {
+        try {
+          await storage.saveRecipeDeletion(recipeId, req.session.userId);
+          deletedCount++;
+        } catch (error) {
+          console.error(`Failed to save deletion for recipe ${recipeId}:`, error);
+        }
+      }
+
+      res.json({
+        message: "Recipe modifications saved to database",
+        savedModifications: savedCount,
+        savedDeletions: deletedCount,
+        totalProcessed: savedCount + deletedCount
+      });
+    } catch (error) {
+      console.error("Error saving recipe modifications:", error);
+      res.status(500).json({ message: "Failed to save modifications to database" });
+    }
+  });
+
   // GET /api/recipes - List all recipes with optional search and filtering
   app.get("/api/recipes", async (req, res) => {
     try {

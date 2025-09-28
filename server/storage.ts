@@ -42,6 +42,13 @@ import {
   type EditableContent,
   type InsertEditableContent,
   type UpdateEditableContent,
+
+  recipeModifications,
+  recipeDeletions,
+  type RecipeModification,
+  type InsertRecipeModification,
+  type RecipeDeletion,
+  type InsertRecipeDeletion,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, gte, lte, desc } from "drizzle-orm";
@@ -99,6 +106,12 @@ export interface IStorage {
   getEditableContent(contentKey?: string): Promise<EditableContent[]>;
   updateEditableContent(contentKey: string, updates: UpdateEditableContent): Promise<EditableContent>;
   createEditableContent(data: InsertEditableContent): Promise<EditableContent>;
+
+  // Recipe Modification methods
+  saveRecipeModification(recipeId: string, modification: any): Promise<void>;
+  saveRecipeDeletion(recipeId: string, userId: number): Promise<void>;
+  getRecipeModifications(): Promise<any[]>;
+  getRecipeDeletions(): Promise<string[]>;
 
 }
 
@@ -542,6 +555,23 @@ export class MemStorage implements IStorage {
 
   async deleteUserRecipe(id: number, userId: number): Promise<void> {
     // No-op for MemStorage
+  }
+
+  // Recipe Modification methods (MemStorage - not implemented)
+  async saveRecipeModification(recipeId: string, modification: any): Promise<void> {
+    // No-op for MemStorage - requires DatabaseStorage implementation
+  }
+
+  async saveRecipeDeletion(recipeId: string, userId: number): Promise<void> {
+    // No-op for MemStorage - requires DatabaseStorage implementation
+  }
+
+  async getRecipeModifications(): Promise<any[]> {
+    return [];
+  }
+
+  async getRecipeDeletions(): Promise<string[]> {
+    return [];
   }
 
 
@@ -1209,6 +1239,69 @@ export class DatabaseStorage implements IStorage {
       .returning();
 
     return created;
+  }
+
+  // Recipe Modification methods
+  async saveRecipeModification(recipeId: string, modification: any): Promise<void> {
+    // Upsert: update if exists, insert if not
+    await db
+      .insert(recipeModifications)
+      .values({
+        recipeId,
+        name: modification.name,
+        ingredients: modification.ingredients,
+        instructions: modification.instructions,
+        nutrition: JSON.stringify(modification.nutrition),
+        category: modification.category,
+        tags: modification.tags,
+        portion: modification.portion,
+        modifiedBy: modification.modifiedBy
+      })
+      .onConflictDoUpdate({
+        target: [recipeModifications.recipeId],
+        set: {
+          name: modification.name,
+          ingredients: modification.ingredients,
+          instructions: modification.instructions,
+          nutrition: JSON.stringify(modification.nutrition),
+          category: modification.category,
+          tags: modification.tags,
+          portion: modification.portion,
+          modifiedBy: modification.modifiedBy,
+          modifiedAt: new Date()
+        }
+      });
+  }
+
+  async saveRecipeDeletion(recipeId: string, userId: number): Promise<void> {
+    await db
+      .insert(recipeDeletions)
+      .values({
+        recipeId,
+        deletedBy: userId
+      })
+      .onConflictDoNothing(); // Don't duplicate deletions
+  }
+
+  async getRecipeModifications(): Promise<any[]> {
+    const modifications = await db.select().from(recipeModifications);
+    return modifications.map(mod => ({
+      recipeId: mod.recipeId,
+      name: mod.name,
+      ingredients: mod.ingredients,
+      instructions: mod.instructions,
+      nutrition: JSON.parse(mod.nutrition),
+      category: mod.category,
+      tags: mod.tags,
+      portion: mod.portion,
+      modifiedBy: mod.modifiedBy,
+      modifiedAt: mod.modifiedAt
+    }));
+  }
+
+  async getRecipeDeletions(): Promise<string[]> {
+    const deletions = await db.select().from(recipeDeletions);
+    return deletions.map(del => del.recipeId);
   }
 
 }

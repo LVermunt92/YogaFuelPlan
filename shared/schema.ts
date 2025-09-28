@@ -454,3 +454,44 @@ export const updateEditableContentSchema = createInsertSchema(editableContent).o
 export type EditableContent = typeof editableContent.$inferSelect;
 export type InsertEditableContent = z.infer<typeof insertEditableContentSchema>;
 export type UpdateEditableContent = z.infer<typeof updateEditableContentSchema>;
+
+// Recipe modifications table for storing admin changes to recipes
+export const recipeModifications = pgTable("recipe_modifications", {
+  id: serial("id").primaryKey(),
+  recipeId: text("recipe_id").notNull(), // Original recipe ID or name
+  name: text("name").notNull(),
+  ingredients: text("ingredients").array().notNull(),
+  instructions: text("instructions").array().notNull(),
+  nutrition: text("nutrition").notNull(), // JSON string of nutrition object
+  category: text("category"),
+  tags: text("tags").array(),
+  portion: text("portion"),
+  modifiedBy: integer("modified_by").references(() => users.id).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  modifiedAt: timestamp("modified_at").defaultNow(),
+});
+
+// Recipe deletions table for tracking which recipes admins have deleted
+export const recipeDeletions = pgTable("recipe_deletions", {
+  id: serial("id").primaryKey(),
+  recipeId: text("recipe_id").notNull().unique(), // Recipe ID that was deleted
+  deletedBy: integer("deleted_by").references(() => users.id).notNull(),
+  deletedAt: timestamp("deleted_at").defaultNow(),
+});
+
+// Recipe modification schemas
+export const insertRecipeModificationSchema = createInsertSchema(recipeModifications).omit({
+  id: true,
+  createdAt: true,
+  modifiedAt: true,
+});
+
+export const insertRecipeDeletionSchema = createInsertSchema(recipeDeletions).omit({
+  id: true,
+  deletedAt: true,
+});
+
+export type RecipeModification = typeof recipeModifications.$inferSelect;
+export type InsertRecipeModification = z.infer<typeof insertRecipeModificationSchema>;
+export type RecipeDeletion = typeof recipeDeletions.$inferSelect;
+export type InsertRecipeDeletion = z.infer<typeof insertRecipeDeletionSchema>;
