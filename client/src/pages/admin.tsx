@@ -329,7 +329,7 @@ function AdminPanelMain() {
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="nutrition">Nutrition Logic</TabsTrigger>
             <TabsTrigger value="config">Configuration</TabsTrigger>
-            <TabsTrigger value="recipes">Recipes</TabsTrigger>
+            <TabsTrigger value="recipes" className="bg-green-100">Recipes</TabsTrigger>
             <TabsTrigger value="users">Users</TabsTrigger>
             <TabsTrigger value="system">System</TabsTrigger>
           </TabsList>
