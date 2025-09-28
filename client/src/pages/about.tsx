@@ -1,11 +1,161 @@
-import React from "react";
-import { Heart, Zap, Users, Brain, Leaf, Target } from "lucide-react";
+import React, { useState } from "react";
+import { Heart, Zap, Users, Brain, Leaf, Target, Edit, Save, X } from "lucide-react";
 import { useTranslations } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "@/hooks/useAuth";
+import { apiRequest } from "@/lib/queryClient";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
+
+interface EditableContentItem {
+  id: number;
+  contentKey: string;
+  contentEn: string;
+  contentNl: string;
+  contentType: string;
+  pageSection: string;
+  updatedBy?: number;
+  createdAt: string;
+  updatedAt: string;
+}
 
 export default function About() {
   const { language } = useLanguage();
   const t = useTranslations(language);
+  const { user: authUser } = useAuth();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  
+  // Check if user is admin
+  const isAdmin = authUser?.username === 'admin' || authUser?.email?.includes('admin');
+  
+  // State for editing
+  const [editingKey, setEditingKey] = useState<string | null>(null);
+  const [editContent, setEditContent] = useState<{ en: string; nl: string }>({ en: '', nl: '' });
+
+  // Fetch editable content
+  const { data: editableContent = [], isLoading } = useQuery<EditableContentItem[]>({
+    queryKey: ['/api/editable-content'],
+    staleTime: 30000, // 30 seconds
+  });
+
+  // Mutation for updating content
+  const updateContentMutation = useMutation({
+    mutationFn: async ({ contentKey, updates }: { contentKey: string; updates: any }) => {
+      const response = await apiRequest('PUT', `/api/editable-content/${contentKey}`, updates);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/editable-content'] });
+      toast({
+        title: "Content updated",
+        description: "The page content has been updated successfully.",
+      });
+      setEditingKey(null);
+    },
+    onError: (error) => {
+      toast({
+        title: "Error updating content",
+        description: "Failed to update the content. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Helper function to get content by key
+  const getContent = (key: string): string => {
+    const item = editableContent.find(item => item.contentKey === key);
+    if (!item) return t[key] || key; // Fallback to translation or key
+    return language === 'nl' ? item.contentNl : item.contentEn;
+  };
+
+  // Helper function to start editing
+  const startEditing = (key: string) => {
+    const item = editableContent.find(item => item.contentKey === key);
+    if (item) {
+      setEditContent({ en: item.contentEn, nl: item.contentNl });
+      setEditingKey(key);
+    }
+  };
+
+  // Helper function to save changes
+  const saveChanges = () => {
+    if (editingKey) {
+      updateContentMutation.mutate({
+        contentKey: editingKey,
+        updates: {
+          contentEn: editContent.en,
+          contentNl: editContent.nl,
+        }
+      });
+    }
+  };
+
+  // Helper function to cancel editing
+  const cancelEditing = () => {
+    setEditingKey(null);
+    setEditContent({ en: '', nl: '' });
+  };
+
+  // Component for editable content
+  const EditableContent = ({ contentKey, className = "", tag = "p" }: { contentKey: string; className?: string; tag?: string }) => {
+    const isEditing = editingKey === contentKey;
+    const content = getContent(contentKey);
+    
+    if (!isAdmin) {
+      const Tag = tag as keyof JSX.IntrinsicElements;
+      return <Tag className={className}>{content}</Tag>;
+    }
+
+    if (isEditing) {
+      return (
+        <div className="space-y-2">
+          <div className="space-y-2">
+            <label className="text-sm font-medium">English:</label>
+            <Textarea
+              value={editContent.en}
+              onChange={(e) => setEditContent(prev => ({ ...prev, en: e.target.value }))}
+              className="min-h-[80px]"
+            />
+            <label className="text-sm font-medium">Dutch:</label>
+            <Textarea
+              value={editContent.nl}
+              onChange={(e) => setEditContent(prev => ({ ...prev, nl: e.target.value }))}
+              className="min-h-[80px]"
+            />
+          </div>
+          <div className="flex gap-2">
+            <Button onClick={saveChanges} size="sm" disabled={updateContentMutation.isPending}>
+              <Save className="h-4 w-4 mr-1" />
+              Save
+            </Button>
+            <Button onClick={cancelEditing} variant="outline" size="sm">
+              <X className="h-4 w-4 mr-1" />
+              Cancel
+            </Button>
+          </div>
+        </div>
+      );
+    }
+
+    const Tag = tag as keyof JSX.IntrinsicElements;
+    return (
+      <div className="relative group">
+        <Tag className={className}>{content}</Tag>
+        <Button
+          onClick={() => startEditing(contentKey)}
+          size="sm"
+          variant="ghost"
+          className="absolute -top-1 -right-1 opacity-0 group-hover:opacity-100 transition-opacity"
+        >
+          <Edit className="h-4 w-4" />
+        </Button>
+      </div>
+    );
+  };
 
   const philosophyPoints = [
     {
@@ -48,9 +198,10 @@ export default function About() {
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             {t.aboutMealPlanner}
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            {t.aboutSubtitle}
-          </p>
+          <EditableContent 
+            contentKey="aboutSubtitle" 
+            className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
+          />
         </div>
 
         {/* Mission Statement */}
@@ -58,9 +209,10 @@ export default function About() {
           <h2 className="text-2xl font-semibold text-gray-900 mb-6 text-center">
             {t.ourPhilosophy}
           </h2>
-          <p className="text-lg text-gray-700 leading-relaxed text-center max-w-4xl mx-auto">
-            {t.philosophyStatement}
-          </p>
+          <EditableContent 
+            contentKey="philosophyStatement" 
+            className="text-lg text-gray-700 leading-relaxed text-center max-w-4xl mx-auto"
+          />
         </div>
 
         {/* Core Principles */}
@@ -77,13 +229,16 @@ export default function About() {
                     <div className="bg-blue-100 p-3 rounded-lg mr-4">
                       <Icon className="h-6 w-6 text-blue-600" />
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {t[point.titleKey]}
-                    </h3>
+                    <EditableContent 
+                      contentKey={point.titleKey} 
+                      className="text-lg font-semibold text-gray-900"
+                      tag="h3"
+                    />
                   </div>
-                  <p className="text-gray-600 leading-relaxed">
-                    {t[point.descriptionKey]}
-                  </p>
+                  <EditableContent 
+                    contentKey={point.descriptionKey} 
+                    className="text-gray-600 leading-relaxed"
+                  />
                 </div>
               );
             })}
