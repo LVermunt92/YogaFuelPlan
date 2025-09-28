@@ -49,7 +49,7 @@ function Navigation() {
   
   const navItems = [
     { path: "/", label: t.mealPlanner, icon: Utensils },
-    { path: "/my-recipes", label: t.myRecipes, icon: ChefHat },
+    ...(isAdmin ? [] : [{ path: "/my-recipes", label: t.myRecipes, icon: ChefHat }]),
     { path: "/profile", label: t.profile, icon: User },
     { path: "/about", label: t.about, icon: Info },
     ...(isAdmin ? [{ path: "/admin", label: "Admin", icon: Settings }] : [])
