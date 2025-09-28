@@ -39,7 +39,23 @@ interface SystemStats {
   recentGenerations: number;
 }
 
-export default function AdminPanel() {
+// Access denied component for non-admin users
+function AccessDenied() {
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <Card className="max-w-md mx-auto">
+        <CardContent className="pt-6 text-center">
+          <AlertTriangle className="h-12 w-12 text-yellow-500 mx-auto mb-4" />
+          <h2 className="text-xl font-bold mb-2">Access Denied</h2>
+          <p className="text-gray-600">Admin privileges required to access this panel.</p>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+// Main admin panel component
+function AdminPanelMain() {
   const { user: authUser } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -56,23 +72,6 @@ export default function AdminPanel() {
     description: "",
     source: ""
   });
-
-  // Check admin access
-  const isAdmin = authUser?.username === 'admin' || authUser?.email?.includes('admin');
-
-  if (!isAdmin) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <Card className="max-w-md mx-auto">
-          <CardContent className="pt-6 text-center">
-            <AlertTriangle className="h-12 w-12 text-yellow-500 mx-auto mb-4" />
-            <h2 className="text-xl font-bold mb-2">Access Denied</h2>
-            <p className="text-gray-600">Admin privileges required to access this panel.</p>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
 
   // Fetch system statistics
   const { data: systemStats, isLoading: statsLoading } = useQuery<SystemStats>({
@@ -583,4 +582,20 @@ export default function AdminPanel() {
       </div>
     </div>
   );
+}
+
+// Wrapper component that handles admin access control
+export default function AdminPanel() {
+  const { user: authUser } = useAuth();
+  
+  // Check admin access
+  const isAdmin = authUser?.username === 'admin' || authUser?.email?.includes('admin');
+
+  // Non-admin users get access denied page
+  if (!isAdmin) {
+    return <AccessDenied />;
+  }
+
+  // Admin users get the full admin panel
+  return <AdminPanelMain />;
 }
