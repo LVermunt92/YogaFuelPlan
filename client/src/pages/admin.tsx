@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
-import { Settings, Users, Calculator, Database, Activity, Target, ChefHat, Save, Edit, Trash2, Plus, AlertTriangle } from "lucide-react";
+import { Settings, Users, Calculator, Database, Activity, Target, ChefHat, Save, Edit, Trash2, Plus, AlertTriangle, Search, Filter, Download, Upload, Eye } from "lucide-react";
 import { useTranslations } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -37,6 +37,65 @@ interface SystemStats {
   avgProteinTarget: number;
   popularActivityLevels: { level: string; count: number }[];
   recentGenerations: number;
+}
+
+interface Recipe {
+  id?: string;
+  name: string;
+  portion: string;
+  category: 'breakfast' | 'lunch' | 'dinner';
+  tags: string[];
+  ingredients: string[];
+  nutrition: {
+    protein: number;
+    prepTime: number;
+    calories: number;
+    carbohydrates: number;
+    fats: number;
+    fiber: number;
+    sugar: number;
+    sodium: number;
+    costEuros?: number;
+  };
+  wholeFoodLevel: 'minimal' | 'moderate' | 'high';
+  vegetableContent: {
+    servings: number;
+    vegetables: string[];
+    benefits: string[];
+  };
+  recipeBenefits?: string[];
+  recipe?: {
+    instructions: string[];
+    tips?: string[];
+    notes?: string;
+  };
+  createdAt?: Date;
+  active?: boolean;
+}
+
+interface RecipeSearchResponse {
+  recipes: Recipe[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+interface RecipeStats {
+  total: number;
+  byCategory: {
+    breakfast: number;
+    lunch: number;
+    dinner: number;
+  };
+  byTags: Record<string, number>;
+  proteinRange: {
+    min: number;
+    max: number;
+    average: number;
+  };
+  modifications: number;
+  deleted: number;
 }
 
 // Access denied component for non-admin users
@@ -73,6 +132,16 @@ function AdminPanelMain() {
     source: ""
   });
 
+  // Recipe management state
+  const [searchTerm, setSearchTerm] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [tagsFilter, setTagsFilter] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedRecipes, setSelectedRecipes] = useState<Set<string>>(new Set());
+  const [editingRecipe, setEditingRecipe] = useState<Recipe | null>(null);
+  const [viewingRecipe, setViewingRecipe] = useState<Recipe | null>(null);
+  const [showCreateRecipe, setShowCreateRecipe] = useState(false);
+
   // Fetch system statistics
   const { data: systemStats, isLoading: statsLoading } = useQuery<SystemStats>({
     queryKey: ['/api/admin/stats'],
@@ -83,6 +152,35 @@ function AdminPanelMain() {
   const { data: nutritionConfigs = [], isLoading: configLoading } = useQuery<NutritionConfig[]>({
     queryKey: ['/api/admin/nutrition-config'],
     queryFn: () => fetch('/api/admin/nutrition-config').then(res => res.json()),
+  });
+
+  // Fetch recipes with search and filters
+  const { data: recipeData, isLoading: recipesLoading, refetch: refetchRecipes } = useQuery<RecipeSearchResponse>({
+    queryKey: ['/api/recipes', { searchTerm, categoryFilter, tagsFilter, page: currentPage }],
+    queryFn: async () => {
+      const params = new URLSearchParams({
+        page: currentPage.toString(),
+        limit: '20'
+      });
+      
+      if (searchTerm) params.set('search', searchTerm);
+      if (categoryFilter) params.set('category', categoryFilter);
+      if (tagsFilter) params.set('tags', tagsFilter);
+      
+      const response = await fetch(`/api/recipes?${params}`);
+      if (!response.ok) throw new Error('Failed to fetch recipes');
+      return response.json();
+    },
+  });
+
+  // Fetch recipe statistics
+  const { data: recipeStats, isLoading: recipeStatsLoading } = useQuery<RecipeStats>({
+    queryKey: ['/api/recipes/stats'],
+    queryFn: async () => {
+      const response = await fetch('/api/recipes/stats');
+      if (!response.ok) throw new Error('Failed to fetch recipe stats');
+      return response.json();
+    },
   });
 
   // Update nutrition configuration
@@ -125,6 +223,58 @@ function AdminPanelMain() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/nutrition-config'] });
       toast({ title: "Success", description: "Configuration deleted successfully" });
+    },
+  });
+
+  // Recipe management mutations
+  const updateRecipeMutation = useMutation({
+    mutationFn: async (recipe: Recipe) => {
+      const response = await apiRequest('PUT', `/api/recipes/${recipe.id}`, recipe);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/recipes'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/recipes/stats'] });
+      setEditingRecipe(null);
+      toast({ title: "Success", description: "Recipe updated successfully" });
+    },
+  });
+
+  const createRecipeMutation = useMutation({
+    mutationFn: async (recipe: Omit<Recipe, 'id'>) => {
+      const response = await apiRequest('POST', '/api/recipes', recipe);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/recipes'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/recipes/stats'] });
+      setShowCreateRecipe(false);
+      toast({ title: "Success", description: "Recipe created successfully" });
+    },
+  });
+
+  const deleteRecipeMutation = useMutation({
+    mutationFn: async (recipeId: string) => {
+      const response = await apiRequest('DELETE', `/api/recipes/${recipeId}`);
+      return response;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/recipes'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/recipes/stats'] });
+      toast({ title: "Success", description: "Recipe deleted successfully" });
+    },
+  });
+
+  const bulkUpdateMutation = useMutation({
+    mutationFn: async ({ recipeIds, updates }: { recipeIds: string[], updates: Partial<Recipe> }) => {
+      const response = await apiRequest('POST', '/api/recipes/bulk-update', { recipeIds, updates });
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/recipes'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/recipes/stats'] });
+      setSelectedRecipes(new Set());
+      toast({ title: "Success", description: "Recipes updated successfully" });
     },
   });
 
@@ -174,10 +324,11 @@ function AdminPanelMain() {
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="nutrition">Nutrition Logic</TabsTrigger>
             <TabsTrigger value="config">Configuration</TabsTrigger>
+            <TabsTrigger value="recipes">Recipes</TabsTrigger>
             <TabsTrigger value="users">Users</TabsTrigger>
             <TabsTrigger value="system">System</TabsTrigger>
           </TabsList>
@@ -500,6 +651,348 @@ function AdminPanelMain() {
                       ))}
                     </div>
                   ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Recipe Management Tab */}
+          <TabsContent value="recipes" className="space-y-6">
+            {/* Recipe Statistics Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Total Recipes</CardTitle>
+                  <Database className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{recipeStats?.total || 0}</div>
+                  <p className="text-xs text-muted-foreground">
+                    {recipeStats?.modifications || 0} modified, {recipeStats?.deleted || 0} deleted
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Breakfast</CardTitle>
+                  <ChefHat className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{recipeStats?.byCategory?.breakfast || 0}</div>
+                  <p className="text-xs text-muted-foreground">Morning recipes</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Lunch</CardTitle>
+                  <ChefHat className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{recipeStats?.byCategory?.lunch || 0}</div>
+                  <p className="text-xs text-muted-foreground">Midday recipes</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Dinner</CardTitle>
+                  <ChefHat className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{recipeStats?.byCategory?.dinner || 0}</div>
+                  <p className="text-xs text-muted-foreground">Evening recipes</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Recipe Management Interface */}
+            <Card>
+              <CardHeader>
+                <div className="flex justify-between items-start">
+                  <div>
+                    <CardTitle className="flex items-center gap-2">
+                      <ChefHat className="h-5 w-5" />
+                      Recipe Database Management
+                    </CardTitle>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Search, edit, and manage your recipe database
+                    </p>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={() => setShowCreateRecipe(true)}
+                      size="sm"
+                      className="flex items-center gap-2"
+                    >
+                      <Plus className="h-4 w-4" />
+                      Add Recipe
+                    </Button>
+                    <Button
+                      onClick={() => window.open('/api/recipes/export', '_blank')}
+                      variant="outline"
+                      size="sm"
+                      className="flex items-center gap-2"
+                    >
+                      <Download className="h-4 w-4" />
+                      Export
+                    </Button>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {/* Search and Filter Controls */}
+                <div className="flex flex-wrap gap-4">
+                  <div className="flex items-center space-x-2 min-w-[300px]">
+                    <Search className="h-4 w-4 text-gray-400" />
+                    <Input
+                      placeholder="Search recipes by name or ingredient..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="flex-1"
+                    />
+                  </div>
+                  
+                  <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                    <SelectTrigger className="w-[150px]">
+                      <SelectValue placeholder="Category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">All Categories</SelectItem>
+                      <SelectItem value="breakfast">Breakfast</SelectItem>
+                      <SelectItem value="lunch">Lunch</SelectItem>
+                      <SelectItem value="dinner">Dinner</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <Select value={tagsFilter} onValueChange={setTagsFilter}>
+                    <SelectTrigger className="w-[150px]">
+                      <SelectValue placeholder="Dietary Tags" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">All Tags</SelectItem>
+                      <SelectItem value="vegetarian">Vegetarian</SelectItem>
+                      <SelectItem value="vegan">Vegan</SelectItem>
+                      <SelectItem value="gluten-free">Gluten-Free</SelectItem>
+                      <SelectItem value="lactose-free">Lactose-Free</SelectItem>
+                      <SelectItem value="high-protein">High Protein</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Bulk Actions */}
+                {selectedRecipes.size > 0 && (
+                  <div className="flex items-center gap-4 p-3 bg-blue-50 rounded-lg">
+                    <span className="text-sm font-medium">
+                      {selectedRecipes.size} recipe(s) selected
+                    </span>
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          const updates = { active: true };
+                          bulkUpdateMutation.mutate({ 
+                            recipeIds: Array.from(selectedRecipes), 
+                            updates 
+                          });
+                        }}
+                      >
+                        Enable
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          const updates = { active: false };
+                          bulkUpdateMutation.mutate({ 
+                            recipeIds: Array.from(selectedRecipes), 
+                            updates 
+                          });
+                        }}
+                      >
+                        Disable
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        onClick={() => {
+                          if (confirm('Are you sure you want to delete the selected recipes?')) {
+                            selectedRecipes.forEach(recipeId => {
+                              deleteRecipeMutation.mutate(recipeId);
+                            });
+                          }
+                        }}
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => setSelectedRecipes(new Set())}
+                    >
+                      Clear Selection
+                    </Button>
+                  </div>
+                )}
+
+                {/* Recipe Table */}
+                <div className="border rounded-lg">
+                  <div className="overflow-x-auto">
+                    {recipesLoading ? (
+                      <div className="p-8 text-center text-gray-500">
+                        Loading recipes...
+                      </div>
+                    ) : recipeData?.recipes?.length === 0 ? (
+                      <div className="p-8 text-center text-gray-500">
+                        No recipes found. Try adjusting your search filters.
+                      </div>
+                    ) : (
+                      <table className="w-full">
+                        <thead className="border-b bg-gray-50">
+                          <tr>
+                            <th className="p-3 text-left">
+                              <input
+                                type="checkbox"
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setSelectedRecipes(new Set(recipeData?.recipes.map(r => r.id || r.name) || []));
+                                  } else {
+                                    setSelectedRecipes(new Set());
+                                  }
+                                }}
+                              />
+                            </th>
+                            <th className="p-3 text-left">Recipe Name</th>
+                            <th className="p-3 text-left">Category</th>
+                            <th className="p-3 text-left">Protein</th>
+                            <th className="p-3 text-left">Prep Time</th>
+                            <th className="p-3 text-left">Tags</th>
+                            <th className="p-3 text-left">Status</th>
+                            <th className="p-3 text-left">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {recipeData?.recipes.map((recipe) => (
+                            <tr key={recipe.id || recipe.name} className="border-b hover:bg-gray-50">
+                              <td className="p-3">
+                                <input
+                                  type="checkbox"
+                                  checked={selectedRecipes.has(recipe.id || recipe.name)}
+                                  onChange={(e) => {
+                                    const recipeId = recipe.id || recipe.name;
+                                    const newSelection = new Set(selectedRecipes);
+                                    if (e.target.checked) {
+                                      newSelection.add(recipeId);
+                                    } else {
+                                      newSelection.delete(recipeId);
+                                    }
+                                    setSelectedRecipes(newSelection);
+                                  }}
+                                />
+                              </td>
+                              <td className="p-3">
+                                <div className="font-medium">{recipe.name}</div>
+                                <div className="text-sm text-gray-500">{recipe.portion}</div>
+                              </td>
+                              <td className="p-3">
+                                <Badge variant="outline" className="capitalize">
+                                  {recipe.category}
+                                </Badge>
+                              </td>
+                              <td className="p-3 font-medium">{recipe.nutrition.protein}g</td>
+                              <td className="p-3">{recipe.nutrition.prepTime} min</td>
+                              <td className="p-3">
+                                <div className="flex flex-wrap gap-1">
+                                  {recipe.tags.slice(0, 3).map((tag) => (
+                                    <Badge key={tag} variant="secondary" className="text-xs">
+                                      {tag}
+                                    </Badge>
+                                  ))}
+                                  {recipe.tags.length > 3 && (
+                                    <Badge variant="secondary" className="text-xs">
+                                      +{recipe.tags.length - 3}
+                                    </Badge>
+                                  )}
+                                </div>
+                              </td>
+                              <td className="p-3">
+                                <Badge variant={recipe.active === false ? "destructive" : "default"}>
+                                  {recipe.active === false ? "Disabled" : "Active"}
+                                </Badge>
+                              </td>
+                              <td className="p-3">
+                                <div className="flex items-center gap-2">
+                                  <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    onClick={() => setViewingRecipe(recipe)}
+                                    title="View recipe"
+                                  >
+                                    <Eye className="h-4 w-4" />
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    onClick={() => setEditingRecipe(recipe)}
+                                    title="Edit recipe"
+                                  >
+                                    <Edit className="h-4 w-4" />
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    onClick={() => {
+                                      if (confirm('Are you sure you want to delete this recipe?')) {
+                                        deleteRecipeMutation.mutate(recipe.id || recipe.name);
+                                      }
+                                    }}
+                                    title="Delete recipe"
+                                  >
+                                    <Trash2 className="h-4 w-4 text-red-500" />
+                                  </Button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+                  
+                  {/* Pagination */}
+                  {recipeData && recipeData.totalPages > 1 && (
+                    <div className="flex items-center justify-between p-4 border-t">
+                      <div className="text-sm text-gray-600">
+                        Showing {((recipeData.page - 1) * recipeData.limit) + 1} to{' '}
+                        {Math.min(recipeData.page * recipeData.limit, recipeData.total)} of{' '}
+                        {recipeData.total} recipes
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                          disabled={currentPage === 1}
+                        >
+                          Previous
+                        </Button>
+                        <span className="text-sm">
+                          Page {currentPage} of {recipeData.totalPages}
+                        </span>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => setCurrentPage(Math.min(recipeData.totalPages, currentPage + 1))}
+                          disabled={currentPage === recipeData.totalPages}
+                        >
+                          Next
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
