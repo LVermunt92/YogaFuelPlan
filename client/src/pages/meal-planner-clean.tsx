@@ -122,7 +122,41 @@ interface OuraStatus {
   message: string;
 }
 
-export default function MealPlanner() {
+// Admin redirect component - handles admin logic without hooks
+function AdminRedirect() {
+  return (
+    <div className="min-h-screen bg-background px-2 py-4">
+      <div className="max-w-4xl mx-auto">
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Settings className="h-5 w-5" />
+              Admin Account Detected
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-gray-600 mb-4">
+              You're logged in as an administrator. The meal planning interface is designed for regular users.
+            </p>
+            <p className="text-gray-600 mb-6">
+              To access the admin panel with system statistics and management tools, click the button below:
+            </p>
+            <Button 
+              onClick={() => window.location.href = '/admin'}
+              className="w-full bg-blue-600 hover:bg-blue-700"
+            >
+              <Settings className="h-4 w-4 mr-2" />
+              Go to Admin Panel
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
+
+// Main meal planner component
+function MealPlannerMain() {
   const [selectedMealPlan, setSelectedMealPlan] = useState<number | null>(() => {
     const stored = localStorage.getItem('selectedMealPlan');
     return stored ? parseInt(stored) : null;
@@ -140,42 +174,6 @@ export default function MealPlanner() {
   // Get language and translations
   const { language } = useLanguage();
   const t = useTranslations(language);
-
-  // Check if user is admin and should bypass meal planning requirements
-  const isAdmin = authUser?.username === 'admin' || authUser?.email?.includes('admin');
-
-  // Admin users should go directly to admin panel instead of meal planning
-  if (isAdmin) {
-    return (
-      <div className="min-h-screen bg-background px-2 py-4">
-        <div className="max-w-4xl mx-auto">
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Settings className="h-5 w-5" />
-                Admin Account Detected
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600 mb-4">
-                You're logged in as an administrator. The meal planning interface is designed for regular users.
-              </p>
-              <p className="text-gray-600 mb-6">
-                To access the admin panel with system statistics and management tools, click the button below:
-              </p>
-              <Button 
-                onClick={() => window.location.href = '/admin'}
-                className="w-full bg-blue-600 hover:bg-blue-700"
-              >
-                <Settings className="h-4 w-4 mr-2" />
-                Go to Admin Panel
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
 
   // Helper functions
   const extractServingNumber = (portion: string): string => {
@@ -1812,4 +1810,20 @@ export default function MealPlanner() {
       </main>
     </div>
   );
+}
+
+// Wrapper component that handles admin vs regular user logic
+export default function MealPlanner() {
+  const { user: authUser } = useAuth();
+  
+  // Check if user is admin and should bypass meal planning requirements
+  const isAdmin = authUser?.username === 'admin' || authUser?.email?.includes('admin');
+
+  // Admin users get redirected to admin panel
+  if (isAdmin) {
+    return <AdminRedirect />;
+  }
+
+  // Regular users get the meal planner
+  return <MealPlannerMain />;
 }
