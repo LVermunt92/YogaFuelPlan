@@ -56,6 +56,34 @@ adminRouter.get('/stats', async (req, res) => {
   }
 });
 
+// Users list endpoint
+adminRouter.get('/users', async (req, res) => {
+  try {
+    const users = await storage.getAllUsers();
+    
+    // Remove sensitive data (passwords) from response
+    const safeUsers = users.map(user => ({
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      activityLevel: user.activityLevel,
+      dietaryTags: user.dietaryTags,
+      proteinTarget: user.proteinTarget,
+      weight: user.weight,
+      goalWeight: user.goalWeight,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt
+    }));
+    
+    res.json({ users: safeUsers });
+  } catch (error) {
+    console.error('Error getting users:', error);
+    res.status(500).json({ error: 'Failed to get users' });
+  }
+});
+
 // Nutrition configuration endpoints
 adminRouter.get('/nutrition-config', async (req, res) => {
   try {

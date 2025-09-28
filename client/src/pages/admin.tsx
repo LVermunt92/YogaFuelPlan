@@ -99,6 +99,25 @@ interface RecipeStats {
   deleted: number;
 }
 
+interface AdminUser {
+  id: number;
+  username: string;
+  email: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  activityLevel: string | null;
+  dietaryTags: string[] | null;
+  proteinTarget: number | null;
+  weight: number | null;
+  goalWeight: number | null;
+  createdAt: Date | null;
+  updatedAt: Date | null;
+}
+
+interface UsersResponse {
+  users: AdminUser[];
+}
+
 // Access denied component for non-admin users
 function AccessDenied() {
   return (
@@ -135,8 +154,8 @@ function AdminPanelMain() {
 
   // Recipe management state
   const [searchTerm, setSearchTerm] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("");
-  const [tagsFilter, setTagsFilter] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("all-categories");
+  const [tagsFilter, setTagsFilter] = useState("all-tags");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedRecipes, setSelectedRecipes] = useState<Set<string>>(new Set());
   const [editingRecipe, setEditingRecipe] = useState<Recipe | null>(null);
@@ -165,8 +184,8 @@ function AdminPanelMain() {
       });
       
       if (searchTerm) params.set('search', searchTerm);
-      if (categoryFilter) params.set('category', categoryFilter);
-      if (tagsFilter) params.set('tags', tagsFilter);
+      if (categoryFilter && categoryFilter !== 'all-categories') params.set('category', categoryFilter);
+      if (tagsFilter && tagsFilter !== 'all-tags') params.set('tags', tagsFilter);
       
       const response = await fetch(`/api/recipes?${params}`);
       if (!response.ok) throw new Error('Failed to fetch recipes');
@@ -180,6 +199,16 @@ function AdminPanelMain() {
     queryFn: async () => {
       const response = await fetch('/api/recipes/stats');
       if (!response.ok) throw new Error('Failed to fetch recipe stats');
+      return response.json();
+    },
+  });
+
+  // Fetch all users
+  const { data: usersData, isLoading: usersLoading } = useQuery<UsersResponse>({
+    queryKey: ['/api/admin/users'],
+    queryFn: async () => {
+      const response = await fetch('/api/admin/users');
+      if (!response.ok) throw new Error('Failed to fetch users');
       return response.json();
     },
   });
@@ -760,7 +789,7 @@ function AdminPanelMain() {
                       <SelectValue placeholder="Category" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Categories</SelectItem>
+                      <SelectItem value="all-categories">All Categories</SelectItem>
                       <SelectItem value="breakfast">Breakfast</SelectItem>
                       <SelectItem value="lunch">Lunch</SelectItem>
                       <SelectItem value="dinner">Dinner</SelectItem>
@@ -772,7 +801,7 @@ function AdminPanelMain() {
                       <SelectValue placeholder="Dietary Tags" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Tags</SelectItem>
+                      <SelectItem value="all-tags">All Tags</SelectItem>
                       <SelectItem value="vegetarian">Vegetarian</SelectItem>
                       <SelectItem value="vegan">Vegan</SelectItem>
                       <SelectItem value="gluten-free">Gluten-Free</SelectItem>
@@ -1003,10 +1032,108 @@ function AdminPanelMain() {
           <TabsContent value="users" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>User Management</CardTitle>
+                <div className="flex justify-between items-start">
+                  <div>
+                    <CardTitle className="flex items-center gap-2">
+                      <Users className="h-5 w-5" />
+                      User Management
+                    </CardTitle>
+                    <p className="text-sm text-gray-600 mt-1">
+                      View and manage all registered users
+                    </p>
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    Total Users: {usersData?.users?.length || 0}
+                  </div>
+                </div>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">User management features coming soon...</p>
+                {usersLoading ? (
+                  <div className="p-8 text-center text-gray-500">
+                    Loading users...
+                  </div>
+                ) : usersData?.users?.length === 0 ? (
+                  <div className="p-8 text-center text-gray-500">
+                    No users found.
+                  </div>
+                ) : (
+                  <div className="border rounded-lg overflow-x-auto">
+                    <table className="w-full">
+                      <thead className="border-b bg-gray-50">
+                        <tr>
+                          <th className="p-3 text-left">ID</th>
+                          <th className="p-3 text-left">Username</th>
+                          <th className="p-3 text-left">Email</th>
+                          <th className="p-3 text-left">Name</th>
+                          <th className="p-3 text-left">Activity Level</th>
+                          <th className="p-3 text-left">Weight</th>
+                          <th className="p-3 text-left">Protein Target</th>
+                          <th className="p-3 text-left">Dietary Tags</th>
+                          <th className="p-3 text-left">Created</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {usersData?.users.map((user) => (
+                          <tr key={user.id} className="border-b hover:bg-gray-50">
+                            <td className="p-3 font-mono text-sm">{user.id}</td>
+                            <td className="p-3 font-medium">{user.username}</td>
+                            <td className="p-3 text-sm">{user.email || 'N/A'}</td>
+                            <td className="p-3 text-sm">
+                              {user.firstName && user.lastName 
+                                ? `${user.firstName} ${user.lastName}` 
+                                : user.firstName || user.lastName || 'N/A'
+                              }
+                            </td>
+                            <td className="p-3">
+                              {user.activityLevel ? (
+                                <Badge variant="outline" className="capitalize">
+                                  {user.activityLevel}
+                                </Badge>
+                              ) : (
+                                <span className="text-gray-400">N/A</span>
+                              )}
+                            </td>
+                            <td className="p-3 text-sm">
+                              {user.weight ? `${user.weight} kg` : 'N/A'}
+                              {user.goalWeight && (
+                                <div className="text-xs text-gray-500">
+                                  Goal: {user.goalWeight} kg
+                                </div>
+                              )}
+                            </td>
+                            <td className="p-3 text-sm font-medium">
+                              {user.proteinTarget ? `${user.proteinTarget}g` : 'N/A'}
+                            </td>
+                            <td className="p-3">
+                              {user.dietaryTags && user.dietaryTags.length > 0 ? (
+                                <div className="flex flex-wrap gap-1">
+                                  {user.dietaryTags.slice(0, 2).map((tag, index) => (
+                                    <Badge key={index} variant="secondary" className="text-xs">
+                                      {tag}
+                                    </Badge>
+                                  ))}
+                                  {user.dietaryTags.length > 2 && (
+                                    <Badge variant="secondary" className="text-xs">
+                                      +{user.dietaryTags.length - 2}
+                                    </Badge>
+                                  )}
+                                </div>
+                              ) : (
+                                <span className="text-gray-400">None</span>
+                              )}
+                            </td>
+                            <td className="p-3 text-sm text-gray-500">
+                              {user.createdAt 
+                                ? new Date(user.createdAt).toLocaleDateString()
+                                : 'N/A'
+                              }
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>

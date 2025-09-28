@@ -40,16 +40,16 @@ localPort = 32927
 externalPort = 3001
 
 [[ports]]
-localPort = 34969
-externalPort = 3003
-
-[[ports]]
 localPort = 36359
 externalPort = 3000
 
 [[ports]]
 localPort = 36601
 externalPort = 3002
+
+[[ports]]
+localPort = 39495
+externalPort = 3003
 
 [agent]
 integrations = ["javascript_anthropic==1.0.0"]
