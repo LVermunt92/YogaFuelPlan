@@ -136,6 +136,22 @@ export async function addSeasonalMonthTagsToRecipe(recipe: MealOption, coords?: 
   const ingredients = recipe.ingredients || [];
   const ingredientText = ingredients.join(' ').toLowerCase();
   
+  // Amsterdam month-specific locally grown vegetables calendar  
+  const AMSTERDAM_MONTHLY_PRODUCE: { [key: number]: string[] } = {
+    0: ['spruitjes', 'boerenkool', 'prei', 'kool', 'wortelen', 'pastinaak', 'winteruien', 'aardappelen'],
+    1: ['spruitjes', 'boerenkool', 'prei', 'wortelen', 'pastinaak', 'knolrapen', 'aardappelen', 'winterkool'],
+    2: ['witte asperges', 'vroege sla', 'spinazie', 'broccoli', 'bloemkool', 'doperwten', 'prei'],
+    3: ['witte asperges', 'lente-uitjes', 'radijsjes', 'sla', 'spinazie', 'verse kruiden', 'bieslook', 'peterselie'],
+    4: ['witte asperges', 'lente-uitjes', 'radijsjes', 'spinazie', 'snijbiet', 'verse kruiden', 'doperwten'],
+    5: ['nieuwe aardappelen', 'paprika', 'komkommers', 'tomaten', 'courgette', 'witte asperges'],
+    6: ['tomaten', 'komkommers', 'paprika', 'sperziebonen', 'mais', 'zomerpompoen', 'basilicum', 'dille', 'munt'],
+    7: ['tomaten', 'komkommers', 'paprika', 'sperziebonen', 'mais', 'zomerpompoen', 'aubergines', 'sla'],
+    8: ['aubergines', 'tomaten', 'zoete paprika', 'sperziebonen', 'vroege herfstgroenten'],
+    9: ['pompoenen', 'winterpompoen', 'spruitjes', 'prei', 'witte kool', 'wortelen', 'rode bieten', 'paddenstoelen'],
+    10: ['pompoenen', 'winterpompoen', 'spruitjes', 'prei', 'kool', 'wortelen', 'rode bieten', 'paddenstoelen', 'knolselderij'],
+    11: ['boerenkool', 'spruitjes', 'winterprei', 'wortelen', 'aardappelen', 'winterkool', 'uien']
+  };
+  
   // Helper functions (copied from seasonal-advisor to avoid circular dependencies)
   function getHemisphere(latitude: number): 'north' | 'south' {
     return latitude >= 0 ? 'north' : 'south';
@@ -168,6 +184,28 @@ export async function addSeasonalMonthTagsToRecipe(recipe: MealOption, coords?: 
   // Default to Amsterdam coordinates if no location provided
   const location = coords || { latitude: 52.3676, longitude: 4.9041 };
   const hemisphere = getHemisphere(location.latitude);
+  
+  // Function to check if recipe contains Amsterdam local produce for specific months
+  function getMonthsForLocalProduce(): number[] {
+    const matchedMonths: number[] = [];
+    
+    // Check each month's local produce against recipe ingredients
+    for (let month = 0; month < 12; month++) {
+      const monthProduce = AMSTERDAM_MONTHLY_PRODUCE[month];
+      const hasLocalProduce = monthProduce.some((produce: string) => 
+        ingredientText.includes(produce.toLowerCase()) ||
+        ingredientText.includes(produce.replace('witte ', '').toLowerCase()) ||
+        ingredientText.includes(produce.replace(' (kas)', '').toLowerCase()) ||
+        ingredientText.includes(produce.replace('nieuwe ', '').toLowerCase())
+      );
+      
+      if (hasLocalProduce) {
+        matchedMonths.push(month);
+      }
+    }
+    
+    return matchedMonths;
+  }
   
   // Check for seasonal characteristics
   const hasWarmingIngredients = 
@@ -236,20 +274,44 @@ export async function addSeasonalMonthTagsToRecipe(recipe: MealOption, coords?: 
     suitableSeasons.push('autumn');
   }
   
-  // If no specific seasonal characteristics, suitable for all seasons
-  if (suitableSeasons.length === 0) {
+  // Get months based on Amsterdam local produce availability
+  const localProduceMonths = getMonthsForLocalProduce();
+  
+  // If we found local produce matches, prioritize those months
+  if (localProduceMonths.length > 0) {
+    const monthNames = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    
+    localProduceMonths.forEach(monthIndex => {
+      const monthName = monthNames[monthIndex];
+      if (!newTags.includes(monthName)) {
+        newTags.push(monthName);
+        // Add local produce tag for better filtering
+        if (!newTags.includes('local-produce')) {
+          newTags.push('local-produce');
+        }
+      }
+    });
+  }
+  
+  // If no specific seasonal characteristics and no local produce, suitable for all seasons
+  if (suitableSeasons.length === 0 && localProduceMonths.length === 0) {
     suitableSeasons.push('winter', 'spring', 'summer', 'autumn');
   }
   
-  // Add month tags for suitable seasons
-  suitableSeasons.forEach(season => {
-    const monthsForSeason = getSeasonalMonths(season, hemisphere);
-    monthsForSeason.forEach(month => {
-      if (!newTags.includes(month)) {
-        newTags.push(month);
-      }
+  // Add month tags for suitable seasons (only if no local produce was found)
+  if (localProduceMonths.length === 0) {
+    suitableSeasons.forEach(season => {
+      const monthsForSeason = getSeasonalMonths(season, hemisphere);
+      monthsForSeason.forEach(month => {
+        if (!newTags.includes(month)) {
+          newTags.push(month);
+        }
+      });
     });
-  });
+  }
   
   return { ...recipe, tags: newTags };
 }
