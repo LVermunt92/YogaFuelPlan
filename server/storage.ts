@@ -8,6 +8,8 @@ import {
   userRecipes,
   shoppingLists,
   shoppingListItems,
+  shoppingListNames,
+  ingredientMappings,
 
   type User, 
   type InsertUser,
@@ -33,6 +35,12 @@ import {
   type InsertShoppingListItem,
   type UpdateShoppingListItem,
   type ShoppingListWithItems,
+  type ShoppingListName,
+  type InsertShoppingListName,
+  type UpdateShoppingListName,
+  type IngredientMapping,
+  type InsertIngredientMapping,
+  type UpdateIngredientMapping,
 
   passwordResetCodes,
   type PasswordResetCode,
@@ -101,6 +109,19 @@ export interface IStorage {
   updateShoppingListItem(id: number, updates: UpdateShoppingListItem): Promise<ShoppingListItem>;
   deleteShoppingListItem(id: number): Promise<void>;
   clearShoppingListItems(shoppingListId: number): Promise<void>;
+
+  // Shopping List Name methods for admin control
+  createShoppingListName(data: InsertShoppingListName): Promise<ShoppingListName>;
+  getShoppingListNames(): Promise<ShoppingListName[]>;
+  updateShoppingListName(id: number, updates: UpdateShoppingListName): Promise<ShoppingListName>;
+  deleteShoppingListName(id: number): Promise<void>;
+
+  // Ingredient Mapping methods for admin control
+  createIngredientMapping(data: InsertIngredientMapping): Promise<IngredientMapping>;
+  getIngredientMappings(): Promise<IngredientMapping[]>;
+  getIngredientMappingByIngredient(normalizedIngredient: string): Promise<IngredientMapping | undefined>;
+  updateIngredientMapping(id: number, updates: UpdateIngredientMapping): Promise<IngredientMapping>;
+  deleteIngredientMapping(id: number): Promise<void>;
 
   // Editable Content methods
   getEditableContent(contentKey?: string): Promise<EditableContent[]>;
@@ -572,6 +593,90 @@ export class MemStorage implements IStorage {
 
   async getRecipeDeletions(): Promise<string[]> {
     return [];
+  }
+
+  // Shopping List methods (MemStorage - not implemented)
+  async createShoppingList(data: InsertShoppingList): Promise<ShoppingList> {
+    throw new Error("Shopping list storage requires DatabaseStorage implementation");
+  }
+
+  async getShoppingList(userId: number, mealPlanId?: number, listType?: string): Promise<ShoppingListWithItems | undefined> {
+    return undefined;
+  }
+
+  async updateShoppingList(id: number, updates: Partial<ShoppingList>): Promise<ShoppingList> {
+    throw new Error("Shopping list storage requires DatabaseStorage implementation");
+  }
+
+  async deleteShoppingList(id: number): Promise<void> {
+    // No-op for MemStorage
+  }
+
+  async addShoppingListItems(shoppingListId: number, items: InsertShoppingListItem[]): Promise<ShoppingListItem[]> {
+    return [];
+  }
+
+  async updateShoppingListItem(id: number, updates: UpdateShoppingListItem): Promise<ShoppingListItem> {
+    throw new Error("Shopping list storage requires DatabaseStorage implementation");
+  }
+
+  async deleteShoppingListItem(id: number): Promise<void> {
+    // No-op for MemStorage
+  }
+
+  async clearShoppingListItems(shoppingListId: number): Promise<void> {
+    // No-op for MemStorage
+  }
+
+  // Shopping List Name methods (MemStorage - not implemented)
+  async createShoppingListName(data: InsertShoppingListName): Promise<ShoppingListName> {
+    throw new Error("Shopping list name storage requires DatabaseStorage implementation");
+  }
+
+  async getShoppingListNames(): Promise<ShoppingListName[]> {
+    return [];
+  }
+
+  async updateShoppingListName(id: number, updates: UpdateShoppingListName): Promise<ShoppingListName> {
+    throw new Error("Shopping list name storage requires DatabaseStorage implementation");
+  }
+
+  async deleteShoppingListName(id: number): Promise<void> {
+    // No-op for MemStorage
+  }
+
+  // Ingredient Mapping methods (MemStorage - not implemented)
+  async createIngredientMapping(data: InsertIngredientMapping): Promise<IngredientMapping> {
+    throw new Error("Ingredient mapping storage requires DatabaseStorage implementation");
+  }
+
+  async getIngredientMappings(): Promise<IngredientMapping[]> {
+    return [];
+  }
+
+  async getIngredientMappingByIngredient(normalizedIngredient: string): Promise<IngredientMapping | undefined> {
+    return undefined;
+  }
+
+  async updateIngredientMapping(id: number, updates: UpdateIngredientMapping): Promise<IngredientMapping> {
+    throw new Error("Ingredient mapping storage requires DatabaseStorage implementation");
+  }
+
+  async deleteIngredientMapping(id: number): Promise<void> {
+    // No-op for MemStorage
+  }
+
+  // Editable Content methods (MemStorage - not implemented)
+  async getEditableContent(contentKey?: string): Promise<EditableContent[]> {
+    return [];
+  }
+
+  async updateEditableContent(contentKey: string, updates: UpdateEditableContent): Promise<EditableContent> {
+    throw new Error("Editable content storage requires DatabaseStorage implementation");
+  }
+
+  async createEditableContent(data: InsertEditableContent): Promise<EditableContent> {
+    throw new Error("Editable content storage requires DatabaseStorage implementation");
   }
 
 
@@ -1206,6 +1311,83 @@ export class DatabaseStorage implements IStorage {
         lastUpdated: new Date()
       })
       .where(eq(shoppingLists.id, shoppingListId));
+  }
+
+  // Shopping List Name methods for admin control
+  async createShoppingListName(data: InsertShoppingListName): Promise<ShoppingListName> {
+    const [created] = await db
+      .insert(shoppingListNames)
+      .values(data)
+      .returning();
+    return created;
+  }
+
+  async getShoppingListNames(): Promise<ShoppingListName[]> {
+    return await db
+      .select()
+      .from(shoppingListNames)
+      .orderBy(shoppingListNames.category, shoppingListNames.name);
+  }
+
+  async updateShoppingListName(id: number, updates: UpdateShoppingListName): Promise<ShoppingListName> {
+    const [updated] = await db
+      .update(shoppingListNames)
+      .set({
+        ...updates,
+        updatedAt: new Date()
+      })
+      .where(eq(shoppingListNames.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteShoppingListName(id: number): Promise<void> {
+    await db
+      .delete(shoppingListNames)
+      .where(eq(shoppingListNames.id, id));
+  }
+
+  // Ingredient Mapping methods for admin control
+  async createIngredientMapping(data: InsertIngredientMapping): Promise<IngredientMapping> {
+    const [created] = await db
+      .insert(ingredientMappings)
+      .values(data)
+      .returning();
+    return created;
+  }
+
+  async getIngredientMappings(): Promise<IngredientMapping[]> {
+    return await db
+      .select()
+      .from(ingredientMappings)
+      .orderBy(ingredientMappings.normalizedIngredient);
+  }
+
+  async getIngredientMappingByIngredient(normalizedIngredient: string): Promise<IngredientMapping | undefined> {
+    const [mapping] = await db
+      .select()
+      .from(ingredientMappings)
+      .where(eq(ingredientMappings.normalizedIngredient, normalizedIngredient))
+      .limit(1);
+    return mapping;
+  }
+
+  async updateIngredientMapping(id: number, updates: UpdateIngredientMapping): Promise<IngredientMapping> {
+    const [updated] = await db
+      .update(ingredientMappings)
+      .set({
+        ...updates,
+        updatedAt: new Date()
+      })
+      .where(eq(ingredientMappings.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteIngredientMapping(id: number): Promise<void> {
+    await db
+      .delete(ingredientMappings)
+      .where(eq(ingredientMappings.id, id));
   }
 
   // Editable Content methods

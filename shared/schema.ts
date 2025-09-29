@@ -171,8 +171,30 @@ export const userRecipes = pgTable("user_recipes", {
   uniqueUserRecipe: unique().on(table.userId, table.name),
 }));
 
+// Shopping list name standardization table
+export const shoppingListNames = pgTable("shopping_list_names", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull().unique(), // standardized grocery name e.g. "Kipfilet" 
+  category: text("category").notNull(), // e.g. "Proteins", "Vegetables", "Fruits"
+  defaultUnit: text("default_unit").default("g"), // default unit for this item
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
 
-
+// Ingredient to shopping list name mappings for admin control
+export const ingredientMappings = pgTable("ingredient_mappings", {
+  id: serial("id").primaryKey(),
+  originalIngredient: text("original_ingredient").notNull(), // e.g. "200g chicken breast"
+  normalizedIngredient: text("normalized_ingredient").notNull(), // e.g. "chicken breast" 
+  shoppingListNameId: integer("shopping_list_name_id").references(() => shoppingListNames.id),
+  quantity: real("quantity"), // extracted quantity e.g. 200
+  unit: text("unit"), // extracted unit e.g. "g"
+  isManualOverride: boolean("is_manual_override").default(false), // admin manually set this mapping
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => ({
+  uniqueIngredient: unique().on(table.normalizedIngredient),
+}));
 
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
@@ -495,3 +517,37 @@ export type RecipeModification = typeof recipeModifications.$inferSelect;
 export type InsertRecipeModification = z.infer<typeof insertRecipeModificationSchema>;
 export type RecipeDeletion = typeof recipeDeletions.$inferSelect;
 export type InsertRecipeDeletion = z.infer<typeof insertRecipeDeletionSchema>;
+
+// Shopping list name schemas
+export const insertShoppingListNameSchema = createInsertSchema(shoppingListNames).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const updateShoppingListNameSchema = createInsertSchema(shoppingListNames).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+}).partial();
+
+// Ingredient mapping schemas
+export const insertIngredientMappingSchema = createInsertSchema(ingredientMappings).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const updateIngredientMappingSchema = createInsertSchema(ingredientMappings).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+}).partial();
+
+export type ShoppingListName = typeof shoppingListNames.$inferSelect;
+export type InsertShoppingListName = z.infer<typeof insertShoppingListNameSchema>;
+export type UpdateShoppingListName = z.infer<typeof updateShoppingListNameSchema>;
+
+export type IngredientMapping = typeof ingredientMappings.$inferSelect;
+export type InsertIngredientMapping = z.infer<typeof insertIngredientMappingSchema>;
+export type UpdateIngredientMapping = z.infer<typeof updateIngredientMappingSchema>;

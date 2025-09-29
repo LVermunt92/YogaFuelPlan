@@ -118,6 +118,469 @@ interface UsersResponse {
   users: AdminUser[];
 }
 
+interface ShoppingListName {
+  id: number;
+  name: string;
+  category: string;
+  defaultUnit: string;
+  createdAt: Date | null;
+  updatedAt: Date | null;
+}
+
+interface IngredientMapping {
+  id: number;
+  originalIngredient: string;
+  normalizedIngredient: string;
+  shoppingListNameId: number | null;
+  quantity: number | null;
+  unit: string | null;
+  isManualOverride: boolean;
+  createdAt: Date | null;
+  updatedAt: Date | null;
+  shoppingListName?: ShoppingListName;
+}
+
+interface IngredientAnalysis {
+  originalIngredient: string;
+  normalizedIngredient: string;
+  extractedQuantity: number;
+  extractedUnit: string;
+  hasMapping: boolean;
+  mappingId?: number;
+  shoppingListNameId?: number;
+  isManualOverride?: boolean;
+  recipeName: string;
+  mealType: string;
+}
+
+interface IngredientAnalysisResponse {
+  mealPlan: {
+    id: number;
+    weekStart: string;
+    totalMeals: number;
+  };
+  ingredientAnalysis: IngredientAnalysis[];
+  totalIngredients: number;
+  mappedIngredients: number;
+  unmappedIngredients: number;
+}
+
+// Ingredient Mapping Manager Component
+function IngredientMappingManager() {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const [activeTab, setActiveTab] = useState("mappings");
+  const [editingMapping, setEditingMapping] = useState<IngredientMapping | null>(null);
+  const [editingShoppingListName, setEditingShoppingListName] = useState<ShoppingListName | null>(null);
+  const [mealPlanId, setMealPlanId] = useState("");
+  const [analysisResult, setAnalysisResult] = useState<IngredientAnalysisResponse | null>(null);
+
+  // Fetch shopping list names
+  const { data: shoppingListNames = [], isLoading: shoppingListNamesLoading } = useQuery<ShoppingListName[]>({
+    queryKey: ['/api/admin/shopping-list-names'],
+    queryFn: () => fetch('/api/admin/shopping-list-names').then(res => res.json()),
+  });
+
+  // Fetch ingredient mappings
+  const { data: ingredientMappings = [], isLoading: mappingsLoading } = useQuery<IngredientMapping[]>({
+    queryKey: ['/api/admin/ingredient-mappings'],
+    queryFn: () => fetch('/api/admin/ingredient-mappings').then(res => res.json()),
+  });
+
+  // Create shopping list name
+  const createShoppingListNameMutation = useMutation({
+    mutationFn: async (data: { name: string; category: string; defaultUnit: string }) => {
+      const response = await apiRequest('POST', '/api/admin/shopping-list-names', data);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/shopping-list-names'] });
+      toast({ title: "Success", description: "Shopping list name created successfully" });
+    },
+  });
+
+  // Update shopping list name
+  const updateShoppingListNameMutation = useMutation({
+    mutationFn: async ({ id, data }: { id: number; data: Partial<ShoppingListName> }) => {
+      const response = await apiRequest('PUT', `/api/admin/shopping-list-names/${id}`, data);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/shopping-list-names'] });
+      setEditingShoppingListName(null);
+      toast({ title: "Success", description: "Shopping list name updated successfully" });
+    },
+  });
+
+  // Delete shopping list name
+  const deleteShoppingListNameMutation = useMutation({
+    mutationFn: async (id: number) => {
+      const response = await apiRequest('DELETE', `/api/admin/shopping-list-names/${id}`);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/shopping-list-names'] });
+      toast({ title: "Success", description: "Shopping list name deleted successfully" });
+    },
+  });
+
+  // Create ingredient mapping
+  const createIngredientMappingMutation = useMutation({
+    mutationFn: async (data: {
+      originalIngredient: string;
+      normalizedIngredient: string;
+      shoppingListNameId?: number;
+      quantity?: number;
+      unit?: string;
+      isManualOverride: boolean;
+    }) => {
+      const response = await apiRequest('POST', '/api/admin/ingredient-mappings', data);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/ingredient-mappings'] });
+      toast({ title: "Success", description: "Ingredient mapping created successfully" });
+    },
+  });
+
+  // Update ingredient mapping
+  const updateIngredientMappingMutation = useMutation({
+    mutationFn: async ({ id, data }: { id: number; data: Partial<IngredientMapping> }) => {
+      const response = await apiRequest('PUT', `/api/admin/ingredient-mappings/${id}`, data);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/ingredient-mappings'] });
+      setEditingMapping(null);
+      toast({ title: "Success", description: "Ingredient mapping updated successfully" });
+    },
+  });
+
+  // Delete ingredient mapping
+  const deleteIngredientMappingMutation = useMutation({
+    mutationFn: async (id: number) => {
+      const response = await apiRequest('DELETE', `/api/admin/ingredient-mappings/${id}`);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/ingredient-mappings'] });
+      toast({ title: "Success", description: "Ingredient mapping deleted successfully" });
+    },
+  });
+
+  // Analyze ingredients
+  const analyzeIngredientsMutation = useMutation({
+    mutationFn: async (mealPlanId: string) => {
+      const response = await apiRequest('POST', '/api/admin/analyze-ingredients', { mealPlanId: parseInt(mealPlanId) });
+      return response.json();
+    },
+    onSuccess: (data) => {
+      setAnalysisResult(data);
+      toast({ title: "Success", description: "Ingredient analysis completed" });
+    },
+  });
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold">Ingredient Mapping Management</h2>
+          <p className="text-gray-600">Control how recipe ingredients are processed into grocery list items</p>
+        </div>
+      </div>
+
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList className="grid grid-cols-3 w-full">
+          <TabsTrigger value="mappings">Ingredient Mappings</TabsTrigger>
+          <TabsTrigger value="shopping-names">Shopping List Names</TabsTrigger>
+          <TabsTrigger value="analysis">Analysis</TabsTrigger>
+        </TabsList>
+
+        {/* Ingredient Mappings Tab */}
+        <TabsContent value="mappings" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <span>Ingredient Mappings ({ingredientMappings.length})</span>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button size="sm">
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Mapping
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Create Ingredient Mapping</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      <div>
+                        <Label>Original Ingredient</Label>
+                        <Input placeholder="e.g., '200g chicken breast'" data-testid="input-original-ingredient" />
+                      </div>
+                      <div>
+                        <Label>Normalized Ingredient</Label>
+                        <Input placeholder="e.g., 'chicken breast'" data-testid="input-normalized-ingredient" />
+                      </div>
+                      <div>
+                        <Label>Shopping List Name</Label>
+                        <Select>
+                          <SelectTrigger data-testid="select-shopping-list-name">
+                            <SelectValue placeholder="Select shopping list name" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {shoppingListNames.map((name) => (
+                              <SelectItem key={name.id} value={name.id.toString()}>
+                                {name.name} ({name.category})
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox id="manual-override" data-testid="checkbox-manual-override" />
+                        <Label htmlFor="manual-override">Manual Override</Label>
+                      </div>
+                    </div>
+                    <DialogFooter>
+                      <Button variant="outline">Cancel</Button>
+                      <Button>Create Mapping</Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {mappingsLoading ? (
+                <div>Loading mappings...</div>
+              ) : (
+                <div className="space-y-2">
+                  {ingredientMappings.map((mapping) => (
+                    <div key={mapping.id} className="flex items-center justify-between p-3 border rounded">
+                      <div className="flex-1">
+                        <div className="font-medium">{mapping.originalIngredient}</div>
+                        <div className="text-sm text-gray-600">→ {mapping.normalizedIngredient}</div>
+                        {mapping.shoppingListName && (
+                          <div className="text-xs text-blue-600">
+                            Maps to: {mapping.shoppingListName.name} ({mapping.shoppingListName.category})
+                          </div>
+                        )}
+                        {mapping.isManualOverride && (
+                          <Badge variant="secondary" className="text-xs">Manual Override</Badge>
+                        )}
+                      </div>
+                      <div className="flex gap-2">
+                        <Button size="sm" variant="outline" onClick={() => setEditingMapping(mapping)}>
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          size="sm" 
+                          variant="destructive" 
+                          onClick={() => deleteIngredientMappingMutation.mutate(mapping.id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                  {ingredientMappings.length === 0 && (
+                    <div className="text-center text-gray-500 py-8">
+                      No ingredient mappings found. Create your first mapping to get started.
+                    </div>
+                  )}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Shopping List Names Tab */}
+        <TabsContent value="shopping-names" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <span>Shopping List Names ({shoppingListNames.length})</span>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button size="sm">
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Name
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Create Shopping List Name</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      <div>
+                        <Label>Name</Label>
+                        <Input placeholder="e.g., 'Chicken Breast'" data-testid="input-shopping-list-name" />
+                      </div>
+                      <div>
+                        <Label>Category</Label>
+                        <Select>
+                          <SelectTrigger data-testid="select-category">
+                            <SelectValue placeholder="Select category" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="meat">Meat & Fish</SelectItem>
+                            <SelectItem value="vegetables">Vegetables</SelectItem>
+                            <SelectItem value="fruits">Fruits</SelectItem>
+                            <SelectItem value="grains">Grains & Cereals</SelectItem>
+                            <SelectItem value="dairy">Dairy</SelectItem>
+                            <SelectItem value="pantry">Pantry Items</SelectItem>
+                            <SelectItem value="spices">Spices & Herbs</SelectItem>
+                            <SelectItem value="other">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <Label>Default Unit</Label>
+                        <Input placeholder="e.g., 'g', 'kg', 'pieces'" data-testid="input-default-unit" />
+                      </div>
+                    </div>
+                    <DialogFooter>
+                      <Button variant="outline">Cancel</Button>
+                      <Button>Create Name</Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {shoppingListNamesLoading ? (
+                <div>Loading shopping list names...</div>
+              ) : (
+                <div className="space-y-2">
+                  {shoppingListNames.map((name) => (
+                    <div key={name.id} className="flex items-center justify-between p-3 border rounded">
+                      <div className="flex-1">
+                        <div className="font-medium">{name.name}</div>
+                        <div className="text-sm text-gray-600">
+                          {name.category} • Default unit: {name.defaultUnit}
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button size="sm" variant="outline" onClick={() => setEditingShoppingListName(name)}>
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          size="sm" 
+                          variant="destructive" 
+                          onClick={() => deleteShoppingListNameMutation.mutate(name.id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                  {shoppingListNames.length === 0 && (
+                    <div className="text-center text-gray-500 py-8">
+                      No shopping list names found. Create your first name to get started.
+                    </div>
+                  )}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Analysis Tab */}
+        <TabsContent value="analysis" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Ingredient Analysis</CardTitle>
+              <CardDescription>
+                Analyze how ingredients from a meal plan would be processed into grocery list items
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex gap-4">
+                <Input
+                  placeholder="Enter meal plan ID"
+                  value={mealPlanId}
+                  onChange={(e) => setMealPlanId(e.target.value)}
+                  data-testid="input-meal-plan-id"
+                />
+                <Button 
+                  onClick={() => analyzeIngredientsMutation.mutate(mealPlanId)}
+                  disabled={!mealPlanId || analyzeIngredientsMutation.isPending}
+                  data-testid="button-analyze-ingredients"
+                >
+                  <Search className="h-4 w-4 mr-2" />
+                  Analyze
+                </Button>
+              </div>
+
+              {analysisResult && (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <Card>
+                      <CardContent className="pt-4">
+                        <div className="text-2xl font-bold">{analysisResult.totalIngredients}</div>
+                        <p className="text-xs text-gray-600">Total Ingredients</p>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardContent className="pt-4">
+                        <div className="text-2xl font-bold text-green-600">{analysisResult.mappedIngredients}</div>
+                        <p className="text-xs text-gray-600">Mapped</p>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardContent className="pt-4">
+                        <div className="text-2xl font-bold text-red-600">{analysisResult.unmappedIngredients}</div>
+                        <p className="text-xs text-gray-600">Unmapped</p>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardContent className="pt-4">
+                        <div className="text-2xl font-bold">{analysisResult.mealPlan.totalMeals}</div>
+                        <p className="text-xs text-gray-600">Meals</p>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  <div className="space-y-2">
+                    {analysisResult.ingredientAnalysis.map((ingredient, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 border rounded">
+                        <div className="flex-1">
+                          <div className="font-medium">{ingredient.originalIngredient}</div>
+                          <div className="text-sm text-gray-600">
+                            {ingredient.recipeName} • {ingredient.mealType}
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            Normalized: {ingredient.normalizedIngredient}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {ingredient.hasMapping ? (
+                            <Badge variant="default" className="bg-green-100 text-green-800">
+                              Mapped
+                            </Badge>
+                          ) : (
+                            <>
+                              <Badge variant="destructive">Unmapped</Badge>
+                              <Button size="sm" variant="outline">
+                                <Plus className="h-4 w-4 mr-1" />
+                                Map
+                              </Button>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}
+
 // Access denied component for non-admin users
 function AccessDenied() {
   return (
@@ -354,11 +817,12 @@ function AdminPanelMain() {
         </div>
 
         <Tabs defaultValue="overview" className="space-y-4 sm:space-y-6">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-1 h-auto p-1">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-8 gap-1 h-auto p-1">
             <TabsTrigger value="overview" className="text-xs sm:text-sm py-2 px-2">Overview</TabsTrigger>
             <TabsTrigger value="nutrition" className="text-xs sm:text-sm py-2 px-2">Nutrition</TabsTrigger>
             <TabsTrigger value="config" className="text-xs sm:text-sm py-2 px-2">Config</TabsTrigger>
             <TabsTrigger value="recipes" className="bg-green-100 text-xs sm:text-sm py-2 px-2">Recipes</TabsTrigger>
+            <TabsTrigger value="ingredient-mapping" className="bg-orange-100 text-xs sm:text-sm py-2 px-2">Ingredients</TabsTrigger>
             <TabsTrigger value="save-changes" className="bg-blue-100 text-xs sm:text-sm py-2 px-2">Save Changes</TabsTrigger>
             <TabsTrigger value="users" className="text-xs sm:text-sm py-2 px-2">Users</TabsTrigger>
             <TabsTrigger value="system" className="text-xs sm:text-sm py-2 px-2">System</TabsTrigger>
@@ -1029,6 +1493,11 @@ function AdminPanelMain() {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Ingredient Mapping Tab */}
+          <TabsContent value="ingredient-mapping" className="space-y-6">
+            <IngredientMappingManager />
           </TabsContent>
 
           {/* Save Changes Tab */}

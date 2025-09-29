@@ -3064,6 +3064,302 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // ============================================================================
+  // ADMIN: Shopping List Name Management
+  // ============================================================================
+
+  // GET /api/admin/shopping-list-names - Get all shopping list names
+  app.get("/api/admin/shopping-list-names", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Authentication required" });
+      }
+
+      const user = await storage.getUser(req.session.userId);
+      if (!user || user.username !== 'admin') {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const shoppingListNames = await storage.getShoppingListNames();
+      res.json(shoppingListNames);
+    } catch (error) {
+      console.error("Error fetching shopping list names:", error);
+      res.status(500).json({ message: "Failed to fetch shopping list names" });
+    }
+  });
+
+  // POST /api/admin/shopping-list-names - Create shopping list name
+  app.post("/api/admin/shopping-list-names", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Authentication required" });
+      }
+
+      const user = await storage.getUser(req.session.userId);
+      if (!user || user.username !== 'admin') {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const { name, category, defaultUnit } = req.body;
+      if (!name || !category) {
+        return res.status(400).json({ message: "Name and category are required" });
+      }
+
+      const shoppingListName = await storage.createShoppingListName({
+        name,
+        category,
+        defaultUnit: defaultUnit || 'g'
+      });
+
+      res.json(shoppingListName);
+    } catch (error) {
+      console.error("Error creating shopping list name:", error);
+      res.status(500).json({ message: "Failed to create shopping list name" });
+    }
+  });
+
+  // PUT /api/admin/shopping-list-names/:id - Update shopping list name
+  app.put("/api/admin/shopping-list-names/:id", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Authentication required" });
+      }
+
+      const user = await storage.getUser(req.session.userId);
+      if (!user || user.username !== 'admin') {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const { id } = req.params;
+      const updates = req.body;
+
+      const shoppingListName = await storage.updateShoppingListName(parseInt(id), updates);
+      res.json(shoppingListName);
+    } catch (error) {
+      console.error("Error updating shopping list name:", error);
+      res.status(500).json({ message: "Failed to update shopping list name" });
+    }
+  });
+
+  // DELETE /api/admin/shopping-list-names/:id - Delete shopping list name
+  app.delete("/api/admin/shopping-list-names/:id", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Authentication required" });
+      }
+
+      const user = await storage.getUser(req.session.userId);
+      if (!user || user.username !== 'admin') {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const { id } = req.params;
+      await storage.deleteShoppingListName(parseInt(id));
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error deleting shopping list name:", error);
+      res.status(500).json({ message: "Failed to delete shopping list name" });
+    }
+  });
+
+  // ============================================================================
+  // ADMIN: Ingredient Mapping Management
+  // ============================================================================
+
+  // GET /api/admin/ingredient-mappings - Get all ingredient mappings
+  app.get("/api/admin/ingredient-mappings", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Authentication required" });
+      }
+
+      const user = await storage.getUser(req.session.userId);
+      if (!user || user.username !== 'admin') {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const mappings = await storage.getIngredientMappings();
+      res.json(mappings);
+    } catch (error) {
+      console.error("Error fetching ingredient mappings:", error);
+      res.status(500).json({ message: "Failed to fetch ingredient mappings" });
+    }
+  });
+
+  // POST /api/admin/ingredient-mappings - Create ingredient mapping
+  app.post("/api/admin/ingredient-mappings", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Authentication required" });
+      }
+
+      const user = await storage.getUser(req.session.userId);
+      if (!user || user.username !== 'admin') {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const { originalIngredient, normalizedIngredient, shoppingListNameId, quantity, unit, isManualOverride } = req.body;
+      
+      if (!originalIngredient || !normalizedIngredient) {
+        return res.status(400).json({ message: "Original and normalized ingredients are required" });
+      }
+
+      const mapping = await storage.createIngredientMapping({
+        originalIngredient,
+        normalizedIngredient,
+        shoppingListNameId,
+        quantity,
+        unit,
+        isManualOverride: isManualOverride || false
+      });
+
+      res.json(mapping);
+    } catch (error) {
+      console.error("Error creating ingredient mapping:", error);
+      res.status(500).json({ message: "Failed to create ingredient mapping" });
+    }
+  });
+
+  // PUT /api/admin/ingredient-mappings/:id - Update ingredient mapping
+  app.put("/api/admin/ingredient-mappings/:id", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Authentication required" });
+      }
+
+      const user = await storage.getUser(req.session.userId);
+      if (!user || user.username !== 'admin') {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const { id } = req.params;
+      const updates = req.body;
+
+      const mapping = await storage.updateIngredientMapping(parseInt(id), updates);
+      res.json(mapping);
+    } catch (error) {
+      console.error("Error updating ingredient mapping:", error);
+      res.status(500).json({ message: "Failed to update ingredient mapping" });
+    }
+  });
+
+  // DELETE /api/admin/ingredient-mappings/:id - Delete ingredient mapping
+  app.delete("/api/admin/ingredient-mappings/:id", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Authentication required" });
+      }
+
+      const user = await storage.getUser(req.session.userId);
+      if (!user || user.username !== 'admin') {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const { id } = req.params;
+      await storage.deleteIngredientMapping(parseInt(id));
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error deleting ingredient mapping:", error);
+      res.status(500).json({ message: "Failed to delete ingredient mapping" });
+    }
+  });
+
+  // POST /api/admin/analyze-ingredients - Analyze meal plan ingredients for mapping
+  app.post("/api/admin/analyze-ingredients", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Authentication required" });
+      }
+
+      const user = await storage.getUser(req.session.userId);
+      if (!user || user.username !== 'admin') {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const { mealPlanId } = req.body;
+      
+      if (!mealPlanId) {
+        return res.status(400).json({ message: "Meal plan ID is required" });
+      }
+
+      // Get meal plan with meals
+      const mealPlan = await storage.getMealPlanWithMeals(mealPlanId);
+      if (!mealPlan) {
+        return res.status(404).json({ message: "Meal plan not found" });
+      }
+
+      // Get all recipes for the meals
+      const { getCompleteEnhancedMealDatabase } = await import("./nutrition-enhanced");
+      const allRecipes = getCompleteEnhancedMealDatabase();
+      
+      // Process ingredients to show how they would be mapped
+      const ingredientAnalysis = [];
+      
+      for (const meal of mealPlan.meals) {
+        const recipe = allRecipes.find(r => r.name === meal.foodDescription);
+        if (recipe) {
+          for (const ingredient of recipe.ingredients) {
+            // Parse ingredient using the existing logic
+            const parseQuantityAndUnit = (ingredient: string): { quantity: number; unit: string; productName: string } => {
+              if (!ingredient || ingredient === '') {
+                return { quantity: 1, unit: '', productName: ingredient };
+              }
+              const cleanIngredient = ingredient.trim();
+              const match = cleanIngredient.match(/^(\d+(?:\.\d+)?)\s*([a-zA-Z]*)\s+(.+)/);
+              if (match) {
+                const quantity = parseFloat(match[1]);
+                const unit = match[2].trim();
+                const productName = match[3].trim();
+                return { quantity, unit, productName };
+              }
+              return { quantity: 1, unit: '', productName: cleanIngredient };
+            };
+
+            const { quantity, unit, productName } = parseQuantityAndUnit(ingredient);
+            
+            // Clean the ingredient name
+            const cleanedIngredient = productName
+              .replace(/\([^)]*\)/g, '') // Remove parentheses
+              .replace(/,.*$/g, '') // Remove everything after comma
+              .replace(/\s+/g, ' ') // Normalize spaces
+              .trim();
+
+            // Check if there's already a mapping
+            const existingMapping = await storage.getIngredientMappingByIngredient(cleanedIngredient);
+            
+            ingredientAnalysis.push({
+              originalIngredient: ingredient,
+              normalizedIngredient: cleanedIngredient,
+              extractedQuantity: quantity,
+              extractedUnit: unit,
+              hasMapping: !!existingMapping,
+              mappingId: existingMapping?.id,
+              shoppingListNameId: existingMapping?.shoppingListNameId,
+              isManualOverride: existingMapping?.isManualOverride,
+              recipeName: recipe.name,
+              mealType: meal.mealType
+            });
+          }
+        }
+      }
+
+      res.json({
+        mealPlan: {
+          id: mealPlan.id,
+          weekStart: mealPlan.weekStart,
+          totalMeals: mealPlan.meals.length
+        },
+        ingredientAnalysis,
+        totalIngredients: ingredientAnalysis.length,
+        mappedIngredients: ingredientAnalysis.filter(i => i.hasMapping).length,
+        unmappedIngredients: ingredientAnalysis.filter(i => !i.hasMapping).length
+      });
+    } catch (error) {
+      console.error("Error analyzing ingredients:", error);
+      res.status(500).json({ message: "Failed to analyze ingredients" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
