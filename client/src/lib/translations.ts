@@ -149,9 +149,9 @@ export const translations = {
     personalisedNutrition: "Personalised nutrition for your lifestyle",
     
     // Meal Plan Display
-    totalProtein: "Total Protein",
-    prepTimeTotal: "Total Prep Time",
-    mealPlanFor: "Meal Plan for",
+    totalProtein: "total protein",
+    prepTimeTotal: "total prep time",
+    mealPlanFor: "meal plan for",
     noMealPlan: "No meal plan selected",
     selectMealPlan: "Select a meal plan to view",
     
@@ -190,14 +190,14 @@ export const translations = {
     servings: "Servings",
     
     // Ingredients to Use Up
-    ingredientsToUseUp: "Ingredients to Use Up",
+    ingredientsToUseUp: "ingredients to use up",
     leftovers: "Leftovers",
     chives: "Chives",
     
     // Seasonal
-    seasonalNutrition: "Seasonal Nutrition",
-    seasonalFoods: "Seasonal Foods",
-    nutritionalFocus: "Nutritional Focus",
+    seasonalNutrition: "seasonal nutrition",
+    seasonalFoods: "seasonal foods",
+    nutritionalFocus: "nutritional focus",
     winter: "Winter",
     spring: "Spring",
     summer: "Summer", 
@@ -231,7 +231,7 @@ export const translations = {
     dutch: "Dutch",
     
     // Messages
-    mealPlanGenerated: "Meal Plan Generated",
+    mealPlanGenerated: "meal plan generated",
     mealPlanRegenerated: "Meal plan regenerated successfully!",
     errorGenerating: "Error generating meal plan",
     lastGenerated: "Last generated",
