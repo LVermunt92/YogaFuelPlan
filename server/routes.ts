@@ -632,7 +632,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       // Viral recipes are now integrated directly into the unified database
       const { getCompleteEnhancedMealDatabase } = await import("./nutrition-enhanced");
-      const allRecipes = getCompleteEnhancedMealDatabase();
+      const allRecipes = await getCompleteEnhancedMealDatabase();
       const currentRecipes = allRecipes.filter(recipe => recipe.tags.includes('viral'));
       console.log(`🔥 Unified database viral recipes: ${currentRecipes.length} recipes`);
       
@@ -1092,7 +1092,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // First check for admin modifications
       let mealOption = null;
-      const modifiedRecipes = getModifiedRecipeDatabase();
+      const modifiedRecipes = await getModifiedRecipeDatabase();
       mealOption = modifiedRecipes.find(recipe => 
         recipe.name === targetMeal.foodDescription || recipe.id === targetMeal.foodDescription
       );
@@ -1104,7 +1104,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       console.log(`Recipe found: ${mealOption ? 'YES' : 'NO'}`);
       if (!mealOption) {
-        const allRecipes = getCompleteEnhancedMealDatabase();
+        const allRecipes = await getCompleteEnhancedMealDatabase();
         console.log(`Available recipes: ${allRecipes.slice(0, 5).map(m => m.name).join(', ')}...`);
       }
 
@@ -2700,8 +2700,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   let nextRecipeId = 10000; // Start custom recipe IDs at 10000
 
   // Helper function to get modified recipe database
-  function getModifiedRecipeDatabase(): MealOption[] {
-    const baseRecipes = getCompleteEnhancedMealDatabase();
+  async function getModifiedRecipeDatabase(): Promise<MealOption[]> {
+    const baseRecipes = await getCompleteEnhancedMealDatabase();
     
     // Apply modifications and filter out deleted recipes
     return baseRecipes
@@ -2840,7 +2840,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         limit = '50'
       } = req.query;
 
-      let recipes = getModifiedRecipeDatabase();
+      let recipes = await getModifiedRecipeDatabase();
 
       // Apply filters
       if (search) {
@@ -2909,7 +2909,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(403).json({ message: "Admin access required" });
       }
 
-      const recipes = getModifiedRecipeDatabase();
+      const recipes = await getModifiedRecipeDatabase();
       
       const stats = {
         total: recipes.length,
@@ -2953,7 +2953,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const recipeId = req.params.id;
-      const recipes = getModifiedRecipeDatabase();
+      const recipes = await getModifiedRecipeDatabase();
       const recipe = recipes.find(r => (r.id || r.name) === recipeId);
 
       if (!recipe) {
@@ -2987,7 +2987,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Missing required fields" });
       }
 
-      const recipes = getModifiedRecipeDatabase();
+      const recipes = await getModifiedRecipeDatabase();
       const existingRecipe = recipes.find(r => (r.id || r.name) === recipeId);
 
       if (!existingRecipe) {
@@ -3074,7 +3074,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const recipeId = req.params.id;
-      const recipes = getModifiedRecipeDatabase();
+      const recipes = await getModifiedRecipeDatabase();
       const recipe = recipes.find(r => (r.id || r.name) === recipeId);
 
       if (!recipe) {
@@ -3114,7 +3114,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Invalid bulk update data" });
       }
 
-      const recipes = getModifiedRecipeDatabase();
+      const recipes = await getModifiedRecipeDatabase();
       const updatedRecipes: MealOption[] = [];
 
       for (const recipeId of recipeIds) {
@@ -3148,7 +3148,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(403).json({ message: "Admin access required" });
       }
 
-      const recipes = getModifiedRecipeDatabase();
+      const recipes = await getModifiedRecipeDatabase();
       
       res.setHeader('Content-Type', 'application/json');
       res.setHeader('Content-Disposition', 'attachment; filename="recipes-export.json"');
@@ -3437,7 +3437,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Get all recipes for the meals
       const { getCompleteEnhancedMealDatabase } = await import("./nutrition-enhanced");
-      const allRecipes = getCompleteEnhancedMealDatabase();
+      const allRecipes = await getCompleteEnhancedMealDatabase();
       
       // Process ingredients to show how they would be mapped
       const ingredientAnalysis = [];

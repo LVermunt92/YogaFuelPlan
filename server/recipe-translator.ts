@@ -1238,8 +1238,8 @@ Please respond with a JSON object in this exact format:
 /**
  * Selects recipes for automated translation based on various criteria
  */
-function selectRecipesForTranslation(maxRecipes: number = 10): AutoTranslationRequest[] {
-  const allRecipes = getCompleteEnhancedMealDatabase();
+async function selectRecipesForTranslation(maxRecipes: number = 10): Promise<AutoTranslationRequest[]> {
+  const allRecipes = await getCompleteEnhancedMealDatabase();
   
   // Filter criteria for translation selection
   const eligibleRecipes = allRecipes.filter(recipe => {
@@ -1295,7 +1295,7 @@ async function processMonthlyTranslations(): Promise<void> {
     console.log(`📅 Processing translations for ${currentMonth} ${currentYear}`);
     
     // Select recipes for translation
-    const recipesToTranslate = selectRecipesForTranslation(8); // 8 recipes per month
+    const recipesToTranslate = await selectRecipesForTranslation(8); // 8 recipes per month
     
     if (recipesToTranslate.length === 0) {
       console.log('⚠️ No eligible recipes found for translation');
@@ -1360,7 +1360,7 @@ async function processMonthlyTranslations(): Promise<void> {
 export async function translateRecipesNow(maxRecipes: number = 3): Promise<AutoTranslatedRecipe[]> {
   console.log('🚀 Manually triggering recipe translation...');
   
-  const recipesToTranslate = selectRecipesForTranslation(maxRecipes);
+  const recipesToTranslate = await selectRecipesForTranslation(maxRecipes);
   const translatedRecipes: AutoTranslatedRecipe[] = [];
   
   for (const request of recipesToTranslate) {

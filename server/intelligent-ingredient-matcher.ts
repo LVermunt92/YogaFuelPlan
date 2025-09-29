@@ -16,11 +16,11 @@ interface IngredientMatch {
 /**
  * Find recipes that naturally contain the ingredients user wants to use up
  */
-export function findRecipesWithIngredients(
+export async function findRecipesWithIngredients(
   ingredientsToUse: string[],
   category: 'breakfast' | 'lunch' | 'dinner',
   dietaryTags: string[] = []
-): IngredientMatch[] {
+): Promise<IngredientMatch[]> {
   if (!ingredientsToUse || ingredientsToUse.length === 0) {
     return [];
   }
@@ -28,7 +28,7 @@ export function findRecipesWithIngredients(
   console.log(`🔍 INTELLIGENT MATCHING: Looking for ${category} recipes containing: ${ingredientsToUse.join(', ')}`);
 
   // Filter recipes by category and dietary requirements
-  const allRecipes = getCompleteEnhancedMealDatabase();
+  const allRecipes = await getCompleteEnhancedMealDatabase();
   const categoryRecipes = allRecipes.filter(recipe => 
     recipe.category === category && 
     (dietaryTags.length === 0 || dietaryTags.every(tag => recipe.tags.includes(tag)))

@@ -12558,7 +12558,7 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
 }
 
 // Function to get complete unified meal database (now contains all recipes in one place)
-export function getCompleteEnhancedMealDatabase(): MealOption[] {
+export async function getCompleteEnhancedMealDatabase(): Promise<MealOption[]> {
   // Get base recipes and clean them (remove parenthetical descriptions from ingredients and normalize portions)
   const baseRecipes = RAW_MEAL_DATABASE.map(recipe => cleanRecipeData(recipe));
   
