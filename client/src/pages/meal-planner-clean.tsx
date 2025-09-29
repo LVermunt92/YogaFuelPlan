@@ -1299,7 +1299,7 @@ function MealPlannerMain() {
                                   <div className={`text-xs font-medium ${
                                     dinner.foodDescription.includes('(leftover)') ? 'text-blue-700' : 'text-green-700'
                                   }`}>
-                                    DINNER
+                                    {t.dinner.toUpperCase()}
                                   </div>
                                   {dinner.foodDescription.includes('(leftover)') && (
                                     <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">
@@ -1338,7 +1338,7 @@ function MealPlannerMain() {
                                         ? 'text-gray-700'
                                         : breakfast.foodDescription.includes('(leftover)') ? 'text-blue-700' : 'text-green-700'
                                     }`}>
-                                      BREAKFAST
+                                      {t.breakfast.toUpperCase()}
                                     </div>
                                     {breakfast.foodDescription.includes('(leftover)') && (
                                       <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">
@@ -1412,7 +1412,7 @@ function MealPlannerMain() {
                                         ? 'text-gray-700'
                                         : dinner.foodDescription.includes('(leftover)') ? 'text-blue-700' : 'text-green-700'
                                     }`}>
-                                      DINNER
+                                      {t.dinner.toUpperCase()}
                                     </div>
                                     {dinner.foodDescription.includes('(leftover)') && (
                                       <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">

@@ -192,6 +192,7 @@ export const translations = {
     // Ingredients to Use Up
     ingredientsToUseUp: "Ingredients to Use Up",
     leftovers: "Leftovers",
+    chives: "Chives",
     addIngredient: "Add Ingredient",
     ingredientPlaceholder: "e.g. leftover spinach, aging mushrooms...",
     removeIngredient: "Remove",
@@ -720,6 +721,7 @@ export const translations = {
     // Ingredients to Use Up
     ingredientsToUseUp: "Ingrediënten om Op te Maken",
     leftovers: "Restjes",
+    chives: "Bieslook",
     addIngredient: "Ingrediënt Toevoegen",
     ingredientPlaceholder: "bijv. restjes spinazie, verouderende champignons...",
     
