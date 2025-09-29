@@ -174,9 +174,45 @@ const ingredientTranslations: Record<string, string> = {
   'cauliflower': 'bloemkool',
   'sugar snaps': 'sugarsnaps',
   
+  // Additional seasonal Dutch vegetables
+  'pumpkin': 'pompoen',
+  'pumpkins': 'pompoenen', 
+  'winter squash': 'winterpompoen',
+  'brussels sprouts': 'spruitjes',
+  'endive': 'andijvie',
+  'artichoke': 'artisjok',
+  'celeriac': 'knolselderij',
+  'celery': 'selderij',
+  'green celery': 'groene selderij',
+  'kohlrabi': 'koolrabi',
+  'corn': 'mais',
+  'radish': 'radijs',
+  'turnip': 'raap',
+  'parsnip': 'pastinaak',
+  'fennel': 'venkel',
+  'chard': 'snijbiet',
+  'pak choi': 'paksoi',
+  'chinese cabbage': 'chinese kool',
+  'red cabbage': 'rodekool',
+  'savoy cabbage': 'savooikool',
+  'pointed cabbage': 'spitskool',
+  'white cabbage': 'witte kool',
+  'watercress': 'waterkers',
+  'lamb\'s lettuce': 'veldsla',
+  'crop lettuce': 'kropsla',
+  'leek': 'prei',
+  'string beans': 'sperziebonen',
+  'red beet': 'rode biet',
+  'beetroot': 'rode biet',
+  'mushrooms': 'paddenstoelen',
+  'apple': 'appel',
+  'apples': 'appels',
+  'pear': 'peer',
+  'pears': 'peren',
+  'grapes': 'druiven',
+  
   // Fruits
   'fruits': 'fruit',
-  'apple': 'appel',
   'banana': 'banaan',
   'berries': 'bessen',
   'mixed berries': 'gemixte bessen',
@@ -736,11 +772,14 @@ export function translateDutchToEnglish(dutchIngredient: string): string {
     return map[normalized];
   }
   
-  // Partial matching for compound ingredients
+  // Partial matching for compound ingredients (only for meaningful length words)
   for (const [dutch, english] of Object.entries(map)) {
-    if (normalized.includes(dutch) || dutch.includes(normalized)) {
-      console.log(`🔄 PARTIAL TRANSLATE: "${dutchIngredient}" -> "${english}" (via "${dutch}")`);
-      return english;
+    // Only do partial matching for words longer than 3 characters to avoid false matches
+    if (dutch.length > 3 && normalized.length > 3) {
+      if (normalized.includes(dutch) || dutch.includes(normalized)) {
+        console.log(`🔄 PARTIAL TRANSLATE: "${dutchIngredient}" -> "${english}" (via "${dutch}")`);
+        return english;
+      }
     }
   }
   
