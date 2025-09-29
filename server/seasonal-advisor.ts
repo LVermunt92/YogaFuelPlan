@@ -54,7 +54,7 @@ const AMSTERDAM_MONTHLY_PRODUCE = {
     peak: ['new potatoes', 'greenhouse peppers', 'early tomatoes']
   },
   6: { // July
-    vegetables: ['tomaten', 'komkommers', 'paprika', 'sperziebonen', 'mais', 'zomerpompoen', 'verse kruiden (basilicum, dille, munt)'],
+    vegetables: ['tomaten', 'komkommers', 'paprika', 'sperziebonen', 'mais', 'zomerpompoen', 'verse kruiden (basilicum, dille, munt)', 'nieuwe aardappelen'],
     localFocus: 'Peak summer greenhouse production',
     peak: ['tomatoes', 'cucumbers', 'sweet corn', 'fresh herbs']
   },
