@@ -1180,7 +1180,7 @@ function MealPlannerMain() {
 
               {/* Color Legend */}
               {currentMealPlan?.meals && (
-                <div className="mt-3 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                <div className="mt-3">
                   <p className="text-xs font-medium text-gray-700 mb-2">
                     {language === 'nl' ? 'Kleurlegende:' : 'Color Legend:'}
                   </p>
@@ -1209,7 +1209,7 @@ function MealPlannerMain() {
               
               {/* Show which leftover ingredients were used */}
               {currentMealPlan && userProfile?.leftovers && userProfile.leftovers.length > 0 && (
-                <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+                <div className="mt-3">
                   {(() => {
                     // Function to check if an ingredient is used
                     const isIngredientUsed = (ingredient: string) => {
