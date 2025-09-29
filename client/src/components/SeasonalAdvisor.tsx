@@ -134,17 +134,17 @@ export function SeasonalAdvisor() {
           {seasonalInfo.weekDescription}
         </p>
         
-        {/* Monthly Local Produce Section */}
-        {seasonalInfo.monthlyProduce && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           <div>
             <div className="flex items-center gap-2 mb-3">
               <Leaf className="h-4 w-4 text-green-600" />
               <h4 className="font-medium text-sm text-gray-700">
-                {language === 'nl' ? 'Lokale Groenten' : 'Local Produce'}
+                {language === 'nl' ? 'Nederlandse Seizoensgroenten' : 'Dutch Seasonal Vegetables'}
               </h4>
             </div>
             <div className="flex flex-wrap gap-1.5">
-              {seasonalInfo.monthlyProduce.vegetables.slice(0, 6).map((veg, index) => (
+              {/* Show Dutch seasonal vegetables from Voedingscentrum data first */}
+              {seasonalInfo.monthlyProduce?.vegetables?.slice(0, 8).map((veg, index) => (
                 <Badge 
                   key={index} 
                   variant="secondary" 
@@ -152,19 +152,7 @@ export function SeasonalAdvisor() {
                 >
                   {veg}
                 </Badge>
-              ))}
-            </div>
-          </div>
-        )}
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-          <div>
-            <div className="flex items-center gap-2 mb-3">
-              <Leaf className="h-4 w-4 text-green-600" />
-              <h4 className="font-medium text-sm text-gray-700">{t.seasonalFoods}</h4>
-            </div>
-            <div className="flex flex-wrap gap-1.5">
-              {seasonalInfo.seasonalFoods.slice(0, 6).map((food, index) => (
+              )) || seasonalInfo.seasonalFoods.slice(0, 8).map((food, index) => (
                 <Badge 
                   key={index} 
                   variant="secondary" 
@@ -174,6 +162,11 @@ export function SeasonalAdvisor() {
                 </Badge>
               ))}
             </div>
+            {seasonalInfo.monthlyProduce?.localFocus && (
+              <p className="text-xs text-gray-500 mt-2 leading-relaxed">
+                {seasonalInfo.monthlyProduce.localFocus}
+              </p>
+            )}
           </div>
           
           <div>
