@@ -64,9 +64,9 @@ const AMSTERDAM_MONTHLY_PRODUCE = {
     peak: ['peak tomatoes', 'sweet corn', 'eggplants', 'summer lettuce']
   },
   8: { // September
-    vegetables: ['aubergines', 'late zomer tomaten', 'zoete paprika', 'sperziebonen (laatste oogst)', 'vroege herfstgroenten'],
-    localFocus: 'Late summer harvest, autumn vegetables begin',
-    peak: ['late summer tomatoes', 'sweet peppers', 'last green beans']
+    vegetables: ['aubergines', 'late zomer tomaten', 'zoete paprika', 'sperziebonen (laatste oogst)', 'vroege spruitjes', 'winterprei', 'vroege pompoen', 'herfst sla'],
+    localFocus: 'Overgangsmaand: laatste zomergroenten samen met de eerste herfstgroenten - een mix van beide seizoenen',
+    peak: ['late zomer tomaten', 'zoete paprika', 'laatste sperziebonen']
   },
   9: { // October
     vegetables: ['pompoenen', 'winterpompoen', 'spruitjes (begin seizoen)', 'prei', 'witte kool', 'wortelen', 'rode bieten', 'paddenstoelen'],
