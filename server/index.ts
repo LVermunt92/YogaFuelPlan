@@ -70,6 +70,15 @@ app.use((req, res, next) => {
     console.error("Failed to initialize Oura auto-sync:", error);
   }
 
+  // Initialize automated recipe translation scheduler
+  try {
+    const { initializeTranslationScheduler } = await import("./recipe-translator");
+    initializeTranslationScheduler();
+    console.log('🌍 Recipe translation scheduler initialized successfully');
+  } catch (error) {
+    console.error("Failed to initialize recipe translation scheduler:", error);
+  }
+
   // Development-only: Keep database alive during active development
   if (process.env.NODE_ENV !== 'production') {
     const { storage } = await import("./storage");

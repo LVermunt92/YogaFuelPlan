@@ -1003,6 +1003,57 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Automated Translation Endpoints
+  app.post("/api/translate/manual", async (req, res) => {
+    try {
+      const { translateRecipesNow } = await import("./recipe-translator");
+      const maxRecipes = req.body.maxRecipes ? parseInt(req.body.maxRecipes as string) : 3;
+      
+      console.log(`🚀 Manual translation triggered for ${maxRecipes} recipes`);
+      const translatedRecipes = await translateRecipesNow(maxRecipes);
+      
+      res.json({
+        success: true,
+        message: `Successfully translated ${translatedRecipes.length} recipes`,
+        translatedRecipes: translatedRecipes.map(recipe => ({
+          originalId: recipe.originalId,
+          translatedName: recipe.translatedName,
+          language: recipe.language,
+          languageCode: recipe.languageCode,
+          translatedAt: recipe.translatedAt
+        }))
+      });
+    } catch (error) {
+      console.error('Manual translation failed:', error);
+      res.status(500).json({ 
+        success: false,
+        message: 'Failed to translate recipes', 
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  app.get("/api/translate/schedule", async (req, res) => {
+    try {
+      const { getNextTranslationDate, getAutomatedLanguages } = await import("./recipe-translator");
+      
+      const nextDate = getNextTranslationDate();
+      const supportedLanguages = getAutomatedLanguages();
+      
+      res.json({
+        nextScheduledTranslation: nextDate,
+        supportedLanguages,
+        schedule: {
+          monthly: "1st of each month at 2:00 AM UTC",
+          weeklyTest: "Every Sunday at 3:00 AM UTC"
+        }
+      });
+    } catch (error) {
+      console.error('Translation schedule status error:', error);
+      res.status(500).json({ message: 'Failed to get translation schedule status' });
+    }
+  });
+
   app.get("/api/meals/:mealId/recipe", async (req, res) => {
     try {
       const mealId = parseInt(req.params.mealId);
