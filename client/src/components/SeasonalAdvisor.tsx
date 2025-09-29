@@ -79,12 +79,16 @@ export function SeasonalAdvisor() {
   };
 
   const { data: seasonalInfo, isLoading } = useQuery<SeasonalInfo>({
-    queryKey: ['/api/seasonal', coords],
+    queryKey: ['/api/seasonal', coords, language],
     queryFn: async () => {
-      const url = coords 
-        ? `/api/seasonal?lat=${coords.latitude}&lng=${coords.longitude}`
-        : '/api/seasonal';
+      const params = new URLSearchParams();
+      if (coords) {
+        params.set('lat', coords.latitude.toString());
+        params.set('lng', coords.longitude.toString());
+      }
+      params.set('language', language);
       
+      const url = `/api/seasonal?${params.toString()}`;
       const response = await fetch(url);
       if (!response.ok) throw new Error('Failed to fetch seasonal info');
       return response.json();
