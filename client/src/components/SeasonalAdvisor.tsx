@@ -187,21 +187,6 @@ export function SeasonalAdvisor() {
                 </div>
               </div>
               
-              <div>
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-lg">⭐</span>
-                  <h4 className="font-medium text-emerald-800 dark:text-emerald-200">
-                    {language === 'nl' ? 'Topseizoen' : 'Peak Harvest'}
-                  </h4>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {seasonalInfo.monthlyProduce.peak.map((item, index) => (
-                    <div key={index} className="px-3 py-2 bg-gradient-to-r from-amber-100 to-orange-100 dark:from-amber-900/20 dark:to-orange-900/20 text-amber-800 dark:text-amber-200 rounded-full text-sm font-medium border border-amber-200 dark:border-amber-700/50 hover:from-amber-200 hover:to-orange-200 dark:hover:from-amber-900/40 dark:hover:to-orange-900/40 transition-all">
-                      {item}
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
           </div>
         )}
