@@ -2040,20 +2040,21 @@ async function generateMealPrepPlan(
   let breakfastOptions = rawBreakfastOptions; // No serving size filtering - dynamic scaling
   console.log(`✓ Breakfast variety: Found ${breakfastOptions.length} breakfast options for dietary tags: ${dietaryTags.join(', ')} (no serving filter - dynamic scaling)`);
   
-  // Smart fallback for breakfast variety - prioritize meal variety for better user experience
+  // Smart fallback for breakfast variety - maintain ALL dietary restrictions
   if (breakfastOptions.length < 4) {
-    console.log('⚠️ Limited breakfast variety, applying smart fallback for better meal rotation');
-    // Keep critical dietary restrictions (vegetarian) but relax others for breakfast variety
-    const criticalTags = dietaryTags.filter(tag => ['vegetarian', 'vegan', 'kosher', 'halal'].includes(tag));
+    console.log('⚠️ Limited breakfast variety, applying smart fallback while maintaining ALL dietary restrictions');
+    // CRITICAL FIX: Keep ALL dietary restrictions - never compromise lactose-free, gluten-free, etc.
+    // All dietary tags are critical for user health and preferences
     
-    // Directly get breakfast meals with only critical restrictions
-    // Import already available at top of file
+    // Directly get breakfast meals with ALL dietary restrictions maintained
     const allBreakfasts = getEnhancedMealsByCategory('breakfast');
-    const fallbackBreakfasts = filterEnhancedMealsByDietaryTags(allBreakfasts, criticalTags);
+    const fallbackBreakfasts = filterEnhancedMealsByDietaryTags(allBreakfasts, dietaryTags);
     
     if (fallbackBreakfasts.length > breakfastOptions.length) {
       breakfastOptions = fallbackBreakfasts;
-      console.log(`✓ Breakfast fallback: Found ${breakfastOptions.length} breakfast options respecting critical dietary restrictions: ${criticalTags.join(', ')}`);
+      console.log(`✓ Breakfast fallback: Found ${breakfastOptions.length} breakfast options respecting ALL dietary restrictions: ${dietaryTags.join(', ')}`);
+    } else {
+      console.log(`⚠️ Fallback did not improve variety - keeping original ${breakfastOptions.length} options with strict dietary compliance`);
     }
   }
   
