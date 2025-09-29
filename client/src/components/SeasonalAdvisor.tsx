@@ -120,8 +120,8 @@ export function SeasonalAdvisor() {
   ];
 
   return (
-    <Card className="w-full">
-      <CardHeader className="pb-4">
+    <Card className="w-full" padding="none">
+      <CardHeader className="pb-4 px-6 pt-6">
         <CardTitle className="flex items-center gap-2">
           <span className="text-xl">{seasonIcons[seasonalInfo.season]}</span>
           <span className="text-gray-900">
@@ -133,7 +133,7 @@ export function SeasonalAdvisor() {
           </div>
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4 sm:space-y-6">
+      <CardContent className="space-y-4 sm:space-y-6 px-6 pb-6">
         <p className="text-sm text-gray-600 leading-relaxed">
           {seasonalInfo.weekDescription}
         </p>

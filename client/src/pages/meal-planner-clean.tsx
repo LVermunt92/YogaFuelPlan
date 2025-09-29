@@ -834,7 +834,9 @@ function MealPlannerMain() {
           )}
 
           {/* 3. Seasonal Advisor */}
-          <SeasonalAdvisor />
+          <div className="container">
+            <SeasonalAdvisor />
+          </div>
 
           {/* 4. Health Tracking (Oura Ring) */}
           {ouraStatus?.connected && ouraData && ouraData.length > 0 && (
