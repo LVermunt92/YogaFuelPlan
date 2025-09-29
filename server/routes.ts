@@ -3375,13 +3375,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Get coordinates from query params if provided
       const latitude = req.query.lat ? parseFloat(req.query.lat as string) : undefined;
       const longitude = req.query.lng ? parseFloat(req.query.lng as string) : undefined;
+      const language = req.query.language as string || 'nl'; // Default to Dutch
       
       let coords;
       if (latitude !== undefined && longitude !== undefined) {
         coords = { latitude, longitude };
       }
       
-      const seasonalInfo = getSeasonalInfo(coords);
+      const seasonalInfo = getSeasonalInfo(coords, language);
       res.json(seasonalInfo);
     } catch (error) {
       console.error("Error getting seasonal advice:", error);

@@ -1,3 +1,5 @@
+import { translateDutchToEnglish } from './recipe-translator';
+
 export interface SeasonalInfo {
   season: 'winter' | 'spring' | 'summer' | 'autumn';
   location: string;
@@ -282,7 +284,7 @@ export function getCurrentSeasonMonths(coords?: LocationCoords): string[] {
   return getSeasonalMonths(currentSeason, hemisphere);
 }
 
-export function getSeasonalInfo(coords?: LocationCoords): SeasonalInfo {
+export function getSeasonalInfo(coords?: LocationCoords, language: string = 'nl'): SeasonalInfo {
   const now = new Date();
   
   // Default to Amsterdam coordinates if no location provided
@@ -310,21 +312,29 @@ export function getSeasonalInfo(coords?: LocationCoords): SeasonalInfo {
     'Boerenmarkten in Vondelpark (zaterdag) - Lokale kwekers'
   ];
   
+  // Translate vegetables to English if requested
+  const translateArray = (arr: string[]) => {
+    if (language === 'en') {
+      return arr.map(item => translateDutchToEnglish(item));
+    }
+    return arr;
+  };
+
   return {
     season,
     location: locationName,
     hemisphere,
     seasonalFoods: [
-      ...seasonalData.vegetables.slice(0, 4),
-      ...seasonalData.fruits.slice(0, 3),
+      ...translateArray(seasonalData.vegetables.slice(0, 4)),
+      ...translateArray(seasonalData.fruits.slice(0, 3)),
     ],
-    nutritionalTips: seasonalData.characteristics,
+    nutritionalTips: translateArray(seasonalData.characteristics),
     weekDescription: generateWeekDescription(season, locationName),
     colorAccent: getSeasonalColor(season),
     monthlyProduce: monthlyData ? {
-      vegetables: monthlyData.vegetables,
+      vegetables: translateArray(monthlyData.vegetables),
       localFocus: monthlyData.localFocus,
-      peak: monthlyData.peak
+      peak: translateArray(monthlyData.peak)
     } : undefined,
     localMarkets: locationName.includes('Amsterdam') || locationName.includes('Netherlands') ? localMarkets : undefined
   };
