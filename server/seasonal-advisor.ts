@@ -304,18 +304,43 @@ export function getSeasonalInfo(coords?: LocationCoords, language: string = 'nl'
   const currentMonth = now.getMonth();
   const monthlyData = AMSTERDAM_MONTHLY_PRODUCE[currentMonth];
   
+  // Translate vegetables to English if language is 'en'
+  let translatedVegetables = monthlyData ? [...monthlyData.vegetables] : [];
+  let translatedLocalFocus = monthlyData?.localFocus || '';
+  let translatedPeak = monthlyData ? [...monthlyData.peak] : [];
+  
+  if (language === 'en' && monthlyData) {
+    // Translate vegetables from Dutch to English
+    translatedVegetables = monthlyData.vegetables.map(vegetable => 
+      translateDutchToEnglish(vegetable) || vegetable
+    );
+    
+    // Translate peak items from Dutch to English
+    translatedPeak = monthlyData.peak.map(peak => 
+      translateDutchToEnglish(peak) || peak
+    );
+    
+    // Translate local focus description
+    translatedLocalFocus = translateDutchToEnglish(monthlyData.localFocus) || monthlyData.localFocus;
+  }
+  
   // Amsterdam local markets for seasonal produce
-  const localMarkets = [
+  const localMarkets = language === 'en' ? [
+    'Noordermarkt (Saturday) - Fresh local vegetables and organic products',
+    'Nieuwmarkt Farmers Market (Saturday) - Organic local farmers',
+    'Albert Cuyp Market - Traditional market with seasonal Dutch products',
+    'Vondelpark Farmers Markets (Saturday) - Local growers'
+  ] : [
     'Noordermarkt (zaterdag) - Verse lokale groenten en biologische producten',
     'Boerenmarkt Nieuwmarkt (zaterdag) - Biologische lokale boeren',
     'Albert Cuyp Markt - Traditionele markt met seizoensgebonden Nederlandse producten',
     'Boerenmarkten in Vondelpark (zaterdag) - Lokale kwekers'
   ];
   
-  // Translate vegetables to English if requested
+  // Helper function to translate arrays
   const translateArray = (arr: string[]) => {
     if (language === 'en') {
-      return arr.map(item => translateDutchToEnglish(item));
+      return arr.map(item => translateDutchToEnglish(item) || item);
     }
     return arr;
   };
@@ -332,9 +357,9 @@ export function getSeasonalInfo(coords?: LocationCoords, language: string = 'nl'
     weekDescription: generateWeekDescription(season, locationName),
     colorAccent: getSeasonalColor(season),
     monthlyProduce: monthlyData ? {
-      vegetables: translateArray(monthlyData.vegetables),
-      localFocus: monthlyData.localFocus,
-      peak: translateArray(monthlyData.peak)
+      vegetables: translatedVegetables,
+      localFocus: translatedLocalFocus,
+      peak: translatedPeak
     } : undefined,
     localMarkets: locationName.includes('Amsterdam') || locationName.includes('Netherlands') ? localMarkets : undefined
   };
