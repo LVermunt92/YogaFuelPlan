@@ -136,57 +136,23 @@ export function SeasonalAdvisor() {
         
         {/* Monthly Local Produce Section */}
         {seasonalInfo.monthlyProduce && (
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <div className="flex items-center justify-center w-10 h-10 bg-emerald-100 dark:bg-emerald-900/30 rounded-full">
-                  <span className="text-xl">🌱</span>
-                </div>
-                <div>
-                  <h3 className="font-semibold text-lg text-emerald-800 dark:text-emerald-200">
-                    {language === 'nl' ? 'Lokale Groenten Amsterdam' : 'Local Amsterdam Produce'}
-                  </h3>
-                  <p className="text-sm text-emerald-600 dark:text-emerald-400">
-                    {monthNames[currentMonth]} {new Date().getFullYear()}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-1 px-3 py-1 bg-emerald-100 dark:bg-emerald-900/30 rounded-full">
-                <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-                <span className="text-xs font-medium text-emerald-700 dark:text-emerald-300">
-                  {language === 'nl' ? 'Seizoen' : 'In Season'}
-                </span>
-              </div>
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <Leaf className="h-4 w-4 text-green-600" />
+              <h4 className="font-medium text-sm text-gray-700">
+                {language === 'nl' ? 'Lokale Groenten Amsterdam' : 'Local Amsterdam Produce'}
+              </h4>
             </div>
-            
-            <div className="mb-4 p-4 bg-white/50 dark:bg-gray-800/20 rounded-lg border border-emerald-100 dark:border-emerald-800/30">
-              <p className="text-sm text-emerald-800 dark:text-emerald-200 font-medium leading-relaxed">
-                {seasonalInfo.monthlyProduce.localFocus}
-              </p>
-            </div>
-            
-            <div className="space-y-4">
-              <div>
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-lg">🥬</span>
-                  <h4 className="font-medium text-emerald-800 dark:text-emerald-200">
-                    {language === 'nl' ? 'Lokaal Geteeld Deze Maand' : 'Locally Grown This Month'}
-                  </h4>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {seasonalInfo.monthlyProduce.vegetables.slice(0, 8).map((veg, index) => (
-                    <div key={index} className="px-3 py-2 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-200 rounded-full text-sm font-medium border border-emerald-200 dark:border-emerald-700/50 hover:bg-emerald-200 dark:hover:bg-emerald-900/50 transition-colors">
-                      {veg}
-                    </div>
-                  ))}
-                  {seasonalInfo.monthlyProduce.vegetables.length > 8 && (
-                    <div className="px-3 py-2 bg-emerald-50 dark:bg-emerald-900/10 text-emerald-600 dark:text-emerald-400 rounded-full text-sm border border-emerald-200 dark:border-emerald-700/30">
-                      +{seasonalInfo.monthlyProduce.vegetables.length - 8} {language === 'nl' ? 'meer' : 'more'}
-                    </div>
-                  )}
-                </div>
-              </div>
-              
+            <div className="flex flex-wrap gap-1.5">
+              {seasonalInfo.monthlyProduce.vegetables.slice(0, 6).map((veg, index) => (
+                <Badge 
+                  key={index} 
+                  variant="secondary" 
+                  className="text-xs capitalize bg-green-50 text-green-700 hover:bg-green-100"
+                >
+                  {veg}
+                </Badge>
+              ))}
             </div>
           </div>
         )}
