@@ -6,6 +6,12 @@ export interface SeasonalInfo {
   nutritionalTips: string[];
   weekDescription: string;
   colorAccent: string;
+  monthlyProduce?: {
+    vegetables: string[];
+    localFocus: string;
+    peak: string[];
+  };
+  localMarkets?: string[];
 }
 
 export interface LocationCoords {
@@ -15,31 +21,99 @@ export interface LocationCoords {
   country?: string;
 }
 
-// Seasonal food data for Netherlands/Northern Europe
+// Amsterdam month-specific locally grown vegetables calendar
+const AMSTERDAM_MONTHLY_PRODUCE = {
+  0: { // January
+    vegetables: ['spruitjes', 'boerenkool', 'prei', 'witte kool', 'rode kool', 'wortelen', 'pastinaak', 'winteruien', 'aardappelen (bewaard)'],
+    localFocus: 'Winter vegetables from storage and cold-hardy greens',
+    peak: ['Brussels sprouts', 'kale', 'stored root vegetables']
+  },
+  1: { // February
+    vegetables: ['spruitjes', 'boerenkool', 'prei', 'wortelen', 'pastinaak', 'knolrapen', 'aardappelen', 'winterkool'],
+    localFocus: 'Peak winter vegetables, last of stored harvest',
+    peak: ['Brussels sprouts', 'winter leeks', 'stored carrots']
+  },
+  2: { // March
+    vegetables: ['witte asperges (eind maart)', 'vroege sla', 'spinazie', 'broccoli', 'bloemkool', 'doperwten', 'prei'],
+    localFocus: 'Early spring vegetables begin, white asparagus starts',
+    peak: ['early spring greens', 'white asparagus begins', 'spinach']
+  },
+  3: { // April
+    vegetables: ['witte asperges', 'lente-uitjes', 'radijsjes', 'vroege sla', 'spinazie', 'verse kruiden (bieslook, peterselie)'],
+    localFocus: 'Spring vegetables abundant, asparagus season',
+    peak: ['white asparagus', 'spring onions', 'fresh herbs']
+  },
+  4: { // May
+    vegetables: ['witte asperges', 'lente-uitjes', 'radijsjes', 'spinazie', 'snijbiet', 'verse kruiden', 'vroege doperwten'],
+    localFocus: 'Peak spring produce, herb garden flourishing',
+    peak: ['white asparagus peak', 'Swiss chard', 'fresh peas']
+  },
+  5: { // June
+    vegetables: ['nieuwe aardappelen', 'paprika (kas)', 'komkommers (kas)', 'vroege tomaten (kas)', 'courgette', 'witte asperges (eind seizoen)'],
+    localFocus: 'First summer vegetables from greenhouses, new potatoes',
+    peak: ['new potatoes', 'greenhouse peppers', 'early tomatoes']
+  },
+  6: { // July
+    vegetables: ['tomaten', 'komkommers', 'paprika', 'sperziebonen', 'mais', 'zomerpompoen', 'verse kruiden (basilicum, dille, munt)'],
+    localFocus: 'Peak summer greenhouse production',
+    peak: ['tomatoes', 'cucumbers', 'sweet corn', 'fresh herbs']
+  },
+  7: { // August
+    vegetables: ['tomaten', 'komkommers', 'paprika', 'sperziebonen', 'mais', 'zomerpompoen', 'aubergines (kas)', 'sla variëteiten'],
+    localFocus: 'Abundant summer harvest from greenhouses and fields',
+    peak: ['peak tomatoes', 'sweet corn', 'eggplants', 'summer lettuce']
+  },
+  8: { // September
+    vegetables: ['aubergines', 'late zomer tomaten', 'zoete paprika', 'sperziebonen (laatste oogst)', 'vroege herfstgroenten'],
+    localFocus: 'Late summer harvest, autumn vegetables begin',
+    peak: ['late summer tomatoes', 'sweet peppers', 'last green beans']
+  },
+  9: { // October
+    vegetables: ['pompoenen', 'winterpompoen', 'spruitjes (begin seizoen)', 'prei', 'witte kool', 'wortelen', 'rode bieten', 'paddenstoelen'],
+    localFocus: 'Autumn harvest, winter vegetables begin',
+    peak: ['pumpkins', 'winter squash', 'Brussels sprouts begin', 'mushrooms']
+  },
+  10: { // November
+    vegetables: ['pompoenen', 'winterpompoen', 'spruitjes', 'prei', 'kool', 'wortelen', 'rode bieten', 'paddenstoelen', 'knolselderij'],
+    localFocus: 'Peak autumn harvest, winter storage vegetables',
+    peak: ['winter squash', 'Brussels sprouts', 'celeriac', 'storage vegetables']
+  },
+  11: { // December
+    vegetables: ['boerenkool', 'spruitjes', 'winterprei', 'bewaard wortelgroenten', 'aardappelen', 'winterkool', 'uien'],
+    localFocus: 'Winter vegetables from storage, cold-hardy greens',
+    peak: ['kale', 'Brussels sprouts', 'winter leeks', 'stored vegetables']
+  }
+};
+
+// Enhanced seasonal food data for Netherlands/Northern Europe with local produce integration
 const SEASONAL_FOODS = {
   winter: {
-    vegetables: ['spruitjes', 'kool', 'wortelen', 'pastinaak', 'prei', 'aardappelen', 'uien', 'rode bieten'],
+    vegetables: ['spruitjes', 'boerenkool', 'kool', 'wortelen', 'pastinaak', 'prei', 'aardappelen', 'uien', 'rode bieten'],
     fruits: ['appels', 'peren', 'citrusvruchten', 'kiwi', 'kaki'],
     proteins: ['stevige stoofpotten', 'wortelgroenten', 'verwarmende kruiden'],
-    characteristics: ['verwarmend voedsel', 'immuunondersteuning', 'comfortvoedsel', 'vitamine D rijk voedsel']
+    characteristics: ['verwarmend voedsel', 'immuunondersteuning', 'comfortvoedsel', 'vitamine D rijk voedsel'],
+    localFocus: 'Cold-hardy vegetables and stored harvest from local farms'
   },
   spring: {
-    vegetables: ['asperges', 'lente-uitjes', 'radijsjes', 'sla', 'spinazie', 'doperwten', 'artisjokken'],
+    vegetables: ['witte asperges', 'lente-uitjes', 'radijsjes', 'sla', 'spinazie', 'doperwten', 'verse kruiden'],
     fruits: ['aardbeien', 'rabarber', 'vroege bessen'],
     proteins: ['lichte eiwitten', 'verse kruiden', 'detox voedsel'],
-    characteristics: ['detoxificerend voedsel', 'verse groenten', 'leverondersteuning', 'energie boost']
+    characteristics: ['detoxificerend voedsel', 'verse groenten', 'leverondersteuning', 'energie boost'],
+    localFocus: 'Famous Dutch white asparagus and fresh spring greens'
   },
   summer: {
-    vegetables: ['tomaten', 'courgette', 'paprika', 'komkommers', 'aubergine', 'mais', 'sperziebonen'],
+    vegetables: ['tomaten (kas)', 'courgette', 'paprika', 'komkommers', 'aubergine', 'mais', 'sperziebonen'],
     fruits: ['bessen', 'steenvruchten', 'meloenen', 'kersen', 'abrikozen'],
     proteins: ['verkoelende eiwitten', 'rauw voedsel', 'hydraterend voedsel'],
-    characteristics: ['verkoelend voedsel', 'hydratatie', 'rauwe bereidingen', 'lichte maaltijden']
+    characteristics: ['verkoelend voedsel', 'hydratatie', 'rauwe bereidingen', 'lichte maaltijden'],
+    localFocus: 'Peak Dutch greenhouse production - tomatoes, peppers, cucumbers'
   },
   autumn: {
-    vegetables: ['pompoenen', 'pompoen', 'zoete aardappelen', 'bloemkool', 'broccoli', 'paddenstoelen'],
+    vegetables: ['pompoenen', 'winterpompoen', 'zoete aardappelen', 'bloemkool', 'broccoli', 'paddenstoelen', 'spruitjes'],
     fruits: ['appels', 'peren', 'druiven', 'cranberries', 'granaatappels'],
     proteins: ['versterkend voedsel', 'verwarmende kruiden', 'immuunondersteuning'],
-    characteristics: ['versterkend voedsel', 'immuunondersteuning', 'oogstsmaken', 'verwarmende bereidingen']
+    characteristics: ['versterkend voedsel', 'immuunondersteuning', 'oogstsmaken', 'verwarmende bereidingen'],
+    localFocus: 'Harvest season - pumpkins, squash, and autumn storage vegetables'
   }
 };
 
@@ -205,6 +279,16 @@ export function getSeasonalInfo(coords?: LocationCoords): SeasonalInfo {
   const locationName = getLocationName(location);
   
   const seasonalData = SEASONAL_FOODS[season];
+  const currentMonth = now.getMonth();
+  const monthlyData = AMSTERDAM_MONTHLY_PRODUCE[currentMonth];
+  
+  // Amsterdam local markets for seasonal produce
+  const localMarkets = [
+    'Noordermarkt (Saturday) - Fresh local vegetables and organic produce',
+    'Boerenmarkt Nieuwmarkt (Saturday) - Organic local farms',
+    'Albert Cuyp Market - Traditional market with seasonal Dutch produce',
+    'Farmers markets in Vondelpark (Saturday) - Local growers'
+  ];
   
   return {
     season,
@@ -216,7 +300,13 @@ export function getSeasonalInfo(coords?: LocationCoords): SeasonalInfo {
     ],
     nutritionalTips: seasonalData.characteristics,
     weekDescription: generateWeekDescription(season, locationName),
-    colorAccent: getSeasonalColor(season)
+    colorAccent: getSeasonalColor(season),
+    monthlyProduce: monthlyData ? {
+      vegetables: monthlyData.vegetables,
+      localFocus: monthlyData.localFocus,
+      peak: monthlyData.peak
+    } : undefined,
+    localMarkets: locationName.includes('Amsterdam') || locationName.includes('Netherlands') ? localMarkets : undefined
   };
 }
 

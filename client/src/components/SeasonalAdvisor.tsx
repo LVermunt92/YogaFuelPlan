@@ -102,6 +102,13 @@ export function SeasonalAdvisor() {
     return null;
   }
 
+  // Get current month name for display
+  const currentMonth = new Date().getMonth();
+  const monthNames = [
+    t.january, t.february, t.march, t.april, t.may, t.june,
+    t.july, t.august, t.september, t.october, t.november, t.december
+  ];
+
   return (
     <Card className="w-full lg:max-w-4xl lg:mx-auto">
       <CardHeader className="pb-4">
@@ -120,6 +127,41 @@ export function SeasonalAdvisor() {
         <p className="text-sm text-gray-600 leading-relaxed">
           {seasonalInfo.weekDescription}
         </p>
+        
+        {/* Monthly Local Produce Section */}
+        {seasonalInfo.monthlyProduce && (
+          <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-lg p-4 border border-green-200 dark:border-green-700">
+            <h3 className="font-medium text-base flex items-center gap-2 mb-3">
+              <span className="text-lg">🌱</span>
+              Local Amsterdam Produce - {monthNames[currentMonth]}
+            </h3>
+            <div className="text-sm text-gray-700 dark:text-gray-300 mb-3 font-medium">
+              {seasonalInfo.monthlyProduce.localFocus}
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div>
+                <h4 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">🥬 Locally Grown This Month:</h4>
+                <div className="flex flex-wrap gap-1">
+                  {seasonalInfo.monthlyProduce.vegetables.slice(0, 6).map((veg, index) => (
+                    <Badge key={index} variant="secondary" className="text-xs bg-green-100 text-green-700 hover:bg-green-200">
+                      {veg}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h4 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">⭐ Peak Harvest:</h4>
+                <div className="flex flex-wrap gap-1">
+                  {seasonalInfo.monthlyProduce.peak.map((item, index) => (
+                    <Badge key={index} variant="outline" className="text-xs border-orange-200 text-orange-700 hover:bg-orange-50">
+                      {item}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           <div>
@@ -158,6 +200,23 @@ export function SeasonalAdvisor() {
             </div>
           </div>
         </div>
+        
+        {/* Local Markets Section */}
+        {seasonalInfo.localMarkets && (
+          <div className="border-t pt-4">
+            <h3 className="font-medium text-base flex items-center gap-2 mb-3">
+              <span className="text-lg">🏪</span>
+              Where to Find Fresh Local Produce
+            </h3>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+              {seasonalInfo.localMarkets.map((market, index) => (
+                <div key={index} className="text-sm px-3 py-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-blue-800 dark:text-blue-200">
+                  {market}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
