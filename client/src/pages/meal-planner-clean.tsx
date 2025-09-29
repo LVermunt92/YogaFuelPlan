@@ -649,7 +649,7 @@ function MealPlannerMain() {
     <div className="bg-background min-h-screen">
       <main className="responsive-container py-6 lg:py-8">
         {/* Centered Content Container */}
-        <div className="max-w-6xl mx-auto space-y-6 lg:space-y-8">
+        <div className="container space-y-6 lg:space-y-8">
           
           {/* 1. Welcome Section */}
           <div className="text-center mb-6">
@@ -880,7 +880,7 @@ function MealPlannerMain() {
           )}
 
           {/* 4. Generate Meal Plan (Combined Section) */}
-          <Card className="w-full lg:max-w-4xl lg:mx-auto">
+          <Card className="container">
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-2">
                 <ChefHat className="h-6 w-6" />
@@ -1109,7 +1109,7 @@ function MealPlannerMain() {
 
           {/* 5. Saved Meal Plans */}
           {mealPlans.length > 0 && (
-            <Card className="w-full lg:max-w-5xl lg:mx-auto">
+            <Card className="container">
               <CardHeader className="pb-1">
                 <CardTitle className="flex items-center gap-2">
                   <History className="h-6 w-6" />
@@ -1166,7 +1166,7 @@ function MealPlannerMain() {
           )}
 
           {/* 6. Weekly Meal Plan */}
-          <Card className="w-full lg:max-w-5xl lg:mx-auto">
+          <Card className="container">
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-2">
                 <Utensils className="h-6 w-6" />
