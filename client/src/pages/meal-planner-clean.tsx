@@ -1144,7 +1144,7 @@ function MealPlannerMain() {
                         </div>
                         <div className="flex items-center gap-3">
                           <div className="text-right">
-                            <p className="text-sm text-emerald-600">{plan.totalProtein.toFixed(0)}g protein/day</p>
+                            <p className="text-sm text-emerald-600">{plan.totalProtein.toFixed(0)}g {t.protein.toLowerCase()}/dag</p>
                             <p className="text-xs text-gray-400">{plan.createdAt ? new Date(plan.createdAt).toLocaleDateString() : ''}</p>
                           </div>
                           <Button
@@ -1259,7 +1259,7 @@ function MealPlannerMain() {
                   <div className="block sm:hidden space-y-2">
                     {[1, 2, 3, 4, 5, 6, 7].map(day => {
                       const dayMeals = getDayMeals(day);
-                      const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                      const dayNames = [t.sunday, t.monday, t.tuesday, t.wednesday, t.thursday, t.friday, t.saturday];
                       
                       if (dayMeals.length === 0) return null;
                       
@@ -1278,7 +1278,7 @@ function MealPlannerMain() {
                             <div className="flex items-center gap-2">
                               <span className="text-gray-900">{dayNames[day - 1]}</span>
                             </div>
-                            <span className="text-emerald-600">{Math.round(dailyProtein)}g protein</span>
+                            <span className="text-emerald-600">{Math.round(dailyProtein)}g {t.protein.toLowerCase()}</span>
                           </div>
                           
                           {/* Individual meal rows - Sunday only shows dinner, other days show all meals */}
@@ -1315,7 +1315,7 @@ function MealPlannerMain() {
                                   )}
                                 </div>
                                 <div className="text-sm font-medium text-gray-900 mb-1">{dinner.foodDescription.replace(' (leftover)', '').replace(/\s*\(incorporating leftover.*?\)/g, '')}</div>
-                                <div className="text-sm text-gray-600"><span className="text-emerald-600">{dinner.protein}g protein</span> • {dinner.prepTime} min</div>
+                                <div className="text-sm text-gray-600"><span className="text-emerald-600">{dinner.protein}g {t.protein.toLowerCase()}</span> • {dinner.prepTime} min</div>
                               </div>
                             )
                           ) : (
@@ -1354,7 +1354,7 @@ function MealPlannerMain() {
                                     )}
                                   </div>
                                   <div className="text-sm font-medium text-gray-900 mb-1">{breakfast.foodDescription.replace(' (leftover)', '').replace(/\s*\(incorporating leftover.*?\)/g, '')}</div>
-                                  <div className="text-sm text-gray-600"><span className="text-emerald-600">{breakfast.protein}g protein</span> • {breakfast.prepTime} min</div>
+                                  <div className="text-sm text-gray-600"><span className="text-emerald-600">{breakfast.protein}g {t.protein.toLowerCase()}</span> • {breakfast.prepTime} min</div>
                                 </div>
                               )}
                               
@@ -1391,7 +1391,7 @@ function MealPlannerMain() {
                                     )}
                                   </div>
                                   <div className="text-sm font-medium text-gray-900 mb-1">{lunch.foodDescription.replace(' (leftover)', '').replace(/\s*\(incorporating leftover.*?\)/g, '')}</div>
-                                  <div className="text-sm text-gray-600"><span className="text-emerald-600">{lunch.protein}g protein</span> • {lunch.prepTime} min</div>
+                                  <div className="text-sm text-gray-600"><span className="text-emerald-600">{lunch.protein}g {t.protein.toLowerCase()}</span> • {lunch.prepTime} min</div>
                                 </div>
                               )}
                               
@@ -1428,7 +1428,7 @@ function MealPlannerMain() {
                                     )}
                                   </div>
                                   <div className="text-sm font-medium text-gray-900 mb-1">{dinner.foodDescription.replace(' (leftover)', '').replace(/\s*\(incorporating leftover.*?\)/g, '')}</div>
-                                  <div className="text-sm text-gray-600"><span className="text-emerald-600">{dinner.protein}g protein</span> • {dinner.prepTime} min</div>
+                                  <div className="text-sm text-gray-600"><span className="text-emerald-600">{dinner.protein}g {t.protein.toLowerCase()}</span> • {dinner.prepTime} min</div>
                                 </div>
                               )}
                             </>
@@ -1455,7 +1455,7 @@ function MealPlannerMain() {
                           <tbody className="bg-white divide-y divide-gray-200">
                             {[1, 2, 3, 4, 5, 6, 7].map(day => {
                               const dayMeals = getDayMeals(day);
-                              const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                              const dayNames = [t.sunday, t.monday, t.tuesday, t.wednesday, t.thursday, t.friday, t.saturday];
                               
                               if (dayMeals.length === 0) return null;
                               
