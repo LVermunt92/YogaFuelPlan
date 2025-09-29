@@ -184,7 +184,7 @@ function generateWeekDescription(season: 'winter' | 'spring' | 'summer' | 'autum
       `Hoge zomer is perfect voor hydraterende voedingsmiddelen en verkoelende bereidingen die de hitte natuurlijk verslaan.`
     ],
     autumn: [
-      `Vroege herfst brengt oogstsmaken - omarm versterkende voedingsmiddelen die voorbereiden op de komende winter.`,
+      `Vroege herfst is een overgangsperiode waar zomerproducten zoals tomaten en paprika samenkomen met de eerste herfstgroenten zoals spruitjes en pompoen - geniet van deze unieke mix van beide seizoenen.`,
       `Midden herfst biedt seizoensgebonden pompoenen en wortelgroenten perfect voor verwarmende, voedzame maaltijden.`,
       `Late herfst vraagt om immuunondersteunende voedingsmiddelen en verwarmende kruiden terwijl de temperaturen dalen.`,
       `Diepe herfst benadrukt versterkende, verwarmende voedingsmiddelen die interne warmte opbouwen voor winterwelzijn.`
