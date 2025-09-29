@@ -162,7 +162,27 @@ function getLocationName(coords: LocationCoords): string {
 // Generate week-specific seasonal description
 function generateWeekDescription(season: 'winter' | 'spring' | 'summer' | 'autumn', location: string): string {
   const now = new Date();
-  const weekNumber = Math.ceil(now.getDate() / 7);
+  const currentMonth = now.getMonth();
+  
+  // Determine season progression based on month rather than week of month
+  let seasonIndex = 0;
+  if (season === 'winter') {
+    if (currentMonth === 11) seasonIndex = 0; // December - early winter
+    else if (currentMonth === 0) seasonIndex = 1; // January - mid winter  
+    else if (currentMonth === 1) seasonIndex = 2; // February - late winter
+  } else if (season === 'spring') {
+    if (currentMonth === 2) seasonIndex = 0; // March - early spring
+    else if (currentMonth === 3) seasonIndex = 1; // April - mid spring
+    else if (currentMonth === 4) seasonIndex = 2; // May - late spring
+  } else if (season === 'summer') {
+    if (currentMonth === 5) seasonIndex = 0; // June - early summer
+    else if (currentMonth === 6) seasonIndex = 1; // July - mid summer
+    else if (currentMonth === 7) seasonIndex = 2; // August - late summer
+  } else if (season === 'autumn') {
+    if (currentMonth === 8) seasonIndex = 0; // September - early autumn (transition)
+    else if (currentMonth === 9) seasonIndex = 1; // October - mid autumn
+    else if (currentMonth === 10) seasonIndex = 2; // November - late autumn
+  }
   
   const descriptions = {
     winter: [
@@ -191,7 +211,7 @@ function generateWeekDescription(season: 'winter' | 'spring' | 'summer' | 'autum
     ]
   };
   
-  return descriptions[season][Math.min(weekNumber - 1, 3)];
+  return descriptions[season][seasonIndex];
 }
 
 // Get seasonal color accent
