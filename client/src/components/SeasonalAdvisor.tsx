@@ -140,7 +140,7 @@ export function SeasonalAdvisor() {
             <div className="flex items-center gap-2 mb-3">
               <Leaf className="h-4 w-4 text-green-600" />
               <h4 className="font-medium text-sm text-gray-700">
-                {language === 'nl' ? 'Lokale Groenten Amsterdam' : 'Local Amsterdam Produce'}
+                {language === 'nl' ? 'Lokale Groenten' : 'Local Produce'}
               </h4>
             </div>
             <div className="flex flex-wrap gap-1.5">
