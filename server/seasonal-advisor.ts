@@ -34,17 +34,17 @@ const AMSTERDAM_MONTHLY_PRODUCE = {
     peak: ['spruitjes', 'winterprei', 'bewaarde wortelen']
   },
   2: { // March
-    vegetables: ['witte asperges (eind maart)', 'vroege sla', 'spinazie', 'broccoli', 'bloemkool', 'doperwten', 'prei'],
+    vegetables: ['witte asperges (eind maart)', 'vroege sla', 'spinazie', 'broccoli', 'bloemkool', 'doperwten', 'prei', 'aardappelen (bewaard)'],
     localFocus: 'Vroege voorjaarsgroenten beginnen, witte asperges starten',
     peak: ['vroeg voorjaarsgroen', 'witte asperges beginnen', 'spinazie']
   },
   3: { // April
-    vegetables: ['witte asperges', 'lente-uitjes', 'radijsjes', 'vroege sla', 'spinazie', 'verse kruiden (bieslook, peterselie)'],
+    vegetables: ['witte asperges', 'lente-uitjes', 'radijsjes', 'vroege sla', 'spinazie', 'verse kruiden (bieslook, peterselie)', 'aardappelen (bewaard)'],
     localFocus: 'Spring vegetables abundant, asparagus season',
     peak: ['white asparagus', 'spring onions', 'fresh herbs']
   },
   4: { // May
-    vegetables: ['witte asperges', 'lente-uitjes', 'radijsjes', 'spinazie', 'snijbiet', 'verse kruiden', 'vroege doperwten'],
+    vegetables: ['witte asperges', 'lente-uitjes', 'radijsjes', 'spinazie', 'snijbiet', 'verse kruiden', 'vroege doperwten', 'aardappelen (bewaard)'],
     localFocus: 'Peak spring produce, herb garden flourishing',
     peak: ['white asparagus peak', 'Swiss chard', 'fresh peas']
   },
