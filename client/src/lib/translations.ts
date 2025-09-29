@@ -203,6 +203,20 @@ export const translations = {
     summer: "Summer", 
     autumn: "Autumn",
     
+    // Months
+    january: "January",
+    february: "February",
+    march: "March",
+    april: "April",
+    may: "May",
+    june: "June",
+    july: "July",
+    august: "August",
+    september: "September",
+    october: "October",
+    november: "November",
+    december: "December",
+    
     addIngredient: "Add Ingredient",
     ingredientPlaceholder: "e.g. leftover spinach, aging mushrooms...",
     removeIngredient: "Remove",
@@ -741,6 +755,20 @@ export const translations = {
     spring: "Lente",
     summer: "Zomer",
     autumn: "Herfst",
+    
+    // Months
+    january: "Januari",
+    february: "Februari",
+    march: "Maart",
+    april: "April",
+    may: "Mei",
+    june: "Juni",
+    july: "Juli",
+    august: "Augustus",
+    september: "September",
+    october: "Oktober",
+    november: "November",
+    december: "December",
     
     addIngredient: "Ingrediënt Toevoegen",
     ingredientPlaceholder: "bijv. restjes spinazie, verouderende champignons...",

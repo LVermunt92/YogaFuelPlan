@@ -7,6 +7,7 @@ import { convertAllRecipeUnits } from './bulk-unit-converter';
 import { validateAndEnhanceMealDatabase } from './protein-validator';
 import { validateAndEnhanceMealsForFiber } from './fiber-validator';
 import { cleanRecipeData } from './ingredient-cleaner';
+import { getSeasonalMonths, getHemisphere, getSeason } from './seasonal-advisor';
 
 export interface NutritionInfo {
   protein: number;
@@ -125,6 +126,101 @@ function addCyclePhaseTagsToRecipe(recipe: MealOption): MealOption {
     // Add all phases for general healthy recipes
     newTags.push('Menstrual', 'Follicular', 'Ovulation', 'Luteal');
   }
+  
+  return { ...recipe, tags: newTags };
+}
+
+// Function to add seasonal month tags to recipes based on ingredients and characteristics
+function addSeasonalMonthTagsToRecipe(recipe: MealOption, coords?: { latitude: number; longitude: number }): MealOption {
+  const newTags = [...recipe.tags];
+  const ingredients = recipe.ingredients || [];
+  const ingredientText = ingredients.join(' ').toLowerCase();
+  
+  // Default to Amsterdam coordinates if no location provided
+  const location = coords || { latitude: 52.3676, longitude: 4.9041 };
+  const hemisphere = getHemisphere(location.latitude);
+  
+  // Check for seasonal characteristics
+  const hasWarmingIngredients = 
+    ingredientText.includes('cinnamon') || ingredientText.includes('ginger') ||
+    ingredientText.includes('cloves') || ingredientText.includes('nutmeg') ||
+    ingredientText.includes('cardamom') || ingredientText.includes('turmeric') ||
+    ingredientText.includes('paprika') || ingredientText.includes('cumin') ||
+    ingredientText.includes('chili') || ingredientText.includes('pepper');
+    
+  const hasCoolingIngredients = 
+    ingredientText.includes('cucumber') || ingredientText.includes('mint') ||
+    ingredientText.includes('watermelon') || ingredientText.includes('lettuce') ||
+    ingredientText.includes('berries') || ingredientText.includes('yogurt') ||
+    ingredientText.includes('coconut') || ingredientText.includes('lime');
+    
+  const hasWinterVegetables = 
+    ingredientText.includes('cabbage') || ingredientText.includes('brussels sprouts') ||
+    ingredientText.includes('carrots') || ingredientText.includes('parsnips') ||
+    ingredientText.includes('leeks') || ingredientText.includes('potatoes') ||
+    ingredientText.includes('sweet potato') || ingredientText.includes('beets');
+    
+  const hasSpringVegetables = 
+    ingredientText.includes('asparagus') || ingredientText.includes('peas') ||
+    ingredientText.includes('radishes') || ingredientText.includes('spring onions') ||
+    ingredientText.includes('artichokes') || ingredientText.includes('spinach');
+    
+  const hasSummerVegetables = 
+    ingredientText.includes('tomatoes') || ingredientText.includes('zucchini') ||
+    ingredientText.includes('bell peppers') || ingredientText.includes('eggplant') ||
+    ingredientText.includes('corn') || ingredientText.includes('green beans');
+    
+  const hasAutumnVegetables = 
+    ingredientText.includes('pumpkin') || ingredientText.includes('squash') ||
+    ingredientText.includes('cauliflower') || ingredientText.includes('broccoli') ||
+    ingredientText.includes('mushrooms') || ingredientText.includes('apples');
+    
+  const isHeartyMeal = 
+    recipe.nutrition.prepTime > 30 || ingredientText.includes('stew') ||
+    ingredientText.includes('soup') || ingredientText.includes('casserole') ||
+    recipe.nutrition.calories > 500;
+    
+  const isLightMeal = 
+    recipe.nutrition.prepTime < 20 || ingredientText.includes('salad') ||
+    ingredientText.includes('raw') || recipe.nutrition.calories < 400;
+  
+  // Determine which seasons this recipe is suitable for
+  const suitableSeasons: ('winter' | 'spring' | 'summer' | 'autumn')[] = [];
+  
+  // Winter: warming, hearty, with winter vegetables
+  if (hasWarmingIngredients || hasWinterVegetables || isHeartyMeal) {
+    suitableSeasons.push('winter');
+  }
+  
+  // Spring: fresh, light, with spring vegetables
+  if (hasSpringVegetables || (isLightMeal && !hasWarmingIngredients)) {
+    suitableSeasons.push('spring');
+  }
+  
+  // Summer: cooling, light, with summer vegetables
+  if (hasCoolingIngredients || hasSummerVegetables || (isLightMeal && recipe.nutrition.prepTime < 15)) {
+    suitableSeasons.push('summer');
+  }
+  
+  // Autumn: grounding, with autumn vegetables
+  if (hasAutumnVegetables || (isHeartyMeal && !hasCoolingIngredients)) {
+    suitableSeasons.push('autumn');
+  }
+  
+  // If no specific seasonal characteristics, suitable for all seasons
+  if (suitableSeasons.length === 0) {
+    suitableSeasons.push('winter', 'spring', 'summer', 'autumn');
+  }
+  
+  // Add month tags for suitable seasons
+  suitableSeasons.forEach(season => {
+    const monthsForSeason = getSeasonalMonths(season, hemisphere);
+    monthsForSeason.forEach(month => {
+      if (!newTags.includes(month)) {
+        newTags.push(month);
+      }
+    });
+  });
   
   return { ...recipe, tags: newTags };
 }

@@ -132,6 +132,62 @@ function getSeasonalColor(season: 'winter' | 'spring' | 'summer' | 'autumn'): st
   return colors[season];
 }
 
+// Get seasonal months for a given season and hemisphere
+export function getSeasonalMonths(season: 'winter' | 'spring' | 'summer' | 'autumn', hemisphere: 'north' | 'south'): string[] {
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  
+  if (hemisphere === 'north') {
+    switch (season) {
+      case 'winter': return [months[11], months[0], months[1]]; // Dec, Jan, Feb
+      case 'spring': return [months[2], months[3], months[4]]; // Mar, Apr, May
+      case 'summer': return [months[5], months[6], months[7]]; // Jun, Jul, Aug
+      case 'autumn': return [months[8], months[9], months[10]]; // Sep, Oct, Nov
+    }
+  } else {
+    // Southern hemisphere - seasons are opposite
+    switch (season) {
+      case 'winter': return [months[5], months[6], months[7]]; // Jun, Jul, Aug
+      case 'spring': return [months[8], months[9], months[10]]; // Sep, Oct, Nov
+      case 'summer': return [months[11], months[0], months[1]]; // Dec, Jan, Feb
+      case 'autumn': return [months[2], months[3], months[4]]; // Mar, Apr, May
+    }
+  }
+}
+
+// Get all seasonal month tags for a recipe based on location
+export function getRecipeSeasonalMonthTags(coords?: LocationCoords): string[] {
+  const location = coords || {
+    latitude: 52.3676,
+    longitude: 4.9041,
+    city: 'Amsterdam',
+    country: 'Netherlands'
+  };
+  
+  const hemisphere = getHemisphere(location.latitude);
+  const allSeasons: ('winter' | 'spring' | 'summer' | 'autumn')[] = ['winter', 'spring', 'summer', 'autumn'];
+  
+  return allSeasons.flatMap(season => getSeasonalMonths(season, hemisphere));
+}
+
+// Get current season's months for highlighting
+export function getCurrentSeasonMonths(coords?: LocationCoords): string[] {
+  const now = new Date();
+  const location = coords || {
+    latitude: 52.3676,
+    longitude: 4.9041,
+    city: 'Amsterdam',
+    country: 'Netherlands'
+  };
+  
+  const hemisphere = getHemisphere(location.latitude);
+  const currentSeason = getSeason(now, hemisphere);
+  
+  return getSeasonalMonths(currentSeason, hemisphere);
+}
+
 export function getSeasonalInfo(coords?: LocationCoords): SeasonalInfo {
   const now = new Date();
   
