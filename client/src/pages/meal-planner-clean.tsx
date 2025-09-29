@@ -646,8 +646,8 @@ function MealPlannerMain() {
   }, [selectedMealPlan, mealPlans]);
 
   return (
-    <div className="bg-red-500 min-h-screen">
-      <main className="container py-6 lg:py-8 bg-blue-500">
+    <div className="bg-background min-h-screen">
+      <main className="container py-6 lg:py-8">
         {/* Centered Content Container */}
         <div className="space-y-6 lg:space-y-8">
           

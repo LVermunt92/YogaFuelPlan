@@ -67,7 +67,6 @@ export const AMSTERDAM_MONTHLY_PRODUCE = {
   },
   8: { // September
     vegetables: ['andijvie', 'artisjok', 'aubergine', 'bleekselderij', 'bloemkool', 'broccoli', 'chinese kool', 'courgette', 'groene selderij', 'knolselderij', 'komkommer', 'koolrabi', 'kropsla', 'mais', 'paddenstoelen', 'paksoi', 'paprika', 'pompoen', 'prei', 'raapsteel', 'radijs', 'rammenas', 'rode biet', 'rodekool', 'savooikool', 'schorseneren', 'sperziebonen', 'snijbiet', 'snijboon', 'spinazie', 'spitskool', 'tomaat', 'ui', 'venkel', 'waterkers', 'witte kool', 'wortel'],
-    localFocus: 'Rijke oogstmaand met overvloed aan Nederlandse seizoensgroenten - van late zomergroenten tot vroege herfstproducten',
     peak: ['tomaat', 'paprika', 'mais', 'pompoen']
   },
   9: { // October
