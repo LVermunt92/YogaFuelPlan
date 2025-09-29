@@ -19,7 +19,7 @@ export const translations = {
     exportToNotion: "Export to Notion",
     syncStatus: "Sync Status",
     synced: "Synced",
-    notSynced: "Not Synced",
+    notSynced: "Not synced",
     ouraSync: "Oura Sync",
     
     // Recipe Modal
@@ -269,7 +269,7 @@ export const translations = {
     quickNutritiousRecipes: "Quick & nutritious recipes",
     cookingSchedule: "Cooking schedule",
     connected: "Connected",
-    notConnected: "Not Connected",
+    notConnected: "Not connected",
     
     // Profile
     saveProfile: "Save Profile",
@@ -498,7 +498,7 @@ export const translations = {
     exportToNotion: "Exporteren naar Notion",
     syncStatus: "Synchronisatie Status",
     synced: "Gesynchroniseerd",
-    notSynced: "Niet Gesynchroniseerd",
+    notSynced: "Niet gesynchroniseerd",
     ouraSync: "Oura Synchronisatie",
     
     // Recipe Modal
@@ -798,7 +798,7 @@ export const translations = {
     mealPlansFilteredBased: "Maaltijdplannen worden gefilterd op basis van deze voorkeuren. Werk ze bij in je profiel.",
     activity: "Activiteit",
     connected: "Verbonden",
-    notConnected: "Niet Verbonden",
+    notConnected: "Niet verbonden",
     
     // Profile
     saveProfile: "Profiel Opslaan",
