@@ -880,14 +880,14 @@ function MealPlannerMain() {
           )}
 
           {/* 4. Generate Meal Plan (Combined Section) */}
-          <Card className="container">
-            <CardHeader className="pb-4">
+          <Card className="container" padding="none">
+            <CardHeader className="pb-4 px-6 pt-6">
               <CardTitle className="flex items-center gap-2">
                 <ChefHat className="h-6 w-6" />
                 {t.generateMealPlan}
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4 sm:space-y-6">
+            <CardContent className="space-y-4 sm:space-y-6 px-6 pb-6">
               {/* Week Selection Subtitle */}
               <div>
                 <Label className="text-sm font-medium text-gray-700">{t.weekSelection}</Label>
@@ -1109,8 +1109,8 @@ function MealPlannerMain() {
 
           {/* 5. Saved Meal Plans */}
           {mealPlans.length > 0 && (
-            <Card className="container">
-              <CardHeader className="pb-1">
+            <Card className="container" padding="none">
+              <CardHeader className="pb-1 px-6 pt-6">
                 <CardTitle className="flex items-center gap-2">
                   <History className="h-6 w-6" />
                   {t.savedMealPlans || 'Saved Meal Plans'} ({mealPlans.length})
@@ -1119,7 +1119,7 @@ function MealPlannerMain() {
                   Click on a meal plan to view its details
                 </p>
               </CardHeader>
-              <CardContent className="pt-0">
+              <CardContent className="pt-0 px-6 pb-6">
                 <div className="space-y-0.5">
                   {mealPlans.map((plan, index) => (
                     <div 
@@ -1166,8 +1166,8 @@ function MealPlannerMain() {
           )}
 
           {/* 6. Weekly Meal Plan */}
-          <Card className="container">
-            <CardHeader className="pb-4">
+          <Card className="container" padding="none">
+            <CardHeader className="pb-4 px-6 pt-6">
               <CardTitle className="flex items-center gap-2">
                 <Utensils className="h-6 w-6" />
                 {t.weeklyMealPlan}
@@ -1180,7 +1180,7 @@ function MealPlannerMain() {
 
               {/* Color Legend */}
               {currentMealPlan?.meals && (
-                <div className="mt-3">
+                <div className="mt-3 px-6">
                   <p className="text-xs font-medium text-gray-700 mb-2">
                     {language === 'nl' ? 'Kleurlegende:' : 'Color Legend:'}
                   </p>
@@ -1209,7 +1209,7 @@ function MealPlannerMain() {
               
               {/* Show which leftover ingredients were used */}
               {currentMealPlan && userProfile?.leftovers && userProfile.leftovers.length > 0 && (
-                <div className="mt-3">
+                <div className="mt-3 px-6">
                   {(() => {
                     // Function to check if an ingredient is used
                     const isIngredientUsed = (ingredient: string) => {
@@ -1275,7 +1275,7 @@ function MealPlannerMain() {
                 </div>
               )}
             </CardHeader>
-            <CardContent className="px-2 sm:px-6">
+            <CardContent className="px-2 sm:px-6 pb-6">
               {loadingCurrentPlan ? (
                 <div className="space-y-4">
                   {[1, 2, 3, 4, 5].map(i => (

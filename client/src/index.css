@@ -52,7 +52,6 @@
     --radius: 0.25rem;
   }
 
-  * { @apply border-border; }
 
   body {
     @apply bg-background text-foreground;
@@ -62,6 +61,18 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+  }
+
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    margin: 0;
+    padding: 0;
   }
 
   /* Serif koppen */
