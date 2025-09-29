@@ -19,6 +19,7 @@ import { useTranslations, translateDietaryTags, translateDietaryTag } from "@/li
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Textarea } from "@/components/ui/textarea";
 import { AlbertHeijnIntegration } from "@/components/albert-heijn-integration";
+import { SeasonalAdvisor } from "@/components/SeasonalAdvisor";
 import type { User, MealPlan as MealPlanType, Meal as MealType } from "@shared/schema";
 
 // Type alias for easier use
@@ -832,7 +833,10 @@ function MealPlannerMain() {
             </div>
           )}
 
-          {/* 3. Health Tracking (Oura Ring) */}
+          {/* 3. Seasonal Advisor */}
+          <SeasonalAdvisor />
+
+          {/* 4. Health Tracking (Oura Ring) */}
           {ouraStatus?.connected && ouraData && ouraData.length > 0 && (
             <Card className="w-full">
               <CardHeader>

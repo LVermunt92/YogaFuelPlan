@@ -3264,6 +3264,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // ============================================================================
+  // SEASONAL ADVISOR API
+  // ============================================================================
+
+  // GET /api/seasonal - Get seasonal food advice based on location
+  app.get("/api/seasonal", async (req, res) => {
+    try {
+      const { getSeasonalAdvice } = await import("./seasonal-advisor");
+      
+      // Get coordinates from query params if provided
+      const latitude = req.query.lat ? parseFloat(req.query.lat as string) : undefined;
+      const longitude = req.query.lng ? parseFloat(req.query.lng as string) : undefined;
+      
+      let coords;
+      if (latitude !== undefined && longitude !== undefined) {
+        coords = { latitude, longitude };
+      }
+      
+      const seasonalInfo = await getSeasonalAdvice(coords);
+      res.json(seasonalInfo);
+    } catch (error) {
+      console.error("Error getting seasonal advice:", error);
+      res.status(500).json({ message: "Failed to get seasonal advice" });
+    }
+  });
+
   // POST /api/admin/analyze-ingredients - Analyze meal plan ingredients for mapping
   app.post("/api/admin/analyze-ingredients", async (req, res) => {
     try {
