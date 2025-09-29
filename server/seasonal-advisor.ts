@@ -64,14 +64,14 @@ const AMSTERDAM_MONTHLY_PRODUCE = {
     peak: ['peak tomatoes', 'sweet corn', 'eggplants', 'summer lettuce']
   },
   8: { // September
-    vegetables: ['aubergines', 'late zomer tomaten', 'zoete paprika', 'sperziebonen (laatste oogst)', 'vroege spruitjes', 'winterprei', 'vroege pompoen', 'herfst sla', 'aardappelen (oogst)'],
-    localFocus: 'Overgangsmaand: laatste zomergroenten samen met de eerste herfstgroenten - een mix van beide seizoenen',
-    peak: ['late zomer tomaten', 'zoete paprika', 'laatste sperziebonen']
+    vegetables: ['andijvie', 'artisjok', 'aubergine', 'bleekselderij', 'bloemkool', 'broccoli', 'chinese kool', 'courgette', 'groene selderij', 'knolselderij', 'komkommer', 'koolrabi', 'kropsla', 'mais', 'paddenstoelen', 'paksoi', 'paprika', 'pompoen', 'prei', 'raapsteel', 'radijs', 'rammenas', 'rode biet', 'rodekool', 'savooikool', 'schorseneren', 'sperziebonen', 'snijbiet', 'snijboon', 'spinazie', 'spitskool', 'tomaat', 'ui', 'venkel', 'waterkers', 'witte kool', 'wortel'],
+    localFocus: 'Rijke oogstmaand met overvloed aan Nederlandse seizoensgroenten - van late zomergroenten tot vroege herfstproducten',
+    peak: ['tomaat', 'paprika', 'mais', 'pompoen']
   },
   9: { // October
-    vegetables: ['pompoenen', 'winterpompoen', 'spruitjes (begin seizoen)', 'prei', 'witte kool', 'wortelen', 'rode bieten', 'paddenstoelen', 'aardappelen (oogst)'],
-    localFocus: 'Autumn harvest, winter vegetables begin',
-    peak: ['pumpkins', 'winter squash', 'Brussels sprouts begin', 'mushrooms']
+    vegetables: ['andijvie', 'artisjok', 'aubergine', 'bleekselderij', 'bloemkool', 'boerenkool', 'broccoli', 'chinese kool', 'courgette', 'groene selderij', 'knolselderij', 'komkommer', 'koolrabi', 'kropsla', 'paddenstoelen', 'paksoi', 'paprika', 'pastinaak', 'pompoen', 'prei', 'raapsteel', 'radijs', 'rammenas', 'rode biet', 'rodekool', 'roodlof', 'savooikool', 'schorseneren', 'sperziebonen', 'snijbiet', 'snijboon', 'spinazie', 'spitskool', 'spruiten', 'tomaat', 'ui', 'veldsla', 'venkel', 'waterkers', 'winterpostelein', 'witlof', 'witte kool', 'wortel'],
+    localFocus: 'Volledige herfstoogst met winterharde groenten die de koude maanden ingaan',
+    peak: ['boerenkool', 'spruiten', 'pompoen', 'pastinaak']
   },
   10: { // November
     vegetables: ['pompoenen', 'winterpompoen', 'spruitjes', 'prei', 'kool', 'wortelen', 'rode bieten', 'paddenstoelen', 'knolselderij', 'aardappelen'],
