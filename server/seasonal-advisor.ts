@@ -166,28 +166,28 @@ function generateWeekDescription(season: 'winter' | 'spring' | 'summer' | 'autum
   
   const descriptions = {
     winter: [
-      `Deze winterweek in ${location}, focus op verwarmende, voedzame voedingsmiddelen die je immuunsysteem ondersteunen en comfort bieden tijdens koude dagen.`,
-      `Midden winter in ${location} vraagt om stevige, versterkende maaltijden rijk aan wortelgroenten en verwarmende kruiden voor volgehouden energie.`,
-      `Eind winter in ${location} is perfect voor immuunversterkende voedingsmiddelen en het voorbereiden van je lichaam op de komende lentevernieuwing.`,
-      `Diep in de winter in ${location} benadrukt gezellige, nutriëntrijke maaltijden die van binnenuit verwarmen en seizoensgebonden welzijn ondersteunen.`
+      `Deze winterweek focus op verwarmende, voedzame voedingsmiddelen die je immuunsysteem ondersteunen en comfort bieden tijdens koude dagen.`,
+      `Midden winter vraagt om stevige, versterkende maaltijden rijk aan wortelgroenten en verwarmende kruiden voor volgehouden energie.`,
+      `Eind winter is perfect voor immuunversterkende voedingsmiddelen en het voorbereiden van je lichaam op de komende lentevernieuwing.`,
+      `Diep in de winter benadrukt gezellige, nutriëntrijke maaltijden die van binnenuit verwarmen en seizoensgebonden welzijn ondersteunen.`
     ],
     spring: [
-      `Vroege lente in ${location} brengt frisse energie - omarm detoxificerende groenten en lichtere maaltijden terwijl de natuur ontwaakt.`,
-      `Midden lente in ${location} biedt de eerste verse groenten - perfect voor het reinigen van winterse zwaarte met levendige smaken.`,
-      `Late lente in ${location} biedt overvloedige verse producten om energie te geven en je lichaam voor te bereiden op zomeractiviteiten.`,
-      `Lentevernieuwing in ${location} ondersteunt natuurlijke detox met verse kruiden, vroege groenten en revitaliserende voedingsstoffen.`
+      `Vroege lente brengt frisse energie - omarm detoxificerende groenten en lichtere maaltijden terwijl de natuur ontwaakt.`,
+      `Midden lente biedt de eerste verse groenten - perfect voor het reinigen van winterse zwaarte met levendige smaken.`,
+      `Late lente biedt overvloedige verse producten om energie te geven en je lichaam voor te bereiden op zomeractiviteiten.`,
+      `Lentevernieuwing ondersteunt natuurlijke detox met verse kruiden, vroege groenten en revitaliserende voedingsstoffen.`
     ],
     summer: [
-      `Vroege zomer in ${location} vraagt om verkoelende, hydraterende voedingsmiddelen die langere dagen en buitenactiviteiten aanvullen.`,
-      `Piekzomer in ${location} biedt overvloedige verse vruchten en groenten - omarm rauwe, verkoelende bereidingen.`,
-      `Midzomer in ${location} benadrukt lichte, verfrissende maaltijden die energie geven zonder zwaar te zijn.`,
-      `Hoge zomer in ${location} is perfect voor hydraterende voedingsmiddelen en verkoelende bereidingen die de hitte natuurlijk verslaan.`
+      `Vroege zomer vraagt om verkoelende, hydraterende voedingsmiddelen die langere dagen en buitenactiviteiten aanvullen.`,
+      `Piekzomer biedt overvloedige verse vruchten en groenten - omarm rauwe, verkoelende bereidingen.`,
+      `Midzomer benadrukt lichte, verfrissende maaltijden die energie geven zonder zwaar te zijn.`,
+      `Hoge zomer is perfect voor hydraterende voedingsmiddelen en verkoelende bereidingen die de hitte natuurlijk verslaan.`
     ],
     autumn: [
-      `Vroege herfst in ${location} brengt oogstsmaken - omarm versterkende voedingsmiddelen die voorbereiden op de komende winter.`,
-      `Midden herfst in ${location} biedt seizoensgebonden pompoenen en wortelgroenten perfect voor verwarmende, voedzame maaltijden.`,
-      `Late herfst in ${location} vraagt om immuunondersteunende voedingsmiddelen en verwarmende kruiden terwijl de temperaturen dalen.`,
-      `Diepe herfst in ${location} benadrukt versterkende, verwarmende voedingsmiddelen die interne warmte opbouwen voor winterwelzijn.`
+      `Vroege herfst brengt oogstsmaken - omarm versterkende voedingsmiddelen die voorbereiden op de komende winter.`,
+      `Midden herfst biedt seizoensgebonden pompoenen en wortelgroenten perfect voor verwarmende, voedzame maaltijden.`,
+      `Late herfst vraagt om immuunondersteunende voedingsmiddelen en verwarmende kruiden terwijl de temperaturen dalen.`,
+      `Diepe herfst benadrukt versterkende, verwarmende voedingsmiddelen die interne warmte opbouwen voor winterwelzijn.`
     ]
   };
   
