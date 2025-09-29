@@ -4771,7 +4771,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 10.0 
     },
     category: "breakfast",
-    tags: ["Vegetarian", "High-Protein", "Quick", "Probiotic", "Dairy"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Quick", "Probiotic"],
     ingredients: [
       "1 cup Greek yogurt (2% fat)",
       "2 tbsp almond butter",
@@ -4821,7 +4821,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 13.6 
     },
     category: "breakfast",
-    tags: ["Vegetarian", "High-Protein", "Keto", "Quick", "Dairy"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Keto", "Quick"],
     ingredients: [
       "3 large eggs",
       "½ cup cottage cheese",
@@ -12621,12 +12621,11 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
         ingredient.toLowerCase().includes('dairy')
       );
       
-      // For lactose-free requirement, check if meal has lactose-free tag OR doesn't contain dairy
+      // For lactose-free requirement, ONLY accept recipes with explicit lactose-free tags
       const lactoseFreeRequirement = dietaryTags.includes('Lactose-Free');
       const lactoseFreeSatisfied = !lactoseFreeRequirement || 
         meal.tags.includes('Lactose-Free') || 
-        meal.tags.includes('dairy-free') || 
-        !hasDairyIngredients;
+        meal.tags.includes('dairy-free');
       
       // Check other critical tags (vegetarian, gluten-free, etc.)
       const otherCriticalTags = userCriticalTags.filter(tag => tag !== 'Lactose-Free');
