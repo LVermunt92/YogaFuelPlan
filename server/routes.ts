@@ -2362,12 +2362,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log(`✅ Custom recipe "${formData.name}" has adequate fiber (${fiberAnalysis.estimatedFiber}g)`);
       }
       
-      // Combine form data with AI-generated nutrition and protein validation
+      // Add seasonal month tags to the recipe before saving
+      const { addSeasonalMonthTagsToRecipe } = await import("./nutrition-enhanced");
+      
+      // Create a temporary recipe object for seasonal tagging
+      const tempRecipe = {
+        id: "temp",
+        name: formData.name,
+        ingredients: finalIngredients,
+        tags: formData.tags || [],
+        nutrition: {
+          protein: finalNutrition?.protein || 0,
+          calories: finalNutrition?.calories || 0,
+          prepTime: formData.prepTime || 30
+        }
+      };
+      
+      // Add seasonal month tags based on ingredients and characteristics
+      const recipeWithSeasonalTags = await addSeasonalMonthTagsToRecipe(tempRecipe);
+      
+      // Combine form data with AI-generated nutrition and seasonal tags
       const recipeData = {
         ...formData,
         ...nutritionAnalysis,
         ingredients: finalIngredients, // Use protein-enhanced ingredients if needed
         nutrition: finalNutrition, // Use protein-enhanced nutrition if needed
+        tags: recipeWithSeasonalTags.tags, // Include seasonal month tags
         portion: "1 serving", // Set default portion
         cookTime: 0, // Set default cookTime since we merged it into prepTime
         difficulty: "easy", // Set default difficulty since we removed the field
@@ -2375,6 +2395,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       };
       
       console.log('✅ AI nutrition analysis complete:', nutritionAnalysis);
+      console.log('🗓️ Added seasonal month tags:', recipeWithSeasonalTags.tags.filter(tag => 
+        ['January', 'February', 'March', 'April', 'May', 'June', 
+         'July', 'August', 'September', 'October', 'November', 'December'].includes(tag)
+      ));
       const recipe = await storage.createUserRecipe(recipeData);
       res.status(201).json(recipe);
     } catch (error) {
@@ -2465,15 +2489,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         }
         
+        // Add seasonal month tags to the updated recipe
+        const { addSeasonalMonthTagsToRecipe } = await import("./nutrition-enhanced");
+        
+        // Create a temporary recipe object for seasonal tagging
+        const tempUpdatedRecipe = {
+          id: "temp",
+          name: updateData.name || "Updated recipe",
+          ingredients: finalIngredients,
+          tags: updateData.tags || [],
+          nutrition: {
+            protein: finalNutrition?.protein || 0,
+            calories: finalNutrition?.calories || 0,
+            prepTime: updateData.prepTime || 30
+          }
+        };
+        
+        // Add seasonal month tags based on updated ingredients and characteristics
+        const updatedRecipeWithSeasonalTags = await addSeasonalMonthTagsToRecipe(tempUpdatedRecipe);
+        
         // Include AI-generated nutrition and protein/fiber validation in update
         const dataWithNutrition = {
           ...updateData,
           ...nutritionAnalysis,
           ingredients: finalIngredients,
-          nutrition: finalNutrition
+          nutrition: finalNutrition,
+          tags: updatedRecipeWithSeasonalTags.tags // Include updated seasonal month tags
         };
         
         console.log('✅ AI nutrition re-analysis complete:', nutritionAnalysis);
+        console.log('🗓️ Updated seasonal month tags:', updatedRecipeWithSeasonalTags.tags.filter(tag => 
+          ['January', 'February', 'March', 'April', 'May', 'June', 
+           'July', 'August', 'September', 'October', 'November', 'December'].includes(tag)
+        ));
         const recipe = await storage.updateUserRecipe(id, req.session.userId, dataWithNutrition);
         res.json(recipe);
       } else {

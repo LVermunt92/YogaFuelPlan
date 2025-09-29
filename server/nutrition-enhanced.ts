@@ -131,7 +131,7 @@ function addCyclePhaseTagsToRecipe(recipe: MealOption): MealOption {
 }
 
 // Function to add seasonal month tags to recipes based on ingredients and characteristics
-async function addSeasonalMonthTagsToRecipe(recipe: MealOption, coords?: { latitude: number; longitude: number }): Promise<MealOption> {
+export async function addSeasonalMonthTagsToRecipe(recipe: MealOption, coords?: { latitude: number; longitude: number }): Promise<MealOption> {
   const newTags = [...recipe.tags];
   const ingredients = recipe.ingredients || [];
   const ingredientText = ingredients.join(' ').toLowerCase();
@@ -12593,15 +12593,17 @@ export function getCompleteEnhancedMealDatabase(): MealOption[] {
   // Combine all recipes
   const allRecipes = [...lactoseTaggedRecipes, ...dietaryVariants];
   
-  // Assign unique IDs to all recipes and add cycle phase tags
-  const recipesWithIds = allRecipes.map((recipe, index) => {
+  // Assign unique IDs to all recipes and add cycle phase tags and seasonal month tags
+  const recipesWithIds = await Promise.all(allRecipes.map(async (recipe, index) => {
     const recipeWithId = {
       ...recipe,
       id: generateRecipeId(recipe.name, index)
     };
     // Add cycle phase tags to every recipe
-    return addCyclePhaseTagsToRecipe(recipeWithId);
-  });
+    const recipeWithCycleTags = addCyclePhaseTagsToRecipe(recipeWithId);
+    // Add seasonal month tags to every recipe
+    return await addSeasonalMonthTagsToRecipe(recipeWithCycleTags);
+  }));
   
   console.log(`📊 UNIVERSAL VARIANTS: ${baseRecipes.length} base recipes + ${dietaryVariants.length} dietary variants = ${recipesWithIds.length} total recipes`);
   console.log(`📊 CYCLE SUPPORT: All recipes now have menstrual cycle phase tags for complete cycle tracking`);
