@@ -2987,7 +2987,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.8
     },
     category: "dinner", 
-    tags: ["Viral", "Social-Media", "High-Protein", "Italian-Inspired", "Instagram-Inspired"],
+    tags: ["Viral", "Social-Media", "High-Protein", "Italian-Inspired", "Instagram-Inspired", "Dairy"],
     ingredients: [
       "chicken breast mince", "brown onion", "basil pesto", "broccoli", "spinach",
       "cottage cheese", "skim milk", "garlic cloves", "lasagna sheets", "mozzarella", "salt"
@@ -4821,7 +4821,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 13.6 
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Keto", "Quick"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Keto", "Quick", "Dairy"],
     ingredients: [
       "3 large eggs",
       "½ cup cottage cheese",
@@ -11824,7 +11824,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.2
     },
     category: "lunch",
-    tags: ["Vegetarian", "Vegan", "High-Protein", "Low-Carb", "Blood-Sugar-Friendly", "Tofu", "Cottage-Cheese", "Sweet-Potato", "Nutrient-Dense", "Power-Bowl"],
+    tags: ["Vegetarian", "High-Protein", "Low-Carb", "Blood-Sugar-Friendly", "Tofu", "Cottage-Cheese", "Sweet-Potato", "Nutrient-Dense", "Power-Bowl", "Dairy"],
     ingredients: [
       "120g extra-firm tofu (cubed and pressed)",
       "100g cottage cheese (or plant-based alternative)",
