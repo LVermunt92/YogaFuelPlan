@@ -193,6 +193,16 @@ export const translations = {
     ingredientsToUseUp: "Ingredients to Use Up",
     leftovers: "Leftovers",
     chives: "Chives",
+    
+    // Seasonal
+    seasonalNutrition: "Seasonal Nutrition",
+    seasonalFoods: "Seasonal Foods",
+    nutritionalFocus: "Nutritional Focus",
+    winter: "Winter",
+    spring: "Spring",
+    summer: "Summer", 
+    autumn: "Autumn",
+    
     addIngredient: "Add Ingredient",
     ingredientPlaceholder: "e.g. leftover spinach, aging mushrooms...",
     removeIngredient: "Remove",
@@ -722,6 +732,16 @@ export const translations = {
     ingredientsToUseUp: "Ingrediënten om Op te Maken",
     leftovers: "Restjes",
     chives: "Bieslook",
+    
+    // Seasonal
+    seasonalNutrition: "Seizoensvoeding",
+    seasonalFoods: "Seizoensproducten",
+    nutritionalFocus: "Voedingsfocus",
+    winter: "Winter",
+    spring: "Lente",
+    summer: "Zomer",
+    autumn: "Herfst",
+    
     addIngredient: "Ingrediënt Toevoegen",
     ingredientPlaceholder: "bijv. restjes spinazie, verouderende champignons...",
     

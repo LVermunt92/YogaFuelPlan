@@ -18,28 +18,28 @@ export interface LocationCoords {
 // Seasonal food data for Netherlands/Northern Europe
 const SEASONAL_FOODS = {
   winter: {
-    vegetables: ['brussels sprouts', 'cabbage', 'carrots', 'parsnips', 'leeks', 'potatoes', 'onions', 'beets'],
-    fruits: ['apples', 'pears', 'citrus fruits', 'kiwi', 'persimmons'],
-    proteins: ['hearty stews', 'root vegetables', 'warming spices'],
-    characteristics: ['warming foods', 'immune support', 'comfort foods', 'vitamin D rich foods']
+    vegetables: ['spruitjes', 'kool', 'wortelen', 'pastinaak', 'prei', 'aardappelen', 'uien', 'rode bieten'],
+    fruits: ['appels', 'peren', 'citrusvruchten', 'kiwi', 'kaki'],
+    proteins: ['stevige stoofpotten', 'wortelgroenten', 'verwarmende kruiden'],
+    characteristics: ['verwarmend voedsel', 'immuunondersteuning', 'comfortvoedsel', 'vitamine D rijk voedsel']
   },
   spring: {
-    vegetables: ['asparagus', 'spring onions', 'radishes', 'lettuce', 'spinach', 'peas', 'artichokes'],
-    fruits: ['strawberries', 'rhubarb', 'early berries'],
-    proteins: ['lighter proteins', 'fresh herbs', 'detox foods'],
-    characteristics: ['detoxifying foods', 'fresh greens', 'liver support', 'energy boost']
+    vegetables: ['asperges', 'lente-uitjes', 'radijsjes', 'sla', 'spinazie', 'doperwten', 'artisjokken'],
+    fruits: ['aardbeien', 'rabarber', 'vroege bessen'],
+    proteins: ['lichte eiwitten', 'verse kruiden', 'detox voedsel'],
+    characteristics: ['detoxificerend voedsel', 'verse groenten', 'leverondersteuning', 'energie boost']
   },
   summer: {
-    vegetables: ['tomatoes', 'zucchini', 'bell peppers', 'cucumbers', 'eggplant', 'corn', 'green beans'],
-    fruits: ['berries', 'stone fruits', 'melons', 'cherries', 'apricots'],
-    proteins: ['cooling proteins', 'raw foods', 'hydrating foods'],
-    characteristics: ['cooling foods', 'hydration', 'raw preparations', 'light meals']
+    vegetables: ['tomaten', 'courgette', 'paprika', 'komkommers', 'aubergine', 'mais', 'sperziebonen'],
+    fruits: ['bessen', 'steenvruchten', 'meloenen', 'kersen', 'abrikozen'],
+    proteins: ['verkoelende eiwitten', 'rauw voedsel', 'hydraterend voedsel'],
+    characteristics: ['verkoelend voedsel', 'hydratatie', 'rauwe bereidingen', 'lichte maaltijden']
   },
   autumn: {
-    vegetables: ['pumpkins', 'squash', 'sweet potatoes', 'cauliflower', 'broccoli', 'mushrooms'],
-    fruits: ['apples', 'pears', 'grapes', 'cranberries', 'pomegranates'],
-    proteins: ['grounding foods', 'warming spices', 'immune support'],
-    characteristics: ['grounding foods', 'immune support', 'harvest flavors', 'warming preparations']
+    vegetables: ['pompoenen', 'pompoen', 'zoete aardappelen', 'bloemkool', 'broccoli', 'paddenstoelen'],
+    fruits: ['appels', 'peren', 'druiven', 'cranberries', 'granaatappels'],
+    proteins: ['versterkend voedsel', 'verwarmende kruiden', 'immuunondersteuning'],
+    characteristics: ['versterkend voedsel', 'immuunondersteuning', 'oogstsmaken', 'verwarmende bereidingen']
   }
 };
 
@@ -92,28 +92,28 @@ function generateWeekDescription(season: 'winter' | 'spring' | 'summer' | 'autum
   
   const descriptions = {
     winter: [
-      `This winter week in ${location}, focus on warming, nourishing foods that support your immune system and provide comfort during cold days.`,
-      `Mid-winter in ${location} calls for hearty, grounding meals rich in root vegetables and warming spices to sustain energy.`,
-      `Late winter in ${location} is perfect for immune-boosting foods and preparing your body for the coming spring renewal.`,
-      `Deep winter in ${location} emphasizes cozy, nutrient-dense meals that warm from within and support seasonal wellness.`
+      `Deze winterweek in ${location}, focus op verwarmende, voedzame voedingsmiddelen die je immuunsysteem ondersteunen en comfort bieden tijdens koude dagen.`,
+      `Midden winter in ${location} vraagt om stevige, versterkende maaltijden rijk aan wortelgroenten en verwarmende kruiden voor volgehouden energie.`,
+      `Eind winter in ${location} is perfect voor immuunversterkende voedingsmiddelen en het voorbereiden van je lichaam op de komende lentevernieuwing.`,
+      `Diep in de winter in ${location} benadrukt gezellige, nutriëntrijke maaltijden die van binnenuit verwarmen en seizoensgebonden welzijn ondersteunen.`
     ],
     spring: [
-      `Early spring in ${location} brings fresh energy - embrace detoxifying greens and lighter meals as nature awakens.`,
-      `Mid-spring in ${location} offers the first fresh vegetables - perfect for cleansing winter heaviness with vibrant flavors.`,
-      `Late spring in ${location} provides abundant fresh produce to energize and prepare your body for summer activity.`,
-      `Spring renewal in ${location} supports natural detox with fresh herbs, early vegetables, and revitalizing nutrients.`
+      `Vroege lente in ${location} brengt frisse energie - omarm detoxificerende groenten en lichtere maaltijden terwijl de natuur ontwaakt.`,
+      `Midden lente in ${location} biedt de eerste verse groenten - perfect voor het reinigen van winterse zwaarte met levendige smaken.`,
+      `Late lente in ${location} biedt overvloedige verse producten om energie te geven en je lichaam voor te bereiden op zomeractiviteiten.`,
+      `Lentevernieuwing in ${location} ondersteunt natuurlijke detox met verse kruiden, vroege groenten en revitaliserende voedingsstoffen.`
     ],
     summer: [
-      `Early summer in ${location} calls for cooling, hydrating foods that complement longer days and outdoor activities.`,
-      `Peak summer in ${location} offers abundant fresh fruits and vegetables - embrace raw, cooling preparations.`,
-      `Mid-summer in ${location} emphasizes light, refreshing meals that provide energy without weighing you down.`,
-      `High summer in ${location} is perfect for hydrating foods and cooling preparations that beat the heat naturally.`
+      `Vroege zomer in ${location} vraagt om verkoelende, hydraterende voedingsmiddelen die langere dagen en buitenactiviteiten aanvullen.`,
+      `Piekzomer in ${location} biedt overvloedige verse vruchten en groenten - omarm rauwe, verkoelende bereidingen.`,
+      `Midzomer in ${location} benadrukt lichte, verfrissende maaltijden die energie geven zonder zwaar te zijn.`,
+      `Hoge zomer in ${location} is perfect voor hydraterende voedingsmiddelen en verkoelende bereidingen die de hitte natuurlijk verslaan.`
     ],
     autumn: [
-      `Early autumn in ${location} brings harvest flavors - embrace grounding foods that prepare for winter ahead.`,
-      `Mid-autumn in ${location} offers seasonal squashes and root vegetables perfect for warming, nourishing meals.`,
-      `Late autumn in ${location} calls for immune-supporting foods and warming spices as temperatures drop.`,
-      `Deep autumn in ${location} emphasizes grounding, warming foods that build internal heat for winter wellness.`
+      `Vroege herfst in ${location} brengt oogstsmaken - omarm versterkende voedingsmiddelen die voorbereiden op de komende winter.`,
+      `Midden herfst in ${location} biedt seizoensgebonden pompoenen en wortelgroenten perfect voor verwarmende, voedzame maaltijden.`,
+      `Late herfst in ${location} vraagt om immuunondersteunende voedingsmiddelen en verwarmende kruiden terwijl de temperaturen dalen.`,
+      `Diepe herfst in ${location} benadrukt versterkende, verwarmende voedingsmiddelen die interne warmte opbouwen voor winterwelzijn.`
     ]
   };
   
@@ -126,7 +126,7 @@ function getSeasonalColor(season: 'winter' | 'spring' | 'summer' | 'autumn'): st
     winter: '#6366f1', // Indigo
     spring: '#10b981', // Emerald  
     summer: '#f59e0b', // Amber
-    autumn: '#dc2626'  // Red
+    autumn: '#f97316'  // Orange (warmer than red)
   };
   
   return colors[season];

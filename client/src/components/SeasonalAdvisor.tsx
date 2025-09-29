@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Leaf, Calendar, ThermometerSun } from "lucide-react";
+import { useTranslations } from "@/lib/translations";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface SeasonalInfo {
   season: 'winter' | 'spring' | 'summer' | 'autumn';
@@ -58,15 +60,17 @@ const seasonIcons = {
   autumn: "🍂"
 };
 
-const seasonNames = {
-  winter: "Winter",
-  spring: "Spring", 
-  summer: "Summer",
-  autumn: "Autumn"
-};
-
 export function SeasonalAdvisor() {
   const { coords } = useGeolocation();
+  const t = useTranslations();
+  const { language } = useLanguage();
+  
+  const seasonNames = {
+    winter: t.winter,
+    spring: t.spring, 
+    summer: t.summer,
+    autumn: t.autumn
+  };
 
   const { data: seasonalInfo, isLoading } = useQuery<SeasonalInfo>({
     queryKey: ['/api/seasonal', coords],
@@ -85,10 +89,10 @@ export function SeasonalAdvisor() {
 
   if (isLoading) {
     return (
-      <Card className="w-full lg:max-w-4xl lg:mx-auto animate-pulse">
-        <CardContent className="p-6">
-          <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
-          <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+      <Card className="w-full lg:max-w-4xl lg:mx-auto">
+        <CardContent className="p-4 sm:p-6">
+          <div className="h-4 bg-gray-200 rounded w-3/4 mb-4 animate-pulse"></div>
+          <div className="h-3 bg-gray-200 rounded w-1/2 animate-pulse"></div>
         </CardContent>
       </Card>
     );
@@ -99,12 +103,12 @@ export function SeasonalAdvisor() {
   }
 
   return (
-    <Card className="w-full lg:max-w-4xl lg:mx-auto border-l-4" style={{ borderLeftColor: seasonalInfo.colorAccent }}>
-      <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-lg">
+    <Card className="w-full lg:max-w-4xl lg:mx-auto">
+      <CardHeader className="pb-4">
+        <CardTitle className="flex items-center gap-2">
           <span className="text-xl">{seasonIcons[seasonalInfo.season]}</span>
-          <span style={{ color: seasonalInfo.colorAccent }}>
-            {seasonNames[seasonalInfo.season]} Nutrition
+          <span className="text-gray-900">
+            {seasonNames[seasonalInfo.season]} {t.seasonalNutrition}
           </span>
           <div className="flex items-center gap-1 text-sm font-normal text-gray-500 ml-auto">
             <MapPin className="h-4 w-4" />
@@ -112,27 +116,23 @@ export function SeasonalAdvisor() {
           </div>
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <p className="text-sm text-gray-700 leading-relaxed">
+      <CardContent className="space-y-4 sm:space-y-6">
+        <p className="text-sm text-gray-600 leading-relaxed">
           {seasonalInfo.weekDescription}
         </p>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           <div>
-            <div className="flex items-center gap-2 mb-2">
-              <Leaf className="h-4 w-4" style={{ color: seasonalInfo.colorAccent }} />
-              <h4 className="font-medium text-sm">Seasonal Foods</h4>
+            <div className="flex items-center gap-2 mb-3">
+              <Leaf className="h-4 w-4 text-green-600" />
+              <h4 className="font-medium text-sm text-gray-700">{t.seasonalFoods}</h4>
             </div>
-            <div className="flex flex-wrap gap-1">
+            <div className="flex flex-wrap gap-1.5">
               {seasonalInfo.seasonalFoods.slice(0, 6).map((food, index) => (
                 <Badge 
                   key={index} 
                   variant="secondary" 
-                  className="text-xs capitalize"
-                  style={{ 
-                    backgroundColor: `${seasonalInfo.colorAccent}15`,
-                    color: seasonalInfo.colorAccent 
-                  }}
+                  className="text-xs capitalize bg-green-50 text-green-700 hover:bg-green-100"
                 >
                   {food}
                 </Badge>
@@ -141,20 +141,16 @@ export function SeasonalAdvisor() {
           </div>
           
           <div>
-            <div className="flex items-center gap-2 mb-2">
-              <ThermometerSun className="h-4 w-4" style={{ color: seasonalInfo.colorAccent }} />
-              <h4 className="font-medium text-sm">Nutritional Focus</h4>
+            <div className="flex items-center gap-2 mb-3">
+              <ThermometerSun className="h-4 w-4 text-blue-600" />
+              <h4 className="font-medium text-sm text-gray-700">{t.nutritionalFocus}</h4>
             </div>
-            <div className="flex flex-wrap gap-1">
+            <div className="flex flex-wrap gap-1.5">
               {seasonalInfo.nutritionalTips.slice(0, 4).map((tip, index) => (
                 <Badge 
                   key={index} 
                   variant="outline" 
-                  className="text-xs capitalize"
-                  style={{ 
-                    borderColor: seasonalInfo.colorAccent,
-                    color: seasonalInfo.colorAccent 
-                  }}
+                  className="text-xs capitalize border-blue-200 text-blue-700 hover:bg-blue-50"
                 >
                   {tip}
                 </Badge>
