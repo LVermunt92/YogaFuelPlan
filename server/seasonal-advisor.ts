@@ -74,7 +74,7 @@ const AMSTERDAM_MONTHLY_PRODUCE = {
     peak: ['pumpkins', 'winter squash', 'Brussels sprouts begin', 'mushrooms']
   },
   10: { // November
-    vegetables: ['pompoenen', 'winterpompoen', 'spruitjes', 'prei', 'kool', 'wortelen', 'rode bieten', 'paddenstoelen', 'knolselderij'],
+    vegetables: ['pompoenen', 'winterpompoen', 'spruitjes', 'prei', 'kool', 'wortelen', 'rode bieten', 'paddenstoelen', 'knolselderij', 'aardappelen'],
     localFocus: 'Peak autumn harvest, winter storage vegetables',
     peak: ['winter squash', 'Brussels sprouts', 'celeriac', 'storage vegetables']
   },
