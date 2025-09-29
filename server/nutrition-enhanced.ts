@@ -12437,11 +12437,36 @@ export function getCompleteEnhancedMealDatabase(): MealOption[] {
   // Get base recipes and clean them (remove parenthetical descriptions from ingredients and normalize portions)
   const baseRecipes = RAW_MEAL_DATABASE.map(recipe => cleanRecipeData(recipe));
   
+  // Auto-tag recipes that are naturally lactose-free
+  const lactoseTaggedRecipes = baseRecipes.map(recipe => {
+    // Skip if already tagged as lactose-free
+    if (recipe.tags.includes('Lactose-Free') || recipe.tags.includes('dairy-free')) {
+      return recipe;
+    }
+    
+    // Check if recipe contains dairy ingredients
+    const dairyIngredients = ['milk', 'cheese', 'yogurt', 'cream', 'butter', 'dairy', 'whey', 'casein', 'lactose'];
+    const hasDairy = recipe.ingredients.some(ingredient => 
+      dairyIngredients.some(dairy => ingredient.toLowerCase().includes(dairy))
+    );
+    
+    // If no dairy found, add lactose-free tag
+    if (!hasDairy) {
+      console.log(`✅ AUTO-TAGGING: "${recipe.name}" as lactose-free (no dairy ingredients found)`);
+      return {
+        ...recipe,
+        tags: [...recipe.tags, 'Lactose-Free']
+      };
+    }
+    
+    return recipe;
+  });
+  
   // Auto-generate dietary variants for EVERY recipe (gluten-free, lactose-free, vegetarian versions)
-  const dietaryVariants = generateDietaryVariants(baseRecipes);
+  const dietaryVariants = generateDietaryVariants(lactoseTaggedRecipes);
   
   // Combine all recipes
-  const allRecipes = [...baseRecipes, ...dietaryVariants];
+  const allRecipes = [...lactoseTaggedRecipes, ...dietaryVariants];
   
   // Assign unique IDs to all recipes and add cycle phase tags
   const recipesWithIds = allRecipes.map((recipe, index) => {
@@ -12609,18 +12634,8 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
       }
     }
     
-    // All critical dietary tags must be satisfied with smart lactose-free logic
+    // All critical dietary tags must be satisfied - simple tag matching
     if (userCriticalTags.length > 0) {
-      // Smart lactose-free filtering: include meals that don't contain dairy ingredients
-      const hasDairyIngredients = meal.ingredients && meal.ingredients.some(ingredient => 
-        ingredient.toLowerCase().includes('milk') ||
-        ingredient.toLowerCase().includes('cheese') ||
-        ingredient.toLowerCase().includes('yogurt') ||
-        ingredient.toLowerCase().includes('cream') ||
-        ingredient.toLowerCase().includes('butter') ||
-        ingredient.toLowerCase().includes('dairy')
-      );
-      
       // For lactose-free requirement, ONLY accept recipes with explicit lactose-free tags
       const lactoseFreeRequirement = dietaryTags.includes('Lactose-Free');
       const lactoseFreeSatisfied = !lactoseFreeRequirement || 
