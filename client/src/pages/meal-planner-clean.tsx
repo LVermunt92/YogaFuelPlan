@@ -1177,6 +1177,35 @@ function MealPlannerMain() {
                   {t.weekOf} {formatWeekRange(currentMealPlan.weekStart)}
                 </p>
               )}
+
+              {/* Color Legend */}
+              {currentMealPlan?.meals && (
+                <div className="mt-3 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                  <p className="text-xs font-medium text-gray-700 mb-2">
+                    {language === 'nl' ? 'Kleurlegende:' : 'Color Legend:'}
+                  </p>
+                  <div className="flex flex-wrap gap-3 text-xs">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-3 h-3 border-l-2 border-green-400 bg-green-50 rounded-sm"></div>
+                      <span className="text-green-700">{language === 'nl' ? 'Vers koken' : 'Fresh cooking'}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-3 h-3 border-l-2 border-blue-400 bg-blue-50 rounded-sm"></div>
+                      <span className="text-blue-700">{language === 'nl' ? 'Restjes' : 'Leftovers'}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-3 h-3 border-l-2 border-gray-400 bg-gray-50 rounded-sm"></div>
+                      <span className="text-gray-700">{language === 'nl' ? 'Uit eten' : 'Eating out'}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <div className="flex items-center gap-0.5 text-xs text-orange-600 bg-orange-100 px-1 py-0.5 rounded">
+                        <Plus className="h-2 w-2" />
+                      </div>
+                      <span className="text-orange-700">{language === 'nl' ? 'Extra ingrediënten' : 'Added ingredients'}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
               
               {/* Show which leftover ingredients were used */}
               {currentMealPlan && userProfile?.leftovers && userProfile.leftovers.length > 0 && (
