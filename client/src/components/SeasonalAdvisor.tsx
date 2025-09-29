@@ -99,7 +99,7 @@ export function SeasonalAdvisor() {
 
   if (isLoading) {
     return (
-      <Card className="w-full lg:max-w-4xl lg:mx-auto">
+      <Card className="w-full">
         <CardContent className="p-4 sm:p-6">
           <div className="h-4 bg-gray-200 rounded w-3/4 mb-4 animate-pulse"></div>
           <div className="h-3 bg-gray-200 rounded w-1/2 animate-pulse"></div>
@@ -120,7 +120,7 @@ export function SeasonalAdvisor() {
   ];
 
   return (
-    <Card className="w-full lg:max-w-4xl lg:mx-auto">
+    <Card className="w-full">
       <CardHeader className="pb-4">
         <CardTitle className="flex items-center gap-2">
           <span className="text-xl">{seasonIcons[seasonalInfo.season]}</span>
