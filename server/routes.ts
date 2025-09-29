@@ -3271,7 +3271,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // GET /api/seasonal - Get seasonal food advice based on location
   app.get("/api/seasonal", async (req, res) => {
     try {
-      const { getSeasonalAdvice } = await import("./seasonal-advisor");
+      const { getSeasonalInfo } = await import("./seasonal-advisor");
       
       // Get coordinates from query params if provided
       const latitude = req.query.lat ? parseFloat(req.query.lat as string) : undefined;
@@ -3282,11 +3282,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
         coords = { latitude, longitude };
       }
       
-      const seasonalInfo = await getSeasonalAdvice(coords);
+      const seasonalInfo = getSeasonalInfo(coords);
       res.json(seasonalInfo);
     } catch (error) {
       console.error("Error getting seasonal advice:", error);
       res.status(500).json({ message: "Failed to get seasonal advice" });
+    }
+  });
+
+  // GET /api/seasonal/current-months - Get current season months based on location
+  app.get("/api/seasonal/current-months", async (req, res) => {
+    try {
+      const { getCurrentSeasonMonths } = await import("./seasonal-advisor");
+      
+      // Get coordinates from query params if provided
+      const latitude = req.query.lat ? parseFloat(req.query.lat as string) : undefined;
+      const longitude = req.query.lng ? parseFloat(req.query.lng as string) : undefined;
+      
+      let coords;
+      if (latitude !== undefined && longitude !== undefined) {
+        coords = { latitude, longitude };
+      }
+      
+      const currentMonths = getCurrentSeasonMonths(coords);
+      res.json({ currentSeasonMonths: currentMonths });
+    } catch (error) {
+      console.error("Error getting current season months:", error);
+      res.status(500).json({ message: "Failed to get current season months" });
     }
   });
 

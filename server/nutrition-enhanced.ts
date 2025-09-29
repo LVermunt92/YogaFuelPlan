@@ -7,7 +7,7 @@ import { convertAllRecipeUnits } from './bulk-unit-converter';
 import { validateAndEnhanceMealDatabase } from './protein-validator';
 import { validateAndEnhanceMealsForFiber } from './fiber-validator';
 import { cleanRecipeData } from './ingredient-cleaner';
-import { getSeasonalMonths, getHemisphere, getSeason } from './seasonal-advisor';
+// Import functions from seasonal-advisor will be done dynamically to avoid circular dependencies
 
 export interface NutritionInfo {
   protein: number;
@@ -131,10 +131,39 @@ function addCyclePhaseTagsToRecipe(recipe: MealOption): MealOption {
 }
 
 // Function to add seasonal month tags to recipes based on ingredients and characteristics
-function addSeasonalMonthTagsToRecipe(recipe: MealOption, coords?: { latitude: number; longitude: number }): MealOption {
+async function addSeasonalMonthTagsToRecipe(recipe: MealOption, coords?: { latitude: number; longitude: number }): Promise<MealOption> {
   const newTags = [...recipe.tags];
   const ingredients = recipe.ingredients || [];
   const ingredientText = ingredients.join(' ').toLowerCase();
+  
+  // Helper functions (copied from seasonal-advisor to avoid circular dependencies)
+  function getHemisphere(latitude: number): 'north' | 'south' {
+    return latitude >= 0 ? 'north' : 'south';
+  }
+  
+  function getSeasonalMonths(season: 'winter' | 'spring' | 'summer' | 'autumn', hemisphere: 'north' | 'south'): string[] {
+    const months = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    
+    if (hemisphere === 'north') {
+      switch (season) {
+        case 'winter': return [months[11], months[0], months[1]]; // Dec, Jan, Feb
+        case 'spring': return [months[2], months[3], months[4]]; // Mar, Apr, May
+        case 'summer': return [months[5], months[6], months[7]]; // Jun, Jul, Aug
+        case 'autumn': return [months[8], months[9], months[10]]; // Sep, Oct, Nov
+      }
+    } else {
+      // Southern hemisphere - seasons are opposite
+      switch (season) {
+        case 'winter': return [months[5], months[6], months[7]]; // Jun, Jul, Aug
+        case 'spring': return [months[8], months[9], months[10]]; // Sep, Oct, Nov
+        case 'summer': return [months[11], months[0], months[1]]; // Dec, Jan, Feb
+        case 'autumn': return [months[2], months[3], months[4]]; // Mar, Apr, May
+      }
+    }
+  }
   
   // Default to Amsterdam coordinates if no location provided
   const location = coords || { latitude: 52.3676, longitude: 4.9041 };
