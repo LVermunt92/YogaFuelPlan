@@ -136,7 +136,7 @@ export function SeasonalAdvisor() {
         
         {/* Monthly Local Produce Section */}
         {seasonalInfo.monthlyProduce && (
-          <div className="bg-gradient-to-br from-emerald-50 via-green-50 to-teal-50 dark:from-emerald-900/10 dark:via-green-900/10 dark:to-teal-900/10 rounded-xl p-6 border border-emerald-200 dark:border-emerald-700/50 shadow-sm">
+          <div className="p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
                 <div className="flex items-center justify-center w-10 h-10 bg-emerald-100 dark:bg-emerald-900/30 rounded-full">
