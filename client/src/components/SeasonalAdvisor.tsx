@@ -198,26 +198,19 @@ export function SeasonalAdvisor() {
         {/* Local Markets Section */}
         {seasonalInfo.localMarkets && (
           <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="flex items-center justify-center w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full">
-                <span className="text-lg">🏪</span>
-              </div>
-              <h3 className="font-semibold text-lg text-gray-800 dark:text-gray-200">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-lg">🏪</span>
+              <h4 className="font-medium text-sm text-gray-700">
                 {language === 'nl' ? 'Waar Verse Lokale Groenten Te Vinden' : 'Where to Find Fresh Local Produce'}
-              </h3>
+              </h4>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+            <ul className="space-y-2">
               {seasonalInfo.localMarkets.map((market, index) => (
-                <div key={index} className="group p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/10 dark:to-indigo-900/10 rounded-lg border border-blue-200 dark:border-blue-800/30 hover:from-blue-100 hover:to-indigo-100 dark:hover:from-blue-900/20 dark:hover:to-indigo-900/20 transition-all duration-200 hover:shadow-sm">
-                  <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-                    <p className="text-sm text-blue-800 dark:text-blue-200 leading-relaxed">
-                      {market}
-                    </p>
-                  </div>
-                </div>
+                <li key={index} className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                  • {market}
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         )}
       </CardContent>
