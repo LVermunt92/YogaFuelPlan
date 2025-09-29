@@ -4771,7 +4771,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 10.0 
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Quick", "Probiotic"],
+    tags: ["Vegetarian", "High-Protein", "Quick", "Probiotic", "Dairy"],
     ingredients: [
       "1 cup Greek yogurt (2% fat)",
       "2 tbsp almond butter",
