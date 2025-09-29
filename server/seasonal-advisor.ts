@@ -25,18 +25,18 @@ export interface LocationCoords {
 const AMSTERDAM_MONTHLY_PRODUCE = {
   0: { // January
     vegetables: ['spruitjes', 'boerenkool', 'prei', 'witte kool', 'rode kool', 'wortelen', 'pastinaak', 'winteruien', 'aardappelen (bewaard)'],
-    localFocus: 'Winter vegetables from storage and cold-hardy greens',
-    peak: ['Brussels sprouts', 'kale', 'stored root vegetables']
+    localFocus: 'Wintergroenten uit opslag en koudebestendige bladgroenten',
+    peak: ['spruitjes', 'boerenkool', 'bewaard wortelgewas']
   },
   1: { // February
     vegetables: ['spruitjes', 'boerenkool', 'prei', 'wortelen', 'pastinaak', 'knolrapen', 'aardappelen', 'winterkool'],
-    localFocus: 'Peak winter vegetables, last of stored harvest',
-    peak: ['Brussels sprouts', 'winter leeks', 'stored carrots']
+    localFocus: 'Piek van wintergroenten, laatste van bewaard oogst',
+    peak: ['spruitjes', 'winterprei', 'bewaarde wortelen']
   },
   2: { // March
     vegetables: ['witte asperges (eind maart)', 'vroege sla', 'spinazie', 'broccoli', 'bloemkool', 'doperwten', 'prei'],
-    localFocus: 'Early spring vegetables begin, white asparagus starts',
-    peak: ['early spring greens', 'white asparagus begins', 'spinach']
+    localFocus: 'Vroege voorjaarsgroenten beginnen, witte asperges starten',
+    peak: ['vroeg voorjaarsgroen', 'witte asperges beginnen', 'spinazie']
   },
   3: { // April
     vegetables: ['witte asperges', 'lente-uitjes', 'radijsjes', 'vroege sla', 'spinazie', 'verse kruiden (bieslook, peterselie)'],
@@ -284,10 +284,10 @@ export function getSeasonalInfo(coords?: LocationCoords): SeasonalInfo {
   
   // Amsterdam local markets for seasonal produce
   const localMarkets = [
-    'Noordermarkt (Saturday) - Fresh local vegetables and organic produce',
-    'Boerenmarkt Nieuwmarkt (Saturday) - Organic local farms',
-    'Albert Cuyp Market - Traditional market with seasonal Dutch produce',
-    'Farmers markets in Vondelpark (Saturday) - Local growers'
+    'Noordermarkt (zaterdag) - Verse lokale groenten en biologische producten',
+    'Boerenmarkt Nieuwmarkt (zaterdag) - Biologische lokale boeren',
+    'Albert Cuyp Markt - Traditionele markt met seizoensgebonden Nederlandse producten',
+    'Boerenmarkten in Vondelpark (zaterdag) - Lokale kwekers'
   ];
   
   return {
