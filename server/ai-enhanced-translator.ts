@@ -36,42 +36,65 @@ async function translateWithAI(
 
     switch (type) {
       case 'recipe-name':
-        systemPrompt = `You are a professional Dutch recipe translator. Translate recipe names to natural, appealing Dutch that home cooks would recognize. Keep it concise and appetizing. Maintain any cultural dish names where appropriate.`;
-        userPrompt = `Translate this recipe name to Dutch: "${text}"
+        systemPrompt = `You are a native Dutch speaker and professional cookbook translator specializing in Dutch cuisine. Translate recipe names to authentic, appetizing Dutch that feels natural to Netherlands home cooks. Use proper Dutch culinary terminology and maintain regional dish names (e.g., "curry" stays "curry", "pasta" stays "pasta"). Avoid overly literal translations - prioritize what sounds natural and appealing in Dutch.`;
+        userPrompt = `Translate this recipe name to natural Dutch: "${text}"
+
+Examples of good translations:
+- "Greek yogurt protein power bowl" → "Griekse yoghurt proteïne bowl" 
+- "Mediterranean quinoa salad" → "Mediterrane quinoasalade"
+- "Spicy chickpea curry" → "Pittige kikkererwtencurry"
 
 Only return the translated name, nothing else.`;
         break;
 
       case 'ingredient':
-        systemPrompt = `You are a Dutch cooking expert. Translate ingredient descriptions to natural Dutch as used in Netherlands recipes. Include quantities and preparation methods. Use metric measurements (grams, ml, liters).`;
-        userPrompt = `Translate this ingredient to Dutch: "${text}"
+        systemPrompt = `You are a native Dutch speaker and cooking expert familiar with Netherlands grocery stores and culinary traditions. Translate ingredients to exactly how they appear in Dutch recipes and Albert Heijn grocery stores. Use proper Dutch measurements (gram, ml, liter, eetlepel, theelepel). Include preparation methods in natural Dutch.`;
+        userPrompt = `Translate this ingredient to Dutch grocery/recipe terminology: "${text}"
 
-Use proper Dutch cooking terminology and metric measurements. Only return the translated ingredient, nothing else.`;
+Use Dutch cooking terminology as found in Netherlands supermarkets:
+- "cottage cheese" → "hüttenkäse" 
+- "Greek yogurt" → "Griekse yoghurt"
+- "2 tbsp olive oil" → "2 eetlepels olijfolie"
+- "1 cup diced tomatoes" → "200g tomaten, in blokjes"
+- "fresh basil leaves" → "verse basilicumblaadjes"
+
+Only return the translated ingredient, nothing else.`;
         break;
 
       case 'instruction':
-        systemPrompt = `You are a Dutch cookbook author. Translate cooking instructions to clear, natural Dutch as used in Netherlands cookbooks. Use imperative mood and proper cooking verbs. Make instructions easy to follow for home cooks.`;
-        userPrompt = `Translate this cooking instruction to Dutch: "${text}"
+        systemPrompt = `You are a native Dutch cookbook author writing for Netherlands home cooks. Translate cooking instructions to clear, actionable Dutch using proper imperative forms and cooking verbs commonly used in Dutch recipes. Make instructions flow naturally and be easy to follow.`;
+        userPrompt = `Translate this cooking instruction to natural Dutch: "${text}"
 
-Use natural Dutch cooking language that Netherlands home cooks would understand. Only return the translated instruction, nothing else.`;
+Use proper Dutch cooking verbs and imperative mood:
+- "Heat oil in a pan" → "Verhit de olie in een pan"
+- "Add garlic and sauté" → "Voeg de knoflook toe en bak aan"
+- "Season with salt and pepper" → "Breng op smaak met zout en peper"
+- "Simmer for 10 minutes" → "Laat 10 minuten sudderen"
+
+Only return the translated instruction, nothing else.`;
         break;
 
       case 'tip':
-        systemPrompt = `You are a Dutch cooking teacher. Translate cooking tips to helpful, natural Dutch advice. Use friendly, instructional tone appropriate for home cooks.`;
-        userPrompt = `Translate this cooking tip to Dutch: "${text}"
+        systemPrompt = `You are a Dutch cooking instructor giving friendly advice to home cooks in the Netherlands. Translate cooking tips to warm, helpful Dutch using the informal tone typical of Dutch cooking advice. Use "je" form and practical language.`;
+        userPrompt = `Translate this cooking tip to natural, friendly Dutch: "${text}"
 
-Use warm, helpful Dutch language for home cooking advice. Only return the translated tip, nothing else.`;
+Use warm, practical Dutch cooking advice style:
+- "Make sure to..." → "Zorg ervoor dat je..."
+- "For best results..." → "Voor het beste resultaat..."
+- "This works well with..." → "Dit smaakt heerlijk bij..."
+
+Only return the translated tip, nothing else.`;
         break;
     }
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
+      model: "gpt-5", // the newest OpenAI model is "gpt-5" which was released August 7, 2025. do not change this unless explicitly requested by the user
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: userPrompt }
       ],
-      max_tokens: 200,
-      temperature: 0.3 // Lower temperature for more consistent translations
+      max_completion_tokens: 200
+      // Note: GPT-5 doesn't support temperature parameter
     });
 
     return response.choices[0].message.content?.trim() || text;

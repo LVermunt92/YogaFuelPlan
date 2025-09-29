@@ -56,4 +56,4 @@ localPort = 36601
 externalPort = 3002
 
 [agent]
-integrations = ["javascript_anthropic==1.0.0"]
+integrations = ["javascript_anthropic:1.0.0", "javascript_openai:1.0.0"]
