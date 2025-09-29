@@ -127,7 +127,7 @@ interface OuraStatus {
 function AdminRedirect() {
   return (
     <div className="min-h-screen bg-background px-2 py-4">
-      <div className="max-w-4xl mx-auto">
+      <div className="w-full">
         <Card className="mb-6">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -661,7 +661,7 @@ function MealPlannerMain() {
 
           {/* 2. Compact Nutrition Charts */}
           {currentMealPlan && kpiData && (
-            <div className="flex justify-center mb-6">
+            <div className="mb-6">
               <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg w-full">
               {/* Protein Chart - First position */}
               <TooltipProvider>
