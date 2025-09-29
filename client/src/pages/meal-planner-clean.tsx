@@ -647,9 +647,9 @@ function MealPlannerMain() {
 
   return (
     <div className="bg-background min-h-screen">
-      <main className="responsive-container py-6 lg:py-8">
+      <main className="container py-6 lg:py-8">
         {/* Centered Content Container */}
-        <div className="container space-y-6 lg:space-y-8">
+        <div className="space-y-6 lg:space-y-8">
           
           {/* 1. Welcome Section */}
           <div className="text-center mb-6">
@@ -662,7 +662,7 @@ function MealPlannerMain() {
           {/* 2. Compact Nutrition Charts */}
           {currentMealPlan && kpiData && (
             <div className="flex justify-center mb-6">
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg max-w-4xl w-full">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg w-full">
               {/* Protein Chart - First position */}
               <TooltipProvider>
                 <Tooltip>
