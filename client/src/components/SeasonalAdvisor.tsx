@@ -62,8 +62,8 @@ const seasonIcons = {
 
 export function SeasonalAdvisor() {
   const { coords } = useGeolocation();
-  const t = useTranslations();
   const { language } = useLanguage();
+  const t = useTranslations(language);
   
   const seasonNames = {
     winter: t.winter,
