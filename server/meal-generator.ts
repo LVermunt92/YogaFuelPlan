@@ -15,7 +15,7 @@ import { calculateProteinTarget } from "./nutrition";
 import { getCurrentAyurvedicSeason } from "./ayurveda-seasonal";
 import { selectProteinOptimizedMeals } from "./smart-protein-selection";
 import { selectProteinOptimizedMealsForTarget, calculateUserProteinTarget } from "./protein-target-optimizer";
-import { calculateMealFreshnessPriority, getRecommendedDayForMeal, logMealFreshnessAnalysis, sortMealsByFreshness } from "./ingredient-freshness";
+import { calculateMealFreshnessPriority, sortMealsByFreshness } from "./ingredient-freshness";
 import { normalizeToSunday } from "./date-utils";
 import { storage } from "./storage";
 import { applyDietarySubstitutions } from "./ingredient-substitution";
@@ -651,8 +651,8 @@ function areMealsSimilar(meal1: string, meal2: string): boolean {
  */
 async function getRecentMealHistory(userId: number, weeksBack: number = 2): Promise<string[]> {
   try {
-    const storage = await getStorage();
-    const recentHistory = await storage.getMealHistory(userId, weeksBack * 21); // 3 meals per day × 7 days × weeks
+    const db = storage;
+    const recentHistory = await db.getMealHistory(userId, weeksBack * 21); // 3 meals per day × 7 days × weeks
     const recentMealNames = recentHistory.map(h => h.mealName);
     
     if (recentMealNames.length > 0) {
@@ -1054,7 +1054,9 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
     dailyProteinTarget = calculateUserProteinTarget(user);
     console.log(`🎯 Using personalized protein target: ${dailyProteinTarget}g/day (based on user profile)`);
   } else {
-    dailyProteinTarget = calculateProteinTarget(request.activityLevel);
+    // Convert 'moderate' to 'low' as fallback since calculateProteinTarget only accepts 'high' | 'low'
+    const activityLevel = request.activityLevel === 'moderate' ? 'low' : request.activityLevel as 'high' | 'low';
+    dailyProteinTarget = calculateProteinTarget(activityLevel);
     console.log(`🎯 Using activity-based protein target: ${dailyProteinTarget}g/day (fallback)`);
   }
   
@@ -1064,8 +1066,10 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   
   // Add menstrual phase as a dietary tag if user has selected a phase (not 'off')
   if (user?.menstrualPhase && user.menstrualPhase !== 'off') {
-    dietaryTags = [...dietaryTags, user.menstrualPhase];
-    console.log(`🩸 Added menstrual phase "${user.menstrualPhase}" to dietary tags: [${dietaryTags.join(', ')}]`);
+    // Convert menstrual phase to a valid dietary tag format
+    const phaseTag = `menstrual-${user.menstrualPhase}` as any;
+    dietaryTags = [...dietaryTags, phaseTag];
+    console.log(`🩸 Added menstrual phase "${user.menstrualPhase}" as tag "${phaseTag}" to dietary tags: [${dietaryTags.join(', ')}]`);
   }
   
   // Get ingredients to use up from user profile
@@ -1128,16 +1132,30 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
     const convertUserRecipeToMealOption = (recipe: any): MealOption => ({
       name: recipe.name,
       portion: recipe.portion || '1 serving',
-      ingredients: recipe.ingredients,
-      instructions: recipe.instructions,
-      nutrition: recipe.nutrition || { protein: 15, calories: 400, carbohydrates: 40, fats: 15 },
+      ingredients: recipe.ingredients || [],
+      nutrition: {
+        protein: recipe.nutrition?.protein || 15,
+        prepTime: recipe.prepTime || 30,
+        calories: recipe.nutrition?.calories || 400,
+        carbohydrates: recipe.nutrition?.carbohydrates || 40,
+        fats: recipe.nutrition?.fats || 15,
+        fiber: recipe.nutrition?.fiber || 8,
+        sugar: recipe.nutrition?.sugar || 10,
+        sodium: recipe.nutrition?.sodium || 300,
+      },
       tags: [...(recipe.tags || []), 'custom'], // Always add 'custom' tag to user recipes
-      prepTime: recipe.prepTime || 30,
-      costEuros: recipe.costEuros || 3.0,
-      proteinPerEuro: recipe.nutrition?.protein ? (recipe.nutrition.protein / (recipe.costEuros || 3.0)) : 5.0,
-      tips: recipe.tips || [],
-      notes: recipe.notes || '',
-      origin: 'user-recipe'
+      category: recipe.mealTypes?.[0] || 'dinner' as 'breakfast' | 'lunch' | 'dinner',
+      wholeFoodLevel: 'moderate' as 'minimal' | 'moderate' | 'high',
+      vegetableContent: {
+        servings: 2,
+        vegetables: ['mixed vegetables'],
+        benefits: ['Nutritious whole foods']
+      },
+      recipe: {
+        instructions: recipe.instructions || [],
+        tips: recipe.tips || [],
+        notes: recipe.notes || ''
+      }
     });
     
     // Get user recipes by meal type (more permissive filtering for user's own recipes)
@@ -1313,7 +1331,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
       
       if (availableMeals.length === 0) {
         console.error(`CRITICAL: No ${mealCategory} meals available for dietary restrictions: ${dietaryTags.join(', ')}. Skipping this meal.`);
-        return; // Skip this meal instead of using inappropriate fallback
+        continue; // Skip this meal instead of using inappropriate fallback
       }
 
       // Apply personalized protein optimization based on user's individual target
@@ -1390,7 +1408,8 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         isLeftover = true;
       } else if (day === 4 && mealCategory === 'dinner') {
         // Day 4: Wednesday dinner - fresh cooking
-        selectedMeal = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        const wednesdayDinnerResult = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        selectedMeal = wednesdayDinnerResult.meal;
         wednesdayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
         allSelectedMealNames.add(selectedMeal.name);
@@ -1404,7 +1423,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         isLeftover = true;
       } else if (day === 5 && mealCategory === 'dinner') {
         // Day 5: Thursday dinner - fresh cooking
-        const thursdayDinnerResult = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        const thursdayDinnerResult = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget, user?.id);
         selectedMeal = thursdayDinnerResult.meal;
         thursdayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
@@ -1419,20 +1438,28 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         isLeftover = true;
       } else if (day === 6 && mealCategory === 'dinner') {
         // Day 6: Friday dinner - fresh cooking
-        const fridayDinnerResult = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        const fridayDinnerResult = await selectUnusedMealIntelligently(availableMeals, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget, user?.id);
         selectedMeal = fridayDinnerResult.meal;
         let fridayDinnerMeal = selectedMeal;
         usedDinnerMeals.add(selectedMeal.name);
         allSelectedMealNames.add(selectedMeal.name);
       } else if (day === 7 && mealCategory === 'lunch') {
         // Day 7: Saturday lunch - only add eating out if user doesn't eat at home
-        if (!daysWithRealMeals.has(day)) {
+        const userEatsAtHome = userEatingDays >= 6; // User eats at home 6+ days per week
+        if (!userEatsAtHome) {
           selectedMeal = {
             name: "Eating out",
             portion: "",
             nutrition: { protein: 0, prepTime: 30, calories: 0, carbohydrates: 0, fats: 0, fiber: 0, sugar: 0, sodium: 0 },
             ingredients: [],
             tags: [],
+            category: 'lunch' as 'breakfast' | 'lunch' | 'dinner',
+            wholeFoodLevel: 'minimal' as 'minimal' | 'moderate' | 'high',
+            vegetableContent: {
+              servings: 0,
+              vegetables: [],
+              benefits: []
+            },
             recipe: { instructions: [], tips: [] }
           };
         } else {
@@ -1444,7 +1471,8 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         }
       } else if (day === 7 && mealCategory === 'dinner') {
         // Day 7: Saturday dinner - only add eating out if different from lunch
-        if (!daysWithRealMeals.has(day)) {
+        const userEatsAtHome = userEatingDays >= 6; // User eats at home 6+ days per week
+        if (!userEatsAtHome) {
           // Only add "Eating out" for dinner if lunch wasn't already "Eating out"
           const lunchMeal = meals.find(m => m.day === day && m.mealType === 'lunch');
           if (!lunchMeal || lunchMeal.foodDescription !== 'Eating out') {
@@ -1454,6 +1482,13 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
               nutrition: { protein: 0, prepTime: 30, calories: 0, carbohydrates: 0, fats: 0, fiber: 0, sugar: 0, sodium: 0 },
               ingredients: [],
               tags: [],
+              category: 'dinner' as 'breakfast' | 'lunch' | 'dinner',
+              wholeFoodLevel: 'minimal' as 'minimal' | 'moderate' | 'high',
+              vegetableContent: {
+                servings: 0,
+                vegetables: [],
+                benefits: []
+              },
               recipe: { instructions: [], tips: [] }
             };
           } else {
@@ -1620,7 +1655,16 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         selectedMeal = {
           name: "Simple Protein Bowl",
           portion: "1 serving",
-          nutrition: { protein: 25, calories: 400, carbohydrates: 40, fats: 15, prepTime: 15 },
+          nutrition: { 
+            protein: 25, 
+            calories: 400, 
+            carbohydrates: 40, 
+            fats: 15, 
+            prepTime: 15,
+            fiber: 8,
+            sugar: 10,
+            sodium: 300
+          },
           ingredients: ["protein", "vegetables"],
           tags: ["quick"],
           category: mealCategory,
