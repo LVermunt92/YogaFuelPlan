@@ -24,7 +24,7 @@ export interface LocationCoords {
 }
 
 // Amsterdam month-specific locally grown vegetables calendar
-const AMSTERDAM_MONTHLY_PRODUCE = {
+export const AMSTERDAM_MONTHLY_PRODUCE = {
   0: { // January
     vegetables: ['spruitjes', 'boerenkool', 'prei', 'witte kool', 'rode kool', 'wortelen', 'pastinaak', 'winteruien', 'aardappelen (bewaard)'],
     localFocus: 'Wintergroenten uit opslag en koudebestendige bladgroenten',

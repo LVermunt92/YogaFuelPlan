@@ -14211,12 +14211,12 @@ export function updateAllRecipesWithSpecificIngredients(): void {
 /**
  * Validate all recipes and report any remaining generic ingredients
  */
-export function validateAllRecipeIngredients(): { 
+export async function validateAllRecipeIngredients(): Promise<{ 
   totalRecipes: number; 
   validRecipes: number; 
   issuesFound: Array<{recipeName: string, issues: string[]}> 
-} {
-  const allRecipes = getCompleteEnhancedMealDatabase();
+}> {
+  const allRecipes = await getCompleteEnhancedMealDatabase();
   const issuesFound: Array<{recipeName: string, issues: string[]}> = [];
   let validRecipes = 0;
   

@@ -2230,7 +2230,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Recipe measurements are automatically converted in the unified database system
       console.log('📏 Recipe measurements are automatically converted to metric in the enhanced database');
-      const validation = validateAllRecipeIngredients();
+      const validation = await validateAllRecipeIngredients();
       
       res.json({
         message: "Recipe ingredients updated successfully",
@@ -2249,7 +2249,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/recipes/validate-ingredients", async (req, res) => {
     try {
-      const validation = validateAllRecipeIngredients();
+      const validation = await validateAllRecipeIngredients();
       
       res.json({
         message: "Recipe ingredient validation complete",
@@ -2267,24 +2267,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Run ingredient specification update on server startup
-  try {
-    console.log('🚀 Server startup: Running ingredient specification update...');
-    updateAllRecipesWithSpecificIngredients();
-    
-    // Recipe measurements are automatically converted in the unified database system
-    console.log('📏 Recipe measurements are automatically converted to metric in the enhanced database');
-    
-    const validation = validateAllRecipeIngredients();
-    console.log(`📊 Ingredient validation: ${validation.validRecipes}/${validation.totalRecipes} recipes have specific ingredients`);
-    if (validation.issuesFound.length > 0) {
-      console.log('⚠️  Recipes still needing attention:');
-      validation.issuesFound.forEach(recipe => {
-        console.log(`   - ${recipe.recipeName}: ${recipe.issues.length} issues`);
-      });
+  (async () => {
+    try {
+      console.log('🚀 Server startup: Running ingredient specification update...');
+      updateAllRecipesWithSpecificIngredients();
+      
+      // Recipe measurements are automatically converted in the unified database system
+      console.log('📏 Recipe measurements are automatically converted to metric in the enhanced database');
+      
+      const validation = await validateAllRecipeIngredients();
+      console.log(`📊 Ingredient validation: ${validation.validRecipes}/${validation.totalRecipes} recipes have specific ingredients`);
+      if (validation.issuesFound.length > 0) {
+        console.log('⚠️  Recipes still needing attention:');
+        validation.issuesFound.forEach(recipe => {
+          console.log(`   - ${recipe.recipeName}: ${recipe.issues.length} issues`);
+        });
+      }
+    } catch (error) {
+      console.error("Error running startup ingredient update:", error);
     }
-  } catch (error) {
-    console.error("Error running startup ingredient update:", error);
-  }
+  })();
 
   // Admin routes
   app.use('/api/admin', adminRouter);
