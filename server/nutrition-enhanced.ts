@@ -4821,7 +4821,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 13.6 
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Keto", "Quick"],
+    tags: ["Vegetarian", "High-Protein", "Keto", "Quick", "Dairy"],
     ingredients: [
       "3 large eggs",
       "½ cup cottage cheese",
