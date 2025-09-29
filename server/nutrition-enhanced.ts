@@ -130,27 +130,22 @@ function addCyclePhaseTagsToRecipe(recipe: MealOption): MealOption {
   return { ...recipe, tags: newTags };
 }
 
-// Function to add seasonal month tags to recipes based on ingredients and characteristics
+// Enhanced function to add seasonal month tags to recipes based on ingredients and characteristics
+// Now uses comprehensive voedingscentrum.nl seasonal vegetables data for users in the Netherlands
+// This enables smart month labelling logic that accurately reflects Dutch seasonal produce availability
 export async function addSeasonalMonthTagsToRecipe(recipe: MealOption, coords?: { latitude: number; longitude: number }): Promise<MealOption> {
   const newTags = [...recipe.tags];
   const ingredients = recipe.ingredients || [];
   const ingredientText = ingredients.join(' ').toLowerCase();
   
-  // Amsterdam month-specific locally grown vegetables calendar  
-  const AMSTERDAM_MONTHLY_PRODUCE: { [key: number]: string[] } = {
-    0: ['spruitjes', 'boerenkool', 'prei', 'kool', 'wortelen', 'pastinaak', 'winteruien', 'aardappelen'],
-    1: ['spruitjes', 'boerenkool', 'prei', 'wortelen', 'pastinaak', 'knolrapen', 'aardappelen', 'winterkool'],
-    2: ['witte asperges', 'vroege sla', 'spinazie', 'broccoli', 'bloemkool', 'doperwten', 'prei'],
-    3: ['witte asperges', 'lente-uitjes', 'radijsjes', 'sla', 'spinazie', 'verse kruiden', 'bieslook', 'peterselie'],
-    4: ['witte asperges', 'lente-uitjes', 'radijsjes', 'spinazie', 'snijbiet', 'verse kruiden', 'doperwten'],
-    5: ['nieuwe aardappelen', 'paprika', 'komkommers', 'tomaten', 'courgette', 'witte asperges'],
-    6: ['tomaten', 'komkommers', 'paprika', 'sperziebonen', 'mais', 'zomerpompoen', 'basilicum', 'dille', 'munt'],
-    7: ['tomaten', 'komkommers', 'paprika', 'sperziebonen', 'mais', 'zomerpompoen', 'aubergines', 'sla'],
-    8: ['aubergines', 'tomaten', 'zoete paprika', 'sperziebonen', 'vroege herfstgroenten'],
-    9: ['pompoenen', 'winterpompoen', 'spruitjes', 'prei', 'witte kool', 'wortelen', 'rode bieten', 'paddenstoelen'],
-    10: ['pompoenen', 'winterpompoen', 'spruitjes', 'prei', 'kool', 'wortelen', 'rode bieten', 'paddenstoelen', 'knolselderij'],
-    11: ['boerenkool', 'spruitjes', 'winterprei', 'wortelen', 'aardappelen', 'winterkool', 'uien']
-  };
+  // Import comprehensive voedingscentrum.nl seasonal vegetables data (37+ vegetables per month)
+  // This replaces the simplified version with official Dutch nutrition center data
+  const { AMSTERDAM_MONTHLY_PRODUCE } = await import("./seasonal-advisor");
+  
+  // Helper function to get vegetables from monthly produce data
+  function getMonthlyVegetables(monthData: any): string[] {
+    return monthData?.vegetables || [];
+  }
   
   // Helper functions (copied from seasonal-advisor to avoid circular dependencies)
   function getHemisphere(latitude: number): 'north' | 'south' {
@@ -185,19 +180,52 @@ export async function addSeasonalMonthTagsToRecipe(recipe: MealOption, coords?: 
   const location = coords || { latitude: 52.3676, longitude: 4.9041 };
   const hemisphere = getHemisphere(location.latitude);
   
-  // Function to check if recipe contains Amsterdam local produce for specific months
+  // Enhanced function to check if recipe contains voedingscentrum.nl seasonal vegetables for specific months
   function getMonthsForLocalProduce(): number[] {
     const matchedMonths: number[] = [];
     
-    // Check each month's local produce against recipe ingredients
+    // Check each month's voedingscentrum.nl produce against recipe ingredients
     for (let month = 0; month < 12; month++) {
-      const monthProduce = AMSTERDAM_MONTHLY_PRODUCE[month];
-      const hasLocalProduce = monthProduce.some((produce: string) => 
-        ingredientText.includes(produce.toLowerCase()) ||
-        ingredientText.includes(produce.replace('witte ', '').toLowerCase()) ||
-        ingredientText.includes(produce.replace(' (kas)', '').toLowerCase()) ||
-        ingredientText.includes(produce.replace('nieuwe ', '').toLowerCase())
-      );
+      const monthData = AMSTERDAM_MONTHLY_PRODUCE[month];
+      const monthVegetables = getMonthlyVegetables(monthData);
+      
+      const hasLocalProduce = monthVegetables.some((produce: string) => {
+        const cleanProduce = produce.toLowerCase()
+          // Remove descriptive text in parentheses
+          .replace(/\s*\([^)]*\)/g, '')
+          // Remove prefixes like 'nieuwe', 'vroege', 'verse', 'witte'
+          .replace(/^(nieuwe|vroege|verse|witte|vroeg|late|zoete)\s+/, '')
+          // Normalize common terms
+          .trim();
+        
+        // Check multiple variations of ingredient matching
+        return ingredientText.includes(cleanProduce) ||
+               // Check for partial matches (e.g., 'kool' matches 'witte kool', 'boerenkool')
+               ingredientText.includes(cleanProduce.split(' ')[0]) ||
+               // Check for English translations if available
+               (cleanProduce === 'spruitjes' && (ingredientText.includes('brussels sprouts') || ingredientText.includes('brussels'))) ||
+               (cleanProduce === 'boerenkool' && (ingredientText.includes('kale') || ingredientText.includes('curly kale'))) ||
+               (cleanProduce === 'wortelen' && (ingredientText.includes('carrots') || ingredientText.includes('carrot'))) ||
+               (cleanProduce === 'prei' && (ingredientText.includes('leeks') || ingredientText.includes('leek'))) ||
+               (cleanProduce === 'courgette' && (ingredientText.includes('zucchini') || ingredientText.includes('courgette'))) ||
+               (cleanProduce === 'aubergine' && (ingredientText.includes('eggplant') || ingredientText.includes('aubergine'))) ||
+               (cleanProduce === 'paprika' && (ingredientText.includes('bell pepper') || ingredientText.includes('pepper'))) ||
+               (cleanProduce === 'tomaten' && (ingredientText.includes('tomatoes') || ingredientText.includes('tomato'))) ||
+               (cleanProduce === 'komkommers' && (ingredientText.includes('cucumbers') || ingredientText.includes('cucumber'))) ||
+               (cleanProduce === 'sperziebonen' && (ingredientText.includes('green beans') || ingredientText.includes('french beans'))) ||
+               (cleanProduce === 'doperwten' && (ingredientText.includes('peas') || ingredientText.includes('green peas'))) ||
+               (cleanProduce === 'spinazie' && ingredientText.includes('spinach')) ||
+               (cleanProduce === 'broccoli' && ingredientText.includes('broccoli')) ||
+               (cleanProduce === 'bloemkool' && (ingredientText.includes('cauliflower') || ingredientText.includes('cauli'))) ||
+               (cleanProduce === 'paddenstoelen' && (ingredientText.includes('mushrooms') || ingredientText.includes('mushroom'))) ||
+               (cleanProduce === 'aardappelen' && (ingredientText.includes('potatoes') || ingredientText.includes('potato'))) ||
+               (cleanProduce === 'pompoenen' && (ingredientText.includes('pumpkin') || ingredientText.includes('squash'))) ||
+               (cleanProduce === 'mais' && (ingredientText.includes('corn') || ingredientText.includes('sweetcorn'))) ||
+               (cleanProduce === 'asperges' && (ingredientText.includes('asparagus') || ingredientText.includes('asparagus'))) ||
+               (cleanProduce === 'radijsjes' && (ingredientText.includes('radishes') || ingredientText.includes('radish'))) ||
+               (cleanProduce === 'rode biet' && (ingredientText.includes('beetroot') || ingredientText.includes('beets'))) ||
+               (cleanProduce === 'venkel' && (ingredientText.includes('fennel') || ingredientText.includes('fennel bulb')));
+      });
       
       if (hasLocalProduce) {
         matchedMonths.push(month);
