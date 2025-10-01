@@ -13,7 +13,7 @@ import Auth from "@/pages/auth";
 import NotFound from "@/pages/not-found";
 import { Utensils, User, Info, Settings, Menu, LogOut, Languages, ChefHat } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTranslations } from "@/lib/translations";
 import { LanguageProvider, useLanguage } from "@/contexts/LanguageContext";
@@ -258,6 +258,38 @@ function Router() {
 }
 
 function App() {
+  useEffect(() => {
+    // Weekly version check for auto-updates
+    const checkForUpdates = async () => {
+      const WEEK_IN_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+      const lastCheck = localStorage.getItem('lastVersionCheck');
+      const storedVersion = localStorage.getItem('appVersion');
+      const now = Date.now();
+      
+      // Check if it's been a week since last check
+      if (!lastCheck || now - parseInt(lastCheck) > WEEK_IN_MS) {
+        try {
+          const response = await fetch('/api/version');
+          const data = await response.json();
+          
+          // If version changed and we have a stored version, reload
+          if (storedVersion && data.version !== storedVersion) {
+            console.log('New version detected, reloading...');
+            window.location.reload();
+          }
+          
+          // Update stored version and last check time
+          localStorage.setItem('appVersion', data.version);
+          localStorage.setItem('lastVersionCheck', now.toString());
+        } catch (error) {
+          console.error('Version check failed:', error);
+        }
+      }
+    };
+    
+    checkForUpdates();
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>

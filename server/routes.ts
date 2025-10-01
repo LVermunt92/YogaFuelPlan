@@ -44,7 +44,15 @@ function parseQuantityAndUnit(totalAmount: string): { quantity: number; unit: st
   return { quantity: 1, unit: cleanAmount };
 }
 
+// Store app start time as version identifier
+const APP_VERSION = Date.now().toString();
+
 export async function registerRoutes(app: Express): Promise<Server> {
+  
+  // Version endpoint for auto-update detection
+  app.get("/api/version", (req, res) => {
+    res.json({ version: APP_VERSION });
+  });
   
   // Authentication routes
   app.post("/api/auth/register", async (req, res) => {
