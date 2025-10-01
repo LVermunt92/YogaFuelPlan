@@ -1420,24 +1420,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
         incorporationNote = ` This recipe has been adapted to include ${incorporatedIngredients.join(', ')} from your leftover ingredients.`;
       }
 
-      // Translate recipe content based on language preference (with AI enhancement when available)
-      const translatedRecipe = await translateRecipeEnhanced({
-        id: mealOption.id,
-        name: mealOption.name,
-        ingredients: finalIngredients,
-        instructions: finalInstructions,
-        tips: mealOption.recipe?.tips || [],
-        notes: [(mealOption.recipe?.notes || "") + incorporationNote]
-      }, language).catch(() => {
-        // Fallback to pattern-based translation if AI fails
-        return translateRecipe({
+      // Try to fetch pre-translated recipe from database first
+      let translatedRecipe;
+      
+      if (mealOption.id && language !== 'en') {
+        console.log(`🔍 Checking for pre-translated recipe: ${mealOption.id} in ${language}`);
+        const preTranslated = await storage.getRecipeTranslation(mealOption.id, language);
+        
+        if (preTranslated) {
+          console.log(`✅ Using pre-translated recipe from database for ${mealOption.id}`);
+          translatedRecipe = {
+            name: preTranslated.name,
+            ingredients: finalIngredients.length > 0 && finalIngredients !== mealOption.ingredients 
+              ? finalIngredients  // Use modified ingredients with leftovers
+              : preTranslated.ingredients,
+            instructions: finalInstructions.length > 0 && finalInstructions !== mealOption.recipe?.instructions
+              ? finalInstructions  // Use modified instructions with leftovers
+              : preTranslated.instructions,
+            tips: preTranslated.tips || [],
+            notes: preTranslated.notes || []
+          };
+        }
+      }
+      
+      // Fallback to on-demand translation if no pre-translation exists
+      if (!translatedRecipe) {
+        console.log(`⏳ No pre-translation found, using on-demand translation for ${mealOption.id || mealOption.name}`);
+        translatedRecipe = await translateRecipeEnhanced({
+          id: mealOption.id,
           name: mealOption.name,
           ingredients: finalIngredients,
           instructions: finalInstructions,
           tips: mealOption.recipe?.tips || [],
           notes: [(mealOption.recipe?.notes || "") + incorporationNote]
-        }, language);
-      });
+        }, language).catch(() => {
+          // Fallback to pattern-based translation if AI fails
+          return translateRecipe({
+            name: mealOption.name,
+            ingredients: finalIngredients,
+            instructions: finalInstructions,
+            tips: mealOption.recipe?.tips || [],
+            notes: [(mealOption.recipe?.notes || "") + incorporationNote]
+          }, language);
+        });
+      }
 
       res.json({
         name: translatedRecipe.name,
