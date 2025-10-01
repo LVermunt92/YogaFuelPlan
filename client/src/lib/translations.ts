@@ -417,7 +417,7 @@ export const translations = {
     
     // Philosophy Points
     personalizedNutrition: "Personalized nutrition",
-    personalizedNutritionDesc: "Every meal plan is tailored to your specific protein targets, activity levels, dietary restrictions, and health goals using evidence-based calculations.",
+    personalizedNutritionDesc: "Every meal plan is tailored to your specific protein targets, activity levels, dietary restrictions, and health goals.",
     intelligentPlanning: "Intelligent planning",
     intelligentPlanningDesc: "Our AI analyzes your preferences, cooking habits, and lifestyle to generate diverse, practical meal plans that fit your schedule.",
     adaptiveLifestyle: "Adaptive lifestyle",
@@ -443,7 +443,7 @@ export const translations = {
     // Key Features
     keyFeatures: "Key features",
     featureProteinTitle: "Advanced protein targeting",
-    featureProteinDesc: "Evidence-based protein calculations with gender-specific age thresholds and activity considerations.",
+    featureProteinDesc: "Protein calculations with gender-specific age thresholds and activity considerations.",
     featureAiTitle: "AI-powered recipe generation",
     featureAiDesc: "Intelligent recipe creation that considers your preferences, restrictions, and nutritional needs.",
     featureOuraTitle: "Oura Ring Integration",
@@ -941,7 +941,7 @@ export const translations = {
     
     // Philosophy Points (Dutch)
     personalizedNutrition: "Gepersonaliseerde Voeding",
-    personalizedNutritionDesc: "Elk maaltijdplan is afgestemd op jouw specifieke eiwitdoelen, activiteitsniveaus, dieetbeperkingen en gezondheidsdoelen met wetenschappelijk onderbouwde berekeningen.",
+    personalizedNutritionDesc: "Elk maaltijdplan is afgestemd op jouw specifieke eiwitdoelen, activiteitsniveaus, dieetbeperkingen en gezondheidsdoelen.",
     intelligentPlanning: "Intelligente Planning",
     intelligentPlanningDesc: "Onze AI analyseert jouw voorkeuren, kookgewoonten en levensstijl om diverse, praktische maaltijdplannen te genereren die bij jouw schema passen.",
     adaptiveLifestyle: "Adaptieve Levensstijl",
@@ -967,7 +967,7 @@ export const translations = {
     // Key Features (Dutch)
     keyFeatures: "Hoofdkenmerken",
     featureProteinTitle: "Geavanceerde Eiwit Targeting",
-    featureProteinDesc: "Wetenschappelijk onderbouwde eiwitberekeningen met geslachtsspecifieke leeftijdsdrempels en activiteitsoverwegingen.",
+    featureProteinDesc: "Eiwitberekeningen met geslachtsspecifieke leeftijdsdrempels en activiteitsoverwegingen.",
     featureAiTitle: "AI-Aangedreven Receptgeneratie",
     featureAiDesc: "Intelligente receptcreatie die rekening houdt met jouw voorkeuren, beperkingen en voedingsbehoeften.",
     featureOuraTitle: "Oura Ring Integratie",
