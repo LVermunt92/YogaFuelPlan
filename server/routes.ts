@@ -1093,30 +1093,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "Meal not found" });
       }
 
-      // Find recipe by ID using enhanced meal database with modifications
+      // Find recipe by stored ID from meal database
       const { getCompleteEnhancedMealDatabase, findRecipeByName } = await import("./nutrition-enhanced");
       
-      console.log(`Looking for recipe for meal: "${targetMeal.foodDescription}"`);
+      console.log(`🔄 Translating recipe ID: ${targetMeal.recipeId} - ${targetMeal.foodDescription}`);
       
-      // First check for admin modifications
       let mealOption = null;
-      const modifiedRecipes = await getModifiedRecipeDatabase();
-      mealOption = modifiedRecipes.find(recipe => 
-        recipe.name === targetMeal.foodDescription || recipe.id === targetMeal.foodDescription
-      );
       
-      // Fallback to original database if not found in modifications
-      if (!mealOption) {
-        mealOption = await findRecipeByName(targetMeal.foodDescription);
-      }
-      
-      console.log(`Recipe found: ${mealOption ? 'YES' : 'NO'}`);
-      if (mealOption) {
-        console.log(`Recipe ID: ${mealOption.id || 'NO ID FOUND'}`);
-      }
-      if (!mealOption) {
+      // If meal has a stored recipe ID, use it for fast lookup
+      if (targetMeal.recipeId) {
         const allRecipes = await getCompleteEnhancedMealDatabase();
-        console.log(`Available recipes: ${allRecipes.slice(0, 5).map(m => m.name).join(', ')}...`);
+        mealOption = allRecipes.find(recipe => recipe.id === targetMeal.recipeId);
+        
+        if (mealOption) {
+          console.log(`✅ Found recipe by ID: ${mealOption.id} - ${mealOption.name}`);
+        } else {
+          console.log(`⚠️  Recipe ID ${targetMeal.recipeId} not found in database, trying name lookup...`);
+        }
+      }
+      
+      // Fallback: Check admin modifications or lookup by name
+      if (!mealOption) {
+        const modifiedRecipes = await getModifiedRecipeDatabase();
+        mealOption = modifiedRecipes.find(recipe => 
+          recipe.name === targetMeal.foodDescription || recipe.id === targetMeal.foodDescription
+        );
+        
+        if (!mealOption) {
+          mealOption = await findRecipeByName(targetMeal.foodDescription);
+        }
       }
 
       // If recipe not found in database, generate with AI
