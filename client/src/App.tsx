@@ -8,6 +8,7 @@ import Profile from "@/pages/profile";
 import About from "@/pages/about";
 import AdminPanel from "@/pages/admin";
 import MyRecipes from "@/pages/my-recipes";
+import TermsAndConditions from "@/pages/terms-and-conditions";
 
 import Auth from "@/pages/auth";
 import NotFound from "@/pages/not-found";
@@ -214,6 +215,8 @@ function Navigation() {
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
+  const { language } = useLanguage();
+  const t = useTranslations(language);
 
   if (isLoading) {
     return (
@@ -246,12 +249,22 @@ function Router() {
           <Route path="/my-recipes" component={MyRecipes} />
           <Route path="/profile" component={Profile} />
           <Route path="/about" component={About} />
+          <Route path="/terms" component={TermsAndConditions} />
           <Route path="/admin" component={AdminPanel} />
           <Route component={NotFound} />
         </Switch>
       </div>
       <footer className="py-4 text-center text-xs text-gray-400 border-t border-gray-200">
-        © {new Date().getFullYear()} Meal Planner. All rights reserved.
+        <div className="space-y-2">
+          <div>
+            © {new Date().getFullYear()} Meal Planner. All rights reserved.
+          </div>
+          <div>
+            <Link href="/terms" className="text-gray-500 hover:text-gray-700 underline">
+              {t.termsAndConditions}
+            </Link>
+          </div>
+        </div>
       </footer>
     </div>
   );

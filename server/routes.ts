@@ -1490,7 +1490,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: 'User not found' });
       }
       
-      res.json(user);
+      // Exclude password from response for security
+      const { password, ...userProfile } = user;
+      res.json(userProfile);
     } catch (error) {
       console.error('Error fetching user profile:', error);
       res.status(500).json({ message: 'Failed to fetch user profile' });
@@ -1512,7 +1514,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: 'User not found' });
       }
       
-      res.json(updatedUser);
+      // Exclude password from response for security
+      const { password, ...userProfile } = updatedUser;
+      res.json(userProfile);
     } catch (error) {
       console.error('Error updating user profile:', error);
       res.status(500).json({ message: 'Failed to update user profile' });
