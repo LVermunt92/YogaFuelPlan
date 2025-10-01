@@ -10,6 +10,7 @@ import {
   shoppingListItems,
   shoppingListNames,
   ingredientMappings,
+  recipeTranslations,
 
   type User, 
   type InsertUser,
@@ -41,6 +42,8 @@ import {
   type IngredientMapping,
   type InsertIngredientMapping,
   type UpdateIngredientMapping,
+  type RecipeTranslation,
+  type InsertRecipeTranslation,
 
   passwordResetCodes,
   type PasswordResetCode,
@@ -134,6 +137,11 @@ export interface IStorage {
   getRecipeModifications(): Promise<any[]>;
   getRecipeDeletions(): Promise<string[]>;
 
+  // Recipe Translation methods
+  getRecipeTranslation(recipeId: string, language: string): Promise<RecipeTranslation | undefined>;
+  upsertRecipeTranslation(data: InsertRecipeTranslation): Promise<RecipeTranslation>;
+  getBatchRecipeTranslations(recipeIds: string[], language: string): Promise<RecipeTranslation[]>;
+  getMissingTranslations(recipeIds: string[], language: string): Promise<string[]>;
 }
 
 export class MemStorage implements IStorage {
@@ -679,6 +687,22 @@ export class MemStorage implements IStorage {
     throw new Error("Editable content storage requires DatabaseStorage implementation");
   }
 
+  // Recipe Translation methods (MemStorage - not implemented)
+  async getRecipeTranslation(recipeId: string, language: string): Promise<RecipeTranslation | undefined> {
+    return undefined;
+  }
+
+  async upsertRecipeTranslation(data: InsertRecipeTranslation): Promise<RecipeTranslation> {
+    throw new Error("Recipe translation storage requires DatabaseStorage implementation");
+  }
+
+  async getBatchRecipeTranslations(recipeIds: string[], language: string): Promise<RecipeTranslation[]> {
+    return [];
+  }
+
+  async getMissingTranslations(recipeIds: string[], language: string): Promise<string[]> {
+    return recipeIds; // All are missing in MemStorage
+  }
 
 }
 
@@ -1484,6 +1508,66 @@ export class DatabaseStorage implements IStorage {
   async getRecipeDeletions(): Promise<string[]> {
     const deletions = await db.select().from(recipeDeletions);
     return deletions.map(del => del.recipeId);
+  }
+
+  // Recipe Translation methods
+  async getRecipeTranslation(recipeId: string, language: string): Promise<RecipeTranslation | undefined> {
+    const result = await db
+      .select()
+      .from(recipeTranslations)
+      .where(and(
+        eq(recipeTranslations.recipeId, recipeId),
+        eq(recipeTranslations.language, language)
+      ))
+      .limit(1);
+    
+    return result[0];
+  }
+
+  async upsertRecipeTranslation(data: InsertRecipeTranslation): Promise<RecipeTranslation> {
+    const result = await db
+      .insert(recipeTranslations)
+      .values(data)
+      .onConflictDoUpdate({
+        target: [recipeTranslations.recipeId, recipeTranslations.language],
+        set: {
+          name: data.name,
+          ingredients: data.ingredients,
+          instructions: data.instructions,
+          tips: data.tips || [],
+          notes: data.notes || [],
+          translatedAt: new Date()
+        }
+      })
+      .returning();
+    
+    return result[0];
+  }
+
+  async getBatchRecipeTranslations(recipeIds: string[], language: string): Promise<RecipeTranslation[]> {
+    if (recipeIds.length === 0) return [];
+    
+    const results = await db
+      .select()
+      .from(recipeTranslations)
+      .where(and(
+        eq(recipeTranslations.language, language),
+        // Use IN operator for batch query
+        db.$with('recipe_ids').as(db.select().from(recipeTranslations).where(
+          eq(recipeTranslations.language, language)
+        ))
+      ));
+    
+    return results.filter(r => recipeIds.includes(r.recipeId));
+  }
+
+  async getMissingTranslations(recipeIds: string[], language: string): Promise<string[]> {
+    if (recipeIds.length === 0) return [];
+    
+    const existing = await this.getBatchRecipeTranslations(recipeIds, language);
+    const existingIds = new Set(existing.map(t => t.recipeId));
+    
+    return recipeIds.filter(id => !existingIds.has(id));
   }
 
 }
