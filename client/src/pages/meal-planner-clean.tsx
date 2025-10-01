@@ -123,6 +123,65 @@ interface OuraStatus {
   message: string;
 }
 
+// SeasonalMonthTag component - displays month tags with seasonal ingredient tooltips
+function SeasonalMonthTag({ tag, ingredients, language }: { tag: string; ingredients: string[]; language: string }) {
+  const [seasonalIngredients, setSeasonalIngredients] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchSeasonalIngredients = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(
+          `/api/seasonal/ingredients-for-month?month=${encodeURIComponent(tag)}&ingredients=${encodeURIComponent(JSON.stringify(ingredients))}`
+        );
+        
+        if (response.ok) {
+          const data = await response.json();
+          setSeasonalIngredients(data.matchingIngredients || []);
+        }
+      } catch (error) {
+        console.error('Failed to fetch seasonal ingredients:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchSeasonalIngredients();
+  }, [tag, ingredients]);
+
+  const displayTag = language === 'nl' ? translateDietaryTag(tag, 'nl') : tag;
+  const displayedIngredients = seasonalIngredients.slice(0, 5);
+  const hasMore = seasonalIngredients.length > 5;
+
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Badge variant="secondary" className="text-xs cursor-help">
+            {displayTag}
+          </Badge>
+        </TooltipTrigger>
+        <TooltipContent className="max-w-xs">
+          <div className="space-y-1">
+            <p className="font-semibold text-sm">Seasonal for {displayTag}</p>
+            {isLoading ? (
+              <p className="text-xs text-muted-foreground">Loading...</p>
+            ) : seasonalIngredients.length > 0 ? (
+              <p className="text-xs text-muted-foreground">
+                {displayedIngredients.join(', ')}
+                {hasMore && '...'}
+              </p>
+            ) : (
+              <p className="text-xs text-muted-foreground">No seasonal matches found</p>
+            )}
+          </div>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}
+
 // Admin redirect component - handles admin logic without hooks
 function AdminRedirect() {
   return (
@@ -1685,11 +1744,27 @@ function MealPlannerMain() {
                 {/* Dietary Tags */}
                 {recipeData.tags && recipeData.tags.length > 0 && (
                   <div className="flex flex-wrap gap-2">
-                    {recipeData.tags.map((tag, index) => (
-                      <Badge key={index} variant="secondary" className="text-xs">
-                        {language === 'nl' ? translateDietaryTag(tag, 'nl') : tag}
-                      </Badge>
-                    ))}
+                    {recipeData.tags.map((tag, index) => {
+                      // Check if this tag is a month name
+                      const monthNames = [
+                        'january', 'february', 'march', 'april', 'may', 'june',
+                        'july', 'august', 'september', 'october', 'november', 'december',
+                        'januari', 'februari', 'maart', 'april', 'mei', 'juni',
+                        'juli', 'augustus', 'september', 'oktober', 'november', 'december'
+                      ];
+                      
+                      const isMonthTag = monthNames.includes(tag.toLowerCase());
+                      
+                      if (isMonthTag) {
+                        return <SeasonalMonthTag key={index} tag={tag} ingredients={recipeData.ingredients} language={language} />;
+                      }
+                      
+                      return (
+                        <Badge key={index} variant="secondary" className="text-xs">
+                          {language === 'nl' ? translateDietaryTag(tag, 'nl') : tag}
+                        </Badge>
+                      );
+                    })}
                   </div>
                 )}
 

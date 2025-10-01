@@ -3422,6 +3422,79 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // GET /api/seasonal/ingredients-for-month - Get seasonal ingredients for a specific month
+  app.get("/api/seasonal/ingredients-for-month", async (req, res) => {
+    try {
+      const { AMSTERDAM_MONTHLY_PRODUCE } = await import("./seasonal-advisor");
+      
+      const month = req.query.month as string;
+      const ingredientsParam = req.query.ingredients as string;
+      
+      if (!month || !ingredientsParam) {
+        return res.status(400).json({ message: "Month and ingredients parameters are required" });
+      }
+
+      // Parse ingredients (they come as a JSON string)
+      let ingredients: string[];
+      try {
+        ingredients = JSON.parse(ingredientsParam);
+      } catch {
+        return res.status(400).json({ message: "Invalid ingredients format" });
+      }
+
+      // Map month names to indices (support both English and Dutch)
+      const monthMap: { [key: string]: number } = {
+        'january': 0, 'januari': 0,
+        'february': 1, 'februari': 1,
+        'march': 2, 'maart': 2,
+        'april': 3,
+        'may': 4, 'mei': 4,
+        'june': 5, 'juni': 5,
+        'july': 6, 'juli': 6,
+        'august': 7, 'augustus': 7,
+        'september': 8,
+        'october': 9, 'oktober': 9,
+        'november': 10,
+        'december': 11
+      };
+
+      const monthIndex = monthMap[month.toLowerCase()];
+      if (monthIndex === undefined) {
+        return res.status(400).json({ message: "Invalid month name" });
+      }
+
+      // Get seasonal vegetables for the month
+      const monthData = AMSTERDAM_MONTHLY_PRODUCE[monthIndex as keyof typeof AMSTERDAM_MONTHLY_PRODUCE];
+      if (!monthData) {
+        return res.json({ matchingIngredients: [] });
+      }
+
+      // Match ingredients with seasonal vegetables (case-insensitive, partial matching)
+      const matchingIngredients: string[] = [];
+      
+      for (const ingredient of ingredients) {
+        const ingredientLower = ingredient.toLowerCase();
+        
+        for (const vegetable of monthData.vegetables) {
+          const vegetableLower = vegetable.toLowerCase();
+          
+          // Check if ingredient contains vegetable name or vice versa
+          if (ingredientLower.includes(vegetableLower) || vegetableLower.includes(ingredientLower)) {
+            // Add the vegetable (seasonal name) to the results if not already added
+            if (!matchingIngredients.includes(vegetable)) {
+              matchingIngredients.push(vegetable);
+            }
+          }
+        }
+      }
+
+      res.json({ matchingIngredients });
+    } catch (error) {
+      console.error("Error getting seasonal ingredients:", error);
+      res.status(500).json({ message: "Failed to get seasonal ingredients" });
+    }
+  });
+
   // POST /api/admin/analyze-ingredients - Analyze meal plan ingredients for mapping
   app.post("/api/admin/analyze-ingredients", async (req, res) => {
     try {
