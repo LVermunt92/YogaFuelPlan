@@ -148,7 +148,7 @@ export function SeasonalAdvisor() {
             </div>
             <div className="flex flex-wrap gap-1.5">
               {/* Show Dutch seasonal vegetables from Voedingscentrum data first */}
-              {seasonalInfo.monthlyProduce?.vegetables?.slice(0, 8).map((veg, index) => (
+              {seasonalInfo.monthlyProduce?.vegetables?.map((veg, index) => (
                 <Badge 
                   key={index} 
                   variant="secondary" 
@@ -156,7 +156,7 @@ export function SeasonalAdvisor() {
                 >
                   {veg}
                 </Badge>
-              )) || seasonalInfo.seasonalFoods.slice(0, 8).map((food, index) => (
+              )) || seasonalInfo.seasonalFoods.map((food, index) => (
                 <Badge 
                   key={index} 
                   variant="secondary" 
