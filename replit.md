@@ -34,6 +34,20 @@ Preferred communication style: Simple, everyday language.
     - **Unified Recipe Database**: Consolidated all recipe databases into a single unified system.
 
 # Recent Changes (October 1, 2025)
+- **Terms and Conditions Page**: Complete legal compliance page with comprehensive GDPR/AVG Netherlands-specific content
+  - 12-point privacy section covering data collection, usage, retention, and user rights
+  - Explicit GDPR/AVG compliance with data subject rights (access, rectification, erasure, restriction, portability, objection)
+  - Cross-border transfer mechanisms (Standard Contractual Clauses for OpenAI)
+  - Data processor disclosure (OpenAI, Oura, Albert Heijn, Replit)
+  - Complaints procedure via Autoriteit Persoonsgegevens (https://autoriteitpersoonsgegevens.nl/)
+  - Governing law explicitly stated as Netherlands law
+  - Medical disclaimer and AI disclosure sections
+  - Fully localized in English and Dutch with sentence case titles
+  - Accessible via footer link in both languages
+- **Critical Security Fix**: Resolved password exposure vulnerability in profile API endpoints
+  - Profile GET endpoint now explicitly excludes password/passwordHash fields from responses
+  - Profile PATCH/PUT endpoints now exclude password from update responses
+  - Verified working in production logs - no password data transmitted to frontend
 - **Weekly Auto-Update System**: Implemented automatic version checking that refreshes published apps when new versions are deployed
   - Version endpoint returns server start timestamp for tracking
   - Frontend checks once per week for new versions using localStorage
