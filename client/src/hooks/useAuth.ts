@@ -67,38 +67,24 @@ export function useAuth() {
 
   const logout = async () => {
     try {
+      // Clear client state first
+      setUser(null);
+      localStorage.clear(); // Clear all localStorage items
+      
       // Call server logout endpoint to destroy session
-      const response = await fetch('/api/auth/logout', {
+      await fetch('/api/auth/logout', {
         method: 'POST',
         credentials: 'include'
       });
       
-      if (response.ok) {
-        // Server logout successful, clear client state
-        setUser(null);
-        localStorage.removeItem('userId');
-        localStorage.removeItem('username');
-        // Clear any cached meal plan data
-        localStorage.removeItem('selectedMealPlan');
-        // Force a page refresh to ensure complete logout
-        window.location.href = '/';
-      } else {
-        console.error('Server logout failed, forcing client logout');
-        // Even if server logout fails, still clear client state
-        setUser(null);
-        localStorage.removeItem('userId');
-        localStorage.removeItem('username');
-        localStorage.removeItem('selectedMealPlan');
-        window.location.href = '/';
-      }
+      // Force a hard reload of the page to login
+      window.location.replace('/');
     } catch (error) {
       console.error('Logout error:', error);
-      // If network error, still clear client state
+      // Clear everything and reload even on error
       setUser(null);
-      localStorage.removeItem('userId');
-      localStorage.removeItem('username');
-      localStorage.removeItem('selectedMealPlan');
-      window.location.href = '/';
+      localStorage.clear();
+      window.location.replace('/');
     }
   };
 
