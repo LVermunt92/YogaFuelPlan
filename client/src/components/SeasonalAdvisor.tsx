@@ -143,12 +143,12 @@ export function SeasonalAdvisor() {
             <div className="flex items-center gap-2 mb-3">
               <Leaf className="h-4 w-4 text-green-600" />
               <h4 className="font-medium text-sm text-gray-700">
-                {language === 'nl' ? 'Nederlandse Seizoensgroenten' : 'Dutch Seasonal Vegetables'}
+                {language === 'nl' ? 'Piek Nederlandse Seizoensgroenten' : 'Peak Dutch seasonal vegetables'}
               </h4>
             </div>
             <div className="flex flex-wrap gap-1.5">
-              {/* Show Dutch seasonal vegetables from Voedingscentrum data first */}
-              {seasonalInfo.monthlyProduce?.vegetables?.map((veg, index) => (
+              {/* Show only peak seasonal vegetables from Voedingscentrum data */}
+              {seasonalInfo.monthlyProduce?.peak?.map((veg, index) => (
                 <Badge 
                   key={index} 
                   variant="secondary" 
@@ -156,7 +156,7 @@ export function SeasonalAdvisor() {
                 >
                   {veg}
                 </Badge>
-              )) || seasonalInfo.seasonalFoods.map((food, index) => (
+              )) || seasonalInfo.seasonalFoods.slice(0, 4).map((food, index) => (
                 <Badge 
                   key={index} 
                   variant="secondary" 
