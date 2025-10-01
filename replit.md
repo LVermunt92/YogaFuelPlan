@@ -33,7 +33,14 @@ Preferred communication style: Simple, everyday language.
     - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, favorite meals, and user-created custom recipes.
     - **Unified Recipe Database**: Consolidated all recipe databases into a single unified system.
 
-# Recent Changes (September 2, 2025)
+# Recent Changes (October 1, 2025)
+- **Weekly Auto-Update System**: Implemented automatic version checking that refreshes published apps when new versions are deployed
+  - Version endpoint returns server start timestamp for tracking
+  - Frontend checks once per week for new versions using localStorage
+  - Automatic page reload when new version detected (zero user intervention needed)
+  - Cost-efficient: Only one API call per user per week
+
+# Previous Changes (September 2, 2025)
 - **Streamlined Profile Interface**: Removed redundant toggles and simplified profile to focus on essential settings
   - Removed "use only my recipes" toggle (exists on recipe page)
   - Removed "include menstrual cycle support" toggle (dropdown includes "off" option)
