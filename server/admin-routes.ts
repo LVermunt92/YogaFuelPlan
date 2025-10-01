@@ -8,7 +8,7 @@ const adminRouter = Router();
 adminRouter.get('/stats', async (req, res) => {
   try {
     const users: User[] = await storage.getAllUsers();
-    const mealPlans: MealPlan[] = await storage.getAllMealPlans();
+    const mealPlans: MealPlan[] = await storage.getMealPlans();
     
     // Calculate statistics
     const totalUsers = users.length;
@@ -313,6 +313,111 @@ adminRouter.delete('/nutrition-config/:id', async (req, res) => {
   } catch (error) {
     console.error('Error deleting nutrition config:', error);
     res.status(500).json({ error: 'Failed to delete configuration' });
+  }
+});
+
+// Backfill translations endpoint - translates all recipes to specified language
+adminRouter.post('/translations/backfill', async (req, res) => {
+  try {
+    const { language = 'nl', limit } = req.body;
+    
+    if (!['en', 'nl'].includes(language)) {
+      return res.status(400).json({ error: 'Language must be "en" or "nl"' });
+    }
+
+    const { getCompleteEnhancedMealDatabase } = await import('./nutrition-enhanced');
+    const { batchTranslator } = await import('./batch-translator');
+    
+    // Check if translation is already running
+    if (batchTranslator.isRunning()) {
+      return res.status(409).json({ 
+        error: 'Translation already in progress',
+        queueLength: batchTranslator.getQueueLength()
+      });
+    }
+
+    // Get all recipe IDs
+    const allRecipes = await getCompleteEnhancedMealDatabase();
+    let recipeIds = allRecipes.map(r => r.id).filter((id): id is string => id !== undefined);
+    
+    // Apply limit if specified
+    if (limit && typeof limit === 'number' && limit > 0) {
+      recipeIds = recipeIds.slice(0, limit);
+    }
+
+    console.log(`🚀 Admin triggered backfill translation: ${recipeIds.length} recipes to ${language}`);
+
+    // Check which recipes are missing translations
+    const missingIds = await storage.getMissingTranslations(recipeIds, language);
+    
+    if (missingIds.length === 0) {
+      return res.json({
+        message: 'All recipes already translated',
+        total: recipeIds.length,
+        alreadyTranslated: recipeIds.length,
+        toTranslate: 0
+      });
+    }
+
+    // Start background translation (non-blocking)
+    batchTranslator.translateRecipes(missingIds, language as 'en' | 'nl')
+      .then(results => {
+        console.log(`✅ Backfill complete: ${results.filter(r => r.success).length}/${results.length} successful`);
+      })
+      .catch(error => {
+        console.error('❌ Backfill translation error:', error);
+      });
+
+    res.json({
+      message: 'Translation started in background',
+      total: recipeIds.length,
+      alreadyTranslated: recipeIds.length - missingIds.length,
+      toTranslate: missingIds.length,
+      language
+    });
+
+  } catch (error) {
+    console.error('Error starting backfill translation:', error);
+    res.status(500).json({ error: 'Failed to start translation backfill' });
+  }
+});
+
+// Get translation backfill status
+adminRouter.get('/translations/status', async (req, res) => {
+  try {
+    const { language = 'nl' } = req.query;
+    
+    if (!['en', 'nl'].includes(language as string)) {
+      return res.status(400).json({ error: 'Language must be "en" or "nl"' });
+    }
+
+    const { getCompleteEnhancedMealDatabase } = await import('./nutrition-enhanced');
+    const { batchTranslator } = await import('./batch-translator');
+    
+    const allRecipes = await getCompleteEnhancedMealDatabase();
+    const totalRecipes = allRecipes.length;
+    
+    const missingIds = await storage.getMissingTranslations(
+      allRecipes.map(r => r.id).filter((id): id is string => id !== undefined),
+      language as string
+    );
+    
+    const translated = totalRecipes - missingIds.length;
+    const percentComplete = Math.round((translated / totalRecipes) * 100);
+
+    res.json({
+      language,
+      totalRecipes,
+      translated,
+      missing: missingIds.length,
+      percentComplete,
+      isRunning: batchTranslator.isRunning(),
+      queueLength: batchTranslator.getQueueLength()
+    });
+
+  } catch (error) {
+    console.error('Error getting translation status:', error);
+    res.status(500).json({ error: 'Failed to get translation status' });
   }
 });
 
