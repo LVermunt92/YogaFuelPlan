@@ -9459,7 +9459,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.6
     },
     category: "breakfast", 
-    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Gluten-Free", "Menstruation", "Chocolate", "Avocado", "Comfort-Food", "Brownies"],
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Gluten-Free", "Menstruation", "Chocolate", "Comfort-Food", "Brownies"],
     ingredients: [
       "1 large ripe avocado",
       "40g cocoa powder",
@@ -9687,7 +9687,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.4
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Menstruation", "Eggs", "Vegetables", "Muffins", "Meal-Prep"],
+    tags: ["Vegetarian", "Menstruation", "Vegetables", "Muffins", "Meal-Prep"],
     ingredients: [
       "3 eggs",
       "60g grated cheese",
@@ -9807,7 +9807,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.1
     },
     category: "lunch",
-    tags: ["Vegetarian", "Menstruation", "flatbread", "Eggs", "yogurt", "probiotics", "Tomato"],
+    tags: ["Vegetarian", "Menstruation", "flatbread", "yogurt", "probiotics", "Tomato"],
     ingredients: [
       "2 eggs",
       "120g Greek yogurt",
@@ -9925,7 +9925,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.6
     },
     category: "dinner",
-    tags: ["Menstruation", "chicken", "casserole", "High-Protein", "Eggs", "cheese", "Vegetables"],
+    tags: ["Menstruation", "chicken", "casserole", "High-Protein", "cheese", "Vegetables"],
     ingredients: [
       "250g ground chicken",
       "2 eggs",
@@ -9985,7 +9985,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 10.0
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Menstruation", "pancakes", "oats", "Eggs", "protein", "banana", "High-Fiber"],
+    tags: ["Vegetarian", "Menstruation", "pancakes", "oats", "protein", "banana", "High-Fiber"],
     ingredients: [
       "2 eggs",
       "1 vanilla protein powder",
@@ -10334,7 +10334,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.6
     },
     category: "lunch",
-    tags: ["Menstruation", "beef", "Eggs", "High-Protein", "Iron-Rich", "spinach", "Avocado", "Keto-Friendly"],
+    tags: ["Menstruation", "beef", "High-Protein", "Iron-Rich", "spinach", "Keto-Friendly"],
     ingredients: [
       "150g lean ground beef",
       "2 eggs",
@@ -11084,7 +11084,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.8
     },
     category: "dinner",
-    tags: ["Vegetarian", "Italian", "Creamy", "Avocado", "Comfort-Food", "Roasted-Vegetables"],
+    tags: ["Vegetarian", "Italian", "Creamy", "Comfort-Food", "Roasted-Vegetables"],
     ingredients: [
       "125g cherry tomatoes",
       "1 ripe avocado",
@@ -11152,7 +11152,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.6
     },
     category: "dinner",
-    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Protein", "Plant-Based", "Italian", "Creamy", "Avocado", "Lentil-Pasta"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Protein", "Plant-Based", "Italian", "Creamy", "Lentil-Pasta"],
     ingredients: [
       "125g cherry tomatoes",
       "1 ripe avocado",
@@ -11222,7 +11222,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.0
     },
     category: "lunch",
-    tags: ["Vegetarian", "Mediterranean", "High-Protein", "Roasted", "Bowl", "Comfort-Food", "Greek", "Sweet-Potato"],
+    tags: ["Vegetarian", "Mediterranean", "High-Protein", "Roasted", "Comfort-Food", "Greek"],
     ingredients: [
       "200g medium sweet potato (1 potato)",
       "75g falafel (4-5 small pieces)",
@@ -11294,7 +11294,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.6
     },
     category: "lunch",
-    tags: ["Vegetarian", "Lactose-Free", "Mediterranean", "High-Protein", "Roasted", "Bowl", "Dairy-Free", "Sweet-Potato"],
+    tags: ["Vegetarian", "Lactose-Free", "Mediterranean", "High-Protein", "Roasted", "Dairy-Free"],
     ingredients: [
       "200g medium sweet potato (1 potato)",
       "75g falafel (4-5 small pieces)",
@@ -11366,7 +11366,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.7
     },
     category: "dinner",
-    tags: ["High-Protein", "Comfort-Food", "Grilled", "American", "Burger", "Sweet-Potato", "Satisfying"],
+    tags: ["High-Protein", "Comfort-Food", "Grilled", "American", "Satisfying"],
     ingredients: [
       "200g sweet potatoes (1-1.5 potatoes)",
       "1 burger bun",
@@ -11440,7 +11440,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.7
     },
     category: "dinner",
-    tags: ["Vegetarian", "Plant-Based", "Gluten-Free", "Lactose-Free", "High-Protein", "Comfort-Food", "Burger", "Sweet-Potato"],
+    tags: ["Vegetarian", "Plant-Based", "Gluten-Free", "Lactose-Free", "High-Protein", "Comfort-Food"],
     ingredients: [
       "200g sweet potatoes (1-1.5 potatoes)",
       "1 gluten-free burger bun",
@@ -11731,7 +11731,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.6
     },
     category: "dinner",
-    tags: ["Vegetarian", "Comfort-Food", "High-Fiber", "Sweet-Potato", "Brussels-Sprouts", "Cheese", "Walnuts", "Slow-Carb"],
+    tags: ["Vegetarian", "Comfort-Food", "High-Fiber", "Brussels-Sprouts", "Cheese", "Walnuts", "Slow-Carb"],
     ingredients: [
       "250g sweet potatoes (per serving from 1kg total)",
       "150g Brussels sprouts (per serving from 600g total)", 
@@ -11964,7 +11964,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.0
     },
     category: "lunch",
-    tags: ["High-Protein", "Low-Carb", "Blood-Sugar-Friendly", "Beef", "Cottage-Cheese", "Sweet-Potato", "Nutrient-Dense", "Power-Bowl"],
+    tags: ["High-Protein", "Low-Carb", "Blood-Sugar-Friendly", "Beef", "Cottage-Cheese", "Nutrient-Dense", "Power-Bowl"],
     ingredients: [
       "120g lean beef (sirloin or tenderloin, cubed)",
       "100g cottage cheese",
@@ -12039,7 +12039,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.2
     },
     category: "lunch",
-    tags: ["Vegetarian", "High-Protein", "Low-Carb", "Blood-Sugar-Friendly", "Tofu", "Cottage-Cheese", "Sweet-Potato", "Nutrient-Dense", "Power-Bowl", "Dairy"],
+    tags: ["Vegetarian", "High-Protein", "Low-Carb", "Blood-Sugar-Friendly", "Tofu", "Cottage-Cheese", "Nutrient-Dense", "Power-Bowl", "Dairy"],
     ingredients: [
       "120g extra-firm tofu (cubed and pressed)",
       "100g cottage cheese (or plant-based alternative)",
@@ -12117,7 +12117,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.2
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "High-Fiber", "Meal-Prep", "Purple-Sweet-Potato", "Vegan-Feta", "Avocado", "Eggs", "Nutrient-Dense"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Fiber", "Meal-Prep", "Nutrient-Dense"],
     ingredients: [
       "2 slices gluten-free purple sweet potato bread (pre-made)",
       "1/2 avocado (80g, mashed)",
@@ -12191,7 +12191,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.7
     },
     category: "breakfast",
-    tags: ["Vegan", "Plant-Based", "Gluten-Free", "High-Fiber", "Meal-Prep", "Purple-Sweet-Potato", "Vegan-Feta", "Chickpea", "Avocado", "Nutrient-Dense"],
+    tags: ["Vegan", "Plant-Based", "Gluten-Free", "High-Fiber", "Meal-Prep", "Nutrient-Dense"],
     ingredients: [
       "2 slices gluten-free purple sweet potato bread (pre-made)",
       "1/2 avocado (80g, mashed)",
@@ -12353,7 +12353,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.7
     },
     category: "breakfast",
-    tags: ["Vegetarian", "High-Protein", "Sourdough", "Baba-Ganoush", "Eggs", "Tofu", "Mushrooms", "Hearty", "Protein-Power"],
+    tags: ["Vegetarian", "High-Protein", "Sourdough", "Baba-Ganoush", "Tofu", "Mushrooms", "Hearty", "Protein-Power"],
     ingredients: [
       "1 thick slice sourdough bread",
       "3-4 tbsp baba ganoush",
