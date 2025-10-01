@@ -998,15 +998,14 @@ function MealPlannerMain() {
               </p>
 
               {/* Grocery List Button */}
-              {currentMealPlan && (
-                <Button 
-                  onClick={() => setShowShoppingList(true)}
-                  className="btn-minimal btn-touch w-full"
-                >
-                  <ShoppingCart className="mr-2 h-4 w-4" />
-                  {t.generateShoppingList}
-                </Button>
-              )}
+              <Button 
+                onClick={() => setShowShoppingList(true)}
+                disabled={!currentMealPlan}
+                className="btn-minimal btn-touch w-full"
+              >
+                <ShoppingCart className="mr-2 h-4 w-4" />
+                {t.generateShoppingList}
+              </Button>
             </CardContent>
           </Card>
 
