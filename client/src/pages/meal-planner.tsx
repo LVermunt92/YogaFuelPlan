@@ -1131,7 +1131,7 @@ export default function MealPlanner() {
                         <div className="space-y-6">
                           <div className="flex justify-between items-center">
                             <span className="text-sm text-gray-500">
-                              {t.weekOf} {formatWeekRange(shoppingListData.weekStart)}
+                              {formatWeekRange(shoppingListData.weekStart)}
                             </span>
                             <Badge variant="secondary">
                               {shoppingListData.totalItems} {t.items}
@@ -1230,7 +1230,7 @@ export default function MealPlanner() {
                           </div>
                         </div>
                         <p className="text-sm text-gray-500 mb-2">
-                          {t.weekOf || 'Week of'} {plan.weekStart}
+                          {plan.weekStart}
                         </p>
                         <div className="flex items-center justify-between text-xs text-gray-400">
                           <span>{plan.totalProtein.toFixed(0)}g {t.proteinDaily || 'protein/day'}</span>
@@ -1304,7 +1304,7 @@ export default function MealPlanner() {
                     </h2>
                   <div className="flex items-center space-x-3">
                     <div className="text-sm text-gray-500">
-                      {t.weekOf} <span className="text-foreground font-medium">{displayedMealPlan ? formatWeekRange(displayedMealPlan.weekStart) : t.noPlan}</span>
+                      <span className="text-foreground font-medium">{displayedMealPlan ? formatWeekRange(displayedMealPlan.weekStart) : t.noPlan}</span>
                     </div>
 
                   </div>

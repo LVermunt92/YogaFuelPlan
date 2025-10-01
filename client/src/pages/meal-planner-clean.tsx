@@ -1142,7 +1142,7 @@ function MealPlannerMain() {
                       <div className="flex justify-between items-center">
                         <div>
                           <h4 className="font-medium">{plan.planName || `Meal Plan ${mealPlans.length - index}`}</h4>
-                          <p className="text-sm text-gray-500">{t.weekOf} {formatWeekRange(plan.weekStart)}</p>
+                          <p className="text-sm text-gray-500">{formatWeekRange(plan.weekStart)}</p>
                         </div>
                         <div className="flex items-center gap-3">
                           <div className="text-right">
@@ -1176,7 +1176,7 @@ function MealPlannerMain() {
               </CardTitle>
               {currentMealPlan && (
                 <p className="text-sm text-gray-500">
-                  {t.weekOf} {formatWeekRange(currentMealPlan.weekStart)}
+                  {formatWeekRange(currentMealPlan.weekStart)}
                 </p>
               )}
 

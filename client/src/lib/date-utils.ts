@@ -50,7 +50,7 @@ export function getCurrentWeekSunday(): string {
 }
 
 /**
- * Format a date string for display (e.g., "Week of Jan 15, 2024")
+ * Format a date string for display (e.g., "Jan 15, 2024")
  * @param sundayDate - ISO date string for Sunday
  * @returns Formatted display string
  */
@@ -61,5 +61,5 @@ export function formatWeekDisplay(sundayDate: string): string {
     day: 'numeric', 
     year: 'numeric' 
   };
-  return `Week of ${date.toLocaleDateString('en-US', options)}`;
+  return date.toLocaleDateString('en-US', options);
 }
