@@ -1696,6 +1696,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         mealPlanId: 0,
         day,
         mealType: mealCategory,
+        recipeId: selectedMeal.id, // Store recipe ID for translation
         foodDescription: mealDescription,
         portion: adjustedPortion,
         protein: adjustedProtein,
@@ -2212,6 +2213,7 @@ async function generateMealPrepPlan(
           mealPlanId: 0,
           day,
           mealType: 'breakfast',
+          recipeId: selectedBreakfast.id, // Store recipe ID for translation
           foodDescription: mealDescription,
           portion: adjustedPortion,
           protein: adjustedProtein,
@@ -2285,6 +2287,7 @@ async function generateMealPrepPlan(
           mealPlanId: 0,
           day,
           mealType: 'lunch',
+          recipeId: lunchMeal.id, // Store recipe ID for translation
           foodDescription: mealDescription,
           portion: adjustedPortion,
           protein: adjustedProtein,
@@ -2422,6 +2425,7 @@ async function generateMealPrepPlan(
           mealPlanId: 0,
           day,
           mealType: 'dinner',
+          recipeId: dinnerMeal.id, // Store recipe ID for translation
           foodDescription: mealDescription,
           portion: adjustedPortion,
           protein: adjustedProtein,
