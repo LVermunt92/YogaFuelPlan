@@ -1107,7 +1107,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Fallback to original database if not found in modifications
       if (!mealOption) {
-        mealOption = findRecipeByName(targetMeal.foodDescription);
+        mealOption = await findRecipeByName(targetMeal.foodDescription);
       }
       
       console.log(`Recipe found: ${mealOption ? 'YES' : 'NO'}`);

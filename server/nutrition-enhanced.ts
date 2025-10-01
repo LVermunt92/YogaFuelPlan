@@ -12715,8 +12715,8 @@ function generateRecipeId(recipeName: string, index: number): string {
 }
 
 // Efficient recipe lookup by name using recipe IDs
-export function findRecipeByName(mealDescription: string): MealOption | null {
-  const allRecipes = getCompleteEnhancedMealDatabase();
+export async function findRecipeByName(mealDescription: string): Promise<MealOption | null> {
+  const allRecipes = await getCompleteEnhancedMealDatabase();
   
   // Clean the meal name by removing portion scaling and leftover indicators
   let cleanMealName = mealDescription
@@ -12786,8 +12786,8 @@ export function findRecipeByName(mealDescription: string): MealOption | null {
 }
 
 // Function to get meals from unified database filtered by dietary requirements
-export function getEnhancedMealsByCategory(category: 'breakfast' | 'lunch' | 'dinner'): MealOption[] {
-  const unifiedDatabase = getCompleteEnhancedMealDatabase();
+export async function getEnhancedMealsByCategory(category: 'breakfast' | 'lunch' | 'dinner'): Promise<MealOption[]> {
+  const unifiedDatabase = await getCompleteEnhancedMealDatabase();
   const categoryMeals = unifiedDatabase.filter(meal => meal.category === category);
   
   console.log(`📋 ${category.charAt(0).toUpperCase() + category.slice(1)} recipes available: ${categoryMeals.length}`);
@@ -12900,7 +12900,7 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
   console.log(`🎯 STREAMLINED APPROACH: category=${category}, userId=${userId}, tags=[${dietaryTags.join(', ')}]`);
   
   // Start with curated database meals
-  let allMeals: MealOption[] = getEnhancedMealsByCategory(category);
+  let allMeals: MealOption[] = await getEnhancedMealsByCategory(category);
   
   // Check if user has cycle support recipes enabled and prioritize them
   if (userId) {

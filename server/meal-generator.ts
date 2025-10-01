@@ -2091,7 +2091,7 @@ async function generateMealPrepPlan(
     // All dietary tags are critical for user health and preferences
     
     // Directly get breakfast meals with ALL dietary restrictions maintained
-    const allBreakfasts = getEnhancedMealsByCategory('breakfast');
+    const allBreakfasts = await getEnhancedMealsByCategory('breakfast');
     const fallbackBreakfasts = filterEnhancedMealsByDietaryTags(allBreakfasts, dietaryTags);
     
     if (fallbackBreakfasts.length > breakfastOptions.length) {
