@@ -166,11 +166,6 @@ export function SeasonalAdvisor() {
                 </Badge>
               ))}
             </div>
-            {seasonalInfo.monthlyProduce?.localFocus && (
-              <p className="text-xs text-gray-500 mt-2 leading-relaxed">
-                {seasonalInfo.monthlyProduce.localFocus}
-              </p>
-            )}
           </div>
           
           <div>
