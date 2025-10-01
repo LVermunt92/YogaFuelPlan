@@ -11,8 +11,8 @@ export function useAuth() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check session validity with backend
-    const checkAuth = async () => {
+    // Check session validity with backend with retry logic
+    const checkAuth = async (retryCount = 0) => {
       try {
         const response = await fetch('/api/auth/me', {
           credentials: 'include'
@@ -24,11 +24,19 @@ export function useAuth() {
           // Update localStorage with fresh data
           localStorage.setItem('userId', data.user.id.toString());
           localStorage.setItem('username', data.user.username);
+          setIsLoading(false);
+        } else if (response.status === 401 && retryCount < 2) {
+          // Retry on 401 (session might be establishing)
+          // Wait briefly before retrying
+          setTimeout(() => {
+            checkAuth(retryCount + 1);
+          }, 300 * (retryCount + 1)); // 300ms, then 600ms
         } else {
           // Session expired or invalid, clear localStorage
           setUser(null);
           localStorage.removeItem('userId');
           localStorage.removeItem('username');
+          setIsLoading(false);
         }
       } catch (error) {
         console.error('Auth check failed:', error);
@@ -42,9 +50,8 @@ export function useAuth() {
             username: username,
           });
         }
+        setIsLoading(false);
       }
-      
-      setIsLoading(false);
     };
     
     checkAuth();
