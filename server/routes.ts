@@ -593,27 +593,54 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Translate meal names and types if Dutch is requested
       if (language === 'nl' && mealPlan.meals) {
+        // Collect unique recipe IDs for batch translation lookup
+        const recipeIds = mealPlan.meals
+          .map(meal => meal.recipeId)
+          .filter((id): id is string => id != null && id !== undefined);
+        
+        // Batch fetch pre-translated recipes from database
+        const preTranslatedRecipes = recipeIds.length > 0
+          ? await storage.getBatchRecipeTranslations(recipeIds, language)
+          : [];
+        
+        // Create a lookup map for quick access
+        const translationMap = new Map(
+          preTranslatedRecipes.map(tr => [tr.recipeId, tr.name])
+        );
+        
+        // Translate meals using pre-translated database or fallback to on-demand
         const translatedMeals = await Promise.all(mealPlan.meals.map(async meal => {
-          const translatedRecipe = await translateRecipeEnhanced({
-            name: meal.foodDescription,
-            ingredients: [],
-            instructions: [],
-            tips: [],
-            notes: []
-          }, language).catch(() => {
-            // Fallback to pattern-based translation if AI fails
-            return translateRecipe({
+          let translatedName = meal.foodDescription;
+          
+          // Check if we have a pre-translated version in the database
+          if (meal.recipeId && translationMap.has(meal.recipeId)) {
+            translatedName = translationMap.get(meal.recipeId)!;
+            console.log(`✅ Using pre-translated recipe: ${meal.recipeId} -> ${translatedName}`);
+          } else {
+            // Fall back to on-demand translation
+            console.log(`🔄 Translating recipe ID: ${meal.recipeId} - ${meal.foodDescription}`);
+            const translatedRecipe = await translateRecipeEnhanced({
               name: meal.foodDescription,
               ingredients: [],
               instructions: [],
               tips: [],
               notes: []
-            }, language);
-          });
+            }, language).catch(() => {
+              // Fallback to pattern-based translation if AI fails
+              return translateRecipe({
+                name: meal.foodDescription,
+                ingredients: [],
+                instructions: [],
+                tips: [],
+                notes: []
+              }, language);
+            });
+            translatedName = translatedRecipe.name;
+          }
           
           return {
             ...meal,
-            foodDescription: translatedRecipe.name,
+            foodDescription: translatedName,
             mealType: meal.mealType === 'breakfast' ? 'ontbijt' : 
                      meal.mealType === 'lunch' ? 'lunch' : 
                      meal.mealType === 'dinner' ? 'diner' : meal.mealType
