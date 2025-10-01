@@ -196,6 +196,21 @@ export const ingredientMappings = pgTable("ingredient_mappings", {
   uniqueIngredient: unique().on(table.normalizedIngredient),
 }));
 
+// Pre-translated recipe storage for multi-language support
+export const recipeTranslations = pgTable("recipe_translations", {
+  id: serial("id").primaryKey(),
+  recipeId: text("recipe_id").notNull(), // ID from enhanced meal database
+  language: varchar("language", { length: 5 }).notNull(), // 'en', 'nl'
+  name: text("name").notNull(), // Translated recipe name
+  ingredients: text("ingredients").array().notNull(), // Translated ingredients array
+  instructions: text("instructions").array().notNull(), // Translated instructions array
+  tips: text("tips").array().default([]), // Translated tips array
+  notes: text("notes").array().default([]), // Translated notes array
+  translatedAt: timestamp("translated_at").defaultNow(),
+}, (table) => ({
+  uniqueRecipeLanguage: unique().on(table.recipeId, table.language),
+}));
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
@@ -551,3 +566,12 @@ export type UpdateShoppingListName = z.infer<typeof updateShoppingListNameSchema
 export type IngredientMapping = typeof ingredientMappings.$inferSelect;
 export type InsertIngredientMapping = z.infer<typeof insertIngredientMappingSchema>;
 export type UpdateIngredientMapping = z.infer<typeof updateIngredientMappingSchema>;
+
+// Recipe translation schemas
+export const insertRecipeTranslationSchema = createInsertSchema(recipeTranslations).omit({
+  id: true,
+  translatedAt: true,
+});
+
+export type RecipeTranslation = typeof recipeTranslations.$inferSelect;
+export type InsertRecipeTranslation = z.infer<typeof insertRecipeTranslationSchema>;
