@@ -70,7 +70,7 @@ export const AMSTERDAM_MONTHLY_PRODUCE = {
     peak: ['tomaat', 'paprika', 'mais', 'pompoen']
   },
   9: { // October
-    vegetables: ['andijvie', 'artisjok', 'aubergine', 'bleekselderij', 'bloemkool', 'boerenkool', 'broccoli', 'chinese kool', 'courgette', 'groene selderij', 'knolselderij', 'komkommer', 'koolrabi', 'kropsla', 'paddenstoelen', 'paksoi', 'paprika', 'pastinaak', 'pompoen', 'prei', 'raapsteel', 'radijs', 'rammenas', 'rode biet', 'rodekool', 'roodlof', 'savooikool', 'schorseneren', 'sperziebonen', 'snijbiet', 'snijboon', 'spinazie', 'spitskool', 'spruiten', 'tomaat', 'ui', 'veldsla', 'venkel', 'waterkers', 'winterpostelein', 'witlof', 'witte kool', 'wortel'],
+    vegetables: ['pompoen', 'boerenkool', 'spruiten', 'pastinaak', 'bloemkool', 'broccoli', 'wortel', 'rode biet', 'andijvie', 'artisjok', 'aubergine', 'bleekselderij', 'chinese kool', 'courgette', 'groene selderij', 'knolselderij', 'komkommer', 'koolrabi', 'kropsla', 'paddenstoelen', 'paksoi', 'paprika', 'prei', 'raapsteel', 'radijs', 'rammenas', 'rodekool', 'roodlof', 'savooikool', 'schorseneren', 'sperziebonen', 'snijbiet', 'snijboon', 'spinazie', 'spitskool', 'tomaat', 'ui', 'veldsla', 'venkel', 'waterkers', 'winterpostelein', 'witlof', 'witte kool'],
     localFocus: 'Volledige herfstoogst met winterharde groenten die de koude maanden ingaan',
     peak: ['boerenkool', 'spruiten', 'pompoen', 'pastinaak']
   },
