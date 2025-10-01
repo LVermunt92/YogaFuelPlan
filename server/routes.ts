@@ -1111,6 +1111,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       console.log(`Recipe found: ${mealOption ? 'YES' : 'NO'}`);
+      if (mealOption) {
+        console.log(`Recipe ID: ${mealOption.id || 'NO ID FOUND'}`);
+      }
       if (!mealOption) {
         const allRecipes = await getCompleteEnhancedMealDatabase();
         console.log(`Available recipes: ${allRecipes.slice(0, 5).map(m => m.name).join(', ')}...`);
@@ -1259,6 +1262,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           
           // Translate AI-enhanced recipe if Dutch is requested (with AI enhancement when available)
           const translatedEnhancedRecipe = await translateRecipeEnhanced({
+            id: mealOption.id,
             name: enhancedRecipe.name,
             ingredients: enhancedRecipe.ingredients || [],
             instructions: enhancedRecipe.instructions || [],
@@ -1344,6 +1348,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Translate recipe content based on language preference (with AI enhancement when available)
       const translatedRecipe = await translateRecipeEnhanced({
+        id: mealOption.id,
         name: mealOption.name,
         ingredients: finalIngredients,
         instructions: finalInstructions,

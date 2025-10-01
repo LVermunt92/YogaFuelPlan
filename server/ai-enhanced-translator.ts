@@ -10,6 +10,15 @@ interface EnhancedTranslationOptions {
   style?: 'casual' | 'formal' | 'instructional';
 }
 
+// In-memory translation cache using recipe IDs
+const translationCache = new Map<string, any>();
+
+// Generate cache key from recipe ID and language
+function getCacheKey(recipeId: string | undefined, language: string): string | null {
+  if (!recipeId) return null;
+  return `${recipeId}-${language}`;
+}
+
 // Check if OpenAI is available
 function isOpenAIAvailable(): boolean {
   return !!process.env.OPENAI_API_KEY;
@@ -121,10 +130,17 @@ export async function translateRecipeEnhanced(
     return recipe;
   }
 
+  // Check cache first using recipe ID
+  const cacheKey = getCacheKey(recipe.id, language);
+  if (cacheKey && translationCache.has(cacheKey)) {
+    console.log(`✅ Using cached translation for recipe ID: ${recipe.id}`);
+    return translationCache.get(cacheKey);
+  }
+
   // Try AI translation first if available
   if (isOpenAIAvailable()) {
     try {
-      console.log('Using AI-enhanced translation for recipe:', recipe.name);
+      console.log(`🔄 Translating recipe ID: ${recipe.id} - ${recipe.name}`);
       
       const [translatedName, translatedIngredients, translatedInstructions, translatedTips] = await Promise.all([
         translateWithAI(recipe.name, 'recipe-name', options),
@@ -139,7 +155,7 @@ export async function translateRecipeEnhanced(
         ))
       ]);
 
-      return {
+      const translatedRecipe = {
         ...recipe,
         name: translatedName,
         ingredients: translatedIngredients,
@@ -148,6 +164,14 @@ export async function translateRecipeEnhanced(
         notes: recipe.notes || [],
         translationMethod: 'ai-enhanced'
       };
+
+      // Cache the translation using recipe ID
+      if (cacheKey) {
+        translationCache.set(cacheKey, translatedRecipe);
+        console.log(`💾 Cached translation for recipe ID: ${recipe.id}`);
+      }
+
+      return translatedRecipe;
     } catch (error: any) {
       if (error.status === 429 || error.code === 'insufficient_quota') {
         console.warn('OpenAI quota exceeded during recipe translation, falling back to pattern-based translation');
