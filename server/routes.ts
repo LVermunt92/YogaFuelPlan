@@ -1062,6 +1062,75 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Batch fetch pre-translated recipes from database
+  app.post("/api/recipes/translations/batch", async (req, res) => {
+    try {
+      const { recipeIds, language } = req.body;
+      
+      if (!recipeIds || !Array.isArray(recipeIds)) {
+        return res.status(400).json({ message: "recipeIds array is required" });
+      }
+      
+      if (!language || !['en', 'nl'].includes(language)) {
+        return res.status(400).json({ message: "Valid language (en or nl) is required" });
+      }
+
+      console.log(`📚 Fetching ${recipeIds.length} recipe translations for language: ${language}`);
+      
+      const translations = await storage.getBatchRecipeTranslations(recipeIds, language);
+      
+      // Create a map for quick lookup
+      const translationMap: Record<string, any> = {};
+      translations.forEach(t => {
+        translationMap[t.recipeId] = {
+          recipeId: t.recipeId,
+          language: t.language,
+          name: t.name,
+          ingredients: t.ingredients,
+          instructions: t.instructions,
+          tips: t.tips || [],
+          notes: t.notes || [],
+          translatedAt: t.translatedAt
+        };
+      });
+
+      res.json({
+        translations: translationMap,
+        found: translations.length,
+        requested: recipeIds.length
+      });
+    } catch (error) {
+      console.error("Batch translation fetch error:", error);
+      res.status(500).json({ message: "Failed to fetch translations" });
+    }
+  });
+
+  // Get missing translations for a set of recipe IDs
+  app.post("/api/recipes/translations/missing", async (req, res) => {
+    try {
+      const { recipeIds, language } = req.body;
+      
+      if (!recipeIds || !Array.isArray(recipeIds)) {
+        return res.status(400).json({ message: "recipeIds array is required" });
+      }
+      
+      if (!language || !['en', 'nl'].includes(language)) {
+        return res.status(400).json({ message: "Valid language (en or nl) is required" });
+      }
+
+      const missingIds = await storage.getMissingTranslations(recipeIds, language);
+      
+      res.json({
+        missingIds,
+        count: missingIds.length,
+        total: recipeIds.length
+      });
+    } catch (error) {
+      console.error("Missing translations check error:", error);
+      res.status(500).json({ message: "Failed to check missing translations" });
+    }
+  });
+
   app.get("/api/meals/:mealId/recipe", async (req, res) => {
     try {
       const mealId = parseInt(req.params.mealId);
