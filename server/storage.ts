@@ -62,7 +62,7 @@ import {
   type InsertRecipeDeletion,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, and, gte, lte, desc } from "drizzle-orm";
+import { eq, and, gte, lte, desc, inArray } from "drizzle-orm";
 import bcrypt from "bcrypt";
 
 export interface IStorage {
@@ -1552,13 +1552,10 @@ export class DatabaseStorage implements IStorage {
       .from(recipeTranslations)
       .where(and(
         eq(recipeTranslations.language, language),
-        // Use IN operator for batch query
-        db.$with('recipe_ids').as(db.select().from(recipeTranslations).where(
-          eq(recipeTranslations.language, language)
-        ))
+        inArray(recipeTranslations.recipeId, recipeIds)
       ));
     
-    return results.filter(r => recipeIds.includes(r.recipeId));
+    return results;
   }
 
   async getMissingTranslations(recipeIds: string[], language: string): Promise<string[]> {

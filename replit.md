@@ -34,6 +34,14 @@ Preferred communication style: Simple, everyday language.
     - **Unified Recipe Database**: Consolidated all recipe databases into a single unified system.
 
 # Recent Changes (October 1, 2025)
+- **Pre-Translated Recipe Database System**: Complete architectural shift from on-demand translation to database-stored translations for performance and cost optimization
+  - Created `recipe_translations` table with indexed lookups by recipe ID and language
+  - Implemented batch translation worker with throttling (2s between API calls) and retry logic (max 3 retries)
+  - Added admin backfill endpoints (`/api/admin/translations/backfill` and `/api/admin/translations/status`) for bulk recipe translation
+  - Modified recipe fetch endpoint to check database first, falling back to on-demand translation only when needed
+  - Supports intelligent leftover ingredient incorporation even with pre-translated recipes
+  - Database stores: name, ingredients, instructions, tips, and notes in target language
+  - System designed to eliminate redundant OpenAI API calls and improve response times
 - **Terms and Conditions Page**: Complete legal compliance page with comprehensive GDPR/AVG Netherlands-specific content
   - 12-point privacy section covering data collection, usage, retention, and user rights
   - Explicit GDPR/AVG compliance with data subject rights (access, rectification, erasure, restriction, portability, objection)
