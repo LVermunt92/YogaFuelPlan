@@ -1562,7 +1562,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const dietaryTags = user?.dietaryTags || [];
       const leftoverIngredients = user?.leftovers || [];
 
-      let shoppingList = await generateEnhancedShoppingList(mealPlan.meals, language, dietaryTags, leftoverIngredients);
+      // ALWAYS generate shopping list with English recipes first
+      let shoppingList = await generateEnhancedShoppingList(mealPlan.meals, 'en', dietaryTags, leftoverIngredients);
+      
+      // Then translate individual ingredient names if Dutch is requested
+      if (language === 'nl') {
+        shoppingList = translateShoppingList(shoppingList, 'nl');
+      }
 
       // Ensure shopping list is an array
       if (!Array.isArray(shoppingList)) {
