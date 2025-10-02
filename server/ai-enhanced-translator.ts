@@ -106,7 +106,9 @@ Only return the translated tip, nothing else.`;
       temperature: 0.3  // Lower temperature for more consistent translations
     });
 
-    return response.choices[0].message.content?.trim() || text;
+    // Remove any quotes that GPT might add around the translation
+    const translated = response.choices[0].message.content?.trim() || text;
+    return translated.replace(/^["']|["']$/g, '');
   } catch (error: any) {
     console.error('AI translation error:', error);
     

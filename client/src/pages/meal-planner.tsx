@@ -1369,8 +1369,8 @@ export default function MealPlanner() {
                           </div>
                           <div className="space-y-3">
                             {dayMeals.map((meal) => {
-                              const isLeftover = meal.foodDescription.includes('(leftover)');
-                              const isEatingOut = meal.foodDescription.includes('Eating out');
+                              const isLeftover = meal.foodDescription.includes('(leftover)') || meal.foodDescription.includes('(restjes)');
+                              const isEatingOut = meal.foodDescription.includes('Eating out') || meal.foodDescription.includes('Uit eten');
                               
                               return (
                                 <div key={meal.id} className={`p-3 rounded-lg ${
@@ -1445,8 +1445,8 @@ export default function MealPlanner() {
                               </tr>
                               {/* Meal Rows */}
                               {dayMeals.map((meal, index) => {
-                                const isLeftover = meal.foodDescription.includes('(leftover)');
-                                const isEatingOut = meal.foodDescription.includes('Eating out');
+                                const isLeftover = meal.foodDescription.includes('(leftover)') || meal.foodDescription.includes('(restjes)');
+                                const isEatingOut = meal.foodDescription.includes('Eating out') || meal.foodDescription.includes('Uit eten');
                                 const isFreshCooking = !isLeftover && !isEatingOut;
                                 
                                 return (
