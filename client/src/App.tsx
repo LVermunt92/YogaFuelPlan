@@ -246,6 +246,7 @@ function Router() {
       <div className="flex-1">
         <Switch>
           <Route path="/" component={MealPlanner} />
+          <Route path="/meal-planner" component={MealPlanner} />
           <Route path="/my-recipes" component={MyRecipes} />
           <Route path="/profile" component={Profile} />
           <Route path="/about" component={About} />
