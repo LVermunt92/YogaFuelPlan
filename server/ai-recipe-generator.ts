@@ -3,6 +3,8 @@ import { hasAdequateProteinSource, enhanceRecipeWithProtein } from './protein-va
 import { hasAdequateFiberSource, enhanceRecipeWithFiber } from './fiber-validator';
 import { MealOption } from './nutrition-enhanced';
 import { cleanRecipeData } from './ingredient-cleaner';
+import { storage } from './storage';
+import crypto from 'crypto';
 
 // Initialize OpenAI - will use environment variable OPENAI_API_KEY
 const openai = new OpenAI({ 
@@ -17,6 +19,13 @@ export interface RecipeGenerationRequest {
   excludeIngredients?: string[];
   cuisine?: string;
   season?: string;
+  userId?: number;
+}
+
+function createRecipeHash(name: string, tags: string[]): string {
+  const sortedTags = [...tags].sort().join(',');
+  const input = `${name.toLowerCase().trim()}:${sortedTags}`;
+  return crypto.createHash('md5').update(input).digest('hex');
 }
 
 export async function generateRecipeWithAI(request: RecipeGenerationRequest): Promise<MealOption> {
@@ -185,6 +194,49 @@ Ensure the recipe is practical, nutritious, and aligns with the dietary requirem
     // Clean the recipe to remove parenthetical descriptions and standardize portion
     const cleanedRecipe = cleanRecipeData(generatedRecipe);
     console.log(`🧹 Applied recipe cleaning to standardize portion and remove parenthetical descriptions`);
+    
+    // Save AI recipe to database for reusability and translation caching
+    const recipeHash = createRecipeHash(cleanedRecipe.name, request.dietaryTags);
+    
+    // Check if recipe already exists
+    let savedRecipe = await storage.getAiRecipeByHash(recipeHash);
+    
+    if (savedRecipe) {
+      // Recipe exists - increment usage counter and return with existing ID
+      await storage.incrementAiRecipeUsage(savedRecipe.id);
+      console.log(`♻️ Reusing existing AI recipe #${savedRecipe.id}: "${savedRecipe.name}" (usage count incremented)`);
+      cleanedRecipe.id = savedRecipe.id;
+    } else {
+      // New recipe - save to database
+      savedRecipe = await storage.upsertAiRecipe({
+        name: cleanedRecipe.name,
+        portion: cleanedRecipe.portion,
+        ingredients: cleanedRecipe.ingredients,
+        instructions: cleanedRecipe.recipe?.instructions || [],
+        tips: cleanedRecipe.recipe?.tips || [],
+        notes: cleanedRecipe.recipe?.notes,
+        protein: cleanedRecipe.nutrition.protein,
+        calories: cleanedRecipe.nutrition.calories,
+        carbohydrates: cleanedRecipe.nutrition.carbohydrates || 0,
+        fats: cleanedRecipe.nutrition.fats || 0,
+        fiber: cleanedRecipe.nutrition.fiber || 0,
+        sugar: cleanedRecipe.nutrition.sugar || 0,
+        sodium: cleanedRecipe.nutrition.sodium || 0,
+        prepTime: cleanedRecipe.nutrition.prepTime,
+        cookTime: 0,
+        servings: 1,
+        mealTypes: [request.category],
+        costEuros: cleanedRecipe.nutrition.costEuros,
+        tags: request.dietaryTags,
+        difficulty: 'easy',
+        cuisine: request.cuisine,
+        source: 'ai',
+        generatedForUserId: request.userId,
+        recipeHash: recipeHash,
+      });
+      console.log(`💾 Saved AI recipe to database with ID: ${savedRecipe.id}`);
+      cleanedRecipe.id = savedRecipe.id;
+    }
     
     return cleanedRecipe as MealOption;
     
