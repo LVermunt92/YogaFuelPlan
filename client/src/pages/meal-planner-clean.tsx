@@ -614,6 +614,10 @@ function MealPlannerMain() {
 
   // Check if a meal contains leftover ingredients
   const isLeftoverMeal = (meal: Meal) => {
+    // First check the explicit isLeftover field from database
+    if (meal.isLeftover === true) return true;
+    
+    // Fallback to text-based detection
     return meal.foodDescription.toLowerCase().includes('leftover') || 
            meal.foodDescription.toLowerCase().includes('incorporating');
   };
