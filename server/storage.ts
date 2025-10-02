@@ -879,7 +879,26 @@ export class DatabaseStorage implements IStorage {
     const [mealPlan] = await db.select().from(mealPlans).where(eq(mealPlans.id, id));
     if (!mealPlan) return undefined;
 
-    const mealList = await db.select().from(meals).where(eq(meals.mealPlanId, id));
+    const mealList = await db.select({
+      id: meals.id,
+      mealPlanId: meals.mealPlanId,
+      recipeId: meals.recipeId,
+      day: meals.day,
+      mealType: meals.mealType,
+      foodDescription: meals.foodDescription,
+      portion: meals.portion,
+      protein: meals.protein,
+      calories: meals.calories,
+      carbohydrates: meals.carbohydrates,
+      fats: meals.fats,
+      fiber: meals.fiber,
+      sugar: meals.sugar,
+      sodium: meals.sodium,
+      prepTime: meals.prepTime,
+      costEuros: meals.costEuros,
+      proteinPerEuro: meals.proteinPerEuro,
+      isLeftover: meals.isLeftover // Explicitly select isLeftover
+    }).from(meals).where(eq(meals.mealPlanId, id));
     
     return {
       ...mealPlan,
