@@ -1687,10 +1687,6 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
       
       // No need for seasonal name adaptation since warming recipes are already excluded during summer
       // Keep original recipe names for proper recipe lookup
-      
-      if (isLeftover) {
-        mealDescription = `${mealDescription} (leftover)`;
-      }
 
       const meal: InsertMeal = {
         mealPlanId: 0,
@@ -1701,6 +1697,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         portion: adjustedPortion,
         protein: adjustedProtein,
         prepTime: prepTimeForDay,
+        isLeftover: isLeftover, // Boolean flag instead of string marker
       };
 
       meals.push(meal);
@@ -2279,10 +2276,6 @@ async function generateMealPrepPlan(
         // Create descriptive meal name (no seasonal adaptation needed since warming recipes are filtered out)
         let mealDescription = lunchMeal.name;
         
-        if (isLunchLeftover) {
-          mealDescription = `${mealDescription} (leftover)`;
-        }
-        
         meals.push({
           mealPlanId: 0,
           day,
@@ -2292,6 +2285,7 @@ async function generateMealPrepPlan(
           portion: adjustedPortion,
           protein: adjustedProtein,
           prepTime: prepTime,
+          isLeftover: isLunchLeftover, // Boolean flag instead of string marker
         });
         
         totalWeeklyProtein += adjustedProtein;
@@ -2417,10 +2411,6 @@ async function generateMealPrepPlan(
         // Create descriptive meal name (no seasonal adaptation needed since warming recipes are filtered out)
         let mealDescription = dinnerMeal.name;
         
-        if (isDinnerLeftover) {
-          mealDescription = `${mealDescription} (leftover)`;
-        }
-        
         meals.push({
           mealPlanId: 0,
           day,
@@ -2430,6 +2420,7 @@ async function generateMealPrepPlan(
           portion: adjustedPortion,
           protein: adjustedProtein,
           prepTime: prepTime,
+          isLeftover: isDinnerLeftover, // Boolean flag instead of string marker
         });
         
         totalWeeklyProtein += adjustedProtein;
