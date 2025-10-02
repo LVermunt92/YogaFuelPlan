@@ -172,6 +172,49 @@ export const userRecipes = pgTable("user_recipes", {
   uniqueUserRecipe: unique().on(table.userId, table.name),
 }));
 
+// AI-generated recipes storage
+export const aiRecipes = pgTable("ai_recipes", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  portion: text("portion").notNull(),
+  ingredients: text("ingredients").array().notNull(),
+  instructions: text("instructions").array().notNull(),
+  tips: text("tips").array().default([]),
+  notes: text("notes"),
+  
+  // Nutrition information
+  protein: real("protein").notNull(),
+  calories: real("calories").notNull(),
+  carbohydrates: real("carbohydrates").default(0),
+  fats: real("fats").default(0),
+  fiber: real("fiber").default(0),
+  sugar: real("sugar").default(0),
+  sodium: real("sodium").default(0),
+  
+  // Meal info
+  prepTime: integer("prep_time").notNull(),
+  cookTime: integer("cook_time").default(0),
+  servings: integer("servings").default(1),
+  mealTypes: text("meal_types").array().notNull(),
+  costEuros: real("cost_euros"),
+  
+  // Categorization
+  tags: text("tags").array().default([]),
+  difficulty: text("difficulty").default("easy"),
+  cuisine: text("cuisine"),
+  
+  // AI-specific metadata
+  source: text("source").default("ai").notNull(),
+  generatedForUserId: integer("generated_for_user_id").references(() => users.id),
+  usageCount: integer("usage_count").default(1),
+  recipeHash: text("recipe_hash").notNull().unique(), // for deduplication based on name + tags
+  
+  // Metadata
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+  lastUsedAt: timestamp("last_used_at").defaultNow(),
+});
+
 // Shopping list name standardization table
 export const shoppingListNames = pgTable("shopping_list_names", {
   id: serial("id").primaryKey(),
@@ -379,7 +422,25 @@ export type UserRecipe = typeof userRecipes.$inferSelect;
 export type InsertUserRecipe = z.infer<typeof insertUserRecipeSchema>;
 export type UpdateUserRecipe = z.infer<typeof updateUserRecipeSchema>;
 
+// AI recipe schemas
+export const insertAiRecipeSchema = createInsertSchema(aiRecipes).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+  lastUsedAt: true,
+  usageCount: true,
+});
 
+export const updateAiRecipeSchema = createInsertSchema(aiRecipes).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+  recipeHash: true,
+}).partial();
+
+export type AiRecipe = typeof aiRecipes.$inferSelect;
+export type InsertAiRecipe = z.infer<typeof insertAiRecipeSchema>;
+export type UpdateAiRecipe = z.infer<typeof updateAiRecipeSchema>;
 
 // Shopping Lists for persistent storage of shopping list data and crossed-off items
 export const shoppingLists = pgTable("shopping_lists", {
