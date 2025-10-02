@@ -12423,7 +12423,7 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
       continue;
     }
     
-    console.log(`🔄 GENERATING VARIANTS for: "${recipe.name}"`);
+    // Removed excessive logging for performance
     
     // 1. GLUTEN-FREE VERSION - Only if recipe contains gluten ingredients
     const hasGlutenIngredients = recipe.ingredients?.some(ing => 
@@ -12647,10 +12647,33 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
   return variants;
 }
 
+// Module-level cache for enhanced meal database
+let cachedMealDatabase: MealOption[] | null = null;
+let cachePromise: Promise<MealOption[]> | null = null;
+
+// Function to invalidate the meal database cache (call after recipe updates)
+export function invalidateEnhancedMealDatabaseCache(): void {
+  cachedMealDatabase = null;
+  cachePromise = null;
+  console.log('🔄 Enhanced meal database cache invalidated');
+}
+
 // Function to get complete unified meal database (now contains all recipes in one place)
 export async function getCompleteEnhancedMealDatabase(): Promise<MealOption[]> {
-  // Get base recipes and clean them (remove parenthetical descriptions from ingredients and normalize portions)
-  const baseRecipes = RAW_MEAL_DATABASE.map(recipe => cleanRecipeData(recipe));
+  // Return cached data if available
+  if (cachedMealDatabase) {
+    return cachedMealDatabase;
+  }
+  
+  // If cache is being built, wait for it
+  if (cachePromise) {
+    return cachePromise;
+  }
+  
+  // Build cache
+  cachePromise = (async () => {
+    // Get base recipes and clean them (remove parenthetical descriptions from ingredients and normalize portions)
+    const baseRecipes = RAW_MEAL_DATABASE.map(recipe => cleanRecipeData(recipe));
   
   // Auto-tag recipes that are naturally lactose-free
   const lactoseTaggedRecipes = baseRecipes.map(recipe => {
@@ -12667,7 +12690,7 @@ export async function getCompleteEnhancedMealDatabase(): Promise<MealOption[]> {
     
     // If no dairy found, add lactose-free tag
     if (!hasDairy) {
-      console.log(`✅ AUTO-TAGGING: "${recipe.name}" as lactose-free (no dairy ingredients found)`);
+      // Removed excessive logging for performance
       return {
         ...recipe,
         tags: [...recipe.tags, 'Lactose-Free']
@@ -12695,10 +12718,16 @@ export async function getCompleteEnhancedMealDatabase(): Promise<MealOption[]> {
     return await addSeasonalMonthTagsToRecipe(recipeWithCycleTags);
   }));
   
-  console.log(`📊 UNIVERSAL VARIANTS: ${baseRecipes.length} base recipes + ${dietaryVariants.length} dietary variants = ${recipesWithIds.length} total recipes`);
-  console.log(`📊 CYCLE SUPPORT: All recipes now have menstrual cycle phase tags for complete cycle tracking`);
-  console.log(`📊 DEVELOPER FRIENDLY: Every recipe now has gluten-free, lactose-free, and vegetarian versions using kipstukjes & Beyond Meat`);
-  return recipesWithIds;
+    console.log(`📊 UNIVERSAL VARIANTS: ${baseRecipes.length} base recipes + ${dietaryVariants.length} dietary variants = ${recipesWithIds.length} total recipes`);
+    console.log(`📊 CYCLE SUPPORT: All recipes now have menstrual cycle phase tags for complete cycle tracking`);
+    console.log(`📊 DEVELOPER FRIENDLY: Every recipe now has gluten-free, lactose-free, and vegetarian versions using kipstukjes & Beyond Meat`);
+    
+    // Store in cache
+    cachedMealDatabase = recipesWithIds;
+    return recipesWithIds;
+  })();
+  
+  return cachePromise;
 }
 
 // Generate a unique numerical ID for a recipe
@@ -13186,7 +13215,7 @@ export interface ShoppingListItem {
   unit: string;
 }
 
-export function generateEnhancedShoppingList(meals: { foodDescription: string }[], language: string = 'en', dietaryTags: string[] = [], leftoverIngredients: string[] = []): ShoppingListItem[] {
+export async function generateEnhancedShoppingList(meals: { foodDescription: string }[], language: string = 'en', dietaryTags: string[] = [], leftoverIngredients: string[] = []): Promise<ShoppingListItem[]> {
   const ingredientAmounts = new Map<string, { totalAmount: number; unit: string; count: number }>();
   
   // Debug: log that we're applying substitutions
@@ -13198,7 +13227,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
   }
   
   // Parse actual recipe amounts from meal instructions
-  meals.forEach(meal => {
+  for (const meal of meals) {
     // Strip any leftover suffix and portion scaling for meal matching
     const cleanMealName = meal.foodDescription
       .replace(/\s*\(incorporating leftover.*?\)/gi, '') // Remove leftover incorporation text
@@ -13214,7 +13243,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
       .replace(/\s*\(Vegan\)/gi, '')
       .trim();
     
-    const allRecipes = getCompleteEnhancedMealDatabase();
+    const allRecipes = await getCompleteEnhancedMealDatabase();
     const mealOption = allRecipes.find(m => m.name === cleanMealName);
     if (mealOption) {
       // Apply dietary substitutions to ingredients before processing
@@ -13468,7 +13497,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
       console.warn(`⚠️ GROCERY LIST WARNING: Recipe not found for meal "${cleanMealName}" (original: "${meal.foodDescription}"). This meal's ingredients will be missing from shopping list!`);
       
       // Try fallback search with more flexible matching
-      const allRecipes = getCompleteEnhancedMealDatabase();
+      const allRecipes = await getCompleteEnhancedMealDatabase();
       const fallbackMeal = allRecipes.find(m => 
         m.name.toLowerCase().includes(cleanMealName.split(' ').slice(0, 2).join(' ').toLowerCase()) ||
         cleanMealName.toLowerCase().includes(m.name.split(' ').slice(0, 2).join(' ').toLowerCase())
@@ -13549,7 +13578,7 @@ export function generateEnhancedShoppingList(meals: { foodDescription: string }[
         console.error(`❌ CRITICAL: No fallback recipe found for "${cleanMealName}". User will be missing ingredients!`);
       }
     }
-  });
+  }
 
   // Categorize ingredients following supermarket layout order
   const ingredientCategories: Record<string, string> = {

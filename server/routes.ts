@@ -285,7 +285,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const dietaryTags = user?.dietaryTags || [];
           const leftoverIngredients = user?.leftovers || [];
           
-          let shoppingList = generateEnhancedShoppingList(savedMeals, 'en', dietaryTags, leftoverIngredients);
+          let shoppingList = await generateEnhancedShoppingList(savedMeals, 'en', dietaryTags, leftoverIngredients);
           
           // Convert shopping list to persistent format and save it
           const itemsToSave = shoppingList.map((item, index) => {
