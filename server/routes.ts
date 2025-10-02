@@ -21,6 +21,7 @@ import { hasAdequateFiberSource, enhanceRecipeWithFiber } from './fiber-validato
 import cron from 'node-cron';
 import { normalizeToSunday, getNextSunday, getCurrentWeekSunday, isValidWeekStart, getAllowedWeekStarts } from './date-utils';
 import { isExemptFromMealPlanRequirements } from '@shared/admin-utils';
+import { getSeasonalAdvice } from './seasonal-advisor';
 
 // Helper function to parse quantity and unit from totalAmount string (e.g., "200g" -> {quantity: 200, unit: "g"})
 function parseQuantityAndUnit(totalAmount: string): { quantity: number; unit: string } {
@@ -52,6 +53,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Version endpoint for auto-update detection
   app.get("/api/version", (req, res) => {
     res.json({ version: APP_VERSION });
+  });
+  
+  // Seasonal advice endpoint
+  app.get("/api/seasonal", async (req, res) => {
+    try {
+      const { latitude, longitude, language = 'en' } = req.query;
+      
+      const coords = (latitude && longitude) ? {
+        latitude: parseFloat(latitude as string),
+        longitude: parseFloat(longitude as string)
+      } : undefined;
+      
+      const seasonalInfo = await getSeasonalAdvice(coords, language as 'en' | 'nl');
+      res.json(seasonalInfo);
+    } catch (error) {
+      console.error('Error getting seasonal info:', error);
+      res.status(500).json({ error: 'Failed to get seasonal information' });
+    }
   });
   
   // Authentication routes
