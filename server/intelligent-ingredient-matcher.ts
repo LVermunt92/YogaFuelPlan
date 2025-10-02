@@ -27,6 +27,10 @@ export async function findRecipesWithIngredients(
 
   console.log(`🔍 INTELLIGENT MATCHING: Looking for ${category} recipes containing: ${ingredientsToUse.join(', ')}`);
 
+  // Translate all ingredients ONCE before the loop (performance optimization)
+  const translatedIngredients = ingredientsToUse.map(ing => translateDutchToEnglish(ing));
+  console.log(`🔄 Translated ${ingredientsToUse.length} ingredients: ${ingredientsToUse.join(', ')} -> ${translatedIngredients.join(', ')}`);
+
   // Filter recipes by category and dietary requirements
   const allRecipes = await getCompleteEnhancedMealDatabase();
   const categoryRecipes = allRecipes.filter(recipe => 
@@ -41,9 +45,9 @@ export async function findRecipesWithIngredients(
     let matchScore = 0;
 
     // Check each ingredient the user wants to use up
-    for (const userIngredient of ingredientsToUse) {
-      // First translate Dutch ingredients to English for matching
-      const translatedUserIngredient = translateDutchToEnglish(userIngredient);
+    for (let i = 0; i < ingredientsToUse.length; i++) {
+      const userIngredient = ingredientsToUse[i];
+      const translatedUserIngredient = translatedIngredients[i];
       const normalizedUserIngredient = normalizeIngredient(translatedUserIngredient);
       
       // Check if this ingredient appears in the recipe
@@ -134,7 +138,7 @@ export async function getIntelligentRecipeRecommendation(
   }
 
   // Find existing recipes that match some of the ingredients
-  const matches = findRecipesWithIngredients(ingredientsToUse, category, dietaryTags);
+  const matches = await findRecipesWithIngredients(ingredientsToUse, category, dietaryTags);
   
   if (matches.length > 0) {
     // If we want better distribution, prefer recipes that use fewer ingredients
