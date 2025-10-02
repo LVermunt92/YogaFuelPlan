@@ -338,7 +338,7 @@ adminRouter.post('/translations/backfill', async (req, res) => {
 
     // Get all recipe IDs
     const allRecipes = await getCompleteEnhancedMealDatabase();
-    let recipeIds = allRecipes.map(r => r.id).filter((id): id is string => id !== undefined);
+    let recipeIds = allRecipes.map(r => r.id).filter((id): id is number => id !== undefined);
     
     // Apply limit if specified
     if (limit && typeof limit === 'number' && limit > 0) {
@@ -398,7 +398,7 @@ adminRouter.get('/translations/status', async (req, res) => {
     const totalRecipes = allRecipes.length;
     
     const missingIds = await storage.getMissingTranslations(
-      allRecipes.map(r => r.id).filter((id): id is string => id !== undefined),
+      allRecipes.map(r => r.id).filter((id): id is number => id !== undefined),
       language as string
     );
     

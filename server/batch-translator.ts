@@ -3,14 +3,14 @@ import { translateRecipeEnhanced } from './ai-enhanced-translator';
 import { getCompleteEnhancedMealDatabase, type MealOption } from './nutrition-enhanced';
 
 interface TranslationJob {
-  recipeId: string;
+  recipeId: number;
   recipe: MealOption;
   language: 'en' | 'nl';
   retryCount: number;
 }
 
 interface TranslationResult {
-  recipeId: string;
+  recipeId: number;
   success: boolean;
   error?: string;
 }
@@ -23,7 +23,7 @@ export class BatchTranslator {
   private readonly BATCH_SIZE = 5; // Process 5 at a time before pausing
 
   async translateRecipes(
-    recipeIds: string[], 
+    recipeIds: number[], 
     language: 'en' | 'nl' = 'nl'
   ): Promise<TranslationResult[]> {
     console.log(`🚀 Starting batch translation for ${recipeIds.length} recipes to ${language}`);
