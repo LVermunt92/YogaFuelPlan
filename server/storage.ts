@@ -60,6 +60,11 @@ import {
   type InsertRecipeModification,
   type RecipeDeletion,
   type InsertRecipeDeletion,
+
+  aiRecipes,
+  type AiRecipe,
+  type InsertAiRecipe,
+  type UpdateAiRecipe,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, gte, lte, desc, inArray } from "drizzle-orm";
@@ -142,6 +147,12 @@ export interface IStorage {
   upsertRecipeTranslation(data: InsertRecipeTranslation): Promise<RecipeTranslation>;
   getBatchRecipeTranslations(recipeIds: string[], language: string): Promise<RecipeTranslation[]>;
   getMissingTranslations(recipeIds: string[], language: string): Promise<string[]>;
+
+  // AI Recipe methods
+  upsertAiRecipe(data: InsertAiRecipe): Promise<AiRecipe>;
+  getAiRecipeByHash(recipeHash: string): Promise<AiRecipe | undefined>;
+  getAiRecipeById(id: number): Promise<AiRecipe | undefined>;
+  incrementAiRecipeUsage(id: number): Promise<void>;
 }
 
 export class MemStorage implements IStorage {
@@ -702,6 +713,23 @@ export class MemStorage implements IStorage {
 
   async getMissingTranslations(recipeIds: string[], language: string): Promise<string[]> {
     return recipeIds; // All are missing in MemStorage
+  }
+
+  // AI Recipe methods (MemStorage - not implemented)
+  async upsertAiRecipe(data: InsertAiRecipe): Promise<AiRecipe> {
+    throw new Error("AI recipe storage requires DatabaseStorage implementation");
+  }
+
+  async getAiRecipeByHash(recipeHash: string): Promise<AiRecipe | undefined> {
+    return undefined;
+  }
+
+  async getAiRecipeById(id: number): Promise<AiRecipe | undefined> {
+    return undefined;
+  }
+
+  async incrementAiRecipeUsage(id: number): Promise<void> {
+    // No-op for MemStorage
   }
 
 }
@@ -1565,6 +1593,54 @@ export class DatabaseStorage implements IStorage {
     const existingIds = new Set(existing.map(t => t.recipeId));
     
     return recipeIds.filter(id => !existingIds.has(id));
+  }
+
+  // AI Recipe methods
+  async upsertAiRecipe(data: InsertAiRecipe): Promise<AiRecipe> {
+    const result = await db
+      .insert(aiRecipes)
+      .values(data)
+      .onConflictDoUpdate({
+        target: [aiRecipes.recipeHash],
+        set: {
+          usageCount: data.usageCount || 1,
+          lastUsedAt: new Date(),
+          updatedAt: new Date()
+        }
+      })
+      .returning();
+    
+    return result[0];
+  }
+
+  async getAiRecipeByHash(recipeHash: string): Promise<AiRecipe | undefined> {
+    const [recipe] = await db
+      .select()
+      .from(aiRecipes)
+      .where(eq(aiRecipes.recipeHash, recipeHash))
+      .limit(1);
+    
+    return recipe;
+  }
+
+  async getAiRecipeById(id: number): Promise<AiRecipe | undefined> {
+    const [recipe] = await db
+      .select()
+      .from(aiRecipes)
+      .where(eq(aiRecipes.id, id))
+      .limit(1);
+    
+    return recipe;
+  }
+
+  async incrementAiRecipeUsage(id: number): Promise<void> {
+    await db
+      .update(aiRecipes)
+      .set({
+        usageCount: db.raw('usage_count + 1') as any,
+        lastUsedAt: new Date()
+      })
+      .where(eq(aiRecipes.id, id));
   }
 
 }
