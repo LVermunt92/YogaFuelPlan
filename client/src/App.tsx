@@ -223,7 +223,7 @@ function Router() {
       <div className="min-h-screen bg-[#fefdf9] flex items-center justify-center">
         <div className="text-center">
           <div className="text-lg font-light" style={{ fontFamily: 'Times New Roman, serif' }}>
-            Loading...
+            {t.loading}
           </div>
         </div>
       </div>

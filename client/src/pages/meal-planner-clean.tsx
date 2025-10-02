@@ -1083,7 +1083,7 @@ function MealPlannerMain() {
                     {loadingPersistentList ? (
                       <div className="flex justify-center py-8">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-                        <p className="ml-3 text-gray-600">Loading your shopping list...</p>
+                        <p className="ml-3 text-gray-600">{t.loadingShoppingList}</p>
                       </div>
                     ) : persistentShoppingList ? (
                       <div className="space-y-4">
