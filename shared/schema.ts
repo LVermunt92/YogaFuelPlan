@@ -53,7 +53,7 @@ export const mealPlans = pgTable("meal_plans", {
 export const meals = pgTable("meals", {
   id: serial("id").primaryKey(),
   mealPlanId: integer("meal_plan_id").references(() => mealPlans.id),
-  recipeId: text("recipe_id"), // ID of the recipe in the enhanced meal database
+  recipeId: integer("recipe_id"), // Numerical ID of the recipe in the enhanced meal database
   day: integer("day").notNull(), // 1-7
   mealType: text("meal_type").notNull(), // breakfast, lunch, dinner
   foodDescription: text("food_description").notNull(),
@@ -199,7 +199,7 @@ export const ingredientMappings = pgTable("ingredient_mappings", {
 // Pre-translated recipe storage for multi-language support
 export const recipeTranslations = pgTable("recipe_translations", {
   id: serial("id").primaryKey(),
-  recipeId: text("recipe_id").notNull(), // ID from enhanced meal database
+  recipeId: integer("recipe_id").notNull(), // Numerical ID from enhanced meal database
   language: varchar("language", { length: 5 }).notNull(), // 'en', 'nl'
   name: text("name").notNull(), // Translated recipe name
   ingredients: text("ingredients").array().notNull(), // Translated ingredients array

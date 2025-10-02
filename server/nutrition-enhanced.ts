@@ -27,7 +27,7 @@ export interface NutritionInfo {
 }
 
 export interface MealOption {
-  id?: string; // Unique identifier for the recipe
+  id?: number; // Unique numerical identifier for the recipe
   name: string;
   portion: string;
   nutrition: NutritionInfo;
@@ -12701,17 +12701,10 @@ export async function getCompleteEnhancedMealDatabase(): Promise<MealOption[]> {
   return recipesWithIds;
 }
 
-// Generate a consistent, unique ID for a recipe based on its name
-function generateRecipeId(recipeName: string, index: number): string {
-  // Create a hash-like ID from the recipe name
-  const nameHash = recipeName
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, '') // Remove special characters
-    .replace(/\s+/g, '-') // Replace spaces with hyphens
-    .substring(0, 50); // Limit length
-  
-  // Add index to ensure uniqueness
-  return `recipe-${nameHash}-${index}`;
+// Generate a unique numerical ID for a recipe
+function generateRecipeId(recipeName: string, index: number): number {
+  // Use index + 1 so IDs start from 1 instead of 0
+  return index + 1;
 }
 
 // Efficient recipe lookup by name using recipe IDs
