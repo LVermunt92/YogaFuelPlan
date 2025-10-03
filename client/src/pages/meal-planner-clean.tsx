@@ -1382,7 +1382,7 @@ function MealPlannerMain() {
                                 className={`cursor-pointer hover:opacity-90 p-3 border-l-4 rounded-r-lg ${
                                   dinner.foodDescription === 'Eating out'
                                     ? 'border-gray-400 bg-gray-50'
-                                    : dinner.foodDescription.includes('(leftover)') 
+                                    : isLeftoverMeal(dinner) 
                                       ? 'border-blue-400 bg-blue-50 dark:bg-blue-950/20' 
                                       : 'border-green-400 bg-green-50 dark:bg-green-950/20'
                                 }`}
@@ -1390,11 +1390,11 @@ function MealPlannerMain() {
                               >
                                 <div className="flex items-center gap-2 mb-1">
                                   <div className={`text-xs font-medium ${
-                                    dinner.foodDescription.includes('(leftover)') ? 'text-blue-700' : 'text-green-700'
+                                    isLeftoverMeal(dinner) ? 'text-blue-700' : 'text-green-700'
                                   }`}>
                                     {t.dinner.toUpperCase()}
                                   </div>
-                                  {dinner.foodDescription.includes('(leftover)') && (
+                                  {isLeftoverMeal(dinner) && (
                                     <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">
                                       <RefreshCw className="h-3 w-3" />
                                       Leftover
@@ -1419,7 +1419,7 @@ function MealPlannerMain() {
                                   className={`cursor-pointer hover:opacity-90 p-3 border-l-4 rounded-r-lg ${
                                     breakfast.foodDescription === 'Eating out'
                                       ? 'border-gray-400 bg-gray-50'
-                                      : breakfast.foodDescription.includes('(leftover)') 
+                                      : isLeftoverMeal(breakfast) 
                                         ? 'border-blue-400 bg-blue-50 dark:bg-blue-950/20' 
                                         : 'border-green-400 bg-green-50 dark:bg-green-950/20'
                                   }`}
@@ -1429,11 +1429,11 @@ function MealPlannerMain() {
                                     <div className={`text-xs font-medium ${
                                       breakfast.foodDescription === 'Eating out'
                                         ? 'text-gray-700'
-                                        : breakfast.foodDescription.includes('(leftover)') ? 'text-blue-700' : 'text-green-700'
+                                        : isLeftoverMeal(breakfast) ? 'text-blue-700' : 'text-green-700'
                                     }`}>
                                       {t.breakfast.toUpperCase()}
                                     </div>
-                                    {breakfast.foodDescription.includes('(leftover)') && (
+                                    {isLeftoverMeal(breakfast) && (
                                       <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">
                                         <RefreshCw className="h-3 w-3" />
                                         Leftover
@@ -1456,7 +1456,7 @@ function MealPlannerMain() {
                                   className={`cursor-pointer hover:opacity-90 p-3 border-l-4 rounded-r-lg ${
                                     lunch.foodDescription === 'Eating out'
                                       ? 'border-gray-400 bg-gray-50'
-                                      : lunch.foodDescription.includes('(leftover)') 
+                                      : isLeftoverMeal(lunch) 
                                         ? 'border-blue-400 bg-blue-50 dark:bg-blue-950/20' 
                                         : 'border-green-400 bg-green-50 dark:bg-green-950/20'
                                   }`}
@@ -1466,11 +1466,11 @@ function MealPlannerMain() {
                                     <div className={`text-xs font-medium ${
                                       lunch.foodDescription === 'Eating out'
                                         ? 'text-gray-700'
-                                        : lunch.foodDescription.includes('(leftover)') ? 'text-blue-700' : 'text-green-700'
+                                        : isLeftoverMeal(lunch) ? 'text-blue-700' : 'text-green-700'
                                     }`}>
                                       LUNCH
                                     </div>
-                                    {lunch.foodDescription.includes('(leftover)') && (
+                                    {isLeftoverMeal(lunch) && (
                                       <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">
                                         <RefreshCw className="h-3 w-3" />
                                         Leftover
@@ -1493,7 +1493,7 @@ function MealPlannerMain() {
                                   className={`cursor-pointer hover:opacity-90 p-3 border-l-4 rounded-r-lg ${
                                     dinner.foodDescription === 'Eating out'
                                       ? 'border-gray-400 bg-gray-50'
-                                      : dinner.foodDescription.includes('(leftover)') 
+                                      : isLeftoverMeal(dinner) 
                                         ? 'border-blue-400 bg-blue-50 dark:bg-blue-950/20' 
                                         : 'border-green-400 bg-green-50 dark:bg-green-950/20'
                                   }`}
@@ -1503,11 +1503,11 @@ function MealPlannerMain() {
                                     <div className={`text-xs font-medium ${
                                       dinner.foodDescription === 'Eating out'
                                         ? 'text-gray-700'
-                                        : dinner.foodDescription.includes('(leftover)') ? 'text-blue-700' : 'text-green-700'
+                                        : isLeftoverMeal(dinner) ? 'text-blue-700' : 'text-green-700'
                                     }`}>
                                       {t.dinner.toUpperCase()}
                                     </div>
-                                    {dinner.foodDescription.includes('(leftover)') && (
+                                    {isLeftoverMeal(dinner) && (
                                       <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">
                                         <RefreshCw className="h-3 w-3" />
                                         Leftover
@@ -1573,7 +1573,7 @@ function MealPlannerMain() {
                                         className={`cursor-pointer hover:bg-gray-100 p-2 rounded border-l-2 ${
                                           breakfast.foodDescription === 'Eating out'
                                             ? 'border-gray-400'
-                                            : breakfast.foodDescription.includes('(leftover)') 
+                                            : isLeftoverMeal(breakfast) 
                                               ? 'border-blue-400' 
                                               : 'border-green-400'
                                         }`}
@@ -1590,7 +1590,7 @@ function MealPlannerMain() {
                                         className={`cursor-pointer hover:bg-gray-100 p-2 rounded border-l-2 ${
                                           lunch.foodDescription === 'Eating out'
                                             ? 'border-gray-400'
-                                            : lunch.foodDescription.includes('(leftover)') 
+                                            : isLeftoverMeal(lunch) 
                                               ? 'border-blue-400' 
                                               : 'border-green-400'
                                         }`}
@@ -1607,7 +1607,7 @@ function MealPlannerMain() {
                                         className={`cursor-pointer hover:bg-gray-100 p-2 rounded border-l-2 ${
                                           dinner.foodDescription === 'Eating out'
                                             ? 'border-gray-400'
-                                            : dinner.foodDescription.includes('(leftover)') 
+                                            : isLeftoverMeal(dinner) 
                                               ? 'border-blue-400' 
                                               : 'border-green-400'
                                         }`}
