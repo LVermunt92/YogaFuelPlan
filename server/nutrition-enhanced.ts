@@ -3587,6 +3587,65 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     }
   },
   {
+    name: "Lactose-free protein baked oats",
+    portion: "1 serving (1 ramekin)",
+    nutrition: {
+      protein: 28,
+      prepTime: 25,
+      calories: 420,
+      carbohydrates: 48,
+      fats: 16,
+      fiber: 8,
+      sugar: 15,
+      sodium: 180,
+      potassium: 520,
+      calcium: 140,
+      iron: 3.2,
+      vitaminC: 8,
+      costEuros: 2.80,
+      proteinPerEuro: 10.0
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "Lactose-Free", "High-Protein", "Baked", "Warm", "Make-Ahead", "Meal-Prep"],
+    ingredients: [
+      "50g oats",
+      "125ml unsweetened almond milk",
+      "½ ripe banana",
+      "1 small egg",
+      "1 tbsp almond paste",
+      "½ scoop (about 15g) vanilla plant-based protein powder (optional)",
+      "½ tsp baking powder",
+      "½ tsp cinnamon",
+      "Pinch of salt",
+      "1 tsp almond flakes"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 0.5,
+      vegetables: ["banana"],
+      benefits: ["Complex carbs for sustained energy", "High protein from powder and egg", "Naturally sweetened with banana"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat oven to 180°C",
+        "Mash half the banana in a bowl",
+        "Mix mashed banana with oats, almond milk, egg, almond paste, protein powder, baking powder, cinnamon, and salt",
+        "Pour mixture into a small ovenproof ramekin or dish",
+        "Top with remaining banana slices and almond flakes",
+        "Bake for 20-25 minutes until golden and set",
+        "Serve warm directly from ramekin"
+      ],
+      tips: [
+        "Use ripe banana for natural sweetness",
+        "Protein powder is optional but increases protein content significantly",
+        "Can be made ahead and reheated for quick breakfast"
+      ],
+      notes: "Lactose-free baked oats that are protein-rich and naturally sweetened with banana - perfect for a warm, comforting breakfast"
+    },
+    createdAt: new Date('2025-10-03'),
+    active: true
+  },
+  {
     name: "Salmon Rice Bowl",
     portion: "1 serving",
     nutrition: { 
