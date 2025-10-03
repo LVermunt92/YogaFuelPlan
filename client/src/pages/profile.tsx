@@ -69,6 +69,7 @@ interface NutritionTargets {
   carbohydrates: number;
   fats: number;
   calories: number;
+  fiber: number;
   maintenanceCalories: number;
   bmr: number;
   proteinFactor: number;

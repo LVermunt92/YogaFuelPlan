@@ -102,6 +102,20 @@ interface RecipeResponse {
   };
 }
 
+interface NutritionTargets {
+  protein: number;
+  carbohydrates: number;
+  fats: number;
+  calories: number;
+  fiber: number;
+  maintenanceCalories: number;
+  bmr: number;
+  proteinFactor: number;
+  palValue: number;
+  carbFactor: number;
+  fatPercentage: number;
+}
+
 interface OuraData {
   id: number;
   userId: number;
@@ -322,6 +336,12 @@ function MealPlannerMain() {
     enabled: !!authUser?.id,
     staleTime: 0,
     refetchOnMount: true,
+  });
+
+  // Fetch nutrition targets (includes gender-specific fiber target)
+  const { data: nutritionTargets } = useQuery<NutritionTargets>({
+    queryKey: ['/api/nutrition/targets', authUser?.id],
+    enabled: !!authUser?.id && !!userProfile,
   });
 
   // Fetch meal plans
@@ -661,6 +681,9 @@ function MealPlannerMain() {
 
     // Calculate fiber estimate based on vegetables, fruits, and whole grains
     const fiberEstimate = Math.max(20, (vegetableEstimate * 0.03) + (fruitStarchEstimate * 0.04) + 8); // Realistic daily fiber intake
+    
+    // Use gender-specific fiber target from nutrition calculator (30g women, 40g men)
+    const fiberTarget = nutritionTargets?.fiber || 30; // Default to 30g if not loaded yet
 
     return {
       goodFats: {
@@ -680,8 +703,8 @@ function MealPlannerMain() {
       },
       fiber: {
         value: Math.round(fiberEstimate),
-        percentage: Math.round(Math.min((fiberEstimate / 30) * 100, 100)), // 30g target for optimal health
-        target: '30-35g/day'
+        percentage: Math.round(Math.min((fiberEstimate / fiberTarget) * 100, 100)), // Gender-specific target
+        target: `${fiberTarget}g/day`
       }
     };
   };
