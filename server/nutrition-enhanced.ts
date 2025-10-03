@@ -3754,6 +3754,67 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     active: true
   },
   {
+    name: "Creamy mushroom pasta",
+    portion: "1 serving (100g dry pasta)",
+    nutrition: {
+      protein: 15,
+      prepTime: 30,
+      calories: 480,
+      carbohydrates: 70,
+      fats: 15,
+      fiber: 8,
+      sugar: 6,
+      sodium: 400,
+      potassium: 620,
+      calcium: 85,
+      iron: 4.2,
+      vitaminC: 18,
+      costEuros: 3.20,
+      proteinPerEuro: 4.7
+    },
+    category: "dinner",
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Creamy", "Comfort-Food", "Plant-Based"],
+    ingredients: [
+      "30g raw cashews",
+      "30ml unsweetened almond milk",
+      "1 tsp tamari",
+      "1 tsp nutritional yeast (optional)",
+      "1/3 lemon, juiced",
+      "1/3 onion, peeled & diced",
+      "1-2 cloves garlic, peeled & diced",
+      "60g mushrooms, sliced",
+      "1/3 tsp dried rosemary",
+      "100g fusilli pasta",
+      "1 handful fresh spinach",
+      "Drizzle of olive oil",
+      "Pinch of sea salt & black pepper"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["mushrooms", "spinach", "onion"],
+      benefits: ["Rich in vitamin D from mushrooms", "Iron from spinach", "Creamy sauce from whole cashews"]
+    },
+    recipe: {
+      instructions: [
+        "Make the sauce by placing cashews, almond milk, tamari, nutritional yeast, lemon juice and a sprinkling of salt into a powerful blender. Blitz to form a creamy sauce – you may wish to add a dash more almond milk, if needed",
+        "Place a pan over medium heat and add a drizzle of olive oil. Once warm, add the diced onion, garlic and a sprinkling of salt. Cook for 10 minutes until the onion is soft",
+        "Once soft, add the sliced mushrooms, dried rosemary and a sprinkling of salt. Mix well and cook for 10 minutes until the mushrooms reduce in size and soften",
+        "While the mushrooms cook, cook the pasta according to the packet instructions. Once cooked, drain (reserving a little of the pasta water) and mix through the mushroom mixture",
+        "Pour in the creamy sauce and add the spinach. Mix well and cook for a few minutes to heat everything through and allow the spinach to wilt; mix through a dash of the pasta water, if the sauce becomes too thick",
+        "Once everything has heated through, serve the pasta in bowls with some black pepper sprinkled on top"
+      ],
+      tips: [
+        "Use a powerful blender to make the cashew sauce silky smooth",
+        "Reserve pasta water to adjust sauce consistency",
+        "Fresh rosemary can replace dried - use about 1 tsp fresh"
+      ],
+      notes: "This indulgent pasta recipe features a creamy cashew-based sauce with rosemary pan-fried mushrooms and spinach. It's a great recipe to make when you're short on time or low on ingredients"
+    },
+    createdAt: new Date('2025-10-03'),
+    active: true
+  },
+  {
     name: "Salmon Rice Bowl",
     portion: "1 serving",
     nutrition: { 
