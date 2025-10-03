@@ -3988,6 +3988,134 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     active: true
   },
   {
+    name: "Burnt aubergine pickle with yogurt",
+    portion: "1 serving",
+    nutrition: {
+      protein: 8,
+      prepTime: 70,
+      calories: 340,
+      carbohydrates: 28,
+      fats: 22,
+      fiber: 8,
+      sugar: 14,
+      sodium: 380,
+      potassium: 620,
+      calcium: 140,
+      iron: 2.8,
+      vitaminC: 12,
+      costEuros: 3.20,
+      proteinPerEuro: 2.5
+    },
+    category: "dinner",
+    tags: ["Vegetarian", "Gluten-Free", "Middle-Eastern", "Spiced", "Meal-Prep"],
+    ingredients: [
+      "75g Greek-style yoghurt",
+      "½ garlic clove, peeled and crushed",
+      "½ spring onion (8g), trimmed and thinly sliced",
+      "¼ tsp nigella seeds, toasted",
+      "**For the burnt aubergine pickle:**",
+      "250g aubergine (1 medium), poked all over with a fork",
+      "⅜ tsp fenugreek seeds",
+      "½ tsp cumin seeds",
+      "⅛ tsp ground turmeric",
+      "30ml olive oil, plus extra for greasing",
+      "¼ onion, peeled and finely chopped (45g)",
+      "10g fresh ginger, peeled and finely grated",
+      "½ tbsp tomato paste",
+      "½ tsp caster sugar",
+      "15ml apple cider vinegar",
+      "Salt and black pepper"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["aubergine", "onion", "ginger"],
+      benefits: ["Rich in antioxidants from charred aubergine", "Probiotic benefits from yogurt", "Anti-inflammatory spices"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat a well-greased griddle pan on high heat. Once smoking, add the aubergine and grill for 40 minutes, turning as necessary, until nicely charred all over and softened. Set aside and when cool enough to handle, remove and discard the stem and skin",
+        "Transfer the aubergine flesh to a colander set over a bowl and leave to drain for 20 minutes, discarding the collected liquid. Roughly tear apart the flesh into strands and set aside",
+        "Put the fenugreek and cumin seeds into a small frying pan on medium-high heat. Toast for 3-4 minutes until fragrant, then transfer to a spice grinder and blitz into a fine powder (or use a pestle and mortar). Stir in the turmeric",
+        "Put the oil into a medium pan on medium-high heat. Add the onion and cook for 7 minutes, stirring occasionally, until lightly coloured and softened. Add the ginger, tomato paste, ground spices, sugar, a pinch of salt and a good grind of pepper. Cook for 3 minutes more, stirring often",
+        "Add the vinegar, bring to a simmer, then remove from the heat. Stir in the aubergine and set aside to cool",
+        "In a bowl, whisk together the yoghurt, garlic and a pinch of salt. Spread the mixture on a plate and top with the burnt aubergine pickle. Sprinkle with spring onions and nigella seeds and serve"
+      ],
+      tips: [
+        "The pickle can be made ahead and stored in a sterilised jar for up to 1 week",
+        "Charring the aubergine adds a deep, smoky flavor to the dish",
+        "Serve with warm flatbread or pita for a complete meal"
+      ],
+      notes: "This Middle Eastern-inspired dish features deeply charred aubergine transformed into a spiced pickle, served over creamy yogurt. The combination of warm spices and cooling yogurt creates a perfect balance"
+    },
+    createdAt: new Date('2025-10-03'),
+    active: true
+  },
+  {
+    name: "Lactose-free burnt aubergine pickle with yogurt",
+    portion: "1 serving",
+    nutrition: {
+      protein: 7,
+      prepTime: 70,
+      calories: 335,
+      carbohydrates: 28,
+      fats: 22,
+      fiber: 8,
+      sugar: 13,
+      sodium: 370,
+      potassium: 610,
+      calcium: 130,
+      iron: 2.8,
+      vitaminC: 12,
+      costEuros: 3.40,
+      proteinPerEuro: 2.1
+    },
+    category: "dinner",
+    tags: ["Vegetarian", "Lactose-Free", "Gluten-Free", "Middle-Eastern", "Spiced", "Meal-Prep"],
+    ingredients: [
+      "75g lactose-free Greek-style yoghurt",
+      "½ garlic clove, peeled and crushed",
+      "½ spring onion (8g), trimmed and thinly sliced",
+      "¼ tsp nigella seeds, toasted",
+      "**For the burnt aubergine pickle:**",
+      "250g aubergine (1 medium), poked all over with a fork",
+      "⅜ tsp fenugreek seeds",
+      "½ tsp cumin seeds",
+      "⅛ tsp ground turmeric",
+      "30ml olive oil, plus extra for greasing",
+      "¼ onion, peeled and finely chopped (45g)",
+      "10g fresh ginger, peeled and finely grated",
+      "½ tbsp tomato paste",
+      "½ tsp caster sugar",
+      "15ml apple cider vinegar",
+      "Salt and black pepper"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["aubergine", "onion", "ginger"],
+      benefits: ["Rich in antioxidants from charred aubergine", "Digestive-friendly lactose-free option", "Anti-inflammatory spices"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat a well-greased griddle pan on high heat. Once smoking, add the aubergine and grill for 40 minutes, turning as necessary, until nicely charred all over and softened. Set aside and when cool enough to handle, remove and discard the stem and skin",
+        "Transfer the aubergine flesh to a colander set over a bowl and leave to drain for 20 minutes, discarding the collected liquid. Roughly tear apart the flesh into strands and set aside",
+        "Put the fenugreek and cumin seeds into a small frying pan on medium-high heat. Toast for 3-4 minutes until fragrant, then transfer to a spice grinder and blitz into a fine powder (or use a pestle and mortar). Stir in the turmeric",
+        "Put the oil into a medium pan on medium-high heat. Add the onion and cook for 7 minutes, stirring occasionally, until lightly coloured and softened. Add the ginger, tomato paste, ground spices, sugar, a pinch of salt and a good grind of pepper. Cook for 3 minutes more, stirring often",
+        "Add the vinegar, bring to a simmer, then remove from the heat. Stir in the aubergine and set aside to cool",
+        "In a bowl, whisk together the lactose-free yoghurt, garlic and a pinch of salt. Spread the mixture on a plate and top with the burnt aubergine pickle. Sprinkle with spring onions and nigella seeds and serve"
+      ],
+      tips: [
+        "The pickle can be made ahead and stored in a sterilised jar for up to 1 week",
+        "Charring the aubergine adds a deep, smoky flavor to the dish",
+        "Lactose-free Greek yogurt provides the same creamy texture without dairy discomfort"
+      ],
+      notes: "Lactose-free version of this Middle Eastern-inspired dish featuring deeply charred aubergine transformed into a spiced pickle, served over creamy lactose-free yogurt. Perfect for those avoiding dairy"
+    },
+    createdAt: new Date('2025-10-03'),
+    active: true
+  },
+  {
     name: "Salmon Rice Bowl",
     portion: "1 serving",
     nutrition: { 
