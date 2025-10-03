@@ -4178,6 +4178,62 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     active: true
   },
   {
+    name: "10-minute butter beans with rocket pesto",
+    portion: "1 serving",
+    nutrition: {
+      protein: 24,
+      prepTime: 10,
+      calories: 575,
+      carbohydrates: 45,
+      fats: 30,
+      fiber: 13,
+      sugar: 3,
+      sodium: 420,
+      potassium: 920,
+      calcium: 110,
+      iron: 5.8,
+      vitaminC: 15,
+      costEuros: 3.20,
+      proteinPerEuro: 7.5
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Vegan", "Quick", "High-Protein", "High-Fiber", "Mediterranean"],
+    ingredients: [
+      "**For the beans:**",
+      "250g butter beans, drained",
+      "½ lemon, zested & squeeze of juice",
+      "1 drizzle of extra virgin olive oil (optional)",
+      "1 pinch of sumac (or use Aleppo pepper)",
+      "Pinch of flaky sea salt & black pepper",
+      "**For the pesto:**",
+      "¼ clove garlic, peeled",
+      "15g pine nuts (about 1.5 tablespoons)",
+      "15g rocket (+ extra to garnish)",
+      "1 drizzle of olive oil"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["rocket"],
+      benefits: ["High protein from butter beans", "Heart-healthy fats from pine nuts", "Peppery rocket adds vitamins"]
+    },
+    recipe: {
+      instructions: [
+        "To make the beans, simply combine the butter beans, lemon zest, a good glug of olive oil, a pinch of flaky sea salt (taste the beans before adding salt, as they may be sufficiently seasoned), black pepper and a squeeze of lemon juice",
+        "For the pesto, add all the ingredients to a mini-chopper and blitz until you have a coarse paste, adding a splash of water to loosen as needed",
+        "To serve, tip the beans onto a large plate or shallow bowl, and spoon over the pesto, adding handful of rocket and a generous pinch of sumac (if using) to garnish. Delicious with fresh sourdough bread"
+      ],
+      tips: [
+        "To batch cook or save leftovers, store the beans and pesto in separate sealed containers in the fridge for up to 3 days",
+        "Use good quality butter beans and olive oil - you'll really notice the difference",
+        "The pesto can be made with basil instead of rocket for a more traditional flavor"
+      ],
+      notes: "This is quick and easy cooking at its best, showcasing what you can do with a few simple ingredients. Perfect as a lazy lunch, or as part of a bigger spread with lots of tasty dips and nourishing salads"
+    },
+    createdAt: new Date('2025-10-03'),
+    active: true
+  },
+  {
     name: "Salmon Rice Bowl",
     portion: "1 serving",
     nutrition: { 
