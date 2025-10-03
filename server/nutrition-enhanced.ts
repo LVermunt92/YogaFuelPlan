@@ -3646,6 +3646,114 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     active: true
   },
   {
+    name: "Breakfast bagel with egg, avocado & cottage cheese",
+    portion: "1 serving (1 bagel)",
+    nutrition: {
+      protein: 23,
+      prepTime: 10,
+      calories: 505,
+      carbohydrates: 52,
+      fats: 25,
+      fiber: 6,
+      sugar: 8,
+      sodium: 580,
+      potassium: 480,
+      calcium: 120,
+      iron: 3.2,
+      vitaminC: 10,
+      costEuros: 3.20,
+      proteinPerEuro: 7.2
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "High-Protein", "Quick", "Filling", "Savory"],
+    ingredients: [
+      "1 whole sesame bagel",
+      "½ ripe avocado",
+      "1 egg",
+      "2-3 tbsp cottage cheese",
+      "1 tsp olive oil",
+      "Salt & pepper to taste",
+      "Chili flakes",
+      "Squeeze of lemon"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 0.5,
+      vegetables: ["avocado"],
+      benefits: ["Healthy fats from avocado", "Complete protein from egg and cottage cheese", "Sustained energy from whole grain bagel"]
+    },
+    recipe: {
+      instructions: [
+        "Slice the bagel in half and toast until golden",
+        "Mash the avocado with a fork, season with salt, pepper, chili flakes, and optionally lemon juice",
+        "Heat olive oil in a pan, fry the egg until the white is set but the yolk is still runny",
+        "Serve everything on a plate: toasted bagel halves, fried egg, mashed avocado, and a scoop of cottage cheese with chili flakes on top"
+      ],
+      tips: [
+        "Use a ripe avocado for easy mashing and creamy texture",
+        "Don't overcook the egg - runny yolk adds richness",
+        "Toast bagel well for the best texture contrast"
+      ],
+      notes: "Quick, protein-packed breakfast that combines creamy avocado, runny egg, and cottage cheese on a toasted sesame bagel"
+    },
+    createdAt: new Date('2025-10-03'),
+    active: true
+  },
+  {
+    name: "Lactose-free breakfast bagel with egg, avocado & cottage cheese",
+    portion: "1 serving (1 bagel)",
+    nutrition: {
+      protein: 23,
+      prepTime: 10,
+      calories: 505,
+      carbohydrates: 52,
+      fats: 25,
+      fiber: 6,
+      sugar: 8,
+      sodium: 580,
+      potassium: 480,
+      calcium: 120,
+      iron: 3.2,
+      vitaminC: 10,
+      costEuros: 3.40,
+      proteinPerEuro: 6.8
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "Lactose-Free", "High-Protein", "Quick", "Filling", "Savory"],
+    ingredients: [
+      "1 whole sesame bagel",
+      "½ ripe avocado",
+      "1 egg",
+      "2-3 tbsp lactose-free cottage cheese",
+      "1 tsp olive oil",
+      "Salt & pepper to taste",
+      "Chili flakes",
+      "Squeeze of lemon"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 0.5,
+      vegetables: ["avocado"],
+      benefits: ["Healthy fats from avocado", "Complete protein from egg and cottage cheese", "Sustained energy from whole grain bagel"]
+    },
+    recipe: {
+      instructions: [
+        "Slice the bagel in half and toast until golden",
+        "Mash the avocado with a fork, season with salt, pepper, chili flakes, and optionally lemon juice",
+        "Heat olive oil in a pan, fry the egg until the white is set but the yolk is still runny",
+        "Serve everything on a plate: toasted bagel halves, fried egg, mashed avocado, and a scoop of lactose-free cottage cheese with chili flakes on top"
+      ],
+      tips: [
+        "Use a ripe avocado for easy mashing and creamy texture",
+        "Don't overcook the egg - runny yolk adds richness",
+        "Toast bagel well for the best texture contrast"
+      ],
+      notes: "Lactose-free version with same great taste - quick breakfast combining creamy avocado, runny egg, and lactose-free cottage cheese on a toasted sesame bagel"
+    },
+    createdAt: new Date('2025-10-03'),
+    active: true
+  },
+  {
     name: "Salmon Rice Bowl",
     portion: "1 serving",
     nutrition: { 
