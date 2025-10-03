@@ -78,7 +78,7 @@ export function SeasonalAdvisor() {
     autumn: t.autumn
   };
 
-  const { data: seasonalInfo, isLoading } = useQuery<SeasonalInfo>({
+  const { data: seasonalInfo, isLoading, error } = useQuery<SeasonalInfo>({
     queryKey: ['/api/seasonal', coords, language],
     queryFn: async () => {
       const params = new URLSearchParams();
@@ -94,7 +94,7 @@ export function SeasonalAdvisor() {
       return response.json();
     },
     staleTime: 1000 * 60 * 60, // 1 hour
-    retry: 1
+    retry: 3
   });
 
   if (isLoading) {
@@ -108,8 +108,20 @@ export function SeasonalAdvisor() {
     );
   }
 
+  // If API fails or no data, show fallback message instead of hiding
   if (!seasonalInfo) {
-    return null;
+    console.error('SeasonalAdvisor: No seasonal info available', { error, coords, language });
+    return (
+      <Card className="w-full">
+        <CardContent className="p-4 sm:p-6">
+          <p className="text-sm text-gray-500">
+            {language === 'nl' 
+              ? 'Seizoensinformatie tijdelijk niet beschikbaar' 
+              : 'Seasonal information temporarily unavailable'}
+          </p>
+        </CardContent>
+      </Card>
+    );
   }
 
   // Get current month name for display
