@@ -13243,6 +13243,137 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-09-09'),
     active: true
+  },
+  {
+    name: "High-protein pistachio cheesecake",
+    portion: "1 individual serving",
+    nutrition: {
+      protein: 18,
+      prepTime: 30,
+      calories: 320,
+      carbohydrates: 32,
+      fats: 14,
+      fiber: 3,
+      sugar: 20,
+      sodium: 180,
+      potassium: 380,
+      calcium: 140,
+      iron: 1.8,
+      vitaminC: 2,
+      costEuros: 2.40,
+      proteinPerEuro: 7.5
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "High-Protein", "Make-Ahead", "Dessert-for-Breakfast", "Pistachios"],
+    ingredients: [
+      "50g cottage cheese (about 3 tbsp)",
+      "50g Greek yogurt (about 3 tbsp)",
+      "1 medium egg",
+      "30g shelled pistachios (about 3 tbsp)",
+      "1.5 tbsp maple syrup or honey",
+      "1 tsp almond flour or oat flour",
+      "¼ tsp vanilla extract"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 0,
+      vegetables: [],
+      benefits: ["High protein from dairy and eggs", "Healthy fats from pistachios", "Natural sweetness from maple syrup"]
+    },
+    recipeBenefits: [
+      "18g protein from cottage cheese, Greek yogurt, and eggs for muscle support",
+      "Pistachios provide heart-healthy fats and antioxidants",
+      "Make-ahead breakfast option - prep the night before",
+      "Creamy, indulgent texture with natural sweetness",
+      "Individual portion perfect for meal prep"
+    ],
+    recipe: {
+      instructions: [
+        "Preheat oven to 163°C (325°F)",
+        "Add all ingredients (cottage cheese, Greek yogurt, egg, pistachios, maple syrup, almond flour, and vanilla) to a blender",
+        "Blend on high speed until completely smooth with no pistachio chunks remaining",
+        "Pour the mixture into a small ramekin or individual baking dish (about 10cm/4 inches) lined with parchment paper",
+        "Bake for 15-20 minutes. The edges should feel set but the center should still have a slight jiggle when you move the dish",
+        "Remove from oven and let cool to room temperature",
+        "Transfer to the fridge and chill for at least 2-4 hours (overnight is best)",
+        "Serve chilled, optionally topped with extra crushed pistachios"
+      ],
+      tips: [
+        "The center will set completely as it cools in the fridge - don't overbake",
+        "For a sweeter cheesecake, add an extra tablespoon of maple syrup",
+        "Line your ramekin with parchment paper for easy removal",
+        "Store covered in the fridge for up to 3 days"
+      ],
+      notes: "Individual high-protein pistachio cheesecake that's perfect for meal prep breakfasts. The creamy texture and natural pistachio flavor make this feel like dessert while providing substantial protein to start your day."
+    },
+    createdAt: new Date('2025-10-03'),
+    active: true
+  },
+  {
+    name: "Lactose-free high-protein pistachio cheesecake",
+    portion: "1 individual serving",
+    nutrition: {
+      protein: 17,
+      prepTime: 30,
+      calories: 310,
+      carbohydrates: 32,
+      fats: 14,
+      fiber: 3,
+      sugar: 20,
+      sodium: 170,
+      potassium: 370,
+      calcium: 120,
+      iron: 1.8,
+      vitaminC: 2,
+      costEuros: 2.60,
+      proteinPerEuro: 6.5
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "Lactose-Free", "High-Protein", "Make-Ahead", "Dessert-for-Breakfast", "Pistachios"],
+    ingredients: [
+      "50g lactose-free cottage cheese (about 3 tbsp)",
+      "50g lactose-free Greek yogurt (about 3 tbsp)",
+      "1 medium egg",
+      "30g shelled pistachios (about 3 tbsp)",
+      "1.5 tbsp maple syrup or honey",
+      "1 tsp almond flour or oat flour",
+      "¼ tsp vanilla extract"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 0,
+      vegetables: [],
+      benefits: ["High protein from lactose-free dairy and eggs", "Healthy fats from pistachios", "Natural sweetness from maple syrup"]
+    },
+    recipeBenefits: [
+      "17g protein from lactose-free dairy and eggs for muscle support",
+      "Gentle on digestion - perfect for lactose intolerance",
+      "Pistachios provide heart-healthy fats and antioxidants",
+      "Make-ahead breakfast option - prep the night before",
+      "Creamy, indulgent texture with natural sweetness"
+    ],
+    recipe: {
+      instructions: [
+        "Preheat oven to 163°C (325°F)",
+        "Add all ingredients (lactose-free cottage cheese, lactose-free Greek yogurt, egg, pistachios, maple syrup, almond flour, and vanilla) to a blender",
+        "Blend on high speed until completely smooth with no pistachio chunks remaining",
+        "Pour the mixture into a small ramekin or individual baking dish (about 10cm/4 inches) lined with parchment paper",
+        "Bake for 15-20 minutes. The edges should feel set but the center should still have a slight jiggle when you move the dish",
+        "Remove from oven and let cool to room temperature",
+        "Transfer to the fridge and chill for at least 2-4 hours (overnight is best)",
+        "Serve chilled, optionally topped with extra crushed pistachios"
+      ],
+      tips: [
+        "The center will set completely as it cools in the fridge - don't overbake",
+        "For a sweeter cheesecake, add an extra tablespoon of maple syrup",
+        "Line your ramekin with parchment paper for easy removal",
+        "Use certified lactose-free dairy products for best results",
+        "Store covered in the fridge for up to 3 days"
+      ],
+      notes: "Lactose-free individual pistachio cheesecake that's gentle on digestion. The creamy texture and natural pistachio flavor make this feel like dessert while providing substantial protein to start your day."
+    },
+    createdAt: new Date('2025-10-03'),
+    active: true
   }
 ];
 
