@@ -4297,6 +4297,69 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     active: true
   },
   {
+    name: "Chickpea, tofu & harissa stew",
+    portion: "1 serving",
+    nutrition: {
+      protein: 28,
+      prepTime: 30,
+      calories: 420,
+      carbohydrates: 38,
+      fats: 18,
+      fiber: 12,
+      sugar: 12,
+      sodium: 480,
+      potassium: 880,
+      calcium: 280,
+      iron: 6.4,
+      vitaminC: 32,
+      costEuros: 2.90,
+      proteinPerEuro: 9.7
+    },
+    category: "dinner",
+    tags: ["Vegetarian", "Vegan", "High-Protein", "High-Fiber", "North-African", "Comfort-Food"],
+    ingredients: [
+      "1 drizzle of toasted sesame oil or olive oil",
+      "½ tsp ground cumin",
+      "½ tsp hot smoked paprika or sweet paprika",
+      "200g chopped tomatoes (½ tin)",
+      "1.5 cloves garlic, peeled & minced",
+      "1 tbsp tomato purée",
+      "½ onion, peeled & diced",
+      "120g canned chickpeas (or butter beans), drained",
+      "50g spinach",
+      "100g firm tofu",
+      "1 tbsp harissa paste (adjust to taste)",
+      "½ tsp tamari",
+      "¼ tsp maple syrup",
+      "¼ lemon, juiced",
+      "1 tbsp coconut yoghurt",
+      "Pinch of sea salt & black pepper"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["tomatoes", "spinach", "onion"],
+      benefits: ["High protein from chickpeas and tofu", "Rich in iron from spinach", "North African spices add depth"]
+    },
+    recipe: {
+      instructions: [
+        "Heat a light drizzle of sesame oil or olive oil in a large frying pan over medium heat. Add the onions and season with a pinch of salt. Cook, stirring often, until softened and lowering heat to low if necessary, about 10 minutes",
+        "Add the crushed garlic and cook, stirring frequently, for 2 minutes. Stir in the cumin and paprika and cook, stirring throughout, until fragrant, about 1 minute",
+        "Add the chickpeas, tofu, tomatoes, tomato puree, and harissa and cook, stirring often, until the tomatoes have darkened and reduced, 10-15 minutes",
+        "Stir in the spinach and allow to cook until wilted, 1-2 minutes. Then add the tamari, maple syrup, and lemon juice. Taste and season to taste with salt and pepper",
+        "Before serving, remove from heat and stir in the coconut yoghurt"
+      ],
+      tips: [
+        "Spice levels of harissa vary from brand to brand - taste before adding and use only the amount you feel comfortable with",
+        "If your stew is too spicy, add more coconut yoghurt to mellow it out",
+        "Goes well with roasted sweet potatoes, rice noodles, or brown rice"
+      ],
+      notes: "This hearty chickpea, tofu & harissa stew, full of protein and fiber, is guaranteed to leave you feeling satisfied. It goes well with a variety of side dishes like roasted sweet potatoes, rice noodles, and brown rice"
+    },
+    createdAt: new Date('2025-10-03'),
+    active: true
+  },
+  {
     name: "Salmon Rice Bowl",
     portion: "1 serving",
     nutrition: { 
