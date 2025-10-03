@@ -35,6 +35,18 @@ Preferred communication style: Simple, everyday language.
     - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, favorite meals, and user-created custom recipes.
     - **Unified Recipe Database**: Consolidated all recipe databases into a single unified system, with pre-translated recipes stored for performance.
 
+# Recent Changes (October 3, 2025)
+- **Seasonal Vegetable Section Production Fix**: Fixed seasonal vegetable section not appearing in published environment
+  - Root cause: Dynamic imports (`await import()`) in seasonal endpoints don't bundle correctly with esbuild in production
+  - Solution: Changed all seasonal endpoints to use static imports at the top of routes.ts
+  - Fixed endpoints: `/api/seasonal`, `/api/seasonal/current-months`, `/api/seasonal/ingredients-for-month`
+  - Now properly displays peak Dutch seasonal vegetables from Voedingscentrum.nl data in production
+- **High-Protein Pistachio Cheesecake Recipes**: Added two individual serving breakfast recipes with Dutch translations (IDs 424-425)
+  - "High-protein pistachio cheesecake" (18g protein) - Regular version with cottage cheese and Greek yogurt
+  - "Lactose-free high-protein pistachio cheesecake" (17g protein) - Lactose-free version for sensitive digestion
+  - Features: 15-20 min bake time at 163°C, make-ahead meal prep friendly, creamy dessert-like texture, individual portions
+  - Both versions include natural pistachio flavor and healthy fats from pistachios
+
 # External Dependencies
 - `@neondatabase/serverless` (PostgreSQL client)
 - `drizzle-orm` (ORM for PostgreSQL)

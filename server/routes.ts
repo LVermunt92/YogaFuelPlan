@@ -21,7 +21,7 @@ import { hasAdequateFiberSource, enhanceRecipeWithFiber } from './fiber-validato
 import cron from 'node-cron';
 import { normalizeToSunday, getNextSunday, getCurrentWeekSunday, isValidWeekStart, getAllowedWeekStarts } from './date-utils';
 import { isExemptFromMealPlanRequirements } from '@shared/admin-utils';
-import { getSeasonalAdvice } from './seasonal-advisor';
+import { getSeasonalInfo, getCurrentSeasonMonths, AMSTERDAM_MONTHLY_PRODUCE } from './seasonal-advisor';
 
 // Helper function to parse quantity and unit from totalAmount string (e.g., "200g" -> {quantity: 200, unit: "g"})
 function parseQuantityAndUnit(totalAmount: string): { quantity: number; unit: string } {
@@ -3529,8 +3529,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // GET /api/seasonal - Get seasonal food advice based on location
   app.get("/api/seasonal", async (req, res) => {
     try {
-      const { getSeasonalInfo } = await import("./seasonal-advisor");
-      
       // Get coordinates from query params if provided
       const latitude = req.query.lat ? parseFloat(req.query.lat as string) : undefined;
       const longitude = req.query.lng ? parseFloat(req.query.lng as string) : undefined;
@@ -3552,8 +3550,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // GET /api/seasonal/current-months - Get current season months based on location
   app.get("/api/seasonal/current-months", async (req, res) => {
     try {
-      const { getCurrentSeasonMonths } = await import("./seasonal-advisor");
-      
       // Get coordinates from query params if provided
       const latitude = req.query.lat ? parseFloat(req.query.lat as string) : undefined;
       const longitude = req.query.lng ? parseFloat(req.query.lng as string) : undefined;
@@ -3574,8 +3570,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // GET /api/seasonal/ingredients-for-month - Get seasonal ingredients for a specific month
   app.get("/api/seasonal/ingredients-for-month", async (req, res) => {
     try {
-      const { AMSTERDAM_MONTHLY_PRODUCE } = await import("./seasonal-advisor");
-      
       const month = req.query.month as string;
       const ingredientsParam = req.query.ingredients as string;
       
