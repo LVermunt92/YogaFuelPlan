@@ -3930,6 +3930,64 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     active: true
   },
   {
+    name: "Miso aubergine & black bean stew",
+    portion: "1 serving",
+    nutrition: {
+      protein: 18,
+      prepTime: 60,
+      calories: 420,
+      carbohydrates: 52,
+      fats: 16,
+      fiber: 16,
+      sugar: 18,
+      sodium: 580,
+      potassium: 980,
+      calcium: 120,
+      iron: 5.2,
+      vitaminC: 28,
+      costEuros: 3.80,
+      proteinPerEuro: 4.7
+    },
+    category: "dinner",
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "High-Fiber", "Comfort-Food", "Batch-Cooking", "Meal-Prep"],
+    ingredients: [
+      "1 whole aubergine",
+      "1.5 tsp olive oil (+ extra to serve)",
+      "1 clove garlic, grated/crushed",
+      "Small pinch of dried red chilli flakes (optional)",
+      "½ brown onion, finely chopped",
+      "200g chopped tomatoes (½ tin)",
+      "1.5 tsp white miso paste",
+      "½ tsp maple syrup",
+      "125g black beans, drained",
+      "1.5 tsp tahini (+ extra to drizzle)",
+      "Small handful of fresh mint leaves (or mint & parsley), roughly chopped"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2.5,
+      vegetables: ["aubergine", "tomatoes", "onion"],
+      benefits: ["High fiber from beans and aubergine", "Probiotic benefits from miso", "Rich in antioxidants"]
+    },
+    recipe: {
+      instructions: [
+        "Preheat the oven to 200°C / 400°F. Prick the aubergine all over with a fork to let the steam escape, then place on a baking tray. Roast for 45-50 minutes, until soft and collapsed",
+        "Meanwhile, warm the oil in a saucepan over medium-low heat. Add the garlic and chilli flakes (if using) and cook for 1-2 minutes, until fragrant. Stir in the onion with a pinch of salt and cook for 10-15 minutes, stirring often, until softened",
+        "Add the chopped tomatoes, miso paste, maple syrup and 100ml water (use some of the empty tomato tin to measure). Simmer for 15-20 minutes, until reduced by about one-third. Turn off the heat, cover with a lid, and leave to sit until the aubergine is ready",
+        "When the aubergine is cool enough to handle, slice it in half and use a fork to scrape out the flesh. Stir this into the tomato sauce, then add the black beans, tahini and a drizzle of olive oil (optional). Season to taste and simmer gently for 5 minutes, until warmed through",
+        "Scatter over the fresh herbs before serving. Delicious with steamed rice or toasted pittas"
+      ],
+      tips: [
+        "This dish keeps well in the fridge for up to 4 days, or in the freezer for up to 3 months",
+        "Roasting the aubergine adds a silky, smoky flavor to the stew",
+        "White miso paste adds umami depth - find it in the Asian section of supermarkets"
+      ],
+      notes: "This hearty aubergine stew is perfect for when the weather cools down. With silky roasted aubergine, fiber-rich beans and a garlicky tomato sauce, it's simple, comforting, and even tastier the next day - perfect for batch cooking or freezing"
+    },
+    createdAt: new Date('2025-10-03'),
+    active: true
+  },
+  {
     name: "Salmon Rice Bowl",
     portion: "1 serving",
     nutrition: { 
