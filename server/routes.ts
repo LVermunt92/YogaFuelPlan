@@ -55,24 +55,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json({ version: APP_VERSION });
   });
   
-  // Seasonal advice endpoint
-  app.get("/api/seasonal", async (req, res) => {
-    try {
-      const { latitude, longitude, language = 'en' } = req.query;
-      
-      const coords = (latitude && longitude) ? {
-        latitude: parseFloat(latitude as string),
-        longitude: parseFloat(longitude as string)
-      } : undefined;
-      
-      const seasonalInfo = await getSeasonalAdvice(coords, language as 'en' | 'nl');
-      res.json(seasonalInfo);
-    } catch (error) {
-      console.error('Error getting seasonal info:', error);
-      res.status(500).json({ error: 'Failed to get seasonal information' });
-    }
-  });
-  
   // Authentication routes
   app.post("/api/auth/register", async (req, res) => {
     try {
