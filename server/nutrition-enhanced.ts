@@ -4116,6 +4116,68 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     active: true
   },
   {
+    name: "15-minute soba noodle lunch bowl",
+    portion: "1 serving",
+    nutrition: {
+      protein: 24,
+      prepTime: 15,
+      calories: 520,
+      carbohydrates: 54,
+      fats: 28,
+      fiber: 10,
+      sugar: 9,
+      sodium: 580,
+      potassium: 720,
+      calcium: 140,
+      iron: 4.2,
+      vitaminC: 22,
+      costEuros: 3.60,
+      proteinPerEuro: 6.7
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Vegan", "Quick", "Fresh", "High-Protein", "Asian-Fusion"],
+    ingredients: [
+      "75g soba noodles",
+      "50g frozen peas",
+      "25g cashews",
+      "38g mixed seeds (sunflower, sesame & pumpkin)",
+      "¼ cucumber, deseeded & thinly sliced",
+      "½ avocado, diced",
+      "Small handful of fresh mint (about 8g), roughly chopped",
+      "Small handful of fresh coriander (about 8g), roughly chopped",
+      "Pinch of flaky sea salt",
+      "**For the dressing:**",
+      "1 tbsp tahini",
+      "½ tbsp maple syrup",
+      "½ tbsp white miso paste",
+      "½ lemon, zested & juiced",
+      "½ tbsp tamari",
+      "½ tbsp olive oil (+ extra to garnish)"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1.5,
+      vegetables: ["peas", "cucumber", "avocado"],
+      benefits: ["High in plant protein from nuts and seeds", "Fresh herbs add vitamins and antioxidants", "Healthy fats from avocado and tahini"]
+    },
+    recipe: {
+      instructions: [
+        "Bring a small saucepan of salted water to the boil. Cook the noodles for 4-5 minutes until al dente, adding the peas for the final minute. Drain and refresh under cold water until cool to touch",
+        "Set a small frying pan over medium-low heat, add the cashews and seeds, and cook for 8-10 minutes until golden. Remove from the heat and set aside",
+        "To make the dressing, in a small bowl, whisk together the tahini, maple syrup, miso, lemon zest and juice, tamari, olive oil and ½ tablespoon of water",
+        "To serve, toss together the noodles, peas, toasted nuts and seeds, cucumber, avocado, mint and coriander. Pour over the dressing and season to taste with flaky sea salt. Drizzle with extra virgin olive oil"
+      ],
+      tips: [
+        "Any leftovers can be stored in the fridge and make a great lunch the following day",
+        "Toast the nuts and seeds until golden for maximum crunch and flavor",
+        "Add edamame beans or broccoli for extra plant protein"
+      ],
+      notes: "This fresh noodle salad is made with only 6 simple ingredients and drizzled with a delicious tahini dressing. With creamy avocado and crunchy nuts and seeds, this salad makes a great base to add any extras you have in the cupboard"
+    },
+    createdAt: new Date('2025-10-03'),
+    active: true
+  },
+  {
     name: "Salmon Rice Bowl",
     portion: "1 serving",
     nutrition: { 
