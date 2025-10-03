@@ -4234,6 +4234,69 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     active: true
   },
   {
+    name: "Simple veggie stir-fry",
+    portion: "1 serving",
+    nutrition: {
+      protein: 18,
+      prepTime: 25,
+      calories: 480,
+      carbohydrates: 62,
+      fats: 18,
+      fiber: 10,
+      sugar: 8,
+      sodium: 280,
+      potassium: 650,
+      calcium: 160,
+      iron: 4.2,
+      vitaminC: 35,
+      costEuros: 2.80,
+      proteinPerEuro: 6.4
+    },
+    category: "dinner",
+    tags: ["Vegetarian", "Vegan", "Quick", "Asian-Fusion", "Weeknight"],
+    ingredients: [
+      "**For the stir fry:**",
+      "75g brown rice noodles",
+      "½ carrot",
+      "½ courgette",
+      "½ tbsp sesame seeds",
+      "50g frozen edamame beans",
+      "½ red chilli, deseeded and sliced",
+      "Small handful of fresh coriander, roughly chopped",
+      "**For the sauce:**",
+      "½ tbsp peanut butter",
+      "½ tbsp toasted sesame oil (+ extra for cooking)",
+      "½ tsp brown rice miso paste",
+      "½ lime, juiced"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["carrot", "courgette", "edamame"],
+      benefits: ["Packed with colorful vegetables", "Plant protein from edamame", "Peanut butter and miso add richness"]
+    },
+    recipe: {
+      instructions: [
+        "Start by cooking the noodles according to the instructions on the pack. Once cooked, drain and leave to one side",
+        "Spiralise the carrot and courgette into thin noodle shapes. If you don't have a spiralizer, you can use a grater to create a similar effect",
+        "Place the edamame beans into a bowl and cover with boiling water. Leave for 5-10 minutes until soft and cooked through, before draining and then leave to one side",
+        "In a small bowl, mix together all of the sauce ingredients",
+        "Place a large pan over a medium heat and add a drizzle of sesame oil. Once warm, add the carrot and courgette noodles",
+        "Stir well and cook for 5 minutes before adding the noodles, sesame seeds, edamame beans and sauce",
+        "Mix well and cook for a further 5-10 minutes until everything has warmed through",
+        "Top with fresh chilli and chopped coriander before serving"
+      ],
+      tips: [
+        "Use brown rice noodles for extra fiber and nutrients",
+        "Feel free to swap in any extra vegetables you have in the fridge",
+        "The peanut butter and miso paste add incredible richness to the dish"
+      ],
+      notes: "This recipe is perfect for a quick, simple and delicious weekday supper - and also an ideal way to pack vegetables into your day. The peanut butter and miso paste add an incredible richness to the dish"
+    },
+    createdAt: new Date('2025-10-03'),
+    active: true
+  },
+  {
     name: "Salmon Rice Bowl",
     portion: "1 serving",
     nutrition: { 
