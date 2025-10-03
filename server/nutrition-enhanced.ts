@@ -3815,6 +3815,60 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     active: true
   },
   {
+    name: "Gluten-free breakfast bagel with egg, avocado & cottage cheese",
+    portion: "1 serving (1 bagel)",
+    nutrition: {
+      protein: 23,
+      prepTime: 10,
+      calories: 515,
+      carbohydrates: 54,
+      fats: 25,
+      fiber: 7,
+      sugar: 8,
+      sodium: 600,
+      potassium: 480,
+      calcium: 120,
+      iron: 3.2,
+      vitaminC: 10,
+      costEuros: 3.50,
+      proteinPerEuro: 6.6
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Quick", "Filling", "Savory"],
+    ingredients: [
+      "1 gluten-free sesame bagel",
+      "½ ripe avocado",
+      "1 egg",
+      "2-3 tbsp cottage cheese",
+      "1 tsp olive oil",
+      "Salt & pepper to taste",
+      "Chili flakes",
+      "Squeeze of lemon"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 0.5,
+      vegetables: ["avocado"],
+      benefits: ["Healthy fats from avocado", "Complete protein from egg and cottage cheese", "Sustained energy from gluten-free bagel"]
+    },
+    recipe: {
+      instructions: [
+        "Slice the gluten-free bagel in half and toast until golden",
+        "Mash the avocado with a fork, season with salt, pepper, chili flakes, and optionally lemon juice",
+        "Heat olive oil in a pan, fry the egg until the white is set but the yolk is still runny",
+        "Serve everything on a plate: toasted bagel halves, fried egg, mashed avocado, and a scoop of cottage cheese with chili flakes on top"
+      ],
+      tips: [
+        "Use a ripe avocado for easy mashing and creamy texture",
+        "Don't overcook the egg - runny yolk adds richness",
+        "Gluten-free bagels toast best when fresh or lightly warmed first"
+      ],
+      notes: "Gluten-free version with same great taste - quick breakfast combining creamy avocado, runny egg, and cottage cheese on a toasted gluten-free sesame bagel"
+    },
+    createdAt: new Date('2025-10-03'),
+    active: true
+  },
+  {
     name: "Gluten-free creamy mushroom pasta",
     portion: "1 serving (100g dry pasta)",
     nutrition: {
