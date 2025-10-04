@@ -5821,7 +5821,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 10.0 
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Protein", "Quick", "Probiotic"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Protein", "Quick", "Probiotic"],
     ingredients: [
       "1 cup coconut yogurt",
       "2 tbsp almond butter",
@@ -5872,7 +5872,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 13.6 
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Protein", "Keto", "Quick"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Protein", "Keto", "Quick"],
     ingredients: [
       "3 large eggs",
       "½ cup firm tofu (crumbled)",
