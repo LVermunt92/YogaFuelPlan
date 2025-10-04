@@ -665,9 +665,10 @@ function MealPlannerMain() {
     const totalCalories = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.calories || 0), 0);
     const totalFats = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fats || 0), 0);
     const totalCarbs = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.carbohydrates || 0), 0);
+    const totalCocoaFlavanols = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.cocoaFlavanols || 0), 0);
     const daysWithMeals = new Set(currentMealPlan.meals.map(meal => meal.day)).size;
 
-    console.log('KPI Debug:', { totalCalories, totalFats, totalCarbs, daysWithMeals, mealCount: currentMealPlan.meals.length });
+    console.log('KPI Debug:', { totalCalories, totalFats, totalCarbs, totalCocoaFlavanols, daysWithMeals, mealCount: currentMealPlan.meals.length });
 
     // Since nutrition data is not populated in meal plans, use reasonable estimates based on meal types
     const avgCaloriesPerDay = daysWithMeals > 0 ? Math.max(totalCalories, 2000) / daysWithMeals : 400;
@@ -687,6 +688,10 @@ function MealPlannerMain() {
     
     // Use gender-specific fiber target from nutrition calculator (30g women, 40g men)
     const fiberTarget = nutritionTargets?.fiber || 30; // Default to 30g if not loaded yet
+    
+    // Calculate average cocoa flavanols per day
+    const avgCocoaFlavanolsPerDay = daysWithMeals > 0 ? totalCocoaFlavanols / daysWithMeals : 0;
+    const cocoaFlavanolsTarget = 500; // mg/day (400-600mg recommended)
 
     return {
       goodFats: {
@@ -708,6 +713,11 @@ function MealPlannerMain() {
         value: Math.round(fiberEstimate),
         percentage: Math.round(Math.min((fiberEstimate / fiberTarget) * 100, 100)), // Gender-specific target
         target: `${fiberTarget}g/day`
+      },
+      cocoaFlavanols: {
+        value: Math.round(avgCocoaFlavanolsPerDay),
+        percentage: Math.round(Math.min((avgCocoaFlavanolsPerDay / cocoaFlavanolsTarget) * 100, 100)),
+        target: `${cocoaFlavanolsTarget}mg/day`
       }
     };
   };
