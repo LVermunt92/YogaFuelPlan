@@ -927,7 +927,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Dice 200g sweet potato, 2 carrots, 1 parsnip into 2cm pieces",
         "Toss vegetables with 1 tbsp olive oil, salt, and fresh rosemary",
         "Roast vegetables for 35 minutes until tender",
-        "Cook 1 cup red lentils in 2 cups water for 15 minutes",
+        "Cook 190g red lentils in 500ml water for 15 minutes",
         "Make tahini dressing with lemon juice and herbs",
         "Serve lentils over roasted vegetables with tahini drizzle"
       ],
@@ -1291,12 +1291,12 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
-        "Rinse 3/4 cup green lentils and 1/2 cup brown rice separately",
-        "Cook rice in 1 cup water for 25-30 minutes",
+        "Rinse 150g green lentils and 100g brown rice separately",
+        "Cook rice in 240ml water for 25-30 minutes",
         "Heat 1 tbsp coconut oil, add 1 tsp cumin seeds until they splutter",
         "Add diced onion, 1 tbsp fresh ginger, 2 cloves garlic",
         "Add 1 tsp fresh turmeric, cook 2 minutes",
-        "Add lentils, diced tomatoes, 1 cup coconut milk, 1 cup water",
+        "Add lentils, diced tomatoes, 240ml coconut milk, 240ml water",
         "Simmer 20 minutes until lentils are tender",
         "Stir in fresh spinach last 2 minutes",
         "Serve over brown rice"
@@ -2417,8 +2417,8 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     category: "dinner",
     tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Ayurvedic", "Quick"],
     ingredients: [
-      "1 cup red lentils (masoor dal)",
-      "1/2 cup basmati rice",
+      "190g red lentils (masoor dal)",
+      "100g basmati rice",
       "1 tsp turmeric",
       "1 tsp cumin seeds",
       "1/2 tsp coriander seeds",
@@ -2438,8 +2438,8 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
-        "Rinse lentils and cook with turmeric in 3 cups water for 15 minutes",
-        "Cook basmati rice separately in 1 cup water for 12 minutes",
+        "Rinse lentils and cook with turmeric in 720ml water for 15 minutes",
+        "Cook basmati rice separately in 240ml water for 12 minutes",
         "Heat ghee in pan, add mustard seeds until they pop",
         "Add cumin and coriander seeds, toast 30 seconds",
         "Add ginger, garlic, and asafoetida, cook 1 minute",
@@ -5118,13 +5118,13 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     category: "lunch",
     tags: ["Vegetarian", "Vegan", "Gluten-Free", "High-Protein", "Quick"],
     ingredients: [
-      "1 cup red lentils",
+      "190g red lentils",
       "1 carrot (diced)",
       "1 celery stalk (diced)",
       "1 onion (diced)",
       "2 cloves garlic (minced)",
       "1 can (400g) diced tomatoes",
-      "3 cups vegetable stock",
+      "720ml vegetable stock",
       "1 tsp cumin",
       "½ tsp paprika",
       "1 tbsp olive oil",
@@ -5980,8 +5980,8 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Gluten-Free", "High-Protein", "Meal-Prep"],
     ingredients: [
       "150g ground turkey (93% lean)",
-      "¾ cup cooked green lentils",
-      "2 cups baby spinach",
+      "150g cooked green lentils",
+      "60g baby spinach",
       "1 medium roasted sweet potato (cubed)",
       "¼ cup feta cheese",
       "2 tbsp tahini",
@@ -6362,7 +6362,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     category: "dinner",
     tags: ["Vegetarian", "High-Protein", "Meal-Prep"],
     ingredients: [
-      "1 cup red lentils (dried)",
+      "190g red lentils (dried)",
       "100g whole wheat pasta",
       "1 can (400g) crushed tomatoes",
       "1 large carrot (finely diced)",
@@ -6374,7 +6374,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "2 tbsp olive oil",
       "1 tsp dried oregano",
       "1 tsp dried basil",
-      "2 cups vegetable stock",
+      "500ml vegetable stock",
       "¼ cup fresh parsley (chopped)",
       "Salt and pepper to taste"
     ],
