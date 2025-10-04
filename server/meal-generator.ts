@@ -1697,18 +1697,18 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
       // No need for seasonal name adaptation since warming recipes are already excluded during summer
       // Keep original recipe names for proper recipe lookup
 
-      // Validate that recipe ID exists - use name as fallback for custom recipes
-      let recipeId = selectedMeal.id;
-      if (!recipeId) {
-        console.warn(`⚠️ WARNING: Recipe ID missing for "${selectedMeal.name}", using name as fallback`);
-        recipeId = selectedMeal.name; // Use name as fallback ID for custom recipes
+      // Validate that recipe ID exists - now all recipes should have proper IDs
+      if (!selectedMeal.id) {
+        console.error(`❌ CRITICAL ERROR: Recipe ID missing for "${selectedMeal.name}" in ${mealCategory} on day ${day}`);
+        console.error(`Recipe details:`, JSON.stringify(selectedMeal, null, 2));
+        throw new Error(`Recipe ID is undefined for "${selectedMeal.name}" - this indicates a bug in recipe conversion`);
       }
 
       const meal: InsertMeal = {
         mealPlanId: 0,
         day,
         mealType: mealCategory,
-        recipeId: recipeId, // Store recipe ID for translation
+        recipeId: selectedMeal.id, // Store recipe ID for translation
         foodDescription: mealDescription,
         portion: adjustedPortion,
         protein: adjustedProtein,

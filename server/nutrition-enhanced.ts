@@ -14483,6 +14483,7 @@ export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' |
           .map(recipe => {
             try {
               const convertedRecipe: MealOption = {
+                id: `user-${recipe.id}`, // CRITICAL: Preserve user recipe ID with prefix
                 name: recipe.name,
                 portion: recipe.portion || '1 serving',
                 ingredients: recipe.ingredients || [],
