@@ -13918,6 +13918,78 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-10-04'),
     active: true
+  },
+
+  {
+    name: "Healthy sweet potato brownies",
+    portion: "1 brownie (1/12 of batch)",
+    nutrition: { 
+      protein: 5, 
+      prepTime: 50, 
+      calories: 156,
+      carbohydrates: 14,
+      fats: 10,
+      fiber: 4,
+      sugar: 6,
+      sodium: 160,
+      costEuros: 0.80, 
+      proteinPerEuro: 6.3 
+    },
+    category: "snack",
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Fiber", "Whole-Food", "Batch-Friendly", "Viral", "Social-Media"],
+    ingredients: [
+      "200g sweet potato (1 medium)",
+      "120ml peanut butter",
+      "50g raw cacao powder",
+      "60g oat flour",
+      "5g salt (1 tsp)",
+      "5g baking powder (1 tsp)",
+      "1 vanilla pod",
+      "100ml sugar-free sweetener (or maple syrup/coconut sugar to taste)",
+      "30ml espresso shot (cold)",
+      "120ml plant milk",
+      "100g dark chocolate (chopped)"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["sweet potato"],
+      benefits: ["High in beta-carotene", "Natural sweetness", "Fiber-rich"]
+    },
+    recipeBenefits: [
+      "Sweet potato provides natural sweetness and moisture",
+      "Rich in antioxidants from cacao and dark chocolate",
+      "High fiber content supports digestive health",
+      "Peanut butter adds healthy fats and protein",
+      "Gluten-free and naturally vegan",
+      "Makes 12 brownies - perfect for meal prep"
+    ],
+    recipe: {
+      instructions: [
+        "Preheat oven to 200°C/390°F",
+        "Use a fork to poke a few holes into sweet potato, bake with skin on until tender (about 30-40 minutes)",
+        "Let the sweet potato cool down completely",
+        "Peel the sweet potato and add to a bowl with peanut butter, mix well until smooth",
+        "Add cacao powder, oat flour, salt, baking powder, vanilla, and sweetener - mix well",
+        "Add cold espresso shot and plant milk, mix until combined",
+        "Fold in chopped dark chocolate (make sure espresso is cold so chocolate doesn't melt)",
+        "Pour batter into a greased oven-proof dish (20x20cm recommended)",
+        "Reduce oven temperature to 176°C/350°F",
+        "Bake for 35-40 minutes until set but still fudgy in the center",
+        "Let cool completely before cutting into 12 squares"
+      ],
+      tips: [
+        "Bake sweet potato ahead of time to save prep time",
+        "If you don't have oat flour, grind rolled oats in a blender",
+        "Espresso shot MUST be cold or chocolate will melt into the batter",
+        "For sweeter brownies, increase sweetener or use maple syrup",
+        "Store in airtight container for up to 5 days",
+        "Can be frozen for up to 3 months"
+      ],
+      notes: "Viral sweet potato brownies that are incredibly rich and gooey. These taste like the real deal but are packed with whole food ingredients. Perfect healthy snack for meal prep!"
+    },
+    createdAt: new Date('2025-10-04'),
+    active: true
   }
 ];
 
