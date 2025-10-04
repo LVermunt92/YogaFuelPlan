@@ -75,9 +75,10 @@ function enhanceWithProtein(meal: MealOption): MealOption {
     return meal; // Not worth the enhancement
   }
   
-  // Create enhanced meal
+  // Create enhanced meal - explicitly preserve id field
   const enhancedMeal: MealOption = {
     ...meal,
+    id: meal.id, // Explicitly preserve recipe ID
     name: meal.name,
     nutrition: {
       ...meal.nutrition,

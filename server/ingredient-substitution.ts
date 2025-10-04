@@ -237,9 +237,10 @@ export function applyDietarySubstitutions(meal: any, dietaryTags: string[]): any
   if (result.substitutions.length > 0) {
     console.log(`🔄 Applied ${result.substitutions.length} dietary substitutions to "${meal.name}"`);
     
-    // Create a modified meal with substituted ingredients
+    // Create a modified meal with substituted ingredients - explicitly preserve id
     const modifiedMeal = {
       ...meal,
+      id: meal.id, // Explicitly preserve recipe ID
       ingredients: result.ingredients
     };
     
