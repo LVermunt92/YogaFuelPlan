@@ -152,6 +152,7 @@ export const userRecipes = pgTable("user_recipes", {
   fiber: real("fiber").default(0), // grams
   sugar: real("sugar").default(0), // grams
   sodium: real("sodium").default(0), // mg
+  cocoaFlavanols: real("cocoa_flavanols").default(0), // mg
   
   // Meal info
   prepTime: integer("prep_time").notNull(), // minutes
@@ -191,6 +192,7 @@ export const aiRecipes = pgTable("ai_recipes", {
   fiber: real("fiber").default(0),
   sugar: real("sugar").default(0),
   sodium: real("sodium").default(0),
+  cocoaFlavanols: real("cocoa_flavanols").default(0), // mg
   
   // Meal info
   prepTime: integer("prep_time").notNull(),
