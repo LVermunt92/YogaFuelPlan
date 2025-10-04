@@ -14378,13 +14378,27 @@ export async function getCompleteEnhancedMealDatabase(): Promise<MealOption[]> {
     return await addSeasonalMonthTagsToRecipe(recipeWithCycleTags);
   }));
   
-    console.log(`📊 UNIVERSAL VARIANTS: ${baseRecipes.length} base recipes + ${dietaryVariants.length} dietary variants = ${recipesWithIds.length} total recipes`);
+  // Filter out deleted recipes from the unified database
+  const { storage } = await import('./storage.js');
+  const deletedRecipeIds = await storage.getRecipeDeletions();
+  const deletedIds = new Set(deletedRecipeIds);
+  const activeRecipes = recipesWithIds.filter(recipe => {
+    if (!recipe.id) return true; // Keep recipes without IDs
+    const recipeId = String(recipe.id);
+    return !deletedIds.has(recipeId);
+  });
+  
+  if (deletedRecipeIds.length > 0) {
+    console.log(`🗑️  Filtered out ${recipesWithIds.length - activeRecipes.length} deleted recipes from unified database`);
+  }
+  
+    console.log(`📊 UNIFIED DATABASE: ${baseRecipes.length} base recipes + ${dietaryVariants.length} dietary variants = ${activeRecipes.length} total active recipes`);
     console.log(`📊 CYCLE SUPPORT: All recipes now have menstrual cycle phase tags for complete cycle tracking`);
     console.log(`📊 DEVELOPER FRIENDLY: Every recipe now has gluten-free, lactose-free, and vegetarian versions using kipstukjes & Beyond Meat`);
     
     // Store in cache
-    cachedMealDatabase = recipesWithIds;
-    return recipesWithIds;
+    cachedMealDatabase = activeRecipes;
+    return activeRecipes;
   })();
   
   return cachePromise;
