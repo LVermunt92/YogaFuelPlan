@@ -168,7 +168,7 @@ export const userRecipes = pgTable("user_recipes", {
   // Metadata
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
-  isActive: boolean("is_active").default(true), // soft delete functionality
+  isActive: boolean("is_active").default(false), // Default inactive - recipes must be explicitly activated to be used in meal plans
 }, (table) => ({
   uniqueUserRecipe: unique().on(table.userId, table.name),
 }));
