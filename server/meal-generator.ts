@@ -1683,7 +1683,11 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
       }
       
       const adjustedPortion = adjustMealPortion(selectedMeal.portion, portionMultiplier, servingMultiplier);
-      const adjustedProtein = Math.round(selectedMeal.nutrition.protein * portionMultiplier);
+      // For leftovers, divide protein by servingMultiplier since we're only eating 1 serving from the batch
+      const baseProtein = Math.round(selectedMeal.nutrition.protein * portionMultiplier);
+      const adjustedProtein = isLeftover && servingMultiplier > 1 
+        ? Math.round(baseProtein / servingMultiplier)
+        : baseProtein;
       const prepTimeForDay = isLeftover ? 5 : selectedMeal.nutrition.prepTime;
       
       // Create descriptive meal name with seasonal adaptation
