@@ -2180,7 +2180,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     category: "dinner",
     tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Quick", "Protein-Rich"],
     ingredients: [
-      "1 cup quinoa",
+      "170g quinoa",
       "1 can (400g) chickpeas (drained)",
       "1 can (200ml) coconut milk",
       "1 onion (diced)",
@@ -2529,7 +2529,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     category: "dinner",
     tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Ayurvedic", "Warming", "Grounding"],
     ingredients: [
-      "1 cup quinoa",
+      "170g quinoa",
       "1 large sweet potato (cubed)",
       "2 large carrots (sliced)",
       "1 beet (cubed)",
@@ -2700,7 +2700,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     category: "lunch",
     tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Ayurvedic", "Cooling", "Quick"],
     ingredients: [
-      "1 cup cooked quinoa (cooled)",
+      "185g cooked quinoa (cooled)",
       "1 cucumber (diced)",
       "8 tbsp fresh mint leaves",
       "1/4 cup coconut flakes",
@@ -2876,9 +2876,9 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ['Vegetarian', 'Vegan', 'Gluten-Free', 'Lactose-Free', 'Ayurvedic', 'Cooling', 'Quick', 'High-Protein'],
     ingredients: [
       '1 cup mixed summer vegetables (zucchini, cucumber, fresh corn)',
-      '1/2 cup coconut milk',
-      '1/4 cup cooked quinoa',
-      '1/2 cup cooked red lentils',
+      '120ml coconut milk',
+      '45g cooked quinoa',
+      '100g cooked red lentils',
       '1 tbsp coconut oil',
       '1/2 tsp fennel seeds',
       '1 cup vegetable stock',
@@ -2932,8 +2932,8 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ['Vegetarian', 'Gluten-Free', 'Lactose-Free', 'Ayurvedic', 'Cooling', 'Quick'],
     ingredients: [
       '1 large cucumber, diced',
-      '1/2 cup cooked quinoa',
-      '1/2 cup coconut yogurt',
+      '90g cooked quinoa',
+      '120g coconut yogurt',
       '2 tbsp fresh mint leaves',
       '1 tbsp fresh cilantro',
       '1/2 tsp fennel powder',
@@ -2985,9 +2985,9 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     category: 'dinner',
     tags: ['Vegetarian', 'Vegan', 'Gluten-Free', 'Lactose-Free', 'Ayurvedic', 'Cooling'],
     ingredients: [
-      '1/2 cup cooked quinoa',
-      '1/2 cup fresh seasonal fruit (melon, pear, berries)',
-      '1/4 cup coconut milk',
+      '90g cooked quinoa',
+      '80g fresh seasonal fruit (melon, pear, berries)',
+      '60ml coconut milk',
       '2 tbsp coconut flakes',
       '1 tbsp hemp hearts',
       '1 tbsp pumpkin seeds',
@@ -4962,7 +4962,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Vegetarian", "Vegan", "Gluten-Free", "High-Protein", "Quick", "asian-inspired"],
     ingredients: [
       "150g firm tofu (cubed)",
-      "½ cup cooked quinoa",
+      "90g cooked quinoa",
       "1 bell pepper (sliced)",
       "100g broccoli florets",
       "1 carrot (julienned)",
@@ -5225,7 +5225,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Vegetarian", "Vegan", "Gluten-Free", "High-Protein", "Mediterranean"],
     ingredients: [
       "2 large bell peppers (halved and seeded)",
-      "½ cup cooked quinoa",
+      "90g cooked quinoa",
       "½ can chickpeas (drained)",
       "1 tomato (diced)",
       "¼ cup olives (chopped)",
@@ -5599,7 +5599,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Keto", "Gluten-Free", "High-Protein", "Low-Carb", "Quick"],
     ingredients: [
       "200g beef sirloin (sliced thin)",
-      "3 cups broccoli florets",
+      "210g broccoli florets",
       "2 tbsp coconut oil",
       "3 cloves garlic (minced)",
       "1 tbsp fresh ginger (grated)",
@@ -6093,14 +6093,14 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Pescatarian", "Gluten-Free", "High-Protein", "Omega-3"],
     ingredients: [
       "180g salmon fillet",
-      "¾ cup cooked quinoa",
+      "140g cooked quinoa",
       "2 tbsp fresh dill (chopped)",
       "2 tbsp fresh parsley (chopped)",
       "1 tbsp capers",
       "2 tbsp olive oil",
       "1 lemon (zested and juiced)",
-      "¼ cup toasted pine nuts",
-      "2 cups steamed broccoli",
+      "30g toasted pine nuts",
+      "140g steamed broccoli",
       "2 cloves garlic (minced)",
       "Salt and pepper to taste"
     ],

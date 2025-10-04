@@ -6,6 +6,7 @@ Preferred communication style: Simple, everyday language.
 **SENTENCE CASE TITLES PREFERENCE**: User strongly prefers sentence case for titles throughout the application interface (first letter capitalized, rest lowercase). Navigation items, section headings, button labels, and form titles should use sentence case (e.g., "Meal planner" not "Meal Planner", "Generate meal plan" not "Generate Meal Plan"). This applies to both English and Dutch translations.
 **CRITICAL DEVELOPMENT RULE**: Never remove existing functionality, features, or logic without explicit user permission. Always ask twice before removing anything. Only make additive changes unless specifically requested to remove features. Preserve all working functionality by default.
 **GLUTEN-FREE RECIPE ADAPTATIONS**: When creating gluten-free versions of wheat-based recipes, carefully consider appropriate flour substitutions and binding agents that maintain the right density, texture, and taste of the original recipe. Use combinations like almond flour + tapioca starch, rice flour + xanthan gum, or other proven gluten-free flour blends rather than simple 1:1 substitutions.
+**METRIC MEASUREMENTS PREFERENCE**: All recipe ingredients must use metric measurements (grams for solids, milliliters for liquids) instead of volume measurements (cups, tablespoons). Examples: quinoa "170g" not "1 cup", broccoli "140g" not "2 cups", sweet potato "200g" not "1 medium". This ensures precision in shopping lists and meal planning. Standard conversions: 1 cup dry quinoa = 170g, 1 cup cooked quinoa = 185g, 1 cup broccoli = 70g, 1 cup spinach = 30g, 1 medium sweet potato = 200g.
 
 # System Architecture
 - **UI/UX Decisions**: Utilizes `shadcn/ui` built on `Radix UI` primitives with `Tailwind CSS` and CSS variables for theming, focusing on a streamlined interface. Color schemes are standardized across the application (emerald, yellow, green, blue, orange for KPIs; gray for general UI; green/blue/orange for meal cards). Mobile layouts are optimized for responsiveness.
@@ -34,6 +35,19 @@ Preferred communication style: Simple, everyday language.
     - **Data Flow**: User input drives meal generation, stored in PostgreSQL, displayed via React Query.
     - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, favorite meals, and user-created custom recipes.
     - **Unified Recipe Database**: Consolidated all recipe databases into a single unified system, with pre-translated recipes stored for performance.
+
+# Recent Changes (October 4, 2025)
+- **Recipe Ingredient Standardization**: Converted all recipe ingredients to metric measurements (grams/ml)
+  - Replaced all cup measurements with precise gram/ml equivalents across entire recipe database
+  - Sweet potatoes: "1 medium" → "200g", "1 large" → "300g"
+  - Quinoa: "1 cup dry" → "170g", "1 cup cooked" → "185g"
+  - Broccoli, spinach, nuts: All converted to gram measurements
+  - Auto-translation system updated to maintain metric standards for new recipes
+- **Lactose-Free Tag Standardization**: Standardized all lactose-free recipes to use only "Lactose-Free" tag (removed redundant "Dairy-Free" tag)
+- **Auto-Translation System**: Admin recipe updates now automatically generate Dutch translations and save to database
+  - PUT /api/recipes/:id automatically translates to Dutch on update
+  - POST /api/recipes automatically translates to Dutch on creation
+  - Ensures consistency between English admin edits and Dutch user experience
 
 # Recent Changes (October 3, 2025)
 - **Seasonal Vegetable Section Production Fix**: Fixed seasonal vegetable section not appearing in published environment
