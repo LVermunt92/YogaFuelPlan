@@ -37,6 +37,13 @@ Preferred communication style: Simple, everyday language.
     - **Unified Recipe Database**: Consolidated all recipe databases into a single unified system, with pre-translated recipes stored for performance.
 
 # Recent Changes (October 4, 2025)
+- **Menstrual Phase Recipe Tagging**: Enhanced recipe database to support strict dietary + menstrual phase filtering
+  - Tagged 8 existing vegetarian, gluten-free, lactose-free recipes with comprehensive menstrual phase support
+  - Added "Menstrual", "Follicular", "Luteal", and/or "Ovulation" tags based on iron/magnesium/omega-3/B-vitamin content
+  - Recipes tagged: lentil bowls, tempeh dishes, portobello mushrooms, quinoa bowls, green smoothie bowl, kefir bowl, white bean bowl
+  - Explicitly added "Lactose-Free" tags to recipes previously marked only as "Dairy-Free" for better filtering
+  - Fills meal plan generation gap for users with Vegetarian + Gluten-Free + Lactose-Free + menstrual phase requirements
+  - Ensures breakfast, lunch, and dinner options available across all menstrual cycle phases
 - **Tag Management System**: Added database-backed tag management to admin panel with new "Tags" tab
   - Created `deletedTags` table to safely persist tag deletions without modifying source files
   - New admin interface displays all tags with usage counts sorted by frequency
