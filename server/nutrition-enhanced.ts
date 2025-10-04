@@ -13990,6 +13990,74 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-10-04'),
     active: true
+  },
+
+  {
+    name: "Flourless carrot cake energy balls",
+    portion: "2 balls (1/12 of batch)",
+    nutrition: { 
+      protein: 4, 
+      prepTime: 15, 
+      calories: 145,
+      carbohydrates: 18,
+      fats: 8,
+      fiber: 3,
+      sugar: 12,
+      sodium: 10,
+      costEuros: 0.65, 
+      proteinPerEuro: 6.2 
+    },
+    category: "snack",
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "No-Cook", "Whole-Food", "Batch-Friendly", "Energy-Bites", "Viral", "Social-Media"],
+    ingredients: [
+      "250g grated carrot",
+      "120g walnuts",
+      "150g pitted dates",
+      "25g rolled oats",
+      "15g shredded coconut",
+      "5g ground cinnamon (1 tsp)",
+      "150g cashews (for coating)",
+      "110ml canned coconut milk (liquid part)",
+      "15ml honey (1 tbsp)",
+      "vanilla extract to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["carrot"],
+      benefits: ["High in beta-carotene", "Natural sweetness", "Rich in antioxidants"]
+    },
+    recipeBenefits: [
+      "No baking required - perfect for hot weather",
+      "Dates provide natural sweetness and binding",
+      "Walnuts add omega-3 fatty acids and protein",
+      "Carrots rich in vitamin A and fiber",
+      "Cashew coating provides creamy texture",
+      "Makes 24 balls - ideal for meal prep and snacking",
+      "Freezer-friendly for long-term storage"
+    ],
+    recipe: {
+      instructions: [
+        "In food processor, blend grated carrot, walnuts, dates, oats, shredded coconut, and cinnamon until you get a dense, sticky dough",
+        "Shape mixture into 24 small balls (about 20g each) and place on a parchment-lined tray",
+        "Freeze balls for 1 hour to firm up",
+        "Meanwhile, blend cashews with coconut milk (liquid part only), honey, and vanilla extract until completely smooth and creamy",
+        "Remove balls from freezer and coat each one with the cashew cream using a spoon or dipping fork",
+        "Return coated balls to tray and freeze for at least 1 more hour before serving",
+        "Store in freezer for up to 3 months, or refrigerator for up to 1 week"
+      ],
+      tips: [
+        "Use fresh grated carrot for best texture and moisture",
+        "If dough is too dry, add 1-2 dates; if too wet, add more oats",
+        "Freeze balls before coating to prevent them from falling apart",
+        "Use only the thick liquid part of coconut milk, not the cream on top",
+        "Let balls sit at room temperature 5-10 minutes before eating for best texture",
+        "Can roll in extra shredded coconut instead of cashew coating for variation"
+      ],
+      notes: "Viral flourless carrot cake balls that taste like dessert but are packed with whole food ingredients. No-bake recipe credited to @lindsay.keosayian. Perfect healthy snack that satisfies sweet cravings!"
+    },
+    createdAt: new Date('2025-10-04'),
+    active: true
   }
 ];
 
