@@ -128,8 +128,17 @@ function Navigation() {
             )}
           </div>
           
-          {/* Right side content for mobile - empty for now */}
+          {/* Right side content for mobile - logout button */}
           <div className="sm:hidden flex items-center">
+            {authUser && (
+              <button
+                onClick={logout}
+                className="inline-flex items-center p-2 text-gray-500 hover:text-gray-700"
+                aria-label="Logout"
+              >
+                <LogOut className="h-5 w-5" />
+              </button>
+            )}
           </div>
         </div>
       </div>
