@@ -55,6 +55,14 @@ export const translations = {
     whyFiberMatters: "Why fiber matters",
     fiberTooltip: "Supports digestive health, stabilizes blood sugar, and helps lower cholesterol. Essential for healthy gut bacteria and weight management.",
     fiberWarning: "⚠️ Increase gradually over 2-3 weeks to avoid digestive discomfort",
+    whyCocoaFlavanolsMatters: "Why cocoa flavanols matter",
+    cocoaFlavanolsTooltip: "Cocoa flavanols are powerful plant compounds that support heart health, brain function, and blood flow. Aim for 400-600mg daily from sources like cocoa powder, dark chocolate, and berries.",
+    cocoaFlavanolsTarget: "Target: 500mg/day for optimal cardiovascular benefits",
+    whyPlantDiversityMatters: "Why plant diversity matters",
+    plantDiversityTooltip: "Eating 30+ different plant foods per week (vegetables, fruits, grains, legumes, nuts, seeds, herbs, spices) supports a healthy gut microbiome. Greater plant diversity means more beneficial bacteria, better digestion, and stronger immunity.",
+    plantDiversityTarget: "Target: 30 different plants per week based on American Gut Project research",
+    cocoaFlavanols: "Cocoa flavanols",
+    plantDiversity: "Plant diversity",
     
     // My Recipes Page
     createPersonalRecipes: "Create and manage your personal recipe collection",
@@ -711,6 +719,14 @@ export const translations = {
     whyFiberMatters: "Waarom Vezels Belangrijk Zijn",
     fiberTooltip: "Ondersteunen spijsvertering, stabiliseren bloedsuiker en helpen cholesterol verlagen. Essentieel voor gezonde darmbacteriën en gewichtsbeheersing.",
     fiberWarning: "⚠️ Verhoog geleidelijk over 2-3 weken om spijsverteringsproblemen te voorkomen",
+    whyCocoaFlavanolsMatters: "Waarom cacaoflavanolen belangrijk zijn",
+    cocoaFlavanolsTooltip: "Cacaoflavanolen zijn krachtige plantenverbindingen die hartgezondheid, hersenfunctie en bloedstroom ondersteunen. Streef naar 400-600mg per dag uit bronnen zoals cacaopoeder, pure chocolade en bessen.",
+    cocoaFlavanolsTarget: "Doel: 500mg/dag voor optimale cardiovasculaire voordelen",
+    whyPlantDiversityMatters: "Waarom plantendiversiteit belangrijk is",
+    plantDiversityTooltip: "Het eten van 30+ verschillende plantenvoedingsmiddelen per week (groenten, fruit, granen, peulvruchten, noten, zaden, kruiden, specerijen) ondersteunt een gezonde darmmicrobioom. Grotere plantendiversiteit betekent meer nuttige bacteriën, betere spijsvertering en sterkere immuniteit.",
+    plantDiversityTarget: "Doel: 30 verschillende planten per week gebaseerd op American Gut Project onderzoek",
+    cocoaFlavanols: "Cacaoflavanolen",
+    plantDiversity: "Plantendiversiteit",
     
     // My Recipes Page
     createPersonalRecipes: "Creëer en beheer je persoonlijke receptenverzameling",

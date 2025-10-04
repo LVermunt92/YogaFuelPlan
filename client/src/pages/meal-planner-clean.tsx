@@ -974,14 +974,14 @@ function MealPlannerMain() {
                           </div>
                         </div>
                       </div>
-                      <h3 className="text-xs font-semibold text-purple-600">Cocoa flavanols</h3>
+                      <h3 className="text-xs font-semibold text-purple-600">{t.cocoaFlavanols}</h3>
                       <p className="text-xs text-gray-500">{Math.min(kpiData.cocoaFlavanols.percentage, 100)}%</p>
                     </div>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
-                    <p className="font-semibold mb-1">Why cocoa flavanols matter</p>
-                    <p className="text-sm mb-2">Cocoa flavanols are powerful plant compounds that support heart health, brain function, and blood flow. Aim for 400-600mg daily from sources like cocoa powder, dark chocolate, and berries.</p>
-                    <p className="text-xs text-purple-200 font-medium">Target: 500mg/day for optimal cardiovascular benefits</p>
+                    <p className="font-semibold mb-1">{t.whyCocoaFlavanolsMatters}</p>
+                    <p className="text-sm mb-2">{t.cocoaFlavanolsTooltip}</p>
+                    <p className="text-xs text-purple-200 font-medium">{t.cocoaFlavanolsTarget}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -1016,14 +1016,14 @@ function MealPlannerMain() {
                           </div>
                         </div>
                       </div>
-                      <h3 className="text-xs font-semibold text-green-700">Plant diversity</h3>
+                      <h3 className="text-xs font-semibold text-green-700">{t.plantDiversity}</h3>
                       <p className="text-xs text-gray-500">{Math.min(kpiData.plantDiversity.percentage, 100)}%</p>
                     </div>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
-                    <p className="font-semibold mb-1">Why plant diversity matters</p>
-                    <p className="text-sm mb-2">Eating 30+ different plant foods per week (vegetables, fruits, grains, legumes, nuts, seeds, herbs, spices) supports a healthy gut microbiome. Greater plant diversity means more beneficial bacteria, better digestion, and stronger immunity.</p>
-                    <p className="text-xs text-green-200 font-medium">Target: 30 different plants per week based on American Gut Project research</p>
+                    <p className="font-semibold mb-1">{t.whyPlantDiversityMatters}</p>
+                    <p className="text-sm mb-2">{t.plantDiversityTooltip}</p>
+                    <p className="text-xs text-green-200 font-medium">{t.plantDiversityTarget}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
