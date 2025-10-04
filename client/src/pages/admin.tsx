@@ -13,7 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
-import { Settings, Users, Calculator, Database, Activity, Target, ChefHat, Save, Edit, Trash2, Plus, AlertTriangle, Search, Filter, Download, Upload, Eye } from "lucide-react";
+import { Settings, Users, Calculator, Database, Activity, Target, ChefHat, Save, Edit, Trash2, Plus, AlertTriangle, Search, Filter, Download, Upload, Eye, Leaf } from "lucide-react";
 import { useTranslations } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -1440,6 +1440,88 @@ function AdminPanelMain() {
                     <p className="text-sm text-purple-800">
                       A breakfast with 20g raw cacao powder (260mg flavanols) + lunch with berries (50mg) + dinner with 10g cocoa powder (130mg) + dark chocolate snack (60mg) = 500mg total daily flavanols, meeting the optimal target.
                     </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Leaf className="h-5 w-5 text-green-700" />
+                    Plant diversity tracking
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">What is plant diversity?</h4>
+                    <p className="text-sm text-gray-700">
+                      Plant diversity refers to the variety of different plant-based foods consumed over a weekly period. Research from the American Gut Project found that people who eat 30 or more different types of plants per week have significantly more diverse gut microbiomes and better health outcomes compared to those eating 10 or fewer different plants.
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">What counts as a "plant"?</h4>
+                    <p className="text-sm text-gray-700 mb-2">
+                      The system tracks eight categories of plant foods:
+                    </p>
+                    <ul className="list-disc list-inside text-sm text-gray-700 space-y-1 ml-2">
+                      <li><strong>Vegetables</strong>: Spinach, broccoli, carrots, bell peppers, tomatoes, mushrooms, etc.</li>
+                      <li><strong>Fruits</strong>: Apples, berries, bananas, avocados, citrus fruits, etc.</li>
+                      <li><strong>Grains</strong>: Oats, quinoa, brown rice, whole wheat, barley, buckwheat, etc.</li>
+                      <li><strong>Legumes</strong>: Lentils, chickpeas, black beans, edamame, green peas, etc.</li>
+                      <li><strong>Nuts</strong>: Almonds, walnuts, cashews, pistachios, etc.</li>
+                      <li><strong>Seeds</strong>: Chia, flax, hemp, pumpkin seeds, sunflower seeds, etc.</li>
+                      <li><strong>Herbs</strong>: Basil, parsley, cilantro, mint, thyme, rosemary, etc.</li>
+                      <li><strong>Spices</strong>: Cinnamon, turmeric, cumin, ginger, black pepper, etc.</li>
+                    </ul>
+                    <p className="text-sm text-gray-700 mt-2">
+                      <strong>Important note:</strong> Each unique plant counts once, regardless of how many times it appears in the week. For example, if spinach appears in 5 meals, it still counts as 1 plant toward the 30-plant target.
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">Health benefits and scientific evidence</h4>
+                    <p className="text-sm text-gray-700 mb-2">
+                      Greater plant diversity supports multiple aspects of health:
+                    </p>
+                    <ul className="list-disc list-inside text-sm text-gray-700 space-y-1 ml-2">
+                      <li><strong>Gut microbiome health</strong>: More diverse plants feed a wider variety of beneficial gut bacteria, improving digestive health, immune function, and even mental health</li>
+                      <li><strong>Nutrient variety</strong>: Different plants provide different vitamins, minerals, phytonutrients, and antioxidants, reducing risk of deficiencies</li>
+                      <li><strong>Inflammation reduction</strong>: Plant polyphenols and fiber work synergistically to reduce chronic inflammation</li>
+                      <li><strong>Disease prevention</strong>: Higher plant diversity is associated with lower risks of obesity, type 2 diabetes, cardiovascular disease, and certain cancers</li>
+                      <li><strong>Metabolic health</strong>: Diverse fiber types improve insulin sensitivity and blood sugar control</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">Weekly target: 30+ different plants</h4>
+                    <p className="text-sm text-gray-700 mb-2">
+                      The system tracks plant diversity with a <strong>weekly target of 30 different plant foods</strong>. This target is based on landmark research from the American Gut Project, which analyzed thousands of participants and found clear health benefits at this threshold.
+                    </p>
+                    <p className="text-sm text-gray-700">
+                      The meal planner displays plant diversity as one of six key weekly metrics, allowing users to track their intake through a green progress chart. The count resets weekly with each new meal plan.
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">How the system tracks plant diversity</h4>
+                    <p className="text-sm text-gray-700">
+                      The plant diversity tracker automatically analyzes all ingredients across every meal in the week's plan. It normalizes ingredient names (removing quantities, descriptors like "fresh" or "chopped"), identifies plant-based foods, categorizes them by type, and counts unique plants. This happens transparently in the background - users simply see their weekly plant count without manual tracking.
+                    </p>
+                  </div>
+
+                  <div className="bg-green-50 p-3 rounded border border-green-200">
+                    <h4 className="font-semibold text-sm mb-1 text-green-900">Practical strategies</h4>
+                    <p className="text-sm text-green-800 mb-2">
+                      Reaching 30 plants per week is easier than it sounds:
+                    </p>
+                    <ul className="list-disc list-inside text-sm text-green-800 space-y-1 ml-2">
+                      <li>Add mixed greens salads (5-7 plants in one meal)</li>
+                      <li>Use herb and spice blends (cumin, turmeric, paprika = 3 plants)</li>
+                      <li>Top meals with mixed nuts and seeds (4-5 plants)</li>
+                      <li>Choose whole grain mixes like quinoa-rice blends (2 plants)</li>
+                      <li>Add variety to smoothies with different fruits and seeds</li>
+                    </ul>
                   </div>
                 </CardContent>
               </Card>
