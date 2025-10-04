@@ -13946,10 +13946,13 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
     
     let glutenFreeVersion: MealOption;
     
+    const baseId = recipe.id || 10000; // Fallback to 10000 if no ID (shouldn't happen)
+    
     if (hasGlutenIngredients) {
       // Create modified version for recipes with gluten
       glutenFreeVersion = {
         ...recipe,
+        id: baseId + 100000, // Deterministic ID: base + 100000
         name: recipe.name,
         tags: [...recipe.tags.filter(tag => tag !== 'wheat'), 'Gluten-Free'],
         ingredients: recipe.ingredients?.map(ingredient => {
@@ -13990,6 +13993,7 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
       // Recipe is naturally gluten-free - just add the tag
       glutenFreeVersion = {
         ...recipe,
+        id: baseId + 100000, // Deterministic ID: base + 100000
         tags: [...recipe.tags, 'Gluten-Free']
       };
     }
@@ -14010,6 +14014,7 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
       // Create modified version for recipes with dairy
       lactoseFreeVersion = {
         ...recipe,
+        id: baseId + 200000, // Deterministic ID: base + 200000
         name: recipe.name,
         tags: [...recipe.tags, 'Lactose-Free', 'dairy-free'],
         ingredients: recipe.ingredients?.map(ingredient => {
@@ -14054,6 +14059,7 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
       // Recipe is naturally lactose-free - just add the tag
       lactoseFreeVersion = {
         ...recipe,
+        id: baseId + 200000, // Deterministic ID: base + 200000
         tags: [...recipe.tags, 'Lactose-Free', 'dairy-free']
       };
     }
@@ -14104,6 +14110,7 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
       
       const vegetarianVersion: MealOption = {
         ...recipe,
+        id: baseId + 300000, // Deterministic ID: base + 300000
         name: vegetarianName,
         tags: [...recipe.tags.filter(tag => !['Non-Vegetarian'].includes(tag)), 'Vegetarian'],
         ingredients: recipe.ingredients?.map(ingredient => {
@@ -14210,20 +14217,22 @@ export async function getCompleteEnhancedMealDatabase(): Promise<MealOption[]> {
     return recipe;
   });
   
-  // Auto-generate dietary variants for EVERY recipe (gluten-free, lactose-free, vegetarian versions)
-  const dietaryVariants = generateDietaryVariants(lactoseTaggedRecipes);
+  // Assign permanent stable IDs to base recipes (starting from 10000)
+  const baseRecipesWithIds = lactoseTaggedRecipes.map((recipe, index) => ({
+    ...recipe,
+    id: 10000 + index // Permanent ID based on position in base array
+  }));
   
-  // Combine all recipes
-  const allRecipes = [...lactoseTaggedRecipes, ...dietaryVariants];
+  // Auto-generate dietary variants with deterministic IDs
+  const dietaryVariants = generateDietaryVariants(baseRecipesWithIds);
   
-  // Assign unique IDs to all recipes and add cycle phase tags and seasonal month tags
-  const recipesWithIds = await Promise.all(allRecipes.map(async (recipe, index) => {
-    const recipeWithId = {
-      ...recipe,
-      id: generateRecipeId(recipe.name, index)
-    };
+  // Combine all recipes (all have IDs now)
+  const allRecipes = [...baseRecipesWithIds, ...dietaryVariants];
+  
+  // Add cycle phase tags and seasonal month tags
+  const recipesWithIds = await Promise.all(allRecipes.map(async (recipe) => {
     // Add cycle phase tags to every recipe
-    const recipeWithCycleTags = addCyclePhaseTagsToRecipe(recipeWithId);
+    const recipeWithCycleTags = addCyclePhaseTagsToRecipe(recipe);
     // Add seasonal month tags to every recipe
     return await addSeasonalMonthTagsToRecipe(recipeWithCycleTags);
   }));
