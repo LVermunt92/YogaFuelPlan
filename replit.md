@@ -44,6 +44,12 @@ Preferred communication style: Simple, everyday language.
     - **Unified Recipe Database**: Consolidated all recipe databases into a single unified system, with pre-translated recipes stored for performance.
 
 # Recent Changes (October 4, 2025)
+- **Dutch Translations for Cocoa Flavanols and Plant Diversity**: Added comprehensive translations for new KPI metrics
+  - Added Dutch translations for cocoa flavanols tooltips: "Waarom cacaoflavanolen belangrijk zijn"
+  - Added Dutch translations for plant diversity tooltips: "Waarom plantendiversiteit belangrijk is"
+  - Updated meal planner UI to use translation keys instead of hardcoded strings
+  - Both metrics now fully support English and Dutch language switching
+  - Maintains sentence case preference in both languages
 - **Menstrual Phase Recipe Tagging**: Enhanced recipe database to support strict dietary + menstrual phase filtering
   - Tagged 8 existing vegetarian, gluten-free, lactose-free recipes with comprehensive menstrual phase support
   - Added "Menstrual", "Follicular", "Luteal", and/or "Ovulation" tags based on iron/magnesium/omega-3/B-vitamin content
