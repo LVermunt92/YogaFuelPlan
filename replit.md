@@ -37,6 +37,25 @@ Preferred communication style: Simple, everyday language.
     - **Unified Recipe Database**: Consolidated all recipe databases into a single unified system, with pre-translated recipes stored for performance.
 
 # Recent Changes (October 4, 2025)
+- **Tag Management System**: Added database-backed tag management to admin panel with new "Tags" tab
+  - Created `deletedTags` table to safely persist tag deletions without modifying source files
+  - New admin interface displays all tags with usage counts sorted by frequency
+  - DELETE endpoint saves tag deletions to database while preserving source code integrity
+  - GET endpoint filters out deleted tags from display automatically
+  - Safe, reversible, and trackable tag management without file corruption risk
+  - Tracks which admin deleted each tag (optional user linkage)
+- **Viral High-Protein Recipes**: Added 6 trending recipes with lactose-free variations
+  - Cottage cheese ice cream breakfast bowl (28g protein)
+  - Protein cookie dough bites snack (15g protein, lactose-free option)
+  - Marry me butter chicken pasta (32g protein, with gluten-free, lactose-free, and vegetarian variants)
+  - Cloud bread sandwich (18g protein, lactose-free version)
+  - Protein churro bowl breakfast (25g protein, lactose-free version)
+  - Cucumber sushi boats snack (20g protein, lactose-free version)
+  - All recipes include Dutch translations and comprehensive nutritional data
+- **Lentil Lasagna Fix**: Fixed "Lentil and basil pesto lasagna with cashew cream sauce" recipe
+  - Added complete metric measurements for all ingredients (200g lentils, 80g broccoli, 60g spinach, etc.)
+  - Fixed missing ingredient amounts that were causing preparation issues
+  - Both English and Dutch versions updated with precise measurements
 - **User Activity Tracking**: Added last login timestamp tracking system
   - Added `lastLoginAt` field to user schema for monitoring user activity
   - Login endpoint now automatically updates last login timestamp on successful authentication
