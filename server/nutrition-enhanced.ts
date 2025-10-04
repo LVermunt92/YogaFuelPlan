@@ -14418,12 +14418,14 @@ export async function getCompleteEnhancedMealDatabase(): Promise<MealOption[]> {
   // Combine all recipes (all have IDs now)
   const allRecipes = [...baseRecipesWithIds, ...dietaryVariants];
   
-  // Add cycle phase tags and seasonal month tags
+  // Add cycle phase tags, functional tags for snacks, and seasonal month tags
   const recipesWithIds = await Promise.all(allRecipes.map(async (recipe) => {
     // Add cycle phase tags to every recipe
     const recipeWithCycleTags = addCyclePhaseTagsToRecipe(recipe);
+    // Add functional tags to snacks (Pre-Workout, Post-Workout, Neutral)
+    const recipeWithFunctionalTags = addFunctionalTagsToSnack(recipeWithCycleTags);
     // Add seasonal month tags to every recipe
-    return await addSeasonalMonthTagsToRecipe(recipeWithCycleTags);
+    return await addSeasonalMonthTagsToRecipe(recipeWithFunctionalTags);
   }));
   
   // Filter out deleted recipes from the unified database
@@ -14442,6 +14444,7 @@ export async function getCompleteEnhancedMealDatabase(): Promise<MealOption[]> {
   
     console.log(`📊 UNIFIED DATABASE: ${baseRecipes.length} base recipes + ${dietaryVariants.length} dietary variants = ${activeRecipes.length} total active recipes`);
     console.log(`📊 CYCLE SUPPORT: All recipes now have menstrual cycle phase tags for complete cycle tracking`);
+    console.log(`📊 FUNCTIONAL TAGS: Snacks are automatically tagged as Pre-Workout, Post-Workout, or Neutral based on nutritional profile`);
     console.log(`📊 DEVELOPER FRIENDLY: Every recipe now has gluten-free, lactose-free, and vegetarian versions using kipstukjes & Beyond Meat`);
     
     // Store in cache
