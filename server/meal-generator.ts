@@ -1838,8 +1838,11 @@ async function generateMealPrepPlan(
       if (recipe.mealTypes?.includes('lunch')) categories.push('lunch');
       if (recipe.mealTypes?.includes('dinner')) categories.push('dinner');
       
+      const recipeId = `user-${recipe.id}`;
+      console.log(`🔑 CUSTOM RECIPE ID ASSIGNMENT: "${recipe.name}" -> ID: "${recipeId}"`);
+      
       const baseRecipe = {
-        id: `user-${recipe.id}`, // Prefix user recipe IDs to avoid conflicts with curated recipes
+        id: recipeId, // Prefix user recipe IDs to avoid conflicts with curated recipes
         name: recipe.name,
         portion: recipe.portion || '1 serving',
         ingredients: recipe.ingredients,
@@ -1855,8 +1858,14 @@ async function generateMealPrepPlan(
         category: categories[0] || 'lunch' // Use first category or default to lunch
       };
       
+      console.log(`🔑 BEFORE DIETARY SUBS: "${baseRecipe.name}" has ID: "${baseRecipe.id}"`);
+      
       // Apply dietary substitutions to user recipes
-      return applyDietarySubstitutions(baseRecipe, dietaryTags);
+      const result = applyDietarySubstitutions(baseRecipe, dietaryTags);
+      
+      console.log(`🔑 AFTER DIETARY SUBS: "${result.name}" has ID: "${result.id}"`);
+      
+      return result;
     };
     
     // Get user recipes by meal type (more permissive filtering for user's own recipes)
