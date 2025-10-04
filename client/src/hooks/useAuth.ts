@@ -67,17 +67,29 @@ export function useAuth() {
 
   const logout = async () => {
     try {
-      // Clear client state first
+      console.log('Logout initiated...');
+      
+      // Call server logout endpoint to destroy session FIRST
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      console.log('Logout response:', response.status, response.statusText);
+      
+      if (!response.ok) {
+        console.error('Logout failed with status:', response.status);
+      }
+      
+      // Clear client state
       setUser(null);
       localStorage.clear(); // Clear all localStorage items
       
-      // Call server logout endpoint to destroy session
-      await fetch('/api/auth/logout', {
-        method: 'POST',
-        credentials: 'include'
-      });
-      
       // Force a hard reload of the page to login
+      console.log('Redirecting to login...');
       window.location.replace('/');
     } catch (error) {
       console.error('Logout error:', error);
