@@ -7,6 +7,13 @@ Preferred communication style: Simple, everyday language.
 **CRITICAL DEVELOPMENT RULE**: Never remove existing functionality, features, or logic without explicit user permission. Always ask twice before removing anything. Only make additive changes unless specifically requested to remove features. Preserve all working functionality by default.
 **GLUTEN-FREE RECIPE ADAPTATIONS**: When creating gluten-free versions of wheat-based recipes, carefully consider appropriate flour substitutions and binding agents that maintain the right density, texture, and taste of the original recipe. Use combinations like almond flour + tapioca starch, rice flour + xanthan gum, or other proven gluten-free flour blends rather than simple 1:1 substitutions.
 **METRIC MEASUREMENTS PREFERENCE**: All recipe ingredients must use metric measurements (grams for solids, milliliters for liquids) instead of volume measurements (cups, tablespoons). Examples: quinoa "170g" not "1 cup", broccoli "140g" not "2 cups", sweet potato "200g" not "1 medium". This ensures precision in shopping lists and meal planning. Standard conversions: 1 cup dry quinoa = 170g, 1 cup cooked quinoa = 185g, 1 cup broccoli = 70g, 1 cup spinach = 30g, 1 medium sweet potato = 200g.
+**MENSTRUAL CYCLE TAGGING GUIDELINES**: All new recipes must be evaluated for menstrual cycle phase support and tagged accordingly:
+  - **Menstrual Phase**: Recipes high in iron (lentils, beans, spinach, quinoa, pumpkin seeds, hemp hearts) and magnesium (nuts, seeds, whole grains, leafy greens)
+  - **Follicular Phase**: Recipes with lighter proteins, fresh vegetables, sprouted grains, probiotic foods
+  - **Ovulation Phase**: Recipes rich in antioxidants (berries, leafy greens), fiber, and anti-inflammatory ingredients
+  - **Luteal Phase**: Recipes with B vitamins (legumes, whole grains), complex carbs, calcium, and magnesium
+  - Apply multiple phase tags when recipes contain ingredients supporting multiple phases
+  - Vegetarian/gluten-free/lactose-free recipes should ALWAYS be evaluated for menstrual tags to ensure adequate meal options for strict dietary filters
 
 # System Architecture
 - **UI/UX Decisions**: Utilizes `shadcn/ui` built on `Radix UI` primitives with `Tailwind CSS` and CSS variables for theming, focusing on a streamlined interface. Color schemes are standardized across the application (emerald, yellow, green, blue, orange for KPIs; gray for general UI; green/blue/orange for meal cards). Mobile layouts are optimized for responsiveness.
