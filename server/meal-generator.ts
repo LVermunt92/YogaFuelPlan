@@ -1360,6 +1360,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
       // Implement Sunday night cooking pattern logic
       let isLeftover = false;
       let selectedMeal: MealOption;
+      let intelligentlyUsedIngredients: string[] = [];
       
       if (day === 1 && mealCategory === 'dinner') {
         // Day 1: Sunday dinner - FIRST cooking moment (only meal on Sunday)
@@ -1521,6 +1522,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
           if (weekendBreakfasts.length > 0) {
             const weekendBreakfastResult = await selectUnusedMealIntelligently(weekendBreakfasts, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget, user?.id);
             selectedMeal = weekendBreakfastResult.meal;
+            intelligentlyUsedIngredients = weekendBreakfastResult.usedIngredients || [];
             usedBreakfastMeals.add(selectedMeal.name);
             allSelectedMealNames.add(selectedMeal.name);
             console.log(`Day ${day} (weekend) breakfast: ${selectedMeal.name} (prep: ${selectedMeal.nutrition.prepTime}min)`);
@@ -1543,6 +1545,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
           if (weekdayBreakfasts.length > 0) {
             const weekdayBreakfastResult = await selectUnusedMealIntelligently(weekdayBreakfasts, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget);
             selectedMeal = weekdayBreakfastResult.meal;
+            intelligentlyUsedIngredients = weekdayBreakfastResult.usedIngredients || [];
             usedBreakfastMeals.add(selectedMeal.name);
             allSelectedMealNames.add(selectedMeal.name);
             console.log(`Day ${day} (weekday) breakfast: ${selectedMeal.name} (prep: ${selectedMeal.nutrition.prepTime}min)`);
@@ -1684,6 +1687,11 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
       
       // Create descriptive meal name with seasonal adaptation
       let mealDescription = selectedMeal.name;
+      
+      // Add "incorporating" text when ingredients are being reused
+      if (intelligentlyUsedIngredients && intelligentlyUsedIngredients.length > 0) {
+        mealDescription = `${selectedMeal.name} (incorporating ${intelligentlyUsedIngredients.join(', ')})`;
+      }
       
       // No need for seasonal name adaptation since warming recipes are already excluded during summer
       // Keep original recipe names for proper recipe lookup
