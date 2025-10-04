@@ -1696,6 +1696,13 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
       // No need for seasonal name adaptation since warming recipes are already excluded during summer
       // Keep original recipe names for proper recipe lookup
 
+      // Validate that recipe ID exists to prevent mismatches
+      if (!selectedMeal.id) {
+        console.error(`❌ CRITICAL ERROR: Recipe ID missing for "${selectedMeal.name}" in ${mealCategory} on day ${day}`);
+        console.error(`Recipe details:`, JSON.stringify(selectedMeal, null, 2));
+        throw new Error(`Recipe ID is undefined for "${selectedMeal.name}" - this would cause ID/description mismatch`);
+      }
+
       const meal: InsertMeal = {
         mealPlanId: 0,
         day,
@@ -2214,6 +2221,12 @@ async function generateMealPrepPlan(
         // Create descriptive meal name
         const mealDescription = selectedBreakfast.name;
         
+        // Validate that recipe ID exists to prevent mismatches
+        if (!selectedBreakfast.id) {
+          console.error(`❌ CRITICAL ERROR: Recipe ID missing for breakfast "${selectedBreakfast.name}" on day ${day}`);
+          throw new Error(`Recipe ID is undefined for "${selectedBreakfast.name}" - this would cause ID/description mismatch`);
+        }
+        
         meals.push({
           mealPlanId: 0,
           day,
@@ -2283,6 +2296,12 @@ async function generateMealPrepPlan(
         
         // Create descriptive meal name (no seasonal adaptation needed since warming recipes are filtered out)
         let mealDescription = lunchMeal.name;
+        
+        // Validate that recipe ID exists to prevent mismatches
+        if (!lunchMeal.id) {
+          console.error(`❌ CRITICAL ERROR: Recipe ID missing for lunch "${lunchMeal.name}" on day ${day}`);
+          throw new Error(`Recipe ID is undefined for "${lunchMeal.name}" - this would cause ID/description mismatch`);
+        }
         
         meals.push({
           mealPlanId: 0,
@@ -2418,6 +2437,12 @@ async function generateMealPrepPlan(
         
         // Create descriptive meal name (no seasonal adaptation needed since warming recipes are filtered out)
         let mealDescription = dinnerMeal.name;
+        
+        // Validate that recipe ID exists to prevent mismatches
+        if (!dinnerMeal.id) {
+          console.error(`❌ CRITICAL ERROR: Recipe ID missing for dinner "${dinnerMeal.name}" on day ${day}`);
+          throw new Error(`Recipe ID is undefined for "${dinnerMeal.name}" - this would cause ID/description mismatch`);
+        }
         
         meals.push({
           mealPlanId: 0,
