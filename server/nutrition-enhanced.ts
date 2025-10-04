@@ -587,6 +587,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       calcium: 75,
       iron: 3.2,
       vitaminC: 4,
+      cocoaFlavanols: 585,
       costEuros: 1.20, 
       proteinPerEuro: 19.2 
     },
@@ -8458,6 +8459,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       calcium: 180,
       iron: 4.2,
       vitaminC: 2,
+      cocoaFlavanols: 85,
       costEuros: 2.40,
       proteinPerEuro: 12.9
     },
@@ -8803,6 +8805,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       calcium: 85,
       iron: 3.5,
       vitaminC: 2,
+      cocoaFlavanols: 450,
       costEuros: 2.20,
       proteinPerEuro: 5.5
     },
@@ -14116,6 +14119,614 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Can roll in extra shredded coconut instead of cashew coating for variation"
       ],
       notes: "Viral flourless carrot cake balls that taste like dessert but are packed with whole food ingredients. No-bake recipe credited to @lindsay.keosayian. Perfect healthy snack that satisfies sweet cravings!"
+    },
+    createdAt: new Date('2025-10-04'),
+    active: true
+  },
+  
+  {
+    name: "Cacao-blueberry power oats",
+    portion: "1 bowl (350g)",
+    nutrition: {
+      protein: 28,
+      prepTime: 10,
+      calories: 420,
+      carbohydrates: 52,
+      fats: 16,
+      fiber: 12,
+      sugar: 18,
+      sodium: 95,
+      potassium: 580,
+      calcium: 220,
+      iron: 4.5,
+      vitaminC: 12,
+      cocoaFlavanols: 85,
+      costEuros: 3.20,
+      proteinPerEuro: 8.8
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Protein", "High-Fiber", "Antioxidant", "Longevity"],
+    ingredients: [
+      "50g rolled oats",
+      "30g buckwheat flakes",
+      "1 tbsp (5g) unsweetened cacao powder",
+      "75g fresh blueberries",
+      "1 scoop (30g) vanilla protein powder",
+      "1 tbsp almond butter",
+      "1/2 tsp cinnamon",
+      "pinch of salt",
+      "250ml almond milk"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["blueberries"],
+      benefits: ["High in antioxidants from cacao and blueberries", "Rich in fiber and magnesium", "Supports brain health"]
+    },
+    recipeBenefits: [
+      "85mg cocoa flavanols from cacao powder and blueberries",
+      "High in protein and fiber for sustained energy",
+      "Magnesium from cacao supports muscle function",
+      "Antioxidants support cardiovascular health"
+    ],
+    recipe: {
+      instructions: [
+        "In a pot, combine oats, buckwheat flakes, and almond milk",
+        "Heat over medium heat, stirring occasionally, for 5-7 minutes until creamy",
+        "Remove from heat and stir in cacao powder, protein powder, cinnamon, and salt",
+        "Mix until protein powder is fully incorporated",
+        "Transfer to bowl",
+        "Top with fresh blueberries and drizzle with almond butter",
+        "Serve immediately"
+      ],
+      tips: [
+        "Use frozen blueberries if fresh aren't available",
+        "Add cacao powder after cooking to preserve flavanols",
+        "Adjust liquid to desired consistency"
+      ],
+      notes: "Power-packed breakfast with 85mg flavanols supporting heart and brain health"
+    },
+    createdAt: new Date('2025-10-04'),
+    active: true
+  },
+  
+  {
+    name: "Cashew yogurt bowl with berries and cacao nibs",
+    portion: "1 bowl (300g)",
+    nutrition: {
+      protein: 18,
+      prepTime: 5,
+      calories: 350,
+      carbohydrates: 42,
+      fats: 14,
+      fiber: 10,
+      sugar: 22,
+      sodium: 65,
+      potassium: 480,
+      calcium: 180,
+      iron: 3.2,
+      vitaminC: 35,
+      cocoaFlavanols: 55,
+      costEuros: 4.50,
+      proteinPerEuro: 4.0
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "Quick", "No-Cook", "Antioxidant", "Gut-Health"],
+    ingredients: [
+      "200g unsweetened cashew yogurt",
+      "1 tbsp (15g) raw cacao nibs",
+      "75g fresh blackberries",
+      "1 tbsp chia seeds",
+      "1 tsp honey (optional)",
+      "fresh mint for garnish"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["blackberries"],
+      benefits: ["Rich in antioxidants", "Anti-inflammatory properties", "Gut-friendly probiotics"]
+    },
+    recipeBenefits: [
+      "55mg cocoa flavanols from cacao nibs and blackberries",
+      "Probiotics support gut health",
+      "Anti-inflammatory benefits from berries",
+      "Quick and easy breakfast"
+    ],
+    recipe: {
+      instructions: [
+        "Spoon cashew yogurt into serving bowl",
+        "Top with fresh blackberries",
+        "Sprinkle cacao nibs evenly over the top",
+        "Add chia seeds",
+        "Drizzle with honey if desired",
+        "Garnish with fresh mint",
+        "Serve immediately"
+      ],
+      tips: [
+        "Use soy yogurt as alternative",
+        "Cacao nibs add satisfying crunch",
+        "Prepare chia pudding night before for extra creaminess"
+      ],
+      notes: "Gut-friendly breakfast with 55mg flavanols and anti-inflammatory compounds"
+    },
+    createdAt: new Date('2025-10-04'),
+    active: true
+  },
+  
+  {
+    name: "Chocolate protein smoothie",
+    portion: "1 large glass (500ml)",
+    nutrition: {
+      protein: 32,
+      prepTime: 5,
+      calories: 380,
+      carbohydrates: 44,
+      fats: 12,
+      fiber: 9,
+      sugar: 24,
+      sodium: 120,
+      potassium: 620,
+      calcium: 350,
+      iron: 3.8,
+      vitaminC: 18,
+      cocoaFlavanols: 85,
+      costEuros: 3.80,
+      proteinPerEuro: 8.4
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Protein", "Quick", "Smoothie", "Post-Workout"],
+    ingredients: [
+      "1 tbsp (5g) unsweetened cocoa powder",
+      "250ml unsweetened soy milk",
+      "1/2 frozen banana",
+      "50g frozen blueberries",
+      "1 scoop (30g) vanilla protein powder",
+      "1 tsp ground flaxseed",
+      "1 tsp hemp hearts",
+      "ice cubes"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["banana", "blueberries"],
+      benefits: ["Antioxidants from cocoa and berries", "Omega-3 from flax and hemp", "Potassium for muscle recovery"]
+    },
+    recipeBenefits: [
+      "85mg cocoa flavanols from cocoa powder and blueberries",
+      "32g protein for muscle recovery",
+      "Omega-3 fatty acids support inflammation reduction",
+      "Ready in 5 minutes"
+    ],
+    recipe: {
+      instructions: [
+        "Add soy milk to blender first",
+        "Add frozen banana and blueberries",
+        "Add cocoa powder and protein powder",
+        "Add flaxseed and hemp hearts",
+        "Add a few ice cubes",
+        "Blend on high for 60-90 seconds until completely smooth",
+        "Pour into glass and serve immediately"
+      ],
+      tips: [
+        "Use frozen fruit for thicker texture",
+        "Blend protein powder last to avoid clumping",
+        "Add more liquid if too thick"
+      ],
+      notes: "High-protein smoothie with 85mg flavanols perfect for post-workout recovery"
+    },
+    createdAt: new Date('2025-10-04'),
+    active: true
+  },
+  
+  {
+    name: "Quinoa salad with apples and walnuts",
+    portion: "1 bowl (400g)",
+    nutrition: {
+      protein: 22,
+      prepTime: 25,
+      calories: 485,
+      carbohydrates: 62,
+      fats: 18,
+      fiber: 14,
+      sugar: 14,
+      sodium: 180,
+      potassium: 680,
+      calcium: 120,
+      iron: 5.2,
+      vitaminC: 12,
+      cocoaFlavanols: 15,
+      costEuros: 4.20,
+      proteinPerEuro: 5.2
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Protein", "High-Fiber", "Meal-Prep"],
+    ingredients: [
+      "120g cooked quinoa",
+      "80g fresh spinach",
+      "100g cooked lentils",
+      "1 small apple (120g), diced",
+      "30g walnuts, chopped",
+      "2 tbsp lemon juice",
+      "1 tbsp olive oil",
+      "1 tsp Dijon mustard",
+      "salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["spinach", "apple"],
+      benefits: ["High in iron and folate", "Rich in omega-3 from walnuts", "Vitamin C from apple and lemon"]
+    },
+    recipeBenefits: [
+      "15mg cocoa flavanols from apple",
+      "Complete plant protein from quinoa and lentils",
+      "High fiber supports digestive health",
+      "Omega-3 from walnuts"
+    ],
+    recipe: {
+      instructions: [
+        "Cook quinoa according to package instructions, let cool",
+        "In large bowl, combine cooled quinoa, spinach, and cooked lentils",
+        "Dice apple and add to bowl",
+        "Chop walnuts and add to salad",
+        "In small bowl, whisk together lemon juice, olive oil, and Dijon mustard",
+        "Pour dressing over salad and toss to combine",
+        "Season with salt and pepper",
+        "Serve immediately or refrigerate for meal prep"
+      ],
+      tips: [
+        "Use pre-cooked quinoa for faster prep",
+        "Toast walnuts for enhanced flavor",
+        "Add apple just before serving to prevent browning"
+      ],
+      notes: "Nutrient-dense salad with complete plant protein and 15mg flavanols from fresh apple"
+    },
+    createdAt: new Date('2025-10-04'),
+    active: true
+  },
+  
+  {
+    name: "Tofu bowl with green vegetables and berries",
+    portion: "1 bowl (450g)",
+    nutrition: {
+      protein: 28,
+      prepTime: 20,
+      calories: 395,
+      carbohydrates: 38,
+      fats: 16,
+      fiber: 10,
+      sugar: 12,
+      sodium: 420,
+      potassium: 720,
+      calcium: 380,
+      iron: 6.2,
+      vitaminC: 85,
+      cocoaFlavanols: 10,
+      costEuros: 4.80,
+      proteinPerEuro: 5.8
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Protein", "Low-Carb"],
+    ingredients: [
+      "200g firm tofu, cubed",
+      "100g kale, chopped",
+      "80g zucchini, sliced",
+      "60g fresh strawberries",
+      "2 tbsp tahini",
+      "1 tbsp lemon juice",
+      "1 tsp sesame oil",
+      "fresh herbs (parsley, basil)",
+      "salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["kale", "zucchini", "strawberries"],
+      benefits: ["High in vitamin C and iron", "Calcium from tofu and kale", "Antioxidants from berries"]
+    },
+    recipeBenefits: [
+      "10mg cocoa flavanols from strawberries",
+      "Complete plant protein from tofu",
+      "High in vitamin C and iron",
+      "Calcium-rich for bone health"
+    ],
+    recipe: {
+      instructions: [
+        "Press tofu to remove excess water, then cube",
+        "Heat sesame oil in large pan over medium-high heat",
+        "Add tofu cubes and cook 8-10 minutes until golden on all sides",
+        "Add kale and zucchini, sauté for 5 minutes until tender",
+        "Season with salt and pepper",
+        "In small bowl, whisk tahini with lemon juice and 1-2 tbsp water until creamy",
+        "Transfer vegetables and tofu to serving bowl",
+        "Top with fresh strawberries and herbs",
+        "Drizzle with tahini dressing"
+      ],
+      tips: [
+        "Marinate tofu beforehand for extra flavor",
+        "Use frozen berries if fresh not available",
+        "Add garlic to tahini dressing for extra flavor"
+      ],
+      notes: "Colorful plant-based bowl with 10mg flavanols and complete nutrition"
+    },
+    createdAt: new Date('2025-10-04'),
+    active: true
+  },
+  
+  {
+    name: "Buckwheat pasta with roasted vegetables and cacao sauce",
+    portion: "1 plate (400g)",
+    nutrition: {
+      protein: 24,
+      prepTime: 35,
+      calories: 520,
+      carbohydrates: 72,
+      fats: 16,
+      fiber: 12,
+      sugar: 10,
+      sodium: 320,
+      potassium: 680,
+      calcium: 140,
+      iron: 4.8,
+      vitaminC: 95,
+      cocoaFlavanols: 26,
+      costEuros: 4.50,
+      proteinPerEuro: 5.3
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Fiber"],
+    ingredients: [
+      "120g buckwheat pasta",
+      "150g broccoli florets",
+      "100g bell peppers, sliced",
+      "200g tomato sauce",
+      "1/2 tsp (2.5g) cacao powder",
+      "1 tbsp olive oil",
+      "2 garlic cloves, minced",
+      "2-3 squares (20g) dark chocolate 70-85%",
+      "fresh basil",
+      "salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["broccoli", "bell peppers", "tomatoes"],
+      benefits: ["High in vitamin C", "Antioxidants from vegetables and cacao", "Fiber-rich"]
+    },
+    recipeBenefits: [
+      "26mg cocoa flavanols from cacao powder and dark chocolate",
+      "High fiber from buckwheat and vegetables",
+      "Antioxidants from tomatoes and cacao",
+      "Gluten-free pasta alternative"
+    ],
+    recipe: {
+      instructions: [
+        "Preheat oven to 200°C",
+        "Toss broccoli and bell peppers with olive oil, salt, and pepper",
+        "Roast vegetables for 20-25 minutes until tender and slightly charred",
+        "Cook buckwheat pasta according to package instructions",
+        "In saucepan, warm tomato sauce with minced garlic",
+        "Stir cacao powder into sauce for depth of flavor",
+        "Drain pasta and toss with cacao tomato sauce",
+        "Add roasted vegetables",
+        "Top with dark chocolate pieces (they'll melt slightly)",
+        "Garnish with fresh basil",
+        "Serve immediately"
+      ],
+      tips: [
+        "Cacao adds richness without sweetness",
+        "Use chickpea pasta for extra protein",
+        "Dark chocolate provides additional flavanols"
+      ],
+      notes: "Hearty pasta dish with 26mg flavanols from cacao and dark chocolate"
+    },
+    createdAt: new Date('2025-10-04'),
+    active: true
+  },
+  
+  {
+    name: "Sweet potato and black bean bowl",
+    portion: "1 bowl (450g)",
+    nutrition: {
+      protein: 18,
+      prepTime: 35,
+      calories: 445,
+      carbohydrates: 72,
+      fats: 12,
+      fiber: 16,
+      sugar: 14,
+      sodium: 280,
+      potassium: 980,
+      calcium: 120,
+      iron: 4.5,
+      vitaminC: 28,
+      cocoaFlavanols: 0,
+      costEuros: 3.20,
+      proteinPerEuro: 5.6
+    },
+    category: "dinner",
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Fiber", "Longevity"],
+    ingredients: [
+      "200g sweet potato, cubed",
+      "150g cooked black beans",
+      "80g fresh spinach",
+      "1/2 avocado (75g), sliced",
+      "1 tbsp olive oil",
+      "1 tsp cumin",
+      "1/2 tsp paprika",
+      "lime juice",
+      "salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["sweet potato", "spinach", "avocado"],
+      benefits: ["High in beta-carotene", "Rich in potassium", "Healthy fats from avocado"]
+    },
+    recipeBenefits: [
+      "High fiber supports digestive health",
+      "Complex carbs for sustained energy",
+      "Plant protein from black beans",
+      "Rich in vitamins A and C"
+    ],
+    recipe: {
+      instructions: [
+        "Preheat oven to 200°C",
+        "Toss sweet potato cubes with olive oil, cumin, paprika, salt, and pepper",
+        "Roast for 25-30 minutes until tender and caramelized",
+        "Warm black beans in small pot",
+        "Arrange spinach in serving bowl",
+        "Top with roasted sweet potato and black beans",
+        "Add sliced avocado",
+        "Squeeze fresh lime juice over the bowl",
+        "Season with salt and pepper",
+        "Serve warm"
+      ],
+      tips: [
+        "Cut sweet potato into even cubes for uniform cooking",
+        "Add jalapeños for heat",
+        "Top with cilantro for fresh flavor"
+      ],
+      notes: "Hearty plant-based bowl rich in fiber and complex carbohydrates"
+    },
+    createdAt: new Date('2025-10-04'),
+    active: true
+  },
+  
+  {
+    name: "Grilled salmon with greens and berry dressing",
+    portion: "1 fillet with sides (350g)",
+    nutrition: {
+      protein: 38,
+      prepTime: 25,
+      calories: 465,
+      carbohydrates: 18,
+      fats: 24,
+      fiber: 6,
+      sugar: 8,
+      sodium: 380,
+      potassium: 820,
+      calcium: 180,
+      iron: 3.2,
+      vitaminC: 45,
+      cocoaFlavanols: 40,
+      costEuros: 7.20,
+      proteinPerEuro: 5.3
+    },
+    category: "dinner",
+    tags: ["High-Protein", "Low-Carb", "Omega-3", "Antioxidant", "Longevity"],
+    ingredients: [
+      "150g salmon fillet",
+      "100g steamed green beans",
+      "80g steamed broccoli",
+      "60g fresh blackberries",
+      "2 tbsp olive oil",
+      "1 tbsp balsamic vinegar",
+      "2-3 squares (20g) dark chocolate 70-85%",
+      "lemon wedge",
+      "salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["green beans", "broccoli", "blackberries"],
+      benefits: ["Omega-3 from salmon", "Vitamin C from vegetables", "Antioxidants from berries and chocolate"]
+    },
+    recipeBenefits: [
+      "40mg cocoa flavanols from blackberries and dark chocolate",
+      "High in omega-3 fatty acids",
+      "Complete protein from salmon",
+      "Anti-inflammatory benefits"
+    ],
+    recipe: {
+      instructions: [
+        "Season salmon with salt, pepper, and lemon juice",
+        "Heat 1 tbsp olive oil in pan over medium-high heat",
+        "Cook salmon 4-5 minutes per side until flaky",
+        "Steam green beans and broccoli until tender-crisp (about 5-7 minutes)",
+        "In small bowl, crush blackberries with fork",
+        "Mix crushed berries with remaining olive oil and balsamic vinegar",
+        "Arrange steamed greens on plate",
+        "Top with grilled salmon",
+        "Drizzle with blackberry dressing",
+        "Serve with dark chocolate squares on the side"
+      ],
+      tips: [
+        "Don't overcook salmon - it should be slightly pink in center",
+        "Use tofu instead of salmon for vegan version",
+        "Berry dressing adds natural sweetness"
+      ],
+      notes: "Omega-3 rich dinner with 40mg flavanols from berries and dark chocolate"
+    },
+    createdAt: new Date('2025-10-04'),
+    active: true
+  },
+  
+  {
+    name: "Vegetable curry with cocoa",
+    portion: "1 bowl with rice (450g)",
+    nutrition: {
+      protein: 16,
+      prepTime: 35,
+      calories: 485,
+      carbohydrates: 78,
+      fats: 14,
+      fiber: 12,
+      sugar: 10,
+      sodium: 420,
+      potassium: 780,
+      calcium: 140,
+      iron: 5.2,
+      vitaminC: 65,
+      cocoaFlavanols: 65,
+      costEuros: 3.80,
+      proteinPerEuro: 4.2
+    },
+    category: "dinner",
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Fiber", "Indian-Inspired"],
+    ingredients: [
+      "150g cooked chickpeas",
+      "100g pumpkin, cubed",
+      "80g fresh spinach",
+      "120g cooked brown rice",
+      "1/2 tbsp (7g) unsweetened cocoa powder",
+      "200ml coconut milk",
+      "1 tbsp curry powder",
+      "1 onion, diced",
+      "2 garlic cloves, minced",
+      "1 tbsp coconut oil",
+      "salt to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["pumpkin", "spinach", "onion"],
+      benefits: ["Rich in beta-carotene", "Iron from spinach", "Plant protein from chickpeas"]
+    },
+    recipeBenefits: [
+      "65mg cocoa flavanols from cocoa powder",
+      "High fiber supports gut health",
+      "Plant protein from chickpeas",
+      "Anti-inflammatory spices"
+    ],
+    recipe: {
+      instructions: [
+        "Heat coconut oil in large pot over medium heat",
+        "Sauté diced onion and garlic until fragrant (3-4 minutes)",
+        "Add curry powder and cocoa powder, stir for 30 seconds",
+        "Add pumpkin cubes and cook for 5 minutes",
+        "Pour in coconut milk and add chickpeas",
+        "Simmer for 15-20 minutes until pumpkin is tender",
+        "Stir in fresh spinach until wilted",
+        "Season with salt",
+        "Serve over brown rice"
+      ],
+      tips: [
+        "Cocoa adds depth without making curry sweet",
+        "Adjust curry powder to taste preference",
+        "Add chili for extra heat"
+      ],
+      notes: "Warming curry with 65mg flavanols from cocoa powder, perfect for dinner"
     },
     createdAt: new Date('2025-10-04'),
     active: true
