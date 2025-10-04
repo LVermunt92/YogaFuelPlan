@@ -92,34 +92,9 @@ export async function generateRecipeForIngredients(
   dietaryTags: string[] = [],
   targetProtein: number = 25
 ): Promise<MealOption | null> {
-  try {
-    console.log(`🤖 AI GENERATION: Creating ${category} recipe to use up: ${ingredientsToUse.join(', ')}`);
-
-    // Translate Dutch ingredients to English for AI prompt
-    const translatedIngredients = ingredientsToUse.map(ingredient => translateDutchToEnglish(ingredient));
-    console.log(`🔄 AI TRANSLATION: ${ingredientsToUse.join(', ')} -> ${translatedIngredients.join(', ')}`);
-
-    // Create specific prompt to incorporate the ingredients
-    const ingredientPrompt = `Create a delicious ${category} recipe that specifically incorporates these ingredients that need to be used up: ${translatedIngredients.join(', ')}. The recipe should make good use of these ingredients as key components, not just minor additions.`;
-
-    const aiRecipe = await generateRecipeWithAI({
-      category: category,
-      targetProtein,
-      dietaryTags,
-      excludeIngredients: [],
-      prepTimeLimit: category === 'breakfast' ? 15 : 45,
-      season: getCurrentSeason()
-    });
-
-    if (aiRecipe) {
-      console.log(`✅ AI RECIPE CREATED: "${aiRecipe.name}" incorporating ingredients to use up`);
-    }
-
-    return aiRecipe;
-  } catch (error) {
-    console.error('Error generating AI recipe for ingredients:', error);
-    return null;
-  }
+  // PERFORMANCE OPTIMIZATION: AI generation disabled - too slow for meal plan creation
+  console.log(`⚡ SKIPPING AI generation for ${category} (performance optimization) - ingredients: ${ingredientsToUse.join(', ')}`);
+  return null;
 }
 
 /**

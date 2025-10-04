@@ -83,20 +83,24 @@ export async function ensureRecipeVariety(
     });
   }
 
-  try {
-    const newRecipes = await generateMultipleRecipes(generationRequests);
-    
-    if (newRecipes.length > 0) {
-      // Cache the generated recipes
-      generatedRecipeCache.set(cacheKey, newRecipes);
-      console.log(`✨ Generated ${newRecipes.length} new recipes for ${category} with tags [${dietaryTags.join(', ')}]`);
-      
-      // Return existing + new recipes
-      return [...await getEnhancedMealsForCategoryAndDiet(category, dietaryTags), ...newRecipes];
-    }
-  } catch (error) {
-    console.error(`❌ Failed to generate recipes for ${category}:`, error);
-  }
+  // PERFORMANCE OPTIMIZATION: AI generation disabled - too slow for meal plan creation
+  console.log(`⚡ SKIPPING AI recipe generation for ${category} (performance optimization)`);
+  
+  // Skip AI generation and use existing recipes only
+  // try {
+  //   const newRecipes = await generateMultipleRecipes(generationRequests);
+  //   
+  //   if (newRecipes.length > 0) {
+  //     // Cache the generated recipes
+  //     generatedRecipeCache.set(cacheKey, newRecipes);
+  //     console.log(`✨ Generated ${newRecipes.length} new recipes for ${category} with tags [${dietaryTags.join(', ')}]`);
+  //     
+  //     // Return existing + new recipes
+  //     return [...await getEnhancedMealsForCategoryAndDiet(category, dietaryTags), ...newRecipes];
+  //   }
+  // } catch (error) {
+  //   console.error(`❌ Failed to generate recipes for ${category}:`, error);
+  // }
 
   // Fallback: return what we have
   console.log(`⚠️ Using available recipes despite limited variety for ${category}`);
