@@ -166,32 +166,11 @@ export async function getIntelligentRecipeRecommendation(
     };
   }
 
-  // No existing recipes found, try to generate one with AI (but only for a subset of ingredients)
-  if (ingredientsToUse.length > 0) {
-    console.log(`🤖 FALLBACK: No existing recipes found, generating AI recipe`);
-    
-    try {
-      // Limit to 2-3 ingredients for better distribution
-      const ingredientsForAI = ingredientsToUse.slice(0, Math.min(3, ingredientsToUse.length));
-      
-      const aiRecipe = await generateRecipeForIngredients(
-        ingredientsForAI,
-        category,
-        dietaryTags,
-        targetProtein
-      );
-      
-      if (aiRecipe) {
-        return {
-          recipe: aiRecipe,
-          usedIngredients: ingredientsForAI
-        };
-      }
-    } catch (error) {
-      console.warn('Failed to generate AI recipe for ingredients:', error);
-    }
-  }
-
+  // PERFORMANCE OPTIMIZATION: Disable AI generation during meal plan creation
+  // AI generation is slow (5-10 seconds per recipe) and blocks meal plan generation
+  // Users can still see previously AI-generated recipes in the database
+  console.log(`⚠️ No existing recipes found for ingredients: ${ingredientsToUse.join(', ')} - skipping AI generation for faster meal plan creation`);
+  
   return null;
 }
 
