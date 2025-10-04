@@ -1374,6 +1374,75 @@ function AdminPanelMain() {
                   </div>
                 </CardContent>
               </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Target className="h-5 w-5 text-purple-600" />
+                    Cocoa flavanols tracking
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">What are cocoa flavanols?</h4>
+                    <p className="text-sm text-gray-700">
+                      Cocoa flavanols are powerful bioactive compounds found in cocoa and chocolate products. They belong to the flavonoid family of polyphenols and are responsible for many of cocoa's health benefits. The processing of cocoa beans significantly affects flavanol content - raw cacao powder contains the highest concentrations, while heavily processed chocolate has much lower amounts.
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">Health benefits and scientific evidence</h4>
+                    <p className="text-sm text-gray-700 mb-2">
+                      Research consistently demonstrates multiple health benefits from daily cocoa flavanol consumption:
+                    </p>
+                    <ul className="list-disc list-inside text-sm text-gray-700 space-y-1 ml-2">
+                      <li><strong>Cardiovascular health</strong>: Improves blood vessel function, reduces blood pressure, and enhances blood flow to vital organs including the heart and brain</li>
+                      <li><strong>Cognitive function</strong>: Supports brain health by increasing cerebral blood flow, potentially improving memory, focus, and processing speed</li>
+                      <li><strong>Anti-inflammatory effects</strong>: Reduces systemic inflammation markers associated with chronic disease</li>
+                      <li><strong>Metabolic support</strong>: Improves insulin sensitivity and glucose metabolism</li>
+                      <li><strong>Skin protection</strong>: Provides photoprotection and improves skin hydration and elasticity</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">Daily target and recommendations</h4>
+                    <p className="text-sm text-gray-700 mb-2">
+                      The system tracks cocoa flavanols with a daily target of <strong>500mg</strong> (recommended range: 400-600mg). This target is based on clinical research showing optimal cardiovascular and cognitive benefits at this dosage range.
+                    </p>
+                    <p className="text-sm text-gray-700">
+                      The meal planner displays cocoa flavanols as one of five key daily metrics (protein, good fats, vegetables, fiber, cocoa flavanols), allowing users to track their intake visually through a purple progress chart.
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">Food sources and flavanol content</h4>
+                    <p className="text-sm text-gray-700 mb-2">
+                      Flavanol content varies significantly by product and processing method:
+                    </p>
+                    <ul className="list-disc list-inside text-sm text-gray-700 space-y-1 ml-2">
+                      <li><strong>Raw cacao powder</strong>: ~13mg flavanols per gram (highest concentration)</li>
+                      <li><strong>Unsweetened cocoa powder</strong>: ~13mg/g (similar to raw cacao)</li>
+                      <li><strong>Cacao nibs</strong>: ~8mg/g (whole crushed cacao beans)</li>
+                      <li><strong>Dark chocolate (70-85%)</strong>: ~2mg/g (processing reduces flavanol content)</li>
+                      <li><strong>Berries and other foods</strong>: Smaller amounts from blueberries, apples, grapes, and tea</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">Implementation in recipes</h4>
+                    <p className="text-sm text-gray-700">
+                      The recipe database includes flavanol-rich breakfast, lunch, and dinner options featuring cocoa powder, cacao nibs, and berries. Each recipe specifies its cocoa flavanol content in milligrams, calculated based on ingredient amounts. The system automatically tracks total daily intake across all meals to help users meet their 500mg target through natural food sources.
+                    </p>
+                  </div>
+
+                  <div className="bg-purple-50 p-3 rounded border border-purple-200">
+                    <h4 className="font-semibold text-sm mb-1 text-purple-900">Practical example</h4>
+                    <p className="text-sm text-purple-800">
+                      A breakfast with 20g raw cacao powder (260mg flavanols) + lunch with berries (50mg) + dinner with 10g cocoa powder (130mg) + dark chocolate snack (60mg) = 500mg total daily flavanols, meeting the optimal target.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </TabsContent>
 
