@@ -82,6 +82,17 @@ interface RecipeSearchResponse {
   totalPages: number;
 }
 
+interface UnifiedRecipesResponse {
+  recipes: Recipe[];
+  total: number;
+  breakdown: {
+    base: number;
+    glutenFree: number;
+    lactoseFree: number;
+    vegetarian: number;
+  };
+}
+
 interface RecipeStats {
   total: number;
   byCategory: {
@@ -836,24 +847,63 @@ function AdminPanelMain() {
     queryFn: () => fetch('/api/admin/nutrition-config').then(res => res.json()),
   });
 
-  // Fetch recipes with search and filters
-  const { data: recipeData, isLoading: recipesLoading, refetch: refetchRecipes } = useQuery<RecipeSearchResponse>({
-    queryKey: ['/api/recipes', { searchTerm, categoryFilter, tagsFilter, page: currentPage }],
+  // Fetch unified recipes (all base + all variants in one list)
+  const { data: unifiedRecipeData, isLoading: recipesLoading, refetch: refetchRecipes } = useQuery<UnifiedRecipesResponse>({
+    queryKey: ['/api/admin/unified-recipes'],
     queryFn: async () => {
-      const params = new URLSearchParams({
-        page: currentPage.toString(),
-        limit: '20'
-      });
-      
-      if (searchTerm) params.set('search', searchTerm);
-      if (categoryFilter && categoryFilter !== 'all-categories') params.set('category', categoryFilter);
-      if (tagsFilter && tagsFilter !== 'all-tags') params.set('tags', tagsFilter);
-      
-      const response = await fetch(`/api/recipes?${params}`);
-      if (!response.ok) throw new Error('Failed to fetch recipes');
+      const response = await fetch('/api/admin/unified-recipes');
+      if (!response.ok) throw new Error('Failed to fetch unified recipes');
       return response.json();
     },
   });
+
+  // Apply client-side filtering for search and filters
+  const filteredRecipes = React.useMemo(() => {
+    if (!unifiedRecipeData?.recipes) return [];
+    
+    let filtered = [...unifiedRecipeData.recipes];
+    
+    // Apply search filter
+    if (searchTerm) {
+      const searchLower = searchTerm.toLowerCase();
+      filtered = filtered.filter(recipe => 
+        recipe.name.toLowerCase().includes(searchLower) ||
+        recipe.ingredients.some(ing => ing.toLowerCase().includes(searchLower))
+      );
+    }
+    
+    // Apply category filter
+    if (categoryFilter && categoryFilter !== 'all-categories') {
+      filtered = filtered.filter(recipe => recipe.category === categoryFilter);
+    }
+    
+    // Apply tags filter
+    if (tagsFilter && tagsFilter !== 'all-tags') {
+      const tagLower = tagsFilter.toLowerCase();
+      filtered = filtered.filter(recipe => 
+        recipe.tags.some(tag => tag.toLowerCase().includes(tagLower))
+      );
+    }
+    
+    return filtered;
+  }, [unifiedRecipeData, searchTerm, categoryFilter, tagsFilter]);
+
+  // Paginate filtered results
+  const recipesPerPage = 20;
+  const totalPages = Math.ceil(filteredRecipes.length / recipesPerPage);
+  const paginatedRecipes = filteredRecipes.slice(
+    (currentPage - 1) * recipesPerPage,
+    currentPage * recipesPerPage
+  );
+
+  // Create recipeData compatible with existing UI
+  const recipeData = React.useMemo(() => ({
+    recipes: paginatedRecipes,
+    total: filteredRecipes.length,
+    page: currentPage,
+    limit: recipesPerPage,
+    totalPages: totalPages
+  }), [paginatedRecipes, filteredRecipes.length, currentPage, totalPages]);
 
   // Fetch recipe statistics
   const { data: recipeStats, isLoading: recipeStatsLoading } = useQuery<RecipeStats>({
@@ -947,13 +997,12 @@ function AdminPanelMain() {
 
   const deleteRecipeMutation = useMutation({
     mutationFn: async (recipeId: string) => {
-      const response = await apiRequest('DELETE', `/api/recipes/${recipeId}`);
+      const response = await apiRequest('DELETE', `/api/admin/unified-recipes/${recipeId}`);
       return response;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/recipes'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/recipes/stats'] });
-      toast({ title: "Success", description: "Recipe deleted successfully" });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/unified-recipes'] });
+      toast({ title: "Success", description: "Recipe deleted from unified database" });
     },
   });
 
@@ -1580,51 +1629,62 @@ function AdminPanelMain() {
 
           {/* Recipe Management Tab */}
           <TabsContent value="recipes" className="space-y-6">
-            {/* Recipe Statistics Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Unified Recipe Database Statistics */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Total Recipes</CardTitle>
+                  <CardTitle className="text-sm font-medium">Total active</CardTitle>
                   <Database className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{recipeStats?.total || 0}</div>
+                  <div className="text-2xl font-bold">{unifiedRecipeData?.total || 0}</div>
                   <p className="text-xs text-muted-foreground">
-                    {recipeStats?.modifications || 0} modified, {recipeStats?.deleted || 0} deleted
+                    All recipes in unified database
                   </p>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Breakfast</CardTitle>
+                  <CardTitle className="text-sm font-medium">Base recipes</CardTitle>
                   <ChefHat className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{recipeStats?.byCategory?.breakfast || 0}</div>
-                  <p className="text-xs text-muted-foreground">Morning recipes</p>
+                  <div className="text-2xl font-bold">{unifiedRecipeData?.breakdown.base || 0}</div>
+                  <p className="text-xs text-muted-foreground">Original recipes</p>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Lunch</CardTitle>
-                  <ChefHat className="h-4 w-4 text-muted-foreground" />
+                  <CardTitle className="text-sm font-medium">Gluten-free</CardTitle>
+                  <ChefHat className="h-4 w-4 text-amber-500" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{recipeStats?.byCategory?.lunch || 0}</div>
-                  <p className="text-xs text-muted-foreground">Midday recipes</p>
+                  <div className="text-2xl font-bold">{unifiedRecipeData?.breakdown.glutenFree || 0}</div>
+                  <p className="text-xs text-muted-foreground">GF variants</p>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Dinner</CardTitle>
-                  <ChefHat className="h-4 w-4 text-muted-foreground" />
+                  <CardTitle className="text-sm font-medium">Lactose-free</CardTitle>
+                  <ChefHat className="h-4 w-4 text-blue-500" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{recipeStats?.byCategory?.dinner || 0}</div>
-                  <p className="text-xs text-muted-foreground">Evening recipes</p>
+                  <div className="text-2xl font-bold">{unifiedRecipeData?.breakdown.lactoseFree || 0}</div>
+                  <p className="text-xs text-muted-foreground">LF variants</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Vegetarian</CardTitle>
+                  <ChefHat className="h-4 w-4 text-green-500" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{unifiedRecipeData?.breakdown.vegetarian || 0}</div>
+                  <p className="text-xs text-muted-foreground">Veg variants</p>
                 </CardContent>
               </Card>
             </div>
