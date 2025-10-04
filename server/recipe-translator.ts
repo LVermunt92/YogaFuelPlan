@@ -223,6 +223,8 @@ const ingredientTranslations: Record<string, string> = {
   'orange': 'sinaasappel',
   'lemon': 'citroen',
   'lemon juice': 'limoensap',
+  'bean sprouts': 'tauge',
+  'sprouts': 'tauge',
   'lime': 'limoen',
   'mango': 'mango',
   'pineapple': 'ananas',
