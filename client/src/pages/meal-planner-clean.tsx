@@ -761,7 +761,7 @@ function MealPlannerMain() {
           {/* 2. Compact Nutrition Charts */}
           {currentMealPlan && kpiData && (
             <div className="mb-6">
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg w-full">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg w-full">
               {/* Protein Chart - First position */}
               <TooltipProvider>
                 <Tooltip>
@@ -924,6 +924,48 @@ function MealPlannerMain() {
                     <p className="font-semibold mb-1">{t.whyFiberMatters}</p>
                     <p className="text-sm mb-2">{t.fiberTooltip}</p>
                     <p className="text-xs text-amber-200 font-medium">{t.fiberWarning}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+
+              {/* Cocoa Flavanols */}
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="text-center cursor-help">
+                      <div className="relative w-20 h-20 mx-auto mb-1">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <PieChart>
+                            <Pie
+                              data={[
+                                { value: Math.min(kpiData.cocoaFlavanols.percentage, 100), fill: "#8b5cf6" },
+                                { value: Math.max(100 - kpiData.cocoaFlavanols.percentage, 0), fill: "#f3f4f6" }
+                              ]}
+                              cx="50%"
+                              cy="50%"
+                              innerRadius={20}
+                              outerRadius={35}
+                              startAngle={90}
+                              endAngle={450}
+                              dataKey="value"
+                            >
+                            </Pie>
+                          </PieChart>
+                        </ResponsiveContainer>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="text-center">
+                            <div className="text-sm font-bold text-purple-600">{kpiData.cocoaFlavanols.value}mg</div>
+                          </div>
+                        </div>
+                      </div>
+                      <h3 className="text-xs font-semibold text-purple-600">Cocoa flavanols</h3>
+                      <p className="text-xs text-gray-500">{Math.min(kpiData.cocoaFlavanols.percentage, 100)}%</p>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p className="font-semibold mb-1">Why cocoa flavanols matter</p>
+                    <p className="text-sm mb-2">Cocoa flavanols are powerful plant compounds that support heart health, brain function, and blood flow. Aim for 400-600mg daily from sources like cocoa powder, dark chocolate, and berries.</p>
+                    <p className="text-xs text-purple-200 font-medium">Target: 500mg/day for optimal cardiovascular benefits</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
