@@ -905,7 +905,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Anti-Inflammatory", "High-Protein", "Longevity"],
     ingredients: [
       "1 cup red lentils",
-      "1 medium sweet potato (diced)",
+      "200g sweet potato (diced)",
       "2 large carrots (diced)",
       "1 parsnip (diced)",
       "½ red onion (sliced)",
@@ -924,7 +924,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     recipe: {
       instructions: [
         "Preheat oven to 200°C",
-        "Dice 1 medium sweet potato, 2 carrots, 1 parsnip into 2cm pieces",
+        "Dice 200g sweet potato, 2 carrots, 1 parsnip into 2cm pieces",
         "Toss vegetables with 1 tbsp olive oil, salt, and fresh rosemary",
         "Roast vegetables for 35 minutes until tender",
         "Cook 1 cup red lentils in 2 cups water for 15 minutes",
@@ -965,7 +965,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "1 ripe avocado (sliced)",
       "125g kidney beans (cooked and drained)",
       "2 sweet red bell peppers (sliced)",
-      "1 medium sweet potato (thinly sliced)",
+      "200g sweet potato (thinly sliced)",
       "10ml pumpkin seeds",
       "10ml hemp seeds",
       "60g fresh spinach leaves",
@@ -1088,7 +1088,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Pescatarian", "Gluten-Free", "Dairy-Free", "Paleo", "Anti-Inflammatory", "High-Protein", "Longevity"],
     ingredients: [
       "150g wild salmon fillet",
-      "1 medium sweet potato (chunked)",
+      "200g sweet potato (chunked)",
       "2 large carrots (chunked)",
       "1 parsnip (chunked)",
       "½ red onion (wedged)",
@@ -1650,7 +1650,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     ingredients: [
       "2 large portobello mushrooms (stems removed)",
       "200g Brussels sprouts (halved)",
-      "1 medium sweet potato (cubed)",
+      "200g sweet potato (cubed)",
       "½ red onion (sliced)",
       "2 sprigs fresh sage",
       "2 sprigs fresh thyme",
@@ -2300,7 +2300,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     category: "dinner",
     tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Quick", "High-Fiber"],
     ingredients: [
-      "1 large sweet potato (cubed)",
+      "300g sweet potato (cubed)",
       "1 can (400g) black beans (drained)",
       "1 red bell pepper (diced)",
       "1 onion (diced)",
