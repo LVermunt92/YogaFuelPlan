@@ -698,7 +698,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.1
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Protein", "Superfood", "Ayurvedic", "Longevity"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Protein", "Superfood", "Ayurvedic", "Longevity", "Menstrual", "Follicular", "Luteal", "Ovulation"],
     ingredients: [
       "90g cooked quinoa",
       "120g coconut yogurt",
@@ -797,7 +797,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.2
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Fiber", "Antioxidant", "Ayurvedic", "High-Protein", "Longevity"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Fiber", "Antioxidant", "Ayurvedic", "High-Protein", "Longevity", "Menstrual", "Follicular", "Ovulation"],
     ingredients: [
       "30g spinach",
       "½ frozen banana",
@@ -852,7 +852,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.7 
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "Probiotic", "Fermented", "High-Protein", "Ayurvedic", "Longevity"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "Probiotic", "Fermented", "High-Protein", "Ayurvedic", "Longevity", "Menstrual", "Follicular", "Luteal", "Ovulation"],
     ingredients: [
       "200ml long-fermented kefir (24+ hours)",
       "30g gluten-free oat granola", 
@@ -902,7 +902,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.3 
     },
     category: "lunch",
-    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Anti-Inflammatory", "High-Protein", "Longevity"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "Anti-Inflammatory", "High-Protein", "Longevity", "Menstrual", "Follicular", "Luteal"],
     ingredients: [
       "190g red lentils",
       "200g sweet potato (diced)",
@@ -1268,7 +1268,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.9 
     },
     category: "lunch",
-    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Ayurvedic", "Anti-Inflammatory"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "Ayurvedic", "Anti-Inflammatory", "Menstrual", "Follicular", "Luteal"],
     ingredients: [
       "140g green lentils",
       "95g brown rice", 
@@ -1324,7 +1324,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.9 
     },
     category: "lunch",
-    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "High-Protein", "Anti-Inflammatory", "Ayurvedic", "Longevity"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Protein", "Anti-Inflammatory", "Ayurvedic", "Longevity", "Menstrual", "Follicular", "Luteal", "Ovulation"],
     ingredients: [
       "200g tempeh (sliced)",
       "1 medium zucchini (sliced)",
@@ -1646,7 +1646,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.4 
     },
     category: "dinner",
-    tags: ["Vegetarian", "Gluten-Free", "Dairy-Free", "High-Protein", "Longevity"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Protein", "Longevity", "Menstrual", "Follicular", "Luteal", "Ovulation"],
     ingredients: [
       "2 large portobello mushrooms (stems removed)",
       "200g Brussels sprouts (halved)",
@@ -5011,7 +5011,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.9 
     },
     category: "lunch",
-    tags: ["Vegetarian", "Vegan", "Gluten-Free", "High-Protein", "Quick", "Mediterranean"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Protein", "Quick", "Mediterranean", "Menstrual", "Follicular", "Luteal"],
     ingredients: [
       "1 can (400g) white beans (drained)",
       "200g fresh spinach",
