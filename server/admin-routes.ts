@@ -73,11 +73,20 @@ adminRouter.get('/users', async (req, res) => {
       proteinTarget: user.proteinTarget,
       weight: user.weight,
       goalWeight: user.goalWeight,
+      lastLoginAt: user.lastLoginAt,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt
     }));
     
-    res.json({ users: safeUsers });
+    // Sort by last login (most recent first, nulls at the end)
+    const sortedUsers = safeUsers.sort((a, b) => {
+      if (!a.lastLoginAt && !b.lastLoginAt) return 0;
+      if (!a.lastLoginAt) return 1;
+      if (!b.lastLoginAt) return -1;
+      return new Date(b.lastLoginAt).getTime() - new Date(a.lastLoginAt).getTime();
+    });
+    
+    res.json({ users: sortedUsers });
   } catch (error) {
     console.error('Error getting users:', error);
     res.status(500).json({ error: 'Failed to get users' });
