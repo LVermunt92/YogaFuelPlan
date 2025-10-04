@@ -2982,7 +2982,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       costEuros: 3.50,
       proteinPerEuro: 4.6
     },
-    category: 'dinner',
+    category: 'breakfast',
     tags: ['Vegetarian', 'Vegan', 'Gluten-Free', 'Lactose-Free', 'Ayurvedic', 'Cooling'],
     ingredients: [
       '90g cooked quinoa',
