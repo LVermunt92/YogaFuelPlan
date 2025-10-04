@@ -10288,7 +10288,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       costEuros: 2.80,
       proteinPerEuro: 6.4
     },
-    category: "breakfast",
+    category: "snack",
     tags: ["Vegetarian", "Gluten-Free", "Menstruation", "High-Protein", "Sweet-Treat", "Cinnamon"],
     ingredients: [
       "80g oat flour",
