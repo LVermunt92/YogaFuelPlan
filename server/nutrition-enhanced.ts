@@ -31,7 +31,7 @@ export interface MealOption {
   name: string;
   portion: string;
   nutrition: NutritionInfo;
-  category: 'breakfast' | 'lunch' | 'dinner';
+  category: 'breakfast' | 'lunch' | 'dinner' | 'snack';
   tags: string[];
   ingredients: string[];
   wholeFoodLevel: 'minimal' | 'moderate' | 'high'; // How processed the ingredients are
@@ -127,6 +127,59 @@ function addCyclePhaseTagsToRecipe(recipe: MealOption): MealOption {
     newTags.push('Menstrual', 'Follicular', 'Ovulation', 'Luteal');
   }
   
+  return { ...recipe, tags: newTags };
+}
+
+// Function to add functional tags to snacks based on nutritional profile
+// Pre-Workout: 120-220 kcal, 20-40g carbs, 0-10g protein, low fat/fiber, easy digest
+// Post-Workout: 180-320 kcal, 15-30g protein, 15-40g carbs, low-moderate fiber
+// Neutral: 120-250 kcal, 5-15g protein, balanced macros, mini-meal vibe
+function addFunctionalTagsToSnack(recipe: MealOption): MealOption {
+  if (recipe.category !== 'snack') {
+    return recipe; // Only tag snacks
+  }
+
+  const newTags = [...recipe.tags];
+  const { calories, protein, carbohydrates, fiber } = recipe.nutrition;
+
+  // Pre-Workout criteria: quick energy without stomach heaviness
+  const isPreWorkout = 
+    calories >= 120 && calories <= 220 &&
+    carbohydrates >= 20 && carbohydrates <= 40 &&
+    protein >= 0 && protein <= 10 &&
+    (fiber || 0) <= 5;
+
+  // Post-Workout criteria: muscle recovery + refill glycogen
+  const isPostWorkout = 
+    calories >= 180 && calories <= 320 &&
+    protein >= 15 && protein <= 30 &&
+    carbohydrates >= 15 && carbohydrates <= 40 &&
+    (fiber || 0) <= 8;
+
+  // Neutral criteria: balanced snack with no training purpose
+  const isNeutral = 
+    calories >= 120 && calories <= 250 &&
+    protein >= 5 && protein <= 15 &&
+    !isPreWorkout && !isPostWorkout;
+
+  // Add functional tags
+  if (isPreWorkout && !newTags.includes('Pre-Workout')) {
+    newTags.push('Pre-Workout');
+  }
+  if (isPostWorkout && !newTags.includes('Post-Workout')) {
+    newTags.push('Post-Workout');
+  }
+  if (isNeutral && !newTags.includes('Neutral-Snack')) {
+    newTags.push('Neutral-Snack');
+  }
+
+  // Ensure at least one functional tag (default to Neutral if no other match)
+  const functionalTags = ['Pre-Workout', 'Post-Workout', 'Neutral-Snack'];
+  const hasFunctionalTag = functionalTags.some(tag => newTags.includes(tag));
+  if (!hasFunctionalTag) {
+    newTags.push('Neutral-Snack');
+  }
+
   return { ...recipe, tags: newTags };
 }
 
@@ -14479,7 +14532,7 @@ export async function findRecipeByName(mealDescription: string): Promise<MealOpt
 }
 
 // Function to get meals from unified database filtered by dietary requirements
-export async function getEnhancedMealsByCategory(category: 'breakfast' | 'lunch' | 'dinner'): Promise<MealOption[]> {
+export async function getEnhancedMealsByCategory(category: 'breakfast' | 'lunch' | 'dinner' | 'snack'): Promise<MealOption[]> {
   const unifiedDatabase = await getCompleteEnhancedMealDatabase();
   const categoryMeals = unifiedDatabase.filter(meal => meal.category === category);
   
@@ -14589,7 +14642,7 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
   });
 }
 
-export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' | 'lunch' | 'dinner', dietaryTags: string[] = [], userId?: number): Promise<MealOption[]> {
+export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' | 'lunch' | 'dinner' | 'snack', dietaryTags: string[] = [], userId?: number): Promise<MealOption[]> {
   console.log(`🎯 STREAMLINED APPROACH: category=${category}, userId=${userId}, tags=[${dietaryTags.join(', ')}]`);
   
   // Start with curated database meals

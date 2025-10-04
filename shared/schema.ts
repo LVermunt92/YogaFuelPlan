@@ -25,7 +25,7 @@ export const users = pgTable("users", {
   householdSize: integer("household_size").default(1),
   cookingDaysPerWeek: integer("cooking_days_per_week").default(7),
   eatingDaysAtHome: integer("eating_days_at_home").default(7),
-  mealsPerDay: integer("meals_per_day").default(2), // 2 = lunch+dinner, 3 = breakfast+lunch+dinner
+  mealsPerDay: integer("meals_per_day").default(2), // 2 = lunch+dinner, 3 = breakfast+lunch+dinner, 4+ = includes snacks
   meatFishMealsPerWeek: integer("meat_fish_meals_per_week").default(0),
   language: text("language").default("en"), // en, nl
   leftovers: text("leftovers").array().default([]), // current leftovers to use in meal planning
@@ -56,7 +56,7 @@ export const meals = pgTable("meals", {
   mealPlanId: integer("meal_plan_id").references(() => mealPlans.id),
   recipeId: integer("recipe_id"), // Numerical ID of the recipe in the enhanced meal database
   day: integer("day").notNull(), // 1-7
-  mealType: text("meal_type").notNull(), // breakfast, lunch, dinner
+  mealType: text("meal_type").notNull(), // breakfast, lunch, dinner, snack
   foodDescription: text("food_description").notNull(),
   portion: text("portion").notNull(),
   protein: real("protein").notNull(), // grams
@@ -96,7 +96,7 @@ export const recipeRatings = pgTable("recipe_ratings", {
   recipeName: text("recipe_name").notNull(),
   rating: integer("rating").notNull(), // 1-5 stars
   feedback: text("feedback"), // optional text feedback
-  mealType: text("meal_type").notNull(), // breakfast, lunch, dinner
+  mealType: text("meal_type").notNull(), // breakfast, lunch, dinner, snack
   ratedAt: timestamp("rated_at").notNull().defaultNow(),
 }, (table) => ({
   uniqueUserRecipe: unique().on(table.userId, table.recipeName),
@@ -106,7 +106,7 @@ export const mealHistory = pgTable("meal_history", {
   id: serial("id").primaryKey(),
   userId: integer("user_id").references(() => users.id, { onDelete: "cascade" }).notNull(),
   mealName: text("meal_name").notNull(),
-  mealType: text("meal_type").notNull(), // breakfast, lunch, dinner
+  mealType: text("meal_type").notNull(), // breakfast, lunch, dinner, snack
   portion: text("portion").notNull(),
   protein: real("protein").notNull(),
   prepTime: integer("prep_time").notNull(),
@@ -120,7 +120,7 @@ export const mealFavorites = pgTable("meal_favorites", {
   id: serial("id").primaryKey(),
   userId: integer("user_id").references(() => users.id, { onDelete: "cascade" }).notNull(),
   mealName: text("meal_name").notNull(),
-  mealType: text("meal_type").notNull(), // breakfast, lunch, dinner
+  mealType: text("meal_type").notNull(), // breakfast, lunch, dinner, snack
   portion: text("portion").notNull(),
   protein: real("protein").notNull(),
   prepTime: integer("prep_time").notNull(),
@@ -157,7 +157,7 @@ export const userRecipes = pgTable("user_recipes", {
   prepTime: integer("prep_time").notNull(), // minutes
   cookTime: integer("cook_time").default(0), // minutes
   servings: integer("servings").default(1), // number of servings
-  mealTypes: text("meal_types").array().notNull(), // breakfast, lunch, dinner
+  mealTypes: text("meal_types").array().notNull(), // breakfast, lunch, dinner, snack
   costEuros: real("cost_euros"), // estimated cost in euros
   
   // Categorization
@@ -367,7 +367,7 @@ export const recipeRatingSchema = z.object({
   recipeName: z.string().min(1),
   rating: z.number().min(1).max(5),
   feedback: z.string().optional(),
-  mealType: z.enum(["breakfast", "lunch", "dinner"]),
+  mealType: z.enum(["breakfast", "lunch", "dinner", "snack"]),
 });
 
 export const insertMealHistorySchema = createInsertSchema(mealHistory).omit({
