@@ -1130,7 +1130,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
     
     // Convert user recipes to MealOption format
     const convertUserRecipeToMealOption = (recipe: any): MealOption => ({
-      id: `user-${recipe.id}`, // Prefix user recipe IDs to avoid conflicts with curated recipes
+      id: recipe.id, // Use numeric recipe ID directly
       name: recipe.name,
       portion: recipe.portion || '1 serving',
       ingredients: recipe.ingredients || [],
