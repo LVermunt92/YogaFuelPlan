@@ -1389,7 +1389,7 @@ function MealPlannerMain() {
                             // Sunday - only dinner
                             dinner && (
                               <div 
-                                className={`cursor-pointer hover:opacity-90 p-3 border-l-4 rounded-r-lg ${
+                                className={`relative cursor-pointer hover:opacity-90 p-3 border-l-4 rounded-r-lg ${
                                   dinner.foodDescription === 'Eating out'
                                     ? 'border-gray-400 bg-gray-50'
                                     : isLeftoverMeal(dinner) 
@@ -1398,6 +1398,11 @@ function MealPlannerMain() {
                                 }`}
                                 onClick={() => setSelectedMealId(dinner.id)}
                               >
+                                {dinner.foodDescription.toLowerCase().includes('incorporating') && !isLeftoverMeal(dinner) && (
+                                  <div className="absolute top-2 right-2 bg-emerald-500 text-white rounded-full p-1" data-testid="icon-ingredient-reuse">
+                                    <Check className="h-3 w-3" />
+                                  </div>
+                                )}
                                 <div className="flex items-center gap-2 mb-1">
                                   <div className={`text-xs font-medium ${
                                     isLeftoverMeal(dinner) ? 'text-blue-700' : 'text-green-700'
@@ -1410,12 +1415,6 @@ function MealPlannerMain() {
                                       Leftover
                                     </div>
                                   )}
-                                  {dinner.foodDescription.toLowerCase().includes('incorporating') && !isLeftoverMeal(dinner) && (
-                                    <div className="flex items-center gap-1 text-xs text-orange-600 bg-orange-100 px-1.5 py-0.5 rounded">
-                                      <Plus className="h-3 w-3" />
-                                      Added Ingredients
-                                    </div>
-                                  )}
                                 </div>
                                 <div className="text-sm font-medium text-gray-900 mb-1">{dinner.foodDescription.replace(' (leftover)', '').replace(/\s*\(incorporating leftover.*?\)/g, '')}</div>
                                 <div className="text-sm text-gray-600"><span className="text-emerald-600">{dinner.protein}g {t.protein.toLowerCase()}</span> • {dinner.prepTime} min</div>
@@ -1426,7 +1425,7 @@ function MealPlannerMain() {
                             <>
                               {breakfast && (
                                 <div 
-                                  className={`cursor-pointer hover:opacity-90 p-3 border-l-4 rounded-r-lg ${
+                                  className={`relative cursor-pointer hover:opacity-90 p-3 border-l-4 rounded-r-lg ${
                                     breakfast.foodDescription === 'Eating out'
                                       ? 'border-gray-400 bg-gray-50'
                                       : isLeftoverMeal(breakfast) 
@@ -1435,6 +1434,11 @@ function MealPlannerMain() {
                                   }`}
                                   onClick={() => setSelectedMealId(breakfast.id)}
                                 >
+                                  {breakfast.foodDescription.toLowerCase().includes('incorporating') && !isLeftoverMeal(breakfast) && (
+                                    <div className="absolute top-2 right-2 bg-emerald-500 text-white rounded-full p-1" data-testid="icon-ingredient-reuse">
+                                      <Check className="h-3 w-3" />
+                                    </div>
+                                  )}
                                   <div className="flex items-center gap-2 mb-1">
                                     <div className={`text-xs font-medium ${
                                       breakfast.foodDescription === 'Eating out'
@@ -1449,12 +1453,6 @@ function MealPlannerMain() {
                                         Leftover
                                       </div>
                                     )}
-                                    {breakfast.foodDescription.toLowerCase().includes('incorporating') && !isLeftoverMeal(breakfast) && (
-                                      <div className="flex items-center gap-1 text-xs text-orange-600 bg-orange-100 px-1.5 py-0.5 rounded">
-                                        <Plus className="h-3 w-3" />
-                                        Added Ingredients
-                                      </div>
-                                    )}
                                   </div>
                                   <div className="text-sm font-medium text-gray-900 mb-1">{breakfast.foodDescription.replace(' (leftover)', '').replace(/\s*\(incorporating leftover.*?\)/g, '')}</div>
                                   <div className="text-sm text-gray-600"><span className="text-emerald-600">{breakfast.protein}g {t.protein.toLowerCase()}</span> • {breakfast.prepTime} min</div>
@@ -1463,7 +1461,7 @@ function MealPlannerMain() {
                               
                               {lunch && (
                                 <div 
-                                  className={`cursor-pointer hover:opacity-90 p-3 border-l-4 rounded-r-lg ${
+                                  className={`relative cursor-pointer hover:opacity-90 p-3 border-l-4 rounded-r-lg ${
                                     lunch.foodDescription === 'Eating out'
                                       ? 'border-gray-400 bg-gray-50'
                                       : isLeftoverMeal(lunch) 
@@ -1472,6 +1470,11 @@ function MealPlannerMain() {
                                   }`}
                                   onClick={() => setSelectedMealId(lunch.id)}
                                 >
+                                  {lunch.foodDescription.toLowerCase().includes('incorporating') && !isLeftoverMeal(lunch) && (
+                                    <div className="absolute top-2 right-2 bg-emerald-500 text-white rounded-full p-1" data-testid="icon-ingredient-reuse">
+                                      <Check className="h-3 w-3" />
+                                    </div>
+                                  )}
                                   <div className="flex items-center gap-2 mb-1">
                                     <div className={`text-xs font-medium ${
                                       lunch.foodDescription === 'Eating out'
@@ -1486,12 +1489,6 @@ function MealPlannerMain() {
                                         Leftover
                                       </div>
                                     )}
-                                    {lunch.foodDescription.toLowerCase().includes('incorporating') && !isLeftoverMeal(lunch) && (
-                                      <div className="flex items-center gap-1 text-xs text-orange-600 bg-orange-100 px-1.5 py-0.5 rounded">
-                                        <Plus className="h-3 w-3" />
-                                        Added Ingredients
-                                      </div>
-                                    )}
                                   </div>
                                   <div className="text-sm font-medium text-gray-900 mb-1">{lunch.foodDescription.replace(' (leftover)', '').replace(/\s*\(incorporating leftover.*?\)/g, '')}</div>
                                   <div className="text-sm text-gray-600"><span className="text-emerald-600">{lunch.protein}g {t.protein.toLowerCase()}</span> • {lunch.prepTime} min</div>
@@ -1500,7 +1497,7 @@ function MealPlannerMain() {
                               
                               {dinner && (
                                 <div 
-                                  className={`cursor-pointer hover:opacity-90 p-3 border-l-4 rounded-r-lg ${
+                                  className={`relative cursor-pointer hover:opacity-90 p-3 border-l-4 rounded-r-lg ${
                                     dinner.foodDescription === 'Eating out'
                                       ? 'border-gray-400 bg-gray-50'
                                       : isLeftoverMeal(dinner) 
@@ -1509,6 +1506,11 @@ function MealPlannerMain() {
                                   }`}
                                   onClick={() => setSelectedMealId(dinner.id)}
                                 >
+                                  {dinner.foodDescription.toLowerCase().includes('incorporating') && !isLeftoverMeal(dinner) && (
+                                    <div className="absolute top-2 right-2 bg-emerald-500 text-white rounded-full p-1" data-testid="icon-ingredient-reuse">
+                                      <Check className="h-3 w-3" />
+                                    </div>
+                                  )}
                                   <div className="flex items-center gap-2 mb-1">
                                     <div className={`text-xs font-medium ${
                                       dinner.foodDescription === 'Eating out'
@@ -1521,12 +1523,6 @@ function MealPlannerMain() {
                                       <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">
                                         <RefreshCw className="h-3 w-3" />
                                         Leftover
-                                      </div>
-                                    )}
-                                    {dinner.foodDescription.toLowerCase().includes('incorporating') && !isLeftoverMeal(dinner) && (
-                                      <div className="flex items-center gap-1 text-xs text-orange-600 bg-orange-100 px-1.5 py-0.5 rounded">
-                                        <Plus className="h-3 w-3" />
-                                        Added Ingredients
                                       </div>
                                     )}
                                   </div>
@@ -1580,7 +1576,7 @@ function MealPlannerMain() {
                                   <td className="px-2 py-4">
                                     {breakfast && (
                                       <div 
-                                        className={`cursor-pointer hover:bg-gray-100 p-2 rounded border-l-2 ${
+                                        className={`relative cursor-pointer hover:bg-gray-100 p-2 rounded border-l-2 ${
                                           breakfast.foodDescription === 'Eating out'
                                             ? 'border-gray-400 bg-gray-50'
                                             : isLeftoverMeal(breakfast) 
@@ -1589,6 +1585,11 @@ function MealPlannerMain() {
                                         }`}
                                         onClick={() => setSelectedMealId(breakfast.id)}
                                       >
+                                        {breakfast.foodDescription.toLowerCase().includes('incorporating') && !isLeftoverMeal(breakfast) && (
+                                          <div className="absolute top-1 right-1 bg-emerald-500 text-white rounded-full p-0.5" data-testid="icon-ingredient-reuse">
+                                            <Check className="h-2.5 w-2.5" />
+                                          </div>
+                                        )}
                                         <div className="text-xs font-medium text-gray-900 mb-1 line-clamp-3">{breakfast.foodDescription}</div>
                                         <div className="text-xs text-gray-500"><span className="text-emerald-600">{breakfast.protein}g</span> • {breakfast.prepTime}min</div>
                                       </div>
@@ -1597,7 +1598,7 @@ function MealPlannerMain() {
                                   <td className="px-2 py-4">
                                     {lunch && (
                                       <div 
-                                        className={`cursor-pointer hover:bg-gray-100 p-2 rounded border-l-2 ${
+                                        className={`relative cursor-pointer hover:bg-gray-100 p-2 rounded border-l-2 ${
                                           lunch.foodDescription === 'Eating out'
                                             ? 'border-gray-400 bg-gray-50'
                                             : isLeftoverMeal(lunch) 
@@ -1606,6 +1607,11 @@ function MealPlannerMain() {
                                         }`}
                                         onClick={() => setSelectedMealId(lunch.id)}
                                       >
+                                        {lunch.foodDescription.toLowerCase().includes('incorporating') && !isLeftoverMeal(lunch) && (
+                                          <div className="absolute top-1 right-1 bg-emerald-500 text-white rounded-full p-0.5" data-testid="icon-ingredient-reuse">
+                                            <Check className="h-2.5 w-2.5" />
+                                          </div>
+                                        )}
                                         <div className="text-xs font-medium text-gray-900 mb-1 line-clamp-3">{lunch.foodDescription}</div>
                                         <div className="text-xs text-gray-500"><span className="text-emerald-600">{lunch.protein}g</span> • {lunch.prepTime}min</div>
                                       </div>
@@ -1614,7 +1620,7 @@ function MealPlannerMain() {
                                   <td className="px-2 py-4">
                                     {dinner && (
                                       <div 
-                                        className={`cursor-pointer hover:bg-gray-100 p-2 rounded border-l-2 ${
+                                        className={`relative cursor-pointer hover:bg-gray-100 p-2 rounded border-l-2 ${
                                           dinner.foodDescription === 'Eating out'
                                             ? 'border-gray-400 bg-gray-50'
                                             : isLeftoverMeal(dinner) 
@@ -1623,6 +1629,11 @@ function MealPlannerMain() {
                                         }`}
                                         onClick={() => setSelectedMealId(dinner.id)}
                                       >
+                                        {dinner.foodDescription.toLowerCase().includes('incorporating') && !isLeftoverMeal(dinner) && (
+                                          <div className="absolute top-1 right-1 bg-emerald-500 text-white rounded-full p-0.5" data-testid="icon-ingredient-reuse">
+                                            <Check className="h-2.5 w-2.5" />
+                                          </div>
+                                        )}
                                         <div className="text-xs font-medium text-gray-900 mb-1 line-clamp-3">{dinner.foodDescription}</div>
                                         <div className="text-xs text-gray-500"><span className="text-emerald-600">{dinner.protein}g</span> • {dinner.prepTime}min</div>
                                       </div>
