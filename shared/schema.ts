@@ -243,6 +243,17 @@ export const ingredientMappings = pgTable("ingredient_mappings", {
   uniqueIngredient: unique().on(table.normalizedIngredient),
 }));
 
+// Plant diversity categorization for tracking unique plant foods per week
+export const plantCategories = pgTable("plant_categories", {
+  id: serial("id").primaryKey(),
+  canonicalName: text("canonical_name").notNull().unique(), // e.g. "spinach"
+  displayName: text("display_name").notNull(), // e.g. "Spinach"
+  plantType: text("plant_type").notNull(), // vegetable, fruit, grain, legume, nut, seed, herb, spice
+  synonyms: text("synonyms").array().default([]), // e.g. ["baby spinach", "raw spinach"]
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 // Pre-translated recipe storage for multi-language support
 export const recipeTranslations = pgTable("recipe_translations", {
   id: serial("id").primaryKey(),
