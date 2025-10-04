@@ -895,13 +895,12 @@ function AdminPanelMain() {
         </div>
 
         <Tabs defaultValue="overview" className="space-y-4 sm:space-y-6">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-8 gap-1 h-auto p-1">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-1 h-auto p-1">
             <TabsTrigger value="overview" className="text-xs sm:text-sm py-2 px-2">Overview</TabsTrigger>
             <TabsTrigger value="nutrition" className="text-xs sm:text-sm py-2 px-2">Nutrition</TabsTrigger>
             <TabsTrigger value="config" className="text-xs sm:text-sm py-2 px-2">Config</TabsTrigger>
             <TabsTrigger value="recipes" className="bg-green-100 text-xs sm:text-sm py-2 px-2">Recipes</TabsTrigger>
             <TabsTrigger value="ingredient-mapping" className="bg-orange-100 text-xs sm:text-sm py-2 px-2">Ingredients</TabsTrigger>
-            <TabsTrigger value="save-changes" className="bg-blue-100 text-xs sm:text-sm py-2 px-2">Save Changes</TabsTrigger>
             <TabsTrigger value="users" className="text-xs sm:text-sm py-2 px-2">Users</TabsTrigger>
             <TabsTrigger value="system" className="text-xs sm:text-sm py-2 px-2">System</TabsTrigger>
           </TabsList>
@@ -1576,128 +1575,6 @@ function AdminPanelMain() {
           {/* Ingredient Mapping Tab */}
           <TabsContent value="ingredient-mapping" className="space-y-6">
             <IngredientMappingManager />
-          </TabsContent>
-
-          {/* Save Changes Tab */}
-          <TabsContent value="save-changes" className="space-y-4">
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-lg font-semibold mb-4">Save Recipe Changes</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Your recipe modifications are currently stored in memory. Use this panel to review and save them permanently to the database.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Current Modifications */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Edit className="w-4 h-4" />
-                      Recipe Modifications
-                    </CardTitle>
-                    <CardDescription>
-                      Review all recipe changes made in this session
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Button 
-                      onClick={async () => {
-                        try {
-                          const response = await apiRequest('/api/admin/recipe-modifications');
-                          toast({
-                            title: "Recipe Modifications",
-                            description: `Found ${response.totalModifications} modifications and ${response.totalDeleted} deletions`,
-                          });
-                          console.log('Modifications:', response);
-                        } catch (error) {
-                          toast({
-                            title: "Error",
-                            description: "Failed to fetch modifications",
-                            variant: "destructive"
-                          });
-                        }
-                      }}
-                      className="w-full mb-4"
-                      variant="outline"
-                    >
-                      <Eye className="w-4 h-4 mr-2" />
-                      View Current Changes
-                    </Button>
-                    
-                    <div className="space-y-2 text-sm">
-                      <div className="p-3 bg-blue-50 rounded-lg">
-                        <p className="font-medium">What gets saved:</p>
-                        <ul className="mt-2 space-y-1 text-xs">
-                          <li>• Modified recipe names and ingredients</li>
-                          <li>• Updated cooking instructions</li>
-                          <li>• Nutrition value changes</li>
-                          <li>• Recipe deletions</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Save Actions */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Save className="w-4 h-4" />
-                      Save to Database
-                    </CardTitle>
-                    <CardDescription>
-                      Make your changes permanent by saving to database
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Button 
-                      onClick={async () => {
-                        try {
-                          const response = await apiRequest('/api/admin/save-recipe-modifications', {
-                            method: 'POST'
-                          });
-                          toast({
-                            title: "Success!",
-                            description: `Saved ${response.savedModifications} modifications and ${response.savedDeletions} deletions`,
-                          });
-                        } catch (error) {
-                          toast({
-                            title: "Error",
-                            description: "Failed to save modifications to database",
-                            variant: "destructive"
-                          });
-                        }
-                      }}
-                      className="w-full mb-4"
-                      size="lg"
-                    >
-                      <Save className="w-4 h-4 mr-2" />
-                      Save All Changes
-                    </Button>
-                    
-                    <div className="space-y-2 text-sm">
-                      <div className="p-3 bg-green-50 rounded-lg">
-                        <p className="font-medium text-green-800">After saving:</p>
-                        <ul className="mt-2 space-y-1 text-xs text-green-700">
-                          <li>• Changes become permanent</li>
-                          <li>• All users will see updates</li>
-                          <li>• Meal generation uses new versions</li>
-                          <li>• Changes survive server restarts</li>
-                        </ul>
-                      </div>
-                      
-                      <div className="p-3 bg-amber-50 rounded-lg">
-                        <p className="font-medium text-amber-800">Important:</p>
-                        <p className="text-xs text-amber-700">
-                          This action cannot be undone. Make sure you've reviewed all changes before saving.
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
           </TabsContent>
 
           {/* Users Tab */}
