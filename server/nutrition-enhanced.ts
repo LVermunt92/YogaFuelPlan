@@ -5695,61 +5695,6 @@ const RAW_MEAL_DATABASE: MealOption[] = [
   },
 
   {
-    name: "Keto lemon herb chicken thighs",
-    portion: "2 chicken thighs",
-    nutrition: { 
-      protein: 34, 
-      prepTime: 35, 
-      calories: 540,
-      carbohydrates: 4,
-      fats: 42,
-      fiber: 1,
-      sugar: 2,
-      sodium: 420,
-      costEuros: 3.40, 
-      proteinPerEuro: 10.0 
-    },
-    category: "dinner",
-    tags: ["Keto", "Gluten-Free", "High-Protein", "Low-Carb"],
-    ingredients: [
-      "4 chicken thighs (bone-in, skin-on)",
-      "2 lemons (juiced and zested)",
-      "3 tbsp olive oil",
-      "4 cloves garlic (minced)",
-      "2 tbsp fresh rosemary (chopped)",
-      "2 tbsp fresh thyme",
-      "1 tsp paprika",
-      "Salt and pepper to taste",
-      "2 cups green beans",
-      "1 tbsp butter"
-    ],
-    wholeFoodLevel: "high",
-    vegetableContent: {
-      servings: 2,
-      vegetables: ["green beans"],
-      benefits: ["Vitamin K", "Fiber", "Low calorie"]
-    },
-    recipe: {
-      instructions: [
-        "Preheat oven to 200°C",
-        "Mix olive oil, lemon juice, zest, garlic, herbs, paprika",
-        "Season chicken thighs with salt and pepper",
-        "Marinate chicken in herb mixture 15 minutes",
-        "Place chicken skin-side up in baking dish with marinade",
-        "Roast 25-30 minutes until skin is golden and crispy",
-        "Meanwhile, sauté green beans with butter until tender-crisp",
-        "Rest chicken 5 minutes before serving",
-        "Serve with pan juices and green beans"
-      ],
-      tips: [
-        "Don't flip chicken - keep skin side up for crispiness",
-        "Use meat thermometer - internal temp should reach 74°C"
-      ],
-      notes: "Juicy, flavorful chicken with crispy skin and minimal carbs"
-    }
-  },
-
-  {
     name: "Keto cauliflower mac and cheese",
     portion: "1 serving",
     nutrition: { 
@@ -14249,11 +14194,13 @@ export async function getCompleteEnhancedMealDatabase(): Promise<MealOption[]> {
   return cachePromise;
 }
 
-// Generate a unique numerical ID for a recipe
-function generateRecipeId(recipeName: string, index: number): number {
-  // Use index + 1 so IDs start from 1 instead of 0
-  return index + 1;
-}
+// Permanent ID system:
+// Base recipes: 10000-19999 (assigned by array position)
+// Gluten-free variants: base_id + 100000
+// Lactose-free variants: base_id + 200000
+// Vegetarian variants: base_id + 300000
+// User custom recipes: 30000-39999
+// AI-generated recipes: 40000-49999
 
 // Efficient recipe lookup by name using recipe IDs
 export async function findRecipeByName(mealDescription: string): Promise<MealOption | null> {
