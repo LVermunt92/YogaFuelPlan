@@ -13376,6 +13376,548 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-10-03'),
     active: true
+  },
+  
+  // NEW VIRAL RECIPES
+  {
+    name: "Lactose-free cottage cheese breakfast bowl",
+    portion: "1 serving",
+    nutrition: {
+      protein: 28,
+      prepTime: 5,
+      calories: 285,
+      carbohydrates: 32,
+      fats: 8,
+      fiber: 6,
+      sugar: 22,
+      sodium: 180,
+      potassium: 420,
+      calcium: 150,
+      iron: 2.1,
+      vitaminC: 45,
+      costEuros: 3.80,
+      proteinPerEuro: 7.4
+    },
+    category: "breakfast",
+    tags: ["Viral", "Social-Media", "Vegetarian", "Lactose-Free", "High-Protein", "Quick", "No-Cook", "TikTok-Inspired"],
+    ingredients: [
+      "200g lactose-free cottage cheese",
+      "1 scoop (30g) vanilla protein powder",
+      "80g frozen mixed berries",
+      "1 tbsp (15ml) honey",
+      "10g dark chocolate chips",
+      "15g sliced almonds"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 0.5,
+      vegetables: [],
+      benefits: ["High protein from lactose-free dairy", "Antioxidants from berries", "Healthy fats from almonds"]
+    },
+    recipeBenefits: [
+      "28g protein supports muscle recovery and satiety",
+      "Lactose-free for sensitive digestion",
+      "Frozen berries create creamy ice cream-like texture",
+      "Ready in 5 minutes - perfect for busy mornings",
+      "Tastes like dessert but packed with nutrients"
+    ],
+    recipe: {
+      instructions: [
+        "Add lactose-free cottage cheese to a bowl",
+        "Mix in vanilla protein powder until well combined",
+        "Add frozen berries (they'll create the 'ice cream' texture)",
+        "Drizzle with honey",
+        "Top with dark chocolate chips and sliced almonds",
+        "Mix together and enjoy immediately while berries are still frozen for best texture"
+      ],
+      tips: [
+        "Keep berries frozen until ready to eat for ice cream-like consistency",
+        "Blend cottage cheese first if you prefer smoother texture",
+        "Add a pinch of cinnamon for extra flavor",
+        "Use any frozen fruit you prefer - mango and strawberries work great"
+      ],
+      notes: "Viral TikTok breakfast bowl that looks and tastes like ice cream but delivers 28g of protein. Lactose-free version is gentle on digestion while maintaining creamy texture."
+    },
+    createdAt: new Date('2025-10-04'),
+    active: true
+  },
+  
+  {
+    name: "Lactose-free protein cookie dough bites",
+    portion: "4 bites (100g total)",
+    nutrition: {
+      protein: 24,
+      prepTime: 10,
+      calories: 320,
+      carbohydrates: 28,
+      fats: 14,
+      fiber: 8,
+      sugar: 8,
+      sodium: 85,
+      potassium: 280,
+      calcium: 90,
+      iron: 2.8,
+      vitaminC: 1,
+      costEuros: 2.90,
+      proteinPerEuro: 8.3
+    },
+    category: "snack",
+    tags: ["Viral", "Social-Media", "Vegetarian", "Lactose-Free", "High-Protein", "No-Bake", "Meal-Prep", "TikTok-Inspired"],
+    ingredients: [
+      "120g almond flour",
+      "30g vanilla protein powder",
+      "3 tbsp (45g) almond butter",
+      "2 tbsp (30ml) maple syrup",
+      "20g lactose-free dark chocolate chips",
+      "pinch of salt",
+      "2 tbsp (30ml) almond milk"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 0,
+      vegetables: [],
+      benefits: ["High protein from nuts and protein powder", "Healthy fats from almond butter", "No refined sugars"]
+    },
+    recipeBenefits: [
+      "24g protein per serving supports muscle maintenance",
+      "Lactose-free and safe for dairy-sensitive individuals",
+      "No-bake recipe perfect for meal prep",
+      "Satisfies sweet tooth while providing nutrition",
+      "Portable snack for on-the-go"
+    ],
+    recipe: {
+      instructions: [
+        "In a bowl, mix almond flour, protein powder, and salt",
+        "Add almond butter and maple syrup, mix until crumbly",
+        "Add almond milk 1 tablespoon at a time until dough forms",
+        "Fold in lactose-free chocolate chips",
+        "Roll into 4 equal-sized balls",
+        "Refrigerate for at least 30 minutes before eating",
+        "Store in airtight container in fridge for up to 1 week"
+      ],
+      tips: [
+        "Dough should be slightly sticky but hold together - add more almond milk if too dry",
+        "Use certified lactose-free chocolate chips for completely dairy-free",
+        "Roll in cocoa powder or coconut for extra flavor",
+        "Double the batch for meal prep"
+      ],
+      notes: "Viral no-bake cookie dough bites that are safe to eat and lactose-free. Perfect high-protein snack for anyone avoiding dairy."
+    },
+    createdAt: new Date('2025-10-04'),
+    active: true
+  },
+  
+  {
+    name: "Marry me butter chicken pasta",
+    portion: "1 serving (350g)",
+    nutrition: {
+      protein: 42,
+      prepTime: 25,
+      calories: 520,
+      carbohydrates: 48,
+      fats: 18,
+      fiber: 8,
+      sugar: 9,
+      sodium: 680,
+      potassium: 720,
+      calcium: 180,
+      iron: 3.2,
+      vitaminC: 12,
+      costEuros: 5.20,
+      proteinPerEuro: 8.1
+    },
+    category: "dinner",
+    tags: ["Viral", "Social-Media", "High-Protein", "Indian-Inspired", "TikTok-Inspired"],
+    ingredients: [
+      "150g chicken breast",
+      "80g whole wheat pasta",
+      "100ml Greek yogurt",
+      "2 tbsp butter chicken spice blend",
+      "1 garlic clove",
+      "50g sun-dried tomatoes",
+      "30g spinach",
+      "20g parmesan cheese",
+      "1 tbsp olive oil",
+      "salt and pepper to taste"
+    ],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["spinach", "tomatoes", "garlic"],
+      benefits: ["Vitamin K from spinach", "Lycopene from tomatoes", "Anti-inflammatory compounds"]
+    },
+    recipeBenefits: [
+      "42g protein from chicken and dairy for muscle support",
+      "Whole wheat pasta provides sustained energy",
+      "Greek yogurt adds creaminess and probiotics",
+      "Sun-dried tomatoes boost flavor and antioxidants",
+      "Viral 'marry me' flavor that actually delivers nutrition"
+    ],
+    recipe: {
+      instructions: [
+        "Cook whole wheat pasta according to package directions, drain and set aside",
+        "Cut chicken breast into bite-sized pieces, season with salt, pepper, and 1 tbsp butter chicken spices",
+        "Heat olive oil in pan, cook chicken until golden and cooked through (6-8 minutes)",
+        "Remove chicken, add minced garlic to pan, cook 30 seconds",
+        "Add chopped sun-dried tomatoes and remaining spice blend, cook 1 minute",
+        "Stir in Greek yogurt and 50ml pasta water, create creamy sauce",
+        "Add spinach and cooked pasta, toss until spinach wilts",
+        "Return chicken to pan, mix well",
+        "Top with grated parmesan and serve immediately"
+      ],
+      tips: [
+        "Reserve pasta water to thin sauce if needed",
+        "Use full-fat Greek yogurt for creamiest texture",
+        "Butterfly chicken breast for faster cooking",
+        "Fresh spinach adds color and nutrition without overwhelming flavor"
+      ],
+      notes: "Viral 'marry me' pasta combining butter chicken flavors with Italian comfort food. This protein-packed version keeps the indulgent taste while delivering serious nutrition."
+    },
+    createdAt: new Date('2025-10-04'),
+    active: true
+  },
+  
+  {
+    name: "Gluten-free lactose-free marry me butter chicken pasta",
+    portion: "1 serving (350g)",
+    nutrition: {
+      protein: 40,
+      prepTime: 25,
+      calories: 535,
+      carbohydrates: 52,
+      fats: 17,
+      fiber: 6,
+      sugar: 8,
+      sodium: 620,
+      potassium: 690,
+      calcium: 95,
+      iron: 2.9,
+      vitaminC: 12,
+      costEuros: 6.10,
+      proteinPerEuro: 6.6
+    },
+    category: "dinner",
+    tags: ["Viral", "Social-Media", "High-Protein", "Gluten-Free", "Lactose-Free", "Indian-Inspired", "TikTok-Inspired"],
+    ingredients: [
+      "150g chicken breast",
+      "80g gluten-free pasta",
+      "100ml lactose-free Greek yogurt",
+      "2 tbsp butter chicken spice blend",
+      "1 garlic clove",
+      "50g sun-dried tomatoes",
+      "30g spinach",
+      "1 tbsp olive oil",
+      "salt and pepper to taste"
+    ],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["spinach", "tomatoes", "garlic"],
+      benefits: ["Vitamin K from spinach", "Lycopene from tomatoes", "Gentle on digestion"]
+    },
+    recipeBenefits: [
+      "40g protein for muscle support without gluten or lactose",
+      "Gluten-free pasta suitable for celiac disease",
+      "Lactose-free yogurt gentle on sensitive stomachs",
+      "All the viral flavor, none of the digestive issues",
+      "Sun-dried tomatoes add depth and antioxidants"
+    ],
+    recipe: {
+      instructions: [
+        "Cook gluten-free pasta according to package directions (usually 1-2 minutes less than wheat pasta), drain and set aside",
+        "Cut chicken breast into bite-sized pieces, season with salt, pepper, and 1 tbsp butter chicken spices",
+        "Heat olive oil in pan, cook chicken until golden and cooked through (6-8 minutes)",
+        "Remove chicken, add minced garlic to pan, cook 30 seconds",
+        "Add chopped sun-dried tomatoes and remaining spice blend, cook 1 minute",
+        "Stir in lactose-free Greek yogurt and 50ml pasta water, create creamy sauce",
+        "Add spinach and cooked pasta, toss until spinach wilts",
+        "Return chicken to pan, mix well and serve immediately"
+      ],
+      tips: [
+        "Gluten-free pasta can get mushy - cook al dente",
+        "Use certified gluten-free spice blends to avoid cross-contamination",
+        "Lactose-free yogurt behaves exactly like regular in this recipe",
+        "Reserve extra pasta water - gluten-free pasta absorbs more liquid"
+      ],
+      notes: "Gluten-free and lactose-free version of the viral 'marry me' pasta. Perfect for those with celiac disease or lactose intolerance who don't want to miss out on trending recipes."
+    },
+    createdAt: new Date('2025-10-04'),
+    active: true
+  },
+  
+  {
+    name: "Vegetarian marry me mushroom pasta",
+    portion: "1 serving (350g)",
+    nutrition: {
+      protein: 28,
+      prepTime: 25,
+      calories: 485,
+      carbohydrates: 54,
+      fats: 16,
+      fiber: 9,
+      sugar: 8,
+      sodium: 580,
+      potassium: 840,
+      calcium: 220,
+      iron: 4.1,
+      vitaminC: 10,
+      costEuros: 4.50,
+      proteinPerEuro: 6.2
+    },
+    category: "dinner",
+    tags: ["Viral", "Social-Media", "Vegetarian", "High-Protein", "Indian-Inspired", "TikTok-Inspired"],
+    ingredients: [
+      "150g mixed mushrooms (cremini, shiitake)",
+      "80g whole wheat pasta",
+      "100ml Greek yogurt",
+      "2 tbsp butter chicken spice blend",
+      "1 garlic clove",
+      "50g sun-dried tomatoes",
+      "30g spinach",
+      "20g parmesan cheese",
+      "50g chickpeas (canned, drained)",
+      "1 tbsp olive oil",
+      "salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["mushrooms", "spinach", "tomatoes", "garlic"],
+      benefits: ["B vitamins from mushrooms", "Iron from spinach", "Fiber from chickpeas", "Antioxidants from tomatoes"]
+    },
+    recipeBenefits: [
+      "28g plant-based protein from chickpeas, dairy, and mushrooms",
+      "Mushrooms provide umami depth replacing chicken",
+      "Chickpeas add protein and fiber for satiety",
+      "Vegetarian version of viral recipe without compromise",
+      "Rich in B vitamins and minerals"
+    ],
+    recipe: {
+      instructions: [
+        "Cook whole wheat pasta according to package directions, drain and set aside",
+        "Slice mushrooms, season with salt, pepper, and 1 tbsp butter chicken spices",
+        "Heat olive oil in pan, sauté mushrooms until golden and liquid evaporates (5-6 minutes)",
+        "Add drained chickpeas to pan, cook 2 minutes until slightly crispy",
+        "Add minced garlic, cook 30 seconds",
+        "Add chopped sun-dried tomatoes and remaining spice blend, cook 1 minute",
+        "Stir in Greek yogurt and 50ml pasta water, create creamy sauce",
+        "Add spinach and cooked pasta, toss until spinach wilts",
+        "Top with grated parmesan and serve immediately"
+      ],
+      tips: [
+        "Don't crowd mushrooms in pan - cook in batches for best browning",
+        "Use a mix of mushroom varieties for complex flavor",
+        "Chickpeas add protein and creamy texture when mashed slightly",
+        "Fresh herbs like cilantro make great garnish"
+      ],
+      notes: "Vegetarian version of viral 'marry me' pasta using hearty mushrooms and protein-rich chickpeas. All the flavor and creaminess of the original without the meat."
+    },
+    createdAt: new Date('2025-10-04'),
+    active: true
+  },
+  
+  {
+    name: "Lactose-free vegetarian cloud bread sandwich",
+    portion: "2 cloud bread pieces + filling",
+    nutrition: {
+      protein: 30,
+      prepTime: 20,
+      calories: 325,
+      carbohydrates: 18,
+      fats: 16,
+      fiber: 4,
+      sugar: 6,
+      sodium: 420,
+      potassium: 380,
+      calcium: 85,
+      iron: 2.4,
+      vitaminC: 18,
+      costEuros: 3.20,
+      proteinPerEuro: 9.4
+    },
+    category: "lunch",
+    tags: ["Viral", "Social-Media", "Vegetarian", "Lactose-Free", "Gluten-Free", "High-Protein", "Low-Carb", "TikTok-Inspired"],
+    ingredients: [
+      "3 medium eggs",
+      "120g lactose-free Greek yogurt",
+      "15g vanilla protein powder",
+      "1/2 tsp baking powder",
+      "Filling: 30g avocado",
+      "Filling: 50g hummus",
+      "Filling: 20g lettuce",
+      "Filling: 1 medium tomato (80g)",
+      "pinch of salt"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1.5,
+      vegetables: ["lettuce", "tomato", "avocado"],
+      benefits: ["Healthy fats from avocado", "Lycopene from tomato", "Fiber from vegetables"]
+    },
+    recipeBenefits: [
+      "30g protein from eggs and lactose-free yogurt",
+      "Gluten-free and grain-free bread alternative",
+      "Fluffy, cloud-like texture that's Instagram-worthy",
+      "Low-carb option perfect for blood sugar management",
+      "Lactose-free for sensitive digestion"
+    ],
+    recipe: {
+      instructions: [
+        "Preheat oven to 150°C (300°F) and line baking sheet with parchment",
+        "Separate egg whites from yolks",
+        "Beat egg whites with pinch of salt until stiff peaks form",
+        "In separate bowl, mix egg yolks, lactose-free yogurt, protein powder, and baking powder",
+        "Gently fold yolk mixture into egg whites, being careful not to deflate",
+        "Spoon mixture into 2 large circles on baking sheet (about 10cm diameter each)",
+        "Bake for 18-20 minutes until golden and set",
+        "Let cool completely (they'll firm up as they cool)",
+        "Fill with mashed avocado, hummus, lettuce, and sliced tomato"
+      ],
+      tips: [
+        "Don't over-mix when folding - cloudy texture comes from air in egg whites",
+        "Cloud bread is delicate when warm - let it cool before handling",
+        "Use lactose-free yogurt for completely dairy-free option",
+        "Store unfilled cloud bread in airtight container for up to 2 days"
+      ],
+      notes: "Viral cloud bread recipe made lactose-free and vegetarian. Fluffy, protein-packed bread alternative that looks like clouds and is perfect for sandwiches."
+    },
+    createdAt: new Date('2025-10-04'),
+    active: true
+  },
+  
+  {
+    name: "Lactose-free protein churro breakfast bowl",
+    portion: "1 serving",
+    nutrition: {
+      protein: 26,
+      prepTime: 12,
+      calories: 380,
+      carbohydrates: 44,
+      fats: 12,
+      fiber: 7,
+      sugar: 18,
+      sodium: 95,
+      potassium: 520,
+      calcium: 180,
+      iron: 2.6,
+      vitaminC: 88,
+      costEuros: 4.10,
+      proteinPerEuro: 6.3
+    },
+    category: "breakfast",
+    tags: ["Viral", "Social-Media", "Vegetarian", "Lactose-Free", "High-Protein", "Quick", "TikTok-Inspired"],
+    ingredients: [
+      "150g lactose-free Greek yogurt",
+      "25g vanilla protein powder",
+      "1 tsp cinnamon",
+      "1 tbsp (15ml) honey",
+      "40g granola",
+      "80g fresh strawberries",
+      "10g lactose-free dark chocolate shavings"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 0.5,
+      vegetables: [],
+      benefits: ["Vitamin C from strawberries", "Antioxidants from cinnamon", "Probiotics from yogurt"]
+    },
+    recipeBenefits: [
+      "26g protein from lactose-free yogurt and protein powder",
+      "Tastes like churros but delivers breakfast nutrition",
+      "Cinnamon helps regulate blood sugar",
+      "Lactose-free for sensitive stomachs",
+      "Ready in 12 minutes - perfect for busy mornings"
+    ],
+    recipe: {
+      instructions: [
+        "In a bowl, mix lactose-free Greek yogurt with vanilla protein powder until smooth",
+        "Stir in cinnamon until evenly distributed",
+        "Transfer to serving bowl",
+        "Drizzle with honey",
+        "Top with granola for crunch",
+        "Add sliced fresh strawberries",
+        "Finish with lactose-free dark chocolate shavings",
+        "Serve immediately"
+      ],
+      tips: [
+        "Mix protein powder thoroughly to avoid lumps",
+        "Use warm cinnamon-toasted granola for extra churro flavor",
+        "Fresh berries can be swapped for any seasonal fruit",
+        "Make it vegan by using plant-based yogurt and protein powder",
+        "Drizzle with almond butter for extra protein and healthy fats"
+      ],
+      notes: "Viral churro bowl that tastes like dessert for breakfast. Lactose-free version is gentle on digestion while maintaining the creamy, sweet churro flavor everyone loves."
+    },
+    createdAt: new Date('2025-10-04'),
+    active: true
+  },
+  
+  {
+    name: "Lactose-free cucumber sushi protein boats",
+    portion: "6 cucumber boats",
+    nutrition: {
+      protein: 24,
+      prepTime: 15,
+      calories: 195,
+      carbohydrates: 12,
+      fats: 8,
+      fiber: 4,
+      sugar: 6,
+      sodium: 580,
+      potassium: 420,
+      calcium: 45,
+      iron: 1.8,
+      vitaminC: 12,
+      costEuros: 3.40,
+      proteinPerEuro: 7.1
+    },
+    category: "snack",
+    tags: ["Viral", "Social-Media", "High-Protein", "Lactose-Free", "Low-Carb", "No-Cook", "Gluten-Free", "TikTok-Inspired"],
+    ingredients: [
+      "1 large cucumber (300g)",
+      "120g canned tuna (drained)",
+      "2 tbsp (30ml) lactose-free Greek yogurt",
+      "1 tsp sriracha sauce",
+      "30g avocado",
+      "10g sesame seeds",
+      "2 nori seaweed sheets (cut into strips)",
+      "soy sauce for serving"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["cucumber", "avocado"],
+      benefits: ["Hydration from cucumber", "Healthy fats from avocado", "Low calorie and refreshing"]
+    },
+    recipeBenefits: [
+      "24g protein from tuna with minimal calories",
+      "Lactose-free for dairy-sensitive individuals",
+      "Low-carb alternative to sushi rice",
+      "Visually stunning presentation perfect for social media",
+      "Refreshing and light - ideal for summer snacking"
+    ],
+    recipe: {
+      instructions: [
+        "Cut cucumber in half lengthwise, scoop out seeds with spoon to create 'boats'",
+        "Cut each half into 3 equal pieces (6 boats total)",
+        "In bowl, mix drained tuna, lactose-free Greek yogurt, and sriracha",
+        "Fill each cucumber boat with tuna mixture",
+        "Top with thin avocado slices",
+        "Sprinkle with sesame seeds",
+        "Garnish with nori seaweed strips",
+        "Serve with soy sauce on the side"
+      ],
+      tips: [
+        "Pat cucumber dry after scooping to prevent soggy filling",
+        "Use a melon baller to easily remove cucumber seeds",
+        "Adjust sriracha to your spice preference",
+        "Make ahead and store in fridge for up to 4 hours",
+        "Swap tuna for cooked shrimp or salmon for variety"
+      ],
+      notes: "Viral cucumber sushi boats that are low-carb, high-protein, and visually stunning. Lactose-free version uses yogurt instead of mayo for creamy texture."
+    },
+    createdAt: new Date('2025-10-04'),
+    active: true
   }
 ];
 
