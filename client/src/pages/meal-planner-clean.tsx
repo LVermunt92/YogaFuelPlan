@@ -21,6 +21,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { AlbertHeijnIntegration } from "@/components/albert-heijn-integration";
 import { SeasonalAdvisor } from "@/components/SeasonalAdvisor";
 import type { User, MealPlan as MealPlanType, Meal as MealType } from "@shared/schema";
+import { countUniquePlants } from "@/lib/plant-diversity";
 
 // Type alias for easier use
 type Meal = MealType;
@@ -692,6 +693,16 @@ function MealPlannerMain() {
     // Calculate average cocoa flavanols per day
     const avgCocoaFlavanolsPerDay = daysWithMeals > 0 ? totalCocoaFlavanols / daysWithMeals : 0;
     const cocoaFlavanolsTarget = 500; // mg/day (400-600mg recommended)
+    
+    // Calculate plant diversity - count unique plant foods across all meals
+    const allIngredients: string[] = [];
+    currentMealPlan.meals.forEach(meal => {
+      if (meal.ingredients && Array.isArray(meal.ingredients)) {
+        allIngredients.push(...meal.ingredients);
+      }
+    });
+    const plantDiversityData = countUniquePlants(allIngredients);
+    const plantDiversityTarget = 30; // 30 different plant foods per week
 
     return {
       goodFats: {
@@ -718,6 +729,11 @@ function MealPlannerMain() {
         value: Math.round(avgCocoaFlavanolsPerDay),
         percentage: Math.round(Math.min((avgCocoaFlavanolsPerDay / cocoaFlavanolsTarget) * 100, 100)),
         target: `${cocoaFlavanolsTarget}mg/day`
+      },
+      plantDiversity: {
+        value: plantDiversityData.count,
+        percentage: Math.round(Math.min((plantDiversityData.count / plantDiversityTarget) * 100, 100)),
+        target: `${plantDiversityTarget}/week`
       }
     };
   };
