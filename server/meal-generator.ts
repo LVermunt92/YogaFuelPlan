@@ -1130,6 +1130,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
     
     // Convert user recipes to MealOption format
     const convertUserRecipeToMealOption = (recipe: any): MealOption => ({
+      id: `user-${recipe.id}`, // Prefix user recipe IDs to avoid conflicts with curated recipes
       name: recipe.name,
       portion: recipe.portion || '1 serving',
       ingredients: recipe.ingredients || [],
@@ -1838,6 +1839,7 @@ async function generateMealPrepPlan(
       if (recipe.mealTypes?.includes('dinner')) categories.push('dinner');
       
       const baseRecipe = {
+        id: `user-${recipe.id}`, // Prefix user recipe IDs to avoid conflicts with curated recipes
         name: recipe.name,
         portion: recipe.portion || '1 serving',
         ingredients: recipe.ingredients,
