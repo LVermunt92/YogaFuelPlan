@@ -260,6 +260,7 @@ export function validateAndEnhanceMealDatabase(meals: any[]): any[] {
       if (enhancement.addedProteins.length > 0) {
         return {
           ...meal,
+          id: meal.id, // Explicitly preserve ID
           ingredients: enhancement.enhancedIngredients,
           nutrition: {
             ...meal.nutrition,

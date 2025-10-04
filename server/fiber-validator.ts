@@ -478,6 +478,7 @@ export function validateAndEnhanceMealsForFiber(meals: any[], targetFiber: numbe
         
         return {
           ...meal,
+          id: meal.id, // Explicitly preserve ID
           ingredients: enhancement.enhancedIngredients,
           nutrition: {
             ...meal.nutrition,
