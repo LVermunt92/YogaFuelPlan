@@ -37,6 +37,19 @@ Preferred communication style: Simple, everyday language.
     - **Unified Recipe Database**: Consolidated all recipe databases into a single unified system, with pre-translated recipes stored for performance.
 
 # Recent Changes (October 4, 2025)
+- **User Activity Tracking**: Added last login timestamp tracking system
+  - Added `lastLoginAt` field to user schema for monitoring user activity
+  - Login endpoint now automatically updates last login timestamp on successful authentication
+  - Admin panel displays last login date and time in both mobile and desktop views
+  - Shows "Never" for users who haven't logged in since feature implementation
+- **Admin Panel Layout Enhancement**: Made admin panel full-width on larger screens
+  - Removed max-width constraint (`max-w-6xl`) to utilize full screen width on desktop/laptop
+  - Responsive padding: `px-2` (mobile), `px-4` (tablet), `px-8` (desktop)
+  - Better utilization of screen real estate for admin data tables and forms
+- **Recipe Tag Cleanup**: Removed 101 non-functional descriptive tags from recipe filtering system
+  - Removed tags like "Comfort-Food", "Crispy", "Creamy", "Savory", "Filling", "Refreshing" that don't help with dietary/nutritional filtering
+  - Kept only functional tags: dietary restrictions (Gluten-Free, Lactose-Free, Vegetarian), nutritional properties (High-Protein, High-Fiber), and meal-specific attributes
+  - Improves filtering performance and user experience by focusing on actionable criteria
 - **Recipe Ingredient Standardization**: Converted all recipe ingredients to metric measurements (grams/ml)
   - Replaced all cup measurements with precise gram/ml equivalents across entire recipe database
   - Sweet potatoes: "1 medium" → "200g", "1 large" → "300g"
