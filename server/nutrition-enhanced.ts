@@ -3356,8 +3356,8 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     category: "dinner", 
     tags: ["Viral", "Social-Media", "Vegetarian", "Lactose-Free", "Dairy-Free", "High-Protein", "Italian-Inspired", "Instagram-Inspired"],
     ingredients: [
-      "cooked green lentils", "brown onion", "dairy-free basil pesto", "broccoli", "spinach",
-      "cashew cream", "unsweetened plant milk", "garlic cloves", "lasagna sheets", "nutritional yeast", "salt"
+      "150g cooked green lentils", "1 medium brown onion (120g)", "60g dairy-free basil pesto", "100g broccoli", "80g spinach",
+      "100g cashew cream", "100ml unsweetened plant milk", "2 garlic cloves", "4 lasagna sheets (80g)", "15g nutritional yeast", "salt to taste"
     ],
     wholeFoodLevel: "high",
     vegetableContent: {
