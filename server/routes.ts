@@ -2986,6 +2986,77 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // GET /api/admin/unified-recipes - Get all recipes from unified database
+  app.get("/api/admin/unified-recipes", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+
+      const isAdmin = await isAdminUser(req.session.userId);
+      if (!isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const allRecipes = await getCompleteEnhancedMealDatabase();
+      
+      // Sort by ID for consistent ordering
+      const sortedRecipes = allRecipes.sort((a, b) => {
+        const aId = a.id ? parseInt(String(a.id)) : 0;
+        const bId = b.id ? parseInt(String(b.id)) : 0;
+        return aId - bId;
+      });
+
+      res.json({
+        recipes: sortedRecipes,
+        total: sortedRecipes.length,
+        breakdown: {
+          base: sortedRecipes.filter(r => r.id && parseInt(String(r.id)) < 100000).length,
+          glutenFree: sortedRecipes.filter(r => r.id && parseInt(String(r.id)) >= 100000 && parseInt(String(r.id)) < 200000).length,
+          lactoseFree: sortedRecipes.filter(r => r.id && parseInt(String(r.id)) >= 200000 && parseInt(String(r.id)) < 300000).length,
+          vegetarian: sortedRecipes.filter(r => r.id && parseInt(String(r.id)) >= 300000).length
+        }
+      });
+    } catch (error) {
+      console.error("Error getting unified recipes:", error);
+      res.status(500).json({ message: "Failed to get recipes" });
+    }
+  });
+
+  // DELETE /api/admin/unified-recipes/:id - Delete a recipe from unified database
+  app.delete("/api/admin/unified-recipes/:id", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+
+      const isAdmin = await isAdminUser(req.session.userId);
+      if (!isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const { id } = req.params;
+      
+      if (!id) {
+        return res.status(400).json({ message: "Recipe ID is required" });
+      }
+
+      // Save deletion to database
+      await storage.saveRecipeDeletion(id, req.session.userId);
+
+      // Invalidate cache so next request gets fresh data
+      invalidateEnhancedMealDatabaseCache();
+
+      res.json({
+        message: "Recipe deleted successfully",
+        recipeId: id
+      });
+    } catch (error) {
+      console.error("Error deleting recipe:", error);
+      res.status(500).json({ message: "Failed to delete recipe" });
+    }
+  });
+
   // GET /api/recipes - List all recipes with optional search and filtering
   app.get("/api/recipes", async (req, res) => {
     try {
