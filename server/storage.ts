@@ -70,7 +70,7 @@ import {
   type UpdateAiRecipe,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, and, gte, lte, desc, inArray } from "drizzle-orm";
+import { eq, and, gte, lte, desc, inArray, sql } from "drizzle-orm";
 import bcrypt from "bcrypt";
 
 export interface IStorage {
@@ -1688,7 +1688,7 @@ export class DatabaseStorage implements IStorage {
     await db
       .update(aiRecipes)
       .set({
-        usageCount: db.raw('usage_count + 1') as any,
+        usageCount: sql`${aiRecipes.usageCount} + 1`,
         lastUsedAt: new Date()
       })
       .where(eq(aiRecipes.id, id));
