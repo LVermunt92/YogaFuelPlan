@@ -1016,8 +1016,9 @@ function AdminPanelMain() {
         </div>
 
         <Tabs defaultValue="overview" className="space-y-4 sm:space-y-6">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-8 gap-1 h-auto p-1">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-9 gap-1 h-auto p-1">
             <TabsTrigger value="overview" className="text-xs sm:text-sm py-2 px-2">Overview</TabsTrigger>
+            <TabsTrigger value="logic" className="bg-purple-100 text-xs sm:text-sm py-2 px-2">Logic</TabsTrigger>
             <TabsTrigger value="nutrition" className="text-xs sm:text-sm py-2 px-2">Nutrition</TabsTrigger>
             <TabsTrigger value="config" className="text-xs sm:text-sm py-2 px-2">Config</TabsTrigger>
             <TabsTrigger value="recipes" className="bg-green-100 text-xs sm:text-sm py-2 px-2">Recipes</TabsTrigger>
@@ -1098,6 +1099,233 @@ function AdminPanelMain() {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Logic Tab - Nutritional Calculation Explanations */}
+          <TabsContent value="logic" className="space-y-6">
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Calculator className="h-5 w-5" />
+                    Protein calculation logic
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">Core principle</h4>
+                    <p className="text-sm text-gray-700">
+                      Protein requirements are calculated using a body weight-based approach (grams per kilogram), as this method provides the most accurate and personalized recommendations. The system uses a multi-factor matrix that considers both activity level and training type to determine the optimal protein factor.
+                    </p>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">Protein factor matrix</h4>
+                    <p className="text-sm text-gray-700 mb-2">
+                      The protein factor ranges from 1.0 g/kg (sedentary individuals focusing on mobility) to 2.3 g/kg (athletes with mixed training). This range reflects current sports nutrition science and longevity research. Key factors:
+                    </p>
+                    <ul className="list-disc list-inside text-sm text-gray-700 space-y-1 ml-2">
+                      <li><strong>Activity level</strong>: Higher activity increases protein needs for recovery and adaptation</li>
+                      <li><strong>Training type</strong>: Strength training requires more protein than mobility work due to muscle protein synthesis demands</li>
+                      <li><strong>Mixed training</strong>: Receives highest factors as it combines multiple stressors on the body</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">Age-based adjustments</h4>
+                    <p className="text-sm text-gray-700 mb-2">
+                      The system applies gender-specific age thresholds to increase protein recommendations for muscle preservation:
+                    </p>
+                    <ul className="list-disc list-inside text-sm text-gray-700 space-y-1 ml-2">
+                      <li><strong>Women &ge;45 years</strong>: Protein recommendations increase by approximately 15-20% to counteract age-related muscle loss (sarcopenia)</li>
+                      <li><strong>Men &ge;50 years</strong>: Similar increases applied, accounting for testosterone decline and reduced protein synthesis efficiency</li>
+                      <li><strong>Rationale</strong>: Older adults require more protein to achieve the same muscle protein synthesis response as younger individuals</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">Goal modifications</h4>
+                    <p className="text-sm text-gray-700">
+                      User goals further refine protein targets. Fat loss goals maintain or slightly increase protein to preserve lean mass during caloric restriction. Bulk goals ensure adequate protein for muscle growth while maintaining a caloric surplus. Maintenance goals use baseline protein factors without modification.
+                    </p>
+                  </div>
+
+                  <div className="bg-blue-50 p-3 rounded border border-blue-200">
+                    <h4 className="font-semibold text-sm mb-1 text-blue-900">Calculation example</h4>
+                    <p className="text-sm text-blue-800">
+                      70kg woman, age 48, moderate activity, strength training: Base factor 1.8 g/kg → 126g protein. Age adjustment (+15%) → 145g protein (rounded to nearest 5g).
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Activity className="h-5 w-5" />
+                    Fiber targets
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">Gender-specific recommendations</h4>
+                    <p className="text-sm text-gray-700 mb-2">
+                      The system uses evidence-based fiber targets that align with international nutrition guidelines:
+                    </p>
+                    <ul className="list-disc list-inside text-sm text-gray-700 space-y-1 ml-2">
+                      <li><strong>Men: 40g per day</strong> - Reflects higher caloric intake and metabolic needs</li>
+                      <li><strong>Women: 30g per day</strong> - Adjusted for typical caloric consumption and body size</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">Health rationale</h4>
+                    <p className="text-sm text-gray-700 mb-2">
+                      These fiber targets support multiple health outcomes:
+                    </p>
+                    <ul className="list-disc list-inside text-sm text-gray-700 space-y-1 ml-2">
+                      <li><strong>Digestive health</strong>: Promotes regular bowel movements and feeds beneficial gut bacteria</li>
+                      <li><strong>Blood sugar control</strong>: Slows glucose absorption, preventing sharp insulin spikes</li>
+                      <li><strong>Cardiovascular protection</strong>: Helps manage cholesterol levels and reduces inflammation</li>
+                      <li><strong>Satiety</strong>: Increases meal satisfaction and reduces overall caloric intake</li>
+                      <li><strong>Longevity</strong>: Higher fiber intake is consistently associated with reduced all-cause mortality</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">Implementation in meal planning</h4>
+                    <p className="text-sm text-gray-700">
+                      The meal generator prioritizes whole foods naturally high in fiber: vegetables, legumes, whole grains, nuts, and seeds. Each recipe specifies fiber content, allowing the system to track daily fiber totals and ensure targets are met through varied, nutrient-dense foods rather than supplements.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Target className="h-5 w-5" />
+                    Calorie and energy balance
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">Basal metabolic rate (BMR)</h4>
+                    <p className="text-sm text-gray-700">
+                      The system calculates BMR using the Mifflin-St Jeor equation, which is considered the most accurate for general populations. BMR represents the calories your body burns at complete rest to maintain vital functions (breathing, circulation, cell production). Gender-specific formulas account for differences in lean body mass and hormonal profiles.
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">Physical activity level (PAL) multipliers</h4>
+                    <p className="text-sm text-gray-700 mb-2">
+                      Total daily energy expenditure is calculated by multiplying BMR by a PAL value:
+                    </p>
+                    <ul className="list-disc list-inside text-sm text-gray-700 space-y-1 ml-2">
+                      <li><strong>Sedentary (1.40)</strong>: Desk work with minimal movement</li>
+                      <li><strong>Light (1.55)</strong>: Light exercise 1-3 days per week</li>
+                      <li><strong>Moderate (1.70)</strong>: Moderate exercise 3-5 days per week</li>
+                      <li><strong>High (1.85)</strong>: Hard exercise 6-7 days per week</li>
+                      <li><strong>Athlete (2.20)</strong>: Very intense training or physical job</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">Goal-based adjustments</h4>
+                    <p className="text-sm text-gray-700 mb-2">
+                      Maintenance calories (BMR × PAL) are then modified based on user goals:
+                    </p>
+                    <ul className="list-disc list-inside text-sm text-gray-700 space-y-1 ml-2">
+                      <li><strong>Fat loss</strong>: 15-20% caloric deficit to promote steady, sustainable weight loss while preserving lean mass</li>
+                      <li><strong>Maintenance</strong>: No adjustment - calories match energy expenditure</li>
+                      <li><strong>Muscle gain</strong>: 10-15% caloric surplus to support muscle protein synthesis and recovery</li>
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Database className="h-5 w-5" />
+                    Macronutrient distribution
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">Carbohydrate calculation</h4>
+                    <p className="text-sm text-gray-700">
+                      Carbohydrate needs are determined by training type, not activity level alone. Endurance training receives the highest carbohydrate allocation (5-8 g/kg) to fuel glycogen-dependent activities. Strength training uses moderate amounts (3-5 g/kg) as it relies more on phosphagen and glycolytic systems. Mobility work requires minimal carbs (2-3 g/kg) as it's primarily aerobic at low intensities.
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">Fat allocation</h4>
+                    <p className="text-sm text-gray-700 mb-2">
+                      Dietary fat is calculated as a percentage of total calories, with training type influencing the target:
+                    </p>
+                    <ul className="list-disc list-inside text-sm text-gray-700 space-y-1 ml-2">
+                      <li><strong>Endurance (25%)</strong>: Lower fat to prioritize carbohydrate fueling</li>
+                      <li><strong>Strength (30%)</strong>: Moderate fat to support hormone production and recovery</li>
+                      <li><strong>Mobility (32.5%)</strong>: Higher fat as primary fuel source for low-intensity movement</li>
+                      <li><strong>Mixed (27.5%)</strong>: Balanced approach for varied training</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">Priority system</h4>
+                    <p className="text-sm text-gray-700">
+                      The system prioritizes macronutrients in this order: (1) Protein is fixed based on body weight factors, (2) Carbohydrates are set according to training demands, (3) Fats fill remaining calories up to their target percentage. If total calories from protein and carbs exceed the target, fat is reduced but never below essential fatty acid requirements (~0.5 g/kg).
+                    </p>
+                  </div>
+
+                  <div className="bg-green-50 p-3 rounded border border-green-200">
+                    <h4 className="font-semibold text-sm mb-1 text-green-900">Precision and rounding</h4>
+                    <p className="text-sm text-green-800">
+                      All final values are rounded for practical meal planning: protein and carbs to nearest 5g, fats to nearest 5g, calories to nearest 10 kcal. This reduces analysis paralysis while maintaining nutritional precision.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <AlertTriangle className="h-5 w-5" />
+                    Special considerations
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">Resistant starch prioritization</h4>
+                    <p className="text-sm text-gray-700">
+                      For users with weight loss goals or BMI &gt;25, the system automatically prioritizes recipes containing resistant starch (cooled potatoes, rice, legumes). Resistant starch acts like fiber, feeding beneficial gut bacteria, improving insulin sensitivity, and increasing satiety with fewer absorbed calories.
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">Menstrual cycle support</h4>
+                    <p className="text-sm text-gray-700">
+                      When users select a menstrual cycle phase, the meal generator automatically prioritizes recipes tagged for that phase. Follicular phase emphasizes lighter, iron-rich foods. Ovulatory phase includes anti-inflammatory ingredients. Luteal phase features complex carbs and magnesium. Menstrual phase prioritizes warming, iron-rich, anti-inflammatory meals.
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">Longevity optimization</h4>
+                    <p className="text-sm text-gray-700">
+                      All meal plans automatically prioritize recipes tagged for longevity. These recipes emphasize whole foods, high nutrient density, anti-inflammatory ingredients, appropriate protein levels, and fiber-rich plant foods - all factors associated with healthy aging and reduced disease risk.
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-sm mb-2">Meal timing and prep time</h4>
+                    <p className="text-sm text-gray-700">
+                      Weekday meals (Monday-Friday) are limited to &le;45 minutes prep time to accommodate work schedules. Weekend meals have no time restrictions, allowing for batch cooking and meal prep. The system intelligently distributes complex recipes and respects user cooking preferences while maintaining nutritional targets.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
 
           {/* Nutrition Logic Tab */}
