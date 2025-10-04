@@ -56,10 +56,13 @@ import {
 
   recipeModifications,
   recipeDeletions,
+  deletedTags,
   type RecipeModification,
   type InsertRecipeModification,
   type RecipeDeletion,
   type InsertRecipeDeletion,
+  type DeletedTag,
+  type InsertDeletedTag,
 
   aiRecipes,
   type AiRecipe,
@@ -141,6 +144,10 @@ export interface IStorage {
   saveRecipeDeletion(recipeId: string, userId: number): Promise<void>;
   getRecipeModifications(): Promise<any[]>;
   getRecipeDeletions(): Promise<string[]>;
+  
+  // Deleted Tags methods
+  saveDeletedTag(tag: string, deletedBy?: number): Promise<void>;
+  getDeletedTags(): Promise<string[]>;
 
   // Recipe Translation methods
   getRecipeTranslation(recipeId: string, language: string): Promise<RecipeTranslation | undefined>;
@@ -611,6 +618,15 @@ export class MemStorage implements IStorage {
   }
 
   async getRecipeDeletions(): Promise<string[]> {
+    return [];
+  }
+  
+  // Deleted Tags methods (MemStorage - not implemented)
+  async saveDeletedTag(tag: string, deletedBy?: number): Promise<void> {
+    // No-op for MemStorage - requires DatabaseStorage implementation
+  }
+
+  async getDeletedTags(): Promise<string[]> {
     return [];
   }
 
@@ -1555,6 +1571,22 @@ export class DatabaseStorage implements IStorage {
   async getRecipeDeletions(): Promise<string[]> {
     const deletions = await db.select().from(recipeDeletions);
     return deletions.map(del => del.recipeId);
+  }
+  
+  // Deleted Tags methods
+  async saveDeletedTag(tag: string, deletedBy?: number): Promise<void> {
+    await db
+      .insert(deletedTags)
+      .values({
+        tag,
+        deletedBy: deletedBy || null
+      })
+      .onConflictDoNothing(); // Don't duplicate tag deletions
+  }
+
+  async getDeletedTags(): Promise<string[]> {
+    const deleted = await db.select().from(deletedTags);
+    return deleted.map(dt => dt.tag);
   }
 
   // Recipe Translation methods

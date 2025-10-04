@@ -430,4 +430,72 @@ adminRouter.get('/translations/status', async (req, res) => {
   }
 });
 
+// Tag management endpoints
+adminRouter.get('/tags', async (req, res) => {
+  try {
+    const { getCompleteEnhancedMealDatabase } = await import('./nutrition-enhanced');
+    const recipes = await getCompleteEnhancedMealDatabase();
+    
+    // Get deleted tags from database
+    const deletedTagsList = await storage.getDeletedTags();
+    const deletedTagsSet = new Set(deletedTagsList);
+    
+    // Count tag occurrences across all recipes, filtering out deleted tags
+    const tagCounts: Record<string, number> = {};
+    
+    recipes.forEach(recipe => {
+      if (recipe.tags && Array.isArray(recipe.tags)) {
+        recipe.tags.forEach(tag => {
+          // Skip deleted tags
+          if (!deletedTagsSet.has(tag)) {
+            tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+          }
+        });
+      }
+    });
+    
+    // Convert to array and sort by count descending
+    const tagsArray = Object.entries(tagCounts)
+      .map(([tag, count]) => ({ tag, count }))
+      .sort((a, b) => b.count - a.count);
+    
+    res.json(tagsArray);
+  } catch (error) {
+    console.error('Error getting tags:', error);
+    res.status(500).json({ error: 'Failed to get tags' });
+  }
+});
+
+adminRouter.delete('/tags', async (req, res) => {
+  try {
+    const { tag } = req.body;
+    
+    if (!tag || typeof tag !== 'string') {
+      return res.status(400).json({ error: 'Tag is required' });
+    }
+    
+    // Get current user ID from session (if available)
+    const userId = (req.user as any)?.id || undefined;
+    
+    // Count how many recipes currently have this tag
+    const { getCompleteEnhancedMealDatabase } = await import('./nutrition-enhanced');
+    const recipes = await getCompleteEnhancedMealDatabase();
+    const recipesUpdated = recipes.filter(recipe => 
+      recipe.tags && Array.isArray(recipe.tags) && recipe.tags.includes(tag)
+    ).length;
+    
+    // Save the tag deletion to database
+    await storage.saveDeletedTag(tag, userId);
+    
+    res.json({ 
+      success: true, 
+      recipesUpdated,
+      message: `Tag "${tag}" will be hidden from ${recipesUpdated} recipe(s).`
+    });
+  } catch (error) {
+    console.error('Error deleting tag:', error);
+    res.status(500).json({ error: 'Failed to delete tag' });
+  }
+});
+
 export { adminRouter };

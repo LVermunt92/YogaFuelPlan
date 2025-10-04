@@ -166,6 +166,127 @@ interface IngredientAnalysisResponse {
   unmappedIngredients: number;
 }
 
+// Tags Manager Component
+function TagsManager() {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [tagToDelete, setTagToDelete] = useState<string | null>(null);
+
+  // Fetch all tags with counts
+  const { data: tagsData, isLoading: tagsLoading } = useQuery<{ tag: string; count: number }[]>({
+    queryKey: ['/api/admin/tags'],
+    queryFn: () => fetch('/api/admin/tags').then(res => res.json()),
+  });
+
+  // Delete tag mutation
+  const deleteTagMutation = useMutation({
+    mutationFn: async (tag: string) => {
+      const response = await apiRequest('DELETE', '/api/admin/tags', { tag });
+      return response.json();
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/tags'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/recipes'] });
+      setTagToDelete(null);
+      toast({ 
+        title: "Success", 
+        description: `Tag removed from ${data.recipesUpdated} recipe(s)` 
+      });
+    },
+    onError: () => {
+      toast({ 
+        title: "Error", 
+        description: "Failed to delete tag",
+        variant: "destructive"
+      });
+    }
+  });
+
+  const filteredTags = tagsData?.filter(item => 
+    item.tag.toLowerCase().includes(searchTerm.toLowerCase())
+  ) || [];
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-col sm:flex-row gap-2">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Input
+            placeholder="Search tags..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+        <div className="text-sm text-gray-600 flex items-center">
+          Total tags: {tagsData?.length || 0}
+        </div>
+      </div>
+
+      {tagsLoading ? (
+        <div className="py-8 text-center text-gray-500">Loading tags...</div>
+      ) : filteredTags.length === 0 ? (
+        <div className="py-8 text-center text-gray-500">
+          {searchTerm ? "No tags found matching your search" : "No tags found in database"}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {filteredTags.map((item) => (
+            <Card key={item.tag} className="p-4">
+              <div className="flex justify-between items-start">
+                <div className="flex-1">
+                  <Badge variant="secondary" className="mb-2">
+                    {item.tag}
+                  </Badge>
+                  <p className="text-sm text-gray-600">
+                    Used in {item.count} recipe{item.count !== 1 ? 's' : ''}
+                  </p>
+                </div>
+                <Dialog open={tagToDelete === item.tag} onOpenChange={(open) => !open && setTagToDelete(null)}>
+                  <DialogTrigger asChild>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => setTagToDelete(item.tag)}
+                    >
+                      <Trash2 className="h-4 w-4 text-red-600" />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Delete tag "{item.tag}"?</DialogTitle>
+                    </DialogHeader>
+                    <p className="text-sm text-gray-600">
+                      This will remove the tag from {item.count} recipe{item.count !== 1 ? 's' : ''}. 
+                      This action cannot be undone.
+                    </p>
+                    <DialogFooter>
+                      <Button 
+                        variant="outline" 
+                        onClick={() => setTagToDelete(null)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button 
+                        variant="destructive"
+                        onClick={() => deleteTagMutation.mutate(item.tag)}
+                        disabled={deleteTagMutation.isPending}
+                      >
+                        {deleteTagMutation.isPending ? "Deleting..." : "Delete"}
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            </Card>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // Ingredient Mapping Manager Component
 function IngredientMappingManager() {
   const { toast } = useToast();
@@ -895,12 +1016,13 @@ function AdminPanelMain() {
         </div>
 
         <Tabs defaultValue="overview" className="space-y-4 sm:space-y-6">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-1 h-auto p-1">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-8 gap-1 h-auto p-1">
             <TabsTrigger value="overview" className="text-xs sm:text-sm py-2 px-2">Overview</TabsTrigger>
             <TabsTrigger value="nutrition" className="text-xs sm:text-sm py-2 px-2">Nutrition</TabsTrigger>
             <TabsTrigger value="config" className="text-xs sm:text-sm py-2 px-2">Config</TabsTrigger>
             <TabsTrigger value="recipes" className="bg-green-100 text-xs sm:text-sm py-2 px-2">Recipes</TabsTrigger>
             <TabsTrigger value="ingredient-mapping" className="bg-orange-100 text-xs sm:text-sm py-2 px-2">Ingredients</TabsTrigger>
+            <TabsTrigger value="tags" className="bg-blue-100 text-xs sm:text-sm py-2 px-2">Tags</TabsTrigger>
             <TabsTrigger value="users" className="text-xs sm:text-sm py-2 px-2">Users</TabsTrigger>
             <TabsTrigger value="system" className="text-xs sm:text-sm py-2 px-2">System</TabsTrigger>
           </TabsList>
@@ -1575,6 +1697,28 @@ function AdminPanelMain() {
           {/* Ingredient Mapping Tab */}
           <TabsContent value="ingredient-mapping" className="space-y-6">
             <IngredientMappingManager />
+          </TabsContent>
+
+          {/* Tags Management Tab */}
+          <TabsContent value="tags" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
+                  <div>
+                    <CardTitle className="flex items-center gap-2">
+                      <Filter className="h-5 w-5" />
+                      Tag management
+                    </CardTitle>
+                    <p className="text-sm text-gray-600 mt-1">
+                      View and delete tags across all recipes in the database
+                    </p>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <TagsManager />
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* Users Tab */}

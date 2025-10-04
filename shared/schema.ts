@@ -579,6 +579,14 @@ export const recipeDeletions = pgTable("recipe_deletions", {
   deletedAt: timestamp("deleted_at").defaultNow(),
 });
 
+// Deleted tags table for tracking which tags have been removed from all recipes
+export const deletedTags = pgTable("deleted_tags", {
+  id: serial("id").primaryKey(),
+  tag: text("tag").notNull().unique(), // Tag that was deleted
+  deletedBy: integer("deleted_by").references(() => users.id),
+  deletedAt: timestamp("deleted_at").defaultNow(),
+});
+
 // Recipe modification schemas
 export const insertRecipeModificationSchema = createInsertSchema(recipeModifications).omit({
   id: true,
@@ -591,10 +599,17 @@ export const insertRecipeDeletionSchema = createInsertSchema(recipeDeletions).om
   deletedAt: true,
 });
 
+export const insertDeletedTagSchema = createInsertSchema(deletedTags).omit({
+  id: true,
+  deletedAt: true,
+});
+
 export type RecipeModification = typeof recipeModifications.$inferSelect;
 export type InsertRecipeModification = z.infer<typeof insertRecipeModificationSchema>;
 export type RecipeDeletion = typeof recipeDeletions.$inferSelect;
 export type InsertRecipeDeletion = z.infer<typeof insertRecipeDeletionSchema>;
+export type DeletedTag = typeof deletedTags.$inferSelect;
+export type InsertDeletedTag = z.infer<typeof insertDeletedTagSchema>;
 
 // Shopping list name schemas
 export const insertShoppingListNameSchema = createInsertSchema(shoppingListNames).omit({
