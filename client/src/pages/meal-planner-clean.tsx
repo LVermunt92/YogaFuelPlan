@@ -642,10 +642,13 @@ function MealPlannerMain() {
            meal.foodDescription.toLowerCase().includes('incorporating');
   };
 
-  // Check if a day is a cooking day (has fresh recipes)
+  // Check if a day is a cooking day (has fresh recipes, not eating out)
   const isCookingDay = (day: number) => {
     const dayMeals = getDayMeals(day);
-    return dayMeals.some(meal => !isLeftoverMeal(meal));
+    return dayMeals.some(meal => 
+      !isLeftoverMeal(meal) && 
+      meal.foodDescription !== 'Eating out'
+    );
   };
 
   // Check if a day is primarily leftover day
