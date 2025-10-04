@@ -5806,7 +5806,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
 
   // HIGH-PROTEIN BREAKFAST OPTIONS
   {
-    name: "Greek yogurt protein power bowl",
+    name: "Coconut yogurt protein power bowl",
     portion: "1 large bowl",
     nutrition: { 
       protein: 32, 
@@ -5821,9 +5821,9 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 10.0 
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Quick", "Probiotic"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Protein", "Quick", "Probiotic"],
     ingredients: [
-      "1 cup Greek yogurt (2% fat)",
+      "1 cup coconut yogurt",
       "2 tbsp almond butter",
       "1 tbsp chia seeds",
       "1 tbsp hemp hearts",
@@ -5840,7 +5840,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
-        "Place Greek yogurt in a large bowl",
+        "Place coconut yogurt in a large bowl",
         "Swirl in almond butter and vanilla extract",
         "Top with chia seeds and hemp hearts",
         "Add mixed berries on top",
@@ -5848,15 +5848,16 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Finish with crushed walnuts"
       ],
       tips: [
-        "Use thick Greek yogurt for best texture",
-        "Let chia seeds sit for 5 minutes to absorb moisture"
+        "Use thick coconut yogurt for best texture",
+        "Let chia seeds sit for 5 minutes to absorb moisture",
+        "Coconut yogurt provides the same creamy texture without lactose"
       ],
-      notes: "Creamy, protein-packed breakfast that feels indulgent"
+      notes: "Lactose-free, creamy, protein-packed breakfast that feels indulgent"
     }
   },
 
   {
-    name: "Cottage cheese and eggs scramble with spinach",
+    name: "Tofu scramble with spinach",
     portion: "1 large serving",
     nutrition: { 
       protein: 38, 
@@ -5871,13 +5872,13 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 13.6 
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Keto", "Quick", "Dairy"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Protein", "Keto", "Quick"],
     ingredients: [
       "3 large eggs",
-      "½ cup cottage cheese",
+      "½ cup firm tofu (crumbled)",
       "2 cups fresh spinach",
-      "1 tbsp butter",
-      "¼ cup shredded cheddar cheese",
+      "1 tbsp olive oil",
+      "2 tbsp nutritional yeast",
       "2 tbsp chives (chopped)",
       "Salt and pepper to taste"
     ],
@@ -5889,19 +5890,20 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
-        "Heat butter in non-stick pan over medium heat",
+        "Heat olive oil in non-stick pan over medium heat",
         "Add spinach, cook until wilted",
         "Beat eggs and add to pan",
-        "As eggs begin to set, add cottage cheese",
-        "Gently scramble, adding cheddar cheese",
+        "As eggs begin to set, add crumbled tofu",
+        "Gently scramble, adding nutritional yeast for cheesy flavor",
         "Cook until eggs are set but still creamy",
         "Season with salt, pepper, and chives"
       ],
       tips: [
         "Don't overcook - eggs should remain creamy",
-        "Add cottage cheese when eggs are half set"
+        "Nutritional yeast adds a cheesy flavor without dairy",
+        "Crumble tofu finely for best texture"
       ],
-      notes: "Restaurant-quality protein breakfast in minutes"
+      notes: "Lactose-free, restaurant-quality protein breakfast in minutes"
     }
   },
 
@@ -10468,7 +10470,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.3
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Dairy-Free", "Gluten-Free", "Menstruation", "matcha", "latte", "Antioxidants", "energy-boost"],
+    tags: ["Vegetarian", "Dairy-Free", "Gluten-Free", "Menstruation", "matcha", "latte", "Antioxidants", "energy-boost", "Beverage", "Drink"],
     ingredients: [
       "5ml matcha powder",
       "250ml plant milk",
@@ -10500,7 +10502,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       notes: "Provides gentle energy boost with L-theanine for calm focus, perfect for managing energy without caffeine crash during menstruation"
     },
     createdAt: new Date('2025-09-02'),
-    active: true
+    active: false
   },
   {
     name: "Breakfast Muffins",
