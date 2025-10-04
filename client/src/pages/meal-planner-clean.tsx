@@ -860,48 +860,6 @@ function MealPlannerMain() {
                 </Tooltip>
               </TooltipProvider>
 
-              {/* Vegetables */}
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="text-center cursor-help">
-                      <div className="relative w-20 h-20 mx-auto mb-1">
-                        <ResponsiveContainer width="100%" height="100%">
-                          <PieChart>
-                            <Pie
-                              data={[
-                                { value: Math.min(kpiData.vegetables.percentage, 100), fill: "#22c55e" },
-                                { value: Math.max(100 - kpiData.vegetables.percentage, 0), fill: "#f3f4f6" }
-                              ]}
-                              cx="50%"
-                              cy="50%"
-                              innerRadius={20}
-                              outerRadius={35}
-                              startAngle={90}
-                              endAngle={450}
-                              dataKey="value"
-                            >
-                            </Pie>
-                          </PieChart>
-                        </ResponsiveContainer>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="text-center">
-                            <div className="text-sm font-bold text-green-600">{kpiData.vegetables.value}g</div>
-                          </div>
-                        </div>
-                      </div>
-                      <h3 className="text-xs font-semibold text-green-600">{t.vegetables}</h3>
-                      <p className="text-xs text-gray-500">{Math.min(kpiData.vegetables.percentage, 100)}%</p>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
-                    <p className="font-semibold mb-1">{t.whyVegetablesMatters}</p>
-                    <p className="text-sm">{t.vegetablesTooltip}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-
-
               {/* Fiber */}
               <TooltipProvider>
                 <Tooltip>
@@ -944,7 +902,7 @@ function MealPlannerMain() {
                 </Tooltip>
               </TooltipProvider>
 
-              {/* Cocoa Flavanols */}
+              {/* Vegetables */}
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -954,8 +912,8 @@ function MealPlannerMain() {
                           <PieChart>
                             <Pie
                               data={[
-                                { value: Math.min(kpiData.cocoaFlavanols.percentage, 100), fill: "#8b5cf6" },
-                                { value: Math.max(100 - kpiData.cocoaFlavanols.percentage, 0), fill: "#f3f4f6" }
+                                { value: Math.min(kpiData.vegetables.percentage, 100), fill: "#22c55e" },
+                                { value: Math.max(100 - kpiData.vegetables.percentage, 0), fill: "#f3f4f6" }
                               ]}
                               cx="50%"
                               cy="50%"
@@ -970,21 +928,21 @@ function MealPlannerMain() {
                         </ResponsiveContainer>
                         <div className="absolute inset-0 flex items-center justify-center">
                           <div className="text-center">
-                            <div className="text-sm font-bold text-purple-600">{kpiData.cocoaFlavanols.value}mg</div>
+                            <div className="text-sm font-bold text-green-600">{kpiData.vegetables.value}g</div>
                           </div>
                         </div>
                       </div>
-                      <h3 className="text-xs font-semibold text-purple-600">{t.cocoaFlavanols}</h3>
-                      <p className="text-xs text-gray-500">{Math.min(kpiData.cocoaFlavanols.percentage, 100)}%</p>
+                      <h3 className="text-xs font-semibold text-green-600">{t.vegetables}</h3>
+                      <p className="text-xs text-gray-500">{Math.min(kpiData.vegetables.percentage, 100)}%</p>
                     </div>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
-                    <p className="font-semibold mb-1">{t.whyCocoaFlavanolsMatters}</p>
-                    <p className="text-sm mb-2">{t.cocoaFlavanolsTooltip}</p>
-                    <p className="text-xs text-purple-200 font-medium">{t.cocoaFlavanolsTarget}</p>
+                    <p className="font-semibold mb-1">{t.whyVegetablesMatters}</p>
+                    <p className="text-sm">{t.vegetablesTooltip}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
+
 
               {/* Plant Diversity */}
               <TooltipProvider>
@@ -1024,6 +982,48 @@ function MealPlannerMain() {
                     <p className="font-semibold mb-1">{t.whyPlantDiversityMatters}</p>
                     <p className="text-sm mb-2">{t.plantDiversityTooltip}</p>
                     <p className="text-xs text-green-200 font-medium">{t.plantDiversityTarget}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+
+              {/* Cocoa Flavanols */}
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="text-center cursor-help">
+                      <div className="relative w-20 h-20 mx-auto mb-1">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <PieChart>
+                            <Pie
+                              data={[
+                                { value: Math.min(kpiData.cocoaFlavanols.percentage, 100), fill: "#8b5cf6" },
+                                { value: Math.max(100 - kpiData.cocoaFlavanols.percentage, 0), fill: "#f3f4f6" }
+                              ]}
+                              cx="50%"
+                              cy="50%"
+                              innerRadius={20}
+                              outerRadius={35}
+                              startAngle={90}
+                              endAngle={450}
+                              dataKey="value"
+                            >
+                            </Pie>
+                          </PieChart>
+                        </ResponsiveContainer>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="text-center">
+                            <div className="text-sm font-bold text-purple-600">{kpiData.cocoaFlavanols.value}mg</div>
+                          </div>
+                        </div>
+                      </div>
+                      <h3 className="text-xs font-semibold text-purple-600">{t.cocoaFlavanols}</h3>
+                      <p className="text-xs text-gray-500">{Math.min(kpiData.cocoaFlavanols.percentage, 100)}%</p>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p className="font-semibold mb-1">{t.whyCocoaFlavanolsMatters}</p>
+                    <p className="text-sm mb-2">{t.cocoaFlavanolsTooltip}</p>
+                    <p className="text-xs text-purple-200 font-medium">{t.cocoaFlavanolsTarget}</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
