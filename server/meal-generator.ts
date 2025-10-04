@@ -2213,9 +2213,10 @@ async function generateMealPrepPlan(
         // servingMultiplier already handles batch cooking for multiple days
         // Only apply household size multiplier (no additional leftover doubling)
         const portionFactor = caloricAdjustment * householdSize;
+        const totalProteinFactor = portionFactor * servingMultiplier;
         
         let adjustedPortion = adjustMealPortion(selectedBreakfast.portion, portionFactor, servingMultiplier);
-        let adjustedProtein = Math.round(selectedBreakfast.nutrition.protein * portionFactor);
+        let adjustedProtein = Math.round(selectedBreakfast.nutrition.protein * totalProteinFactor);
         
         // Create descriptive meal name
         const mealDescription = selectedBreakfast.name;
@@ -2287,9 +2288,10 @@ async function generateMealPrepPlan(
         // servingMultiplier already handles batch cooking for multiple days
         // Only apply household size multiplier (no additional leftover doubling)
         const portionFactor = caloricAdjustment * householdSize;
+        const totalProteinFactor = portionFactor * servingMultiplier;
         
         let adjustedPortion = adjustMealPortion(lunchMeal.portion, portionFactor, servingMultiplier);
-        let adjustedProtein = Math.round(lunchMeal.nutrition.protein * portionFactor);
+        let adjustedProtein = Math.round(lunchMeal.nutrition.protein * totalProteinFactor);
         const prepTime = isLunchLeftover ? 5 : lunchMeal.nutrition.prepTime;
         
         // Create descriptive meal name (no seasonal adaptation needed since warming recipes are filtered out)
@@ -2427,8 +2429,10 @@ async function generateMealPrepPlan(
           portionFactor *= 2; // Double for single person cooking for leftovers
         }
         
+        const totalProteinFactor = portionFactor * servingMultiplier;
+        
         let adjustedPortion = adjustMealPortion(dinnerMeal.portion, portionFactor, servingMultiplier);
-        let adjustedProtein = Math.round(dinnerMeal.nutrition.protein * portionFactor);
+        let adjustedProtein = Math.round(dinnerMeal.nutrition.protein * totalProteinFactor);
         const prepTime = isDinnerLeftover ? 5 : dinnerMeal.nutrition.prepTime;
         
         // Create descriptive meal name (no seasonal adaptation needed since warming recipes are filtered out)
