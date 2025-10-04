@@ -3166,6 +3166,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Store the modification
       recipeModifications.set(recipeId, updatedRecipe);
 
+      // Automatically translate to Dutch and save to database
+      try {
+        const numericRecipeId = parseInt(recipeId);
+        if (!isNaN(numericRecipeId)) {
+          console.log(`🌐 AUTO-TRANSLATE: Updating Dutch translation for recipe ${recipeId}: ${updatedRecipe.name}`);
+          const translated = translateRecipe(updatedRecipe, 'nl');
+          
+          // Store Dutch translation in database
+          await storage.upsertRecipeTranslation({
+            recipeId: numericRecipeId,
+            language: 'nl',
+            name: translated.name,
+            ingredients: translated.ingredients,
+            instructions: translated.instructions || [],
+            tips: translated.tips || [],
+            notes: translated.notes || []
+          });
+          
+          console.log(`✅ Dutch translation updated: ${updatedRecipe.name} → ${translated.name}`);
+        }
+      } catch (translationError) {
+        console.error(`⚠️  Failed to auto-translate recipe ${recipeId}:`, translationError);
+        // Don't fail the whole request if translation fails
+      }
+
       res.json(updatedRecipe);
     } catch (error) {
       console.error("Error updating recipe:", error);
@@ -3215,6 +3240,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Store the new recipe
       recipeModifications.set(newRecipe.id, newRecipe);
+
+      // Automatically translate to Dutch and save to database
+      try {
+        const numericRecipeId = newRecipe.id ? parseInt(newRecipe.id.toString()) : undefined;
+        if (numericRecipeId && !isNaN(numericRecipeId)) {
+          console.log(`🌐 AUTO-TRANSLATE: Creating Dutch translation for new recipe ${newRecipe.id}: ${newRecipe.name}`);
+          const translated = translateRecipe(newRecipe, 'nl');
+          
+          // Store Dutch translation in database
+          await storage.upsertRecipeTranslation({
+            recipeId: numericRecipeId,
+            language: 'nl',
+            name: translated.name,
+            ingredients: translated.ingredients,
+            instructions: translated.instructions || [],
+            tips: translated.tips || [],
+            notes: translated.notes || []
+          });
+          
+          console.log(`✅ Dutch translation created: ${newRecipe.name} → ${translated.name}`);
+        }
+      } catch (translationError) {
+        console.error(`⚠️  Failed to auto-translate new recipe ${newRecipe.id}:`, translationError);
+        // Don't fail the whole request if translation fails
+      }
 
       res.status(201).json(newRecipe);
     } catch (error) {
