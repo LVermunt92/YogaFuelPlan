@@ -1410,7 +1410,7 @@ function MealPlannerMain() {
                                       Leftover
                                     </div>
                                   )}
-                                  {dinner.foodDescription.includes('incorporating leftover') && (
+                                  {dinner.foodDescription.toLowerCase().includes('incorporating') && !isLeftoverMeal(dinner) && (
                                     <div className="flex items-center gap-1 text-xs text-orange-600 bg-orange-100 px-1.5 py-0.5 rounded">
                                       <Plus className="h-3 w-3" />
                                       Added Ingredients
@@ -1449,7 +1449,7 @@ function MealPlannerMain() {
                                         Leftover
                                       </div>
                                     )}
-                                    {breakfast.foodDescription.includes('incorporating leftover') && (
+                                    {breakfast.foodDescription.toLowerCase().includes('incorporating') && !isLeftoverMeal(breakfast) && (
                                       <div className="flex items-center gap-1 text-xs text-orange-600 bg-orange-100 px-1.5 py-0.5 rounded">
                                         <Plus className="h-3 w-3" />
                                         Added Ingredients
@@ -1486,7 +1486,7 @@ function MealPlannerMain() {
                                         Leftover
                                       </div>
                                     )}
-                                    {lunch.foodDescription.includes('incorporating leftover') && (
+                                    {lunch.foodDescription.toLowerCase().includes('incorporating') && !isLeftoverMeal(lunch) && (
                                       <div className="flex items-center gap-1 text-xs text-orange-600 bg-orange-100 px-1.5 py-0.5 rounded">
                                         <Plus className="h-3 w-3" />
                                         Added Ingredients
@@ -1523,7 +1523,7 @@ function MealPlannerMain() {
                                         Leftover
                                       </div>
                                     )}
-                                    {dinner.foodDescription.includes('incorporating leftover') && (
+                                    {dinner.foodDescription.toLowerCase().includes('incorporating') && !isLeftoverMeal(dinner) && (
                                       <div className="flex items-center gap-1 text-xs text-orange-600 bg-orange-100 px-1.5 py-0.5 rounded">
                                         <Plus className="h-3 w-3" />
                                         Added Ingredients
@@ -1582,7 +1582,7 @@ function MealPlannerMain() {
                                       <div 
                                         className={`cursor-pointer hover:bg-gray-100 p-2 rounded border-l-2 ${
                                           breakfast.foodDescription === 'Eating out'
-                                            ? 'border-gray-400'
+                                            ? 'border-gray-400 bg-gray-50'
                                             : isLeftoverMeal(breakfast) 
                                               ? 'border-blue-400' 
                                               : 'border-green-400'
@@ -1599,7 +1599,7 @@ function MealPlannerMain() {
                                       <div 
                                         className={`cursor-pointer hover:bg-gray-100 p-2 rounded border-l-2 ${
                                           lunch.foodDescription === 'Eating out'
-                                            ? 'border-gray-400'
+                                            ? 'border-gray-400 bg-gray-50'
                                             : isLeftoverMeal(lunch) 
                                               ? 'border-blue-400' 
                                               : 'border-green-400'
@@ -1616,7 +1616,7 @@ function MealPlannerMain() {
                                       <div 
                                         className={`cursor-pointer hover:bg-gray-100 p-2 rounded border-l-2 ${
                                           dinner.foodDescription === 'Eating out'
-                                            ? 'border-gray-400'
+                                            ? 'border-gray-400 bg-gray-50'
                                             : isLeftoverMeal(dinner) 
                                               ? 'border-blue-400' 
                                               : 'border-green-400'
