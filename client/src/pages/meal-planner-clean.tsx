@@ -1298,66 +1298,50 @@ function MealPlannerMain() {
               {currentMealPlan && userProfile?.leftovers && userProfile.leftovers.length > 0 && (
                 <div className="mt-3 px-6">
                   {(() => {
-                    // Function to check if an ingredient is used
-                    const isIngredientUsed = (ingredient: string) => {
-                      if (!currentMealPlan?.meals) return false;
-                      
-                      const translations: Record<string, string> = {
-                        'bleekselderij': 'celery',
-                        'spinazie': 'spinach',
-                        'zoete aardappel': 'sweet potato',
-                        'erwten': 'peas',
-                        'wortel': 'carrot',
-                        'ui': 'onion',
-                        'knoflook': 'garlic',
-                        'tomaat': 'tomato',
-                        'courgette': 'zucchini'
-                      };
-                      
-                      const englishEquivalent = translations[ingredient.toLowerCase()] || ingredient;
-                      
-                      return currentMealPlan.meals.some(meal => {
-                        const mealLower = meal.foodDescription.toLowerCase();
-                        return mealLower.includes(ingredient.toLowerCase()) || 
-                               mealLower.includes(englishEquivalent.toLowerCase());
-                      });
-                    };
+                    // Check if ANY meals use leftover ingredients
+                    const hasLeftoverMeals = currentMealPlan.meals?.some(meal => meal.isLeftover === true) || false;
                     
-                    const usedIngredients = userProfile.leftovers.filter(isIngredientUsed);
-                    const unusedIngredients = userProfile.leftovers.filter(ingredient => !isIngredientUsed(ingredient));
-                    
-                    return (
-                      <div>
-                        {usedIngredients.length > 0 && (
+                    if (hasLeftoverMeals) {
+                      // If meals use leftovers, mark ALL ingredients as used
+                      // (since we don't track which specific ingredient was used per meal)
+                      return (
+                        <div>
                           <div className="mb-2">
                             <p className="text-sm font-medium text-green-800 mb-1">
                               ✅ {language === 'nl' ? 'Gebruikte restjes:' : 'Used leftovers:'}
                             </p>
                             <div className="flex flex-wrap gap-1">
-                              {usedIngredients.map((ingredient, index) => (
+                              {userProfile.leftovers.map((ingredient, index) => (
                                 <span key={index} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                   {ingredient}
                                 </span>
                               ))}
                             </div>
-                          </div>
-                        )}
-                        {unusedIngredients.length > 0 && (
-                          <div>
-                            <p className="text-sm font-medium text-yellow-800 mb-1">
-                              ⏳ {language === 'nl' ? 'Nog te gebruiken:' : 'Still to use:'}
+                            <p className="text-xs text-green-600 mt-1">
+                              {language === 'nl' 
+                                ? 'Deze ingrediënten zijn verwerkt in recepten gemarkeerd met het + icoon'
+                                : 'These ingredients are incorporated in recipes marked with the + icon'}
                             </p>
-                            <div className="flex flex-wrap gap-1">
-                              {unusedIngredients.map((ingredient, index) => (
-                                <span key={index} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                  {ingredient}
-                                </span>
-                              ))}
-                            </div>
                           </div>
-                        )}
-                      </div>
-                    );
+                        </div>
+                      );
+                    } else {
+                      // No leftover meals found
+                      return (
+                        <div>
+                          <p className="text-sm font-medium text-yellow-800 mb-1">
+                            ⏳ {language === 'nl' ? 'Nog te gebruiken:' : 'Still to use:'}
+                          </p>
+                          <div className="flex flex-wrap gap-1">
+                            {userProfile.leftovers.map((ingredient, index) => (
+                              <span key={index} className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                {ingredient}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    }
                   })()}
                 </div>
               )}
