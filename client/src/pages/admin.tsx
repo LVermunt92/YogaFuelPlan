@@ -887,8 +887,8 @@ function AdminPanelMain() {
   ];
 
   return (
-    <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
-      <div className="max-w-6xl mx-auto">
+    <div className="w-full px-2 sm:px-4 lg:px-8 py-4 sm:py-8">
+      <div className="w-full">
         <div className="mb-4 sm:mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">Admin Panel</h1>
           <p className="text-gray-600 text-sm sm:text-base">Manage nutrition calculations, system settings, and monitor application performance</p>
