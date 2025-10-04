@@ -169,11 +169,24 @@ interface IngredientAnalysisResponse {
 function IngredientMappingManager() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const [activeTab, setActiveTab] = useState("mappings");
+  const [activeTab, setActiveTab] = useState("shopping-names");
   const [editingMapping, setEditingMapping] = useState<IngredientMapping | null>(null);
   const [editingShoppingListName, setEditingShoppingListName] = useState<ShoppingListName | null>(null);
   const [mealPlanId, setMealPlanId] = useState("");
   const [analysisResult, setAnalysisResult] = useState<IngredientAnalysisResponse | null>(null);
+  
+  // Form states for creating new shopping list name
+  const [newShoppingListName, setNewShoppingListName] = useState({ name: "", category: "", defaultUnit: "g" });
+  const [showCreateShoppingName, setShowCreateShoppingName] = useState(false);
+  
+  // Form states for creating new ingredient mapping
+  const [newMapping, setNewMapping] = useState({ 
+    originalIngredient: "", 
+    normalizedIngredient: "", 
+    shoppingListNameId: 0,
+    isManualOverride: false 
+  });
+  const [showCreateMapping, setShowCreateMapping] = useState(false);
 
   // Fetch shopping list names
   const { data: shoppingListNames = [], isLoading: shoppingListNamesLoading } = useQuery<ShoppingListName[]>({
@@ -195,6 +208,8 @@ function IngredientMappingManager() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/shopping-list-names'] });
+      setShowCreateShoppingName(false);
+      setNewShoppingListName({ name: "", category: "", defaultUnit: "g" });
       toast({ title: "Success", description: "Shopping list name created successfully" });
     },
   });
@@ -239,6 +254,8 @@ function IngredientMappingManager() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/ingredient-mappings'] });
+      setShowCreateMapping(false);
+      setNewMapping({ originalIngredient: "", normalizedIngredient: "", shoppingListNameId: 0, isManualOverride: false });
       toast({ title: "Success", description: "Ingredient mapping created successfully" });
     },
   });
@@ -284,15 +301,15 @@ function IngredientMappingManager() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">Ingredient Mapping Management</h2>
+          <h2 className="text-2xl font-bold">Ingredient mapping management</h2>
           <p className="text-gray-600">Control how recipe ingredients are processed into grocery list items</p>
         </div>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid grid-cols-3 w-full">
-          <TabsTrigger value="mappings">Ingredient Mappings</TabsTrigger>
-          <TabsTrigger value="shopping-names">Shopping List Names</TabsTrigger>
+          <TabsTrigger value="mappings">Ingredient mappings</TabsTrigger>
+          <TabsTrigger value="shopping-names">Shopping list names</TabsTrigger>
           <TabsTrigger value="analysis">Analysis</TabsTrigger>
         </TabsList>
 
@@ -301,30 +318,43 @@ function IngredientMappingManager() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
-                <span>Ingredient Mappings ({ingredientMappings.length})</span>
-                <Dialog>
+                <span>Ingredient mappings ({ingredientMappings.length})</span>
+                <Dialog open={showCreateMapping} onOpenChange={setShowCreateMapping}>
                   <DialogTrigger asChild>
-                    <Button size="sm">
+                    <Button size="sm" data-testid="button-add-ingredient-mapping">
                       <Plus className="h-4 w-4 mr-2" />
-                      Add Mapping
+                      Add mapping
                     </Button>
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>
-                      <DialogTitle>Create Ingredient Mapping</DialogTitle>
+                      <DialogTitle>Create ingredient mapping</DialogTitle>
                     </DialogHeader>
                     <div className="space-y-4">
                       <div>
-                        <Label>Original Ingredient</Label>
-                        <Input placeholder="e.g., '200g chicken breast'" data-testid="input-original-ingredient" />
+                        <Label>Original ingredient</Label>
+                        <Input 
+                          placeholder="e.g., '200g chicken breast'" 
+                          data-testid="input-original-ingredient"
+                          value={newMapping.originalIngredient}
+                          onChange={(e) => setNewMapping({...newMapping, originalIngredient: e.target.value})}
+                        />
                       </div>
                       <div>
-                        <Label>Normalized Ingredient</Label>
-                        <Input placeholder="e.g., 'chicken breast'" data-testid="input-normalized-ingredient" />
+                        <Label>Normalized ingredient</Label>
+                        <Input 
+                          placeholder="e.g., 'chicken breast'" 
+                          data-testid="input-normalized-ingredient"
+                          value={newMapping.normalizedIngredient}
+                          onChange={(e) => setNewMapping({...newMapping, normalizedIngredient: e.target.value})}
+                        />
                       </div>
                       <div>
-                        <Label>Shopping List Name</Label>
-                        <Select>
+                        <Label>Shopping list name</Label>
+                        <Select
+                          value={newMapping.shoppingListNameId.toString()}
+                          onValueChange={(value) => setNewMapping({...newMapping, shoppingListNameId: parseInt(value)})}
+                        >
                           <SelectTrigger data-testid="select-shopping-list-name">
                             <SelectValue placeholder="Select shopping list name" />
                           </SelectTrigger>
@@ -338,13 +368,35 @@ function IngredientMappingManager() {
                         </Select>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <Checkbox id="manual-override" data-testid="checkbox-manual-override" />
-                        <Label htmlFor="manual-override">Manual Override</Label>
+                        <Checkbox 
+                          id="manual-override" 
+                          data-testid="checkbox-manual-override"
+                          checked={newMapping.isManualOverride}
+                          onCheckedChange={(checked) => setNewMapping({...newMapping, isManualOverride: !!checked})}
+                        />
+                        <Label htmlFor="manual-override">Manual override</Label>
                       </div>
                     </div>
                     <DialogFooter>
-                      <Button variant="outline">Cancel</Button>
-                      <Button>Create Mapping</Button>
+                      <Button 
+                        variant="outline" 
+                        onClick={() => setShowCreateMapping(false)}
+                        data-testid="button-cancel-mapping"
+                      >
+                        Cancel
+                      </Button>
+                      <Button 
+                        onClick={() => createIngredientMappingMutation.mutate({
+                          originalIngredient: newMapping.originalIngredient,
+                          normalizedIngredient: newMapping.normalizedIngredient,
+                          shoppingListNameId: newMapping.shoppingListNameId || undefined,
+                          isManualOverride: newMapping.isManualOverride
+                        })}
+                        disabled={!newMapping.normalizedIngredient || createIngredientMappingMutation.isPending}
+                        data-testid="button-create-mapping"
+                      >
+                        {createIngredientMappingMutation.isPending ? "Creating..." : "Create mapping"}
+                      </Button>
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
@@ -399,49 +451,74 @@ function IngredientMappingManager() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
-                <span>Shopping List Names ({shoppingListNames.length})</span>
-                <Dialog>
+                <span>Shopping list names ({shoppingListNames.length})</span>
+                <Dialog open={showCreateShoppingName} onOpenChange={setShowCreateShoppingName}>
                   <DialogTrigger asChild>
-                    <Button size="sm">
+                    <Button size="sm" data-testid="button-add-shopping-list-name">
                       <Plus className="h-4 w-4 mr-2" />
-                      Add Name
+                      Add name
                     </Button>
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>
-                      <DialogTitle>Create Shopping List Name</DialogTitle>
+                      <DialogTitle>Create shopping list name</DialogTitle>
                     </DialogHeader>
                     <div className="space-y-4">
                       <div>
                         <Label>Name</Label>
-                        <Input placeholder="e.g., 'Chicken Breast'" data-testid="input-shopping-list-name" />
+                        <Input 
+                          placeholder="e.g., 'Chicken breast'" 
+                          data-testid="input-shopping-list-name"
+                          value={newShoppingListName.name}
+                          onChange={(e) => setNewShoppingListName({...newShoppingListName, name: e.target.value})}
+                        />
                       </div>
                       <div>
                         <Label>Category</Label>
-                        <Select>
+                        <Select 
+                          value={newShoppingListName.category}
+                          onValueChange={(value) => setNewShoppingListName({...newShoppingListName, category: value})}
+                        >
                           <SelectTrigger data-testid="select-category">
                             <SelectValue placeholder="Select category" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="meat">Meat & Fish</SelectItem>
-                            <SelectItem value="vegetables">Vegetables</SelectItem>
-                            <SelectItem value="fruits">Fruits</SelectItem>
-                            <SelectItem value="grains">Grains & Cereals</SelectItem>
-                            <SelectItem value="dairy">Dairy</SelectItem>
-                            <SelectItem value="pantry">Pantry Items</SelectItem>
-                            <SelectItem value="spices">Spices & Herbs</SelectItem>
-                            <SelectItem value="other">Other</SelectItem>
+                            <SelectItem value="Meat & Fish">Meat & Fish</SelectItem>
+                            <SelectItem value="Vegetables">Vegetables</SelectItem>
+                            <SelectItem value="Fruits">Fruits</SelectItem>
+                            <SelectItem value="Grains & Cereals">Grains & Cereals</SelectItem>
+                            <SelectItem value="Dairy">Dairy</SelectItem>
+                            <SelectItem value="Pantry Items">Pantry Items</SelectItem>
+                            <SelectItem value="Spices & Herbs">Spices & Herbs</SelectItem>
+                            <SelectItem value="Other">Other</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
                       <div>
-                        <Label>Default Unit</Label>
-                        <Input placeholder="e.g., 'g', 'kg', 'pieces'" data-testid="input-default-unit" />
+                        <Label>Default unit</Label>
+                        <Input 
+                          placeholder="e.g., 'g', 'kg', 'pieces'" 
+                          data-testid="input-default-unit"
+                          value={newShoppingListName.defaultUnit}
+                          onChange={(e) => setNewShoppingListName({...newShoppingListName, defaultUnit: e.target.value})}
+                        />
                       </div>
                     </div>
                     <DialogFooter>
-                      <Button variant="outline">Cancel</Button>
-                      <Button>Create Name</Button>
+                      <Button 
+                        variant="outline" 
+                        onClick={() => setShowCreateShoppingName(false)}
+                        data-testid="button-cancel-shopping-name"
+                      >
+                        Cancel
+                      </Button>
+                      <Button 
+                        onClick={() => createShoppingListNameMutation.mutate(newShoppingListName)}
+                        disabled={!newShoppingListName.name || !newShoppingListName.category || createShoppingListNameMutation.isPending}
+                        data-testid="button-create-shopping-name"
+                      >
+                        {createShoppingListNameMutation.isPending ? "Creating..." : "Create name"}
+                      </Button>
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
@@ -489,7 +566,7 @@ function IngredientMappingManager() {
         <TabsContent value="analysis" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Ingredient Analysis</CardTitle>
+              <CardTitle>Ingredient analysis</CardTitle>
               <CardDescription>
                 Analyze how ingredients from a meal plan would be processed into grocery list items
               </CardDescription>
