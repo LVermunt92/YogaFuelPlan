@@ -2209,14 +2209,13 @@ async function generateMealPrepPlan(
       if (selectedBreakfast) {
         console.log(`Day ${day} (${isWeekend ? 'weekend' : 'weekday'}) breakfast: ${selectedBreakfast.name} (prep: ${selectedBreakfast.nutrition.prepTime}min)`);
         const householdSize = user?.householdSize || 1;
-        let adjustedPortion = adjustMealPortion(selectedBreakfast.portion, caloricAdjustment, servingMultiplier);
-        let adjustedProtein = Math.round(selectedBreakfast.nutrition.protein * caloricAdjustment);
         
-        // Apply household size multiplier
-        if (householdSize > 1) {
-          adjustedPortion = adjustMealPortion(selectedBreakfast.portion, caloricAdjustment * householdSize, servingMultiplier);
-          adjustedProtein = Math.round(selectedBreakfast.nutrition.protein * caloricAdjustment * householdSize);
-        }
+        // servingMultiplier already handles batch cooking for multiple days
+        // Only apply household size multiplier (no additional leftover doubling)
+        const portionFactor = caloricAdjustment * householdSize;
+        
+        let adjustedPortion = adjustMealPortion(selectedBreakfast.portion, portionFactor, servingMultiplier);
+        let adjustedProtein = Math.round(selectedBreakfast.nutrition.protein * portionFactor);
         
         // Create descriptive meal name
         const mealDescription = selectedBreakfast.name;
@@ -2284,15 +2283,14 @@ async function generateMealPrepPlan(
       
       if (lunchMeal) {
         const householdSize = user?.householdSize || 1;
-        let adjustedPortion = adjustMealPortion(lunchMeal.portion, caloricAdjustment, servingMultiplier);
-        let adjustedProtein = Math.round(lunchMeal.nutrition.protein * caloricAdjustment);
-        const prepTime = isLunchLeftover ? 5 : lunchMeal.nutrition.prepTime;
         
-        // Apply household size multiplier for fresh meals
-        if (householdSize > 1 && !isLunchLeftover) {
-          adjustedPortion = adjustMealPortion(lunchMeal.portion, caloricAdjustment * householdSize, servingMultiplier);
-          adjustedProtein = Math.round(lunchMeal.nutrition.protein * caloricAdjustment * householdSize);
-        }
+        // servingMultiplier already handles batch cooking for multiple days
+        // Only apply household size multiplier (no additional leftover doubling)
+        const portionFactor = caloricAdjustment * householdSize;
+        
+        let adjustedPortion = adjustMealPortion(lunchMeal.portion, portionFactor, servingMultiplier);
+        let adjustedProtein = Math.round(lunchMeal.nutrition.protein * portionFactor);
+        const prepTime = isLunchLeftover ? 5 : lunchMeal.nutrition.prepTime;
         
         // Create descriptive meal name (no seasonal adaptation needed since warming recipes are filtered out)
         let mealDescription = lunchMeal.name;
@@ -2416,24 +2414,22 @@ async function generateMealPrepPlan(
                                (day === 4 && daysWithMeals.includes(5)) || // Wednesday dinner → Thursday lunch
                                (day === 5 && daysWithMeals.includes(6));   // Thursday dinner → Friday lunch
         
-        let adjustedPortion = adjustMealPortion(dinnerMeal.portion, caloricAdjustment, servingMultiplier);
-        let adjustedProtein = Math.round(dinnerMeal.nutrition.protein * caloricAdjustment);
-        const prepTime = isDinnerLeftover ? 5 : dinnerMeal.nutrition.prepTime;
-        
-        // Calculate total portions needed (household size + leftovers)
         const householdSize = user?.householdSize || 1;
-        let totalPortions = householdSize;
         
-        // If cooking for leftovers, add portions for tomorrow's lunch
-        if (willBeLeftover && !isDinnerLeftover) {
-          totalPortions += householdSize; // Double for leftovers
+        // servingMultiplier already handles batch cooking for multiple days
+        // Only apply household size multiplier if servingMultiplier = 1 (cooking every day)
+        // Otherwise servingMultiplier already accounts for cooking fewer days
+        let portionFactor = caloricAdjustment * householdSize;
+        
+        // Only apply leftover doubling if NOT using servingMultiplier
+        // (servingMultiplier already covers cooking for multiple eating days)
+        if (servingMultiplier === 1 && willBeLeftover && !isDinnerLeftover && householdSize === 1) {
+          portionFactor *= 2; // Double for single person cooking for leftovers
         }
         
-        // Apply total portion multiplier
-        if (totalPortions > 1 && !isDinnerLeftover) {
-          adjustedPortion = adjustMealPortion(dinnerMeal.portion, caloricAdjustment * totalPortions, servingMultiplier);
-          adjustedProtein = Math.round(dinnerMeal.nutrition.protein * caloricAdjustment * totalPortions);
-        }
+        let adjustedPortion = adjustMealPortion(dinnerMeal.portion, portionFactor, servingMultiplier);
+        let adjustedProtein = Math.round(dinnerMeal.nutrition.protein * portionFactor);
+        const prepTime = isDinnerLeftover ? 5 : dinnerMeal.nutrition.prepTime;
         
         // Create descriptive meal name (no seasonal adaptation needed since warming recipes are filtered out)
         let mealDescription = dinnerMeal.name;
