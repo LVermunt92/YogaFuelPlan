@@ -22,6 +22,7 @@ interface NutritionTargets {
   fats: number; // grams, rounded to nearest 5g
   calories: number; // kcal, rounded to nearest 10 kcal
   fiber: number; // grams, gender-specific target
+  cocoaFlavanols: number; // mg, daily target 400-600mg (use 500mg)
   maintenanceCalories: number; // kcal for reference
   bmr: number; // kcal for reference
   proteinFactor: number; // g/kg for transparency
@@ -210,12 +211,16 @@ export function calculateNutritionTargets(profile: NutritionProfile, height?: nu
   // Calculate fiber target (gender-specific)
   const fiberTarget = profile.gender === 'male' ? 40 : 30; // 40g for men, 30g for women
   
+  // Cocoa flavanols target (universal recommendation)
+  const cocoaFlavanolsTarget = 500; // mg/day (range 400-600mg)
+  
   return {
     protein: Math.max(roundedProtein, 0),
     carbohydrates: Math.max(roundedCarbs, 0),
     fats: Math.max(roundedFats, 0),
     calories: Math.max(roundedCalories, 0),
     fiber: fiberTarget,
+    cocoaFlavanols: cocoaFlavanolsTarget,
     maintenanceCalories: Math.round(maintenanceCalories),
     bmr: Math.round(bmr),
     proteinFactor,
