@@ -110,6 +110,7 @@ interface AdminUser {
   proteinTarget: number | null;
   weight: number | null;
   goalWeight: number | null;
+  lastLoginAt: Date | null;
   createdAt: Date | null;
   updatedAt: Date | null;
 }
@@ -1783,11 +1784,18 @@ function AdminPanelMain() {
                               </div>
                             )}
                             
-                            {user.createdAt && (
-                              <p className="text-xs text-gray-500">
-                                Joined: {new Date(user.createdAt).toLocaleDateString()}
-                              </p>
-                            )}
+                            <div className="space-y-1">
+                              {user.lastLoginAt && (
+                                <p className="text-xs text-gray-700">
+                                  Last login: {new Date(user.lastLoginAt).toLocaleDateString()} {new Date(user.lastLoginAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                </p>
+                              )}
+                              {user.createdAt && (
+                                <p className="text-xs text-gray-500">
+                                  Joined: {new Date(user.createdAt).toLocaleDateString()}
+                                </p>
+                              )}
+                            </div>
                           </div>
                         </Card>
                       ))}
@@ -1806,6 +1814,7 @@ function AdminPanelMain() {
                             <th className="p-3 text-left font-medium">Weight</th>
                             <th className="p-3 text-left font-medium">Protein</th>
                             <th className="p-3 text-left font-medium">Diet Tags</th>
+                            <th className="p-3 text-left font-medium">Last login</th>
                             <th className="p-3 text-left font-medium">Created</th>
                           </tr>
                         </thead>
@@ -1858,6 +1867,19 @@ function AdminPanelMain() {
                                 ) : (
                                   <span className="text-gray-400">None</span>
                                 )}
+                              </td>
+                              <td className="p-3 text-sm text-gray-700">
+                                {user.lastLoginAt 
+                                  ? (
+                                    <div>
+                                      <div>{new Date(user.lastLoginAt).toLocaleDateString()}</div>
+                                      <div className="text-xs text-gray-500">
+                                        {new Date(user.lastLoginAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                      </div>
+                                    </div>
+                                  )
+                                  : <span className="text-gray-400">Never</span>
+                                }
                               </td>
                               <td className="p-3 text-sm text-gray-500">
                                 {user.createdAt 

@@ -95,6 +95,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: "Invalid username or password" });
       }
 
+      // Update last login timestamp
+      await storage.updateUserProfile(user.id, {
+        lastLoginAt: new Date()
+      });
+
       // Set session for authenticated user
       req.session.userId = user.id;
       req.session.rememberMe = rememberMe; // Store preference for rolling sessions
