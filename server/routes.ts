@@ -1274,7 +1274,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           return res.json({
             ...aiRecipe,
             name: translatedAIRecipe.name,
-            portion: targetMeal.portion || aiRecipe.portion,
+            portion: targetMeal.portion,
             ingredients: translatedAIRecipe.ingredients,
             instructions: translatedAIRecipe.instructions,
             tips: translatedAIRecipe.tips,
@@ -1346,7 +1346,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           return res.json({
             ...fallbackRecipe,
             name: translatedFallback.name,
-            portion: targetMeal.portion || fallbackRecipe.portion,
+            portion: targetMeal.portion,
             ingredients: translatedFallback.ingredients,
             instructions: translatedFallback.instructions,
             tips: translatedFallback.tips,
@@ -1394,7 +1394,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           return res.json({
             ...enhancedRecipe,
             name: translatedEnhancedRecipe.name,
-            portion: targetMeal.portion || enhancedRecipe.portion,
+            portion: targetMeal.portion,
             ingredients: translatedEnhancedRecipe.ingredients,
             instructions: translatedEnhancedRecipe.instructions,
             tips: translatedEnhancedRecipe.tips,
@@ -1506,7 +1506,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       res.json({
         name: translatedRecipe.name,
-        portion: targetMeal.portion || mealOption.portion,
+        portion: targetMeal.portion,
         ingredients: translatedRecipe.ingredients,
         instructions: translatedRecipe.instructions,
         tips: translatedRecipe.tips,
