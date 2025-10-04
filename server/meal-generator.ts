@@ -1683,9 +1683,10 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
       }
       
       const adjustedPortion = adjustMealPortion(selectedMeal.portion, portionMultiplier, servingMultiplier);
-      // For leftovers, divide protein by servingMultiplier since we're only eating 1 serving from the batch
+      // When cooking in batch (servingMultiplier > 1), each meal only counts 1 serving worth of nutrients
+      // This applies to BOTH fresh and leftover meals since you eat 1 serving per meal
       const baseProtein = Math.round(selectedMeal.nutrition.protein * portionMultiplier);
-      const adjustedProtein = isLeftover && servingMultiplier > 1 
+      const adjustedProtein = servingMultiplier > 1 
         ? Math.round(baseProtein / servingMultiplier)
         : baseProtein;
       const prepTimeForDay = isLeftover ? 5 : selectedMeal.nutrition.prepTime;
