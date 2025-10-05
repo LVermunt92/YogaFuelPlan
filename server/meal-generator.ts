@@ -1717,6 +1717,12 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         foodDescription: mealDescription,
         portion: adjustedPortion,
         protein: adjustedProtein,
+        calories: Math.round((selectedMeal.nutrition.calories || 0) * portionFactor),
+        carbohydrates: Math.round((selectedMeal.nutrition.carbohydrates || 0) * portionFactor),
+        fats: Math.round((selectedMeal.nutrition.fats || 0) * portionFactor),
+        fiber: Math.round((selectedMeal.nutrition.fiber || 0) * portionFactor),
+        sugar: Math.round((selectedMeal.nutrition.sugar || 0) * portionFactor),
+        sodium: Math.round((selectedMeal.nutrition.sodium || 0) * portionFactor),
         prepTime: prepTimeForDay,
         isLeftover: isLeftover, // Boolean flag instead of string marker
       };
@@ -2251,6 +2257,12 @@ async function generateMealPrepPlan(
           foodDescription: mealDescription,
           portion: adjustedPortion,
           protein: adjustedProtein,
+          calories: Math.round((selectedBreakfast.nutrition.calories || 0) * portionFactor),
+          carbohydrates: Math.round((selectedBreakfast.nutrition.carbohydrates || 0) * portionFactor),
+          fats: Math.round((selectedBreakfast.nutrition.fats || 0) * portionFactor),
+          fiber: Math.round((selectedBreakfast.nutrition.fiber || 0) * portionFactor),
+          sugar: Math.round((selectedBreakfast.nutrition.sugar || 0) * portionFactor),
+          sodium: Math.round((selectedBreakfast.nutrition.sodium || 0) * portionFactor),
           prepTime: selectedBreakfast.nutrition.prepTime,
         });
         
@@ -2327,6 +2339,12 @@ async function generateMealPrepPlan(
           foodDescription: mealDescription,
           portion: adjustedPortion,
           protein: adjustedProtein,
+          calories: Math.round((lunchMeal.nutrition.calories || 0) * portionFactor),
+          carbohydrates: Math.round((lunchMeal.nutrition.carbohydrates || 0) * portionFactor),
+          fats: Math.round((lunchMeal.nutrition.fats || 0) * portionFactor),
+          fiber: Math.round((lunchMeal.nutrition.fiber || 0) * portionFactor),
+          sugar: Math.round((lunchMeal.nutrition.sugar || 0) * portionFactor),
+          sodium: Math.round((lunchMeal.nutrition.sodium || 0) * portionFactor),
           prepTime: prepTime,
           isLeftover: isLunchLeftover, // Boolean flag instead of string marker
         });
@@ -2467,6 +2485,12 @@ async function generateMealPrepPlan(
           foodDescription: mealDescription,
           portion: adjustedPortion,
           protein: adjustedProtein,
+          calories: Math.round((dinnerMeal.nutrition.calories || 0) * portionFactor),
+          carbohydrates: Math.round((dinnerMeal.nutrition.carbohydrates || 0) * portionFactor),
+          fats: Math.round((dinnerMeal.nutrition.fats || 0) * portionFactor),
+          fiber: Math.round((dinnerMeal.nutrition.fiber || 0) * portionFactor),
+          sugar: Math.round((dinnerMeal.nutrition.sugar || 0) * portionFactor),
+          sodium: Math.round((dinnerMeal.nutrition.sodium || 0) * portionFactor),
           prepTime: prepTime,
           isLeftover: isDinnerLeftover, // Boolean flag instead of string marker
         });
