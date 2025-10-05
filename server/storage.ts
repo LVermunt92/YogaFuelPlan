@@ -142,6 +142,7 @@ export interface IStorage {
   // Recipe Modification methods
   saveRecipeModification(recipeId: string, modification: any): Promise<void>;
   saveRecipeDeletion(recipeId: string, userId: number): Promise<void>;
+  removeRecipeDeletion(recipeId: string): Promise<void>;
   getRecipeModifications(): Promise<any[]>;
   getRecipeDeletions(): Promise<string[]>;
   
@@ -610,6 +611,10 @@ export class MemStorage implements IStorage {
   }
 
   async saveRecipeDeletion(recipeId: string, userId: number): Promise<void> {
+    // No-op for MemStorage - requires DatabaseStorage implementation
+  }
+
+  async removeRecipeDeletion(recipeId: string): Promise<void> {
     // No-op for MemStorage - requires DatabaseStorage implementation
   }
 
@@ -1576,6 +1581,12 @@ export class DatabaseStorage implements IStorage {
       console.error('Error fetching recipe deletions, returning empty array:', error);
       return []; // Return empty array on error to prevent meal generation failure
     }
+  }
+
+  async removeRecipeDeletion(recipeId: string): Promise<void> {
+    await db
+      .delete(recipeDeletions)
+      .where(eq(recipeDeletions.recipeId, recipeId));
   }
   
   // Deleted Tags methods

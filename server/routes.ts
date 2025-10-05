@@ -3057,6 +3057,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // POST /api/admin/unified-recipes/:id/restore - Restore a deleted recipe
+  app.post("/api/admin/unified-recipes/:id/restore", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+
+      const isAdmin = await isAdminUser(req.session.userId);
+      if (!isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const { id } = req.params;
+      
+      if (!id) {
+        return res.status(400).json({ message: "Recipe ID is required" });
+      }
+
+      // Remove deletion from database (restores the recipe)
+      await storage.removeRecipeDeletion(id);
+
+      // Invalidate cache so next request gets fresh data
+      invalidateEnhancedMealDatabaseCache();
+
+      res.json({
+        message: "Recipe restored successfully",
+        recipeId: id
+      });
+    } catch (error) {
+      console.error("Error restoring recipe:", error);
+      res.status(500).json({ message: "Failed to restore recipe" });
+    }
+  });
+
   // GET /api/recipes - List all recipes with optional search and filtering
   app.get("/api/recipes", async (req, res) => {
     try {
