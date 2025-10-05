@@ -667,14 +667,19 @@ function MealPlannerMain() {
     const totalFats = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fats || 0), 0);
     const totalCarbs = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.carbohydrates || 0), 0);
     const totalCocoaFlavanols = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.cocoaFlavanols || 0), 0);
-    const daysWithMeals = new Set(currentMealPlan.meals.map(meal => meal.day)).size;
+    const totalMeals = currentMealPlan.meals.length;
+    
+    // Get user's meals per day setting (default to 3 if not available)
+    const mealsPerDay = userProfile?.mealsPerDay || 3;
+    const daysInWeek = 7;
 
-    console.log('KPI Debug:', { totalCalories, totalFats, totalCarbs, totalCocoaFlavanols, daysWithMeals, mealCount: currentMealPlan.meals.length });
+    console.log('KPI Debug:', { totalCalories, totalFats, totalCarbs, totalCocoaFlavanols, totalMeals, mealsPerDay });
 
-    // Since nutrition data is not populated in meal plans, use reasonable estimates based on meal types
-    const avgCaloriesPerDay = daysWithMeals > 0 ? Math.max(totalCalories, 2000) / daysWithMeals : 400;
-    const avgFatsPerDay = daysWithMeals > 0 ? Math.max(totalFats, 65) / daysWithMeals : 12;
-    const avgCarbsPerDay = daysWithMeals > 0 ? Math.max(totalCarbs, 250) / daysWithMeals : 45;
+    // Calculate daily average: (total / number of meals) * meals per day
+    // This gives a realistic daily average based on actual meal composition
+    const avgCaloriesPerDay = totalMeals > 0 ? Math.max(totalCalories, 2000) / totalMeals * mealsPerDay : 400;
+    const avgFatsPerDay = totalMeals > 0 ? Math.max(totalFats, 65) / totalMeals * mealsPerDay : 12;
+    const avgCarbsPerDay = totalMeals > 0 ? Math.max(totalCarbs, 250) / totalMeals * mealsPerDay : 45;
 
     // Calculate percentages
     const fatCalories = avgFatsPerDay * 9; // 9 calories per gram of fat
@@ -690,8 +695,8 @@ function MealPlannerMain() {
     // Use gender-specific fiber target from nutrition calculator (30g women, 40g men)
     const fiberTarget = nutritionTargets?.fiber || 30; // Default to 30g if not loaded yet
     
-    // Calculate average cocoa flavanols per day
-    const avgCocoaFlavanolsPerDay = daysWithMeals > 0 ? totalCocoaFlavanols / daysWithMeals : 0;
+    // Calculate average cocoa flavanols per day: (total / number of meals) * meals per day
+    const avgCocoaFlavanolsPerDay = totalMeals > 0 ? (totalCocoaFlavanols / totalMeals) * mealsPerDay : 0;
     const cocoaFlavanolsTarget = 500; // mg/day (400-600mg recommended)
     
     // Calculate plant diversity - count unique plant foods across all meals
