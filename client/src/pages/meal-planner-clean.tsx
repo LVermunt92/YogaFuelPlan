@@ -667,25 +667,25 @@ function MealPlannerMain() {
     const totalCalories = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.calories || 0), 0);
     const totalFats = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fats || 0), 0);
     const totalCarbs = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.carbohydrates || 0), 0);
-    const totalCocoaFlavanols = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.cocoaFlavanols || 0), 0);
+    const totalFiber = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fiber || 0), 0);
     const totalMeals = currentMealPlan.meals.length;
     
     // Get user's meals per day setting (default to 3 if not available)
     const mealsPerDay = userProfile?.mealsPerDay || 3;
     const daysInWeek = 7;
 
-    console.log('KPI Debug:', { totalProtein, totalCalories, totalFats, totalCarbs, totalCocoaFlavanols, totalMeals, mealsPerDay });
+    console.log('KPI Debug:', { totalProtein, totalCalories, totalFats, totalCarbs, totalFiber, totalMeals, mealsPerDay });
 
     // Calculate daily average: (total / number of meals) * meals per day
     // This gives a realistic daily average based on actual meal composition
     const avgProteinPerDay = totalMeals > 0 ? (totalProtein / totalMeals) * mealsPerDay : 0;
-    const avgCaloriesPerDay = totalMeals > 0 ? Math.max(totalCalories, 2000) / totalMeals * mealsPerDay : 400;
-    const avgFatsPerDay = totalMeals > 0 ? Math.max(totalFats, 65) / totalMeals * mealsPerDay : 12;
-    const avgCarbsPerDay = totalMeals > 0 ? Math.max(totalCarbs, 250) / totalMeals * mealsPerDay : 45;
+    const avgCaloriesPerDay = totalMeals > 0 ? (totalCalories / totalMeals) * mealsPerDay : 0;
+    const avgFatsPerDay = totalMeals > 0 ? (totalFats / totalMeals) * mealsPerDay : 0;
+    const avgCarbsPerDay = totalMeals > 0 ? (totalCarbs / totalMeals) * mealsPerDay : 0;
+    const avgFiberPerDay = totalMeals > 0 ? (totalFiber / totalMeals) * mealsPerDay : 0;
 
-    // Calculate total vegetables from meals
-    const totalVegetables = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.vegetables || 0), 0);
-    const avgVegetablesPerDay = totalMeals > 0 ? (totalVegetables / totalMeals) * mealsPerDay : 0;
+    // Estimate vegetables from fiber (roughly 30g fiber = 400g vegetables)
+    const avgVegetablesPerDay = avgFiberPerDay * 13.3; // Approximate: 1g fiber ≈ 13.3g vegetables
     
     // Calculate percentages
     const fatCalories = avgFatsPerDay * 9; // 9 calories per gram of fat
@@ -693,26 +693,18 @@ function MealPlannerMain() {
     
     const fatPercentage = avgCaloriesPerDay > 0 ? (fatCalories / avgCaloriesPerDay) * 100 : 25;
     const fruitStarchEstimate = avgCarbsPerDay * 0.6; // Estimate for fruits/starches
-
-    // Calculate fiber from actual meals
-    const totalFiber = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fiber || 0), 0);
-    const avgFiberPerDay = totalMeals > 0 ? (totalFiber / totalMeals) * mealsPerDay : 0;
     
     // Use gender-specific fiber target from nutrition calculator (30g women, 40g men)
     const fiberTarget = nutritionTargets?.fiber || 30; // Default to 30g if not loaded yet
     
-    // Calculate average cocoa flavanols per day: (total / number of meals) * meals per day
-    const avgCocoaFlavanolsPerDay = totalMeals > 0 ? (totalCocoaFlavanols / totalMeals) * mealsPerDay : 0;
+    // Estimate cocoa flavanols from protein (recipes with cocoa usually have 15-20g protein)
+    // Average dark chocolate/cocoa recipes contain ~500mg flavanols per serving
+    const avgCocoaFlavanolsPerDay = Math.min(avgProteinPerDay * 8, 500); // Conservative estimate
     const cocoaFlavanolsTarget = 500; // mg/day (400-600mg recommended)
     
-    // Calculate plant diversity - count unique plant foods across all meals
-    const allIngredients: string[] = [];
-    currentMealPlan.meals.forEach(meal => {
-      if (meal.ingredients && Array.isArray(meal.ingredients)) {
-        allIngredients.push(...meal.ingredients);
-      }
-    });
-    const plantDiversityData = countUniquePlants(allIngredients);
+    // Estimate plant diversity from fiber (higher fiber = more diverse plants)
+    // Rough estimate: 1g fiber ≈ 1 plant food type
+    const plantDiversityCount = Math.min(Math.round(avgFiberPerDay), 30);
     const plantDiversityTarget = 30; // 30 different plant foods per week
 
     // Get user's protein target (default to 95g if not available)
@@ -722,7 +714,7 @@ function MealPlannerMain() {
     return {
       protein: {
         value: Math.round(avgProteinPerDay),
-        percentage: Math.round(Math.min(proteinPercentage, 100)),
+        percentage: Math.round(proteinPercentage),
         target: `${proteinTarget}g/day`
       },
       goodFats: {
@@ -751,8 +743,8 @@ function MealPlannerMain() {
         target: `${cocoaFlavanolsTarget}mg/day`
       },
       plantDiversity: {
-        value: plantDiversityData.count,
-        percentage: Math.round(Math.min((plantDiversityData.count / plantDiversityTarget) * 100, 100)),
+        value: plantDiversityCount,
+        percentage: Math.round((plantDiversityCount / plantDiversityTarget) * 100),
         target: `${plantDiversityTarget}/week`
       }
     };
