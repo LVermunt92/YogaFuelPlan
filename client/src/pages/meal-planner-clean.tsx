@@ -683,16 +683,20 @@ function MealPlannerMain() {
     const avgFatsPerDay = totalMeals > 0 ? Math.max(totalFats, 65) / totalMeals * mealsPerDay : 12;
     const avgCarbsPerDay = totalMeals > 0 ? Math.max(totalCarbs, 250) / totalMeals * mealsPerDay : 45;
 
+    // Calculate total vegetables from meals
+    const totalVegetables = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.vegetables || 0), 0);
+    const avgVegetablesPerDay = totalMeals > 0 ? (totalVegetables / totalMeals) * mealsPerDay : 0;
+    
     // Calculate percentages
     const fatCalories = avgFatsPerDay * 9; // 9 calories per gram of fat
     const carbCalories = avgCarbsPerDay * 4; // 4 calories per gram of carbs
     
     const fatPercentage = avgCaloriesPerDay > 0 ? (fatCalories / avgCaloriesPerDay) * 100 : 25;
-    const vegetableEstimate = Math.max(300, avgCarbsPerDay * 1.2); // Realistic daily vegetable intake
     const fruitStarchEstimate = avgCarbsPerDay * 0.6; // Estimate for fruits/starches
 
-    // Calculate fiber estimate based on vegetables, fruits, and whole grains
-    const fiberEstimate = Math.max(20, (vegetableEstimate * 0.03) + (fruitStarchEstimate * 0.04) + 8); // Realistic daily fiber intake
+    // Calculate fiber from actual meals
+    const totalFiber = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fiber || 0), 0);
+    const avgFiberPerDay = totalMeals > 0 ? (totalFiber / totalMeals) * mealsPerDay : 0;
     
     // Use gender-specific fiber target from nutrition calculator (30g women, 40g men)
     const fiberTarget = nutritionTargets?.fiber || 30; // Default to 30g if not loaded yet
@@ -727,8 +731,8 @@ function MealPlannerMain() {
         target: '25-35%'
       },
       vegetables: {
-        value: Math.round(vegetableEstimate),
-        percentage: Math.round(Math.min((vegetableEstimate / 400) * 100, 100)), // 400g target
+        value: Math.round(avgVegetablesPerDay),
+        percentage: Math.round((avgVegetablesPerDay / 400) * 100), // 400g target
         target: '400g/day'
       },
       fruitsStarches: {
@@ -737,8 +741,8 @@ function MealPlannerMain() {
         target: '45-60g/day'
       },
       fiber: {
-        value: Math.round(fiberEstimate),
-        percentage: Math.round(Math.min((fiberEstimate / fiberTarget) * 100, 100)), // Gender-specific target
+        value: Math.round(avgFiberPerDay),
+        percentage: Math.round((avgFiberPerDay / fiberTarget) * 100), // Gender-specific target
         target: `${fiberTarget}g/day`
       },
       cocoaFlavanols: {
