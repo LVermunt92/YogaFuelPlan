@@ -678,6 +678,7 @@ function MealPlannerMain() {
 
     // Calculate daily average: (total / number of meals) * meals per day
     // This gives a realistic daily average based on actual meal composition
+    const avgProteinPerDay = totalMeals > 0 ? (totalProtein / totalMeals) * mealsPerDay : 0;
     const avgCaloriesPerDay = totalMeals > 0 ? Math.max(totalCalories, 2000) / totalMeals * mealsPerDay : 400;
     const avgFatsPerDay = totalMeals > 0 ? Math.max(totalFats, 65) / totalMeals * mealsPerDay : 12;
     const avgCarbsPerDay = totalMeals > 0 ? Math.max(totalCarbs, 250) / totalMeals * mealsPerDay : 45;
@@ -710,7 +711,16 @@ function MealPlannerMain() {
     const plantDiversityData = countUniquePlants(allIngredients);
     const plantDiversityTarget = 30; // 30 different plant foods per week
 
+    // Get user's protein target (default to 95g if not available)
+    const proteinTarget = nutritionTargets?.protein || 95;
+    const proteinPercentage = proteinTarget > 0 ? (avgProteinPerDay / proteinTarget) * 100 : 0;
+
     return {
+      protein: {
+        value: Math.round(avgProteinPerDay),
+        percentage: Math.round(Math.min(proteinPercentage, 100)),
+        target: `${proteinTarget}g/day`
+      },
       goodFats: {
         value: Math.round(avgFatsPerDay),
         percentage: Math.round(Math.min(fatPercentage, 100)),
@@ -794,8 +804,8 @@ function MealPlannerMain() {
                           <PieChart>
                             <Pie
                               data={[
-                                { value: 75, fill: "#10b981" },
-                                { value: 25, fill: "#f3f4f6" }
+                                { value: Math.min(kpiData.protein.percentage, 100), fill: "#10b981" },
+                                { value: Math.max(100 - kpiData.protein.percentage, 0), fill: "#f3f4f6" }
                               ]}
                               cx="50%"
                               cy="50%"
@@ -810,12 +820,12 @@ function MealPlannerMain() {
                         </ResponsiveContainer>
                         <div className="absolute inset-0 flex items-center justify-center">
                           <div className="text-center">
-                            <div className="text-sm font-bold text-emerald-600">{currentMealPlan?.totalProtein ? Math.round(currentMealPlan.totalProtein) : 0}g</div>
+                            <div className="text-sm font-bold text-emerald-600">{kpiData.protein.value}g</div>
                           </div>
                         </div>
                       </div>
                       <h3 className="text-xs font-semibold text-emerald-600">{t.protein}</h3>
-                      <p className="text-xs text-gray-500">75%</p>
+                      <p className="text-xs text-gray-500">{Math.min(kpiData.protein.percentage, 100)}%</p>
                     </div>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
