@@ -6308,14 +6308,14 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     nutrition: { 
       protein: 26, 
       prepTime: 25, 
-      calories: 520,
-      carbohydrates: 62,
+      calories: 540,
+      carbohydrates: 64,
       fats: 22,
-      fiber: 6,
-      sugar: 4,
-      sodium: 480,
-      costEuros: 3.80, 
-      proteinPerEuro: 6.8 
+      fiber: 8,
+      sugar: 6,
+      sodium: 500,
+      costEuros: 4.20, 
+      proteinPerEuro: 6.2 
     },
     category: "dinner",
     tags: ["Vegetarian", "Gluten-Free", "Lactose-Free"],
@@ -6323,6 +6323,8 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "180g gluten-free pasta",
       "200ml coconut cream",
       "100g plant-based protein (tempeh or tofu)",
+      "100g spinach (fresh)",
+      "80g peas (frozen or fresh)",
       "50g nutritional yeast",
       "2 cloves garlic (minced)",
       "30ml olive oil",
@@ -6332,25 +6334,27 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     ],
     wholeFoodLevel: "moderate",
     vegetableContent: {
-      servings: 1,
-      vegetables: ["onion", "garlic"],
-      benefits: ["Prebiotic fiber", "Antioxidants"]
+      servings: 2.5,
+      vegetables: ["spinach", "peas", "onion", "garlic"],
+      benefits: ["Iron and vitamin K from greens", "Protein from peas", "Prebiotic fiber", "Antioxidants"]
     },
     recipe: {
       instructions: [
-        "Cook gluten-free pasta al dente",
+        "Cook gluten-free pasta al dente, add peas in last 2 minutes",
         "Cube and pan-fry protein until golden",
-        "Sauté onion and garlic in olive oil",
-        "Add coconut cream and nutritional yeast",
-        "Toss hot pasta with creamy sauce",
+        "Sauté onion and garlic in olive oil until soft",
+        "Add fresh spinach, cook until wilted (2 minutes)",
+        "Add coconut cream and nutritional yeast, stir until smooth",
+        "Toss hot pasta and peas with creamy sauce",
         "Add protein and fresh parsley",
         "Season generously with black pepper"
       ],
       tips: [
         "Remove pan from heat when adding pasta to prevent curdling",
+        "Cook peas with pasta for convenience and perfect texture",
         "Save pasta water to adjust sauce consistency"
       ],
-      notes: "Rich, creamy texture without dairy - perfect comfort food"
+      notes: "Rich, creamy texture with added greens - balanced comfort food"
     }
   },
 
