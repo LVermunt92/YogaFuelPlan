@@ -663,6 +663,7 @@ function MealPlannerMain() {
   const calculateKPIs = () => {
     if (!currentMealPlan?.meals) return null;
 
+    const totalProtein = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.protein || 0), 0);
     const totalCalories = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.calories || 0), 0);
     const totalFats = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fats || 0), 0);
     const totalCarbs = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.carbohydrates || 0), 0);
@@ -673,7 +674,7 @@ function MealPlannerMain() {
     const mealsPerDay = userProfile?.mealsPerDay || 3;
     const daysInWeek = 7;
 
-    console.log('KPI Debug:', { totalCalories, totalFats, totalCarbs, totalCocoaFlavanols, totalMeals, mealsPerDay });
+    console.log('KPI Debug:', { totalProtein, totalCalories, totalFats, totalCarbs, totalCocoaFlavanols, totalMeals, mealsPerDay });
 
     // Calculate daily average: (total / number of meals) * meals per day
     // This gives a realistic daily average based on actual meal composition
