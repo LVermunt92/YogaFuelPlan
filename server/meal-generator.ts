@@ -1717,12 +1717,12 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         foodDescription: mealDescription,
         portion: adjustedPortion,
         protein: adjustedProtein,
-        calories: Math.round((selectedMeal.nutrition.calories || 0) * portionFactor),
-        carbohydrates: Math.round((selectedMeal.nutrition.carbohydrates || 0) * portionFactor),
-        fats: Math.round((selectedMeal.nutrition.fats || 0) * portionFactor),
-        fiber: Math.round((selectedMeal.nutrition.fiber || 0) * portionFactor),
-        sugar: Math.round((selectedMeal.nutrition.sugar || 0) * portionFactor),
-        sodium: Math.round((selectedMeal.nutrition.sodium || 0) * portionFactor),
+        calories: Math.round((selectedMeal.nutrition.calories || 0) * portionMultiplier),
+        carbohydrates: Math.round((selectedMeal.nutrition.carbohydrates || 0) * portionMultiplier),
+        fats: Math.round((selectedMeal.nutrition.fats || 0) * portionMultiplier),
+        fiber: Math.round((selectedMeal.nutrition.fiber || 0) * portionMultiplier),
+        sugar: Math.round((selectedMeal.nutrition.sugar || 0) * portionMultiplier),
+        sodium: Math.round((selectedMeal.nutrition.sodium || 0) * portionMultiplier),
         prepTime: prepTimeForDay,
         isLeftover: isLeftover, // Boolean flag instead of string marker
       };
