@@ -825,7 +825,7 @@ function MealPlannerMain() {
                         </div>
                       </div>
                       <h3 className="text-xs font-semibold text-emerald-600">{t.protein}</h3>
-                      <p className="text-xs text-gray-500">{Math.min(kpiData.protein.percentage, 100)}%</p>
+                      <p className="text-xs text-gray-500">{kpiData.protein.percentage}%</p>
                     </div>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
@@ -907,7 +907,7 @@ function MealPlannerMain() {
                         </div>
                       </div>
                       <h3 className="text-xs font-semibold text-orange-600">{t.fiber}</h3>
-                      <p className="text-xs text-gray-500">{Math.min(kpiData.fiber.percentage, 100)}%</p>
+                      <p className="text-xs text-gray-500">{kpiData.fiber.percentage}%</p>
                     </div>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
@@ -949,7 +949,7 @@ function MealPlannerMain() {
                         </div>
                       </div>
                       <h3 className="text-xs font-semibold text-green-600">{t.vegetables}</h3>
-                      <p className="text-xs text-gray-500">{Math.min(kpiData.vegetables.percentage, 100)}%</p>
+                      <p className="text-xs text-gray-500">{kpiData.vegetables.percentage}%</p>
                     </div>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
@@ -991,7 +991,7 @@ function MealPlannerMain() {
                         </div>
                       </div>
                       <h3 className="text-xs font-semibold text-green-700">{t.plantDiversity}</h3>
-                      <p className="text-xs text-gray-500">{Math.min(kpiData.plantDiversity.percentage, 100)}%</p>
+                      <p className="text-xs text-gray-500">{kpiData.plantDiversity.percentage}%</p>
                     </div>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
@@ -1033,7 +1033,7 @@ function MealPlannerMain() {
                         </div>
                       </div>
                       <h3 className="text-xs font-semibold text-purple-600">{t.cocoaFlavanols}</h3>
-                      <p className="text-xs text-gray-500">{Math.min(kpiData.cocoaFlavanols.percentage, 100)}%</p>
+                      <p className="text-xs text-gray-500">{kpiData.cocoaFlavanols.percentage}%</p>
                     </div>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
