@@ -2459,20 +2459,22 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     nutrition: { 
       protein: 22, 
       prepTime: 25, 
-      calories: 380,
-      carbohydrates: 58,
+      calories: 400,
+      carbohydrates: 62,
       fats: 8,
-      fiber: 14,
-      sugar: 6,
-      sodium: 320,
-      costEuros: 2.80, 
-      proteinPerEuro: 7.9 
+      fiber: 16,
+      sugar: 8,
+      sodium: 340,
+      costEuros: 3.20, 
+      proteinPerEuro: 6.9 
     },
     category: "dinner",
     tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Ayurvedic", "Quick"],
     ingredients: [
       "190g red lentils (masoor dal)",
       "100g basmati rice",
+      "100g spinach (chopped)",
+      "1 medium tomato (diced, 120g)",
       "1 tsp turmeric",
       "1 tsp cumin seeds",
       "1/2 tsp coriander seeds",
@@ -2486,9 +2488,9 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     ],
     wholeFoodLevel: "high",
     vegetableContent: {
-      servings: 1,
-      vegetables: ["garlic", "ginger"],
-      benefits: ["Digestive support", "Anti-inflammatory", "Warming for constitution"]
+      servings: 2.5,
+      vegetables: ["spinach", "tomato", "garlic", "ginger"],
+      benefits: ["Iron-rich greens", "Digestive support", "Anti-inflammatory", "Warming for constitution"]
     },
     recipe: {
       instructions: [
@@ -2497,15 +2499,18 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Heat ghee in pan, add mustard seeds until they pop",
         "Add cumin and coriander seeds, toast 30 seconds",
         "Add ginger, garlic, and asafoetida, cook 1 minute",
+        "Add diced tomato, cook 2 minutes until soft",
         "Add cooked lentils and simmer 5 minutes",
+        "Stir in chopped spinach, cook until wilted (2 minutes)",
         "Season with salt and lemon juice",
         "Serve over rice, garnish with fresh cilantro"
       ],
       tips: [
         "Toast whole spices for deeper flavor",
+        "Add spinach at the end to retain nutrients",
         "Add ghee at the end for better digestion according to Ayurveda"
       ],
-      notes: "Classical Ayurvedic meal that balances all three doshas"
+      notes: "Classical Ayurvedic meal with added vegetables for balanced nutrition"
     }
   },
 
