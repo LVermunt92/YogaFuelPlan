@@ -6361,6 +6361,70 @@ const RAW_MEAL_DATABASE: MealOption[] = [
   },
 
   {
+    name: "Spiced aubergine and lentil stew hummus bowl (paprika-free)",
+    portion: "1 bowl with flatbread",
+    nutrition: { 
+      protein: 25, 
+      prepTime: 30, 
+      calories: 570,
+      carbohydrates: 60,
+      fats: 16,
+      fiber: 15,
+      sugar: 6,
+      sodium: 450,
+      costEuros: 3.80, 
+      proteinPerEuro: 6.6 
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Lactose-Free", "High-Fiber", "Mediterranean"],
+    ingredients: [
+      "100g aubergine (cubed)",
+      "150g canned lentils (drained and rinsed)",
+      "75g canned chopped tomatoes",
+      "45g hummus (3 tbsp)",
+      "50ml vegetable stock",
+      "15ml olive oil (1 tbsp)",
+      "1/2 small onion (finely chopped)",
+      "1 clove garlic (minced)",
+      "5g tahini (1 tsp)",
+      "1 tsp lemon juice",
+      "1/2 tsp ground cumin",
+      "1/4 tsp ground cinnamon",
+      "1/4 tsp chili flakes (optional)",
+      "2-3 green olives (optional)",
+      "Fresh parsley (chopped)",
+      "50g flatbread or pita",
+      "Salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2.5,
+      vegetables: ["aubergine", "tomatoes", "onion", "garlic"],
+      benefits: ["Rich in fiber from lentils", "Antioxidants from aubergine", "Heart-healthy fats from tahini and olive oil", "Anti-inflammatory spices"]
+    },
+    recipe: {
+      instructions: [
+        "Heat olive oil in a pan over medium heat, add aubergine cubes and sauté until browned and soft (6-8 minutes), remove and set aside",
+        "In the same pan, cook onion and garlic for 2-3 minutes until soft",
+        "Add cumin, cinnamon, and chili flakes (if using), stir for 30 seconds",
+        "Stir in lentils, tomatoes, and vegetable stock, simmer for 10 minutes until thickened",
+        "Return aubergine to the pan, season with salt and pepper",
+        "Spread hummus on the bottom of a shallow bowl, drizzle with olive oil and lemon juice",
+        "Spoon the aubergine-lentil stew over the hummus",
+        "Drizzle with tahini and olive oil, garnish with parsley and olives",
+        "Serve with warm flatbread"
+      ],
+      tips: [
+        "Make the stew ahead and reheat for quick assembly",
+        "Adjust spice level with chili flakes to taste",
+        "For gluten-free option, serve with gluten-free flatbread or skip the bread",
+        "The stew thickens as it sits - add a splash of stock when reheating"
+      ],
+      notes: "Warming Middle Eastern bowl with no paprika - perfect for those avoiding nightshades except tomatoes. Rich in plant protein and fiber."
+    }
+  },
+
+  {
     name: "Mediterranean gluten-free pasta salad with olives",
     portion: "2 cups pasta salad",
     nutrition: { 
