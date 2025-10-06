@@ -6322,7 +6322,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     ingredients: [
       "180g gluten-free pasta",
       "200ml coconut cream",
-      "100g plant-based protein (tempeh or tofu)",
+      "100g vegetarian chicken pieces (from vegetarische slager)",
       "100g spinach (fresh)",
       "80g peas (frozen or fresh)",
       "50g nutritional yeast",
