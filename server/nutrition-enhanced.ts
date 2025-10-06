@@ -6362,7 +6362,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
 
   {
     name: "Spiced aubergine and lentil stew hummus bowl (paprika-free)",
-    portion: "1 bowl with flatbread",
+    portion: "1 bowl with sourdough bread",
     nutrition: { 
       protein: 25, 
       prepTime: 30, 
@@ -6393,7 +6393,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "1/4 tsp chili flakes (optional)",
       "2-3 green olives (optional)",
       "Fresh parsley (chopped)",
-      "50g flatbread or pita",
+      "50g sourdough bread",
       "Salt and pepper to taste"
     ],
     wholeFoodLevel: "high",
@@ -6412,15 +6412,16 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Spread hummus on the bottom of a shallow bowl, drizzle with olive oil and lemon juice",
         "Spoon the aubergine-lentil stew over the hummus",
         "Drizzle with tahini and olive oil, garnish with parsley and olives",
-        "Serve with warm flatbread"
+        "Serve with warm sourdough bread"
       ],
       tips: [
         "Make the stew ahead and reheat for quick assembly",
         "Adjust spice level with chili flakes to taste",
-        "For gluten-free option, serve with gluten-free flatbread or skip the bread",
-        "The stew thickens as it sits - add a splash of stock when reheating"
+        "For gluten-free option, serve with gluten-free sourdough bread or skip the bread",
+        "The stew thickens as it sits - add a splash of stock when reheating",
+        "Toast the sourdough for extra flavor and texture"
       ],
-      notes: "Warming Middle Eastern bowl with no paprika - perfect for those avoiding nightshades except tomatoes. Rich in plant protein and fiber."
+      notes: "Warming Middle Eastern bowl with no paprika - perfect for those avoiding nightshades except tomatoes. Rich in plant protein and fiber. Served with gut-friendly sourdough bread."
     }
   },
 
