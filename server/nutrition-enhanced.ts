@@ -6361,7 +6361,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
   },
 
   {
-    name: "Spiced aubergine and lentil stew hummus bowl (paprika-free)",
+    name: "Spiced aubergine and lentil stew hummus bowl",
     portion: "1 bowl with sourdough bread",
     nutrition: { 
       protein: 25, 
