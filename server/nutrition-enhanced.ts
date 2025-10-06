@@ -6306,16 +6306,16 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     name: "Creamy gluten-free pasta carbonara with dairy-free sauce",
     portion: "1.5 cups pasta with sauce",
     nutrition: { 
-      protein: 26, 
+      protein: 28, 
       prepTime: 25, 
-      calories: 540,
-      carbohydrates: 64,
-      fats: 22,
+      calories: 570,
+      carbohydrates: 65,
+      fats: 24,
       fiber: 8,
       sugar: 6,
-      sodium: 500,
-      costEuros: 4.20, 
-      proteinPerEuro: 6.2 
+      sodium: 580,
+      costEuros: 4.80, 
+      proteinPerEuro: 5.8 
     },
     category: "dinner",
     tags: ["Vegetarian", "Gluten-Free", "Lactose-Free"],
@@ -6325,6 +6325,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "100g vegetarian chicken pieces (from vegetarische slager)",
       "100g spinach (fresh)",
       "80g peas (frozen or fresh)",
+      "50g vegan feta cheese (crumbled)",
       "50g nutritional yeast",
       "2 cloves garlic (minced)",
       "30ml olive oil",
@@ -6341,20 +6342,21 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     recipe: {
       instructions: [
         "Cook gluten-free pasta al dente, add peas in last 2 minutes",
-        "Cube and pan-fry protein until golden",
+        "Cube and pan-fry vegetarian chicken pieces until golden",
         "Sauté onion and garlic in olive oil until soft",
         "Add fresh spinach, cook until wilted (2 minutes)",
         "Add coconut cream and nutritional yeast, stir until smooth",
         "Toss hot pasta and peas with creamy sauce",
-        "Add protein and fresh parsley",
+        "Add protein pieces, crumbled vegan feta, and fresh parsley",
         "Season generously with black pepper"
       ],
       tips: [
         "Remove pan from heat when adding pasta to prevent curdling",
         "Cook peas with pasta for convenience and perfect texture",
-        "Save pasta water to adjust sauce consistency"
+        "Save pasta water to adjust sauce consistency",
+        "Add vegan feta just before serving for best texture"
       ],
-      notes: "Rich, creamy texture with added greens - balanced comfort food"
+      notes: "Rich, creamy texture with added greens and vegan feta - balanced comfort food"
     }
   },
 
