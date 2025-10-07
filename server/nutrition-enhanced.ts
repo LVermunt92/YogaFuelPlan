@@ -6426,6 +6426,380 @@ const RAW_MEAL_DATABASE: MealOption[] = [
   },
 
   {
+    name: "Balanced beetroot broccoli bowl with tempeh",
+    portion: "1 bowl with hummus and sides",
+    nutrition: { 
+      protein: 28, 
+      prepTime: 40, 
+      calories: 620,
+      carbohydrates: 68,
+      fats: 24,
+      fiber: 16,
+      sugar: 12,
+      sodium: 420,
+      costEuros: 4.50, 
+      proteinPerEuro: 6.2 
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Fiber"],
+    ingredients: [
+      "100g beetroot (boiled or roasted, peeled)",
+      "250g cooked chickpeas (with 15ml of their liquid)",
+      "30g tahini (2 tbsp)",
+      "1/2 tsp cumin",
+      "1 small garlic clove",
+      "Juice of 1/2 lemon",
+      "1 ice cube",
+      "150g broccoli (cut into 1 thick steak)",
+      "15ml olive oil (1 tbsp)",
+      "100g tempeh",
+      "50g gluten-free sourdough or 80g cooked quinoa",
+      "30g rocket (arugula)",
+      "50g cucumber (sliced)",
+      "Fresh mint",
+      "22ml extra virgin olive oil (1.5 tbsp)",
+      "15ml balsamic vinegar (1 tbsp)",
+      "1/2 tsp chopped red chilli",
+      "15g fresh parsley (chopped, 1 tbsp)",
+      "1/2 tsp agave syrup (optional)",
+      "Salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["beetroot", "broccoli", "cucumber", "rocket"],
+      benefits: ["Nitrates from beetroot for blood pressure", "Cruciferous compounds from broccoli", "Rich in plant protein", "Heart-healthy fats"]
+    },
+    recipe: {
+      instructions: [
+        "Cook the beetroot until tender (boil or roast, about 30 min), then peel",
+        "Make the hummus: blend beetroot, chickpeas, tahini, cumin, garlic, lemon juice, and chickpea water. Add the ice cube while blending. Season with salt and pepper until smooth",
+        "Heat 15ml olive oil in a pan and sear the broccoli steak for 2-3 minutes per side until browned and tender",
+        "Pan-fry tempeh in olive oil with a little cumin, salt, and pepper until golden",
+        "Make the vinaigrette: whisk together extra virgin olive oil, balsamic vinegar, chilli, parsley, and agave",
+        "Spread hummus on the plate, top with broccoli and tempeh, drizzle with vinaigrette",
+        "Serve with rocket-cucumber-mint salad with lemon juice and gluten-free sourdough or quinoa"
+      ],
+      tips: [
+        "Make hummus ahead and store in fridge for up to 5 days",
+        "The ice cube makes the hummus extra creamy",
+        "Meal prep friendly - assemble fresh for best texture",
+        "Broccoli can be roasted instead of pan-seared"
+      ],
+      notes: "Vibrant beetroot hummus bowl with protein-rich tempeh and crunchy broccoli steaks. Perfect balance of earthy, tangy, and fresh flavors."
+    }
+  },
+
+  {
+    name: "Balanced beetroot broccoli bowl with grilled chicken",
+    portion: "1 bowl with hummus and sides",
+    nutrition: { 
+      protein: 35, 
+      prepTime: 40, 
+      calories: 640,
+      carbohydrates: 68,
+      fats: 20,
+      fiber: 16,
+      sugar: 12,
+      sodium: 460,
+      costEuros: 5.20, 
+      proteinPerEuro: 6.7 
+    },
+    category: "lunch",
+    tags: ["Gluten-Free", "Lactose-Free", "High-Protein", "High-Fiber"],
+    ingredients: [
+      "100g beetroot (boiled or roasted, peeled)",
+      "250g cooked chickpeas (with 15ml of their liquid)",
+      "30g tahini (2 tbsp)",
+      "1/2 tsp cumin",
+      "1 small garlic clove",
+      "Juice of 1/2 lemon",
+      "1 ice cube",
+      "150g broccoli (cut into 1 thick steak)",
+      "15ml olive oil (1 tbsp)",
+      "120g grilled chicken breast",
+      "50g gluten-free sourdough or 80g cooked quinoa",
+      "30g rocket (arugula)",
+      "50g cucumber (sliced)",
+      "Fresh mint",
+      "22ml extra virgin olive oil (1.5 tbsp)",
+      "15ml balsamic vinegar (1 tbsp)",
+      "1/2 tsp chopped red chilli",
+      "15g fresh parsley (chopped, 1 tbsp)",
+      "1/2 tsp agave syrup (optional)",
+      "Salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["beetroot", "broccoli", "cucumber", "rocket"],
+      benefits: ["Nitrates from beetroot for blood pressure", "Cruciferous compounds from broccoli", "Lean protein from chicken", "Heart-healthy fats"]
+    },
+    recipe: {
+      instructions: [
+        "Cook the beetroot until tender (boil or roast, about 30 min), then peel",
+        "Make the hummus: blend beetroot, chickpeas, tahini, cumin, garlic, lemon juice, and chickpea water. Add the ice cube while blending. Season with salt and pepper until smooth",
+        "Heat 15ml olive oil in a pan and sear the broccoli steak for 2-3 minutes per side until browned and tender",
+        "Grill chicken breast seasoned with cumin, salt, and pepper until cooked through (165°F internal temp)",
+        "Make the vinaigrette: whisk together extra virgin olive oil, balsamic vinegar, chilli, parsley, and agave",
+        "Spread hummus on the plate, top with broccoli and chicken, drizzle with vinaigrette",
+        "Serve with rocket-cucumber-mint salad with lemon juice and gluten-free sourdough or quinoa"
+      ],
+      tips: [
+        "Make hummus ahead and store in fridge for up to 5 days",
+        "The ice cube makes the hummus extra creamy",
+        "Meal prep friendly - assemble fresh for best texture",
+        "Use pre-cooked chicken for faster assembly"
+      ],
+      notes: "Vibrant beetroot hummus bowl with lean grilled chicken and crunchy broccoli steaks. High protein version with the same balanced flavors."
+    }
+  },
+
+  {
+    name: "Mediterranean broccoli bowl with roasted pepper hummus",
+    portion: "1 bowl with hummus and sides",
+    nutrition: { 
+      protein: 26, 
+      prepTime: 35, 
+      calories: 580,
+      carbohydrates: 64,
+      fats: 22,
+      fiber: 14,
+      sugar: 10,
+      sodium: 400,
+      costEuros: 4.20, 
+      proteinPerEuro: 6.2 
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "Mediterranean"],
+    ingredients: [
+      "100g red bell pepper (roasted and peeled)",
+      "250g cooked chickpeas (with 15ml liquid)",
+      "30g tahini (2 tbsp)",
+      "1/2 tsp smoked paprika",
+      "1 small garlic clove",
+      "Juice of 1/2 lemon",
+      "1 ice cube",
+      "150g broccoli (cut into steaks)",
+      "100g grilled tempeh or tofu",
+      "15ml olive oil (1 tbsp)",
+      "22ml extra virgin olive oil (1.5 tbsp)",
+      "15ml red wine vinegar (1 tbsp)",
+      "15g fresh basil and oregano (chopped, 1 tbsp)",
+      "Pinch of chilli flakes",
+      "80g cooked quinoa or millet",
+      "100g cherry tomatoes",
+      "40g olives",
+      "Salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["red pepper", "broccoli", "cherry tomatoes"],
+      benefits: ["Vitamin C from red pepper", "Lycopene from tomatoes", "Cruciferous compounds", "Mediterranean antioxidants"]
+    },
+    recipe: {
+      instructions: [
+        "Blend roasted pepper, chickpeas, tahini, paprika, garlic, lemon juice, and chickpea water with ice cube until smooth",
+        "Sear broccoli steaks in olive oil until tender and browned",
+        "Grill tempeh or tofu seasoned with salt and pepper",
+        "Mix vinaigrette: whisk extra virgin olive oil, red wine vinegar, basil, oregano, and chilli flakes",
+        "Plate the hummus, top with broccoli and protein, drizzle vinaigrette",
+        "Serve with quinoa or millet and a side of cherry tomatoes and olives"
+      ],
+      tips: [
+        "Roast peppers under broiler or on gas flame for smoky flavor",
+        "Hummus can be made 5 days ahead",
+        "Use marinated tofu for extra flavor",
+        "Great for meal prep"
+      ],
+      notes: "Fresh Mediterranean bowl with roasted red pepper hummus, bright herbs, and smoky paprika. Light yet satisfying."
+    }
+  },
+
+  {
+    name: "Middle Eastern broccoli bowl with tempeh and za'atar",
+    portion: "1 bowl with hummus and tabbouleh",
+    nutrition: { 
+      protein: 28, 
+      prepTime: 35, 
+      calories: 610,
+      carbohydrates: 66,
+      fats: 24,
+      fiber: 15,
+      sugar: 11,
+      sodium: 410,
+      costEuros: 4.60, 
+      proteinPerEuro: 6.1 
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "Middle-Eastern"],
+    ingredients: [
+      "100g beetroot (cooked and peeled)",
+      "250g cooked chickpeas",
+      "30g tahini (2 tbsp)",
+      "1/2 tsp cumin",
+      "1 garlic clove",
+      "Juice of 1/2 lemon",
+      "1 ice cube",
+      "150g broccoli (sliced into steaks)",
+      "100g tempeh",
+      "15ml olive oil (1 tbsp)",
+      "1/2 tsp za'atar",
+      "5g dukkah (1 tsp, optional)",
+      "Fresh parsley and mint",
+      "80g cooked quinoa",
+      "50g tomato (diced)",
+      "Fresh lemon juice",
+      "Salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2.5,
+      vegetables: ["beetroot", "broccoli", "tomato"],
+      benefits: ["Middle Eastern spices with anti-inflammatory properties", "High fiber", "Plant protein", "Fresh herbs"]
+    },
+    recipe: {
+      instructions: [
+        "Blend beetroot hummus ingredients with ice cube until smooth",
+        "Pan-sear broccoli steaks in olive oil",
+        "Pan-fry tempeh until golden and crispy",
+        "Sprinkle za'atar over broccoli while warm",
+        "Make quinoa tabbouleh: mix cooked quinoa with parsley, diced tomato, lemon juice, and olive oil",
+        "Serve hummus with broccoli and tempeh, sprinkle with dukkah, parsley, and mint",
+        "Add quinoa tabbouleh on the side"
+      ],
+      tips: [
+        "Za'atar adds aromatic Middle Eastern flavor",
+        "Dukkah provides crunchy texture",
+        "Make tabbouleh ahead for flavors to meld",
+        "Fresh herbs are essential for brightness"
+      ],
+      notes: "Earthy beetroot hummus with aromatic za'atar and dukkah crunch. Traditional Middle Eastern flavors in a nourishing bowl."
+    }
+  },
+
+  {
+    name: "Middle Eastern broccoli bowl with grilled chicken and za'atar",
+    portion: "1 bowl with hummus and tabbouleh",
+    nutrition: { 
+      protein: 36, 
+      prepTime: 35, 
+      calories: 630,
+      carbohydrates: 66,
+      fats: 20,
+      fiber: 15,
+      sugar: 11,
+      sodium: 450,
+      costEuros: 5.30, 
+      proteinPerEuro: 6.8 
+    },
+    category: "lunch",
+    tags: ["Gluten-Free", "Lactose-Free", "High-Protein", "Middle-Eastern"],
+    ingredients: [
+      "100g beetroot (cooked and peeled)",
+      "250g cooked chickpeas",
+      "30g tahini (2 tbsp)",
+      "1/2 tsp cumin",
+      "1 garlic clove",
+      "Juice of 1/2 lemon",
+      "1 ice cube",
+      "150g broccoli (sliced into steaks)",
+      "120g grilled chicken breast",
+      "15ml olive oil (1 tbsp)",
+      "1/2 tsp za'atar",
+      "5g dukkah (1 tsp, optional)",
+      "Fresh parsley and mint",
+      "80g cooked quinoa",
+      "50g tomato (diced)",
+      "Fresh lemon juice",
+      "Salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2.5,
+      vegetables: ["beetroot", "broccoli", "tomato"],
+      benefits: ["Middle Eastern spices with anti-inflammatory properties", "High fiber", "Lean protein", "Fresh herbs"]
+    },
+    recipe: {
+      instructions: [
+        "Blend beetroot hummus ingredients with ice cube until smooth",
+        "Pan-sear broccoli steaks in olive oil",
+        "Grill chicken breast seasoned with za'atar, salt, and pepper",
+        "Sprinkle extra za'atar over broccoli while warm",
+        "Make quinoa tabbouleh: mix cooked quinoa with parsley, diced tomato, lemon juice, and olive oil",
+        "Serve hummus with broccoli and chicken, sprinkle with dukkah, parsley, and mint",
+        "Add quinoa tabbouleh on the side"
+      ],
+      tips: [
+        "Za'atar-seasoned chicken adds aromatic flavor",
+        "Dukkah provides crunchy texture",
+        "Make tabbouleh ahead for flavors to meld",
+        "Fresh herbs are essential for brightness"
+      ],
+      notes: "Earthy beetroot hummus with za'atar-grilled chicken and dukkah crunch. High-protein Middle Eastern bowl with traditional flavors."
+    }
+  },
+
+  {
+    name: "Warm winter broccoli bowl with roasted sweet potato",
+    portion: "1 bowl with roasted vegetables",
+    nutrition: { 
+      protein: 26, 
+      prepTime: 45, 
+      calories: 640,
+      carbohydrates: 78,
+      fats: 24,
+      fiber: 16,
+      sugar: 16,
+      sodium: 390,
+      costEuros: 4.40, 
+      proteinPerEuro: 5.9 
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Fiber"],
+    ingredients: [
+      "100g beetroot (cooked)",
+      "250g cooked chickpeas",
+      "30g tahini (2 tbsp + 1 tbsp for dressing)",
+      "1/2 tsp cumin",
+      "1 garlic clove",
+      "Juice of 1/2 lemon (+ 1 tbsp for dressing)",
+      "1 ice cube",
+      "150g broccoli (cut into steaks)",
+      "150g sweet potato (cubed)",
+      "100g baked tempeh or tofu",
+      "30ml olive oil (2 tbsp)",
+      "15ml warm water (1 tbsp)",
+      "Salt and pepper to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["beetroot", "broccoli", "sweet potato"],
+      benefits: ["Beta-carotene from sweet potato", "Fiber-rich root vegetables", "Warming winter comfort", "Plant protein"]
+    },
+    recipe: {
+      instructions: [
+        "Make the beetroot hummus: blend beetroot, chickpeas, 2 tbsp tahini, cumin, garlic, 1/2 lemon juice, and ice cube until smooth",
+        "Roast sweet potato cubes in olive oil at 200°C for 25 minutes until golden",
+        "Pan-sear broccoli steaks in olive oil until tender",
+        "Bake tempeh or tofu seasoned with salt and pepper",
+        "Make warm tahini dressing: whisk 1 tbsp tahini, 1 tbsp lemon juice, 1 tbsp warm water, 1 tsp olive oil, and pinch of salt until smooth",
+        "Serve hummus with roasted sweet potato and broccoli",
+        "Top with tempeh or tofu and drizzle warm tahini dressing over everything"
+      ],
+      tips: [
+        "Roast sweet potato until caramelized for sweetness",
+        "Warm tahini dressing adds comfort",
+        "Perfect for cold weather meals",
+        "Store components separately for meal prep"
+      ],
+      notes: "Cozy winter bowl with roasted sweet potato, beetroot hummus, and warm tahini dressing. Comforting and nourishing."
+    }
+  },
+
+  {
     name: "Mediterranean gluten-free pasta salad with olives",
     portion: "2 cups pasta salad",
     nutrition: { 
