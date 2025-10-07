@@ -6800,6 +6800,67 @@ const RAW_MEAL_DATABASE: MealOption[] = [
   },
 
   {
+    name: "Sticky tofu rice bowl with vegetables and kimchi",
+    portion: "1 bowl with rice and vegetables",
+    nutrition: { 
+      protein: 18, 
+      prepTime: 25, 
+      calories: 500,
+      carbohydrates: 58,
+      fats: 20,
+      fiber: 8,
+      sugar: 6,
+      sodium: 620,
+      costEuros: 3.40, 
+      proteinPerEuro: 5.3 
+    },
+    category: "dinner",
+    tags: ["Vegetarian", "Lactose-Free", "Asian"],
+    ingredients: [
+      "33g basmati rice (or 83g pre-cooked rice)",
+      "93g firm tofu (drained, cut into 1cm cubes)",
+      "7ml olive oil (2 tsp, for tofu)",
+      "5ml chilli oil (1 tsp)",
+      "5ml maple syrup (1 tsp)",
+      "Pinch of flaky sea salt",
+      "5ml olive oil (1 tsp, for vegetables)",
+      "1 large garlic clove (finely chopped)",
+      "10g ginger (grated or finely chopped)",
+      "1 red chilli (finely chopped)",
+      "100g hispi cabbage (thinly sliced)",
+      "17g kale (roughly sliced)",
+      "30g leek (very thinly sliced)",
+      "33g frozen peas (defrosted)",
+      "10ml tamari (2 tsp)",
+      "7g kimchi (optional)"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2.5,
+      vegetables: ["cabbage", "kale", "leek", "peas"],
+      benefits: ["Fermented foods from kimchi for gut health", "Cruciferous vegetables", "High in fiber", "Asian spices with anti-inflammatory properties"]
+    },
+    recipe: {
+      instructions: [
+        "Pour rice into a small saucepan with 67ml water and a pinch of salt. Bring to boil, cover, reduce heat to low and simmer 10 minutes until water absorbed. Set aside",
+        "While rice cooks, warm 7ml olive oil in medium frying pan over medium-high heat. Add tofu and cook 10 minutes, turning occasionally, until crisp and golden",
+        "Add chilli oil and maple syrup to tofu, bubble 1-2 minutes to create sticky coating. Season with sea salt flakes, remove and set aside",
+        "Wipe pan clean, increase heat to high, add 5ml olive oil. Add garlic, ginger, and chilli, fry 3-4 minutes until golden (watch garlic doesn't burn)",
+        "Stir in cooked rice and place cabbage, kale, leek, and peas on top. Let sit 1-2 minutes without stirring",
+        "Add tamari and stir everything through, cook 3-5 minutes until vegetables just tender",
+        "Stir through sticky tofu, divide into bowl and add kimchi if using. Drizzle with any extra chilli sauce from tofu"
+      ],
+      tips: [
+        "Press tofu for 10 minutes before cooking for crispier texture",
+        "Don't stir vegetables immediately - letting them sit creates nice caramelization",
+        "Use gluten-free tamari for celiac-safe version",
+        "Meal prep: store sticky tofu, rice, and veggies separately"
+      ],
+      notes: "Vibrant Asian-inspired bowl with sticky tofu, crispy vegetables, and optional kimchi. Quick weeknight meal with great texture contrast."
+    }
+  },
+
+  {
     name: "Mediterranean gluten-free pasta salad with olives",
     portion: "2 cups pasta salad",
     nutrition: { 
