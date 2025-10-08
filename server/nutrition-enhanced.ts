@@ -2459,14 +2459,14 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     nutrition: { 
       protein: 22, 
       prepTime: 25, 
-      calories: 400,
+      calories: 480,
       carbohydrates: 62,
-      fats: 8,
-      fiber: 16,
-      sugar: 8,
+      fats: 16,
+      fiber: 17,
+      sugar: 10,
       sodium: 340,
-      costEuros: 3.20, 
-      proteinPerEuro: 6.9 
+      costEuros: 3.80, 
+      proteinPerEuro: 5.8 
     },
     category: "dinner",
     tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Ayurvedic", "Quick"],
@@ -2474,43 +2474,45 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "190g red lentils (masoor dal)",
       "100g basmati rice",
       "100g spinach (chopped)",
-      "1 medium tomato (diced, 120g)",
-      "1 tsp turmeric",
-      "1 tsp cumin seeds",
-      "1/2 tsp coriander seeds",
-      "1 tsp fresh ginger (grated)",
-      "2 cloves garlic (minced)",
-      "1 tbsp ghee or coconut oil",
-      "1/2 tsp asafoetida (hing)",
-      "1 tsp mustard seeds",
+      "3 medium tomatoes (diced, 360g)",
+      "1 tsp turmeric (kurkuma)",
+      "1 tsp curry powder",
+      "2 tsp fresh ginger (grated)",
+      "1-2 red chilis (finely chopped)",
+      "1 tbsp coconut oil",
+      "200ml coconut milk",
+      "200ml water",
       "Fresh cilantro for garnish",
-      "1 lemon (juiced)"
+      "1 lemon (juiced)",
+      "Salt to taste"
     ],
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 2.5,
-      vegetables: ["spinach", "tomato", "garlic", "ginger"],
-      benefits: ["Iron-rich greens", "Digestive support", "Anti-inflammatory", "Warming for constitution"]
+      vegetables: ["spinach", "tomato", "ginger", "chili"],
+      benefits: ["Iron-rich greens", "Digestive support", "Anti-inflammatory from ginger and turmeric", "Warming for constitution"]
     },
     recipe: {
       instructions: [
-        "Rinse lentils and cook with turmeric in 720ml water for 15 minutes",
+        "Heat coconut oil in a large pot over medium heat",
+        "Add grated ginger and chopped chilis, sauté for 1 minute until fragrant",
+        "Add turmeric and curry powder, stir for 30 seconds",
+        "Add diced tomatoes and cook for 3-4 minutes until softened",
+        "Rinse lentils and add to the pot with the herbs and tomatoes",
+        "Pour in coconut milk and water, stir everything together",
+        "Bring to a boil, then reduce heat and simmer for 15-20 minutes until lentils are tender",
         "Cook basmati rice separately in 240ml water for 12 minutes",
-        "Heat ghee in pan, add mustard seeds until they pop",
-        "Add cumin and coriander seeds, toast 30 seconds",
-        "Add ginger, garlic, and asafoetida, cook 1 minute",
-        "Add diced tomato, cook 2 minutes until soft",
-        "Add cooked lentils and simmer 5 minutes",
-        "Stir in chopped spinach, cook until wilted (2 minutes)",
-        "Season with salt and lemon juice",
-        "Serve over rice, garnish with fresh cilantro"
+        "Stir in chopped spinach to the dal, cook until wilted (2 minutes)",
+        "Season with salt and lemon juice to taste",
+        "Serve dal over rice, garnish with fresh cilantro"
       ],
       tips: [
-        "Toast whole spices for deeper flavor",
-        "Add spinach at the end to retain nutrients",
-        "Add ghee at the end for better digestion according to Ayurveda"
+        "Coconut milk adds creamy richness and balances the spices",
+        "Adjust chili amount to your heat preference",
+        "Lentils cooked with coconut milk and tomatoes create a rich, flavorful curry",
+        "Add spinach at the end to retain nutrients"
       ],
-      notes: "Classical Ayurvedic meal with added vegetables for balanced nutrition"
+      notes: "Creamy Ayurvedic dal cooked in coconut milk with fresh tomatoes, ginger, and turmeric. Simplified spices for authentic comfort food."
     }
   },
 
