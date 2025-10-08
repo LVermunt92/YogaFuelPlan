@@ -2480,7 +2480,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "1 tsp ground coriander",
       "2 tsp fresh ginger (grated)",
       "1/2 tsp chili powder (or to taste)",
-      "1 tbsp coconut oil",
+      "1 tbsp ghee",
       "1 tsp mustard seeds",
       "1/2 tsp asafoetida (hing)",
       "200ml coconut milk",
@@ -2497,7 +2497,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     recipe: {
       instructions: [
         "Cook basmati rice separately in 240ml water for 12 minutes, set aside",
-        "Heat coconut oil in a large pot over medium heat",
+        "Heat ghee in a large pot over medium heat",
         "Add mustard seeds and let them pop for 30 seconds",
         "Add grated ginger and asafoetida, sauté for 1 minute until fragrant",
         "Add turmeric, curry powder, ground coriander, and chili powder, stir for 30 seconds",
