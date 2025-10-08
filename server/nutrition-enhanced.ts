@@ -2478,7 +2478,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "1 tsp turmeric (kurkuma)",
       "1 tsp curry powder",
       "2 tsp fresh ginger (grated)",
-      "1-2 red chilis (finely chopped)",
+      "1/2 tsp chili powder (or to taste)",
       "1 tbsp coconut oil",
       "1 tsp mustard seeds",
       "1/2 tsp asafoetida (hing)",
@@ -2497,8 +2497,9 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     recipe: {
       instructions: [
         "Heat coconut oil in a large pot over medium heat",
-        "Add grated ginger and chopped chilis, sauté for 1 minute until fragrant",
-        "Add turmeric and curry powder, stir for 30 seconds",
+        "Add mustard seeds and let them pop for 30 seconds",
+        "Add grated ginger and asafoetida, sauté for 1 minute until fragrant",
+        "Add turmeric, curry powder, and chili powder, stir for 30 seconds",
         "Add diced tomatoes and cook for 3-4 minutes until softened",
         "Rinse lentils and add to the pot with the herbs and tomatoes",
         "Pour in coconut milk and water, stir everything together",
@@ -2509,12 +2510,13 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Serve dal over rice, garnish with fresh cilantro"
       ],
       tips: [
+        "Mustard seeds add traditional Ayurvedic flavor and aid digestion",
         "Coconut milk adds creamy richness and balances the spices",
-        "Adjust chili amount to your heat preference",
+        "Adjust chili powder to your heat preference",
         "Lentils cooked with coconut milk and tomatoes create a rich, flavorful curry",
         "Add spinach at the end to retain nutrients"
       ],
-      notes: "Creamy Ayurvedic dal cooked in coconut milk with fresh tomatoes, ginger, and turmeric. Simplified spices for authentic comfort food."
+      notes: "Creamy Ayurvedic dal cooked in coconut milk with fresh tomatoes, ginger, and turmeric. Traditional spices with digestive benefits."
     }
   },
 
