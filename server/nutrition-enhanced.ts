@@ -2577,6 +2577,73 @@ const RAW_MEAL_DATABASE: MealOption[] = [
   },
 
   {
+    name: "Nourishing vegetable kitchari with spinach and carrots",
+    portion: "2 servings",
+    nutrition: { 
+      protein: 20, 
+      prepTime: 35, 
+      calories: 420,
+      carbohydrates: 62,
+      fats: 12,
+      fiber: 15,
+      sugar: 6,
+      sodium: 320,
+      costEuros: 3.60, 
+      proteinPerEuro: 5.6 
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Ayurvedic", "High-Fiber"],
+    ingredients: [
+      "85g split mung beans (moong dal)",
+      "85g basmati rice",
+      "100g spinach (chopped)",
+      "100g carrots (diced)",
+      "80g zucchini (diced)",
+      "1 tsp turmeric (kurkuma)",
+      "1 tsp cumin seeds",
+      "1 tsp ground coriander",
+      "1/2 tsp fennel seeds",
+      "2 tsp fresh ginger (grated)",
+      "1 tbsp coconut oil or ghee",
+      "1 tsp mustard seeds",
+      "600ml water",
+      "Fresh cilantro for garnish",
+      "Salt to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 3,
+      vegetables: ["spinach", "carrots", "zucchini", "ginger"],
+      benefits: ["Complete protein from beans and rice", "Easy to digest vegetables", "Anti-inflammatory spices", "Balancing for all doshas"]
+    },
+    recipe: {
+      instructions: [
+        "Rinse mung beans and rice together until water runs clear",
+        "Heat coconut oil or ghee in heavy-bottomed pot over medium heat",
+        "Add mustard seeds and let them pop for 30 seconds",
+        "Add cumin seeds and fennel seeds, toast until fragrant",
+        "Add grated ginger and turmeric, cook 30 seconds",
+        "Add ground coriander, stir for 15 seconds",
+        "Add mung beans and rice, stir to coat with spices for 1 minute",
+        "Add diced carrots and zucchini, stir together",
+        "Pour in 600ml water and bring to boil",
+        "Reduce heat to low, cover, and simmer for 25-30 minutes until creamy and vegetables are tender",
+        "Stir in chopped spinach in the last 3 minutes until wilted",
+        "Season with salt to taste",
+        "Serve warm, garnished with fresh cilantro"
+      ],
+      tips: [
+        "Consistency should be like a thick, creamy stew - add more water if needed",
+        "Carrots and zucchini are easy to digest and won't upset the Ayurvedic balance",
+        "Cook until the beans and rice break down and become soft",
+        "Perfect everyday nourishing meal that's still gentle on digestion",
+        "Can add a squeeze of lime at the end if you want extra brightness"
+      ],
+      notes: "Nourishing everyday kitchari with easy-to-digest vegetables. More complete than traditional cleansing kitchari, still gentle and balancing for all doshas."
+    }
+  },
+
+  {
     name: "Warm spiced quinoa bowl with roasted root vegetables",
     portion: "2 servings",
     nutrition: { 
