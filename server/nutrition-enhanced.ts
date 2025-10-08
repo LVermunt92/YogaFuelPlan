@@ -2480,6 +2480,8 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "2 tsp fresh ginger (grated)",
       "1-2 red chilis (finely chopped)",
       "1 tbsp coconut oil",
+      "1 tsp mustard seeds",
+      "1/2 tsp asafoetida (hing)",
       "200ml coconut milk",
       "200ml water",
       "Fresh cilantro for garnish",
