@@ -6934,6 +6934,188 @@ const RAW_MEAL_DATABASE: MealOption[] = [
   },
 
   {
+    name: "Venezuelan arepa with shredded chicken (reina pepiada)",
+    portion: "2 arepas with filling",
+    nutrition: { 
+      protein: 32, 
+      prepTime: 35, 
+      calories: 580,
+      carbohydrates: 52,
+      fats: 24,
+      fiber: 6,
+      sugar: 4,
+      sodium: 480,
+      costEuros: 4.80, 
+      proteinPerEuro: 6.7 
+    },
+    category: "lunch",
+    tags: ["Gluten-Free", "High-Protein", "Latin-American"],
+    ingredients: [
+      "100g pre-cooked white cornmeal (masarepa/harina PAN)",
+      "150ml warm water",
+      "1/4 tsp salt",
+      "1 tsp olive oil (for dough)",
+      "120g cooked shredded chicken breast",
+      "60g avocado (mashed)",
+      "20g mayonnaise",
+      "15ml lime juice (1 tbsp)",
+      "1 tbsp fresh cilantro (chopped)",
+      "1/4 tsp cumin",
+      "Salt and pepper to taste",
+      "Oil for cooking arepas"
+    ],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["avocado", "cilantro"],
+      benefits: ["High protein from chicken", "Healthy fats from avocado", "Traditional Venezuelan street food", "Gluten-free corn base"]
+    },
+    recipe: {
+      instructions: [
+        "Make arepa dough: mix masarepa, warm water, salt, and olive oil until smooth. Let rest 5 minutes",
+        "Divide dough into 2 equal portions and form into thick discs (about 1.5cm thick, 10cm diameter)",
+        "Heat a lightly oiled griddle or pan over medium heat",
+        "Cook arepas 5-7 minutes per side until golden crust forms and they sound hollow when tapped",
+        "While arepas cook, make filling: mix shredded chicken with mashed avocado, mayonnaise, lime juice, cumin, cilantro, salt and pepper",
+        "When arepas are done, let cool 2 minutes, then slice open like a pita pocket",
+        "Stuff generously with chicken-avocado mixture (reina pepiada)",
+        "Serve warm"
+      ],
+      tips: [
+        "Arepas should have a crispy outside and soft inside",
+        "Don't make them too thin or they'll be dry",
+        "Can finish in oven at 180°C for 10 minutes for extra crispiness",
+        "Reina pepiada is the classic Venezuelan chicken-avocado filling",
+        "Use rotisserie chicken for faster prep"
+      ],
+      notes: "Classic Venezuelan arepa with homemade corn cakes and the famous 'reina pepiada' chicken-avocado filling. Naturally gluten-free and packed with protein."
+    }
+  },
+
+  {
+    name: "Vegetarian Venezuelan arepa with black beans and eggs",
+    portion: "2 arepas with filling",
+    nutrition: { 
+      protein: 26, 
+      prepTime: 30, 
+      calories: 540,
+      carbohydrates: 58,
+      fats: 22,
+      fiber: 12,
+      sugar: 3,
+      sodium: 520,
+      costEuros: 3.20, 
+      proteinPerEuro: 8.1 
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Gluten-Free", "High-Fiber", "Latin-American"],
+    ingredients: [
+      "100g pre-cooked white cornmeal (masarepa/harina PAN)",
+      "150ml warm water",
+      "1/4 tsp salt",
+      "1 tsp olive oil (for dough)",
+      "120g cooked black beans",
+      "2 eggs (scrambled)",
+      "40g cheese (grated, optional)",
+      "60g avocado (sliced)",
+      "30g tomato (diced)",
+      "1 tbsp fresh cilantro",
+      "1/4 tsp cumin",
+      "Salt and pepper to taste",
+      "Oil for cooking arepas"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["avocado", "tomato", "cilantro"],
+      benefits: ["Complete protein from beans and eggs", "High fiber from black beans", "Traditional Venezuelan breakfast", "Gluten-free"]
+    },
+    recipe: {
+      instructions: [
+        "Make arepa dough: mix masarepa, warm water, salt, and olive oil until smooth. Let rest 5 minutes",
+        "Divide dough into 2 equal portions and form into thick discs (about 1.5cm thick, 10cm diameter)",
+        "Heat a lightly oiled griddle or pan over medium heat",
+        "Cook arepas 5-7 minutes per side until golden crust forms",
+        "While arepas cook, scramble eggs with salt and pepper",
+        "Warm black beans with cumin",
+        "When arepas are done, slice open like a pita pocket",
+        "Layer with black beans, scrambled eggs, grated cheese, avocado, tomato, and cilantro",
+        "Serve immediately while warm"
+      ],
+      tips: [
+        "This is called 'pabellón arepa' - a vegetarian take on Venezuela's national dish",
+        "Arepas are best fresh and warm",
+        "Can add hot sauce or salsa for extra flavor",
+        "Black beans can be made ahead and reheated",
+        "Perfect high-protein breakfast or lunch"
+      ],
+      notes: "Hearty vegetarian Venezuelan arepa with homemade corn cakes stuffed with black beans, scrambled eggs, cheese, and avocado. Complete meal in every bite."
+    }
+  },
+
+  {
+    name: "Vegetarian Venezuelan arepa with vegan feta and avocado",
+    portion: "2 arepas with filling",
+    nutrition: { 
+      protein: 22, 
+      prepTime: 30, 
+      calories: 520,
+      carbohydrates: 56,
+      fats: 24,
+      fiber: 11,
+      sugar: 4,
+      sodium: 580,
+      costEuros: 3.60, 
+      proteinPerEuro: 6.1 
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Lactose-Free", "Gluten-Free", "High-Fiber", "Latin-American"],
+    ingredients: [
+      "100g pre-cooked white cornmeal (masarepa/harina PAN)",
+      "150ml warm water",
+      "1/4 tsp salt",
+      "1 tsp olive oil (for dough)",
+      "120g cooked black beans",
+      "60g vegan feta cheese (crumbled)",
+      "70g avocado (sliced)",
+      "40g tomato (diced)",
+      "30g red onion (thinly sliced)",
+      "1 tbsp fresh cilantro",
+      "1/4 tsp cumin",
+      "15ml lime juice (1 tbsp)",
+      "Salt and pepper to taste",
+      "Oil for cooking arepas"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2.5,
+      vegetables: ["avocado", "tomato", "red onion", "cilantro"],
+      benefits: ["Plant-based protein", "High fiber from beans", "Lactose-free vegan feta", "Fresh vegetables", "Gluten-free"]
+    },
+    recipe: {
+      instructions: [
+        "Make arepa dough: mix masarepa, warm water, salt, and olive oil until smooth. Let rest 5 minutes",
+        "Divide dough into 2 equal portions and form into thick discs (about 1.5cm thick, 10cm diameter)",
+        "Heat a lightly oiled griddle or pan over medium heat",
+        "Cook arepas 5-7 minutes per side until golden crust forms and sound hollow when tapped",
+        "While arepas cook, warm black beans with cumin, salt and pepper",
+        "Prepare filling: mix diced tomato, sliced red onion, cilantro, and lime juice",
+        "When arepas are done, slice open like a pita pocket",
+        "Layer with warm black beans, crumbled vegan feta, avocado slices, and tomato-onion mixture",
+        "Serve immediately"
+      ],
+      tips: [
+        "Vegan feta adds creamy, tangy flavor without dairy",
+        "Can use regular feta if not avoiding lactose",
+        "Arepas freeze well - reheat in oven when needed",
+        "Add jalapeños for spicy kick",
+        "Perfect plant-based protein meal"
+      ],
+      notes: "Plant-based Venezuelan arepa with homemade corn cakes stuffed with seasoned black beans, vegan feta, fresh avocado, and zesty tomato-onion salsa. Lactose-free and delicious."
+    }
+  },
+
+  {
     name: "Mediterranean gluten-free pasta salad with olives",
     portion: "2 cups pasta salad",
     nutrition: { 
