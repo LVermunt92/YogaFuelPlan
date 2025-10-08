@@ -2483,7 +2483,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "1 tsp mustard seeds",
       "1/2 tsp asafoetida (hing)",
       "200ml coconut milk",
-      "200ml water",
+      "240ml water (for rice)",
       "Fresh cilantro for garnish",
       "1 lemon (juiced)",
       "Salt to taste"
@@ -2496,15 +2496,15 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
+        "Cook basmati rice separately in 240ml water for 12 minutes, set aside",
         "Heat coconut oil in a large pot over medium heat",
         "Add mustard seeds and let them pop for 30 seconds",
         "Add grated ginger and asafoetida, sauté for 1 minute until fragrant",
         "Add turmeric, curry powder, and chili powder, stir for 30 seconds",
         "Add diced tomatoes and cook for 3-4 minutes until softened",
         "Rinse lentils and add to the pot with the herbs and tomatoes",
-        "Pour in coconut milk and water, stir everything together",
+        "Pour in coconut milk only, stir everything together",
         "Bring to a boil, then reduce heat and simmer for 15-20 minutes until lentils are tender",
-        "Cook basmati rice separately in 240ml water for 12 minutes",
         "Stir in chopped spinach to the dal, cook until wilted (2 minutes)",
         "Season with salt and lemon juice to taste",
         "Serve dal over rice, garnish with fresh cilantro"
@@ -2513,10 +2513,10 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Mustard seeds add traditional Ayurvedic flavor and aid digestion",
         "Coconut milk adds creamy richness and balances the spices",
         "Adjust chili powder to your heat preference",
-        "Lentils cooked with coconut milk and tomatoes create a rich, flavorful curry",
+        "Lentils cook in pure coconut milk with tomatoes for extra richness",
         "Add spinach at the end to retain nutrients"
       ],
-      notes: "Creamy Ayurvedic dal cooked in coconut milk with fresh tomatoes, ginger, and turmeric. Traditional spices with digestive benefits."
+      notes: "Rich Ayurvedic dal with lentils cooked in coconut milk (no water) with fresh tomatoes, ginger, and turmeric. Traditional digestive spices."
     }
   },
 
