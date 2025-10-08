@@ -2486,7 +2486,6 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "200ml coconut milk",
       "240ml water (for rice)",
       "Fresh cilantro for garnish",
-      "1 lemon (juiced)",
       "Salt to taste"
     ],
     wholeFoodLevel: "high",
@@ -2507,7 +2506,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Pour in coconut milk only, stir everything together",
         "Bring to a boil, then reduce heat and simmer for 15-20 minutes until lentils are tender",
         "Stir in chopped spinach to the dal, cook until wilted (2 minutes)",
-        "Season with salt and lemon juice to taste",
+        "Season with salt to taste",
         "Serve dal over rice, garnish with fresh cilantro"
       ],
       tips: [
