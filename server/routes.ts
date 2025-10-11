@@ -2875,16 +2875,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
   async function getModifiedRecipeDatabase(): Promise<MealOption[]> {
     const baseRecipes = await getCompleteEnhancedMealDatabase();
     
+    // Load persistent modifications from database
+    const dbModifications = await storage.getRecipeModifications();
+    const dbDeletions = await storage.getRecipeDeletions();
+    
+    // Merge in-memory and database modifications
+    const allModifications = new Map<string, MealOption>();
+    
+    // Add database modifications
+    for (const mod of dbModifications) {
+      allModifications.set(mod.recipeId, {
+        id: mod.recipeId,
+        name: mod.name,
+        category: mod.category,
+        ingredients: mod.ingredients,
+        portion: mod.portion,
+        nutrition: mod.nutrition,
+        tags: mod.tags || [],
+        recipe: {
+          name: mod.name,
+          instructions: mod.instructions,
+          tips: [],
+          notes: []
+        }
+      });
+    }
+    
+    // Overlay in-memory modifications (for current session)
+    for (const [id, recipe] of recipeModifications.entries()) {
+      allModifications.set(id, recipe);
+    }
+    
+    // Merge in-memory and database deletions
+    const allDeletions = new Set<string>([...dbDeletions, ...deletedRecipes]);
+    
     // Apply modifications and filter out deleted recipes
     return baseRecipes
-      .filter(recipe => !deletedRecipes.has(recipe.id || recipe.name))
+      .filter(recipe => !allDeletions.has(recipe.id || recipe.name))
       .map(recipe => {
         const id = recipe.id || recipe.name;
-        return recipeModifications.has(id) ? recipeModifications.get(id)! : recipe;
+        return allModifications.has(id) ? allModifications.get(id)! : recipe;
       })
       .concat(
-        Array.from(recipeModifications.values()).filter(recipe => 
-          recipe.id && parseInt(recipe.id) >= 10000 && !deletedRecipes.has(recipe.id)
+        Array.from(allModifications.values()).filter(recipe => 
+          recipe.id && parseInt(recipe.id) >= 10000 && !allDeletions.has(recipe.id)
         )
       );
   }
@@ -3278,7 +3312,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         id: existingRecipe.id || existingRecipe.name
       };
 
-      // Store the modification
+      // Store the modification in database for persistence
+      await storage.saveRecipeModification(recipeId, {
+        name: updatedRecipe.name,
+        ingredients: updatedRecipe.ingredients,
+        instructions: updatedRecipe.recipe?.instructions || [],
+        nutrition: updatedRecipe.nutrition,
+        category: updatedRecipe.category,
+        tags: updatedRecipe.tags,
+        portion: updatedRecipe.portion,
+        modifiedBy: req.session.userId
+      });
+
+      // Also keep in memory for immediate access during this session
       recipeModifications.set(recipeId, updatedRecipe);
 
       // Automatically translate to Dutch and save to database
@@ -3408,7 +3454,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "Recipe not found" });
       }
 
-      // Mark recipe as deleted
+      // Mark recipe as deleted in database for persistence
+      await storage.saveRecipeDeletion(recipeId, req.session.userId);
+      
+      // Also mark in memory for immediate effect during this session
       deletedRecipes.add(recipeId);
       
       // Remove from modifications if it was a custom recipe
@@ -3448,6 +3497,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const recipe = recipes.find(r => (r.id || r.name) === recipeId);
         if (recipe) {
           const updatedRecipe = { ...recipe, ...updates };
+          
+          // Save to database for persistence
+          await storage.saveRecipeModification(recipeId, {
+            name: updatedRecipe.name,
+            ingredients: updatedRecipe.ingredients,
+            instructions: updatedRecipe.recipe?.instructions || [],
+            nutrition: updatedRecipe.nutrition,
+            category: updatedRecipe.category,
+            tags: updatedRecipe.tags,
+            portion: updatedRecipe.portion,
+            modifiedBy: req.session.userId
+          });
+          
+          // Also keep in memory for immediate access
           recipeModifications.set(recipeId, updatedRecipe);
           updatedRecipes.push(updatedRecipe);
         }
