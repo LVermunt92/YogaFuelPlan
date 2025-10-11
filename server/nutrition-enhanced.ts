@@ -7588,6 +7588,189 @@ const RAW_MEAL_DATABASE: MealOption[] = [
   },
 
   {
+    name: "Greek orzo salad with avocado and feta",
+    portion: "1 serving",
+    nutrition: { 
+      protein: 21, 
+      prepTime: 20, 
+      calories: 520,
+      carbohydrates: 50,
+      fats: 22,
+      fiber: 6,
+      sugar: 4,
+      sodium: 480,
+      costEuros: 4.20, 
+      proteinPerEuro: 5.0 
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Mediterranean", "Fresh", "High-Protein"],
+    ingredients: [
+      "60g orzo pasta",
+      "70g avocado (½ avocado, diced)",
+      "40g feta cheese (crumbled)",
+      "80g cucumber (diced)",
+      "50g tomato (diced)",
+      "30g red onion (finely chopped)",
+      "5 Kalamata olives (pitted and halved)",
+      "5ml olive oil (1 tsp)",
+      "½ lemon (juiced)",
+      "½ tsp dried oregano (1g)",
+      "Salt to taste",
+      "Black pepper to taste",
+      "Fresh parsley for garnish"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["avocado", "cucumber", "tomato", "red onion"],
+      benefits: ["Healthy fats from avocado", "Hydration from cucumber", "Lycopene from tomatoes", "Mediterranean antioxidants"]
+    },
+    recipe: {
+      instructions: [
+        "Boil orzo in salted water for 8-10 minutes until al dente",
+        "Drain orzo, rinse lightly with cold water, and let cool slightly",
+        "In a bowl, mix diced cucumber, tomato, red onion, and halved olives",
+        "Add the cooled orzo and gently toss with the vegetables",
+        "Fold in diced avocado and crumbled feta cheese",
+        "Drizzle with olive oil and fresh lemon juice",
+        "Sprinkle with oregano, salt, and pepper",
+        "Toss gently to combine",
+        "Top with fresh parsley and serve immediately or chilled"
+      ],
+      tips: [
+        "Don't overcook the orzo - it should be al dente for best texture",
+        "Add avocado just before serving to prevent browning",
+        "Can be made ahead without avocado and added fresh",
+        "Tastes even better after 30 minutes in the fridge",
+        "Double the recipe for easy meal prep"
+      ],
+      notes: "Fresh Greek-inspired orzo salad with creamy avocado, tangy feta, and Mediterranean vegetables. Perfect light lunch ready in 20 minutes."
+    }
+  },
+
+  {
+    name: "Lactose-free Greek orzo salad with avocado",
+    portion: "1 serving",
+    nutrition: { 
+      protein: 20, 
+      prepTime: 20, 
+      calories: 510,
+      carbohydrates: 50,
+      fats: 21,
+      fiber: 6,
+      sugar: 4,
+      sodium: 460,
+      costEuros: 4.40, 
+      proteinPerEuro: 4.5 
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Lactose-Free", "Mediterranean", "Fresh", "High-Protein"],
+    ingredients: [
+      "60g orzo pasta",
+      "70g avocado (½ avocado, diced)",
+      "40g lactose-free feta cheese (crumbled)",
+      "80g cucumber (diced)",
+      "50g tomato (diced)",
+      "30g red onion (finely chopped)",
+      "5 Kalamata olives (pitted and halved)",
+      "5ml olive oil (1 tsp)",
+      "½ lemon (juiced)",
+      "½ tsp dried oregano (1g)",
+      "Salt to taste",
+      "Black pepper to taste",
+      "Fresh parsley for garnish"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["avocado", "cucumber", "tomato", "red onion"],
+      benefits: ["Healthy fats from avocado", "Hydration from cucumber", "Lycopene from tomatoes", "Lactose-free Mediterranean flavors"]
+    },
+    recipe: {
+      instructions: [
+        "Boil orzo in salted water for 8-10 minutes until al dente",
+        "Drain orzo, rinse lightly with cold water, and let cool slightly",
+        "In a bowl, mix diced cucumber, tomato, red onion, and halved olives",
+        "Add the cooled orzo and gently toss with the vegetables",
+        "Fold in diced avocado and crumbled lactose-free feta cheese",
+        "Drizzle with olive oil and fresh lemon juice",
+        "Sprinkle with oregano, salt, and pepper",
+        "Toss gently to combine",
+        "Top with fresh parsley and serve immediately or chilled"
+      ],
+      tips: [
+        "Don't overcook the orzo - it should be al dente for best texture",
+        "Add avocado just before serving to prevent browning",
+        "Lactose-free feta has the same tangy flavor without digestive issues",
+        "Can be made ahead without avocado and added fresh",
+        "Great for sensitive digestion"
+      ],
+      notes: "Lactose-free version of Greek orzo salad with creamy avocado and dairy-free feta. Mediterranean freshness without lactose."
+    }
+  },
+
+  {
+    name: "Gluten-free lactose-free Greek quinoa orzo salad with avocado",
+    portion: "1 serving",
+    nutrition: { 
+      protein: 19, 
+      prepTime: 25, 
+      calories: 505,
+      carbohydrates: 48,
+      fats: 21,
+      fiber: 7,
+      sugar: 4,
+      sodium: 440,
+      costEuros: 4.80, 
+      proteinPerEuro: 4.0 
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "Mediterranean", "Fresh", "High-Protein"],
+    ingredients: [
+      "60g quinoa orzo pasta (gluten-free)",
+      "70g avocado (½ avocado, diced)",
+      "40g lactose-free feta cheese (crumbled)",
+      "80g cucumber (diced)",
+      "50g tomato (diced)",
+      "30g red onion (finely chopped)",
+      "5 Kalamata olives (pitted and halved)",
+      "5ml olive oil (1 tsp)",
+      "½ lemon (juiced)",
+      "½ tsp dried oregano (1g)",
+      "Salt to taste",
+      "Black pepper to taste",
+      "Fresh parsley for garnish"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["avocado", "cucumber", "tomato", "red onion"],
+      benefits: ["Healthy fats from avocado", "Complete protein from quinoa pasta", "Hydration from cucumber", "Lycopene from tomatoes", "Gluten-free and lactose-free"]
+    },
+    recipe: {
+      instructions: [
+        "Cook quinoa orzo according to package directions (typically 8-12 minutes, check package as gluten-free pasta varies)",
+        "Drain quinoa orzo, rinse lightly with cold water, and let cool slightly",
+        "In a bowl, mix diced cucumber, tomato, red onion, and halved olives",
+        "Add the cooled quinoa orzo and gently toss with the vegetables",
+        "Fold in diced avocado and crumbled lactose-free feta cheese",
+        "Drizzle with olive oil and fresh lemon juice",
+        "Sprinkle with oregano, salt, and pepper",
+        "Toss gently to combine",
+        "Top with fresh parsley and serve immediately or chilled"
+      ],
+      tips: [
+        "Always check package directions for quinoa orzo - cooking times vary by brand",
+        "Don't overcook gluten-free pasta as it can become mushy",
+        "Add avocado just before serving to prevent browning",
+        "Quinoa orzo provides complete protein and extra fiber",
+        "Perfect for gluten and lactose sensitivities"
+      ],
+      notes: "Fully gluten-free and lactose-free Greek salad with quinoa orzo, creamy avocado, and dairy-free feta. Mediterranean flavors for sensitive digestion, ready in 25 minutes."
+    }
+  },
+
+  {
     name: "Mediterranean gluten-free pasta salad with olives",
     portion: "2 cups pasta salad",
     nutrition: { 
