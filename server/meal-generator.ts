@@ -93,6 +93,33 @@ function applyResistantStarchPreference(meals: MealOption[], user: User): MealOp
 }
 
 /**
+ * Check if a meal contains avocado
+ */
+function mealContainsAvocado(meal: MealOption): boolean {
+  const mealText = `${meal.name} ${meal.ingredients.join(' ')}`.toLowerCase();
+  return mealText.includes('avocado') || mealText.includes('avocado\'s');
+}
+
+/**
+ * Prioritize avocado meals to meet healthy fats target (2-3 avocados per week)
+ */
+function applyAvocadoPreference(meals: MealOption[], currentAvocadoCount: number, targetAvocadoMeals: number = 3): MealOption[] {
+  // If we've already met the target, don't prioritize avocado meals
+  if (currentAvocadoCount >= targetAvocadoMeals) {
+    return meals;
+  }
+  
+  console.log(`🥑 AVOCADO PREFERENCE: ${currentAvocadoCount}/${targetAvocadoMeals} avocado meals selected, prioritizing avocado-rich meals`);
+  
+  // Separate avocado and non-avocado meals
+  const avocadoMeals = meals.filter(meal => mealContainsAvocado(meal));
+  const nonAvocadoMeals = meals.filter(meal => !mealContainsAvocado(meal));
+  
+  // Prioritize avocado meals by putting them first, then non-avocado meals
+  return [...avocadoMeals, ...nonAvocadoMeals];
+}
+
+/**
  * Get ingredients to use up from user profile
  */
 function getIngredientsToUseUp(user?: User): string[] {
@@ -1237,6 +1264,10 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   
   // Track all selected meal names to prevent similar recipes across all categories
   const allSelectedMealNames: Set<string> = new Set();
+  
+  // Track avocado meals for healthy fats (target: 2-3 avocados per week)
+  let avocadoMealCount = 0;
+  const targetAvocadoMeals = 3; // 1 avocado 2-3 times per week
 
   // Track which meals to use as leftovers
   let sundayDinnerMeal: MealOption | null = null;
@@ -1349,6 +1380,9 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         
         // Apply resistant starch preference for weight loss goals
         availableMeals = applyResistantStarchPreference(availableMeals, user);
+        
+        // Apply avocado preference for healthy fats (2-3 avocados per week)
+        availableMeals = applyAvocadoPreference(availableMeals, avocadoMealCount, targetAvocadoMeals);
       } else {
         // Fallback to activity-level based optimization if no user data
         const shouldOptimizeProtein = request.activityLevel === 'high';
@@ -1729,6 +1763,12 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
 
       meals.push(meal);
       dailyProtein += adjustedProtein;
+      
+      // Track avocado meals for healthy fats target (2-3 per week)
+      if (!isLeftover && mealContainsAvocado(selectedMeal)) {
+        avocadoMealCount++;
+        console.log(`🥑 Avocado meal selected: "${selectedMeal.name}" (${avocadoMealCount}/${targetAvocadoMeals} avocado meals this week)`);
+      }
     }
 
     totalWeeklyProtein += dailyProtein;
@@ -1747,6 +1787,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   
   console.log(`🎯 Protein optimization results: ${totalWeeklyProtein}g total / ${totalDaysWithRealMeals} full meal days = ${averageProteinPerDay.toFixed(1)}g per day`);
   console.log(`🎯 Personal protein target: ${dailyProteinTarget}g/day | Achievement: ${((averageProteinPerDay / dailyProteinTarget) * 100).toFixed(1)}%`);
+  console.log(`🥑 Avocado intake: ${avocadoMealCount} avocado-containing meals this week (target: 2-3 for healthy fats)`);
 
   const mealPlan: InsertMealPlan = {
     userId: request.userId || 1,
