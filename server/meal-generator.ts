@@ -93,30 +93,29 @@ function applyResistantStarchPreference(meals: MealOption[], user: User): MealOp
 }
 
 /**
- * Check if a meal contains avocado
+ * Check if a meal has Anti-Aging tag
  */
-function mealContainsAvocado(meal: MealOption): boolean {
-  const mealText = `${meal.name} ${meal.ingredients.join(' ')}`.toLowerCase();
-  return mealText.includes('avocado') || mealText.includes('avocado\'s');
+function mealHasAntiAgingTag(meal: MealOption): boolean {
+  return meal.tags && meal.tags.includes('Anti-Aging');
 }
 
 /**
- * Prioritize avocado meals to meet healthy fats target (2-3 avocados per week)
+ * Prioritize anti-aging meals to meet daily target (1 anti-aging meal per day)
  */
-function applyAvocadoPreference(meals: MealOption[], currentAvocadoCount: number, targetAvocadoMeals: number = 3): MealOption[] {
-  // If we've already met the target, don't prioritize avocado meals
-  if (currentAvocadoCount >= targetAvocadoMeals) {
+function applyAntiAgingPreference(meals: MealOption[], currentAntiAgingCount: number, targetAntiAgingMeals: number = 7): MealOption[] {
+  // If we've already met the target, don't prioritize anti-aging meals
+  if (currentAntiAgingCount >= targetAntiAgingMeals) {
     return meals;
   }
   
-  console.log(`🥑 AVOCADO PREFERENCE: ${currentAvocadoCount}/${targetAvocadoMeals} avocado meals selected, prioritizing avocado-rich meals`);
+  console.log(`🌟 ANTI-AGING PREFERENCE: ${currentAntiAgingCount}/${targetAntiAgingMeals} anti-aging meals selected, prioritizing anti-aging meals`);
   
-  // Separate avocado and non-avocado meals
-  const avocadoMeals = meals.filter(meal => mealContainsAvocado(meal));
-  const nonAvocadoMeals = meals.filter(meal => !mealContainsAvocado(meal));
+  // Separate anti-aging and non-anti-aging meals
+  const antiAgingMeals = meals.filter(meal => mealHasAntiAgingTag(meal));
+  const nonAntiAgingMeals = meals.filter(meal => !mealHasAntiAgingTag(meal));
   
-  // Prioritize avocado meals by putting them first, then non-avocado meals
-  return [...avocadoMeals, ...nonAvocadoMeals];
+  // Prioritize anti-aging meals by putting them first, then non-anti-aging meals
+  return [...antiAgingMeals, ...nonAntiAgingMeals];
 }
 
 /**
@@ -1265,9 +1264,9 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   // Track all selected meal names to prevent similar recipes across all categories
   const allSelectedMealNames: Set<string> = new Set();
   
-  // Track avocado meals for healthy fats (target: 2-3 avocados per week)
-  let avocadoMealCount = 0;
-  const targetAvocadoMeals = 3; // 1 avocado 2-3 times per week
+  // Track anti-aging meals (target: 1 anti-aging meal per day = 7 per week)
+  let antiAgingMealCount = 0;
+  const targetAntiAgingMeals = 7; // 1 anti-aging meal per day for longevity support
 
   // Track which meals to use as leftovers
   let sundayDinnerMeal: MealOption | null = null;
@@ -1381,8 +1380,8 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         // Apply resistant starch preference for weight loss goals
         availableMeals = applyResistantStarchPreference(availableMeals, user);
         
-        // Apply avocado preference for healthy fats (2-3 avocados per week)
-        availableMeals = applyAvocadoPreference(availableMeals, avocadoMealCount, targetAvocadoMeals);
+        // Apply anti-aging preference (1 anti-aging meal per day for longevity)
+        availableMeals = applyAntiAgingPreference(availableMeals, antiAgingMealCount, targetAntiAgingMeals);
       } else {
         // Fallback to activity-level based optimization if no user data
         const shouldOptimizeProtein = request.activityLevel === 'high';
@@ -1764,10 +1763,10 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
       meals.push(meal);
       dailyProtein += adjustedProtein;
       
-      // Track avocado meals for healthy fats target (2-3 per week)
-      if (!isLeftover && mealContainsAvocado(selectedMeal)) {
-        avocadoMealCount++;
-        console.log(`🥑 Avocado meal selected: "${selectedMeal.name}" (${avocadoMealCount}/${targetAvocadoMeals} avocado meals this week)`);
+      // Track anti-aging meals for longevity support (1 per day = 7 per week)
+      if (!isLeftover && mealHasAntiAgingTag(selectedMeal)) {
+        antiAgingMealCount++;
+        console.log(`🌟 Anti-aging meal selected: "${selectedMeal.name}" (${antiAgingMealCount}/${targetAntiAgingMeals} anti-aging meals this week)`);
       }
     }
 
@@ -1787,7 +1786,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   
   console.log(`🎯 Protein optimization results: ${totalWeeklyProtein}g total / ${totalDaysWithRealMeals} full meal days = ${averageProteinPerDay.toFixed(1)}g per day`);
   console.log(`🎯 Personal protein target: ${dailyProteinTarget}g/day | Achievement: ${((averageProteinPerDay / dailyProteinTarget) * 100).toFixed(1)}%`);
-  console.log(`🥑 Avocado intake: ${avocadoMealCount} avocado-containing meals this week (target: 2-3 for healthy fats)`);
+  console.log(`🌟 Anti-aging intake: ${antiAgingMealCount} anti-aging meals this week (target: 7 for daily longevity support)`);
 
   const mealPlan: InsertMealPlan = {
     userId: request.userId || 1,
