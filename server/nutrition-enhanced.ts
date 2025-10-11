@@ -7489,6 +7489,105 @@ const RAW_MEAL_DATABASE: MealOption[] = [
   },
 
   {
+    name: "Creamy avocado protein smoothie",
+    portion: "1 serving",
+    nutrition: { 
+      protein: 25, 
+      prepTime: 5, 
+      calories: 300,
+      carbohydrates: 18,
+      fats: 14,
+      fiber: 6,
+      sugar: 8,
+      sodium: 120,
+      costEuros: 2.80, 
+      proteinPerEuro: 8.9 
+    },
+    category: "snack",
+    tags: ["Vegetarian", "High-Protein", "Quick", "Gluten-Free", "Lactose-Free"],
+    ingredients: [
+      "70g avocado (½ avocado)",
+      "200ml almond milk (unsweetened)",
+      "25g protein powder (1 scoop)",
+      "½ small banana (50g)",
+      "½ tsp cinnamon (1g)"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["avocado"],
+      benefits: ["Healthy fats from avocado", "High protein for muscle recovery", "Sustained energy from banana", "Anti-inflammatory cinnamon"]
+    },
+    recipe: {
+      instructions: [
+        "Add all ingredients to a high-speed blender",
+        "Blend on high speed until completely smooth and creamy (30-60 seconds)",
+        "Add more almond milk if you prefer a thinner consistency",
+        "Pour into a glass and serve immediately"
+      ],
+      tips: [
+        "Use frozen banana for a thicker, colder smoothie",
+        "Choose vanilla or unflavored protein powder for best taste",
+        "Ripe avocado blends smoothest",
+        "Can add a handful of ice for extra chill",
+        "Add a drizzle of honey or maple syrup if you prefer sweeter"
+      ],
+      notes: "Ultra-creamy high-protein smoothie with avocado and cinnamon. Perfect post-workout snack or quick breakfast ready in 5 minutes."
+    }
+  },
+
+  {
+    name: "Creamy avocado protein smoothie bowl",
+    portion: "1 bowl",
+    nutrition: { 
+      protein: 27, 
+      prepTime: 10, 
+      calories: 380,
+      carbohydrates: 28,
+      fats: 18,
+      fiber: 9,
+      sugar: 12,
+      sodium: 140,
+      costEuros: 3.60, 
+      proteinPerEuro: 7.5 
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "High-Protein", "Quick", "Gluten-Free", "Lactose-Free"],
+    ingredients: [
+      "70g avocado (½ avocado)",
+      "150ml almond milk (unsweetened)",
+      "25g protein powder (1 scoop)",
+      "½ small banana (50g, frozen if possible)",
+      "½ tsp cinnamon (1g)",
+      "Toppings: 20g granola, 30g fresh berries, 10g chia seeds, sliced banana"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1.5,
+      vegetables: ["avocado"],
+      benefits: ["Healthy fats from avocado", "High protein for satiety", "Omega-3 from chia seeds", "Antioxidants from berries", "Anti-inflammatory cinnamon"]
+    },
+    recipe: {
+      instructions: [
+        "Add avocado, almond milk (use less milk for thicker consistency), protein powder, banana, and cinnamon to a high-speed blender",
+        "Blend on high speed until thick and creamy (like soft-serve ice cream texture)",
+        "Pour into a bowl",
+        "Top with granola, fresh berries, chia seeds, and sliced banana",
+        "Drizzle with honey or nut butter if desired",
+        "Serve immediately with a spoon"
+      ],
+      tips: [
+        "Use frozen banana for extra thick, ice-cream-like texture",
+        "Less liquid = thicker bowl (start with 100ml and add more if needed)",
+        "Customize toppings: nuts, coconut flakes, cacao nibs, or fresh fruit",
+        "Blend until very smooth for best texture",
+        "Eat immediately before it melts"
+      ],
+      notes: "Thick and creamy avocado smoothie bowl topped with granola, berries, and chia seeds. High-protein breakfast that feels like dessert, ready in 10 minutes."
+    }
+  },
+
+  {
     name: "Mediterranean gluten-free pasta salad with olives",
     portion: "2 cups pasta salad",
     nutrition: { 
