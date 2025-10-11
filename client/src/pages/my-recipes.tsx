@@ -18,6 +18,7 @@ import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
 
 // Types
 interface UserRecipe {
@@ -78,6 +79,12 @@ export default function MyRecipes() {
   const { data: recipes = [], isLoading, error: recipesError } = useQuery<UserRecipe[]>({
     queryKey: ['/api/user-recipes'],
     enabled: !!user,
+  });
+
+  // Fetch available dietary tags
+  const { data: availableTags = [] } = useQuery<{ tag: string; count: number }[]>({
+    queryKey: ['/api/admin/tags'],
+    queryFn: () => fetch('/api/admin/tags').then(res => res.json()),
   });
 
   // Debug authentication
@@ -416,10 +423,53 @@ export default function MyRecipes() {
                           </FormItem>
                         )}
                       />
-                      
 
-                      
-
+                      {/* Dietary Tags */}
+                      <FormField
+                        control={form.control}
+                        name="tags"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t.dietaryTags || 'Dietary tags'}</FormLabel>
+                            <FormControl>
+                              <div className="flex flex-wrap gap-2 p-3 border rounded-md min-h-[100px]">
+                                {availableTags.length === 0 ? (
+                                  <p className="text-sm text-gray-400">Loading tags...</p>
+                                ) : (
+                                  availableTags.map(({ tag }) => {
+                                    const isSelected = field.value?.includes(tag) || false;
+                                    return (
+                                      <Badge
+                                        key={tag}
+                                        variant={isSelected ? "default" : "secondary"}
+                                        className={`cursor-pointer transition-colors ${
+                                          isSelected 
+                                            ? 'bg-emerald-500 hover:bg-emerald-600 text-white' 
+                                            : 'hover:bg-gray-200'
+                                        }`}
+                                        onClick={() => {
+                                          const currentTags = field.value || [];
+                                          if (isSelected) {
+                                            field.onChange(currentTags.filter(t => t !== tag));
+                                          } else {
+                                            field.onChange([...currentTags, tag]);
+                                          }
+                                        }}
+                                      >
+                                        {tag}
+                                      </Badge>
+                                    );
+                                  })
+                                )}
+                              </div>
+                            </FormControl>
+                            <p className="text-xs text-gray-500 mt-1">
+                              {t.clickTagsToSelect || 'Click on tags to select or deselect them'}
+                            </p>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                       
                       <FormField
                         control={form.control}
