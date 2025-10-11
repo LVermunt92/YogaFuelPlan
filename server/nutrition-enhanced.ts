@@ -7436,6 +7436,59 @@ const RAW_MEAL_DATABASE: MealOption[] = [
   },
 
   {
+    name: "Savory avocado toast with egg",
+    portion: "1 serving",
+    nutrition: { 
+      protein: 14, 
+      prepTime: 10, 
+      calories: 320,
+      carbohydrates: 22,
+      fats: 20,
+      fiber: 7,
+      sugar: 2,
+      sodium: 280,
+      costEuros: 2.40, 
+      proteinPerEuro: 5.8 
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "Quick", "High-Protein"],
+    ingredients: [
+      "50g sourdough bread (1 slice)",
+      "70g avocado (½ avocado)",
+      "1 egg",
+      "½ lemon (juiced)",
+      "Salt to taste",
+      "Black pepper to taste",
+      "Chili flakes to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["avocado"],
+      benefits: ["Healthy fats from avocado", "Complete protein from egg", "Fermented sourdough for gut health", "Quick energy breakfast"]
+    },
+    recipe: {
+      instructions: [
+        "Toast the sourdough bread until golden and crispy",
+        "While bread toasts, mash the avocado with lemon juice, salt, and pepper",
+        "Cook the egg to your preference (fried, poached, or scrambled)",
+        "Spread the mashed avocado on the toasted sourdough",
+        "Top with the cooked egg",
+        "Sprinkle with chili flakes for a spicy kick",
+        "Serve immediately while warm"
+      ],
+      tips: [
+        "Use ripe avocado for easy mashing and creamy texture",
+        "Add a drizzle of olive oil for extra richness",
+        "Try a runny egg yolk for a luxurious sauce",
+        "Add cherry tomatoes or microgreens for extra nutrients",
+        "Can use gluten-free bread for a gluten-free version"
+      ],
+      notes: "Classic savory avocado toast with a perfectly cooked egg. Quick, nutritious breakfast with healthy fats and quality protein in under 10 minutes."
+    }
+  },
+
+  {
     name: "Mediterranean gluten-free pasta salad with olives",
     portion: "2 cups pasta salad",
     nutrition: { 
