@@ -7116,6 +7116,198 @@ const RAW_MEAL_DATABASE: MealOption[] = [
   },
 
   {
+    name: "Creamy mushroom pasta",
+    portion: "1 serving",
+    nutrition: { 
+      protein: 14, 
+      prepTime: 25, 
+      calories: 480,
+      carbohydrates: 62,
+      fats: 18,
+      fiber: 5,
+      sugar: 6,
+      sodium: 340,
+      costEuros: 3.20, 
+      proteinPerEuro: 4.4 
+    },
+    category: "dinner",
+    tags: ["Vegetarian", "Italian", "Creamy"],
+    ingredients: [
+      "60-70g short pasta (farfalle, penne, or pasta geveltjes)",
+      "125g mixed mushrooms (brushed clean and roughly chopped)",
+      "¼ onion (finely sliced)",
+      "½ tbsp extra virgin olive oil (7.5ml)",
+      "½ tbsp tomato paste (7.5g)",
+      "¼ tsp dried garlic granules (or ½ fresh garlic clove, minced)",
+      "¼ tsp crushed red pepper flakes (adjust to taste)",
+      "¼ tsp dried parsley",
+      "Pinch of dried oregano (optional)",
+      "25ml white wine or water",
+      "60ml dairy cream",
+      "Salt and black pepper to taste",
+      "Fresh parsley (chopped, for garnish)"
+    ],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 1.5,
+      vegetables: ["mushrooms", "onion"],
+      benefits: ["Mushroom umami flavor", "Quick weeknight meal", "Creamy comfort food", "Rich in B vitamins from mushrooms"]
+    },
+    recipe: {
+      instructions: [
+        "Cook pasta according to package directions, drain and set aside",
+        "Brush mushrooms clean and cut into large chunks",
+        "Heat olive oil in a large pan over medium heat",
+        "Add sliced onion and cook until translucent (3-4 minutes)",
+        "Add mushrooms and cook for 5-7 minutes until golden brown",
+        "Stir in tomato paste and cook for 1 minute",
+        "Add garlic granules, chili flakes, dried parsley, and oregano - stir well",
+        "Pour in white wine or water and simmer for 5 minutes until slightly reduced",
+        "Stir in dairy cream and simmer gently for 5-10 minutes until sauce thickens",
+        "Season with salt and pepper to taste",
+        "Toss cooked pasta with the creamy mushroom sauce",
+        "Top with chopped fresh parsley and serve"
+      ],
+      tips: [
+        "Use a mix of mushroom varieties for deeper flavor (portobello, chestnut, shiitake)",
+        "Don't wash mushrooms - brush them clean to prevent sogginess",
+        "Let mushrooms brown without stirring too much for best flavor",
+        "Pasta geveltjes (gable-shaped pasta) works perfectly for catching the sauce",
+        "Add a splash of pasta water if sauce becomes too thick"
+      ],
+      notes: "Rich and creamy mushroom pasta with white wine, garlic, and chili flakes. Classic Italian comfort food ready in 25 minutes."
+    }
+  },
+
+  {
+    name: "Gluten-free creamy mushroom pasta with lactose-free cream",
+    portion: "1 serving",
+    nutrition: { 
+      protein: 13, 
+      prepTime: 25, 
+      calories: 465,
+      carbohydrates: 64,
+      fats: 17,
+      fiber: 6,
+      sugar: 5,
+      sodium: 320,
+      costEuros: 3.60, 
+      proteinPerEuro: 3.6 
+    },
+    category: "dinner",
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "Italian", "Creamy"],
+    ingredients: [
+      "60-70g gluten-free short pasta (farfalle, penne, or pasta geveltjes)",
+      "125g mixed mushrooms (brushed clean and roughly chopped)",
+      "¼ onion (finely sliced)",
+      "½ tbsp extra virgin olive oil (7.5ml)",
+      "½ tbsp tomato paste (7.5g)",
+      "¼ tsp dried garlic granules (or ½ fresh garlic clove, minced)",
+      "¼ tsp crushed red pepper flakes (adjust to taste)",
+      "¼ tsp dried parsley",
+      "Pinch of dried oregano (optional)",
+      "25ml white wine or water",
+      "60ml lactose-free cream (or oat cream)",
+      "Salt and black pepper to taste",
+      "Fresh parsley (chopped, for garnish)"
+    ],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 1.5,
+      vegetables: ["mushrooms", "onion"],
+      benefits: ["Gluten-free and lactose-free", "Mushroom umami flavor", "Easy on digestion", "Rich in B vitamins from mushrooms"]
+    },
+    recipe: {
+      instructions: [
+        "Cook gluten-free pasta according to package directions (usually 1-2 minutes longer than regular pasta), drain and set aside",
+        "Brush mushrooms clean and cut into large chunks",
+        "Heat olive oil in a large pan over medium heat",
+        "Add sliced onion and cook until translucent (3-4 minutes)",
+        "Add mushrooms and cook for 5-7 minutes until golden brown",
+        "Stir in tomato paste and cook for 1 minute",
+        "Add garlic granules, chili flakes, dried parsley, and oregano - stir well",
+        "Pour in white wine or water and simmer for 5 minutes until slightly reduced",
+        "Stir in lactose-free cream and simmer gently for 5-10 minutes until sauce thickens",
+        "Season with salt and pepper to taste",
+        "Toss cooked gluten-free pasta with the creamy mushroom sauce",
+        "Top with chopped fresh parsley and serve"
+      ],
+      tips: [
+        "Gluten-free pasta can become mushy quickly - watch cooking time carefully",
+        "Rinse gluten-free pasta after cooking to remove excess starch",
+        "Lactose-free cream or oat cream creates the same creamy texture",
+        "Use a mix of mushroom varieties for deeper flavor",
+        "Let mushrooms brown without stirring too much for best flavor"
+      ],
+      notes: "Gluten-free and lactose-free version of creamy mushroom pasta. Perfect for sensitive digestion while maintaining rich Italian flavor."
+    }
+  },
+
+  {
+    name: "Creamy mushroom pasta with lactose-free cream",
+    portion: "1 serving",
+    nutrition: { 
+      protein: 14, 
+      prepTime: 25, 
+      calories: 475,
+      carbohydrates: 62,
+      fats: 17,
+      fiber: 5,
+      sugar: 5,
+      sodium: 330,
+      costEuros: 3.30, 
+      proteinPerEuro: 4.2 
+    },
+    category: "dinner",
+    tags: ["Vegetarian", "Lactose-Free", "Italian", "Creamy"],
+    ingredients: [
+      "60-70g short pasta (farfalle, penne, or pasta geveltjes)",
+      "125g mixed mushrooms (brushed clean and roughly chopped)",
+      "¼ onion (finely sliced)",
+      "½ tbsp extra virgin olive oil (7.5ml)",
+      "½ tbsp tomato paste (7.5g)",
+      "¼ tsp dried garlic granules (or ½ fresh garlic clove, minced)",
+      "¼ tsp crushed red pepper flakes (adjust to taste)",
+      "¼ tsp dried parsley",
+      "Pinch of dried oregano (optional)",
+      "25ml white wine or water",
+      "60ml lactose-free cream (or oat cream)",
+      "Salt and black pepper to taste",
+      "Fresh parsley (chopped, for garnish)"
+    ],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 1.5,
+      vegetables: ["mushrooms", "onion"],
+      benefits: ["Lactose-free creamy sauce", "Mushroom umami flavor", "Easy on digestion", "Rich in B vitamins from mushrooms"]
+    },
+    recipe: {
+      instructions: [
+        "Cook pasta according to package directions, drain and set aside",
+        "Brush mushrooms clean and cut into large chunks",
+        "Heat olive oil in a large pan over medium heat",
+        "Add sliced onion and cook until translucent (3-4 minutes)",
+        "Add mushrooms and cook for 5-7 minutes until golden brown",
+        "Stir in tomato paste and cook for 1 minute",
+        "Add garlic granules, chili flakes, dried parsley, and oregano - stir well",
+        "Pour in white wine or water and simmer for 5 minutes until slightly reduced",
+        "Stir in lactose-free cream and simmer gently for 5-10 minutes until sauce thickens",
+        "Season with salt and pepper to taste",
+        "Toss cooked pasta with the creamy mushroom sauce",
+        "Top with chopped fresh parsley and serve"
+      ],
+      tips: [
+        "Lactose-free cream or oat cream creates the same creamy texture as dairy",
+        "Use a mix of mushroom varieties for deeper flavor (portobello, chestnut, shiitake)",
+        "Don't wash mushrooms - brush them clean to prevent sogginess",
+        "Let mushrooms brown without stirring too much for best flavor",
+        "Add a splash of pasta water if sauce becomes too thick"
+      ],
+      notes: "Regular pasta with lactose-free cream for those avoiding dairy. Same rich and creamy mushroom flavor without the lactose."
+    }
+  },
+
+  {
     name: "Mediterranean gluten-free pasta salad with olives",
     portion: "2 cups pasta salad",
     nutrition: { 
