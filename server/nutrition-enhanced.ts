@@ -7345,7 +7345,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     vegetableContent: {
       servings: 2,
       vegetables: ["onion", "carrot", "zucchini", "spinach"],
-      benefits: ["Millet is rich in magnesium and B vitamins", "Alkaline ancient grain that's easy to digest", "Anti-inflammatory turmeric", "Omega-3 from seeds and nuts", "High in fiber"]
+      benefits: ["Millet is rich in magnesium and B vitamins", "Supports heart health through fiber and magnesium", "Promotes gut health with prebiotic fibers", "Provides stable energy and satiety for weight management", "Alkaline ancient grain that's easy to digest", "Anti-inflammatory turmeric", "Omega-3 from seeds and nuts"]
     },
     recipe: {
       instructions: [
@@ -7409,7 +7409,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     vegetableContent: {
       servings: 2,
       vegetables: ["onion", "carrot", "zucchini", "spinach"],
-      benefits: ["Millet is rich in magnesium and B vitamins", "Alkaline ancient grain that's easy to digest", "Anti-inflammatory turmeric", "Omega-3 from seeds and nuts", "Lactose-free and vegan", "High in fiber"]
+      benefits: ["Millet is rich in magnesium and B vitamins", "Supports heart health through fiber and magnesium", "Promotes gut health with prebiotic fibers", "Provides stable energy and satiety for weight management", "Alkaline ancient grain that's easy to digest", "Anti-inflammatory turmeric", "Omega-3 from seeds and nuts", "Lactose-free and vegan"]
     },
     recipe: {
       instructions: [
