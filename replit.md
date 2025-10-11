@@ -24,8 +24,8 @@ Preferred communication style: Simple, everyday language.
     - **Session Management**: Express sessions with PostgreSQL store.
     - **Build Tools**: Vite for frontend, esbuild for backend.
 - **Feature Specifications**:
-    - **Authentication & Multi-User Support**: Secure login/registration, password reset, isolated user data, and route protection.
-    - **Meal Generation**: Calculates protein targets, selects meals from a nutrition database, generates 7-day plans with variety, and creates shopping lists. Includes smart AI recipe generation, comprehensive ingredient specification, and alcohol-free recipes. Automatically includes 2-3 avocado-containing meals per week.
+    - **Authentication & Multi-User Support**: Secure login/registration with "remember me for 30 days" rolling session support, password reset, isolated user data, and route protection.
+    - **Meal Generation**: Calculates protein targets, selects meals from a nutrition database, generates 7-day plans with variety, and creates shopping lists. Includes smart AI recipe generation, comprehensive ingredient specification, and alcohol-free recipes. Automatically includes 1 anti-aging meal per day (7 per week) for longevity support.
     - **Universal Meal Prep Engine**: Adapts to user cooking schedules, supporting batch cooking, proper meal distribution, and intelligent dietary fallbacks. Weekday meals (Mon-Fri) are limited to ≤45 minutes prep time; weekends have no time restrictions.
     - **Ayurvedic Integration**: Supports Ayurvedic dietary tags and seasonal adaptation.
     - **Menstrual Cycle Support**: Complete cycle phase tracking with dropdown selection that automatically prioritizes phase-appropriate recipes during meal generation.
