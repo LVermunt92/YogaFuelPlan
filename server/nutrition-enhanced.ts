@@ -484,7 +484,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 8.2 
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "Dairy-Free", "Lactose-Free", "High-Protein", "Anti-Inflammatory", "Whole30", "Ayurvedic", "Longevity", "Follicular", "Ovulation"],
+    tags: ["Vegetarian", "Gluten-Free", "Dairy-Free", "Lactose-Free", "High-Protein", "Anti-Inflammatory", "Whole30", "Ayurvedic", "Longevity", "Follicular", "Ovulation", "Anti-Aging"],
     ingredients: [
       "60g steel-cut oats",
       "35g raw almonds and walnuts (chopped)",
@@ -537,7 +537,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.9 
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "Keto", "Paleo", "High-Protein"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "Keto", "Paleo", "High-Protein", "Anti-Aging"],
     ingredients: [
       "3 large free-range eggs",
       "60g fresh spinach leaves",
@@ -653,7 +653,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.7 
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "Raw", "Anti-Inflammatory", "Ayurvedic", "Longevity", "Follicular", "Ovulation"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "Raw", "Anti-Inflammatory", "Ayurvedic", "Longevity", "Follicular", "Ovulation", "Anti-Aging"],
     ingredients: [
       "3 tbsp chia seeds",
       "180ml unsweetened almond milk",
@@ -704,7 +704,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.8
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Fiber", "Make-Ahead", "Ayurvedic", "Longevity"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Fiber", "Make-Ahead", "Ayurvedic", "Longevity", "Anti-Aging"],
     ingredients: [
       "45g gluten-free rolled oats",
       "120ml unsweetened almond milk",
@@ -752,7 +752,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.1
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Protein", "Superfood", "Ayurvedic", "Longevity", "Menstrual", "Follicular", "Luteal", "Ovulation"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Protein", "Superfood", "Ayurvedic", "Longevity", "Menstrual", "Follicular", "Luteal", "Ovulation", "Anti-Aging"],
     ingredients: [
       "90g cooked quinoa",
       "120g coconut yogurt",
@@ -801,7 +801,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.8
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Protein", "Low-Carb"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Protein", "Low-Carb", "Anti-Aging"],
     ingredients: [
       "30g coconut flour",
       "30g plant protein powder",
@@ -851,7 +851,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.2
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Fiber", "Antioxidant", "Ayurvedic", "High-Protein", "Longevity", "Menstrual", "Follicular", "Ovulation"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Fiber", "Antioxidant", "Ayurvedic", "High-Protein", "Longevity", "Menstrual", "Follicular", "Ovulation", "Anti-Aging"],
     ingredients: [
       "30g spinach",
       "½ frozen banana",
@@ -906,7 +906,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.7 
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "Probiotic", "Fermented", "High-Protein", "Ayurvedic", "Longevity", "Menstrual", "Follicular", "Luteal", "Ovulation"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "Probiotic", "Fermented", "High-Protein", "Ayurvedic", "Longevity", "Menstrual", "Follicular", "Luteal", "Ovulation", "Anti-Aging"],
     ingredients: [
       "200ml long-fermented kefir (24+ hours)",
       "30g gluten-free oat granola", 
@@ -956,7 +956,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.3 
     },
     category: "lunch",
-    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "Anti-Inflammatory", "High-Protein", "Longevity", "Menstrual", "Follicular", "Luteal"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "Anti-Inflammatory", "High-Protein", "Longevity", "Menstrual", "Follicular", "Luteal", "Anti-Aging"],
     ingredients: [
       "190g red lentils",
       "200g sweet potato (diced)",
@@ -1012,7 +1012,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.2 
     },
     category: "lunch",
-    tags: ["Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Protein", "Anti-Inflammatory", "Whole30", "Raw", "Ayurvedic", "Longevity", "Follicular", "Ovulation", "Luteal"],
+    tags: ["Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Protein", "Anti-Inflammatory", "Whole30", "Raw", "Ayurvedic", "Longevity", "Follicular", "Ovulation", "Luteal", "Anti-Aging"],
     ingredients: [
       "1 winter carrot (spiralized or julienned)",
       "½ cucumber (sliced)",
@@ -1082,7 +1082,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.0 
     },
     category: "lunch",
-    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Quick", "Meal-Prep", "Longevity"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Quick", "Meal-Prep", "Longevity", "Anti-Aging"],
     ingredients: [
       "185g cooked quinoa",
       "90g black beans (cooked)",
@@ -1139,7 +1139,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.1 
     },
     category: "lunch",
-    tags: ["Pescatarian", "Gluten-Free", "Dairy-Free", "Lactose-Free", "Paleo", "Anti-Inflammatory", "High-Protein", "Longevity"],
+    tags: ["Pescatarian", "Gluten-Free", "Dairy-Free", "Lactose-Free", "Paleo", "Anti-Inflammatory", "High-Protein", "Longevity", "Anti-Aging"],
     ingredients: [
       "150g wild salmon fillet",
       "200g sweet potato (chunked)",
@@ -1700,7 +1700,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.4 
     },
     category: "dinner",
-    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Protein", "Longevity", "Menstrual", "Follicular", "Luteal", "Ovulation"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Protein", "Longevity", "Menstrual", "Follicular", "Luteal", "Ovulation", "Anti-Aging"],
     ingredients: [
       "2 large portobello mushrooms (stems removed)",
       "200g Brussels sprouts (halved)",
@@ -1759,7 +1759,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.8 
     },
     category: "dinner",
-    tags: ["Non-Vegetarian", "Gluten-Free", "Dairy-Free", "Lactose-Free", "Paleo", "High-Protein"],
+    tags: ["Non-Vegetarian", "Gluten-Free", "Dairy-Free", "Lactose-Free", "Paleo", "High-Protein", "Anti-Aging"],
     ingredients: ["free-range chicken thighs", "Brussels sprouts", "sweet potato", "red onion", "fresh sage", "fresh thyme", "fresh rosemary", "olive oil", "lemon", "garlic", "toasted almonds", "sea salt"],
     wholeFoodLevel: "high",
     vegetableContent: {
@@ -1903,7 +1903,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.9 
     },
     category: "lunch",
-    tags: ["Vegetarian", "Gluten-Free", "Viral", "Social-Media", "Anti-Inflammatory", "Keto"],
+    tags: ["Vegetarian", "Gluten-Free", "Viral", "Social-Media", "Anti-Inflammatory", "Keto", "Anti-Aging"],
     ingredients: ["mixed greens", "cucumber", "ripe avocado", "hemp seeds", "pumpkin seeds", "tahini", "lemon", "fresh herbs", "olive oil", "nutritional yeast"],
     wholeFoodLevel: "high",
     vegetableContent: {
@@ -2352,7 +2352,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.3 
     },
     category: "dinner",
-    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Quick", "High-Fiber"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Quick", "High-Fiber", "Anti-Aging"],
     ingredients: [
       "300g sweet potato (cubed)",
       "1 can (400g) black beans (drained)",
@@ -2659,7 +2659,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.8 
     },
     category: "dinner",
-    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Ayurvedic", "Grounding"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Ayurvedic", "Grounding", "Anti-Aging"],
     ingredients: [
       "170g quinoa",
       "1 large sweet potato (cubed)",
@@ -3283,7 +3283,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.8
     },
     category: "dinner",
-    tags: ["Viral", "Social-Media", "High-Protein", "Instagram-Inspired"],
+    tags: ["Viral", "Social-Media", "High-Protein", "Instagram-Inspired", "Anti-Aging"],
     ingredients: [
       "lasagna sheets", "chicken stock", "cottage cheese", "light cream cheese", 
       "mozzarella", "parmesan", "chicken breast", "mushrooms", "broccoli", 
@@ -3435,7 +3435,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.5
     },
     category: "dinner",
-    tags: ["Viral", "Social-Media", "Vegetarian", "Lactose-Free", "Dairy-Free", "High-Protein", "Instagram-Inspired"],
+    tags: ["Viral", "Social-Media", "Vegetarian", "Lactose-Free", "Dairy-Free", "High-Protein", "Instagram-Inspired", "Anti-Aging"],
     ingredients: [
       "lasagna sheets", "vegetable stock", "cashew cream", "nutritional yeast", 
       "firm tofu", "mushrooms", "broccoli", "spinach", "zucchini",
@@ -3585,7 +3585,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 8.8 
     },
     category: "breakfast",
-    tags: ["Viral", "Social-Media", "High-Protein", "Gluten-Free", "Vegetarian", "Quick"],
+    tags: ["Viral", "Social-Media", "High-Protein", "Gluten-Free", "Vegetarian", "Quick", "Anti-Aging"],
     ingredients: [
       "150g frozen mixed berries",
       "1 vanilla protein powder",
@@ -3682,7 +3682,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.3 
     },
     category: "breakfast",
-    tags: ["Viral", "Social-Media", "Vegetarian", "Gluten-Free", "High-Protein"],
+    tags: ["Viral", "Social-Media", "Vegetarian", "Gluten-Free", "High-Protein", "Anti-Aging"],
     ingredients: [
       "50g rolled oats",
       "1 vanilla protein powder", 
@@ -3738,7 +3738,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 10.0
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Lactose-Free", "High-Protein", "Make-Ahead", "Meal-Prep"],
+    tags: ["Vegetarian", "Lactose-Free", "High-Protein", "Make-Ahead", "Meal-Prep", "Anti-Aging"],
     ingredients: [
       "50g oats",
       "125ml unsweetened almond milk",
@@ -3797,7 +3797,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.2
     },
     category: "breakfast",
-    tags: ["Vegetarian", "High-Protein", "Quick"],
+    tags: ["Vegetarian", "High-Protein", "Quick", "Anti-Aging"],
     ingredients: [
       "1 whole sesame bagel",
       "½ ripe avocado",
@@ -3851,7 +3851,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.8
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Lactose-Free", "High-Protein", "Quick"],
+    tags: ["Vegetarian", "Lactose-Free", "High-Protein", "Quick", "Anti-Aging"],
     ingredients: [
       "1 whole sesame bagel",
       "½ ripe avocado",
@@ -3905,7 +3905,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.7
     },
     category: "dinner",
-    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Lactose-Free", "Plant-Based"],
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Lactose-Free", "Plant-Based", "Anti-Aging"],
     ingredients: [
       "30g raw cashews",
       "30ml unsweetened almond milk",
@@ -3966,7 +3966,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.6
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Quick"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Quick", "Anti-Aging"],
     ingredients: [
       "1 gluten-free sesame bagel",
       "½ ripe avocado",
@@ -4020,7 +4020,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.4
     },
     category: "dinner",
-    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Lactose-Free", "Gluten-Free", "Plant-Based"],
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Lactose-Free", "Gluten-Free", "Plant-Based", "Anti-Aging"],
     ingredients: [
       "30g raw cashews",
       "30ml unsweetened almond milk",
@@ -4267,7 +4267,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.7
     },
     category: "lunch",
-    tags: ["Vegetarian", "Vegan", "Quick", "Fresh", "High-Protein", "Asian-Fusion"],
+    tags: ["Vegetarian", "Vegan", "Quick", "Fresh", "High-Protein", "Asian-Fusion", "Anti-Aging"],
     ingredients: [
       "75g soba noodles",
       "50g frozen peas",
@@ -4331,7 +4331,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.3
     },
     category: "lunch",
-    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Quick", "Fresh", "High-Protein", "Asian-Fusion"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Quick", "Fresh", "High-Protein", "Asian-Fusion", "Anti-Aging"],
     ingredients: [
       "75g gluten-free soba noodles (100% buckwheat)",
       "50g frozen peas",
@@ -4573,7 +4573,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.5 
     },
     category: "dinner",
-    tags: ["Viral", "Social-Media", "Gluten-Free", "High-Protein", "Omega-3"],
+    tags: ["Viral", "Social-Media", "Gluten-Free", "High-Protein", "Omega-3", "Anti-Aging"],
     ingredients: [
       "150g salmon fillet",
       "160g cooked sushi rice",
@@ -4634,7 +4634,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.9 
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "High-Protein", "overnight"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "High-Protein", "overnight", "Anti-Aging"],
     ingredients: [
       "45ml chia seeds",
       "240ml almond milk",
@@ -4685,7 +4685,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.3 
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Mediterranean"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Mediterranean", "Anti-Aging"],
     ingredients: [
       "6 large eggs",
       "80g spinach",
@@ -4740,7 +4740,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.2 
     },
     category: "lunch",
-    tags: ["Viral", "Social-Media", "Vegetarian", "Gluten-Free", "Quick", "High-Protein"],
+    tags: ["Viral", "Social-Media", "Vegetarian", "Gluten-Free", "Quick", "High-Protein", "Anti-Aging"],
     ingredients: [
       "120g mixed greens",
       "100g black beans",
@@ -4844,7 +4844,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.0 
     },
     category: "breakfast",
-    tags: ["Viral", "Social-Media", "Vegetarian", "Gluten-Free", "High-Protein"],
+    tags: ["Viral", "Social-Media", "Vegetarian", "Gluten-Free", "High-Protein", "Anti-Aging"],
     ingredients: [
       "150g fresh blueberries",
       "30ml pomegranate seeds",
@@ -4944,7 +4944,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.6 
     },
     category: "breakfast",
-    tags: ["Vegetarian", "High-Protein", "post-workout", "energizing"],
+    tags: ["Vegetarian", "High-Protein", "post-workout", "energizing", "Anti-Aging"],
     ingredients: [
       "1 vanilla protein powder",
       "150g frozen berries",
@@ -4993,7 +4993,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.0 
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "savory"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "savory", "Anti-Aging"],
     ingredients: [
       "80g quinoa",
       "2 eggs",
@@ -5043,7 +5043,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 8.6 
     },
     category: "breakfast",
-    tags: ["Vegetarian", "High-Protein", "weekend-treat"],
+    tags: ["Vegetarian", "High-Protein", "weekend-treat", "Anti-Aging"],
     ingredients: [
       "2 eggs",
       "1 vanilla protein powder",
@@ -5199,7 +5199,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.7 
     },
     category: "dinner",
-    tags: ["Vegetarian", "Vegan", "Gluten-Free", "High-Protein", "Quick", "indian-inspired"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "High-Protein", "Quick", "indian-inspired", "Anti-Aging"],
     ingredients: [
       "1 can (400g) chickpeas (drained)",
       "1 medium sweet potato (cubed)",
@@ -5413,7 +5413,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.5 
     },
     category: "breakfast",
-    tags: ["Keto", "Gluten-Free", "High-Protein", "Low-Carb"],
+    tags: ["Keto", "Gluten-Free", "High-Protein", "Low-Carb", "Anti-Aging"],
     ingredients: [
       "2 large avocados (halved, pitted)",
       "4 eggs",
@@ -5464,7 +5464,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.4 
     },
     category: "breakfast",
-    tags: ["Keto", "Gluten-Free", "Vegetarian", "Low-Carb"],
+    tags: ["Keto", "Gluten-Free", "Vegetarian", "Low-Carb", "Anti-Aging"],
     ingredients: [
       "¼ cup coconut flour",
       "4 eggs",
@@ -5516,7 +5516,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.6 
     },
     category: "breakfast",
-    tags: ["Keto", "Gluten-Free", "Vegetarian", "Vegan", "Low-Carb", "overnight"],
+    tags: ["Keto", "Gluten-Free", "Vegetarian", "Vegan", "Low-Carb", "overnight", "Anti-Aging"],
     ingredients: [
       "3 tbsp chia seeds",
       "200ml coconut milk (full-fat)",
@@ -5676,7 +5676,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.8 
     },
     category: "lunch",
-    tags: ["Keto", "Gluten-Free", "High-Protein", "Omega-3", "Low-Carb"],
+    tags: ["Keto", "Gluten-Free", "High-Protein", "Omega-3", "Low-Carb", "Anti-Aging"],
     ingredients: [
       "150g salmon fillet",
       "1 large avocado (sliced)",
@@ -5957,7 +5957,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 10.0 
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Protein", "Quick", "Probiotic"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Protein", "Quick", "Probiotic", "Anti-Aging"],
     ingredients: [
       "1 cup coconut yogurt",
       "2 tbsp almond butter",
@@ -6059,7 +6059,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 8.0 
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "weekend"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "weekend", "Anti-Aging"],
     ingredients: [
       "3 large eggs",
       "1 vanilla protein powder",
@@ -6113,7 +6113,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 10.0 
     },
     category: "lunch",
-    tags: ["Gluten-Free", "High-Protein", "Meal-Prep"],
+    tags: ["Gluten-Free", "High-Protein", "Meal-Prep", "Anti-Aging"],
     ingredients: [
       "150g ground turkey (93% lean)",
       "150g cooked green lentils",
@@ -6170,7 +6170,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 9.2 
     },
     category: "lunch",
-    tags: ["Vegetarian", "High-Protein", "Meal-Prep", "Quick"],
+    tags: ["Vegetarian", "High-Protein", "Meal-Prep", "Quick", "Anti-Aging"],
     ingredients: [
       "1 can (400g) chickpeas (drained, mashed)",
       "2 tbsp hemp hearts",
@@ -6514,7 +6514,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.2 
     },
     category: "lunch",
-    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Fiber"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Fiber", "Anti-Aging"],
     ingredients: [
       "100g beetroot (boiled or roasted, peeled)",
       "250g cooked chickpeas (with 15ml of their liquid)",
@@ -6949,7 +6949,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.7 
     },
     category: "lunch",
-    tags: ["Gluten-Free", "High-Protein", "Latin-American"],
+    tags: ["Gluten-Free", "High-Protein", "Latin-American", "Anti-Aging"],
     ingredients: [
       "100g pre-cooked white cornmeal (masarepa/harina PAN)",
       "150ml warm water",
@@ -7008,7 +7008,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 8.1 
     },
     category: "lunch",
-    tags: ["Vegetarian", "Gluten-Free", "High-Fiber", "Latin-American"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Fiber", "Latin-American", "Anti-Aging"],
     ingredients: [
       "100g pre-cooked white cornmeal (masarepa/harina PAN)",
       "150ml warm water",
@@ -7069,7 +7069,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.1 
     },
     category: "lunch",
-    tags: ["Vegetarian", "Lactose-Free", "Gluten-Free", "High-Fiber", "Latin-American"],
+    tags: ["Vegetarian", "Lactose-Free", "Gluten-Free", "High-Fiber", "Latin-American", "Anti-Aging"],
     ingredients: [
       "100g pre-cooked white cornmeal (masarepa/harina PAN)",
       "150ml warm water",
@@ -7323,7 +7323,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.3 
     },
     category: "lunch",
-    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "One-Pot"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "One-Pot", "Anti-Aging"],
     ingredients: [
       "50g millet (uncooked)",
       "180ml vegetable broth",
@@ -7387,7 +7387,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.6 
     },
     category: "lunch",
-    tags: ["Vegetarian", "Lactose-Free", "Gluten-Free", "High-Protein", "One-Pot", "Vegan"],
+    tags: ["Vegetarian", "Lactose-Free", "Gluten-Free", "High-Protein", "One-Pot", "Vegan", "Anti-Aging"],
     ingredients: [
       "50g millet (uncooked)",
       "180ml vegetable broth",
@@ -7451,7 +7451,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.8 
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Quick", "High-Protein"],
+    tags: ["Vegetarian", "Quick", "High-Protein", "Anti-Aging"],
     ingredients: [
       "50g sourdough bread (1 slice)",
       "70g avocado (½ avocado)",
@@ -7504,7 +7504,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 8.9 
     },
     category: "snack",
-    tags: ["Vegetarian", "High-Protein", "Quick", "Gluten-Free", "Lactose-Free"],
+    tags: ["Vegetarian", "High-Protein", "Quick", "Gluten-Free", "Lactose-Free", "Anti-Aging"],
     ingredients: [
       "70g avocado (½ avocado)",
       "200ml almond milk (unsweetened)",
@@ -7552,7 +7552,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.5 
     },
     category: "breakfast",
-    tags: ["Vegetarian", "High-Protein", "Quick", "Gluten-Free", "Lactose-Free"],
+    tags: ["Vegetarian", "High-Protein", "Quick", "Gluten-Free", "Lactose-Free", "Anti-Aging"],
     ingredients: [
       "70g avocado (½ avocado)",
       "150ml almond milk (unsweetened)",
@@ -7603,7 +7603,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.0 
     },
     category: "lunch",
-    tags: ["Vegetarian", "Mediterranean", "Fresh", "High-Protein"],
+    tags: ["Vegetarian", "Mediterranean", "Fresh", "High-Protein", "Anti-Aging"],
     ingredients: [
       "60g orzo pasta",
       "70g avocado (½ avocado, diced)",
@@ -7664,7 +7664,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.5 
     },
     category: "lunch",
-    tags: ["Vegetarian", "Lactose-Free", "Mediterranean", "Fresh", "High-Protein"],
+    tags: ["Vegetarian", "Lactose-Free", "Mediterranean", "Fresh", "High-Protein", "Anti-Aging"],
     ingredients: [
       "60g orzo pasta",
       "70g avocado (½ avocado, diced)",
@@ -7725,7 +7725,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.0 
     },
     category: "lunch",
-    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "Mediterranean", "Fresh", "High-Protein"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "Mediterranean", "Fresh", "High-Protein", "Anti-Aging"],
     ingredients: [
       "60g quinoa orzo pasta (gluten-free)",
       "70g avocado (½ avocado, diced)",
@@ -8050,7 +8050,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 10.0
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Quick"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Quick", "Anti-Aging"],
     ingredients: [
       "30ml quinoa (uncooked)",
       "30g porridge oats",
@@ -8246,7 +8246,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 9.2
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Quick", "winter", "Ayurvedic"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Quick", "winter", "Ayurvedic", "Anti-Aging"],
     ingredients: [
       "30ml cooked quinoa",
       "30g porridge oats",
@@ -8448,7 +8448,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.3
     },
     category: "dinner",
-    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Meal-Prep", "Traybake"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Meal-Prep", "Traybake", "Anti-Aging"],
     ingredients: [
       "130g sweet potato, cut into 2cm cubes",
       "5ml ground cumin",
@@ -8587,7 +8587,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.3
     },
     category: "dinner",
-    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "One-Pan", "Ayurvedic", "Hearty"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "One-Pan", "Ayurvedic", "Hearty", "Anti-Aging"],
     ingredients: [
       "1 medium white onion, finely chopped",
       "2 cloves garlic, minced",
@@ -8724,7 +8724,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.2
     },
     category: "dinner",
-    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Dutch-Fusion"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Dutch-Fusion", "Anti-Aging"],
     ingredients: [
       "400g sweet potatoes, cut into thick fries",
       "15ml olive oil",
@@ -8792,7 +8792,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.8
     },
     category: "dinner",
-    tags: ["High-Protein", "Gluten-Free", "Dutch-Fusion", "Lean-Protein"],
+    tags: ["High-Protein", "Gluten-Free", "Dutch-Fusion", "Lean-Protein", "Anti-Aging"],
     ingredients: [
       "400g sweet potatoes, cut into thick fries",
       "15ml olive oil",
@@ -8932,7 +8932,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.8
     },
     category: "dinner",
-    tags: ["Vegetarian", "Lactose-Free", "Dairy-Free", "Gluten-Free", "High-Protein", "Dutch-Fusion"],
+    tags: ["Vegetarian", "Lactose-Free", "Dairy-Free", "Gluten-Free", "High-Protein", "Dutch-Fusion", "Anti-Aging"],
     ingredients: [
       "400g sweet potatoes, cut into thick fries",
       "15ml olive oil",
@@ -9060,7 +9060,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.5 
     },
     category: "lunch",
-    tags: ["Vegetarian", "Dairy-Free", "Lactose-Free", "High-Protein", "Fresh", "Asian"],
+    tags: ["Vegetarian", "Dairy-Free", "Lactose-Free", "High-Protein", "Fresh", "Asian", "Anti-Aging"],
     ingredients: [
       "300g extra-firm tofu, cubed and marinated",
       "200g shiitake mushrooms, sliced and marinated",
@@ -10021,7 +10021,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.0
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Lactose-Free", "Meal-Prep", "Make-Ahead", "High-Protein", "Omega-3", "Superfood"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Lactose-Free", "Meal-Prep", "Make-Ahead", "High-Protein", "Omega-3", "Superfood", "Anti-Aging"],
     ingredients: [
       "200ml coconut milk (full-fat)",
       "30g chia seeds",
@@ -10087,7 +10087,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 8.8
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Vegan", "Gluten-Free", "High-Protein", "Omega-3", "Superfood", "Energy", "Post-Workout"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "High-Protein", "Omega-3", "Superfood", "Energy", "Post-Workout", "Anti-Aging"],
     ingredients: [
       "50g rolled oats",
       "1 tbsp chia seeds",
@@ -10159,7 +10159,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.8
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Lactose-Free", "Antioxidants", "Superfood", "Energy", "Post-Workout", "Tropical"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Lactose-Free", "Antioxidants", "Superfood", "Energy", "Post-Workout", "Tropical", "Anti-Aging"],
     ingredients: [
       "2 medium bananas (frozen)",
       "50g frozen açai puree",
@@ -10231,7 +10231,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.5
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Lactose-Free", "Meal-Prep", "Bake", "Chocolate", "Crunchy", "Make-Ahead"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Lactose-Free", "Meal-Prep", "Bake", "Chocolate", "Crunchy", "Make-Ahead", "Anti-Aging"],
     ingredients: [
       "200g rolled oats",
       "30g raw cacao powder",
@@ -10307,7 +10307,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 8.8
     },
     category: "breakfast",
-    tags: ["Vegetarian", "High-Protein", "Gluten-Free", "Quick", "Post-Workout", "Antioxidants", "Omega-3", "Energy"],
+    tags: ["Vegetarian", "High-Protein", "Gluten-Free", "Quick", "Post-Workout", "Antioxidants", "Omega-3", "Energy", "Anti-Aging"],
     ingredients: [
       "250ml cashew milk (unsweetened)",
       "1 medium banana (frozen)",
@@ -10377,7 +10377,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.3
     },
     category: "breakfast",
-    tags: ["Vegetarian", "High-Protein", "Gluten-Free", "Antioxidants", "Energy", "Green", "Matcha", "Japanese"],
+    tags: ["Vegetarian", "High-Protein", "Gluten-Free", "Antioxidants", "Energy", "Green", "Matcha", "Japanese", "Anti-Aging"],
     ingredients: [
       "200ml coconut milk (full-fat)",
       "150ml Greek yogurt",
@@ -10446,7 +10446,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.2
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Lactose-Free", "Antioxidants", "High-Protein", "Berry", "Quick"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Lactose-Free", "Antioxidants", "High-Protein", "Berry", "Quick", "Anti-Aging"],
     ingredients: [
       "250ml almond milk (unsweetened)",
       "1 medium banana (frozen)",
@@ -10515,7 +10515,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.3
     },
     category: "lunch",
-    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Lactose-Free", "Mexican", "Spicy", "High-Protein", "Fiber"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Lactose-Free", "Mexican", "Spicy", "High-Protein", "Fiber", "Anti-Aging"],
     ingredients: [
       "100g fresh spinach",
       "150g cooked brown rice",
@@ -10590,7 +10590,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.2
     },
     category: "lunch",
-    tags: ["Vegetarian", "Gluten-Free", "Japanese", "Green", "High-Protein", "Asian"],
+    tags: ["Vegetarian", "Gluten-Free", "Japanese", "Green", "High-Protein", "Asian", "Anti-Aging"],
     ingredients: [
       "80g fresh spinach",
       "60g kale (stems removed, chopped)",
@@ -10665,7 +10665,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.3
     },
     category: "dinner",
-    tags: ["Pescatarian", "Gluten-Free", "Mexican", "High-Protein", "Omega-3", "Spicy"],
+    tags: ["Pescatarian", "Gluten-Free", "Mexican", "High-Protein", "Omega-3", "Spicy", "Anti-Aging"],
     ingredients: [
       "150g salmon fillet (skin removed)",
       "80g fresh spinach",
@@ -10742,7 +10742,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.1
     },
     category: "dinner",
-    tags: ["Pescatarian", "Gluten-Free", "Japanese", "High-Protein", "Omega-3", "Asian"],
+    tags: ["Pescatarian", "Gluten-Free", "Japanese", "High-Protein", "Omega-3", "Asian", "Anti-Aging"],
     ingredients: [
       "120g kale (stems removed, chopped)",
       "150g cooked brown rice",
@@ -10884,7 +10884,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.7
     },
     category: "dinner",
-    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Lactose-Free", "Pasta", "Nutritional-Yeast", "Tomato"],
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Lactose-Free", "Pasta", "Nutritional-Yeast", "Tomato", "Anti-Aging"],
     ingredients: [
       "300g macaroni pasta",
       "4 cloves garlic (peeled & diced)",
@@ -10946,7 +10946,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.0
     },
     category: "dinner",
-    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Lactose-Free", "Gluten-Free", "Pasta", "Nutritional-Yeast", "Tomato"],
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Lactose-Free", "Gluten-Free", "Pasta", "Nutritional-Yeast", "Tomato", "Anti-Aging"],
     ingredients: [
       "300g gluten-free macaroni pasta",
       "4 cloves garlic (peeled & diced)",
@@ -11146,7 +11146,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.2
     },
     category: "dinner",
-    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Lactose-Free", "quinoa", "beans", "chilli", "one-pot", "weeknight", "Ayurvedic"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Lactose-Free", "quinoa", "beans", "chilli", "one-pot", "weeknight", "Ayurvedic", "Anti-Aging"],
     ingredients: [
       "1 large red onion (peeled & finely chopped)",
       "3 cloves garlic (peeled & finely chopped)",
@@ -11215,7 +11215,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.8
     },
     category: "dinner",
-    tags: ["Vegetarian", "Gluten-Free", "Dairy-Free", "Lactose-Free", "High-Protein", "Mediterranean", "Spicy", "One-Pan"],
+    tags: ["Vegetarian", "Gluten-Free", "Dairy-Free", "Lactose-Free", "High-Protein", "Mediterranean", "Spicy", "One-Pan", "Anti-Aging"],
     ingredients: [
       "240g canned chickpeas (drained and rinsed)",
       "1 medium aubergine",
@@ -11536,7 +11536,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.3
     },
     category: "lunch",
-    tags: ["High-Protein", "Keto-Friendly", "Menstruation", "Quick", "satisfying", "healthy-fats"],
+    tags: ["High-Protein", "Keto-Friendly", "Menstruation", "Quick", "satisfying", "healthy-fats", "Anti-Aging"],
     ingredients: [
       "2 large eggs",
       "1 ripe avocado, sliced",
@@ -11599,7 +11599,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.8
     },
     category: "dinner",
-    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Plant-Based", "Menstruation", "mexican-inspired", "fiber-rich"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Plant-Based", "Menstruation", "mexican-inspired", "fiber-rich", "Anti-Aging"],
     ingredients: [
       "100g tempeh, cubed",
       "75g quinoa",
@@ -11665,7 +11665,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.8
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Lactose-Free", "Gluten-Free", "Menstruation", "High-Protein", "smoothie", "berries", "pre-workout"],
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Lactose-Free", "Gluten-Free", "Menstruation", "High-Protein", "smoothie", "berries", "pre-workout", "Anti-Aging"],
     ingredients: [
       "1 vanilla protein powder",
       "150g mixed berries",
@@ -11719,7 +11719,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.4
     },
     category: "snack",
-    tags: ["Vegetarian", "Gluten-Free", "Menstruation", "High-Protein", "Sweet-Treat", "Cinnamon"],
+    tags: ["Vegetarian", "Gluten-Free", "Menstruation", "High-Protein", "Sweet-Treat", "Cinnamon", "Anti-Aging"],
     ingredients: [
       "80g oat flour",
       "1 vanilla protein powder", 
@@ -11779,7 +11779,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.6
     },
     category: "breakfast", 
-    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Lactose-Free", "Gluten-Free", "Menstruation", "Chocolate", "Brownies"],
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Lactose-Free", "Gluten-Free", "Menstruation", "Chocolate", "Brownies", "Anti-Aging"],
     ingredients: [
       "1 large ripe avocado",
       "40g cocoa powder",
@@ -11897,7 +11897,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.8
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Lactose-Free", "Gluten-Free", "Menstruation", "High-Protein", "spirulina", "smoothie", "Iron-Rich", "detox"],
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Lactose-Free", "Gluten-Free", "Menstruation", "High-Protein", "spirulina", "smoothie", "Iron-Rich", "detox", "Anti-Aging"],
     ingredients: [
       "1 vanilla protein powder",
       "5ml spirulina powder",
@@ -12423,7 +12423,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.6
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Lactose-Free", "Gluten-Free", "Menstruation", "protein", "Chocolate", "truffle", "no-bake"],
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Lactose-Free", "Gluten-Free", "Menstruation", "protein", "Chocolate", "truffle", "no-bake", "Anti-Aging"],
     ingredients: [
       "1 vanilla protein powder",
       "30g rolled oats",
@@ -12597,7 +12597,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.4
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Lactose-Free", "Gluten-Free", "Menstruation", "energy-bites", "dates", "no-bake", "Iron-Rich", "cycleBased", "Menstrual", "Luteal"],
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Lactose-Free", "Gluten-Free", "Menstruation", "energy-bites", "dates", "no-bake", "Iron-Rich", "cycleBased", "Menstrual", "Luteal", "Anti-Aging"],
     ingredients: [
       "100g pitted dates",
       "40g rolled oats",
@@ -12654,7 +12654,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.6
     },
     category: "lunch",
-    tags: ["Menstruation", "beef", "High-Protein", "Iron-Rich", "spinach", "Keto-Friendly"],
+    tags: ["Menstruation", "beef", "High-Protein", "Iron-Rich", "spinach", "Keto-Friendly", "Anti-Aging"],
     ingredients: [
       "150g lean ground beef",
       "2 eggs",
@@ -12713,7 +12713,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 2.5
     },
     category: "lunch",
-    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Lactose-Free", "Gluten-Free", "Menstruation", "guacamole", "ripe avocado", "Potassium", "healthy-fats"],
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Lactose-Free", "Gluten-Free", "Menstruation", "guacamole", "ripe avocado", "Potassium", "healthy-fats", "Anti-Aging"],
     ingredients: [
       "2 ripe avocados",
       "1 lime (juiced)",
@@ -12886,7 +12886,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 11.3
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "Menstruation", "mug-cake", "protein", "Chocolate", "Quick"],
+    tags: ["Vegetarian", "Gluten-Free", "Menstruation", "mug-cake", "protein", "Chocolate", "Quick", "Anti-Aging"],
     ingredients: [
       "1 vanilla protein powder",
       "20g cocoa powder",
@@ -12942,7 +12942,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.2 
     },
     category: "dinner",
-    tags: ["Vegetarian", "Vegan", "High-Protein", "High-Fiber", "Complete-Meal"],
+    tags: ["Vegetarian", "Vegan", "High-Protein", "High-Fiber", "Complete-Meal", "Anti-Aging"],
     ingredients: [
       "2 whole wheat burger buns",
       "450g canned jackfruit (drained)",
@@ -13017,7 +13017,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.9 
     },
     category: "dinner",
-    tags: ["Vegetarian", "Vegan", "Gluten-Free", "High-Protein", "High-Fiber", "Complete-Meal"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "High-Protein", "High-Fiber", "Complete-Meal", "Anti-Aging"],
     ingredients: [
       "2 gluten-free burger buns (or large portobello mushroom caps)",
       "450g canned jackfruit (drained)",
@@ -13404,7 +13404,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.8
     },
     category: "dinner",
-    tags: ["Vegetarian", "Italian", "Roasted-Vegetables"],
+    tags: ["Vegetarian", "Italian", "Roasted-Vegetables", "Anti-Aging"],
     ingredients: [
       "125g cherry tomatoes",
       "1 ripe avocado",
@@ -13472,7 +13472,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.6
     },
     category: "dinner",
-    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Protein", "Plant-Based", "Italian", "Lentil-Pasta"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Protein", "Plant-Based", "Italian", "Lentil-Pasta", "Anti-Aging"],
     ingredients: [
       "125g cherry tomatoes",
       "1 ripe avocado",
@@ -13542,7 +13542,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.0
     },
     category: "lunch",
-    tags: ["Vegetarian", "Mediterranean", "High-Protein", "Roasted", "Greek"],
+    tags: ["Vegetarian", "Mediterranean", "High-Protein", "Roasted", "Greek", "Anti-Aging"],
     ingredients: [
       "200g medium sweet potato (1 potato)",
       "75g falafel (4-5 small pieces)",
@@ -13614,7 +13614,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.6
     },
     category: "lunch",
-    tags: ["Vegetarian", "Lactose-Free", "Mediterranean", "High-Protein", "Roasted", "Dairy-Free"],
+    tags: ["Vegetarian", "Lactose-Free", "Mediterranean", "High-Protein", "Roasted", "Dairy-Free", "Anti-Aging"],
     ingredients: [
       "200g medium sweet potato (1 potato)",
       "75g falafel (4-5 small pieces)",
@@ -13686,7 +13686,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.7
     },
     category: "dinner",
-    tags: ["High-Protein", "Grilled", "American", "Satisfying"],
+    tags: ["High-Protein", "Grilled", "American", "Satisfying", "Anti-Aging"],
     ingredients: [
       "200g sweet potatoes (1-1.5 potatoes)",
       "1 burger bun",
@@ -13760,7 +13760,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 3.7
     },
     category: "dinner",
-    tags: ["Vegetarian", "Plant-Based", "Gluten-Free", "Lactose-Free", "High-Protein"],
+    tags: ["Vegetarian", "Plant-Based", "Gluten-Free", "Lactose-Free", "High-Protein", "Anti-Aging"],
     ingredients: [
       "200g sweet potatoes (1-1.5 potatoes)",
       "1 gluten-free burger bun",
@@ -13903,7 +13903,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.8
     },
     category: "lunch",
-    tags: ["Vegetarian", "Vegan", "Gluten-Free", "High-Fiber", "Low-Carb", "High-Protein", "Blood-Sugar-Friendly", "Quinoa", "Buddha-Bowl"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "High-Fiber", "Low-Carb", "High-Protein", "Blood-Sugar-Friendly", "Quinoa", "Buddha-Bowl", "Anti-Aging"],
     ingredients: [
       "80g quinoa (uncooked)",
       "100g black beans (cooked)",
@@ -14051,7 +14051,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.6
     },
     category: "dinner",
-    tags: ["Vegetarian", "High-Fiber", "Brussels-Sprouts", "Cheese", "Walnuts", "Slow-Carb"],
+    tags: ["Vegetarian", "High-Fiber", "Brussels-Sprouts", "Cheese", "Walnuts", "Slow-Carb", "Anti-Aging"],
     ingredients: [
       "250g sweet potatoes (per serving from 1kg total)",
       "150g Brussels sprouts (per serving from 600g total)", 
@@ -14124,7 +14124,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.9
     },
     category: "lunch",
-    tags: ["High-Protein", "Omega-3", "Low-Carb", "Blood-Sugar-Friendly", "Tuna", "Edamame", "Quick", "Fresh", "Poke-Bowl"],
+    tags: ["High-Protein", "Omega-3", "Low-Carb", "Blood-Sugar-Friendly", "Tuna", "Edamame", "Quick", "Fresh", "Poke-Bowl", "Anti-Aging"],
     ingredients: [
       "120g fresh tuna (sashimi grade or cooked)",
       "80g edamame beans (shelled)",
@@ -14202,7 +14202,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.7
     },
     category: "lunch",
-    tags: ["Vegetarian", "Vegan", "High-Protein", "Low-Carb", "Blood-Sugar-Friendly", "Tofu", "Edamame", "Quick", "Fresh", "Poke-Bowl"],
+    tags: ["Vegetarian", "Vegan", "High-Protein", "Low-Carb", "Blood-Sugar-Friendly", "Tofu", "Edamame", "Quick", "Fresh", "Poke-Bowl", "Anti-Aging"],
     ingredients: [
       "120g firm tofu (cubed)",
       "100g edamame beans (shelled)",
@@ -14284,7 +14284,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.0
     },
     category: "lunch",
-    tags: ["High-Protein", "Low-Carb", "Blood-Sugar-Friendly", "Beef", "Cottage-Cheese", "Nutrient-Dense", "Power-Bowl"],
+    tags: ["High-Protein", "Low-Carb", "Blood-Sugar-Friendly", "Beef", "Cottage-Cheese", "Nutrient-Dense", "Power-Bowl", "Anti-Aging"],
     ingredients: [
       "120g lean beef (sirloin or tenderloin, cubed)",
       "100g cottage cheese",
@@ -14359,7 +14359,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.2
     },
     category: "lunch",
-    tags: ["Vegetarian", "High-Protein", "Low-Carb", "Blood-Sugar-Friendly", "Tofu", "Cottage-Cheese", "Nutrient-Dense", "Power-Bowl", "Dairy"],
+    tags: ["Vegetarian", "High-Protein", "Low-Carb", "Blood-Sugar-Friendly", "Tofu", "Cottage-Cheese", "Nutrient-Dense", "Power-Bowl", "Dairy", "Anti-Aging"],
     ingredients: [
       "120g extra-firm tofu (cubed and pressed)",
       "100g cottage cheese (or plant-based alternative)",
@@ -14437,7 +14437,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.2
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Gluten-Free", "High-Fiber", "Meal-Prep", "Nutrient-Dense"],
+    tags: ["Vegetarian", "Gluten-Free", "High-Fiber", "Meal-Prep", "Nutrient-Dense", "Anti-Aging"],
     ingredients: [
       "2 slices gluten-free purple sweet potato bread (pre-made)",
       "1/2 avocado (80g, mashed)",
@@ -14511,7 +14511,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.7
     },
     category: "breakfast",
-    tags: ["Vegan", "Plant-Based", "Gluten-Free", "High-Fiber", "Meal-Prep", "Nutrient-Dense"],
+    tags: ["Vegan", "Plant-Based", "Gluten-Free", "High-Fiber", "Meal-Prep", "Nutrient-Dense", "Anti-Aging"],
     ingredients: [
       "2 slices gluten-free purple sweet potato bread (pre-made)",
       "1/2 avocado (80g, mashed)",
@@ -14751,7 +14751,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.5
     },
     category: "breakfast",
-    tags: ["Vegetarian", "High-Protein", "Make-Ahead", "Dessert-for-Breakfast", "Pistachios"],
+    tags: ["Vegetarian", "High-Protein", "Make-Ahead", "Dessert-for-Breakfast", "Pistachios", "Anti-Aging"],
     ingredients: [
       "50g cottage cheese (about 3 tbsp)",
       "50g Greek yogurt (about 3 tbsp)",
@@ -14816,7 +14816,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.5
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Lactose-Free", "High-Protein", "Make-Ahead", "Dessert-for-Breakfast", "Pistachios"],
+    tags: ["Vegetarian", "Lactose-Free", "High-Protein", "Make-Ahead", "Dessert-for-Breakfast", "Pistachios", "Anti-Aging"],
     ingredients: [
       "50g lactose-free cottage cheese (about 3 tbsp)",
       "50g lactose-free Greek yogurt (about 3 tbsp)",
@@ -14884,7 +14884,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.4
     },
     category: "breakfast",
-    tags: ["Viral", "Social-Media", "Vegetarian", "Lactose-Free", "High-Protein", "Quick", "No-Cook", "TikTok-Inspired"],
+    tags: ["Viral", "Social-Media", "Vegetarian", "Lactose-Free", "High-Protein", "Quick", "No-Cook", "TikTok-Inspired", "Anti-Aging"],
     ingredients: [
       "200g lactose-free cottage cheese",
       "1 scoop (30g) vanilla protein powder",
@@ -14947,7 +14947,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 8.3
     },
     category: "snack",
-    tags: ["Viral", "Social-Media", "Vegetarian", "Lactose-Free", "High-Protein", "No-Bake", "Meal-Prep", "TikTok-Inspired"],
+    tags: ["Viral", "Social-Media", "Vegetarian", "Lactose-Free", "High-Protein", "No-Bake", "Meal-Prep", "TikTok-Inspired", "Anti-Aging"],
     ingredients: [
       "120g almond flour",
       "30g vanilla protein powder",
@@ -15221,7 +15221,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 9.4
     },
     category: "lunch",
-    tags: ["Viral", "Social-Media", "Vegetarian", "Lactose-Free", "Gluten-Free", "High-Protein", "Low-Carb", "TikTok-Inspired"],
+    tags: ["Viral", "Social-Media", "Vegetarian", "Lactose-Free", "Gluten-Free", "High-Protein", "Low-Carb", "TikTok-Inspired", "Anti-Aging"],
     ingredients: [
       "3 medium eggs",
       "120g lactose-free Greek yogurt",
@@ -15357,7 +15357,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 7.1
     },
     category: "snack",
-    tags: ["Viral", "Social-Media", "High-Protein", "Lactose-Free", "Low-Carb", "No-Cook", "Gluten-Free", "TikTok-Inspired"],
+    tags: ["Viral", "Social-Media", "High-Protein", "Lactose-Free", "Low-Carb", "No-Cook", "Gluten-Free", "TikTok-Inspired", "Anti-Aging"],
     ingredients: [
       "1 large cucumber (300g)",
       "120g canned tuna (drained)",
@@ -15421,7 +15421,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 6.3 
     },
     category: "snack",
-    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Fiber", "Whole-Food", "Batch-Friendly", "Viral", "Social-Media"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Fiber", "Whole-Food", "Batch-Friendly", "Viral", "Social-Media", "Anti-Aging"],
     ingredients: [
       "200g sweet potato (1 medium)",
       "120ml peanut butter",
@@ -15566,7 +15566,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 8.8
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Protein", "High-Fiber", "Antioxidant", "Longevity"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Protein", "High-Fiber", "Antioxidant", "Longevity", "Anti-Aging"],
     ingredients: [
       "50g rolled oats",
       "30g buckwheat flakes",
@@ -15695,7 +15695,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 8.4
     },
     category: "breakfast",
-    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Protein", "Quick", "Smoothie", "Post-Workout"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Protein", "Quick", "Smoothie", "Post-Workout", "Anti-Aging"],
     ingredients: [
       "1 tbsp (5g) unsweetened cocoa powder",
       "250ml unsweetened soy milk",
@@ -15966,7 +15966,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 5.6
     },
     category: "dinner",
-    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Fiber", "Longevity"],
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Fiber", "Longevity", "Anti-Aging"],
     ingredients: [
       "200g sweet potato, cubed",
       "150g cooked black beans",

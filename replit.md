@@ -37,6 +37,7 @@ Preferred communication style: Simple, everyday language.
     - **AI-Powered Nutrition Analysis**: Automated generation of comprehensive nutritional values directly from recipe ingredients.
     - **Longevity Optimization**: Longevity-focused recipes are automatically prioritized for all users.
     - **Resistant Starch Logic**: Prioritizes meals with resistant starch for users with weight loss goals or BMI >25.
+    - **Anti-Aging Tag System**: 116 recipes tagged with "Anti-Aging" tag for recipes containing avocado, sweet potatoes, blueberries, or almonds to support healthy aging and longevity.
 - **System Design Choices**:
     - **Data Flow**: User input drives meal generation, stored in PostgreSQL, displayed via React Query.
     - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, favorite meals, and user-created custom recipes.
