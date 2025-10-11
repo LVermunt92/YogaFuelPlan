@@ -210,8 +210,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Rolling session: extend session duration on each authenticated request
       if (req.session.rememberMe) {
         req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // Reset to 30 days
+        req.session.save(); // Explicitly save to persist the updated maxAge
       } else {
         req.session.cookie.maxAge = 24 * 60 * 60 * 1000; // Reset to 1 day
+        req.session.save(); // Explicitly save to persist the updated maxAge
       }
       
       const user = await storage.getUser(req.session.userId);

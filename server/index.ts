@@ -21,6 +21,7 @@ app.use(session({
   secret: process.env.SESSION_SECRET || 'dev-secret-key-change-in-production',
   resave: false,
   saveUninitialized: false,
+  rolling: true, // Extend session expiration on each request
   cookie: {
     secure: process.env.NODE_ENV === 'production', // Auto-enable in production with HTTPS
     httpOnly: true,
