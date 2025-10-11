@@ -7308,6 +7308,134 @@ const RAW_MEAL_DATABASE: MealOption[] = [
   },
 
   {
+    name: "One-pot millet pilaf with vegetables, turmeric, feta, seeds & nuts",
+    portion: "1 serving",
+    nutrition: { 
+      protein: 20, 
+      prepTime: 30, 
+      calories: 440,
+      carbohydrates: 38,
+      fats: 18,
+      fiber: 5,
+      sugar: 3,
+      sodium: 480,
+      costEuros: 3.80, 
+      proteinPerEuro: 5.3 
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Gluten-Free", "High-Protein", "One-Pot"],
+    ingredients: [
+      "50g millet (uncooked)",
+      "180ml vegetable broth",
+      "7ml olive oil (1½ tsp)",
+      "1g turmeric powder (¼ tsp)",
+      "0.5g ground cumin (¼ tsp)",
+      "0.2g black pepper (¼ tsp)",
+      "2g salt (½ tsp)",
+      "25g onion (finely chopped)",
+      "30g carrot (diced)",
+      "40g zucchini (diced)",
+      "30g fresh spinach",
+      "30g feta cheese (crumbled)",
+      "10g pumpkin seeds",
+      "10g chopped almonds or walnuts",
+      "1 tbsp chopped fresh parsley"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["onion", "carrot", "zucchini", "spinach"],
+      benefits: ["Ancient grain with complete protein", "Anti-inflammatory turmeric", "Omega-3 from seeds and nuts", "High in fiber"]
+    },
+    recipe: {
+      instructions: [
+        "Optional: Toast dry millet in a small pot over medium heat for 2-3 minutes until lightly golden",
+        "Add olive oil to the pot and sauté onion for 2 minutes",
+        "Add diced carrot and zucchini, cook for another 3 minutes",
+        "Stir in turmeric, cumin, salt, and black pepper",
+        "Add the toasted millet and pour in 180ml vegetable broth",
+        "Bring to a boil, then reduce heat to low and cover",
+        "Simmer gently for about 15 minutes until liquid is absorbed and millet is tender",
+        "Stir in fresh spinach, cover again, and let steam for 2-3 minutes",
+        "Mix in crumbled feta, pumpkin seeds, and chopped almonds",
+        "Fluff with a fork and top with fresh parsley before serving"
+      ],
+      tips: [
+        "Toasting millet enhances its nutty flavor",
+        "Make sure millet is fully cooked - it should be tender with a slight pop",
+        "Use walnuts instead of almonds for extra omega-3s",
+        "Great for meal prep - reheat with a splash of broth",
+        "Can add extra vegetables like bell peppers or peas"
+      ],
+      notes: "Nutritious one-pot millet pilaf with colorful vegetables, anti-inflammatory turmeric, creamy feta, and crunchy seeds. Ancient grain goodness in 30 minutes."
+    }
+  },
+
+  {
+    name: "One-pot millet pilaf with vegetables, turmeric, vegan feta, seeds & nuts",
+    portion: "1 serving",
+    nutrition: { 
+      protein: 18, 
+      prepTime: 30, 
+      calories: 425,
+      carbohydrates: 38,
+      fats: 17,
+      fiber: 5,
+      sugar: 2,
+      sodium: 460,
+      costEuros: 3.90, 
+      proteinPerEuro: 4.6 
+    },
+    category: "lunch",
+    tags: ["Vegetarian", "Lactose-Free", "Gluten-Free", "High-Protein", "One-Pot", "Vegan"],
+    ingredients: [
+      "50g millet (uncooked)",
+      "180ml vegetable broth",
+      "7ml olive oil (1½ tsp)",
+      "1g turmeric powder (¼ tsp)",
+      "0.5g ground cumin (¼ tsp)",
+      "0.2g black pepper (¼ tsp)",
+      "2g salt (½ tsp)",
+      "25g onion (finely chopped)",
+      "30g carrot (diced)",
+      "40g zucchini (diced)",
+      "30g fresh spinach",
+      "30g vegan feta cheese (crumbled)",
+      "10g pumpkin seeds",
+      "10g chopped almonds or walnuts",
+      "1 tbsp chopped fresh parsley"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["onion", "carrot", "zucchini", "spinach"],
+      benefits: ["Ancient grain with complete protein", "Anti-inflammatory turmeric", "Omega-3 from seeds and nuts", "Lactose-free and vegan", "High in fiber"]
+    },
+    recipe: {
+      instructions: [
+        "Optional: Toast dry millet in a small pot over medium heat for 2-3 minutes until lightly golden",
+        "Add olive oil to the pot and sauté onion for 2 minutes",
+        "Add diced carrot and zucchini, cook for another 3 minutes",
+        "Stir in turmeric, cumin, salt, and black pepper",
+        "Add the toasted millet and pour in 180ml vegetable broth",
+        "Bring to a boil, then reduce heat to low and cover",
+        "Simmer gently for about 15 minutes until liquid is absorbed and millet is tender",
+        "Stir in fresh spinach, cover again, and let steam for 2-3 minutes",
+        "Mix in crumbled vegan feta, pumpkin seeds, and chopped almonds",
+        "Fluff with a fork and top with fresh parsley before serving"
+      ],
+      tips: [
+        "Toasting millet enhances its nutty flavor",
+        "Vegan feta adds creamy tangy flavor without dairy",
+        "Make sure millet is fully cooked - it should be tender with a slight pop",
+        "Use walnuts instead of almonds for extra omega-3s",
+        "Great for meal prep - reheat with a splash of broth"
+      ],
+      notes: "Plant-based one-pot millet pilaf with colorful vegetables, anti-inflammatory turmeric, vegan feta, and crunchy seeds. Lactose-free ancient grain goodness."
+    }
+  },
+
+  {
     name: "Mediterranean gluten-free pasta salad with olives",
     portion: "2 cups pasta salad",
     nutrition: { 
