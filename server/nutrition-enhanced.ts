@@ -7345,7 +7345,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     vegetableContent: {
       servings: 2,
       vegetables: ["onion", "carrot", "zucchini", "spinach"],
-      benefits: ["Ancient grain with complete protein", "Anti-inflammatory turmeric", "Omega-3 from seeds and nuts", "High in fiber"]
+      benefits: ["Millet is rich in magnesium and B vitamins", "Alkaline ancient grain that's easy to digest", "Anti-inflammatory turmeric", "Omega-3 from seeds and nuts", "High in fiber"]
     },
     recipe: {
       instructions: [
@@ -7409,7 +7409,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     vegetableContent: {
       servings: 2,
       vegetables: ["onion", "carrot", "zucchini", "spinach"],
-      benefits: ["Ancient grain with complete protein", "Anti-inflammatory turmeric", "Omega-3 from seeds and nuts", "Lactose-free and vegan", "High in fiber"]
+      benefits: ["Millet is rich in magnesium and B vitamins", "Alkaline ancient grain that's easy to digest", "Anti-inflammatory turmeric", "Omega-3 from seeds and nuts", "Lactose-free and vegan", "High in fiber"]
     },
     recipe: {
       instructions: [
