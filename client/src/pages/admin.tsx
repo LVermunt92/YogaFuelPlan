@@ -1911,10 +1911,13 @@ function AdminPanelMain() {
                         <SelectValue placeholder="Category" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="all-categories">All Categories</SelectItem>
+                        <SelectItem value="all-categories">All categories</SelectItem>
                         <SelectItem value="breakfast">Breakfast</SelectItem>
                         <SelectItem value="lunch">Lunch</SelectItem>
                         <SelectItem value="dinner">Dinner</SelectItem>
+                        <SelectItem value="snack">Snack</SelectItem>
+                        <SelectItem value="dessert">Dessert</SelectItem>
+                        <SelectItem value="smoothie">Smoothie</SelectItem>
                       </SelectContent>
                     </Select>
 
@@ -2599,6 +2602,9 @@ function AdminPanelMain() {
                         <SelectItem value="breakfast">Breakfast</SelectItem>
                         <SelectItem value="lunch">Lunch</SelectItem>
                         <SelectItem value="dinner">Dinner</SelectItem>
+                        <SelectItem value="snack">Snack</SelectItem>
+                        <SelectItem value="dessert">Dessert</SelectItem>
+                        <SelectItem value="smoothie">Smoothie</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -2860,6 +2866,9 @@ function AdminPanelMain() {
                         <SelectItem value="breakfast">Breakfast</SelectItem>
                         <SelectItem value="lunch">Lunch</SelectItem>
                         <SelectItem value="dinner">Dinner</SelectItem>
+                        <SelectItem value="snack">Snack</SelectItem>
+                        <SelectItem value="dessert">Dessert</SelectItem>
+                        <SelectItem value="smoothie">Smoothie</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

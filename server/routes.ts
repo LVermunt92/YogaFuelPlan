@@ -1243,7 +1243,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const user = mealPlan ? await storage.getUser(mealPlan.userId) : null;
           const dietaryTags = user?.dietaryTags || [];
           
-          const mealType = targetMeal.mealType as 'breakfast' | 'lunch' | 'dinner';
+          const mealType = targetMeal.mealType as 'breakfast' | 'lunch' | 'dinner' | 'snack' | 'dessert' | 'smoothie';
           
           const aiRecipe = await generateRecipeWithAI({
             category: mealType,

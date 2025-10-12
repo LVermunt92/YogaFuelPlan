@@ -12,7 +12,7 @@ const openai = new OpenAI({
 });
 
 export interface RecipeGenerationRequest {
-  category: 'breakfast' | 'lunch' | 'dinner';
+  category: 'breakfast' | 'lunch' | 'dinner' | 'snack' | 'dessert' | 'smoothie';
   dietaryTags: string[];
   targetProtein: number;
   prepTimeLimit?: number;
