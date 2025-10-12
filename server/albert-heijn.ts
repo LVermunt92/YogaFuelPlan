@@ -123,6 +123,30 @@ class AlbertHeijnService {
             return { quantity: 1, unit: '', productName: ingredient };
           }
           const cleanIngredient = ingredient.trim();
+          
+          // Handle fractions written as text (Half, Quarter, etc.)
+          const fractionMatch = cleanIngredient.match(/^(half|quarter|third)\s+(.+)/i);
+          if (fractionMatch) {
+            const fractionWord = fractionMatch[1].toLowerCase();
+            const productName = fractionMatch[2].trim();
+            let quantity = 1;
+            if (fractionWord === 'half') quantity = 0.5;
+            else if (fractionWord === 'quarter') quantity = 0.25;
+            else if (fractionWord === 'third') quantity = 0.33;
+            return { quantity, unit: 'piece', productName };
+          }
+          
+          // Handle numeric fractions (1/2, 1/4, etc.)
+          const numericFractionMatch = cleanIngredient.match(/^(\d+)\/(\d+)\s+(.+)/);
+          if (numericFractionMatch) {
+            const numerator = parseFloat(numericFractionMatch[1]);
+            const denominator = parseFloat(numericFractionMatch[2]);
+            const quantity = numerator / denominator;
+            const productName = numericFractionMatch[3].trim();
+            return { quantity, unit: 'piece', productName };
+          }
+          
+          // Handle standard numeric quantities with optional units
           const match = cleanIngredient.match(/^(\d+(?:\.\d+)?)\s*([a-zA-Z]*)\s+(.+)/);
           if (match) {
             const quantity = parseFloat(match[1]);
@@ -130,6 +154,7 @@ class AlbertHeijnService {
             const productName = match[3].trim();
             return { quantity, unit, productName };
           }
+          
           return { quantity: 1, unit: '', productName: cleanIngredient };
         };
 
