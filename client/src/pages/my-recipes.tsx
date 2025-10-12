@@ -74,6 +74,7 @@ export default function MyRecipes() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingRecipe, setEditingRecipe] = useState<UserRecipe | null>(null);
   const [useOnlyMyRecipes, setUseOnlyMyRecipes] = useState(false);
+  const [ingredientCategories, setIngredientCategories] = useState<Record<number, string>>({});
 
   // Fetch user recipes
   const { data: recipes = [], isLoading, error: recipesError } = useQuery<UserRecipe[]>({
@@ -107,6 +108,40 @@ export default function MyRecipes() {
       setUseOnlyMyRecipes(userProfile.useOnlyMyRecipes);
     }
   }, [userProfile]);
+
+  // Analyze ingredients to get their categories
+  const analyzeIngredients = async (ingredients: string[]) => {
+    if (!ingredients || ingredients.length === 0) return;
+    
+    try {
+      const response = await fetch('/api/analyze-ingredients', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ingredients })
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        const categories: Record<number, string> = {};
+        data.analysis.forEach((item: {ingredient: string, category: string}, index: number) => {
+          categories[index] = item.category;
+        });
+        setIngredientCategories(categories);
+      }
+    } catch (error) {
+      console.error('Error analyzing ingredients:', error);
+    }
+  };
+
+  // Watch for ingredient changes and analyze them
+  React.useEffect(() => {
+    const subscription = form.watch((value, { name }) => {
+      if (name?.startsWith('ingredients') && value.ingredients) {
+        analyzeIngredients(value.ingredients as string[]);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [form]);
 
   // Mutation to update recipe preference  
   const updatePreferenceMutation = useMutation({
@@ -508,17 +543,29 @@ export default function MyRecipes() {
                     <FormLabel className="text-base font-medium">{t.ingredients}</FormLabel>
                     <div className="space-y-2 mt-2">
                       {form.watch('ingredients').map((_, index) => (
-                        <div key={index} className="flex gap-2">
+                        <div key={index} className="flex gap-2 items-start">
                           <FormField
                             control={form.control}
                             name={`ingredients.${index}`}
                             render={({ field }) => (
                               <FormItem className="flex-1">
                                 <FormControl>
-                                  <Input 
-                                    placeholder={t.enterIngredient}
-                                    {...field} 
-                                  />
+                                  <div className="flex gap-2 items-center">
+                                    <Input 
+                                      placeholder={t.enterIngredient}
+                                      {...field}
+                                      className="flex-1"
+                                    />
+                                    {ingredientCategories[index] && (
+                                      <Badge 
+                                        variant="outline" 
+                                        className="text-xs whitespace-nowrap shrink-0"
+                                        data-testid={`ingredient-category-${index}`}
+                                      >
+                                        {ingredientCategories[index]}
+                                      </Badge>
+                                    )}
+                                  </div>
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -530,6 +577,7 @@ export default function MyRecipes() {
                             size="sm"
                             onClick={() => removeIngredient(index)}
                             disabled={form.watch('ingredients').length <= 1}
+                            data-testid={`remove-ingredient-${index}`}
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>

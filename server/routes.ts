@@ -2302,6 +2302,112 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Analyze ingredients to show their shopping categories
+  app.post("/api/analyze-ingredients", async (req, res) => {
+    try {
+      const { ingredients } = req.body;
+      
+      if (!Array.isArray(ingredients)) {
+        return res.status(400).json({ message: "Ingredients must be an array" });
+      }
+
+      const categorizeIngredient = (ingredient: string): string => {
+        const cleaned = ingredient
+          .replace(/\d+g?/g, '') // Remove quantities
+          .replace(/\([^)]*\)/g, '') // Remove parentheses
+          .replace(/,.*$/g, '') // Remove everything after comma
+          .replace(/\s+/g, ' ')
+          .trim()
+          .toLowerCase();
+
+        // Enhanced categorization logic matching albert-heijn.ts
+        if (cleaned.includes('mushroom') || cleaned.includes('champignon') || 
+            cleaned.includes('garlic') || cleaned.includes('onion') || 
+            cleaned.includes('tomato') || cleaned.includes('pepper') ||
+            cleaned.includes('lettuce') || cleaned.includes('spinach') ||
+            cleaned.includes('kale') || cleaned.includes('broccoli') ||
+            cleaned.includes('cauliflower') || cleaned.includes('carrot') ||
+            cleaned.includes('celery') || cleaned.includes('cucumber') ||
+            cleaned.includes('zucchini') || cleaned.includes('eggplant') ||
+            cleaned.includes('squash') || cleaned.includes('pumpkin') ||
+            cleaned.includes('sweet potato') || cleaned.includes('potato') ||
+            cleaned.includes('beet') || cleaned.includes('radish') ||
+            cleaned.includes('cabbage') || cleaned.includes('bok choy') ||
+            cleaned.includes('brussels') || cleaned.includes('asparagus') ||
+            cleaned.includes('artichoke') || cleaned.includes('leek') ||
+            cleaned.includes('fennel') || cleaned.includes('turnip') ||
+            cleaned.includes('parsnip') || cleaned.includes('rutabaga') ||
+            cleaned.includes('apple') || cleaned.includes('banana') ||
+            cleaned.includes('orange') || cleaned.includes('grape') ||
+            cleaned.includes('strawberry') || cleaned.includes('blueberry') ||
+            cleaned.includes('raspberry') || cleaned.includes('blackberry') ||
+            cleaned.includes('cherry') || cleaned.includes('peach') ||
+            cleaned.includes('pear') || cleaned.includes('plum') ||
+            cleaned.includes('kiwi') || cleaned.includes('mango') ||
+            cleaned.includes('pineapple') || cleaned.includes('lime') ||
+            cleaned.includes('lemon')) {
+          return 'Groente & fruit';
+        } else if (cleaned.includes('milk') || cleaned.includes('cheese') ||
+                  cleaned.includes('egg') || cleaned.includes('yogurt') ||
+                  cleaned.includes('kefir') || cleaned.includes('cream') ||
+                  cleaned.includes('butter') || cleaned.includes('ghee') ||
+                  cleaned.includes('feta') || cleaned.includes('mozzarella') ||
+                  cleaned.includes('parmesan') || cleaned.includes('cheddar') ||
+                  cleaned.includes('goat cheese') || cleaned.includes('ricotta') ||
+                  cleaned.includes('skyr') || cleaned.includes('quark')) {
+          return 'Zuivel & eieren';
+        } else if (cleaned.includes('chicken') || cleaned.includes('beef') ||
+                  cleaned.includes('fish') || cleaned.includes('meat') ||
+                  cleaned.includes('tofu') || cleaned.includes('tempeh') ||
+                  cleaned.includes('salmon') || cleaned.includes('tuna') ||
+                  cleaned.includes('shrimp') || cleaned.includes('turkey') ||
+                  cleaned.includes('pork') || cleaned.includes('ham') ||
+                  cleaned.includes('bacon') || cleaned.includes('sausage') ||
+                  cleaned.includes('edamame') || cleaned.includes('chickpea') ||
+                  cleaned.includes('lentil') || cleaned.includes('bean')) {
+          return 'Vlees, vis & vega';
+        } else if (cleaned.includes('peanut butter') || cleaned.includes('nut butter') ||
+                  cleaned.includes('jam') || cleaned.includes('honey') ||
+                  cleaned.includes('maple syrup') || cleaned.includes('marmalade') ||
+                  cleaned.includes('hazelnut spread') || cleaned.includes('almond butter')) {
+          return 'Ontbijt & beleg';
+        } else if (cleaned.includes('bread') || cleaned.includes('pastry') ||
+                  cleaned.includes('croissant') || cleaned.includes('baguette') ||
+                  cleaned.includes('roll') || cleaned.includes('bun')) {
+          return 'Brood & gebak';
+        } else if (cleaned.includes('rice') || cleaned.includes('pasta') ||
+                  cleaned.includes('quinoa') || cleaned.includes('noodle') ||
+                  cleaned.includes('couscous') || cleaned.includes('bulgur')) {
+          return 'Pasta, rijst & wereldkeuken';
+        } else if (cleaned.includes('sauce') || cleaned.includes('stock') ||
+                  cleaned.includes('broth') || cleaned.includes('paste') ||
+                  cleaned.includes('curry paste') || cleaned.includes('tomato paste')) {
+          return 'Soepen, sauzen & kruiden';
+        } else if (cleaned.includes('chocolate') || cleaned.includes('cookie') ||
+                  cleaned.includes('cake') || cleaned.includes('candy')) {
+          return 'Snoep, koek & chips';
+        } else if (cleaned.includes('protein powder') || cleaned.includes('supplement')) {
+          return 'Bewuste voeding';
+        } else if (cleaned.includes('water') || cleaned.includes('juice') ||
+                  cleaned.includes('tea') || cleaned.includes('coffee')) {
+          return 'Dranken';
+        }
+        
+        return 'Te zoeken'; // Default/uncategorized
+      };
+
+      const analysis = ingredients.map((ingredient: string) => ({
+        ingredient,
+        category: categorizeIngredient(ingredient)
+      }));
+
+      res.json({ analysis });
+    } catch (error) {
+      console.error("Error analyzing ingredients:", error);
+      res.status(500).json({ message: "Failed to analyze ingredients" });
+    }
+  });
+
   // Albert Heijn Shopping List Integration
   app.post("/api/shopping-list/albert-heijn", async (req, res) => {
     try {
