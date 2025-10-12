@@ -1989,7 +1989,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     category: "dinner",
     tags: ["Vegetarian", "Viral", "Social-Media", "High-Protein"],
-    ingredients: ["king oyster mushrooms", "100g pasta", "30g sun-dried tomatoes", "cashew cream", "nutritional yeast", "garlic", "herbs", "vegetable stock"],
+    ingredients: ["150g king oyster mushrooms", "100g pasta", "30g sun-dried tomatoes", "80ml cashew cream", "15g nutritional yeast", "2 garlic cloves", "5g fresh herbs", "100ml vegetable stock"],
     wholeFoodLevel: "moderate",
     vegetableContent: {
       servings: 2,
