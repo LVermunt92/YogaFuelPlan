@@ -18620,7 +18620,6 @@ function cleanIngredientName(ingredient: string): string {
     /^cut into \d+ cm pieces?$/i,
     /^finely$/i,
     /^melted$/i,
-    /^half sweet red pepper$/i,
     /^cut into pieces?$/i,
     /^finely (chopped|diced|sliced)$/i,
     /^roughly (chopped|diced|sliced)$/i,
