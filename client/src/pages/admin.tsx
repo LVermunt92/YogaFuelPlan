@@ -998,6 +998,7 @@ function AdminPanelMain() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/recipes'] });
       queryClient.invalidateQueries({ queryKey: ['/api/recipes/stats'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/unified-recipes'] });
       setEditingRecipe(null);
       toast({ title: "Success", description: "Recipe updated successfully" });
     },
@@ -1011,6 +1012,7 @@ function AdminPanelMain() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/recipes'] });
       queryClient.invalidateQueries({ queryKey: ['/api/recipes/stats'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/unified-recipes'] });
       setShowCreateRecipe(false);
       toast({ title: "Success", description: "Recipe created successfully" });
     },
