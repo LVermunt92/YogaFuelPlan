@@ -2396,8 +2396,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return 'Te zoeken'; // Default/uncategorized
       };
 
+      // Helper function to normalize ingredient name
+      const normalizeIngredient = (ingredient: string): string => {
+        return ingredient
+          .replace(/\d+g?/g, '') // Remove quantities
+          .replace(/\([^)]*\)/g, '') // Remove parentheses
+          .replace(/,.*$/g, '') // Remove everything after comma
+          .replace(/\s+/g, ' ')
+          .trim();
+      };
+
       const analysis = ingredients.map((ingredient: string) => ({
         ingredient,
+        normalizedIngredient: normalizeIngredient(ingredient),
         category: categorizeIngredient(ingredient)
       }));
 

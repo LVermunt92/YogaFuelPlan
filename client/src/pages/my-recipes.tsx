@@ -74,7 +74,7 @@ export default function MyRecipes() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingRecipe, setEditingRecipe] = useState<UserRecipe | null>(null);
   const [useOnlyMyRecipes, setUseOnlyMyRecipes] = useState(false);
-  const [ingredientCategories, setIngredientCategories] = useState<Record<number, string>>({});
+  const [ingredientCategories, setIngredientCategories] = useState<Record<number, { category: string; normalizedName: string }>>({});
 
   // Fetch user recipes
   const { data: recipes = [], isLoading, error: recipesError } = useQuery<UserRecipe[]>({
@@ -186,9 +186,12 @@ export default function MyRecipes() {
       
       if (response.ok) {
         const data = await response.json();
-        const categories: Record<number, string> = {};
-        data.analysis.forEach((item: {ingredient: string, category: string}, index: number) => {
-          categories[index] = item.category;
+        const categories: Record<number, { category: string; normalizedName: string }> = {};
+        data.analysis.forEach((item: {ingredient: string, category: string, normalizedIngredient?: string}, index: number) => {
+          categories[index] = {
+            category: item.category,
+            normalizedName: item.normalizedIngredient || item.ingredient
+          };
         });
         setIngredientCategories(categories);
       }
@@ -538,39 +541,55 @@ export default function MyRecipes() {
                     </div>
                   </div>
                   
-                  {/* Ingredients */}
+                  {/* Ingredients - Two Column Layout */}
                   <div>
                     <FormLabel className="text-base font-medium">{t.ingredients}</FormLabel>
+                    <div className="text-sm text-gray-600 mb-3">
+                      Enter ingredients with quantities (e.g., "200g quinoa"). Mappings show how they'll appear on shopping lists.
+                    </div>
                     <div className="space-y-2 mt-2">
+                      {/* Header Row */}
+                      <div className="grid grid-cols-2 gap-2 text-xs font-medium text-gray-600 px-2 pb-1 border-b">
+                        <div>Recipe ingredient</div>
+                        <div>Shopping list mapping</div>
+                      </div>
+                      
                       {form.watch('ingredients').map((_, index) => (
                         <div key={index} className="flex gap-2 items-start">
-                          <FormField
-                            control={form.control}
-                            name={`ingredients.${index}`}
-                            render={({ field }) => (
-                              <FormItem className="flex-1">
-                                <FormControl>
-                                  <div className="flex gap-2 items-center">
+                          <div className="grid grid-cols-2 gap-2 flex-1">
+                            <FormField
+                              control={form.control}
+                              name={`ingredients.${index}`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormControl>
                                     <Input 
                                       placeholder={t.enterIngredient}
                                       {...field}
-                                      className="flex-1"
+                                      className="w-full"
                                     />
-                                    {ingredientCategories[index] && (
-                                      <Badge 
-                                        variant="outline" 
-                                        className="text-xs whitespace-nowrap shrink-0"
-                                        data-testid={`ingredient-category-${index}`}
-                                      >
-                                        {ingredientCategories[index]}
-                                      </Badge>
-                                    )}
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <div className="flex items-center gap-2">
+                              <div className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-sm">
+                                {ingredientCategories[index] ? (
+                                  <div>
+                                    <div className="font-medium text-gray-900">
+                                      {ingredientCategories[index].normalizedName || 'No mapping'}
+                                    </div>
+                                    <div className="text-xs text-gray-500">
+                                      {ingredientCategories[index].category}
+                                    </div>
                                   </div>
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            )}
-                          />
+                                ) : (
+                                  <span className="text-gray-400 text-xs">Analyzing...</span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
                           <Button
                             type="button"
                             variant="outline"
