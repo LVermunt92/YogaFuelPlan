@@ -433,8 +433,8 @@ adminRouter.get('/translations/status', async (req, res) => {
 // Tag management endpoints
 adminRouter.get('/tags', async (req, res) => {
   try {
-    const { getCompleteEnhancedMealDatabase } = await import('./nutrition-enhanced');
-    const recipes = await getCompleteEnhancedMealDatabase();
+    // Get recipes directly from database (bypass heavy processing)
+    const dbRecipes = await storage.getAllRecipes(true);
     
     // Get deleted tags from database
     const deletedTagsList = await storage.getDeletedTags();
@@ -443,7 +443,7 @@ adminRouter.get('/tags', async (req, res) => {
     // Count tag occurrences across all recipes, filtering out deleted tags
     const tagCounts: Record<string, number> = {};
     
-    recipes.forEach(recipe => {
+    dbRecipes.forEach(recipe => {
       if (recipe.tags && Array.isArray(recipe.tags)) {
         recipe.tags.forEach(tag => {
           // Skip deleted tags
@@ -477,10 +477,9 @@ adminRouter.delete('/tags', async (req, res) => {
     // Get current user ID from session (if available)
     const userId = (req.user as any)?.id || undefined;
     
-    // Count how many recipes currently have this tag
-    const { getCompleteEnhancedMealDatabase } = await import('./nutrition-enhanced');
-    const recipes = await getCompleteEnhancedMealDatabase();
-    const recipesUpdated = recipes.filter(recipe => 
+    // Count how many recipes currently have this tag (query database directly)
+    const dbRecipes = await storage.getAllRecipes(true);
+    const recipesUpdated = dbRecipes.filter(recipe => 
       recipe.tags && Array.isArray(recipe.tags) && recipe.tags.includes(tag)
     ).length;
     

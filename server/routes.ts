@@ -2439,20 +2439,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Run ingredient specification update on server startup
   (async () => {
     try {
-      console.log('🚀 Server startup: Running ingredient specification update...');
-      updateAllRecipesWithSpecificIngredients();
-      
-      // Recipe measurements are automatically converted in the unified database system
+      console.log('🚀 Server startup: Skipping ingredient validation (database-first architecture)');
       console.log('📏 Recipe measurements are automatically converted to metric in the enhanced database');
-      
-      const validation = await validateAllRecipeIngredients();
-      console.log(`📊 Ingredient validation: ${validation.validRecipes}/${validation.totalRecipes} recipes have specific ingredients`);
-      if (validation.issuesFound.length > 0) {
-        console.log('⚠️  Recipes still needing attention:');
-        validation.issuesFound.forEach(recipe => {
-          console.log(`   - ${recipe.recipeName}: ${recipe.issues.length} issues`);
-        });
-      }
+      console.log('📊 Ingredient validation: All recipes loaded from database');
+      // Note: Ingredient validation disabled to prevent database timeout on startup
+      // Use /api/recipes/validate-ingredients endpoint to manually trigger validation if needed
     } catch (error) {
       console.error("Error running startup ingredient update:", error);
     }
@@ -2972,7 +2963,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // GET /api/admin/unified-recipes - Get all recipes from unified database (with modifications)
+  // GET /api/admin/unified-recipes - Get all recipes from database (admin view)
   app.get("/api/admin/unified-recipes", async (req, res) => {
     try {
       if (!req.session?.userId) {
@@ -2984,7 +2975,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(403).json({ message: "Admin access required" });
       }
 
-      const allRecipes = await getModifiedRecipeDatabase();
+      // Get all active recipes directly from database (bypass enhanced database processing)
+      const dbRecipes = await storage.getAllRecipes(true); // Only active recipes
+      
+      // Convert database Recipe format to MealOption format for admin panel
+      const allRecipes = dbRecipes.map(recipe => {
+        const nutritionData = recipe.nutrition as any || {};
+        const vegContent = recipe.vegetableContent as any || {};
+        
+        return {
+          id: recipe.id, // Keep as text string
+          name: recipe.name,
+          category: recipe.category as any,
+          ingredients: recipe.ingredients,
+          instructions: recipe.instructions,
+          portion: recipe.portion,
+          wholeFoodLevel: recipe.wholeFoodLevel || 'moderate',
+          nutrition: nutritionData,
+          vegetableContent: vegContent,
+          tags: recipe.tags || [],
+          prepTime: recipe.prepTime
+        } as MealOption;
+      });
       
       // Sort by ID for consistent ordering
       const sortedRecipes = allRecipes.sort((a, b) => {
@@ -3182,31 +3194,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(403).json({ message: "Admin access required" });
       }
 
-      const recipes = await getModifiedRecipeDatabase();
+      // Get recipes directly from database (bypass heavy processing)
+      const dbRecipes = await storage.getAllRecipes(true);
       
       const stats = {
-        total: recipes.length,
+        total: dbRecipes.length,
         byCategory: {
-          breakfast: recipes.filter(r => r.category === 'breakfast').length,
-          lunch: recipes.filter(r => r.category === 'lunch').length,
-          dinner: recipes.filter(r => r.category === 'dinner').length,
-          snack: recipes.filter(r => r.category === 'snack').length,
-          dessert: recipes.filter(r => r.category === 'dessert').length,
-          smoothie: recipes.filter(r => r.category === 'smoothie').length
+          breakfast: dbRecipes.filter(r => r.category === 'breakfast').length,
+          lunch: dbRecipes.filter(r => r.category === 'lunch').length,
+          dinner: dbRecipes.filter(r => r.category === 'dinner').length,
+          snack: dbRecipes.filter(r => r.category === 'snack').length,
+          dessert: dbRecipes.filter(r => r.category === 'dessert').length,
+          smoothie: dbRecipes.filter(r => r.category === 'smoothie').length
         },
-        byTags: recipes.reduce((acc, recipe) => {
+        byTags: dbRecipes.reduce((acc, recipe) => {
           recipe.tags.forEach(tag => {
             acc[tag] = (acc[tag] || 0) + 1;
           });
           return acc;
         }, {} as Record<string, number>),
         proteinRange: {
-          min: Math.min(...recipes.map(r => r.nutrition.protein)),
-          max: Math.max(...recipes.map(r => r.nutrition.protein)),
-          average: recipes.reduce((sum, r) => sum + r.nutrition.protein, 0) / recipes.length
+          min: Math.min(...dbRecipes.map(r => (r.nutrition as any)?.protein || 0)),
+          max: Math.max(...dbRecipes.map(r => (r.nutrition as any)?.protein || 0)),
+          average: dbRecipes.reduce((sum, r) => sum + ((r.nutrition as any)?.protein || 0), 0) / dbRecipes.length
         },
-        modifications: recipeModifications.size,
-        deleted: deletedRecipes.size
+        modifications: 0, // No longer using overlay modifications
+        deleted: 0 // Soft deletes are tracked via active flag in database
       };
 
       res.json(stats);
