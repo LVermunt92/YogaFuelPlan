@@ -18343,6 +18343,11 @@ export function getDefaultPortion(ingredient: string): { amount: number; unit: s
     'lime': { amount: 1, unit: 'piece' }, // 1 lime
     'bell pepper': { amount: 1, unit: 'piece' }, // 1 bell pepper (singular)
     'bell peppers': { amount: 2, unit: 'pieces' }, // 2 medium peppers
+    'red bell pepper': { amount: 1, unit: 'piece' }, // 1 red bell pepper
+    'green bell pepper': { amount: 1, unit: 'piece' }, // 1 green bell pepper
+    'yellow bell pepper': { amount: 1, unit: 'piece' }, // 1 yellow bell pepper
+    'orange bell pepper': { amount: 1, unit: 'piece' }, // 1 orange bell pepper
+    'sweet red pepper': { amount: 1, unit: 'piece' }, // 1 sweet red pepper (alternative name)
     'sugar snaps': { amount: 150, unit: 'g' }, // Sugar snap peas in grams
     'sugarsnaps': { amount: 150, unit: 'g' }, // Sugar snap peas in grams (alternative name)
     'zucchini': { amount: 1, unit: 'piece' }, // 1 medium zucchini
