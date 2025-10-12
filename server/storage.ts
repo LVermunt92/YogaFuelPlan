@@ -68,6 +68,11 @@ import {
   type AiRecipe,
   type InsertAiRecipe,
   type UpdateAiRecipe,
+
+  recipes,
+  type Recipe,
+  type InsertRecipe,
+  type UpdateRecipe,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, gte, lte, desc, inArray, sql } from "drizzle-orm";
@@ -156,6 +161,15 @@ export interface IStorage {
   getBatchRecipeTranslations(recipeIds: string[], language: string): Promise<RecipeTranslation[]>;
   getMissingTranslations(recipeIds: string[], language: string): Promise<string[]>;
 
+  // Recipe CRUD methods (unified database)
+  getAllRecipes(activeOnly?: boolean): Promise<Recipe[]>;
+  getRecipeById(id: string): Promise<Recipe | undefined>;
+  getRecipesByCategory(category: string, activeOnly?: boolean): Promise<Recipe[]>;
+  getRecipesByTags(tags: string[], activeOnly?: boolean): Promise<Recipe[]>;
+  createRecipe(data: InsertRecipe): Promise<Recipe>;
+  updateRecipe(id: string, updates: UpdateRecipe): Promise<Recipe>;
+  deleteRecipe(id: string): Promise<void>;
+  
   // AI Recipe methods
   upsertAiRecipe(data: InsertAiRecipe): Promise<AiRecipe>;
   getAiRecipeByHash(recipeHash: string): Promise<AiRecipe | undefined>;
@@ -734,6 +748,35 @@ export class MemStorage implements IStorage {
 
   async getMissingTranslations(recipeIds: string[], language: string): Promise<string[]> {
     return recipeIds; // All are missing in MemStorage
+  }
+
+  // Recipe CRUD methods (MemStorage - not implemented)
+  async getAllRecipes(activeOnly?: boolean): Promise<Recipe[]> {
+    throw new Error("Recipe database requires DatabaseStorage implementation");
+  }
+
+  async getRecipeById(id: string): Promise<Recipe | undefined> {
+    throw new Error("Recipe database requires DatabaseStorage implementation");
+  }
+
+  async getRecipesByCategory(category: string, activeOnly?: boolean): Promise<Recipe[]> {
+    throw new Error("Recipe database requires DatabaseStorage implementation");
+  }
+
+  async getRecipesByTags(tags: string[], activeOnly?: boolean): Promise<Recipe[]> {
+    throw new Error("Recipe database requires DatabaseStorage implementation");
+  }
+
+  async createRecipe(data: InsertRecipe): Promise<Recipe> {
+    throw new Error("Recipe database requires DatabaseStorage implementation");
+  }
+
+  async updateRecipe(id: string, updates: UpdateRecipe): Promise<Recipe> {
+    throw new Error("Recipe database requires DatabaseStorage implementation");
+  }
+
+  async deleteRecipe(id: string): Promise<void> {
+    throw new Error("Recipe database requires DatabaseStorage implementation");
   }
 
   // AI Recipe methods (MemStorage - not implemented)
@@ -1657,6 +1700,84 @@ export class DatabaseStorage implements IStorage {
     const existingIds = new Set(existing.map(t => t.recipeId));
     
     return recipeIds.filter(id => !existingIds.has(id));
+  }
+
+  // Recipe CRUD methods (unified database)
+  async getAllRecipes(activeOnly: boolean = true): Promise<Recipe[]> {
+    const query = db.select().from(recipes);
+    
+    if (activeOnly) {
+      return await query.where(eq(recipes.active, true));
+    }
+    
+    return await query;
+  }
+
+  async getRecipeById(id: string): Promise<Recipe | undefined> {
+    const [recipe] = await db
+      .select()
+      .from(recipes)
+      .where(eq(recipes.id, id))
+      .limit(1);
+    
+    return recipe;
+  }
+
+  async getRecipesByCategory(category: string, activeOnly: boolean = true): Promise<Recipe[]> {
+    const query = db
+      .select()
+      .from(recipes)
+      .where(eq(recipes.category, category));
+    
+    if (activeOnly) {
+      return await query.where(and(
+        eq(recipes.category, category),
+        eq(recipes.active, true)
+      ));
+    }
+    
+    return await query;
+  }
+
+  async getRecipesByTags(tags: string[], activeOnly: boolean = true): Promise<Recipe[]> {
+    if (tags.length === 0) return [];
+    
+    // Use SQL to check if any of the provided tags exist in the recipe's tags array
+    let query = db
+      .select()
+      .from(recipes)
+      .where(sql`${recipes.tags} && ARRAY[${tags.map(t => sql`${t}`).join(',')}]::text[]`);
+    
+    if (activeOnly) {
+      query = query.where(eq(recipes.active, true));
+    }
+    
+    return await query;
+  }
+
+  async createRecipe(data: InsertRecipe): Promise<Recipe> {
+    const [recipe] = await db
+      .insert(recipes)
+      .values(data)
+      .returning();
+    
+    return recipe;
+  }
+
+  async updateRecipe(id: string, updates: UpdateRecipe): Promise<Recipe> {
+    const [recipe] = await db
+      .update(recipes)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(recipes.id, id))
+      .returning();
+    
+    return recipe;
+  }
+
+  async deleteRecipe(id: string): Promise<void> {
+    await db
+      .delete(recipes)
+      .where(eq(recipes.id, id));
   }
 
   // AI Recipe methods
