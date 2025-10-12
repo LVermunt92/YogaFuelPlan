@@ -925,6 +925,12 @@ function AdminPanelMain() {
     },
   });
 
+  // Fetch all tags for recipe editor
+  const { data: tagsData } = useQuery<{ tag: string; count: number }[]>({
+    queryKey: ['/api/admin/tags'],
+    queryFn: () => fetch('/api/admin/tags').then(res => res.json()),
+  });
+
   // Update nutrition configuration
   const updateConfigMutation = useMutation({
     mutationFn: async (config: NutritionConfig) => {
@@ -2071,7 +2077,7 @@ function AdminPanelMain() {
                                   <Button
                                     size="sm"
                                     variant="ghost"
-                                    onClick={() => setEditingRecipe(recipe)}
+                                    onClick={() => setEditingRecipe({...recipe, portion: "1 serving"})}
                                     title="Edit recipe"
                                   >
                                     <Edit className="h-4 w-4" />
@@ -2555,12 +2561,12 @@ function AdminPanelMain() {
                     <Label htmlFor="portion">Portion Size</Label>
                     <Input
                       id="portion"
-                      value={editingRecipe.portion}
-                      onChange={(e) => setEditingRecipe({...editingRecipe, portion: e.target.value})}
-                      placeholder="e.g., 1 serving"
-                      className="w-full"
+                      value="1 serving"
+                      disabled
+                      className="w-full bg-gray-100 cursor-not-allowed"
                       style={{ fontSize: '16px' }}
                     />
+                    <p className="text-xs text-gray-500 mt-1">Recipes always use 1 serving for consistency</p>
                   </div>
                   <div className="sm:col-span-1">
                     {/* This ensures proper spacing on mobile */}
@@ -2712,16 +2718,39 @@ function AdminPanelMain() {
 
                 {/* Tags */}
                 <div>
-                  <Label htmlFor="tags">Dietary Tags (comma-separated)</Label>
-                  <Input
-                    id="tags"
-                    value={editingRecipe.tags.join(", ")}
-                    onChange={(e) => setEditingRecipe({
-                      ...editingRecipe, 
-                      tags: e.target.value.split(",").map(tag => tag.trim()).filter(Boolean)
-                    })}
-                    placeholder="vegetarian, gluten-free, high-protein"
-                  />
+                  <Label htmlFor="tags">Dietary Tags</Label>
+                  <div className="flex flex-wrap gap-2 p-3 border rounded-md min-h-[100px] bg-white">
+                    {!tagsData || tagsData.length === 0 ? (
+                      <p className="text-sm text-gray-400">Loading tags...</p>
+                    ) : (
+                      tagsData.map((tagData) => {
+                        const isSelected = editingRecipe.tags.includes(tagData.tag);
+                        return (
+                          <Badge
+                            key={tagData.tag}
+                            variant={isSelected ? "default" : "outline"}
+                            className={`cursor-pointer transition-colors ${
+                              isSelected 
+                                ? "bg-emerald-500 hover:bg-emerald-600 text-white" 
+                                : "hover:bg-gray-100"
+                            }`}
+                            onClick={() => {
+                              setEditingRecipe({
+                                ...editingRecipe,
+                                tags: isSelected
+                                  ? editingRecipe.tags.filter(t => t !== tagData.tag)
+                                  : [...editingRecipe.tags, tagData.tag]
+                              });
+                            }}
+                          >
+                            {tagData.tag}
+                            {isSelected && " ✓"}
+                          </Badge>
+                        );
+                      })
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">Click tags to select/deselect</p>
                 </div>
 
                 {/* Ingredients */}
@@ -2758,7 +2787,7 @@ function AdminPanelMain() {
                   Cancel
                 </Button>
                 <Button 
-                  onClick={() => updateRecipeMutation.mutate(editingRecipe)}
+                  onClick={() => updateRecipeMutation.mutate({...editingRecipe, portion: "1 serving"})}
                   disabled={updateRecipeMutation.isPending}
                 >
                   {updateRecipeMutation.isPending ? "Saving..." : "Save Changes"}
