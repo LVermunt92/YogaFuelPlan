@@ -24,6 +24,14 @@ Preferred communication style: Simple, everyday language.
   - **Check base recipe tags BEFORE creating any variant** - if tag exists, variant is unnecessary
   - **Portion sizing**: All recipes display ingredients for 2 servings (cooking batch), shopping lists calculate: ingredient amount × 2 servings × number of cooking sessions
 
+**INGREDIENT FORMAT STANDARDS** (CRITICAL - ensures consistent shopping lists):
+  - **Bell peppers**: ALWAYS specify in pieces (e.g., "1/2 bell pepper, diced", "1 red bell pepper, sliced") - NEVER use grams
+  - **Zucchini**: ALWAYS specify in pieces (e.g., "1 zucchini, sliced", "1/2 zucchini") - NEVER use grams
+  - **Mushrooms (regular)**: ALWAYS specify in grams (e.g., "150g mushrooms, sliced", "100g button mushrooms") - NEVER use pieces
+  - **Portobello mushrooms**: ALWAYS specify in pieces (e.g., "2 large portobello mushrooms", "1 portobello mushroom cap") - these are specialty items that stay separate on shopping lists
+  - **Cauliflower**: Use cauliflower rice (e.g., "300g cauliflower rice") or florets in grams (e.g., "250g cauliflower florets") - NEVER use "1 head" as it's imprecise for portion control
+  - When AI generates new recipes, it MUST follow these ingredient format rules to ensure shopping list accuracy and consistency
+
 # System Architecture
 - **UI/UX Decisions**: Utilizes `shadcn/ui` built on `Radix UI` primitives with `Tailwind CSS` and CSS variables for theming, focusing on a streamlined interface. Color schemes are standardized across the application (emerald, yellow, green, blue, orange for KPIs; gray for general UI; green/blue/orange for meal cards). Mobile layouts are optimized for responsiveness.
 - **Technical Implementations**:
