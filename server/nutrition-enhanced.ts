@@ -18274,6 +18274,13 @@ export function parseIngredientAmount(ingredientString: string): { amount: numbe
   
   // Match patterns like "200g", "1 piece", "2 tbsp", etc.
   const patterns = [
+    // Fractions: 1/2, 1/4, 3/4 with optional unit
+    { regex: /^(\d+)\/(\d+)\s*(g|gram|grams|mg|kg)?(?:\s|$)/i, unit: 'pieces', multiplier: (unit: string, num: string, denom: string) => {
+      if (unit && (unit === 'g' || unit === 'gram' || unit === 'grams')) return 1; // If it has grams unit, use grams
+      if (unit === 'kg') return 1000;
+      if (unit === 'mg') return 0.001;
+      return 1; // Otherwise treat as pieces
+    }},
     // Weight: 200g, 150ml
     { regex: /^(\d+(?:\.\d+)?)\s*(g|gram|grams|mg|kg)(?:\s|$)/i, unit: 'g', multiplier: (unit: string) => {
       if (unit === 'kg') return 1000;
@@ -18297,10 +18304,25 @@ export function parseIngredientAmount(ingredientString: string): { amount: numbe
   for (const pattern of patterns) {
     const match = lower.match(pattern.regex);
     if (match) {
-      const amount = parseFloat(match[1]);
-      const unitStr = match[2] || '';
-      const multiplier = pattern.multiplier(unitStr);
-      return { amount: amount * multiplier, unit: pattern.unit };
+      // Handle fractions: match[1] = numerator, match[2] = denominator
+      let amount: number;
+      if (match[2] && pattern.regex.toString().includes('\\/')) {
+        // This is a fraction pattern
+        const numerator = parseFloat(match[1]);
+        const denominator = parseFloat(match[2]);
+        amount = numerator / denominator;
+        const unitStr = match[3] || ''; // Unit is in match[3] for fractions
+        const multiplier = pattern.multiplier(unitStr, match[1], match[2]);
+        // Determine unit based on whether it has a weight unit
+        const finalUnit = unitStr && (unitStr === 'g' || unitStr === 'gram' || unitStr === 'grams' || unitStr === 'kg' || unitStr === 'mg') ? 'g' : 'pieces';
+        return { amount: amount * multiplier, unit: finalUnit };
+      } else {
+        // Regular pattern
+        amount = parseFloat(match[1]);
+        const unitStr = match[2] || '';
+        const multiplier = pattern.multiplier(unitStr);
+        return { amount: amount * multiplier, unit: pattern.unit };
+      }
     }
   }
 
