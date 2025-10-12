@@ -3308,17 +3308,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const recipeId = req.params.id;
       const updates = req.body;
 
+      console.log(`📝 UPDATE REQUEST: Recipe ID ${recipeId}`);
+
       // Validate the updates (basic validation)
       if (!updates.name || !updates.category || !updates.ingredients || !updates.nutrition) {
         return res.status(400).json({ message: "Missing required fields" });
       }
 
       const recipes = await getCompleteEnhancedMealDatabase();
-      const existingRecipe = recipes.find(r => (r.id || r.name) === recipeId);
+      console.log(`📊 Database has ${recipes.length} recipes`);
+      
+      // Try to find the recipe by ID (as string or number)
+      const existingRecipe = recipes.find(r => {
+        const recipeIdStr = String(r.id || r.name);
+        return recipeIdStr === recipeId || recipeIdStr === String(recipeId);
+      });
 
       if (!existingRecipe) {
+        // Debug: Show what IDs we have near this range
+        const nearbyIds = recipes
+          .filter(r => r.id && Math.abs(parseInt(String(r.id)) - parseInt(recipeId)) < 5)
+          .map(r => r.id)
+          .slice(0, 10);
+        console.log(`❌ Recipe ${recipeId} not found. Nearby IDs:`, nearbyIds);
         return res.status(404).json({ message: "Recipe not found" });
       }
+
+      console.log(`✅ Found recipe: ${existingRecipe.name} (ID: ${existingRecipe.id})`);
 
       // Create updated recipe
       const updatedRecipe: MealOption = {
