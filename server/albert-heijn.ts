@@ -409,7 +409,9 @@ class AlbertHeijnService {
           const product = products[0]; // Take first match
           // Special handling for certain ingredients to normalize different variations
           let productKey = `${product.name}_${product.id}`;
-          if (ingredient.toLowerCase().includes('garlic') || ingredient.toLowerCase().includes('knoflook') || 
+          if (ingredient.toLowerCase().includes('portobello')) {
+            productKey = `portobello_mushrooms_consolidated`; // Keep portobello separate from regular mushrooms
+          } else if (ingredient.toLowerCase().includes('garlic') || ingredient.toLowerCase().includes('knoflook') || 
               product.name.toLowerCase().includes('knoflook') || product.name.toLowerCase().includes('garlic')) {
             productKey = `garlic_consolidated`; // Use unified key for all garlic products
           } else if (ingredient.toLowerCase().includes('lime') || product.name.toLowerCase().includes('limoen')) {
@@ -450,7 +452,9 @@ class AlbertHeijnService {
           let manualKey = `manual_${mappedProductName.toLowerCase().trim()}`;
           
           // Special handling for specific ingredients to consolidate all variations
-          if (mappedProductName.toLowerCase().includes('garlic') || mappedProductName.toLowerCase().includes('clove')) {
+          if (mappedProductName.toLowerCase().includes('portobello')) {
+            manualKey = `portobello_mushrooms_consolidated`; // Keep portobello separate from regular mushrooms
+          } else if (mappedProductName.toLowerCase().includes('garlic') || mappedProductName.toLowerCase().includes('clove')) {
             manualKey = `manual_garlic_cloves`;
           } else if (mappedProductName.toLowerCase().includes('lime')) {
             manualKey = `manual_lime_pieces`;
