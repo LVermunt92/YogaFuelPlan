@@ -1293,44 +1293,6 @@ function MealPlannerMain() {
                                                 {item.quantity} {item.unit}
                                               </span>
                                             </div>
-                                            
-                                            {/* Category Remapping Dropdown */}
-                                            <Select
-                                              value={item.category}
-                                              onValueChange={(newCategory) => {
-                                                // Update item category
-                                                updateShoppingListItemMutation.mutate({
-                                                  itemId: item.id,
-                                                  updates: { category: newCategory }
-                                                });
-                                              }}
-                                            >
-                                              <SelectTrigger 
-                                                className="w-[140px] h-8 text-xs"
-                                                onClick={(e) => e.stopPropagation()}
-                                                data-testid={`select-category-${item.id}`}
-                                              >
-                                                <SelectValue />
-                                              </SelectTrigger>
-                                              <SelectContent>
-                                                <SelectItem value="Groente & fruit">Groente & fruit</SelectItem>
-                                                <SelectItem value="Vlees, vis & vega">Vlees, vis & vega</SelectItem>
-                                                <SelectItem value="Zuivel & eieren">Zuivel & eieren</SelectItem>
-                                                <SelectItem value="Brood & gebak">Brood & gebak</SelectItem>
-                                                <SelectItem value="Kaas & vleeswaren">Kaas & vleeswaren</SelectItem>
-                                                <SelectItem value="Ontbijt & beleg">Ontbijt & beleg</SelectItem>
-                                                <SelectItem value="Pasta, rijst & wereldkeuken">Pasta, rijst & wereldkeuken</SelectItem>
-                                                <SelectItem value="Soepen, sauzen & kruiden">Soepen, sauzen & kruiden</SelectItem>
-                                                <SelectItem value="Snoep, koek & chips">Snoep, koek & chips</SelectItem>
-                                                <SelectItem value="Bewuste voeding">Bewuste voeding</SelectItem>
-                                                <SelectItem value="Dranken">Dranken</SelectItem>
-                                                <SelectItem value="Baby & peuter">Baby & peuter</SelectItem>
-                                                <SelectItem value="Diepvries">Diepvries</SelectItem>
-                                                <SelectItem value="Huishouden">Huishouden</SelectItem>
-                                                <SelectItem value="Huisdier">Huisdier</SelectItem>
-                                                <SelectItem value="Persoonlijke verzorging">Persoonlijke verzorging</SelectItem>
-                                              </SelectContent>
-                                            </Select>
                                           </div>
                                         </div>
                                       );
