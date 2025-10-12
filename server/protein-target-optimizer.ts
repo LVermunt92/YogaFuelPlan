@@ -80,6 +80,8 @@ function analyzeProteinGap(currentProtein: number, targetProtein: number): Prote
 
 /**
  * Score meals based on protein content and user's target
+ * Rebalanced to favor meals that match target per meal (~32g for 95g daily)
+ * and reduce overshooting while maintaining variety
  */
 function scoreProteinForTarget(meal: MealOption, targetDailyProtein: number): number {
   const protein = meal.nutrition.protein;
@@ -88,24 +90,50 @@ function scoreProteinForTarget(meal: MealOption, targetDailyProtein: number): nu
   // Score based on how well this meal contributes to daily target
   let score = 0;
   
-  // Base protein score (higher protein = higher score)
-  if (protein >= 35) score += 100; // Excellent protein (new high-protein meals)
-  else if (protein >= 28) score += 90; // Very high protein (new high-protein meals)
-  else if (protein >= 20) score += 70; // High protein
-  else if (protein >= 15) score += 50; // Good protein
-  else if (protein >= 10) score += 30; // Moderate protein
-  else score += 10; // Lower protein
+  // NEW: Rebalanced protein scoring - favor meals close to target per meal
+  // For 95g daily target: ~32g per meal is ideal
+  const distanceFromTarget = Math.abs(protein - targetPerMeal);
   
-  // Bonus for meals that help reach target per meal
+  // Perfect match or slightly above target (within 5g)
+  if (distanceFromTarget <= 5) {
+    score += 100; // Ideal protein content for target
+  }
+  // Good range (within 8g of target)
+  else if (distanceFromTarget <= 8) {
+    score += 90; // Very good protein content
+  }
+  // Acceptable range (within 12g of target)
+  else if (distanceFromTarget <= 12) {
+    score += 75; // Good protein content
+  }
+  // Moderate protein (still useful but not optimal)
+  else if (protein >= 15 && protein <= 45) {
+    score += 60; // Moderate protein - provides variety
+  }
+  // Very high protein (overshoots significantly)
+  else if (protein > 45) {
+    score += 40; // Penalize excessive protein
+  }
+  // Low protein
+  else {
+    score += 20; // Low protein - last resort
+  }
+  
+  // Bonus for meals that help reach target per meal (not overshoot)
   const targetContribution = (protein / targetPerMeal) * 100;
-  if (targetContribution >= 80) score += 20; // Gets us close to target per meal
-  else if (targetContribution >= 60) score += 10; // Good contribution
+  if (targetContribution >= 90 && targetContribution <= 110) {
+    score += 20; // Perfect contribution (90-110% of target)
+  } else if (targetContribution >= 70 && targetContribution <= 130) {
+    score += 10; // Good contribution (70-130% of target)
+  } else if (targetContribution > 130) {
+    score -= 10; // Penalize overshooting
+  }
   
-  // Efficiency bonus (protein per calorie)
+  // Efficiency bonus (protein per calorie) - less weight than before
   const proteinPerCalorie = protein / (meal.nutrition.calories || 400);
-  if (proteinPerCalorie > 0.08) score += 15; // Very efficient
-  else if (proteinPerCalorie > 0.06) score += 10; // Good efficiency
-  else if (proteinPerCalorie > 0.04) score += 5; // Moderate efficiency
+  if (proteinPerCalorie > 0.08) score += 10; // Very efficient
+  else if (proteinPerCalorie > 0.06) score += 7; // Good efficiency
+  else if (proteinPerCalorie > 0.04) score += 3; // Moderate efficiency
   
   return score;
 }
