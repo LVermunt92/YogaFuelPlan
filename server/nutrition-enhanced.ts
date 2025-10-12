@@ -18328,6 +18328,7 @@ export function getDefaultPortion(ingredient: string): { amount: number; unit: s
     'quinoa': { amount: 85, unit: 'g' }, // 0.5 cup dry = ~85g
     'brown rice': { amount: 95, unit: 'g' }, // 0.5 cup dry = ~95g
     'spinach': { amount: 60, unit: 'g' }, // 2 cups fresh = ~60g
+    'plant-based milk': { amount: 240, unit: 'ml' }, // 1 cup = 240ml (any plant milk: almond, oat, soy)
     'mushrooms': { amount: 70, unit: 'g' }, // 1 cup sliced = ~70g
     'portobello mushrooms': { amount: 2, unit: 'pieces' }, // 2 large portobello mushrooms
     'onions': { amount: 1, unit: 'piece' }, // 1 medium onion
@@ -18985,30 +18986,34 @@ function cleanIngredientName(ingredient: string): string {
     'wine': 'vegetable stock',
     'vegetable broth': 'vegetable stock',
     'vegetable stock': 'vegetable stock',
-    'almond milk': 'almond milk',
+    // Consolidate all plant-based milks (except coconut milk for curries)
+    'almond milk': 'plant-based milk',
+    'unsweetened almond milk': 'plant-based milk',
+    'oat milk': 'plant-based milk',
+    'soy milk': 'plant-based milk',
+    'oat oat milk': 'plant-based milk',
+    'soy oat milk': 'plant-based milk',
+    'unsweetened oat milk': 'plant-based milk',
+    'organic oat milk': 'plant-based milk',
+    'barista oat milk': 'plant-based milk',
+    'sweetened oat milk': 'plant-based milk',
+    'vanilla oat milk': 'plant-based milk',
+    'chocolate oat milk': 'plant-based milk',
+    'enriched oat milk': 'plant-based milk',
+    'calcium enriched oat milk': 'plant-based milk',
+    'oat milk (unsweetened)': 'plant-based milk',
+    'oat milk (sweetened)': 'plant-based milk',
+    'oat milk (vanilla)': 'plant-based milk',
+    'oat milk (original)': 'plant-based milk',
+    'original oat milk': 'plant-based milk',
+    'fresh oat milk': 'plant-based milk',
+    'creamy oat milk': 'plant-based milk',
+    'oat drink': 'plant-based milk',
+    'oat beverage': 'plant-based milk',
+    'plant-based milk': 'plant-based milk',
     'kefir': 'fermented kefir',
     'berries': 'mixed berries',
     'oats': 'rolled oats',
-    // Comprehensive oat milk consolidation - all variations standardize to 'oat milk'
-    'oat oat milk': 'oat milk',
-    'soy oat milk': 'soy milk',
-    'unsweetened oat milk': 'oat milk',
-    'organic oat milk': 'oat milk',
-    'barista oat milk': 'oat milk',
-    'sweetened oat milk': 'oat milk',
-    'vanilla oat milk': 'oat milk',
-    'chocolate oat milk': 'oat milk',
-    'enriched oat milk': 'oat milk',
-    'calcium enriched oat milk': 'oat milk',
-    'oat milk (unsweetened)': 'oat milk',
-    'oat milk (sweetened)': 'oat milk',
-    'oat milk (vanilla)': 'oat milk',
-    'oat milk (original)': 'oat milk',
-    'original oat milk': 'oat milk',
-    'fresh oat milk': 'oat milk',
-    'creamy oat milk': 'oat milk',
-    'oat drink': 'oat milk',
-    'oat beverage': 'oat milk',
     'pieces of pieces of lemon': 'lemon',
     'pieces of lemon': 'lemon', // Simplify lemon to avoid complex specifications
     'porridge certified oats': 'rolled oats',
