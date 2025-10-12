@@ -1520,16 +1520,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      // Multiply ingredients by portion size (2 servings) for display - shows cooking batch
-      const PORTION_SIZE = 2;
+      // Check if this is a leftover meal or fresh cooking
+      // Leftovers: show 1 serving (just reheating)
+      // Fresh: show 2 servings (cooking batch for today + tomorrow's leftover)
+      const PORTION_SIZE = targetMeal.isLeftover ? 1 : 2;
+      const portionLabel = targetMeal.isLeftover ? '1 serving (leftover)' : '2 servings (cooking batch)';
+      
       const multipliedIngredients = translatedRecipe.ingredients.map(ingredient => 
         multiplyIngredientAmount(ingredient, PORTION_SIZE)
       );
       
       res.json({
         name: translatedRecipe.name,
-        portion: `${PORTION_SIZE} servings (cooking batch)`,
-        ingredients: multipliedIngredients,  // Show ingredients for cooking batch (2 servings)
+        portion: portionLabel,
+        ingredients: multipliedIngredients,  // Multiply based on fresh vs leftover
         instructions: translatedRecipe.instructions,
         tips: translatedRecipe.tips,
         notes: translatedRecipe.notes.join('\n'),
