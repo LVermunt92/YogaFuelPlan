@@ -849,6 +849,7 @@ function AdminPanelMain() {
   const [editingRecipe, setEditingRecipe] = useState<Recipe | null>(null);
   const [viewingRecipe, setViewingRecipe] = useState<Recipe | null>(null);
   const [showCreateRecipe, setShowCreateRecipe] = useState(false);
+  const [adminIngredientCategories, setAdminIngredientCategories] = useState<Record<number, { category: string; normalizedName: string }>>({});
 
   // Fetch system statistics
   const { data: systemStats, isLoading: statsLoading } = useQuery<SystemStats>({
@@ -1041,6 +1042,38 @@ function AdminPanelMain() {
       toast({ title: "Success", description: "Recipes updated successfully" });
     },
   });
+
+  // Analyze ingredients for admin panel
+  const analyzeAdminIngredients = async (ingredients: string[]) => {
+    try {
+      const response = await fetch('/api/analyze-ingredients', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ingredients })
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        const categories: Record<number, { category: string; normalizedName: string }> = {};
+        data.analysis.forEach((item: {ingredient: string, category: string, normalizedIngredient?: string}, index: number) => {
+          categories[index] = {
+            category: item.category,
+            normalizedName: item.normalizedIngredient || item.ingredient
+          };
+        });
+        setAdminIngredientCategories(categories);
+      }
+    } catch (error) {
+      console.error('Error analyzing ingredients:', error);
+    }
+  };
+
+  // Watch for recipe ingredient changes in admin panel
+  React.useEffect(() => {
+    if (editingRecipe && editingRecipe.ingredients.length > 0) {
+      analyzeAdminIngredients(editingRecipe.ingredients);
+    }
+  }, [editingRecipe?.ingredients]);
 
   const groupedConfigs = nutritionConfigs.reduce((acc, config) => {
     if (!acc[config.category]) acc[config.category] = {};
@@ -2787,19 +2820,95 @@ function AdminPanelMain() {
                   <p className="text-xs text-gray-500 mt-1">Click tags to select/deselect. Selected tags show an X to remove.</p>
                 </div>
 
-                {/* Ingredients */}
+                {/* Ingredients - Two Column Layout */}
                 <div>
-                  <Label htmlFor="ingredients">Ingredients (one per line)</Label>
-                  <Textarea
-                    id="ingredients"
-                    rows={5}
-                    value={editingRecipe.ingredients.join("\n")}
-                    onChange={(e) => setEditingRecipe({
-                      ...editingRecipe, 
-                      ingredients: e.target.value.split("\n").filter(Boolean)
-                    })}
-                    placeholder="200g chicken breast&#10;1 tbsp olive oil&#10;100g brown rice"
-                  />
+                  <Label className="text-base font-semibold">Ingredients</Label>
+                  <div className="text-sm text-gray-600 mb-3">
+                    Enter ingredients with quantities (e.g., "200g quinoa"). Mappings show how they'll appear on shopping lists.
+                  </div>
+                  <div className="space-y-2">
+                    {/* Header Row */}
+                    <div className="grid grid-cols-2 gap-2 text-xs font-medium text-gray-600 px-2 pb-1 border-b">
+                      <div>Recipe ingredient</div>
+                      <div>Shopping list mapping</div>
+                    </div>
+                    
+                    {/* Ingredient Rows */}
+                    {editingRecipe.ingredients.map((ingredient, index) => (
+                      <div key={index} className="flex gap-2 items-start">
+                        <div className="grid grid-cols-2 gap-2 flex-1">
+                          {/* Recipe Ingredient Input */}
+                          <div>
+                            <Input
+                              value={ingredient}
+                              onChange={(e) => {
+                                const newIngredients = [...editingRecipe.ingredients];
+                                newIngredients[index] = e.target.value;
+                                setEditingRecipe({
+                                  ...editingRecipe,
+                                  ingredients: newIngredients
+                                });
+                              }}
+                              placeholder="e.g., 200g quinoa"
+                              className="w-full"
+                            />
+                          </div>
+                          
+                          {/* Mapping Display */}
+                          <div className="flex items-center gap-2">
+                            <div className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-sm">
+                              {adminIngredientCategories[index] ? (
+                                <div>
+                                  <div className="font-medium text-gray-900">
+                                    {adminIngredientCategories[index].normalizedName || 'No mapping'}
+                                  </div>
+                                  <div className="text-xs text-gray-500">
+                                    {adminIngredientCategories[index].category}
+                                  </div>
+                                </div>
+                              ) : (
+                                <span className="text-gray-400 text-xs">Analyzing...</span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Remove Button */}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const newIngredients = editingRecipe.ingredients.filter((_, i) => i !== index);
+                            setEditingRecipe({
+                              ...editingRecipe,
+                              ingredients: newIngredients.length > 0 ? newIngredients : ['']
+                            });
+                          }}
+                          disabled={editingRecipe.ingredients.length <= 1}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                    
+                    {/* Add Ingredient Button */}
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setEditingRecipe({
+                          ...editingRecipe,
+                          ingredients: [...editingRecipe.ingredients, '']
+                        });
+                      }}
+                      className="mt-2"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add ingredient
+                    </Button>
+                  </div>
                 </div>
 
                 {/* Active Status */}
