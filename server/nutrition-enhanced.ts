@@ -16468,17 +16468,16 @@ export async function getCompleteEnhancedMealDatabase(): Promise<MealOption[]> {
     return await addSeasonalMonthTagsToRecipe(recipeWithFunctionalTags);
   }));
   
-  // Filter out deleted recipes from the unified database
-  const { storage } = await import('./storage.js');
-  const deletedRecipeIds = await storage.getRecipeDeletions();
-  const deletedIds = new Set(deletedRecipeIds);
+  // Filter out deleted recipes using dedicated deletion cache with retry logic
+  const { recipeDeletionCache } = await import('./recipe-deletion-cache.js');
+  const deletedIds = await recipeDeletionCache.load();
   const activeRecipes = recipesWithIds.filter(recipe => {
     if (!recipe.id) return true; // Keep recipes without IDs
     const recipeId = String(recipe.id);
     return !deletedIds.has(recipeId);
   });
   
-  if (deletedRecipeIds.length > 0) {
+  if (deletedIds.size > 0) {
     console.log(`🗑️  Filtered out ${recipesWithIds.length - activeRecipes.length} deleted recipes from unified database`);
   }
   

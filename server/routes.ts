@@ -3061,6 +3061,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // DELETE /api/admin/unified-recipes/:id - Delete a recipe from unified database
   app.delete("/api/admin/unified-recipes/:id", async (req, res) => {
+    const { recipeDeletionCache } = await import('./recipe-deletion-cache.js');
+    
     try {
       if (!req.session?.userId) {
         return res.status(401).json({ message: "Not authenticated" });
@@ -3077,11 +3079,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Recipe ID is required" });
       }
 
-      // Save deletion to database
+      // Save deletion to database FIRST
       await storage.saveRecipeDeletion(id, req.session.userId);
 
-      // Invalidate cache so next request gets fresh data
-      invalidateEnhancedMealDatabaseCache();
+      // Only update cache after successful DB write
+      recipeDeletionCache.addDeletion(id);
 
       res.json({
         message: "Recipe deleted successfully",
@@ -3090,11 +3092,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error deleting recipe:", error);
       res.status(500).json({ message: "Failed to delete recipe" });
+    } finally {
+      // Always invalidate caches to ensure consistency
+      invalidateEnhancedMealDatabaseCache();
+      recipeDeletionCache.invalidate();
     }
   });
 
   // POST /api/admin/unified-recipes/:id/restore - Restore a deleted recipe
   app.post("/api/admin/unified-recipes/:id/restore", async (req, res) => {
+    const { recipeDeletionCache } = await import('./recipe-deletion-cache.js');
+    
     try {
       if (!req.session?.userId) {
         return res.status(401).json({ message: "Not authenticated" });
@@ -3111,11 +3119,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Recipe ID is required" });
       }
 
-      // Remove deletion from database (restores the recipe)
+      // Remove deletion from database FIRST
       await storage.removeRecipeDeletion(id);
 
-      // Invalidate cache so next request gets fresh data
-      invalidateEnhancedMealDatabaseCache();
+      // Only update cache after successful DB write
+      recipeDeletionCache.removeDeletion(id);
 
       res.json({
         message: "Recipe restored successfully",
@@ -3124,6 +3132,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error restoring recipe:", error);
       res.status(500).json({ message: "Failed to restore recipe" });
+    } finally {
+      // Always invalidate caches to ensure consistency
+      invalidateEnhancedMealDatabaseCache();
+      recipeDeletionCache.invalidate();
     }
   });
 

@@ -1574,13 +1574,10 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getRecipeDeletions(): Promise<string[]> {
-    try {
-      const deletions = await db.select().from(recipeDeletions);
-      return deletions.map(del => del.recipeId);
-    } catch (error) {
-      console.error('Error fetching recipe deletions, returning empty array:', error);
-      return []; // Return empty array on error to prevent meal generation failure
-    }
+    // Note: Retry logic is now handled by RecipeDeletionCache
+    // This method should throw errors so the cache can handle retries properly
+    const deletions = await db.select().from(recipeDeletions);
+    return deletions.map(del => del.recipeId);
   }
 
   async removeRecipeDeletion(recipeId: string): Promise<void> {
