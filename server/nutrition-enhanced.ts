@@ -18221,7 +18221,9 @@ export function multiplyIngredientAmount(ingredientString: string, multiplier: n
   
   // Match patterns for quantities at the start of the string
   const patterns = [
-    // Fractions: ½, ¼, ⅓, etc.
+    // Text fractions: 1/2, 3/4, 1/4, etc.
+    /^(\d+\/\d+)/,
+    // Unicode fractions: ½, ¼, ⅓, etc.
     /^(½|¼|¾|⅓|⅔|⅛)/,
     // Decimal numbers: 1.5, 2.0, etc.
     /^(\d+\.?\d*)/,
@@ -18233,8 +18235,13 @@ export function multiplyIngredientAmount(ingredientString: string, multiplier: n
       const originalAmount = match[1];
       let numericAmount = 0;
       
-      // Handle fractions
-      if (originalAmount === '½') numericAmount = 0.5;
+      // Handle text fractions (1/2, 3/4, etc.)
+      if (originalAmount.includes('/')) {
+        const [numerator, denominator] = originalAmount.split('/').map(Number);
+        numericAmount = numerator / denominator;
+      }
+      // Handle Unicode fractions
+      else if (originalAmount === '½') numericAmount = 0.5;
       else if (originalAmount === '¼') numericAmount = 0.25;
       else if (originalAmount === '¾') numericAmount = 0.75;
       else if (originalAmount === '⅓') numericAmount = 0.33;
@@ -18243,8 +18250,8 @@ export function multiplyIngredientAmount(ingredientString: string, multiplier: n
       else numericAmount = parseFloat(originalAmount);
       
       const newAmount = numericAmount * multiplier;
-      // Format the new amount nicely
-      const formattedAmount = newAmount % 1 === 0 ? newAmount.toString() : newAmount.toFixed(1);
+      // Format the new amount: whole numbers as integers, decimals with max 1 decimal place
+      const formattedAmount = newAmount % 1 === 0 ? newAmount.toString() : newAmount.toFixed(1).replace('.0', '');
       
       return ingredientString.replace(originalAmount, formattedAmount);
     }
