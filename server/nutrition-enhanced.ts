@@ -18341,6 +18341,7 @@ export function getDefaultPortion(ingredient: string): { amount: number; unit: s
     'cherry tomatoes': { amount: 150, unit: 'g' }, // 1 cup = ~150g
     'tomatoes': { amount: 2, unit: 'pieces' }, // 2 medium tomatoes
     'lime': { amount: 1, unit: 'piece' }, // 1 lime
+    'bell pepper': { amount: 1, unit: 'piece' }, // 1 bell pepper (singular)
     'bell peppers': { amount: 2, unit: 'pieces' }, // 2 medium peppers
     'sugar snaps': { amount: 150, unit: 'g' }, // Sugar snap peas in grams
     'sugarsnaps': { amount: 150, unit: 'g' }, // Sugar snap peas in grams (alternative name)
