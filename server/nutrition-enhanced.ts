@@ -18329,6 +18329,7 @@ export function getDefaultPortion(ingredient: string): { amount: number; unit: s
     'brown rice': { amount: 95, unit: 'g' }, // 0.5 cup dry = ~95g
     'spinach': { amount: 60, unit: 'g' }, // 2 cups fresh = ~60g
     'mushrooms': { amount: 70, unit: 'g' }, // 1 cup sliced = ~70g
+    'portobello mushrooms': { amount: 2, unit: 'pieces' }, // 2 large portobello mushrooms
     'onions': { amount: 1, unit: 'piece' }, // 1 medium onion
     'garlic': { amount: 2, unit: 'cloves' }, // 2 cloves
     'olive oil': { amount: 30, unit: 'ml' }, // 2 tbsp = ~30ml
@@ -18924,7 +18925,7 @@ function cleanIngredientName(ingredient: string): string {
     'pepper': 'pepper',
     'quinoa': 'quinoa',
     'wild mushrooms': 'mushrooms',
-    'portobello mushrooms': 'mushrooms',
+    'portobello mushrooms': 'portobello mushrooms',
     'king oyster mushrooms': 'mushrooms',
     'mushrooms': 'mushrooms',
     'garlic': 'garlic',
