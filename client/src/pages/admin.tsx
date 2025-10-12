@@ -616,13 +616,18 @@ function IngredientMappingManager() {
                             <SelectValue placeholder="Select category" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="Meat & Fish">Meat & Fish</SelectItem>
                             <SelectItem value="Vegetables">Vegetables</SelectItem>
                             <SelectItem value="Fruits">Fruits</SelectItem>
-                            <SelectItem value="Grains & Cereals">Grains & Cereals</SelectItem>
-                            <SelectItem value="Dairy">Dairy</SelectItem>
-                            <SelectItem value="Pantry Items">Pantry Items</SelectItem>
-                            <SelectItem value="Spices & Herbs">Spices & Herbs</SelectItem>
+                            <SelectItem value="Protein">Protein</SelectItem>
+                            <SelectItem value="Plant-Based Alternatives">Plant-Based Alternatives</SelectItem>
+                            <SelectItem value="Grains & Carbs">Grains & Carbs</SelectItem>
+                            <SelectItem value="Dairy & Alternatives">Dairy & Alternatives</SelectItem>
+                            <SelectItem value="Fats & Oils">Fats & Oils</SelectItem>
+                            <SelectItem value="Nuts & Seeds">Nuts & Seeds</SelectItem>
+                            <SelectItem value="Condiments & Sauces">Condiments & Sauces</SelectItem>
+                            <SelectItem value="Spices & Dried Herbs">Spices & Dried Herbs</SelectItem>
+                            <SelectItem value="Fresh Herbs">Fresh Herbs</SelectItem>
+                            <SelectItem value="Other Dry Goods">Other Dry Goods</SelectItem>
                             <SelectItem value="Other">Other</SelectItem>
                           </SelectContent>
                         </Select>
