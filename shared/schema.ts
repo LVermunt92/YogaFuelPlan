@@ -296,7 +296,7 @@ export const plantCategories = pgTable("plant_categories", {
 // Pre-translated recipe storage for multi-language support
 export const recipeTranslations = pgTable("recipe_translations", {
   id: serial("id").primaryKey(),
-  recipeId: integer("recipe_id").notNull(), // Numerical ID from enhanced meal database
+  recipeId: text("recipe_id").notNull(), // Text ID matching recipes.id (supports both numeric and string IDs)
   language: varchar("language", { length: 5 }).notNull(), // 'en', 'nl'
   name: text("name").notNull(), // Translated recipe name
   ingredients: text("ingredients").array().notNull(), // Translated ingredients array

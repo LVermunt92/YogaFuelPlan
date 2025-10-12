@@ -1646,7 +1646,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Recipe Translation methods
-  async getRecipeTranslation(recipeId: number, language: string): Promise<RecipeTranslation | undefined> {
+  async getRecipeTranslation(recipeId: string, language: string): Promise<RecipeTranslation | undefined> {
     const result = await db
       .select()
       .from(recipeTranslations)
@@ -1679,7 +1679,7 @@ export class DatabaseStorage implements IStorage {
     return result[0];
   }
 
-  async getBatchRecipeTranslations(recipeIds: number[], language: string): Promise<RecipeTranslation[]> {
+  async getBatchRecipeTranslations(recipeIds: string[], language: string): Promise<RecipeTranslation[]> {
     if (recipeIds.length === 0) return [];
     
     const results = await db
@@ -1693,7 +1693,7 @@ export class DatabaseStorage implements IStorage {
     return results;
   }
 
-  async getMissingTranslations(recipeIds: number[], language: string): Promise<number[]> {
+  async getMissingTranslations(recipeIds: string[], language: string): Promise<string[]> {
     if (recipeIds.length === 0) return [];
     
     const existing = await this.getBatchRecipeTranslations(recipeIds, language);

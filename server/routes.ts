@@ -3243,7 +3243,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // PUT /api/recipes/:id - Update a recipe
+  // PUT /api/recipes/:id - Update a recipe (writes directly to database)
   app.put("/api/recipes/:id", async (req, res) => {
     try {
       if (!req.session?.userId) {
@@ -3265,79 +3265,76 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Missing required fields" });
       }
 
-      const recipes = await getCompleteEnhancedMealDatabase();
-      console.log(`📊 Database has ${recipes.length} recipes`);
-      
-      // Try to find the recipe by ID (as string or number)
-      const existingRecipe = recipes.find(r => {
-        const recipeIdStr = String(r.id || r.name);
-        return recipeIdStr === recipeId || recipeIdStr === String(recipeId);
-      });
-
-      if (!existingRecipe) {
-        // Debug: Show what IDs we have near this range
-        const nearbyIds = recipes
-          .filter(r => r.id && Math.abs(parseInt(String(r.id)) - parseInt(recipeId)) < 5)
-          .map(r => r.id)
-          .slice(0, 10);
-        console.log(`❌ Recipe ${recipeId} not found. Nearby IDs:`, nearbyIds);
-        return res.status(404).json({ message: "Recipe not found" });
-      }
-
-      console.log(`✅ Found recipe: ${existingRecipe.name} (ID: ${existingRecipe.id})`);
-
-      // Create updated recipe
-      const updatedRecipe: MealOption = {
-        ...existingRecipe,
-        ...updates,
-        id: existingRecipe.id || existingRecipe.name
-      };
-
       try {
-        // Store the modification in database for persistence
-        await storage.saveRecipeModification(recipeId, {
-          name: updatedRecipe.name,
-          ingredients: updatedRecipe.ingredients,
-          instructions: updatedRecipe.recipe?.instructions || [],
-          nutrition: updatedRecipe.nutrition,
-          category: updatedRecipe.category,
-          tags: updatedRecipe.tags,
-          portion: updatedRecipe.portion,
-          modifiedBy: req.session.userId
+        // Update recipe directly in database
+        const updatedRecipe = await storage.updateRecipe(recipeId, {
+          name: updates.name,
+          category: updates.category,
+          ingredients: updates.ingredients,
+          instructions: updates.instructions || updates.recipe?.instructions || [],
+          portion: updates.portion || "1 serving",
+          nutrition: updates.nutrition,
+          tags: updates.tags || [],
+          wholeFoodLevel: updates.wholeFoodLevel || "moderate",
+          vegetableContent: updates.vegetableContent || {},
+          recipeBenefits: updates.recipeBenefits || [],
+          recipeTips: updates.recipeTips || updates.recipe?.tips || [],
+          recipeNotes: updates.recipeNotes || (updates.recipe?.notes || []).join('; '),
+          updatedBy: req.session.userId
         });
 
-        // Also keep in memory for immediate access during this session
-        recipeModifications.set(recipeId, updatedRecipe);
+        console.log(`✅ Updated recipe in database: ${updatedRecipe.name} (ID: ${updatedRecipe.id})`);
 
         // Automatically translate to Dutch and save to database
         try {
-          const numericRecipeId = parseInt(recipeId);
-          if (!isNaN(numericRecipeId)) {
-            console.log(`🌐 AUTO-TRANSLATE: Updating Dutch translation for recipe ${recipeId}: ${updatedRecipe.name}`);
-            const translated = translateRecipe(updatedRecipe, 'nl');
-            
-            // Store Dutch translation in database
-            await storage.upsertRecipeTranslation({
-              recipeId: numericRecipeId,
-              language: 'nl',
-              name: translated.name,
-              ingredients: translated.ingredients,
-              instructions: translated.instructions || [],
-              tips: translated.tips || [],
-              notes: translated.notes || []
-            });
-            
-            console.log(`✅ Dutch translation updated: ${updatedRecipe.name} → ${translated.name}`);
-          }
+          console.log(`🌐 AUTO-TRANSLATE: Updating Dutch translation for recipe ${recipeId}: ${updatedRecipe.name}`);
+          
+          // Create MealOption format for translation
+          const mealOption: MealOption = {
+            id: updatedRecipe.id,
+            name: updatedRecipe.name,
+            category: updatedRecipe.category as any,
+            ingredients: updatedRecipe.ingredients,
+            instructions: updatedRecipe.instructions,
+            portion: updatedRecipe.portion,
+            nutrition: updatedRecipe.nutrition as any,
+            tags: updatedRecipe.tags || [],
+            wholeFoodLevel: updatedRecipe.wholeFoodLevel as any,
+            vegetableContent: [],
+            recipe: {
+              name: updatedRecipe.name,
+              instructions: updatedRecipe.instructions,
+              tips: updatedRecipe.recipeTips || [],
+              notes: updatedRecipe.recipeNotes ? [updatedRecipe.recipeNotes] : []
+            }
+          };
+          
+          const translated = translateRecipe(mealOption, 'nl');
+          
+          // Store Dutch translation in database (recipeId is now text, supports any ID format)
+          await storage.upsertRecipeTranslation({
+            recipeId: recipeId,
+            language: 'nl',
+            name: translated.name,
+            ingredients: translated.ingredients,
+            instructions: translated.instructions || [],
+            tips: translated.tips || [],
+            notes: translated.notes || []
+          });
+          
+          console.log(`✅ Dutch translation updated: ${updatedRecipe.name} → ${translated.name}`);
         } catch (translationError) {
           console.error(`⚠️  Failed to auto-translate recipe ${recipeId}:`, translationError);
           // Don't fail the whole request if translation fails
         }
 
-        res.json(updatedRecipe);
-      } finally {
-        // Always invalidate cache to ensure updated recipes are visible
+        // Invalidate cache to ensure updated recipes are visible
         invalidateEnhancedMealDatabaseCache();
+
+        res.json(updatedRecipe);
+      } catch (updateError) {
+        console.error(`❌ Failed to update recipe ${recipeId}:`, updateError);
+        res.status(500).json({ message: "Failed to update recipe in database" });
       }
     } catch (error) {
       console.error("Error updating recipe:", error);
@@ -3345,7 +3342,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // POST /api/recipes - Create a new recipe
+  // POST /api/recipes - Create a new recipe (writes directly to database)
   app.post("/api/recipes", async (req, res) => {
     try {
       if (!req.session?.userId) {
@@ -3364,60 +3361,82 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Missing required fields" });
       }
 
-      // Create new recipe with generated ID
-      const newRecipe: MealOption = {
-        id: (nextRecipeId++).toString(),
-        name: recipeData.name,
-        portion: recipeData.portion || "1 serving",
-        nutrition: recipeData.nutrition,
-        category: recipeData.category,
-        tags: recipeData.tags || [],
-        ingredients: recipeData.ingredients,
-        wholeFoodLevel: recipeData.wholeFoodLevel || "moderate",
-        vegetableContent: recipeData.vegetableContent || {
-          servings: 0,
-          vegetables: [],
-          benefits: []
-        },
-        recipeBenefits: recipeData.recipeBenefits || [],
-        recipe: recipeData.recipe,
-        createdAt: new Date(),
-        active: recipeData.active !== false
-      };
-
       try {
-        // Store the new recipe
-        recipeModifications.set(newRecipe.id, newRecipe);
+        // Generate unique numeric ID for custom recipe using timestamp
+        // This ensures uniqueness and compatibility with translation table
+        const customId = String(Date.now());
+        
+        // Create recipe directly in database
+        const newRecipe = await storage.createRecipe({
+          id: customId,
+          name: recipeData.name,
+          category: recipeData.category,
+          ingredients: recipeData.ingredients,
+          instructions: recipeData.recipe?.instructions || recipeData.instructions || [],
+          portion: recipeData.portion || "1 serving",
+          nutrition: recipeData.nutrition,
+          tags: recipeData.tags || [],
+          wholeFoodLevel: recipeData.wholeFoodLevel || "moderate",
+          vegetableContent: recipeData.vegetableContent || {},
+          recipeBenefits: recipeData.recipeBenefits || [],
+          recipeTips: recipeData.recipe?.tips || recipeData.recipeTips || [],
+          recipeNotes: recipeData.recipe?.notes?.join('; ') || recipeData.recipeNotes,
+          source: "custom",
+          active: recipeData.active !== false,
+          createdBy: req.session.userId
+        });
+
+        console.log(`✅ Created new recipe in database: ${newRecipe.name} (ID: ${newRecipe.id})`);
 
         // Automatically translate to Dutch and save to database
         try {
-          const numericRecipeId = newRecipe.id ? parseInt(newRecipe.id.toString()) : undefined;
-          if (numericRecipeId && !isNaN(numericRecipeId)) {
-            console.log(`🌐 AUTO-TRANSLATE: Creating Dutch translation for new recipe ${newRecipe.id}: ${newRecipe.name}`);
-            const translated = translateRecipe(newRecipe, 'nl');
-            
-            // Store Dutch translation in database
-            await storage.upsertRecipeTranslation({
-              recipeId: numericRecipeId,
-              language: 'nl',
-              name: translated.name,
-              ingredients: translated.ingredients,
-              instructions: translated.instructions || [],
-              tips: translated.tips || [],
-              notes: translated.notes || []
-            });
-            
-            console.log(`✅ Dutch translation created: ${newRecipe.name} → ${translated.name}`);
-          }
+          console.log(`🌐 AUTO-TRANSLATE: Creating Dutch translation for new recipe ${newRecipe.id}: ${newRecipe.name}`);
+          
+          const mealOption: MealOption = {
+            id: newRecipe.id,
+            name: newRecipe.name,
+            category: newRecipe.category as any,
+            ingredients: newRecipe.ingredients,
+            instructions: newRecipe.instructions,
+            portion: newRecipe.portion,
+            nutrition: newRecipe.nutrition as any,
+            tags: newRecipe.tags || [],
+            wholeFoodLevel: newRecipe.wholeFoodLevel as any,
+            vegetableContent: [],
+            recipe: {
+              name: newRecipe.name,
+              instructions: newRecipe.instructions,
+              tips: newRecipe.recipeTips || [],
+              notes: newRecipe.recipeNotes ? [newRecipe.recipeNotes] : []
+            }
+          };
+          
+          const translated = translateRecipe(mealOption, 'nl');
+          
+          // Store Dutch translation in database (recipeId is now text, supports any ID format)
+          await storage.upsertRecipeTranslation({
+            recipeId: customId,
+            language: 'nl',
+            name: translated.name,
+            ingredients: translated.ingredients,
+            instructions: translated.instructions || [],
+            tips: translated.tips || [],
+            notes: translated.notes || []
+          });
+          
+          console.log(`✅ Dutch translation created: ${newRecipe.name} → ${translated.name}`)
         } catch (translationError) {
           console.error(`⚠️  Failed to auto-translate new recipe ${newRecipe.id}:`, translationError);
           // Don't fail the whole request if translation fails
         }
 
-        res.status(201).json(newRecipe);
-      } finally {
-        // Always invalidate cache to ensure new recipe is visible
+        // Invalidate cache to ensure new recipe is visible
         invalidateEnhancedMealDatabaseCache();
+
+        res.status(201).json(newRecipe);
+      } catch (createError) {
+        console.error(`❌ Failed to create recipe:`, createError);
+        res.status(500).json({ message: "Failed to create recipe in database" });
       }
     } catch (error) {
       console.error("Error creating recipe:", error);
@@ -3425,7 +3444,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // DELETE /api/recipes/:id - Delete a recipe
+  // DELETE /api/recipes/:id - Delete a recipe (soft delete: marks as inactive)
   app.delete("/api/recipes/:id", async (req, res) => {
     try {
       if (!req.session?.userId) {
@@ -3438,25 +3457,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const recipeId = req.params.id;
-      const recipes = await getCompleteEnhancedMealDatabase();
-      const recipe = recipes.find(r => (r.id || r.name) === recipeId);
 
-      if (!recipe) {
-        return res.status(404).json({ message: "Recipe not found" });
+      try {
+        // Soft delete: mark recipe as inactive in database
+        await storage.updateRecipe(recipeId, {
+          active: false,
+          updatedBy: req.session.userId
+        });
+
+        console.log(`🗑️  Soft-deleted recipe: ${recipeId} (marked as inactive)`);
+
+        // Invalidate cache to ensure deleted recipe is hidden
+        invalidateEnhancedMealDatabaseCache();
+
+        res.status(204).send();
+      } catch (deleteError) {
+        console.error(`❌ Failed to delete recipe ${recipeId}:`, deleteError);
+        res.status(404).json({ message: "Recipe not found" });
       }
-
-      // Mark recipe as deleted in database for persistence
-      await storage.saveRecipeDeletion(recipeId, req.session.userId);
-      
-      // Also mark in memory for immediate effect during this session
-      deletedRecipes.add(recipeId);
-      
-      // Remove from modifications if it was a custom recipe
-      if (recipeModifications.has(recipeId)) {
-        recipeModifications.delete(recipeId);
-      }
-
-      res.status(204).send();
     } catch (error) {
       console.error("Error deleting recipe:", error);
       res.status(500).json({ message: "Failed to delete recipe" });
