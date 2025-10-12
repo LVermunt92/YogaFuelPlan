@@ -17088,7 +17088,7 @@ export interface ShoppingListItem {
   unit: string;
 }
 
-export async function generateEnhancedShoppingList(meals: { foodDescription: string }[], language: string = 'en', dietaryTags: string[] = [], leftoverIngredients: string[] = []): Promise<ShoppingListItem[]> {
+export async function generateEnhancedShoppingList(meals: { foodDescription: string; isLeftover?: boolean }[], language: string = 'en', dietaryTags: string[] = [], leftoverIngredients: string[] = []): Promise<ShoppingListItem[]> {
   const ingredientAmounts = new Map<string, { totalAmount: number; unit: string; count: number }>();
   
   // Debug: log that we're applying substitutions
@@ -17101,6 +17101,11 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
   
   // Parse actual recipe amounts from meal instructions
   for (const meal of meals) {
+    // Skip leftover meals - they don't need ingredients
+    if (meal.isLeftover) {
+      console.log(`⏭️  SKIPPING LEFTOVER MEAL: ${meal.foodDescription}`);
+      continue;
+    }
     // Strip any leftover suffix and portion scaling for meal matching
     const cleanMealName = meal.foodDescription
       .replace(/\s*\(incorporating leftover.*?\)/gi, '') // Remove leftover incorporation text
