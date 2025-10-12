@@ -3324,47 +3324,52 @@ export async function registerRoutes(app: Express): Promise<Server> {
         id: existingRecipe.id || existingRecipe.name
       };
 
-      // Store the modification in database for persistence
-      await storage.saveRecipeModification(recipeId, {
-        name: updatedRecipe.name,
-        ingredients: updatedRecipe.ingredients,
-        instructions: updatedRecipe.recipe?.instructions || [],
-        nutrition: updatedRecipe.nutrition,
-        category: updatedRecipe.category,
-        tags: updatedRecipe.tags,
-        portion: updatedRecipe.portion,
-        modifiedBy: req.session.userId
-      });
-
-      // Also keep in memory for immediate access during this session
-      recipeModifications.set(recipeId, updatedRecipe);
-
-      // Automatically translate to Dutch and save to database
       try {
-        const numericRecipeId = parseInt(recipeId);
-        if (!isNaN(numericRecipeId)) {
-          console.log(`🌐 AUTO-TRANSLATE: Updating Dutch translation for recipe ${recipeId}: ${updatedRecipe.name}`);
-          const translated = translateRecipe(updatedRecipe, 'nl');
-          
-          // Store Dutch translation in database
-          await storage.upsertRecipeTranslation({
-            recipeId: numericRecipeId,
-            language: 'nl',
-            name: translated.name,
-            ingredients: translated.ingredients,
-            instructions: translated.instructions || [],
-            tips: translated.tips || [],
-            notes: translated.notes || []
-          });
-          
-          console.log(`✅ Dutch translation updated: ${updatedRecipe.name} → ${translated.name}`);
-        }
-      } catch (translationError) {
-        console.error(`⚠️  Failed to auto-translate recipe ${recipeId}:`, translationError);
-        // Don't fail the whole request if translation fails
-      }
+        // Store the modification in database for persistence
+        await storage.saveRecipeModification(recipeId, {
+          name: updatedRecipe.name,
+          ingredients: updatedRecipe.ingredients,
+          instructions: updatedRecipe.recipe?.instructions || [],
+          nutrition: updatedRecipe.nutrition,
+          category: updatedRecipe.category,
+          tags: updatedRecipe.tags,
+          portion: updatedRecipe.portion,
+          modifiedBy: req.session.userId
+        });
 
-      res.json(updatedRecipe);
+        // Also keep in memory for immediate access during this session
+        recipeModifications.set(recipeId, updatedRecipe);
+
+        // Automatically translate to Dutch and save to database
+        try {
+          const numericRecipeId = parseInt(recipeId);
+          if (!isNaN(numericRecipeId)) {
+            console.log(`🌐 AUTO-TRANSLATE: Updating Dutch translation for recipe ${recipeId}: ${updatedRecipe.name}`);
+            const translated = translateRecipe(updatedRecipe, 'nl');
+            
+            // Store Dutch translation in database
+            await storage.upsertRecipeTranslation({
+              recipeId: numericRecipeId,
+              language: 'nl',
+              name: translated.name,
+              ingredients: translated.ingredients,
+              instructions: translated.instructions || [],
+              tips: translated.tips || [],
+              notes: translated.notes || []
+            });
+            
+            console.log(`✅ Dutch translation updated: ${updatedRecipe.name} → ${translated.name}`);
+          }
+        } catch (translationError) {
+          console.error(`⚠️  Failed to auto-translate recipe ${recipeId}:`, translationError);
+          // Don't fail the whole request if translation fails
+        }
+
+        res.json(updatedRecipe);
+      } finally {
+        // Always invalidate cache to ensure updated recipes are visible
+        invalidateEnhancedMealDatabaseCache();
+      }
     } catch (error) {
       console.error("Error updating recipe:", error);
       res.status(500).json({ message: "Failed to update recipe" });
@@ -3411,35 +3416,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
         active: recipeData.active !== false
       };
 
-      // Store the new recipe
-      recipeModifications.set(newRecipe.id, newRecipe);
-
-      // Automatically translate to Dutch and save to database
       try {
-        const numericRecipeId = newRecipe.id ? parseInt(newRecipe.id.toString()) : undefined;
-        if (numericRecipeId && !isNaN(numericRecipeId)) {
-          console.log(`🌐 AUTO-TRANSLATE: Creating Dutch translation for new recipe ${newRecipe.id}: ${newRecipe.name}`);
-          const translated = translateRecipe(newRecipe, 'nl');
-          
-          // Store Dutch translation in database
-          await storage.upsertRecipeTranslation({
-            recipeId: numericRecipeId,
-            language: 'nl',
-            name: translated.name,
-            ingredients: translated.ingredients,
-            instructions: translated.instructions || [],
-            tips: translated.tips || [],
-            notes: translated.notes || []
-          });
-          
-          console.log(`✅ Dutch translation created: ${newRecipe.name} → ${translated.name}`);
-        }
-      } catch (translationError) {
-        console.error(`⚠️  Failed to auto-translate new recipe ${newRecipe.id}:`, translationError);
-        // Don't fail the whole request if translation fails
-      }
+        // Store the new recipe
+        recipeModifications.set(newRecipe.id, newRecipe);
 
-      res.status(201).json(newRecipe);
+        // Automatically translate to Dutch and save to database
+        try {
+          const numericRecipeId = newRecipe.id ? parseInt(newRecipe.id.toString()) : undefined;
+          if (numericRecipeId && !isNaN(numericRecipeId)) {
+            console.log(`🌐 AUTO-TRANSLATE: Creating Dutch translation for new recipe ${newRecipe.id}: ${newRecipe.name}`);
+            const translated = translateRecipe(newRecipe, 'nl');
+            
+            // Store Dutch translation in database
+            await storage.upsertRecipeTranslation({
+              recipeId: numericRecipeId,
+              language: 'nl',
+              name: translated.name,
+              ingredients: translated.ingredients,
+              instructions: translated.instructions || [],
+              tips: translated.tips || [],
+              notes: translated.notes || []
+            });
+            
+            console.log(`✅ Dutch translation created: ${newRecipe.name} → ${translated.name}`);
+          }
+        } catch (translationError) {
+          console.error(`⚠️  Failed to auto-translate new recipe ${newRecipe.id}:`, translationError);
+          // Don't fail the whole request if translation fails
+        }
+
+        res.status(201).json(newRecipe);
+      } finally {
+        // Always invalidate cache to ensure new recipe is visible
+        invalidateEnhancedMealDatabaseCache();
+      }
     } catch (error) {
       console.error("Error creating recipe:", error);
       res.status(500).json({ message: "Failed to create recipe" });
@@ -3502,36 +3512,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Invalid bulk update data" });
       }
 
-      const recipes = await getModifiedRecipeDatabase();
-      const updatedRecipes: MealOption[] = [];
+      try {
+        const recipes = await getModifiedRecipeDatabase();
+        const updatedRecipes: MealOption[] = [];
 
-      for (const recipeId of recipeIds) {
-        const recipe = recipes.find(r => (r.id || r.name) === recipeId);
-        if (recipe) {
-          const updatedRecipe = { ...recipe, ...updates };
-          
-          // Save to database for persistence
-          await storage.saveRecipeModification(recipeId, {
-            name: updatedRecipe.name,
-            ingredients: updatedRecipe.ingredients,
-            instructions: updatedRecipe.recipe?.instructions || [],
-            nutrition: updatedRecipe.nutrition,
-            category: updatedRecipe.category,
-            tags: updatedRecipe.tags,
-            portion: updatedRecipe.portion,
-            modifiedBy: req.session.userId
-          });
-          
-          // Also keep in memory for immediate access
-          recipeModifications.set(recipeId, updatedRecipe);
-          updatedRecipes.push(updatedRecipe);
+        for (const recipeId of recipeIds) {
+          const recipe = recipes.find(r => (r.id || r.name) === recipeId);
+          if (recipe) {
+            const updatedRecipe = { ...recipe, ...updates };
+            
+            // Save to database for persistence
+            await storage.saveRecipeModification(recipeId, {
+              name: updatedRecipe.name,
+              ingredients: updatedRecipe.ingredients,
+              instructions: updatedRecipe.recipe?.instructions || [],
+              nutrition: updatedRecipe.nutrition,
+              category: updatedRecipe.category,
+              tags: updatedRecipe.tags,
+              portion: updatedRecipe.portion,
+              modifiedBy: req.session.userId
+            });
+            
+            // Also keep in memory for immediate access
+            recipeModifications.set(recipeId, updatedRecipe);
+            updatedRecipes.push(updatedRecipe);
+          }
         }
-      }
 
-      res.json({
-        message: `Updated ${updatedRecipes.length} recipes`,
-        recipes: updatedRecipes
-      });
+        res.json({
+          message: `Updated ${updatedRecipes.length} recipes`,
+          recipes: updatedRecipes
+        });
+      } finally {
+        // Always invalidate cache to ensure updated recipes are visible
+        invalidateEnhancedMealDatabaseCache();
+      }
     } catch (error) {
       console.error("Error bulk updating recipes:", error);
       res.status(500).json({ message: "Failed to bulk update recipes" });
