@@ -5,7 +5,7 @@ import { storage } from "./storage";
 import { generateWeeklyMealPlan } from "./meal-generator";
 import { mealPlanRequestSchema } from "@shared/schema";
 
-import { generateEnhancedShoppingList, updateAllRecipesWithSpecificIngredients, validateAllRecipeIngredients, getDefaultPortion, getCompleteEnhancedMealDatabase, type MealOption } from "./nutrition-enhanced";
+import { generateEnhancedShoppingList, updateAllRecipesWithSpecificIngredients, validateAllRecipeIngredients, getDefaultPortion, getCompleteEnhancedMealDatabase, invalidateEnhancedMealDatabaseCache, type MealOption } from "./nutrition-enhanced";
 import { OuraService } from "./oura";
 import { updateUserProfileSchema, authRegisterSchema, authLoginSchema } from "@shared/schema";
 import { z } from "zod";
