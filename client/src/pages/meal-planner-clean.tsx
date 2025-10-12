@@ -1954,7 +1954,7 @@ function MealPlannerMain() {
                         <p className="text-sm text-green-700 mb-2">
                           <span className="font-medium">{t.servings}:</span> {recipeData.vegetableContent.servings}
                         </p>
-                        {recipeData.vegetableContent.vegetables.length > 0 && (
+                        {recipeData.vegetableContent?.vegetables?.length > 0 && (
                           <div>
                             <p className="text-sm font-medium text-green-700 mb-1">{t.vegetables}:</p>
                             <div className="flex flex-wrap gap-1">
