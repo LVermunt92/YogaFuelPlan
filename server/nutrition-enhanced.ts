@@ -17099,6 +17099,11 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
     console.log(`🥬 LEFTOVER INGREDIENTS: Excluding from shopping list: ${JSON.stringify(leftoverIngredients)}`);
   }
   
+  // Debug: log meal information
+  console.log(`📋 SHOPPING LIST: Processing ${meals.length} meals`);
+  const leftoverCount = meals.filter(m => m.isLeftover).length;
+  console.log(`📋 LEFTOVER COUNT: ${leftoverCount} leftover meals out of ${meals.length} total`);
+  
   // Parse actual recipe amounts from meal instructions
   for (const meal of meals) {
     // Skip leftover meals - they don't need ingredients
