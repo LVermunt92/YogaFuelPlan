@@ -31,7 +31,7 @@ export interface MealOption {
   name: string;
   portion: string;
   nutrition: NutritionInfo;
-  category: 'breakfast' | 'lunch' | 'dinner' | 'snack';
+  category: 'breakfast' | 'lunch' | 'dinner' | 'snack' | 'dessert' | 'smoothie';
   tags: string[];
   ingredients: string[];
   wholeFoodLevel: 'minimal' | 'moderate' | 'high'; // How processed the ingredients are
@@ -16574,7 +16574,7 @@ export async function findRecipeByName(mealDescription: string): Promise<MealOpt
 }
 
 // Function to get meals from unified database filtered by dietary requirements
-export async function getEnhancedMealsByCategory(category: 'breakfast' | 'lunch' | 'dinner' | 'snack'): Promise<MealOption[]> {
+export async function getEnhancedMealsByCategory(category: 'breakfast' | 'lunch' | 'dinner' | 'snack' | 'dessert' | 'smoothie'): Promise<MealOption[]> {
   const unifiedDatabase = await getCompleteEnhancedMealDatabase();
   const categoryMeals = unifiedDatabase.filter(meal => meal.category === category);
   
@@ -16684,7 +16684,7 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
   });
 }
 
-export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' | 'lunch' | 'dinner' | 'snack', dietaryTags: string[] = [], userId?: number): Promise<MealOption[]> {
+export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' | 'lunch' | 'dinner' | 'snack' | 'dessert' | 'smoothie', dietaryTags: string[] = [], userId?: number): Promise<MealOption[]> {
   console.log(`🎯 STREAMLINED APPROACH: category=${category}, userId=${userId}, tags=[${dietaryTags.join(', ')}]`);
   
   // Start with curated database meals
