@@ -3279,7 +3279,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const recipeId = req.params.id;
-      const recipes = await getModifiedRecipeDatabase();
+      const recipes = await getCompleteEnhancedMealDatabase();
       const recipe = recipes.find(r => (r.id || r.name) === recipeId);
 
       if (!recipe) {
@@ -3313,7 +3313,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Missing required fields" });
       }
 
-      const recipes = await getModifiedRecipeDatabase();
+      const recipes = await getCompleteEnhancedMealDatabase();
       const existingRecipe = recipes.find(r => (r.id || r.name) === recipeId);
 
       if (!existingRecipe) {
@@ -3472,7 +3472,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const recipeId = req.params.id;
-      const recipes = await getModifiedRecipeDatabase();
+      const recipes = await getCompleteEnhancedMealDatabase();
       const recipe = recipes.find(r => (r.id || r.name) === recipeId);
 
       if (!recipe) {
@@ -3516,7 +3516,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       try {
-        const recipes = await getModifiedRecipeDatabase();
+        const recipes = await getCompleteEnhancedMealDatabase();
         const updatedRecipes: MealOption[] = [];
 
         for (const recipeId of recipeIds) {
