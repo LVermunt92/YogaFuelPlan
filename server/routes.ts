@@ -2866,61 +2866,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // RECIPE MANAGEMENT API ENDPOINTS (ADMIN ONLY)
   // ============================================
 
-  // In-memory storage for recipe modifications (until we implement persistence)
-  let recipeModifications: Map<string, MealOption> = new Map();
-  let deletedRecipes: Set<string> = new Set();
-  let nextRecipeId = 10000; // Start custom recipe IDs at 10000
-
   // Helper function to get modified recipe database
+  // NOW SIMPLIFIED: Recipes table is the source of truth (no overlay needed)
   async function getModifiedRecipeDatabase(): Promise<MealOption[]> {
-    const baseRecipes = await getCompleteEnhancedMealDatabase();
-    
-    // Load persistent modifications from database
-    const dbModifications = await storage.getRecipeModifications();
-    const dbDeletions = await storage.getRecipeDeletions();
-    
-    // Merge in-memory and database modifications
-    const allModifications = new Map<string, MealOption>();
-    
-    // Add database modifications
-    for (const mod of dbModifications) {
-      allModifications.set(mod.recipeId, {
-        id: mod.recipeId,
-        name: mod.name,
-        category: mod.category,
-        ingredients: mod.ingredients,
-        portion: mod.portion,
-        nutrition: mod.nutrition,
-        tags: mod.tags || [],
-        recipe: {
-          name: mod.name,
-          instructions: mod.instructions,
-          tips: [],
-          notes: []
-        }
-      });
-    }
-    
-    // Overlay in-memory modifications (for current session)
-    for (const [id, recipe] of recipeModifications.entries()) {
-      allModifications.set(id, recipe);
-    }
-    
-    // Merge in-memory and database deletions
-    const allDeletions = new Set<string>([...dbDeletions, ...deletedRecipes]);
-    
-    // Apply modifications and filter out deleted recipes
-    return baseRecipes
-      .filter(recipe => !allDeletions.has(recipe.id || recipe.name))
-      .map(recipe => {
-        const id = recipe.id || recipe.name;
-        return allModifications.has(id) ? allModifications.get(id)! : recipe;
-      })
-      .concat(
-        Array.from(allModifications.values()).filter(recipe => 
-          recipe.id && parseInt(recipe.id) >= 10000 && !allDeletions.has(recipe.id)
-        )
-      );
+    // Database is now the source of truth - all modifications are saved directly to recipes table
+    return await getCompleteEnhancedMealDatabase();
   }
 
   // Helper function to check admin access

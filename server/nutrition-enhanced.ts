@@ -16404,7 +16404,7 @@ export function invalidateEnhancedMealDatabaseCache(): void {
   console.log('🔄 Enhanced meal database cache invalidated');
 }
 
-// Function to get complete unified meal database (now contains all recipes in one place)
+// Function to get complete unified meal database (reads from PostgreSQL database)
 export async function getCompleteEnhancedMealDatabase(): Promise<MealOption[]> {
   // Return cached data if available
   if (cachedMealDatabase) {
@@ -16418,77 +16418,41 @@ export async function getCompleteEnhancedMealDatabase(): Promise<MealOption[]> {
   
   // Build cache
   cachePromise = (async () => {
-    // Get base recipes and clean them (remove parenthetical descriptions from ingredients and normalize portions)
-    const baseRecipes = RAW_MEAL_DATABASE.map(recipe => cleanRecipeData(recipe));
-  
-  // Auto-tag recipes that are naturally lactose-free
-  const lactoseTaggedRecipes = baseRecipes.map(recipe => {
-    // Skip if already tagged as lactose-free
-    if (recipe.tags.includes('Lactose-Free') || recipe.tags.includes('dairy-free')) {
-      return recipe;
-    }
+    // Load all active recipes from database
+    const { storage } = await import('./storage');
+    const dbRecipes = await storage.getAllRecipes(true); // Only active recipes
     
-    // Check if recipe contains dairy ingredients
-    const dairyIngredients = ['milk', 'cheese', 'yogurt', 'cream', 'butter', 'dairy', 'whey', 'casein', 'lactose'];
-    const hasDairy = recipe.ingredients.some(ingredient => 
-      dairyIngredients.some(dairy => ingredient.toLowerCase().includes(dairy))
-    );
-    
-    // If no dairy found, add lactose-free tag
-    if (!hasDairy) {
-      // Removed excessive logging for performance
+    // Convert database Recipe format to MealOption format
+    const mealOptions: MealOption[] = dbRecipes.map(recipe => {
+      const nutritionData = recipe.nutrition as any || {};
+      const vegContent = recipe.vegetableContent as any || {};
+      
       return {
-        ...recipe,
-        tags: [...recipe.tags, 'Lactose-Free']
-      };
-    }
+        id: parseInt(recipe.id) || recipe.id as any, // Keep as number if possible, otherwise as string
+        name: recipe.name,
+        category: recipe.category as any,
+        ingredients: recipe.ingredients,
+        instructions: recipe.instructions,
+        portion: recipe.portion,
+        wholeFoodLevel: recipe.wholeFoodLevel || 'moderate',
+        nutrition: nutritionData,
+        tags: recipe.tags || [],
+        vegetableContent: vegContent.vegetables || [],
+        specificIngredients: [], // Not stored in database, computed on-demand if needed
+        recipe: {
+          name: recipe.name,
+          instructions: recipe.instructions,
+          tips: recipe.recipeTips || [],
+          notes: recipe.recipeNotes ? [recipe.recipeNotes] : []
+        }
+      } as MealOption;
+    });
     
-    return recipe;
-  });
-  
-  // Assign permanent stable IDs to base recipes (starting from 10000)
-  const baseRecipesWithIds = lactoseTaggedRecipes.map((recipe, index) => ({
-    ...recipe,
-    id: 10000 + index // Permanent ID based on position in base array
-  }));
-  
-  // Auto-generate dietary variants with deterministic IDs
-  const dietaryVariants = generateDietaryVariants(baseRecipesWithIds);
-  
-  // Combine all recipes (all have IDs now)
-  const allRecipes = [...baseRecipesWithIds, ...dietaryVariants];
-  
-  // Add cycle phase tags, functional tags for snacks, and seasonal month tags
-  const recipesWithIds = await Promise.all(allRecipes.map(async (recipe) => {
-    // Add cycle phase tags to every recipe
-    const recipeWithCycleTags = addCyclePhaseTagsToRecipe(recipe);
-    // Add functional tags to snacks (Pre-Workout, Post-Workout, Neutral)
-    const recipeWithFunctionalTags = addFunctionalTagsToSnack(recipeWithCycleTags);
-    // Add seasonal month tags to every recipe
-    return await addSeasonalMonthTagsToRecipe(recipeWithFunctionalTags);
-  }));
-  
-  // Filter out deleted recipes using dedicated deletion cache with retry logic
-  const { recipeDeletionCache } = await import('./recipe-deletion-cache.js');
-  const deletedIds = await recipeDeletionCache.load();
-  const activeRecipes = recipesWithIds.filter(recipe => {
-    if (!recipe.id) return true; // Keep recipes without IDs
-    const recipeId = String(recipe.id);
-    return !deletedIds.has(recipeId);
-  });
-  
-  if (deletedIds.size > 0) {
-    console.log(`🗑️  Filtered out ${recipesWithIds.length - activeRecipes.length} deleted recipes from unified database`);
-  }
-  
-    console.log(`📊 UNIFIED DATABASE: ${baseRecipes.length} base recipes + ${dietaryVariants.length} dietary variants = ${activeRecipes.length} total active recipes`);
-    console.log(`📊 CYCLE SUPPORT: All recipes now have menstrual cycle phase tags for complete cycle tracking`);
-    console.log(`📊 FUNCTIONAL TAGS: Snacks are automatically tagged as Pre-Workout, Post-Workout, or Neutral based on nutritional profile`);
-    console.log(`📊 DEVELOPER FRIENDLY: Every recipe now has gluten-free, lactose-free, and vegetarian versions using kipstukjes & Beyond Meat`);
+    console.log(`📊 LOADED FROM DATABASE: ${mealOptions.length} active recipes`);
     
     // Store in cache
-    cachedMealDatabase = activeRecipes;
-    return activeRecipes;
+    cachedMealDatabase = mealOptions;
+    return mealOptions;
   })();
   
   return cachePromise;
