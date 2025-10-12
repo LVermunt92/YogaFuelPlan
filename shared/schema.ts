@@ -571,7 +571,7 @@ export type UpdateEditableContent = z.infer<typeof updateEditableContentSchema>;
 // Recipe modifications table for storing admin changes to recipes
 export const recipeModifications = pgTable("recipe_modifications", {
   id: serial("id").primaryKey(),
-  recipeId: text("recipe_id").notNull(), // Original recipe ID or name
+  recipeId: text("recipe_id").notNull().unique(), // Original recipe ID or name - must be unique for upsert
   name: text("name").notNull(),
   ingredients: text("ingredients").array().notNull(),
   instructions: text("instructions").array().notNull(),
