@@ -140,6 +140,8 @@ function scoreProteinForTarget(meal: MealOption, targetDailyProtein: number): nu
 
 /**
  * Select protein-optimized meals for a given category and target
+ * NEW APPROACH: Returns diverse protein range (15-35g) for flexible daily balancing
+ * System will mix and match to hit daily target (e.g., high dinner + low breakfast = 95g total)
  */
 export function selectProteinOptimizedMealsForTarget(
   availableMeals: MealOption[],
@@ -149,7 +151,7 @@ export function selectProteinOptimizedMealsForTarget(
 ): MealOption[] {
   const userProteinTarget = targetDailyProtein || calculateUserProteinTarget(user);
   
-  console.log(`🥩 Protein optimization for ${category}: Target ${userProteinTarget}g daily`);
+  console.log(`🥩 Protein optimization for ${category}: Target ${userProteinTarget}g daily (flexible balancing)`);
   
   // Filter meals for the category
   const categoryMeals = availableMeals.filter(meal => meal.category === category);
@@ -159,32 +161,54 @@ export function selectProteinOptimizedMealsForTarget(
     return [];
   }
   
-  // Score and sort meals by protein optimization
-  const scoredMeals = categoryMeals.map(meal => ({
-    meal,
-    score: scoreProteinForTarget(meal, userProteinTarget),
-    protein: meal.nutrition.protein
-  }));
-  
-  // Sort by score (highest first), then by protein content
-  scoredMeals.sort((a, b) => {
-    if (b.score !== a.score) return b.score - a.score;
-    return b.protein - a.protein;
+  // NEW: Score meals to provide DIVERSE protein options (15-35g range)
+  // This allows daily balancing: high protein meal + low protein meal = target
+  const scoredMeals = categoryMeals.map(meal => {
+    const protein = meal.nutrition.protein;
+    let score = 0;
+    
+    // DIVERSE PROTEIN SCORING: Accept wide range, penalize extremes
+    if (protein >= 18 && protein <= 32) {
+      score += 100; // Ideal range for flexible balancing
+    } else if (protein >= 15 && protein <= 35) {
+      score += 90; // Good range
+    } else if (protein >= 12 && protein <= 38) {
+      score += 70; // Acceptable
+    } else if (protein > 40) {
+      score += 40; // Too high (limits flexibility)
+    } else if (protein < 12) {
+      score += 50; // Too low (limits flexibility)
+    }
+    
+    // Bonus for variety and efficiency
+    const proteinPerCalorie = protein / (meal.nutrition.calories || 400);
+    if (proteinPerCalorie > 0.06) score += 10;
+    else if (proteinPerCalorie > 0.04) score += 5;
+    
+    // Small randomization for variety (±5 points)
+    score += Math.random() * 10 - 5;
+    
+    return { meal, score, protein };
   });
   
-  // Take top meals based on protein content tiers
-  const optimizedMeals = scoredMeals.slice(0, Math.min(8, scoredMeals.length)).map(item => item.meal);
+  // Sort by score (highest first)
+  scoredMeals.sort((a, b) => b.score - a.score);
   
-  // Log protein optimization results
+  // Take MORE meals for better variety (15 instead of 8)
+  const optimizedMeals = scoredMeals.slice(0, Math.min(15, scoredMeals.length)).map(item => item.meal);
+  
+  // Log protein distribution
   const avgProtein = optimizedMeals.reduce((sum, meal) => sum + meal.nutrition.protein, 0) / optimizedMeals.length;
-  const highProteinCount = optimizedMeals.filter(meal => meal.nutrition.protein >= 28).length;
-  const excellentProteinCount = optimizedMeals.filter(meal => meal.nutrition.protein >= 35).length;
+  const proteinRange = {
+    min: Math.min(...optimizedMeals.map(m => m.nutrition.protein)),
+    max: Math.max(...optimizedMeals.map(m => m.nutrition.protein))
+  };
   
-  console.log(`🥩 ${category} protein optimization complete:`);
+  console.log(`🥩 ${category} optimization complete:`);
   console.log(`   - Selected ${optimizedMeals.length} meals`);
-  console.log(`   - Average protein: ${avgProtein.toFixed(1)}g per meal`);
-  console.log(`   - High-protein meals (28g+): ${highProteinCount}`);
-  console.log(`   - Excellent protein meals (35g+): ${excellentProteinCount}`);
+  console.log(`   - Protein range: ${proteinRange.min}g - ${proteinRange.max}g`);
+  console.log(`   - Average protein: ${avgProtein.toFixed(1)}g`);
+  console.log(`   - System will balance meals daily to hit ${userProteinTarget}g target`);
   
   return optimizedMeals;
 }
