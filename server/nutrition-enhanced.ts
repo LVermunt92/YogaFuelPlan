@@ -18272,6 +18272,11 @@ export function multiplyIngredientAmount(ingredientString: string, multiplier: n
 export function parseIngredientAmount(ingredientString: string): { amount: number; unit: string } {
   const lower = ingredientString.toLowerCase().trim();
   
+  // DEBUG: Log what we're parsing
+  if (lower.includes('rice')) {
+    console.log(`🔍 parseIngredientAmount: "${ingredientString}" -> lower: "${lower}"`);
+  }
+  
   // Match patterns like "200g", "1 piece", "2 tbsp", etc.
   const patterns = [
     // Fractions: 1/2, 1/4, 3/4 with optional unit
@@ -18321,13 +18326,21 @@ export function parseIngredientAmount(ingredientString: string): { amount: numbe
         amount = parseFloat(match[1]);
         const unitStr = match[2] || '';
         const multiplier = pattern.multiplier(unitStr);
-        return { amount: amount * multiplier, unit: pattern.unit };
+        const result = { amount: amount * multiplier, unit: pattern.unit };
+        if (ingredientString.toLowerCase().includes('rice')) {
+          console.log(`  ✅ Matched pattern, returning:`, result);
+        }
+        return result;
       }
     }
   }
 
   // Fallback to defaults if no pattern matches
-  return getDefaultPortion(ingredientString);
+  const defaultResult = getDefaultPortion(ingredientString);
+  if (ingredientString.toLowerCase().includes('rice')) {
+    console.log(`  📋 No pattern matched, using default:`, defaultResult);
+  }
+  return defaultResult;
 }
 
 export function getDefaultPortion(ingredient: string): { amount: number; unit: string } {
