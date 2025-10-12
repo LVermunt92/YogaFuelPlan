@@ -105,11 +105,29 @@ class AlbertHeijnService {
   /**
    * Convert meal plan ingredients to Albert Heijn shopping list
    */
-  async createShoppingListFromMealPlan(ingredients: string[]): Promise<ShoppingListExport> {
+  async createShoppingListFromMealPlan(ingredients: string[], storage?: any): Promise<ShoppingListExport> {
     console.log('🛒 Creating Albert Heijn shopping list from meal plan...');
     console.log('🚨 SHOPPING LIST GENERATION STARTED - FILTERING ENABLED!');
     console.log(`📋 Total ingredients received: ${ingredients.length}`);
     console.log('📋 Raw ingredients:', ingredients);
+    
+    // Fetch ingredient mappings from database if storage is provided
+    let ingredientMappings = new Map<string, string>();
+    if (storage) {
+      try {
+        const mappings = await storage.getIngredientMappings();
+        console.log(`📝 Loaded ${mappings.length} ingredient mappings from database`);
+        mappings.forEach((mapping: any) => {
+          // Use originalIngredient as the lookup key, normalizedIngredient as the value
+          const key = mapping.originalIngredient.toLowerCase().trim();
+          const value = mapping.normalizedIngredient;
+          ingredientMappings.set(key, value);
+          console.log(`  ✓ Mapping: "${key}" → "${value}"`);
+        });
+      } catch (error) {
+        console.error('⚠️  Failed to load ingredient mappings:', error);
+      }
+    }
     
     // Use Map to consolidate identical products
     const consolidatedItems = new Map<string, AHShoppingListItem>();
@@ -160,11 +178,19 @@ class AlbertHeijnService {
 
         const { quantity: itemQuantity, unit: itemUnit, productName } = parseQuantityAndUnit(ingredient);
 
+        // Apply ingredient mapping if exists
+        let mappedProductName = productName;
+        const normalizedKey = productName.toLowerCase().trim();
+        if (ingredientMappings.has(normalizedKey)) {
+          mappedProductName = ingredientMappings.get(normalizedKey)!;
+          console.log(`🔄 Applied mapping: "${productName}" → "${mappedProductName}"`);
+        }
+
         // Filter out non-grocery items BEFORE searching for products
-        const cleanedIngredient = productName
+        const cleanedIngredient = mappedProductName
           .replace(/\([^)]*\)/g, '') // Remove parentheses and contents
           .replace(/,.*$/g, '') // Remove everything after comma
-          .replace(/\s+/g, ' ') // Normalize spaces
+          .replace(/\s+/g, ' ') // Normalize spaces to single space
           .trim().toLowerCase();
 
         console.log(`🔍 Pre-filter check: "${ingredient}" → cleaned: "${cleanedIngredient}"`);
@@ -377,7 +403,8 @@ class AlbertHeijnService {
           continue; // Skip this ingredient entirely
         }
 
-        const products = await this.searchProduct(productName);
+        // Use the mapped product name for searching
+        const products = await this.searchProduct(mappedProductName);
         
         if (products.length > 0) {
           const product = products[0]; // Take first match
@@ -420,19 +447,19 @@ class AlbertHeijnService {
             totalPrice += product.price;
           }
         } else {
-          // For manual items, use ingredient name as key for consolidation
-          let manualKey = `manual_${productName.toLowerCase().trim()}`;
+          // For manual items, use mapped ingredient name as key for consolidation
+          let manualKey = `manual_${mappedProductName.toLowerCase().trim()}`;
           
           // Special handling for specific ingredients to consolidate all variations
-          if (productName.toLowerCase().includes('garlic') || productName.toLowerCase().includes('clove')) {
+          if (mappedProductName.toLowerCase().includes('garlic') || mappedProductName.toLowerCase().includes('clove')) {
             manualKey = `manual_garlic_cloves`;
-          } else if (productName.toLowerCase().includes('lime')) {
+          } else if (mappedProductName.toLowerCase().includes('lime')) {
             manualKey = `manual_lime_pieces`;
-          } else if (productName.toLowerCase().includes('lemon')) {
+          } else if (mappedProductName.toLowerCase().includes('lemon')) {
             manualKey = `manual_lemon_pieces`;
-          } else if (productName.toLowerCase().includes('oat milk') || productName.toLowerCase().includes('haver')) {
+          } else if (mappedProductName.toLowerCase().includes('oat milk') || mappedProductName.toLowerCase().includes('haver')) {
             manualKey = `oat_milk_consolidated`; // Use same key as products for consolidation
-          } else if (productName.toLowerCase().includes('red pepper') || productName.toLowerCase().includes('sweet red pepper')) {
+          } else if (mappedProductName.toLowerCase().includes('red pepper') || mappedProductName.toLowerCase().includes('sweet red pepper')) {
             manualKey = `red_pepper_consolidated`; // Consolidate all red pepper variations
           }
           
@@ -440,17 +467,13 @@ class AlbertHeijnService {
             // Manual item already exists, add quantity
             const existingItem = consolidatedItems.get(manualKey)!;
             existingItem.quantity += itemQuantity;
-            console.log(`🔄 Consolidated manual item: ${productName} (quantity now: ${existingItem.quantity} ${itemUnit})`);
+            console.log(`🔄 Consolidated manual item: ${mappedProductName} (quantity now: ${existingItem.quantity} ${itemUnit})`);
           } else {
             // Add as new manual item
             // Determine appropriate category for manual items
             let itemCategory = 'Te zoeken'; // Default fallback
-            // Clean ingredient name by removing descriptions and preparation methods
-            const cleanedIngredient = productName
-              .replace(/\([^)]*\)/g, '') // Remove parentheses and contents
-              .replace(/,.*$/g, '') // Remove everything after comma
-              .replace(/\s+/g, ' ') // Normalize spaces
-              .trim().toLowerCase();
+            // Clean ingredient name by removing descriptions and preparation methods (already done above, use cleanedIngredient)
+            // Note: cleanedIngredient already uses mappedProductName
 
             // Debug logging to see what we're testing
             console.log(`🔍 Testing ingredient: "${ingredient}" → cleaned: "${cleanedIngredient}"`);
@@ -755,8 +778,8 @@ class AlbertHeijnService {
               itemCategory = 'Snacks & snoep';
             }
 
-            // Clean the display name too  
-            const cleanDisplayName = productName
+            // Clean the display name using the mapped product name  
+            const cleanDisplayName = mappedProductName
               .replace(/\([^)]*\)/g, '') // Remove parentheses and contents
               .replace(/,.*$/g, '') // Remove everything after comma
               .replace(/\s+/g, ' ') // Normalize spaces

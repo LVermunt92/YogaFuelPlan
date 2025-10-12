@@ -2422,8 +2422,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Map ingredients to Dutch terms
       const dutchIngredients = albertHeijnService.mapIngredientsToAH(ingredients);
       
-      // Create shopping list
-      const shoppingList = await albertHeijnService.createShoppingListFromMealPlan(dutchIngredients);
+      // Create shopping list with ingredient mapping support
+      const shoppingList = await albertHeijnService.createShoppingListFromMealPlan(dutchIngredients, storage);
       
       // Optimize store route
       shoppingList.items = await albertHeijnService.optimizeShoppingRoute(shoppingList.items);
@@ -2451,7 +2451,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const ingredientsList = (ingredients as string).split(',');
       const dutchIngredients = albertHeijnService.mapIngredientsToAH(ingredientsList);
       
-      const shoppingList = await albertHeijnService.createShoppingListFromMealPlan(dutchIngredients);
+      const shoppingList = await albertHeijnService.createShoppingListFromMealPlan(dutchIngredients, storage);
       shoppingList.items = await albertHeijnService.optimizeShoppingRoute(shoppingList.items);
       
       const exportData = await albertHeijnService.exportShoppingList(shoppingList, format as 'json' | 'text' | 'csv');
