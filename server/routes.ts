@@ -3022,7 +3022,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // GET /api/admin/unified-recipes - Get all recipes from unified database
+  // GET /api/admin/unified-recipes - Get all recipes from unified database (with modifications)
   app.get("/api/admin/unified-recipes", async (req, res) => {
     try {
       if (!req.session?.userId) {
@@ -3034,7 +3034,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(403).json({ message: "Admin access required" });
       }
 
-      const allRecipes = await getCompleteEnhancedMealDatabase();
+      const allRecipes = await getModifiedRecipeDatabase();
       
       // Sort by ID for consistent ordering
       const sortedRecipes = allRecipes.sort((a, b) => {
