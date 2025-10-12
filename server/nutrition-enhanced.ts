@@ -17519,6 +17519,7 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
     'diced apple': 'Fruits',
     'sliced apple': 'Fruits',
     'chopped apple': 'Fruits',
+    'avocado': 'Fruits',
     'ripe avocado': 'Fruits',
     'lime': 'Fruits',
     'mango': 'Fruits',
@@ -17628,6 +17629,7 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
     // Pantry & Dry Goods (includes grains, legumes, nuts, canned goods, spices, oils)
     'quinoa': 'Grains, Pasta & Canned Goods',
     'brown rice': 'Grains, Pasta & Canned Goods',
+    'brown rice cake': 'Grains, Pasta & Canned Goods',
     'rolled oats': 'Grains, Pasta & Canned Goods',
     'gluten-free oats': 'Grains, Pasta & Canned Goods',
     'gluten-free pasta': 'Grains, Pasta & Canned Goods',
@@ -18272,28 +18274,23 @@ export function multiplyIngredientAmount(ingredientString: string, multiplier: n
 export function parseIngredientAmount(ingredientString: string): { amount: number; unit: string } {
   const lower = ingredientString.toLowerCase().trim();
   
-  // DEBUG: Log what we're parsing
-  if (lower.includes('rice')) {
-    console.log(`🔍 parseIngredientAmount: "${ingredientString}" -> lower: "${lower}"`);
-  }
-  
   // Match patterns like "200g", "1 piece", "2 tbsp", etc.
   const patterns = [
     // Fractions: 1/2, 1/4, 3/4 with optional unit
-    { regex: /^(\d+)\/(\d+)\s*(g|gram|grams|mg|kg)?(?:\s|$)/i, unit: 'pieces', multiplier: (unit: string, num: string, denom: string) => {
+    { regex: /^(\d+)\/(\d+)\s*(g|gram|grams|mg|kg)?(?:\s|$)/i, unit: 'pieces', multiplier: (unit?: string, num?: string, denom?: string) => {
       if (unit && (unit === 'g' || unit === 'gram' || unit === 'grams')) return 1; // If it has grams unit, use grams
       if (unit === 'kg') return 1000;
       if (unit === 'mg') return 0.001;
       return 1; // Otherwise treat as pieces
     }},
     // Weight: 200g, 150ml
-    { regex: /^(\d+(?:\.\d+)?)\s*(g|gram|grams|mg|kg)(?:\s|$)/i, unit: 'g', multiplier: (unit: string) => {
+    { regex: /^(\d+(?:\.\d+)?)\s*(g|gram|grams|mg|kg)(?:\s|$)/i, unit: 'g', multiplier: (unit?: string) => {
       if (unit === 'kg') return 1000;
       if (unit === 'mg') return 0.001;
       return 1;
     }},
     // Volume: 200ml, 1 cup, 2 tbsp, 1 tsp
-    { regex: /^(\d+(?:\.\d+)?)\s*(ml|l|liter|cup|cups|tbsp|tablespoon|tablespoons|tsp|teaspoon|teaspoons)(?:\s|$)/i, unit: 'ml', multiplier: (unit: string) => {
+    { regex: /^(\d+(?:\.\d+)?)\s*(ml|l|liter|cup|cups|tbsp|tablespoon|tablespoons|tsp|teaspoon|teaspoons)(?:\s|$)/i, unit: 'ml', multiplier: (unit?: string) => {
       if (unit === 'l' || unit === 'liter') return 1000;
       if (unit === 'cup' || unit === 'cups') return 240;
       if (unit === 'tbsp' || unit === 'tablespoon' || unit === 'tablespoons') return 15;
@@ -18301,9 +18298,9 @@ export function parseIngredientAmount(ingredientString: string): { amount: numbe
       return 1;
     }},
     // Pieces/cloves: 1 pepper, 2 cloves, 3 eggs
-    { regex: /^(\d+(?:\.\d+)?)\s*(piece|pieces|clove|cloves|whole|halves|half)(?:\s|$)/i, unit: 'pieces', multiplier: () => 1 },
+    { regex: /^(\d+(?:\.\d+)?)\s*(piece|pieces|clove|cloves|whole|halves|half)(?:\s|$)/i, unit: 'pieces', multiplier: (_unit?: string) => 1 },
     // Number at start (no unit): "1 red bell pepper" → 1 piece
-    { regex: /^(\d+(?:\.\d+)?)\s+(?!g|ml|tbsp|tsp|cup|kg|mg)/, unit: 'pieces', multiplier: () => 1 },
+    { regex: /^(\d+(?:\.\d+)?)\s+(?!g|ml|tbsp|tsp|cup|kg|mg)/, unit: 'pieces', multiplier: (_unit?: string) => 1 },
   ];
 
   for (const pattern of patterns) {
@@ -18326,21 +18323,13 @@ export function parseIngredientAmount(ingredientString: string): { amount: numbe
         amount = parseFloat(match[1]);
         const unitStr = match[2] || '';
         const multiplier = pattern.multiplier(unitStr);
-        const result = { amount: amount * multiplier, unit: pattern.unit };
-        if (ingredientString.toLowerCase().includes('rice')) {
-          console.log(`  ✅ Matched pattern, returning:`, result);
-        }
-        return result;
+        return { amount: amount * multiplier, unit: pattern.unit };
       }
     }
   }
 
   // Fallback to defaults if no pattern matches
-  const defaultResult = getDefaultPortion(ingredientString);
-  if (ingredientString.toLowerCase().includes('rice')) {
-    console.log(`  📋 No pattern matched, using default:`, defaultResult);
-  }
-  return defaultResult;
+  return getDefaultPortion(ingredientString);
 }
 
 export function getDefaultPortion(ingredient: string): { amount: number; unit: string } {
@@ -18357,11 +18346,13 @@ export function getDefaultPortion(ingredient: string): { amount: number; unit: s
     'banana': { amount: 1, unit: 'piece' }, // 1 medium banana
     'apples': { amount: 3, unit: 'pieces' }, // 3 medium apples  
     'apple': { amount: 1, unit: 'piece' }, // 1 medium apple
+    'avocado': { amount: 1, unit: 'piece' }, // 1 medium avocado
     'ripe avocado': { amount: 1, unit: 'piece' }, // 1 medium ripe avocado
     'lemon': { amount: 1, unit: 'piece' }, // 1 lemon
     'lemons': { amount: 2, unit: 'pieces' }, // 2 lemons
     'quinoa': { amount: 85, unit: 'g' }, // 0.5 cup dry = ~85g
     'brown rice': { amount: 95, unit: 'g' }, // 0.5 cup dry = ~95g
+    'brown rice cake': { amount: 1, unit: 'piece' }, // 1 brown rice cake
     'spinach': { amount: 60, unit: 'g' }, // 2 cups fresh = ~60g
     'plant-based milk': { amount: 240, unit: 'ml' }, // 1 cup = 240ml (any plant milk: almond, oat, soy)
     'mushrooms': { amount: 70, unit: 'g' }, // 1 cup sliced = ~70g
@@ -18522,10 +18513,12 @@ function cleanIngredientName(ingredient: string): string {
   if (cleaned.startsWith('reen onions') || cleaned === 'reen onions') {
     cleaned = 'green onions';
   }
-  if (cleaned.startsWith('s brown rice') || cleaned === 's brown rice' || cleaned.includes('s brown rice')) {
+  // Don't consolidate brown rice cake to brown rice - they're different products
+  if (cleaned.includes('brown rice cake') || cleaned.includes('rice cake')) {
+    cleaned = 'brown rice cake';
+  } else if (cleaned.startsWith('s brown rice') || cleaned === 's brown rice' || cleaned.includes('s brown rice')) {
     cleaned = 'brown rice';
-  }
-  if (cleaned.startsWith(' brown rice') || cleaned.includes(' brown rice')) {
+  } else if (cleaned.startsWith(' brown rice') || cleaned.includes(' brown rice')) {
     cleaned = 'brown rice';
   }
   if (cleaned.startsWith('s spinach') || cleaned === 's spinach') {
@@ -18950,7 +18943,8 @@ function cleanIngredientName(ingredient: string): string {
     'bell pepper': 'bell peppers',
     'cherry tomatoes': 'cherry tomatoes',
     'herbs': 'fresh herbs',
-    'ripe avocado': 'ripe avocado',
+    'avocado': 'avocado',
+    'ripe avocado': 'avocado', // Consolidate ripe avocado to avocado
     'olive oil': 'olive oil',
     'salt': 'salt',
     'sea salt': 'salt',
