@@ -248,7 +248,6 @@ class AlbertHeijnService {
           
           // Preparation descriptions and instructions
           /^finely$/,
-          /finely$/,
           /^roughly$/,
           /^thinly$/,
           /^thickly$/,
