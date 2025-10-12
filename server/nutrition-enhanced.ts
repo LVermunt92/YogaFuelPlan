@@ -17351,16 +17351,19 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
         }
         
         const existing = ingredientAmounts.get(cleanIngredient);
+        // Parse actual quantity from ingredient string and multiply by portion size (2 servings)
+        const PORTION_SIZE = 2;
+        const parsedAmount = parseIngredientAmount(ingredient);
+        const portionedAmount = parsedAmount.amount * PORTION_SIZE;
+        
         if (existing) {
           existing.count += 1;
-          // Add the quantity for this meal
-          const defaultPortion = getDefaultPortion(cleanIngredient);
-          existing.totalAmount += defaultPortion.amount;
+          // Add the portioned quantity for this meal
+          existing.totalAmount += portionedAmount;
         } else {
-          const defaultPortion = getDefaultPortion(cleanIngredient);
           ingredientAmounts.set(cleanIngredient, { 
-            totalAmount: defaultPortion.amount, 
-            unit: defaultPortion.unit, 
+            totalAmount: portionedAmount, 
+            unit: parsedAmount.unit, 
             count: 1 
           });
         }
@@ -17424,16 +17427,19 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
           }
           
           const existing = ingredientAmounts.get(cleanIngredient);
+          // Parse actual quantity from ingredient string and multiply by portion size (2 servings)
+          const PORTION_SIZE = 2;
+          const parsedAmount = parseIngredientAmount(ingredient);
+          const portionedAmount = parsedAmount.amount * PORTION_SIZE;
+          
           if (existing) {
             existing.count += 1;
-            // Add the quantity for this meal
-            const defaultPortion = getDefaultPortion(cleanIngredient);
-            existing.totalAmount += defaultPortion.amount;
+            // Add the portioned quantity for this meal
+            existing.totalAmount += portionedAmount;
           } else {
-            const defaultPortion = getDefaultPortion(cleanIngredient);
             ingredientAmounts.set(cleanIngredient, { 
-              totalAmount: defaultPortion.amount, 
-              unit: defaultPortion.unit, 
+              totalAmount: portionedAmount, 
+              unit: parsedAmount.unit, 
               count: 1 
             });
           }
@@ -18199,6 +18205,100 @@ function formatAmountWithLanguage(amount: number, unit: string, language: string
   }
   
   return `${amount} ${unit}`;
+}
+
+/**
+ * Multiply ingredient quantities for recipe display (e.g., show 2 servings instead of 1)
+ * Examples:
+ * - "200g rice noodles" × 2 → "400g rice noodles"
+ * - "1 red bell pepper" × 2 → "2 red bell peppers"
+ * - "2 tbsp tahini" × 2 → "4 tbsp tahini"
+ */
+export function multiplyIngredientAmount(ingredientString: string, multiplier: number): string {
+  if (multiplier === 1) return ingredientString;
+  
+  const lower = ingredientString.toLowerCase().trim();
+  
+  // Match patterns for quantities at the start of the string
+  const patterns = [
+    // Fractions: ½, ¼, ⅓, etc.
+    /^(½|¼|¾|⅓|⅔|⅛)/,
+    // Decimal numbers: 1.5, 2.0, etc.
+    /^(\d+\.?\d*)/,
+  ];
+
+  for (const pattern of patterns) {
+    const match = ingredientString.match(pattern);
+    if (match) {
+      const originalAmount = match[1];
+      let numericAmount = 0;
+      
+      // Handle fractions
+      if (originalAmount === '½') numericAmount = 0.5;
+      else if (originalAmount === '¼') numericAmount = 0.25;
+      else if (originalAmount === '¾') numericAmount = 0.75;
+      else if (originalAmount === '⅓') numericAmount = 0.33;
+      else if (originalAmount === '⅔') numericAmount = 0.67;
+      else if (originalAmount === '⅛') numericAmount = 0.125;
+      else numericAmount = parseFloat(originalAmount);
+      
+      const newAmount = numericAmount * multiplier;
+      // Format the new amount nicely
+      const formattedAmount = newAmount % 1 === 0 ? newAmount.toString() : newAmount.toFixed(1);
+      
+      return ingredientString.replace(originalAmount, formattedAmount);
+    }
+  }
+  
+  // If no quantity found at start, just return original (e.g., "Salt to taste")
+  return ingredientString;
+}
+
+/**
+ * Parse ingredient string to extract quantity and unit
+ * Examples:
+ * - "200g rice noodles" → { amount: 200, unit: 'g' }
+ * - "1 red bell pepper" → { amount: 1, unit: 'piece' }
+ * - "2 tbsp tahini" → { amount: 30, unit: 'ml' } (converted to ml)
+ * - "150g sugar snaps" → { amount: 150, unit: 'g' }
+ */
+export function parseIngredientAmount(ingredientString: string): { amount: number; unit: string } {
+  const lower = ingredientString.toLowerCase().trim();
+  
+  // Match patterns like "200g", "1 piece", "2 tbsp", etc.
+  const patterns = [
+    // Weight: 200g, 150ml
+    { regex: /^(\d+(?:\.\d+)?)\s*(g|gram|grams|mg|kg)(?:\s|$)/i, unit: 'g', multiplier: (unit: string) => {
+      if (unit === 'kg') return 1000;
+      if (unit === 'mg') return 0.001;
+      return 1;
+    }},
+    // Volume: 200ml, 1 cup, 2 tbsp, 1 tsp
+    { regex: /^(\d+(?:\.\d+)?)\s*(ml|l|liter|cup|cups|tbsp|tablespoon|tablespoons|tsp|teaspoon|teaspoons)(?:\s|$)/i, unit: 'ml', multiplier: (unit: string) => {
+      if (unit === 'l' || unit === 'liter') return 1000;
+      if (unit === 'cup' || unit === 'cups') return 240;
+      if (unit === 'tbsp' || unit === 'tablespoon' || unit === 'tablespoons') return 15;
+      if (unit === 'tsp' || unit === 'teaspoon' || unit === 'teaspoons') return 5;
+      return 1;
+    }},
+    // Pieces/cloves: 1 pepper, 2 cloves, 3 eggs
+    { regex: /^(\d+(?:\.\d+)?)\s*(piece|pieces|clove|cloves|whole|halves|half)(?:\s|$)/i, unit: 'pieces', multiplier: () => 1 },
+    // Number at start (no unit): "1 red bell pepper" → 1 piece
+    { regex: /^(\d+(?:\.\d+)?)\s+(?!g|ml|tbsp|tsp|cup|kg|mg)/, unit: 'pieces', multiplier: () => 1 },
+  ];
+
+  for (const pattern of patterns) {
+    const match = lower.match(pattern.regex);
+    if (match) {
+      const amount = parseFloat(match[1]);
+      const unitStr = match[2] || '';
+      const multiplier = pattern.multiplier(unitStr);
+      return { amount: amount * multiplier, unit: pattern.unit };
+    }
+  }
+
+  // Fallback to defaults if no pattern matches
+  return getDefaultPortion(ingredientString);
 }
 
 export function getDefaultPortion(ingredient: string): { amount: number; unit: string } {
