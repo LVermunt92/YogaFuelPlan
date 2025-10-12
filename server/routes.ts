@@ -1273,11 +1273,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }, language);
           });
           
+          // Multiply AI-generated ingredients by portion size (2 servings)
+          const PORTION_SIZE = 2;
+          const multipliedAIIngredients = translatedAIRecipe.ingredients.map(ingredient => 
+            multiplyIngredientAmount(ingredient, PORTION_SIZE)
+          );
+          
           return res.json({
             ...aiRecipe,
             name: translatedAIRecipe.name,
-            portion: targetMeal.portion,
-            ingredients: translatedAIRecipe.ingredients,
+            portion: `${PORTION_SIZE} servings`,
+            ingredients: multipliedAIIngredients,
             instructions: translatedAIRecipe.instructions,
             tips: translatedAIRecipe.tips,
             notes: translatedAIRecipe.notes.join('\n'),
@@ -1394,11 +1400,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }, language);
           });
           
+          // Multiply AI-enhanced ingredients by portion size (2 servings)
+          const PORTION_SIZE = 2;
+          const multipliedEnhancedIngredients = translatedEnhancedRecipe.ingredients.map(ingredient => 
+            multiplyIngredientAmount(ingredient, PORTION_SIZE)
+          );
+          
           return res.json({
             ...enhancedRecipe,
             name: translatedEnhancedRecipe.name,
-            portion: targetMeal.portion,
-            ingredients: translatedEnhancedRecipe.ingredients,
+            portion: `${PORTION_SIZE} servings`,
+            ingredients: multipliedEnhancedIngredients,
             instructions: translatedEnhancedRecipe.instructions,
             tips: translatedEnhancedRecipe.tips,
             notes: translatedEnhancedRecipe.notes.join('\n'),
@@ -1508,24 +1520,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
+      // Multiply ingredients by portion size (2 servings) for display
+      const PORTION_SIZE = 2;
+      const multipliedIngredients = translatedRecipe.ingredients.map(ingredient => 
+        multiplyIngredientAmount(ingredient, PORTION_SIZE)
+      );
+      
       res.json({
         name: translatedRecipe.name,
-        portion: targetMeal.portion,
-        ingredients: translatedRecipe.ingredients,
+        portion: `${PORTION_SIZE} servings`,  // Update portion text
+        ingredients: multipliedIngredients,  // Use multiplied ingredients
         instructions: translatedRecipe.instructions,
         tips: translatedRecipe.tips,
         notes: translatedRecipe.notes.join('\n'),
         prepTime: mealOption.nutrition?.prepTime || 30,
         nutrition: {
-          protein: mealOption.nutrition?.protein || 0,
-          calories: mealOption.nutrition?.calories || 0,
-          carbohydrates: mealOption.nutrition?.carbohydrates || 0,
-          fats: mealOption.nutrition?.fats || 0,
-          fiber: mealOption.nutrition?.fiber || 0,
-          sugar: mealOption.nutrition?.sugar || 0,
-          sodium: mealOption.nutrition?.sodium || 0,
-          costEuros: mealOption.nutrition?.costEuros,
-          proteinPerEuro: mealOption.nutrition?.proteinPerEuro
+          protein: (mealOption.nutrition?.protein || 0) * PORTION_SIZE,  // Multiply nutrition by portion size
+          calories: (mealOption.nutrition?.calories || 0) * PORTION_SIZE,
+          carbohydrates: (mealOption.nutrition?.carbohydrates || 0) * PORTION_SIZE,
+          fats: (mealOption.nutrition?.fats || 0) * PORTION_SIZE,
+          fiber: (mealOption.nutrition?.fiber || 0) * PORTION_SIZE,
+          sugar: (mealOption.nutrition?.sugar || 0) * PORTION_SIZE,
+          sodium: (mealOption.nutrition?.sodium || 0) * PORTION_SIZE,
+          costEuros: (mealOption.nutrition?.costEuros || 0) * PORTION_SIZE,
+          proteinPerEuro: mealOption.nutrition?.proteinPerEuro  // This ratio stays the same
         },
         tags: mealOption.tags || [],
         vegetableContent: mealOption.vegetableContent || { servings: 0, vegetables: [], benefits: [] },
