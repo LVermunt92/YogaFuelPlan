@@ -109,40 +109,6 @@ export default function MyRecipes() {
     }
   }, [userProfile]);
 
-  // Analyze ingredients to get their categories
-  const analyzeIngredients = async (ingredients: string[]) => {
-    if (!ingredients || ingredients.length === 0) return;
-    
-    try {
-      const response = await fetch('/api/analyze-ingredients', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ingredients })
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        const categories: Record<number, string> = {};
-        data.analysis.forEach((item: {ingredient: string, category: string}, index: number) => {
-          categories[index] = item.category;
-        });
-        setIngredientCategories(categories);
-      }
-    } catch (error) {
-      console.error('Error analyzing ingredients:', error);
-    }
-  };
-
-  // Watch for ingredient changes and analyze them
-  React.useEffect(() => {
-    const subscription = form.watch((value, { name }) => {
-      if (name?.startsWith('ingredients') && value.ingredients) {
-        analyzeIngredients(value.ingredients as string[]);
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [form]);
-
   // Mutation to update recipe preference  
   const updatePreferenceMutation = useMutation({
     mutationFn: (useOnlyMyRecipes: boolean) => 
@@ -206,6 +172,40 @@ export default function MyRecipes() {
       tags: [],
     },
   });
+
+  // Analyze ingredients to get their categories
+  const analyzeIngredients = async (ingredients: string[]) => {
+    if (!ingredients || ingredients.length === 0) return;
+    
+    try {
+      const response = await fetch('/api/analyze-ingredients', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ingredients })
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        const categories: Record<number, string> = {};
+        data.analysis.forEach((item: {ingredient: string, category: string}, index: number) => {
+          categories[index] = item.category;
+        });
+        setIngredientCategories(categories);
+      }
+    } catch (error) {
+      console.error('Error analyzing ingredients:', error);
+    }
+  };
+
+  // Watch for ingredient changes and analyze them
+  React.useEffect(() => {
+    const subscription = form.watch((value, { name }) => {
+      if (name?.startsWith('ingredients') && value.ingredients) {
+        analyzeIngredients(value.ingredients as string[]);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [form]);
 
   // Mutations
   const createMutation = useMutation({
