@@ -573,9 +573,10 @@ export const insertShoppingListItemSchema = createInsertSchema(shoppingListItems
 });
 
 export const updateShoppingListItemSchema = z.object({
-  isChecked: z.boolean(),
+  isChecked: z.boolean().optional(),
   quantity: z.number().optional(),
   productName: z.string().optional(),
+  category: z.string().optional(),
 });
 
 export type ShoppingList = typeof shoppingLists.$inferSelect;

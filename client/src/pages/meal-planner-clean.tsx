@@ -290,7 +290,7 @@ function MealPlannerMain() {
 
   // Mutations for shopping list item updates
   const updateShoppingListItemMutation = useMutation({
-    mutationFn: async ({ itemId, updates }: { itemId: number; updates: { isChecked: boolean } }) => {
+    mutationFn: async ({ itemId, updates }: { itemId: number; updates: { isChecked?: boolean; category?: string } }) => {
       const response = await apiRequest('PUT', `/api/shopping-lists/0/items/${itemId}`, updates);
       return response.json();
     },
@@ -1267,28 +1267,70 @@ function MealPlannerMain() {
                                       return (
                                         <div 
                                           key={item.id} 
-                                          className={`py-3 px-3 rounded cursor-pointer transition-all duration-200 ${
+                                          className={`py-3 px-3 rounded transition-all duration-200 ${
                                             item.isChecked 
                                               ? 'bg-green-100 border border-green-300' 
                                               : 'bg-white border border-gray-200 hover:bg-gray-50 hover:border-gray-300'
                                           }`}
-                                          onClick={() => toggleItemChecked(item)}
                                         >
-                                          <div className="flex items-center justify-between w-full">
-                                            <span className={`font-medium leading-tight break-words flex-grow text-sm ${
-                                              item.isChecked 
-                                                ? 'text-green-700 line-through decoration-2' 
-                                                : 'text-gray-800'
-                                            }`}>
-                                              {item.productName}
-                                            </span>
-                                            <span className={`font-semibold text-sm ml-3 whitespace-nowrap ${
-                                              item.isChecked 
-                                                ? 'text-green-600 line-through decoration-2' 
-                                                : 'text-gray-600'
-                                            }`}>
-                                              {item.quantity} {item.unit}
-                                            </span>
+                                          <div className="flex items-center justify-between w-full gap-2">
+                                            <div 
+                                              className="flex items-center gap-2 flex-grow cursor-pointer"
+                                              onClick={() => toggleItemChecked(item)}
+                                            >
+                                              <span className={`font-medium leading-tight break-words flex-grow text-sm ${
+                                                item.isChecked 
+                                                  ? 'text-green-700 line-through decoration-2' 
+                                                  : 'text-gray-800'
+                                              }`}>
+                                                {item.productName}
+                                              </span>
+                                              <span className={`font-semibold text-sm whitespace-nowrap ${
+                                                item.isChecked 
+                                                  ? 'text-green-600 line-through decoration-2' 
+                                                  : 'text-gray-600'
+                                              }`}>
+                                                {item.quantity} {item.unit}
+                                              </span>
+                                            </div>
+                                            
+                                            {/* Category Remapping Dropdown */}
+                                            <Select
+                                              value={item.category}
+                                              onValueChange={(newCategory) => {
+                                                // Update item category
+                                                updateShoppingListItemMutation.mutate({
+                                                  itemId: item.id,
+                                                  updates: { category: newCategory }
+                                                });
+                                              }}
+                                            >
+                                              <SelectTrigger 
+                                                className="w-[140px] h-8 text-xs"
+                                                onClick={(e) => e.stopPropagation()}
+                                                data-testid={`select-category-${item.id}`}
+                                              >
+                                                <SelectValue />
+                                              </SelectTrigger>
+                                              <SelectContent>
+                                                <SelectItem value="Groente & fruit">Groente & fruit</SelectItem>
+                                                <SelectItem value="Vlees, vis & vega">Vlees, vis & vega</SelectItem>
+                                                <SelectItem value="Zuivel & eieren">Zuivel & eieren</SelectItem>
+                                                <SelectItem value="Brood & gebak">Brood & gebak</SelectItem>
+                                                <SelectItem value="Kaas & vleeswaren">Kaas & vleeswaren</SelectItem>
+                                                <SelectItem value="Ontbijt & beleg">Ontbijt & beleg</SelectItem>
+                                                <SelectItem value="Pasta, rijst & wereldkeuken">Pasta, rijst & wereldkeuken</SelectItem>
+                                                <SelectItem value="Soepen, sauzen & kruiden">Soepen, sauzen & kruiden</SelectItem>
+                                                <SelectItem value="Snoep, koek & chips">Snoep, koek & chips</SelectItem>
+                                                <SelectItem value="Bewuste voeding">Bewuste voeding</SelectItem>
+                                                <SelectItem value="Dranken">Dranken</SelectItem>
+                                                <SelectItem value="Baby & peuter">Baby & peuter</SelectItem>
+                                                <SelectItem value="Diepvries">Diepvries</SelectItem>
+                                                <SelectItem value="Huishouden">Huishouden</SelectItem>
+                                                <SelectItem value="Huisdier">Huisdier</SelectItem>
+                                                <SelectItem value="Persoonlijke verzorging">Persoonlijke verzorging</SelectItem>
+                                              </SelectContent>
+                                            </Select>
                                           </div>
                                         </div>
                                       );
