@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean, timestamp, real, date, unique, varchar } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, real, date, unique, varchar, jsonb } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -34,6 +34,45 @@ export const users = pgTable("users", {
   menstrualPhase: text("menstrual_phase").default("off"), // off, menstrual, follicular, ovulation, luteal
   longevityFocusedRecipes: boolean("longevity_focused_recipes").default(false), // enable longevity-focused recipes
   lastLoginAt: timestamp("last_login_at"), // track when user last logged in
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Unified recipes table - stores all recipes (base, variants, custom, AI-generated)
+export const recipes = pgTable("recipes", {
+  id: text("id").primaryKey(), // String ID to support various ID formats
+  name: text("name").notNull(),
+  category: text("category").notNull(), // breakfast, lunch, dinner, snack, dessert, smoothie
+  ingredients: text("ingredients").array().notNull(),
+  instructions: text("instructions").array().notNull(),
+  portion: text("portion").notNull().default("1 serving"),
+  
+  // Nutrition data stored as JSONB
+  nutrition: jsonb("nutrition").notNull(), // NutritionInfo object
+  
+  // Tags and metadata
+  tags: text("tags").array().default([]),
+  wholeFoodLevel: text("whole_food_level").default("moderate"), // minimal, moderate, high
+  
+  // Vegetable content stored as JSONB
+  vegetableContent: jsonb("vegetable_content"), // { servings, vegetables[], benefits[] }
+  
+  // Recipe benefits and tips
+  recipeBenefits: text("recipe_benefits").array(),
+  recipeTips: text("recipe_tips").array(),
+  recipeNotes: text("recipe_notes"),
+  
+  // Source tracking
+  source: text("source").notNull().default("base"), // base, variant, custom, ai
+  variantOf: text("variant_of"), // Reference to base recipe ID for variants
+  variantType: text("variant_type"), // gluten_free, lactose_free, vegetarian
+  
+  // Status
+  active: boolean("active").default(true),
+  
+  // Audit fields
+  createdBy: integer("created_by").references(() => users.id),
+  updatedBy: integer("updated_by").references(() => users.id),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -417,6 +456,22 @@ export type InsertMealHistory = z.infer<typeof insertMealHistorySchema>;
 export type MealFavorite = typeof mealFavorites.$inferSelect;
 export type InsertMealFavorite = z.infer<typeof insertMealFavoriteSchema>;
 export type MealFavoriteUpdate = z.infer<typeof mealFavoriteUpdateSchema>;
+
+// Unified recipe schemas
+export const insertRecipeSchema = createInsertSchema(recipes).omit({
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const updateRecipeSchema = createInsertSchema(recipes).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+}).partial();
+
+export type Recipe = typeof recipes.$inferSelect;
+export type InsertRecipe = z.infer<typeof insertRecipeSchema>;
+export type UpdateRecipe = z.infer<typeof updateRecipeSchema>;
 
 // User recipe schemas
 export const insertUserRecipeSchema = createInsertSchema(userRecipes).omit({
