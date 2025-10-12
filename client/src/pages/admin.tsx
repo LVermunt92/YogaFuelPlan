@@ -302,7 +302,7 @@ function TagsManager() {
 function IngredientMappingManager() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const [activeTab, setActiveTab] = useState("shopping-names");
+  const [activeTab, setActiveTab] = useState("shopping-names"); // Default to grocery items tab
   const [editingMapping, setEditingMapping] = useState<IngredientMapping | null>(null);
   const [editingShoppingListName, setEditingShoppingListName] = useState<ShoppingListName | null>(null);
   const [mealPlanId, setMealPlanId] = useState("");
@@ -434,15 +434,15 @@ function IngredientMappingManager() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">Ingredient mapping management</h2>
-          <p className="text-gray-600">Control how recipe ingredients are processed into grocery list items</p>
+          <h2 className="text-2xl font-bold">Grocery list & ingredient mapping</h2>
+          <p className="text-gray-600">Manage grocery items, their units, and how recipe ingredients map to them</p>
         </div>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid grid-cols-3 w-full">
-          <TabsTrigger value="mappings">Ingredient mappings</TabsTrigger>
-          <TabsTrigger value="shopping-names">Shopping list names</TabsTrigger>
+          <TabsTrigger value="shopping-names">Grocery items ({shoppingListNames.length})</TabsTrigger>
+          <TabsTrigger value="mappings">Ingredient mappings ({ingredientMappings.length})</TabsTrigger>
           <TabsTrigger value="analysis">Analysis</TabsTrigger>
         </TabsList>
 
@@ -584,7 +584,7 @@ function IngredientMappingManager() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
-                <span>Shopping list names ({shoppingListNames.length})</span>
+                <span>Grocery items with unit conventions ({shoppingListNames.length})</span>
                 <Dialog open={showCreateShoppingName} onOpenChange={setShowCreateShoppingName}>
                   <DialogTrigger asChild>
                     <Button size="sm" data-testid="button-add-shopping-list-name">
@@ -662,12 +662,19 @@ function IngredientMappingManager() {
                 <div>Loading shopping list names...</div>
               ) : (
                 <div className="space-y-2">
+                  {/* Column headers */}
+                  <div className="grid grid-cols-3 gap-4 px-3 py-2 bg-gray-100 rounded font-medium text-sm text-gray-700">
+                    <div>Item name</div>
+                    <div>Category</div>
+                    <div>Unit convention</div>
+                  </div>
                   {shoppingListNames.map((name) => (
-                    <div key={name.id} className="flex items-center justify-between p-3 border rounded">
-                      <div className="flex-1">
+                    <div key={name.id} className="flex items-center justify-between p-3 border rounded hover:bg-gray-50">
+                      <div className="flex-1 grid grid-cols-3 gap-4">
                         <div className="font-medium">{name.name}</div>
-                        <div className="text-sm text-gray-600">
-                          {name.category} • Default unit: {name.defaultUnit}
+                        <div className="text-sm text-gray-600">{name.category}</div>
+                        <div className="text-sm">
+                          <Badge variant="outline" className="font-mono">{name.defaultUnit}</Badge>
                         </div>
                       </div>
                       <div className="flex gap-2">
