@@ -13,7 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
-import { Settings, Users, Calculator, Database, Activity, Target, ChefHat, Save, Edit, Trash2, Plus, AlertTriangle, Search, Filter, Download, Upload, Eye, Leaf } from "lucide-react";
+import { Settings, Users, Calculator, Database, Activity, Target, ChefHat, Save, Edit, Trash2, Plus, AlertTriangle, Search, Filter, Download, Upload, Eye, Leaf, X } from "lucide-react";
 import { useTranslations } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -2729,7 +2729,7 @@ function AdminPanelMain() {
                           <Badge
                             key={tagData.tag}
                             variant={isSelected ? "default" : "outline"}
-                            className={`cursor-pointer transition-colors ${
+                            className={`group cursor-pointer transition-colors ${
                               isSelected 
                                 ? "bg-emerald-500 hover:bg-emerald-600 text-white" 
                                 : "hover:bg-gray-100"
@@ -2744,13 +2744,24 @@ function AdminPanelMain() {
                             }}
                           >
                             {tagData.tag}
-                            {isSelected && " ✓"}
+                            {isSelected && (
+                              <X 
+                                className="ml-1 h-3 w-3 inline-block opacity-70 group-hover:opacity-100" 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setEditingRecipe({
+                                    ...editingRecipe,
+                                    tags: editingRecipe.tags.filter(t => t !== tagData.tag)
+                                  });
+                                }}
+                              />
+                            )}
                           </Badge>
                         );
                       })
                     )}
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">Click tags to select/deselect</p>
+                  <p className="text-xs text-gray-500 mt-1">Click tags to select/deselect. Selected tags show an X to remove.</p>
                 </div>
 
                 {/* Ingredients */}
