@@ -380,7 +380,7 @@ export const recipeRatingSchema = z.object({
   recipeName: z.string().min(1),
   rating: z.number().min(1).max(5),
   feedback: z.string().optional(),
-  mealType: z.enum(["breakfast", "lunch", "dinner", "snack"]),
+  mealType: z.enum(["breakfast", "lunch", "dinner", "snack", "dessert", "smoothie"]),
 });
 
 export const insertMealHistorySchema = createInsertSchema(mealHistory).omit({

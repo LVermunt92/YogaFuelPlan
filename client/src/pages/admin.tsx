@@ -44,7 +44,7 @@ interface Recipe {
   id?: string;
   name: string;
   portion: string;
-  category: 'breakfast' | 'lunch' | 'dinner';
+  category: 'breakfast' | 'lunch' | 'dinner' | 'snack' | 'dessert' | 'smoothie';
   tags: string[];
   ingredients: string[];
   nutrition: {
@@ -99,6 +99,9 @@ interface RecipeStats {
     breakfast: number;
     lunch: number;
     dinner: number;
+    snack: number;
+    dessert: number;
+    smoothie: number;
   };
   byTags: Record<string, number>;
   proteinRange: {

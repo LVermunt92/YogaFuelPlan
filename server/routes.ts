@@ -3239,7 +3239,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         byCategory: {
           breakfast: recipes.filter(r => r.category === 'breakfast').length,
           lunch: recipes.filter(r => r.category === 'lunch').length,
-          dinner: recipes.filter(r => r.category === 'dinner').length
+          dinner: recipes.filter(r => r.category === 'dinner').length,
+          snack: recipes.filter(r => r.category === 'snack').length,
+          dessert: recipes.filter(r => r.category === 'dessert').length,
+          smoothie: recipes.filter(r => r.category === 'smoothie').length
         },
         byTags: recipes.reduce((acc, recipe) => {
           recipe.tags.forEach(tag => {
