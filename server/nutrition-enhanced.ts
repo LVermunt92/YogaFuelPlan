@@ -17201,7 +17201,6 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
           
           // Preparation descriptions and instructions
           /^finely$/,
-          /finely$/,
           /^roughly$/,
           /^thinly$/,
           /^thickly$/,
@@ -18369,6 +18368,9 @@ function cleanIngredientName(ingredient: string): string {
   
   // Remove leading numbers, decimals and fractions that might still be there  
   cleaned = cleaned.replace(/^[\d\.\/½¼¾⅓⅔⅛⅜⅝⅞]+\s*/, '');
+  
+  // Remove text fractions (half, quarter, third, etc.)
+  cleaned = cleaned.replace(/^(half|quarter|third|one|two|three|four)\s+(of\s+)?/i, '');
   
   // Remove vague quantity descriptions like "handful", "small handful", etc.
   cleaned = cleaned.replace(/^(small\s+handful|large\s+handful|handful|few|some|bit|touch|splash|drizzle|sprinkle)\s+(of\s+)?/i, '');
