@@ -16151,6 +16151,148 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     createdAt: new Date('2025-10-04'),
     active: true
+  },
+
+  {
+    name: "Coconut curry with vegan dumplings",
+    portion: "1 serving with rice (450g)",
+    nutrition: {
+      protein: 15,
+      prepTime: 35,
+      calories: 600,
+      carbohydrates: 71,
+      fats: 25,
+      fiber: 6,
+      sugar: 6,
+      sodium: 580,
+      potassium: 520,
+      calcium: 85,
+      iron: 3.2,
+      vitaminC: 95,
+      costEuros: 4.20,
+      proteinPerEuro: 3.6
+    },
+    category: "dinner",
+    tags: ["Vegetarian", "Vegan", "Lactose-Free", "Dairy-Free", "Asian-Inspired"],
+    ingredients: [
+      "10g red curry paste",
+      "1 garlic clove, finely chopped",
+      "100g broccoli florets",
+      "75g red pointed pepper",
+      "40g baby corn",
+      "7g fresh ginger, grated",
+      "110ml coconut milk",
+      "1 kaffir lime leaf",
+      "60g vegan dumplings (5-6 pieces)",
+      "fresh coriander for garnish",
+      "2.5g sesame seeds",
+      "crispy chili oil to taste",
+      "40g rice (uncooked)",
+      "pinch of salt"
+    ],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["broccoli", "red pepper", "baby corn", "ginger"],
+      benefits: ["High in vitamin C", "Anti-inflammatory ginger", "Rich in antioxidants"]
+    },
+    recipeBenefits: [
+      "Thai-inspired comfort food with vegetables",
+      "Vegan dumplings add satisfying texture",
+      "Aromatic curry with coconut creaminess",
+      "Serves well with or without rice"
+    ],
+    recipe: {
+      instructions: [
+        "Finely grate the ginger and chop the garlic. Cut broccoli into small florets, red pepper into pieces, and baby corn into 2-3cm chunks",
+        "Preheat oven to 180°C (fan)",
+        "In an oven dish, mix curry paste, garlic, grated ginger, and coconut milk with a whisk. Add vegetables and kaffir lime leaf, stir well",
+        "Bake for 25 minutes",
+        "Optional: Cook rice according to package instructions (40g rice with 60ml hot water and pinch of salt)",
+        "Remove dish from oven, place vegan dumplings on top, cover with aluminum foil, and bake for another 5-10 minutes until dumplings are cooked",
+        "Serve with fresh coriander, sesame seeds, and crispy chili oil"
+      ],
+      tips: [
+        "Can use steam oven method: switch to steam mode after initial 25 min baking, then steam dumplings 5-10 min",
+        "Kaffir lime leaf adds authentic Thai flavor but can be omitted",
+        "Adjust curry paste amount based on heat preference",
+        "Great for meal prep - reheat gently to preserve dumpling texture"
+      ],
+      notes: "Aromatic Thai-inspired curry that can be baked in conventional or steam oven. Vegan dumplings make it hearty and satisfying."
+    },
+    createdAt: new Date('2025-10-12'),
+    active: true
+  },
+
+  {
+    name: "Coconut curry with gluten-free dumplings",
+    portion: "1 serving with rice (450g)",
+    nutrition: {
+      protein: 14,
+      prepTime: 35,
+      calories: 590,
+      carbohydrates: 70,
+      fats: 25,
+      fiber: 7,
+      sugar: 6,
+      sodium: 560,
+      potassium: 510,
+      calcium: 80,
+      iron: 3.0,
+      vitaminC: 95,
+      costEuros: 4.50,
+      proteinPerEuro: 3.1
+    },
+    category: "dinner",
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "Asian-Inspired"],
+    ingredients: [
+      "10g red curry paste",
+      "1 garlic clove, finely chopped",
+      "100g broccoli florets",
+      "75g red pointed pepper",
+      "40g baby corn",
+      "7g fresh ginger, grated",
+      "110ml coconut milk",
+      "1 kaffir lime leaf",
+      "60g gluten-free vegan dumplings (5-6 pieces)",
+      "fresh coriander for garnish",
+      "2.5g sesame seeds",
+      "crispy chili oil to taste",
+      "40g gluten-free rice (uncooked)",
+      "pinch of salt"
+    ],
+    wholeFoodLevel: "moderate",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["broccoli", "red pepper", "baby corn", "ginger"],
+      benefits: ["High in vitamin C", "Anti-inflammatory ginger", "Rich in antioxidants"]
+    },
+    recipeBenefits: [
+      "Gluten-free Thai curry for celiac-safe dining",
+      "Rice-based dumplings maintain authentic texture",
+      "Same aromatic flavors as traditional version",
+      "Naturally dairy-free and vegan"
+    ],
+    recipe: {
+      instructions: [
+        "Finely grate the ginger and chop the garlic. Cut broccoli into small florets, red pepper into pieces, and baby corn into 2-3cm chunks",
+        "Preheat oven to 180°C (fan)",
+        "In an oven dish, mix curry paste (ensure gluten-free), garlic, grated ginger, and coconut milk with a whisk. Add vegetables and kaffir lime leaf, stir well",
+        "Bake for 25 minutes",
+        "Optional: Cook gluten-free rice according to package instructions (40g rice with 60ml hot water and pinch of salt)",
+        "Remove dish from oven, place gluten-free dumplings on top, cover with aluminum foil, and bake for another 5-10 minutes until dumplings are cooked",
+        "Serve with fresh coriander, sesame seeds, and crispy chili oil (check label for gluten)"
+      ],
+      tips: [
+        "Verify curry paste is certified gluten-free (some contain wheat)",
+        "Gluten-free dumplings may cook slightly faster - check at 5 minutes",
+        "Rice-based dumplings are naturally gluten-free",
+        "Can use steam oven method for gentler dumpling cooking"
+      ],
+      notes: "Gluten-free version using rice-based dumplings. Verify all packaged ingredients are certified gluten-free to avoid cross-contamination."
+    },
+    createdAt: new Date('2025-10-12'),
+    active: true
   }
 ];
 
