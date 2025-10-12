@@ -15,6 +15,15 @@ Preferred communication style: Simple, everyday language.
   - Apply multiple phase tags when recipes contain ingredients supporting multiple phases
   - Vegetarian/gluten-free/lactose-free recipes should ALWAYS be evaluated for menstrual tags to ensure adequate meal options for strict dietary filters
 
+**RECIPE VARIANT PREVENTION RULES** (CRITICAL - prevents duplicate recipes):
+  - **NEVER create gluten-free variants** if base recipe already contains "Gluten-Free" tag (e.g., quinoa/rice/oat-based dishes are naturally gluten-free)
+  - **NEVER create lactose-free variants** if base recipe already contains "Lactose-Free" tag (e.g., dishes with almond/coconut/oat milk are naturally lactose-free)
+  - **NEVER create vegetarian variants** if base recipe already contains "Vegetarian" tag
+  - **Only create variants when substitution is ACTUALLY needed** (e.g., wheat pasta → gluten-free pasta, cow's milk → plant milk, meat → plant protein)
+  - **Chickpea flour (gram flour) is NATURALLY GLUTEN-FREE** - never create separate gluten-free variants for chickpea flour recipes
+  - **Check base recipe tags BEFORE creating any variant** - if tag exists, variant is unnecessary
+  - **Portion sizing**: All recipes display ingredients for 2 servings (cooking batch), shopping lists calculate: ingredient amount × 2 servings × number of cooking sessions
+
 # System Architecture
 - **UI/UX Decisions**: Utilizes `shadcn/ui` built on `Radix UI` primitives with `Tailwind CSS` and CSS variables for theming, focusing on a streamlined interface. Color schemes are standardized across the application (emerald, yellow, green, blue, orange for KPIs; gray for general UI; green/blue/orange for meal cards). Mobile layouts are optimized for responsiveness.
 - **Technical Implementations**:
