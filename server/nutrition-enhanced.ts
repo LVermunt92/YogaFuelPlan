@@ -17353,18 +17353,9 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
         const existing = ingredientAmounts.get(cleanIngredient);
         if (existing) {
           existing.count += 1;
-          // Smart aggregation: calculate reasonable weekly amount based on count
+          // Add the quantity for this meal
           const defaultPortion = getDefaultPortion(cleanIngredient);
-          // For weekly shopping, use reasonable multipliers based on ingredient type
-          let weeklyMultiplier = Math.min(existing.count, 3); // Max 3x for vegetables
-          if (cleanIngredient.includes('oil') || cleanIngredient.includes('spice') || cleanIngredient.includes('seasoning') ||
-              cleanIngredient.includes('fresh') && (cleanIngredient.includes('herb') || cleanIngredient.includes('basil') || 
-              cleanIngredient.includes('parsley') || cleanIngredient.includes('cilantro') || cleanIngredient.includes('thyme') ||
-              cleanIngredient.includes('rosemary') || cleanIngredient.includes('oregano') || cleanIngredient.includes('mint') ||
-              cleanIngredient.includes('dill') || cleanIngredient.includes('chives') || cleanIngredient.includes('sage'))) {
-            weeklyMultiplier = 1; // Fresh herbs don't multiply - one bunch lasts the week
-          }
-          existing.totalAmount = defaultPortion.amount * weeklyMultiplier;
+          existing.totalAmount += defaultPortion.amount;
         } else {
           const defaultPortion = getDefaultPortion(cleanIngredient);
           ingredientAmounts.set(cleanIngredient, { 
@@ -17435,18 +17426,9 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
           const existing = ingredientAmounts.get(cleanIngredient);
           if (existing) {
             existing.count += 1;
-            // Smart aggregation: calculate reasonable weekly amount based on count
+            // Add the quantity for this meal
             const defaultPortion = getDefaultPortion(cleanIngredient);
-            // For weekly shopping, use reasonable multipliers based on ingredient type
-            let weeklyMultiplier = Math.min(existing.count, 3); // Max 3x for vegetables
-            if (cleanIngredient.includes('oil') || cleanIngredient.includes('spice') || cleanIngredient.includes('seasoning') ||
-                cleanIngredient.includes('fresh') && (cleanIngredient.includes('herb') || cleanIngredient.includes('basil') || 
-                cleanIngredient.includes('parsley') || cleanIngredient.includes('cilantro') || cleanIngredient.includes('thyme') ||
-                cleanIngredient.includes('rosemary') || cleanIngredient.includes('oregano') || cleanIngredient.includes('mint') ||
-                cleanIngredient.includes('dill') || cleanIngredient.includes('chives') || cleanIngredient.includes('sage'))) {
-              weeklyMultiplier = 1; // Fresh herbs don't multiply - one bunch lasts the week
-            }
-            existing.totalAmount = defaultPortion.amount * weeklyMultiplier;
+            existing.totalAmount += defaultPortion.amount;
           } else {
             const defaultPortion = getDefaultPortion(cleanIngredient);
             ingredientAmounts.set(cleanIngredient, { 
