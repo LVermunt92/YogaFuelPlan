@@ -13,7 +13,7 @@ import Insights from "@/pages/insights";
 
 import Auth from "@/pages/auth";
 import NotFound from "@/pages/not-found";
-import { Utensils, User, Info, Settings, Menu, LogOut, Languages, ChefHat, BarChart3 } from "lucide-react";
+import { Utensils, User, Info, Settings, Menu, LogOut, Languages, ChefHat } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import React, { useState, useEffect } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";

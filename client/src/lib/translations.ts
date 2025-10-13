@@ -6,6 +6,7 @@ export const translations = {
     about: "About",
     myRecipes: "My recipes",
     logout: "Logout",
+    viewInsights: "View insights",
     
     // Meal Planner
     generateMealPlan: "Generate meal plan",
@@ -566,6 +567,7 @@ export const translations = {
     about: "Over",
     myRecipes: "Mijn recepten",
     logout: "Uitloggen",
+    viewInsights: "Bekijk inzichten",
     
     // Meal Planner
     generateMealPlan: "Maaltijdplan genereren",

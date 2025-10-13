@@ -11,7 +11,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
 import { getCurrentWeekSunday, formatWeekDisplay } from '../lib/date-utils';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Calendar, Clock, Target, Eye, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages, Users, Minus, Trash2, Euro, TrendingUp, Droplet, Apple, Leaf, Check, Wheat, Settings } from "lucide-react";
+import { Calendar, Clock, Target, Eye, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages, Users, Minus, Trash2, Euro, TrendingUp, Droplet, Apple, Leaf, Check, Wheat, Settings, ArrowRight } from "lucide-react";
+import { useLocation } from "wouter";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Separator } from "@/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -232,6 +233,7 @@ function AdminRedirect() {
 
 // Main meal planner component
 function MealPlannerMain() {
+  const [, setLocation] = useLocation();
   const [selectedMealPlan, setSelectedMealPlan] = useState<number | null>(() => {
     const stored = localStorage.getItem('selectedMealPlan');
     return stored ? parseInt(stored) : null;
@@ -788,7 +790,14 @@ function MealPlannerMain() {
 
           {/* 2. Compact Nutrition Charts */}
           {currentMealPlan && kpiData && (
-            <div className="mb-6">
+            <div className="mb-6 relative">
+              <button
+                onClick={() => setLocation('/insights')}
+                className="absolute top-2 right-2 z-10 flex items-center gap-1 text-xs text-gray-500 hover:text-gray-700 transition-colors cursor-pointer group"
+              >
+                <span className="hidden sm:inline">{t.viewInsights || 'View insights'}</span>
+                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </button>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg w-full">
               {/* Protein Chart - First position */}
               <TooltipProvider>
