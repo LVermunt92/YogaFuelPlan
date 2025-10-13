@@ -53,6 +53,31 @@ export default function Insights() {
     queryKey: ["/api/nutrition/targets"],
   });
 
+  // Ingredient to color group mapping
+  const getIngredientColors = (ingredients: string[]): Set<string> => {
+    const colorGroups = {
+      red: ['tomato', 'red pepper', 'bell pepper red', 'strawberr', 'raspberr', 'red cabbage', 'beet', 'red onion', 'cherry tomato', 'radish'],
+      orange: ['carrot', 'sweet potato', 'orange', 'pumpkin', 'butternut squash', 'mango', 'papaya', 'apricot', 'peach'],
+      yellow: ['yellow pepper', 'corn', 'banana', 'pineapple', 'yellow squash', 'lemon', 'ginger'],
+      green: ['spinach', 'broccoli', 'kale', 'lettuce', 'green bean', 'pea', 'zucchini', 'cucumber', 'avocado', 'arugula', 'bok choy', 'celery', 'asparagus', 'edamame', 'lime'],
+      purple: ['blueberr', 'purple cabbage', 'eggplant', 'blackberr', 'plum', 'purple potato', 'acai', 'grape'],
+      white: ['cauliflower', 'mushroom', 'onion', 'garlic', 'potato', 'white bean', 'chickpea', 'tahini', 'tofu', 'banana']
+    };
+
+    const foundColors = new Set<string>();
+    
+    ingredients.forEach(ingredient => {
+      const lowerIngredient = ingredient.toLowerCase();
+      Object.entries(colorGroups).forEach(([color, keywords]) => {
+        if (keywords.some(keyword => lowerIngredient.includes(keyword))) {
+          foundColors.add(color);
+        }
+      });
+    });
+
+    return foundColors;
+  };
+
   // Calculate nutrition data from current meal plan (same logic as meal planner)
   const calculateKPIs = () => {
     if (!currentMealPlan?.meals) return null;
@@ -66,6 +91,18 @@ export default function Insights() {
     // Count unique days covered by the meal plan
     const uniqueDays = new Set(currentMealPlan.meals.map(meal => meal.day));
     const daysCovered = uniqueDays.size;
+
+    // Calculate Eating the Rainbow score
+    const allColors = new Set<string>();
+    currentMealPlan.meals.forEach(meal => {
+      if (meal.ingredients && Array.isArray(meal.ingredients)) {
+        const mealColors = getIngredientColors(meal.ingredients);
+        mealColors.forEach(color => allColors.add(color));
+      }
+    });
+    const totalColorGroups = 6; // red, orange, yellow, green, purple, white
+    const achievedColors = allColors.size;
+    const rainbowScore = Math.round((achievedColors / totalColorGroups) * 100);
 
     // Calculate daily averages - divide total by actual days covered
     const avgProteinPerDay = daysCovered > 0 ? totalProtein / daysCovered : 0;
@@ -140,6 +177,12 @@ export default function Insights() {
         value: Math.round(avgCaloriesPerDay),
         percentage: Math.round((avgCaloriesPerDay / caloriesTarget) * 100),
         target: caloriesTarget
+      },
+      rainbow: {
+        value: achievedColors,
+        percentage: rainbowScore,
+        target: totalColorGroups,
+        colors: Array.from(allColors)
       }
     };
   };
@@ -534,6 +577,70 @@ export default function Insights() {
                 </Dialog>
               </div>
               <p className="text-xs text-gray-500">{kpiData.calories.percentage}%</p>
+            </div>
+
+            {/* Eating the Rainbow */}
+            <div className="text-center relative">
+              <div className="relative w-20 h-20 mx-auto mb-1">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { value: Math.min(kpiData.rainbow.percentage, 100), fill: "url(#rainbowGradient)" },
+                        { value: Math.max(100 - kpiData.rainbow.percentage, 0), fill: "#f3f4f6" }
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={20}
+                      outerRadius={35}
+                      startAngle={90}
+                      endAngle={450}
+                      dataKey="value"
+                    />
+                    <defs>
+                      <linearGradient id="rainbowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#ef4444" />
+                        <stop offset="20%" stopColor="#f97316" />
+                        <stop offset="40%" stopColor="#eab308" />
+                        <stop offset="60%" stopColor="#22c55e" />
+                        <stop offset="80%" stopColor="#3b82f6" />
+                        <stop offset="100%" stopColor="#8b5cf6" />
+                      </linearGradient>
+                    </defs>
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-sm font-bold bg-gradient-to-r from-red-500 via-green-500 to-purple-500 bg-clip-text text-transparent">{kpiData.rainbow.value}/{kpiData.rainbow.target}</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-center gap-1">
+                <h3 className="text-xs font-semibold bg-gradient-to-r from-red-500 via-green-500 to-purple-500 bg-clip-text text-transparent">
+                  {language === "nl" ? "Regenboog" : "Rainbow"}
+                </h3>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-rainbow">
+                      <Info className="h-3 w-3" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-sm">
+                    <DialogHeader>
+                      <DialogTitle>{language === "nl" ? "Waarom kleurrijk eten belangrijk is" : "Why eating colorful foods matters"}</DialogTitle>
+                      <DialogDescription className="text-sm pt-2">
+                        {language === "nl" 
+                          ? "Verschillende kleuren vertegenwoordigen verschillende voedingsstoffen. Streef naar 6 kleurgroepen per week (rood, oranje, geel, groen, paars, wit) voor optimale gezondheid."
+                          : "Different colors represent different nutrients. Aim for 6 color groups per week (red, orange, yellow, green, purple, white) for optimal health."}
+                        <p className="text-xs text-gray-600 font-medium mt-2">
+                          {language === "nl" 
+                            ? `Je hebt ${kpiData.rainbow.value} van ${kpiData.rainbow.target} kleuren bereikt: ${kpiData.rainbow.colors.join(', ')}`
+                            : `You've achieved ${kpiData.rainbow.value} of ${kpiData.rainbow.target} colors: ${kpiData.rainbow.colors.join(', ')}`}
+                        </p>
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <p className="text-xs text-gray-500">{kpiData.rainbow.percentage}%</p>
             </div>
 
           </div>
