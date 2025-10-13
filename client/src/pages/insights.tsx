@@ -464,10 +464,10 @@ export default function Insights() {
                   </div>
                 </TooltipTrigger>
                 <TooltipContent className="max-w-xs">
-                  <p className="font-semibold mb-1">{language === "nl" ? "Waarom calorieën belangrijk zijn" : "Why calories matter"}</p>
+                  <p className="font-semibold mb-1">{language === "nl" ? "Over calorieën" : "About calories"}</p>
                   <p className="text-sm">{language === "nl" 
-                    ? "Calorieën bieden de energie die je lichaam nodig heeft voor dagelijkse activiteiten en lichaamsprocessen."
-                    : "Calories provide the energy your body needs for daily activities and bodily processes."}</p>
+                    ? "kcal weerspiegelen energie in voedsel, niet noodzakelijkelijk geabsorbeerde energie. Absorptie varieert met voedseltype, verwerking en macronutriënten (bijv. hele noten leveren vaak minder kcal dan op het etiket staat; eiwit heeft hogere verteringskosten)"
+                    : "kcal reflect energy in food, not necessarily energy absorbed. Absorption varies with food type, processing, and macronutrients (e.g., whole nuts often yield fewer kcal than labels; protein has a higher digestion cost)"}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
