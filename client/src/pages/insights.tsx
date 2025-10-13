@@ -55,16 +55,17 @@ export default function Insights() {
     const totalFats = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fats || 0), 0);
     const totalCarbs = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.carbohydrates || 0), 0);
     const totalFiber = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fiber || 0), 0);
-    const totalMeals = currentMealPlan.meals.length;
-    
-    const mealsPerDay = userProfile?.mealsPerDay || 3;
 
-    // Calculate daily averages
-    const avgProteinPerDay = totalMeals > 0 ? (totalProtein / totalMeals) * mealsPerDay : 0;
-    const avgCaloriesPerDay = totalMeals > 0 ? (totalCalories / totalMeals) * mealsPerDay : 0;
-    const avgFatsPerDay = totalMeals > 0 ? (totalFats / totalMeals) * mealsPerDay : 0;
-    const avgCarbsPerDay = totalMeals > 0 ? (totalCarbs / totalMeals) * mealsPerDay : 0;
-    const avgFiberPerDay = totalMeals > 0 ? (totalFiber / totalMeals) * mealsPerDay : 0;
+    // Count unique days covered by the meal plan
+    const uniqueDays = new Set(currentMealPlan.meals.map(meal => meal.day));
+    const daysCovered = uniqueDays.size;
+
+    // Calculate daily averages - divide total by actual days covered
+    const avgProteinPerDay = daysCovered > 0 ? totalProtein / daysCovered : 0;
+    const avgCaloriesPerDay = daysCovered > 0 ? totalCalories / daysCovered : 0;
+    const avgFatsPerDay = daysCovered > 0 ? totalFats / daysCovered : 0;
+    const avgCarbsPerDay = daysCovered > 0 ? totalCarbs / daysCovered : 0;
+    const avgFiberPerDay = daysCovered > 0 ? totalFiber / daysCovered : 0;
 
     // Calculate net carbs (total carbs - fiber)
     const avgNetCarbsPerDay = avgCarbsPerDay - avgFiberPerDay;

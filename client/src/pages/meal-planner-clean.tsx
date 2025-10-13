@@ -670,21 +670,19 @@ function MealPlannerMain() {
     const totalFats = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fats || 0), 0);
     const totalCarbs = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.carbohydrates || 0), 0);
     const totalFiber = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fiber || 0), 0);
-    const totalMeals = currentMealPlan.meals.length;
-    
-    // Get user's meals per day setting (default to 3 if not available)
-    const mealsPerDay = userProfile?.mealsPerDay || 3;
-    const daysInWeek = 7;
 
-    console.log('KPI Debug:', { totalProtein, totalCalories, totalFats, totalCarbs, totalFiber, totalMeals, mealsPerDay });
+    // Count unique days covered by the meal plan
+    const uniqueDays = new Set(currentMealPlan.meals.map(meal => meal.day));
+    const daysCovered = uniqueDays.size || 7; // Fallback to 7 if no days defined
 
-    // Calculate daily average: (total / number of meals) * meals per day
-    // This gives a realistic daily average based on actual meal composition
-    const avgProteinPerDay = totalMeals > 0 ? (totalProtein / totalMeals) * mealsPerDay : 0;
-    const avgCaloriesPerDay = totalMeals > 0 ? (totalCalories / totalMeals) * mealsPerDay : 0;
-    const avgFatsPerDay = totalMeals > 0 ? (totalFats / totalMeals) * mealsPerDay : 0;
-    const avgCarbsPerDay = totalMeals > 0 ? (totalCarbs / totalMeals) * mealsPerDay : 0;
-    const avgFiberPerDay = totalMeals > 0 ? (totalFiber / totalMeals) * mealsPerDay : 0;
+    console.log('KPI Debug:', { totalProtein, totalCalories, totalFats, totalCarbs, totalFiber, totalMeals: currentMealPlan.meals.length, daysCovered });
+
+    // Calculate daily averages - divide total by actual days covered
+    const avgProteinPerDay = daysCovered > 0 ? totalProtein / daysCovered : 0;
+    const avgCaloriesPerDay = daysCovered > 0 ? totalCalories / daysCovered : 0;
+    const avgFatsPerDay = daysCovered > 0 ? totalFats / daysCovered : 0;
+    const avgCarbsPerDay = daysCovered > 0 ? totalCarbs / daysCovered : 0;
+    const avgFiberPerDay = daysCovered > 0 ? totalFiber / daysCovered : 0;
 
     // Estimate vegetables from fiber (roughly 30g fiber = 400g vegetables)
     const avgVegetablesPerDay = avgFiberPerDay * 13.3; // Approximate: 1g fiber ≈ 13.3g vegetables
