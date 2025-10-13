@@ -931,6 +931,16 @@ function AdminPanelMain() {
     },
   });
 
+  // Fetch recipe usage statistics (how often each recipe is used in meal plans)
+  const { data: recipeUsage } = useQuery<Record<number, number>>({
+    queryKey: ['/api/recipes/usage'],
+    queryFn: async () => {
+      const response = await fetch('/api/recipes/usage');
+      if (!response.ok) throw new Error('Failed to fetch recipe usage');
+      return response.json();
+    },
+  });
+
   // Fetch all users
   const { data: usersData, isLoading: usersLoading } = useQuery<UsersResponse>({
     queryKey: ['/api/admin/users'],
@@ -2044,10 +2054,10 @@ function AdminPanelMain() {
                         No recipes found. Try adjusting your search filters.
                       </div>
                     ) : (
-                      <table className="w-full">
+                      <table className="w-full min-w-full table-auto">
                         <thead className="border-b bg-gray-50">
                           <tr>
-                            <th className="p-3 text-left">
+                            <th className="p-3 text-left whitespace-nowrap">
                               <input
                                 type="checkbox"
                                 onChange={(e) => {
@@ -2059,13 +2069,14 @@ function AdminPanelMain() {
                                 }}
                               />
                             </th>
-                            <th className="p-3 text-left">Recipe Name</th>
-                            <th className="p-3 text-left">Category</th>
-                            <th className="p-3 text-left">Protein</th>
-                            <th className="p-3 text-left">Prep Time</th>
-                            <th className="p-3 text-left">Tags</th>
-                            <th className="p-3 text-left">Status</th>
-                            <th className="p-3 text-left">Actions</th>
+                            <th className="p-3 text-left whitespace-nowrap">Recipe Name</th>
+                            <th className="p-3 text-left whitespace-nowrap">Category</th>
+                            <th className="p-3 text-left whitespace-nowrap">Protein</th>
+                            <th className="p-3 text-left whitespace-nowrap">Prep Time</th>
+                            <th className="p-3 text-left whitespace-nowrap">Tags</th>
+                            <th className="p-3 text-left whitespace-nowrap">Used In Plans</th>
+                            <th className="p-3 text-left whitespace-nowrap">Status</th>
+                            <th className="p-3 text-left whitespace-nowrap">Actions</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -2111,6 +2122,15 @@ function AdminPanelMain() {
                                     </Badge>
                                   )}
                                 </div>
+                              </td>
+                              <td className="p-3 text-center">
+                                {recipe.id && recipeUsage && recipeUsage[Number(recipe.id)] ? (
+                                  <Badge variant="outline" className="font-mono">
+                                    {recipeUsage[Number(recipe.id)]}× used
+                                  </Badge>
+                                ) : (
+                                  <span className="text-gray-400 text-sm">Not used</span>
+                                )}
                               </td>
                               <td className="p-3">
                                 <Badge variant={recipe.active === false ? "destructive" : "default"}>

@@ -3371,6 +3371,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // GET /api/recipes/usage - Get recipe usage statistics (how often each recipe is used in meal plans)
+  app.get("/api/recipes/usage", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+
+      const isAdmin = await isAdminUser(req.session.userId);
+      if (!isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      // Query database to count how many times each recipe appears in meals
+      const usageCounts = await db
+        .select({
+          recipeId: meals.recipeId,
+          count: sql<number>`count(*)::int`,
+        })
+        .from(meals)
+        .where(sql`${meals.recipeId} IS NOT NULL`)
+        .groupBy(meals.recipeId);
+
+      // Convert to a map for easy lookup: recipeId -> count
+      const usageMap = usageCounts.reduce((acc, { recipeId, count }) => {
+        if (recipeId !== null) {
+          acc[recipeId] = count;
+        }
+        return acc;
+      }, {} as Record<number, number>);
+
+      res.json(usageMap);
+    } catch (error) {
+      console.error("Error getting recipe usage:", error);
+      res.status(500).json({ message: "Failed to get recipe usage statistics" });
+    }
+  });
+
   // GET /api/recipes/:id - Get a specific recipe by ID
   app.get("/api/recipes/:id", async (req, res) => {
     try {
