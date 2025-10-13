@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -896,6 +897,17 @@ export default function MealPlanner() {
                 </div>
               </div>
             </div>
+            
+            {/* View More Insights Button */}
+            <div className="mt-4 text-center">
+              <Link href="/insights" className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium">
+                {language === "nl" ? "Bekijk meer voedingsinzichten" : "View more nutrition insights"}
+                <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
+
             {latestOuraData && (
               <div className="mt-6 p-4 bg-muted/30 rounded-lg">
                 <div className="text-sm text-gray-500 mb-2">
