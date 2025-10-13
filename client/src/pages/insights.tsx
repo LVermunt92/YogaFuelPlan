@@ -88,8 +88,7 @@ export default function Insights() {
     const totalCarbs = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.carbohydrates || 0), 0);
     const totalFiber = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fiber || 0), 0);
     const totalVitaminK = currentMealPlan.meals.reduce((sum, meal) => {
-      const nutrition = meal.nutrition as any;
-      return sum + (nutrition?.vitaminK || 0);
+      return sum + ((meal as any).vitaminK || 0);
     }, 0);
 
     // Calculate Eating the Rainbow score

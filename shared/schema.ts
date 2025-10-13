@@ -106,6 +106,7 @@ export const meals = pgTable("meals", {
   fiber: real("fiber").default(0), // grams
   sugar: real("sugar").default(0), // grams
   sodium: real("sodium").default(0), // mg
+  vitaminK: real("vitamin_k").default(0), // mcg (micrograms)
   prepTime: integer("prep_time").default(30), // minutes
   costEuros: real("cost_euros"), // cost in euros
   proteinPerEuro: real("protein_per_euro"), // protein grams per euro
