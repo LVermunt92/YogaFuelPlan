@@ -92,10 +92,6 @@ export default function Insights() {
       return sum + (nutrition?.vitaminK || 0);
     }, 0);
 
-    // Count unique days covered by the meal plan
-    const uniqueDays = new Set(currentMealPlan.meals.map(meal => meal.day));
-    const daysCovered = uniqueDays.size;
-
     // Calculate Eating the Rainbow score
     const allColors = new Set<string>();
     currentMealPlan.meals.forEach(meal => {
@@ -108,13 +104,18 @@ export default function Insights() {
     const achievedColors = allColors.size;
     const rainbowScore = Math.round((achievedColors / totalColorGroups) * 100);
 
-    // Calculate daily averages - divide total by actual days covered
-    const avgProteinPerDay = daysCovered > 0 ? totalProtein / daysCovered : 0;
-    const avgCaloriesPerDay = daysCovered > 0 ? totalCalories / daysCovered : 0;
-    const avgFatsPerDay = daysCovered > 0 ? totalFats / daysCovered : 0;
-    const avgCarbsPerDay = daysCovered > 0 ? totalCarbs / daysCovered : 0;
-    const avgFiberPerDay = daysCovered > 0 ? totalFiber / daysCovered : 0;
-    const avgVitaminKPerDay = daysCovered > 0 ? totalVitaminK / daysCovered : 0;
+    // Calculate daily averages based on total meals divided by expected 3 meals per day
+    // This gives accurate daily averages for the weekly meal plan
+    const totalMeals = currentMealPlan.meals.length;
+    const estimatedDays = totalMeals / 3; // Assuming 3 meals per day (breakfast, lunch, dinner)
+    const daysForAverage = estimatedDays > 0 ? estimatedDays : 7; // Fallback to 7 days if calculation fails
+    
+    const avgProteinPerDay = daysForAverage > 0 ? totalProtein / daysForAverage : 0;
+    const avgCaloriesPerDay = daysForAverage > 0 ? totalCalories / daysForAverage : 0;
+    const avgFatsPerDay = daysForAverage > 0 ? totalFats / daysForAverage : 0;
+    const avgCarbsPerDay = daysForAverage > 0 ? totalCarbs / daysForAverage : 0;
+    const avgFiberPerDay = daysForAverage > 0 ? totalFiber / daysForAverage : 0;
+    const avgVitaminKPerDay = daysForAverage > 0 ? totalVitaminK / daysForAverage : 0;
 
     // Calculate net carbs (total carbs - fiber)
     const avgNetCarbsPerDay = avgCarbsPerDay - avgFiberPerDay;
