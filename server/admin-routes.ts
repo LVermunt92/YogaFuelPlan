@@ -497,4 +497,50 @@ adminRouter.delete('/tags', async (req, res) => {
   }
 });
 
+// Update all recipes with Vitamin K values
+adminRouter.post('/update-vitamin-k', async (req, res) => {
+  try {
+    const { calculateVitaminK } = await import('./vitamin-k-calculator');
+    const dbRecipes = await storage.getAllRecipes(true);
+    
+    let updatedCount = 0;
+    const updates: Array<{ id: number; name: string; vitaminK: number }> = [];
+    
+    for (const recipe of dbRecipes) {
+      if (recipe.id && recipe.ingredients && Array.isArray(recipe.ingredients)) {
+        const vitaminK = calculateVitaminK(recipe.ingredients);
+        
+        // Update recipe nutrition with Vitamin K
+        const currentNutrition = recipe.nutrition || {};
+        const updatedNutrition = {
+          ...currentNutrition,
+          vitaminK
+        };
+        
+        await storage.updateRecipe(recipe.id, {
+          nutrition: updatedNutrition
+        });
+        
+        updatedCount++;
+        updates.push({
+          id: recipe.id,
+          name: recipe.name,
+          vitaminK
+        });
+      }
+    }
+    
+    res.json({
+      success: true,
+      updatedCount,
+      totalRecipes: dbRecipes.length,
+      message: `Updated ${updatedCount} recipes with Vitamin K values`,
+      samples: updates.slice(0, 10) // Return first 10 as samples
+    });
+  } catch (error) {
+    console.error('Error updating recipes with Vitamin K:', error);
+    res.status(500).json({ error: 'Failed to update recipes with Vitamin K' });
+  }
+});
+
 export { adminRouter };
