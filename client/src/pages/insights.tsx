@@ -68,10 +68,14 @@ export default function Insights() {
     });
   }
 
+  // Calculate net carbs (total carbs - fiber)
+  const netCarbs = nutritionData.carbs - nutritionData.fiber;
+
   // Gender-specific fiber target (30g women, 40g men)
   const fiberTarget = userProfile?.fiberTarget || (userProfile?.gender === "male" ? 40 : 30);
   const calorieTarget = 2000; // Default, could be personalized
   const carbTarget = 250; // Default
+  const netCarbsTarget = carbTarget - fiberTarget; // Net carbs target
   const sugarTarget = 50; // WHO recommendation
   const sodiumTarget = 2300; // mg, recommended daily limit
 
@@ -87,6 +91,7 @@ export default function Insights() {
   const fiberChartData = createChartData(nutritionData.fiber, fiberTarget, "#10B981");
   const caloriesChartData = createChartData(nutritionData.calories, calorieTarget, "#F59E0B");
   const carbsChartData = createChartData(nutritionData.carbs, carbTarget, "#8B5CF6");
+  const netCarbsChartData = createChartData(netCarbs, netCarbsTarget, "#6366F1");
   const sugarChartData = createChartData(nutritionData.sugar, sugarTarget, "#EC4899");
   const sodiumChartData = createChartData(nutritionData.sodium, sodiumTarget, "#EF4444");
 
@@ -246,6 +251,53 @@ export default function Insights() {
                   <div className="text-sm text-gray-500">{language === "nl" ? "van" : "of"} {carbTarget}g</div>
                   <div className="text-xs text-gray-400 mt-1">
                     {((nutritionData.carbs / carbTarget) * 100).toFixed(0)}%
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Net Carbs KPI */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <Activity className="h-4 w-4 text-indigo-600" />
+                {language === "nl" ? "Netto koolhydraten" : "Net carbs"}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between">
+                <div className="relative w-24 h-24">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={netCarbsChartData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius="65%"
+                        outerRadius="100%"
+                        paddingAngle={2}
+                        dataKey="value"
+                        startAngle={90}
+                        endAngle={450}
+                      >
+                        {netCarbsChartData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.fill} />
+                        ))}
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-lg font-semibold text-foreground">
+                      {netCarbs.toFixed(0)}g
+                    </span>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-2xl font-bold text-foreground">{netCarbs.toFixed(0)}g</div>
+                  <div className="text-sm text-gray-500">{language === "nl" ? "van" : "of"} {netCarbsTarget.toFixed(0)}g</div>
+                  <div className="text-xs text-gray-400 mt-1">
+                    {((netCarbs / netCarbsTarget) * 100).toFixed(0)}%
                   </div>
                 </div>
               </div>
