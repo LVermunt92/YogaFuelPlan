@@ -58,6 +58,7 @@ Preferred communication style: Simple, everyday language.
     - **Longevity Optimization**: Longevity-focused recipes are automatically prioritized for all users.
     - **Resistant Starch Logic**: Prioritizes meals with resistant starch for users with weight loss goals or BMI >25.
     - **Anti-Aging Tag System**: 116 recipes tagged with "Anti-Aging" tag for recipes containing avocado, sweet potatoes, blueberries, or almonds to support healthy aging and longevity.
+    - **Vitamin K Tracking**: Comprehensive Vitamin K content calculation from recipe ingredients with insights KPI chart. Ingredient mapping covers leafy greens, cruciferous vegetables, herbs, and oils. Admin endpoint available to update all recipes with Vitamin K values. Supports bone health and blood clotting monitoring with 90 mcg/day target for women.
 - **System Design Choices**:
     - **Data Flow**: User input drives meal generation, stored in PostgreSQL, displayed via React Query.
     - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, favorite meals, and user-created custom recipes.
