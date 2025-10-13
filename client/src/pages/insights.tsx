@@ -1,26 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-import { ArrowLeft, TrendingUp, Activity, Droplet, Wheat, Apple, Leaf } from "lucide-react";
+import { PieChart, Pie, ResponsiveContainer } from "recharts";
+import { ArrowLeft } from "lucide-react";
 import { Link } from "wouter";
 import { useTranslations } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { countUniquePlants } from "@/lib/plant-diversity";
 
 interface MealPlan {
   id: number;
   meals: any[];
 }
 
-interface NutritionData {
+interface NutritionTargets {
   protein: number;
-  calories: number;
-  fats: number;
-  carbs: number;
   fiber: number;
-  sugar: number;
-  sodium: number;
-  vegetables: number;
-  fruitsStarches: number;
+  calories: number;
 }
 
 export default function Insights() {
@@ -31,420 +26,455 @@ export default function Insights() {
     queryKey: ["/api/selected-meal-plan"],
   });
 
-  const { data: userProfile } = useQuery<{ gender?: string; fiberTarget?: number }>({
+  const { data: userProfile } = useQuery<{ 
+    gender?: string; 
+    mealsPerDay?: number;
+  }>({
     queryKey: ["/api/user/profile"],
   });
 
-  // Calculate nutrition totals
-  const nutritionData: NutritionData = {
-    protein: 0,
-    calories: 0,
-    fats: 0,
-    carbs: 0,
-    fiber: 0,
-    sugar: 0,
-    sodium: 0,
-    vegetables: 0,
-    fruitsStarches: 0,
+  const { data: nutritionTargets } = useQuery<NutritionTargets>({
+    queryKey: ["/api/nutrition/targets"],
+  });
+
+  // Calculate nutrition data from current meal plan
+  const calculateKPIs = () => {
+    if (!selectedMealPlan?.meals) return null;
+
+    const totalProtein = selectedMealPlan.meals.reduce((sum, meal) => sum + (meal.protein || 0), 0);
+    const totalCalories = selectedMealPlan.meals.reduce((sum, meal) => sum + (meal.calories || 0), 0);
+    const totalFats = selectedMealPlan.meals.reduce((sum, meal) => sum + (meal.fats || 0), 0);
+    const totalCarbs = selectedMealPlan.meals.reduce((sum, meal) => sum + (meal.carbohydrates || 0), 0);
+    const totalFiber = selectedMealPlan.meals.reduce((sum, meal) => sum + (meal.fiber || 0), 0);
+    const totalMeals = selectedMealPlan.meals.length;
+    
+    const mealsPerDay = userProfile?.mealsPerDay || 3;
+
+    // Calculate daily averages
+    const avgProteinPerDay = totalMeals > 0 ? (totalProtein / totalMeals) * mealsPerDay : 0;
+    const avgCaloriesPerDay = totalMeals > 0 ? (totalCalories / totalMeals) * mealsPerDay : 0;
+    const avgFatsPerDay = totalMeals > 0 ? (totalFats / totalMeals) * mealsPerDay : 0;
+    const avgCarbsPerDay = totalMeals > 0 ? (totalCarbs / totalMeals) * mealsPerDay : 0;
+    const avgFiberPerDay = totalMeals > 0 ? (totalFiber / totalMeals) * mealsPerDay : 0;
+
+    // Calculate net carbs (total carbs - fiber)
+    const avgNetCarbsPerDay = avgCarbsPerDay - avgFiberPerDay;
+
+    // Estimate vegetables from fiber
+    const avgVegetablesPerDay = avgFiberPerDay * 13.3;
+    
+    // Calculate fat percentage of calories
+    const fatCalories = avgFatsPerDay * 9;
+    const fatPercentage = avgCaloriesPerDay > 0 ? (fatCalories / avgCaloriesPerDay) * 100 : 25;
+    
+    // Fiber target (gender-specific)
+    const fiberTarget = nutritionTargets?.fiber || 30;
+    
+    // Cocoa flavanols estimate
+    const avgCocoaFlavanolsPerDay = Math.min(avgProteinPerDay * 8, 500);
+    const cocoaFlavanolsTarget = 500;
+    
+    // Plant diversity estimate
+    const plantDiversityCount = Math.min(Math.round(avgFiberPerDay), 30);
+    const plantDiversityTarget = 30;
+
+    // Targets
+    const proteinTarget = nutritionTargets?.protein || 95;
+    const caloriesTarget = nutritionTargets?.calories || 2000;
+    const netCarbsTarget = 160; // Example target for net carbs
+
+    return {
+      protein: {
+        value: Math.round(avgProteinPerDay),
+        percentage: Math.round((avgProteinPerDay / proteinTarget) * 100),
+        target: proteinTarget
+      },
+      goodFats: {
+        value: Math.round(avgFatsPerDay),
+        percentage: Math.round(Math.min(fatPercentage, 100)),
+        target: 30 // 30% of calories
+      },
+      fiber: {
+        value: Math.round(avgFiberPerDay),
+        percentage: Math.round((avgFiberPerDay / fiberTarget) * 100),
+        target: fiberTarget
+      },
+      vegetables: {
+        value: Math.round(avgVegetablesPerDay),
+        percentage: Math.round((avgVegetablesPerDay / 400) * 100),
+        target: 400
+      },
+      plantDiversity: {
+        value: plantDiversityCount,
+        percentage: Math.round((plantDiversityCount / plantDiversityTarget) * 100),
+        target: plantDiversityTarget
+      },
+      cocoaFlavanols: {
+        value: Math.round(avgCocoaFlavanolsPerDay),
+        percentage: Math.round((avgCocoaFlavanolsPerDay / cocoaFlavanolsTarget) * 100),
+        target: cocoaFlavanolsTarget
+      },
+      netCarbs: {
+        value: Math.round(avgNetCarbsPerDay),
+        percentage: Math.round((avgNetCarbsPerDay / netCarbsTarget) * 100),
+        target: netCarbsTarget
+      },
+      calories: {
+        value: Math.round(avgCaloriesPerDay),
+        percentage: Math.round((avgCaloriesPerDay / caloriesTarget) * 100),
+        target: caloriesTarget
+      }
+    };
   };
 
-  if (selectedMealPlan?.meals) {
-    selectedMealPlan.meals.forEach((meal) => {
-      if (meal.nutrition) {
-        nutritionData.protein += meal.nutrition.protein || 0;
-        nutritionData.calories += meal.nutrition.calories || 0;
-        nutritionData.fats += meal.nutrition.fats || 0;
-        nutritionData.carbs += meal.nutrition.carbohydrates || 0;
-        nutritionData.fiber += meal.nutrition.fiber || 0;
-        nutritionData.sugar += meal.nutrition.sugar || 0;
-        nutritionData.sodium += meal.nutrition.sodium || 0;
-      }
-      if (meal.vegetableContent) {
-        nutritionData.vegetables += meal.vegetableContent.servings || 0;
-      }
-      if (meal.tags?.includes("Fruit") || meal.tags?.includes("Starch")) {
-        nutritionData.fruitsStarches += 1;
-      }
-    });
-  }
-
-  // Calculate net carbs (total carbs - fiber)
-  const netCarbs = nutritionData.carbs - nutritionData.fiber;
-
-  // Gender-specific fiber target (30g women, 40g men)
-  const fiberTarget = userProfile?.fiberTarget || (userProfile?.gender === "male" ? 40 : 30);
-  const calorieTarget = 2000; // Default, could be personalized
-  const carbTarget = 250; // Default
-  const netCarbsTarget = carbTarget - fiberTarget; // Net carbs target
-  const sugarTarget = 50; // WHO recommendation
-  const sodiumTarget = 2300; // mg, recommended daily limit
-
-  // Create chart data for each KPI
-  const createChartData = (value: number, target: number, color: string) => {
-    const percentage = Math.min((value / target) * 100, 100);
-    return [
-      { name: "Achieved", value: percentage, fill: color },
-      { name: "Remaining", value: 100 - percentage, fill: "#E5E7EB" },
-    ];
-  };
-
-  const fiberChartData = createChartData(nutritionData.fiber, fiberTarget, "#10B981");
-  const caloriesChartData = createChartData(nutritionData.calories, calorieTarget, "#F59E0B");
-  const carbsChartData = createChartData(nutritionData.carbs, carbTarget, "#8B5CF6");
-  const netCarbsChartData = createChartData(netCarbs, netCarbsTarget, "#6366F1");
-  const sugarChartData = createChartData(nutritionData.sugar, sugarTarget, "#EC4899");
-  const sodiumChartData = createChartData(nutritionData.sodium, sodiumTarget, "#EF4444");
+  const kpiData = calculateKPIs();
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-background">
+      <div className="container py-6 lg:py-8">
         {/* Header with back button */}
         <div className="mb-6">
           <Link href="/" className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
             {language === "nl" ? "Terug naar maaltijdplanner" : "Back to meal planner"}
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+          <h1 className="text-3xl font-bold text-foreground mb-2">
             {language === "nl" ? "Voedingsinzichten" : "Nutrition insights"}
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">
+          <p className="text-lg text-gray-600">
             {language === "nl" 
               ? "Gedetailleerd overzicht van je voedingsdoelen en voortgang" 
               : "Detailed overview of your nutrition goals and progress"}
           </p>
         </div>
 
-        {/* KPI Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Fiber KPI */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Wheat className="h-4 w-4 text-green-600" />
-                {language === "nl" ? "Vezels" : "Fiber"}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between">
-                <div className="relative w-24 h-24">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={fiberChartData}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius="65%"
-                        outerRadius="100%"
-                        paddingAngle={2}
-                        dataKey="value"
-                        startAngle={90}
-                        endAngle={450}
-                      >
-                        {fiberChartData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.fill} />
-                        ))}
-                      </Pie>
-                    </PieChart>
-                  </ResponsiveContainer>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-lg font-semibold text-foreground">
-                      {nutritionData.fiber.toFixed(0)}g
-                    </span>
+        {/* Compact Nutrition Charts - Same format as meal planner */}
+        {kpiData && (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg w-full">
+            
+            {/* Protein Chart */}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="text-center cursor-help">
+                    <div className="relative w-20 h-20 mx-auto mb-1">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={[
+                              { value: Math.min(kpiData.protein.percentage, 100), fill: "#10b981" },
+                              { value: Math.max(100 - kpiData.protein.percentage, 0), fill: "#f3f4f6" }
+                            ]}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={20}
+                            outerRadius={35}
+                            startAngle={90}
+                            endAngle={450}
+                            dataKey="value"
+                          />
+                        </PieChart>
+                      </ResponsiveContainer>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-sm font-bold text-emerald-600">{kpiData.protein.value}g</div>
+                      </div>
+                    </div>
+                    <h3 className="text-xs font-semibold text-emerald-600">{t.protein}</h3>
+                    <p className="text-xs text-gray-500">{kpiData.protein.percentage}%</p>
                   </div>
-                </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-foreground">{nutritionData.fiber.toFixed(0)}g</div>
-                  <div className="text-sm text-gray-500">{language === "nl" ? "van" : "of"} {fiberTarget}g</div>
-                  <div className="text-xs text-gray-400 mt-1">
-                    {((nutritionData.fiber / fiberTarget) * 100).toFixed(0)}%
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p className="font-semibold mb-1">{t.whyProteinMatters}</p>
+                  <p className="text-sm">{t.proteinTooltip}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
 
-          {/* Calories KPI */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <TrendingUp className="h-4 w-4 text-orange-600" />
-                {language === "nl" ? "Calorieën" : "Calories"}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between">
-                <div className="relative w-24 h-24">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={caloriesChartData}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius="65%"
-                        outerRadius="100%"
-                        paddingAngle={2}
-                        dataKey="value"
-                        startAngle={90}
-                        endAngle={450}
-                      >
-                        {caloriesChartData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.fill} />
-                        ))}
-                      </Pie>
-                    </PieChart>
-                  </ResponsiveContainer>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-lg font-semibold text-foreground">
-                      {nutritionData.calories.toFixed(0)}
-                    </span>
+            {/* Good Fats */}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="text-center cursor-help">
+                    <div className="relative w-20 h-20 mx-auto mb-1">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={[
+                              { value: kpiData.goodFats.percentage, fill: "#eab308" },
+                              { value: 100 - kpiData.goodFats.percentage, fill: "#f3f4f6" }
+                            ]}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={20}
+                            outerRadius={35}
+                            startAngle={90}
+                            endAngle={450}
+                            dataKey="value"
+                          />
+                        </PieChart>
+                      </ResponsiveContainer>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-sm font-bold text-yellow-600">{kpiData.goodFats.value}g</div>
+                      </div>
+                    </div>
+                    <h3 className="text-xs font-semibold text-yellow-600">{t.goodFats || 'Good fats'}</h3>
+                    <p className="text-xs text-gray-500">{kpiData.goodFats.percentage}%</p>
                   </div>
-                </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-foreground">{nutritionData.calories.toFixed(0)}</div>
-                  <div className="text-sm text-gray-500">{language === "nl" ? "van" : "of"} {calorieTarget}</div>
-                  <div className="text-xs text-gray-400 mt-1">
-                    {((nutritionData.calories / calorieTarget) * 100).toFixed(0)}%
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p className="font-semibold mb-1">{t.whyHealthyFatsMatters}</p>
+                  <p className="text-sm">{t.fatsTooltip}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
 
-          {/* Carbohydrates KPI */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Wheat className="h-4 w-4 text-purple-600" />
-                {language === "nl" ? "Koolhydraten" : "Carbohydrates"}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between">
-                <div className="relative w-24 h-24">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={carbsChartData}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius="65%"
-                        outerRadius="100%"
-                        paddingAngle={2}
-                        dataKey="value"
-                        startAngle={90}
-                        endAngle={450}
-                      >
-                        {carbsChartData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.fill} />
-                        ))}
-                      </Pie>
-                    </PieChart>
-                  </ResponsiveContainer>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-lg font-semibold text-foreground">
-                      {nutritionData.carbs.toFixed(0)}g
-                    </span>
+            {/* Fiber */}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="text-center cursor-help">
+                    <div className="relative w-20 h-20 mx-auto mb-1">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={[
+                              { value: Math.min(kpiData.fiber.percentage, 100), fill: "#f97316" },
+                              { value: Math.max(100 - kpiData.fiber.percentage, 0), fill: "#f3f4f6" }
+                            ]}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={20}
+                            outerRadius={35}
+                            startAngle={90}
+                            endAngle={450}
+                            dataKey="value"
+                          />
+                        </PieChart>
+                      </ResponsiveContainer>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-sm font-bold text-orange-600">{kpiData.fiber.value}g</div>
+                      </div>
+                    </div>
+                    <h3 className="text-xs font-semibold text-orange-600">{t.fiber}</h3>
+                    <p className="text-xs text-gray-500">{kpiData.fiber.percentage}%</p>
                   </div>
-                </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-foreground">{nutritionData.carbs.toFixed(0)}g</div>
-                  <div className="text-sm text-gray-500">{language === "nl" ? "van" : "of"} {carbTarget}g</div>
-                  <div className="text-xs text-gray-400 mt-1">
-                    {((nutritionData.carbs / carbTarget) * 100).toFixed(0)}%
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p className="font-semibold mb-1">{t.whyFiberMatters}</p>
+                  <p className="text-sm mb-2">{t.fiberTooltip}</p>
+                  <p className="text-xs text-amber-200 font-medium">{t.fiberWarning}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
 
-          {/* Net Carbs KPI */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Activity className="h-4 w-4 text-indigo-600" />
-                {language === "nl" ? "Netto koolhydraten" : "Net carbs"}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between">
-                <div className="relative w-24 h-24">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={netCarbsChartData}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius="65%"
-                        outerRadius="100%"
-                        paddingAngle={2}
-                        dataKey="value"
-                        startAngle={90}
-                        endAngle={450}
-                      >
-                        {netCarbsChartData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.fill} />
-                        ))}
-                      </Pie>
-                    </PieChart>
-                  </ResponsiveContainer>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-lg font-semibold text-foreground">
-                      {netCarbs.toFixed(0)}g
-                    </span>
+            {/* Vegetables */}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="text-center cursor-help">
+                    <div className="relative w-20 h-20 mx-auto mb-1">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={[
+                              { value: Math.min(kpiData.vegetables.percentage, 100), fill: "#22c55e" },
+                              { value: Math.max(100 - kpiData.vegetables.percentage, 0), fill: "#f3f4f6" }
+                            ]}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={20}
+                            outerRadius={35}
+                            startAngle={90}
+                            endAngle={450}
+                            dataKey="value"
+                          />
+                        </PieChart>
+                      </ResponsiveContainer>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-sm font-bold text-green-600">{kpiData.vegetables.value}g</div>
+                      </div>
+                    </div>
+                    <h3 className="text-xs font-semibold text-green-600">{t.vegetables}</h3>
+                    <p className="text-xs text-gray-500">{kpiData.vegetables.percentage}%</p>
                   </div>
-                </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-foreground">{netCarbs.toFixed(0)}g</div>
-                  <div className="text-sm text-gray-500">{language === "nl" ? "van" : "of"} {netCarbsTarget.toFixed(0)}g</div>
-                  <div className="text-xs text-gray-400 mt-1">
-                    {((netCarbs / netCarbsTarget) * 100).toFixed(0)}%
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p className="font-semibold mb-1">{t.whyVegetablesMatters}</p>
+                  <p className="text-sm">{t.vegetablesTooltip}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
 
-          {/* Sugar KPI */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Apple className="h-4 w-4 text-pink-600" />
-                {language === "nl" ? "Suikers" : "Sugar"}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between">
-                <div className="relative w-24 h-24">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={sugarChartData}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius="65%"
-                        outerRadius="100%"
-                        paddingAngle={2}
-                        dataKey="value"
-                        startAngle={90}
-                        endAngle={450}
-                      >
-                        {sugarChartData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.fill} />
-                        ))}
-                      </Pie>
-                    </PieChart>
-                  </ResponsiveContainer>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-lg font-semibold text-foreground">
-                      {nutritionData.sugar.toFixed(0)}g
-                    </span>
+            {/* Plant Diversity */}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="text-center cursor-help">
+                    <div className="relative w-20 h-20 mx-auto mb-1">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={[
+                              { value: Math.min(kpiData.plantDiversity.percentage, 100), fill: "#16a34a" },
+                              { value: Math.max(100 - kpiData.plantDiversity.percentage, 0), fill: "#f3f4f6" }
+                            ]}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={20}
+                            outerRadius={35}
+                            startAngle={90}
+                            endAngle={450}
+                            dataKey="value"
+                          />
+                        </PieChart>
+                      </ResponsiveContainer>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-sm font-bold text-green-700">{kpiData.plantDiversity.value}</div>
+                      </div>
+                    </div>
+                    <h3 className="text-xs font-semibold text-green-700">{t.plantDiversity}</h3>
+                    <p className="text-xs text-gray-500">{kpiData.plantDiversity.percentage}%</p>
                   </div>
-                </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-foreground">{nutritionData.sugar.toFixed(0)}g</div>
-                  <div className="text-sm text-gray-500">{language === "nl" ? "van" : "of"} {sugarTarget}g</div>
-                  <div className="text-xs text-gray-400 mt-1">
-                    {((nutritionData.sugar / sugarTarget) * 100).toFixed(0)}%
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p className="font-semibold mb-1">{t.whyPlantDiversityMatters}</p>
+                  <p className="text-sm mb-2">{t.plantDiversityTooltip}</p>
+                  <p className="text-xs text-green-200 font-medium">{t.plantDiversityTarget}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
 
-          {/* Sodium KPI */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Droplet className="h-4 w-4 text-red-600" />
-                {language === "nl" ? "Natrium" : "Sodium"}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between">
-                <div className="relative w-24 h-24">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={sodiumChartData}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius="65%"
-                        outerRadius="100%"
-                        paddingAngle={2}
-                        dataKey="value"
-                        startAngle={90}
-                        endAngle={450}
-                      >
-                        {sodiumChartData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.fill} />
-                        ))}
-                      </Pie>
-                    </PieChart>
-                  </ResponsiveContainer>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-sm font-semibold text-foreground">
-                      {nutritionData.sodium.toFixed(0)}
-                    </span>
+            {/* Cocoa Flavanols */}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="text-center cursor-help">
+                    <div className="relative w-20 h-20 mx-auto mb-1">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={[
+                              { value: Math.min(kpiData.cocoaFlavanols.percentage, 100), fill: "#8b5cf6" },
+                              { value: Math.max(100 - kpiData.cocoaFlavanols.percentage, 0), fill: "#f3f4f6" }
+                            ]}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={20}
+                            outerRadius={35}
+                            startAngle={90}
+                            endAngle={450}
+                            dataKey="value"
+                          />
+                        </PieChart>
+                      </ResponsiveContainer>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-sm font-bold text-purple-600">{kpiData.cocoaFlavanols.value}mg</div>
+                      </div>
+                    </div>
+                    <h3 className="text-xs font-semibold text-purple-600">{t.cocoaFlavanols}</h3>
+                    <p className="text-xs text-gray-500">{kpiData.cocoaFlavanols.percentage}%</p>
                   </div>
-                </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-foreground">{nutritionData.sodium.toFixed(0)}mg</div>
-                  <div className="text-sm text-gray-500">{language === "nl" ? "van" : "of"} {sodiumTarget}mg</div>
-                  <div className="text-xs text-gray-400 mt-1">
-                    {((nutritionData.sodium / sodiumTarget) * 100).toFixed(0)}%
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p className="font-semibold mb-1">{t.whyCocoaFlavanolsMatters}</p>
+                  <p className="text-sm mb-2">{t.cocoaFlavanolsTooltip}</p>
+                  <p className="text-xs text-purple-200 font-medium">{t.cocoaFlavanolsTarget}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
 
-          {/* Vegetables KPI (from main page) */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Leaf className="h-4 w-4 text-green-600" />
-                {language === "nl" ? "Groenten" : "Vegetables"}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between">
-                <div className="relative w-24 h-24">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={createChartData(nutritionData.vegetables, 21, "#10B981")}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius="65%"
-                        outerRadius="100%"
-                        paddingAngle={2}
-                        dataKey="value"
-                        startAngle={90}
-                        endAngle={450}
-                      >
-                        {createChartData(nutritionData.vegetables, 21, "#10B981").map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.fill} />
-                        ))}
-                      </Pie>
-                    </PieChart>
-                  </ResponsiveContainer>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-lg font-semibold text-foreground">
-                      {nutritionData.vegetables.toFixed(0)}
-                    </span>
+            {/* Net Carbs (NEW) */}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="text-center cursor-help">
+                    <div className="relative w-20 h-20 mx-auto mb-1">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={[
+                              { value: Math.min(kpiData.netCarbs.percentage, 100), fill: "#06b6d4" },
+                              { value: Math.max(100 - kpiData.netCarbs.percentage, 0), fill: "#f3f4f6" }
+                            ]}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={20}
+                            outerRadius={35}
+                            startAngle={90}
+                            endAngle={450}
+                            dataKey="value"
+                          />
+                        </PieChart>
+                      </ResponsiveContainer>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-sm font-bold text-cyan-600">{kpiData.netCarbs.value}g</div>
+                      </div>
+                    </div>
+                    <h3 className="text-xs font-semibold text-cyan-600">{language === "nl" ? "Netto koolh." : "Net carbs"}</h3>
+                    <p className="text-xs text-gray-500">{kpiData.netCarbs.percentage}%</p>
                   </div>
-                </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-foreground">{nutritionData.vegetables.toFixed(0)}</div>
-                  <div className="text-sm text-gray-500">{language === "nl" ? "van" : "of"} 21</div>
-                  <div className="text-xs text-gray-400 mt-1">
-                    {((nutritionData.vegetables / 21) * 100).toFixed(0)}%
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p className="font-semibold mb-1">{language === "nl" ? "Waarom netto koolhydraten belangrijk zijn" : "Why net carbs matter"}</p>
+                  <p className="text-sm">{language === "nl" 
+                    ? "Netto koolhydraten (totale koolhydraten minus vezels) geven een nauwkeuriger beeld van de impact op je bloedsuikerspiegel."
+                    : "Net carbs (total carbs minus fiber) give a more accurate picture of the impact on your blood sugar levels."}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            {/* Calories (NEW) */}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="text-center cursor-help">
+                    <div className="relative w-20 h-20 mx-auto mb-1">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={[
+                              { value: Math.min(kpiData.calories.percentage, 100), fill: "#3b82f6" },
+                              { value: Math.max(100 - kpiData.calories.percentage, 0), fill: "#f3f4f6" }
+                            ]}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={20}
+                            outerRadius={35}
+                            startAngle={90}
+                            endAngle={450}
+                            dataKey="value"
+                          />
+                        </PieChart>
+                      </ResponsiveContainer>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-sm font-bold text-blue-600">{kpiData.calories.value}</div>
+                      </div>
+                    </div>
+                    <h3 className="text-xs font-semibold text-blue-600">{t.calories}</h3>
+                    <p className="text-xs text-gray-500">{kpiData.calories.percentage}%</p>
                   </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p className="font-semibold mb-1">{language === "nl" ? "Waarom calorieën belangrijk zijn" : "Why calories matter"}</p>
+                  <p className="text-sm">{language === "nl" 
+                    ? "Calorieën bieden de energie die je lichaam nodig heeft voor dagelijkse activiteiten en lichaamsprocessen."
+                    : "Calories provide the energy your body needs for daily activities and bodily processes."}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+          </div>
+        )}
+
+        {!kpiData && (
+          <div className="text-center py-12">
+            <p className="text-gray-500">
+              {language === "nl" 
+                ? "Genereer een maaltijdplan om je voedingsinzichten te zien" 
+                : "Generate a meal plan to see your nutrition insights"}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
