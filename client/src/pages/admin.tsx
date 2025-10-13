@@ -2221,7 +2221,7 @@ function AdminPanelMain() {
 
           {/* Users Tab */}
           <TabsContent value="users" className="space-y-4">
-            <Card>
+            <Card className="max-w-none">
               <CardHeader className="pb-4">
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
                   <div>
@@ -2230,7 +2230,7 @@ function AdminPanelMain() {
                       User Management
                     </CardTitle>
                     <p className="text-sm text-gray-600 mt-1">
-                      View and manage all registered users
+                      View and manage all registered users (sorted by most recent login)
                     </p>
                   </div>
                   <div className="text-sm text-gray-500 font-medium">
@@ -2238,7 +2238,7 @@ function AdminPanelMain() {
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="p-3 sm:p-6">
+              <CardContent className="p-3 sm:p-6 overflow-x-auto">
                 {usersLoading ? (
                   <div className="py-8 text-center text-gray-500">
                     Loading users...
@@ -2320,36 +2320,42 @@ function AdminPanelMain() {
                       ))}
                     </div>
 
-                    {/* Desktop Table View */}
+                    {/* Desktop Table View - Full Width */}
                     <div className="hidden sm:block border rounded-lg overflow-x-auto">
-                      <table className="w-full">
+                      <table className="w-full min-w-full table-auto">
                         <thead className="border-b bg-gray-50">
                           <tr>
-                            <th className="p-3 text-left font-medium">ID</th>
-                            <th className="p-3 text-left font-medium">Username</th>
-                            <th className="p-3 text-left font-medium">Email</th>
-                            <th className="p-3 text-left font-medium">Name</th>
-                            <th className="p-3 text-left font-medium">Activity</th>
-                            <th className="p-3 text-left font-medium">Weight</th>
-                            <th className="p-3 text-left font-medium">Protein</th>
-                            <th className="p-3 text-left font-medium">Diet Tags</th>
-                            <th className="p-3 text-left font-medium">Last login</th>
-                            <th className="p-3 text-left font-medium">Created</th>
+                            <th className="p-3 text-left font-medium whitespace-nowrap">ID</th>
+                            <th className="p-3 text-left font-medium whitespace-nowrap">Username</th>
+                            <th className="p-3 text-left font-medium whitespace-nowrap">Email</th>
+                            <th className="p-3 text-left font-medium whitespace-nowrap">Name</th>
+                            <th className="p-3 text-left font-medium whitespace-nowrap">Activity</th>
+                            <th className="p-3 text-left font-medium whitespace-nowrap">Weight</th>
+                            <th className="p-3 text-left font-medium whitespace-nowrap">Protein</th>
+                            <th className="p-3 text-left font-medium whitespace-nowrap">Diet Tags</th>
+                            <th className="p-3 text-left font-medium whitespace-nowrap">Last Login</th>
+                            <th className="p-3 text-left font-medium whitespace-nowrap">Created</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {usersData?.users.map((user) => (
+                          {/* Sort users by lastLoginAt (most recent first) */}
+                          {[...usersData?.users || []].sort((a, b) => {
+                            if (!a.lastLoginAt && !b.lastLoginAt) return 0;
+                            if (!a.lastLoginAt) return 1;
+                            if (!b.lastLoginAt) return -1;
+                            return new Date(b.lastLoginAt).getTime() - new Date(a.lastLoginAt).getTime();
+                          }).map((user) => (
                             <tr key={user.id} className="border-b hover:bg-gray-50">
-                              <td className="p-3 font-mono text-sm">{user.id}</td>
-                              <td className="p-3 font-medium">{user.username}</td>
-                              <td className="p-3 text-sm">{user.email || 'N/A'}</td>
-                              <td className="p-3 text-sm">
+                              <td className="p-3 font-mono text-sm whitespace-nowrap">{user.id}</td>
+                              <td className="p-3 font-medium whitespace-nowrap">{user.username}</td>
+                              <td className="p-3 text-sm whitespace-nowrap">{user.email || 'N/A'}</td>
+                              <td className="p-3 text-sm whitespace-nowrap">
                                 {user.firstName && user.lastName 
                                   ? `${user.firstName} ${user.lastName}` 
                                   : user.firstName || user.lastName || 'N/A'
                                 }
                               </td>
-                              <td className="p-3">
+                              <td className="p-3 whitespace-nowrap">
                                 {user.activityLevel ? (
                                   <Badge variant="outline" className="capitalize text-xs">
                                     {user.activityLevel}
@@ -2358,7 +2364,7 @@ function AdminPanelMain() {
                                   <span className="text-gray-400">N/A</span>
                                 )}
                               </td>
-                              <td className="p-3 text-sm">
+                              <td className="p-3 text-sm whitespace-nowrap">
                                 {user.weight ? `${user.weight} kg` : 'N/A'}
                                 {user.goalWeight && (
                                   <div className="text-xs text-gray-500">
@@ -2366,28 +2372,23 @@ function AdminPanelMain() {
                                   </div>
                                 )}
                               </td>
-                              <td className="p-3 text-sm font-medium">
+                              <td className="p-3 text-sm font-medium whitespace-nowrap">
                                 {user.proteinTarget ? `${user.proteinTarget}g` : 'N/A'}
                               </td>
                               <td className="p-3">
                                 {user.dietaryTags && user.dietaryTags.length > 0 ? (
-                                  <div className="flex flex-wrap gap-1">
-                                    {user.dietaryTags.slice(0, 2).map((tag, index) => (
-                                      <Badge key={index} variant="secondary" className="text-xs">
+                                  <div className="flex flex-wrap gap-1 max-w-md">
+                                    {user.dietaryTags.map((tag, index) => (
+                                      <Badge key={index} variant="secondary" className="text-xs whitespace-nowrap">
                                         {tag}
                                       </Badge>
                                     ))}
-                                    {user.dietaryTags.length > 2 && (
-                                      <Badge variant="secondary" className="text-xs">
-                                        +{user.dietaryTags.length - 2}
-                                      </Badge>
-                                    )}
                                   </div>
                                 ) : (
                                   <span className="text-gray-400">None</span>
                                 )}
                               </td>
-                              <td className="p-3 text-sm text-gray-700">
+                              <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                                 {user.lastLoginAt 
                                   ? (
                                     <div>
@@ -2400,7 +2401,7 @@ function AdminPanelMain() {
                                   : <span className="text-gray-400">Never</span>
                                 }
                               </td>
-                              <td className="p-3 text-sm text-gray-500">
+                              <td className="p-3 text-sm text-gray-500 whitespace-nowrap">
                                 {user.createdAt 
                                   ? new Date(user.createdAt).toLocaleDateString()
                                   : 'N/A'
