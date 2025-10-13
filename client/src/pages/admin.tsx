@@ -336,6 +336,20 @@ function IngredientMappingManager() {
     queryFn: () => fetch('/api/admin/ingredient-mappings').then(res => res.json()),
   });
 
+  // Fetch all recipe ingredients
+  const { data: allRecipeIngredientsData, isLoading: recipeIngredientsLoading } = useQuery<{
+    total: number;
+    ingredients: Array<{
+      ingredient: string;
+      originalForms: string[];
+      recipes: string[];
+      count: number;
+    }>;
+  }>({
+    queryKey: ['/api/admin/all-recipe-ingredients'],
+    queryFn: () => fetch('/api/admin/all-recipe-ingredients').then(res => res.json()),
+  });
+
   // Create shopping list name
   const createShoppingListNameMutation = useMutation({
     mutationFn: async (data: { name: string; category: string; defaultUnit: string }) => {
@@ -433,6 +447,21 @@ function IngredientMappingManager() {
     },
   });
 
+  // Bulk import shopping list names
+  const bulkImportShoppingListNamesMutation = useMutation({
+    mutationFn: async (items: Array<{ name: string; category: string; defaultUnit: string }>) => {
+      const response = await apiRequest('POST', '/api/admin/shopping-list-names/bulk', { items });
+      return response.json();
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/shopping-list-names'] });
+      toast({ 
+        title: "Bulk import completed", 
+        description: `Created: ${data.summary.success}, Duplicates: ${data.summary.duplicates}, Errors: ${data.summary.errors}` 
+      });
+    },
+  });
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -443,9 +472,10 @@ function IngredientMappingManager() {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid grid-cols-3 w-full">
-          <TabsTrigger value="shopping-names">Grocery items ({shoppingListNames.length})</TabsTrigger>
-          <TabsTrigger value="mappings">Ingredient mappings ({ingredientMappings.length})</TabsTrigger>
+        <TabsList className="grid grid-cols-4 w-full">
+          <TabsTrigger value="shopping-names">System list ({shoppingListNames.length})</TabsTrigger>
+          <TabsTrigger value="recipe-ingredients">Recipe ingredients ({allRecipeIngredientsData?.total || 0})</TabsTrigger>
+          <TabsTrigger value="mappings">Mappings ({ingredientMappings.length})</TabsTrigger>
           <TabsTrigger value="analysis">Analysis</TabsTrigger>
         </TabsList>
 
@@ -588,13 +618,58 @@ function IngredientMappingManager() {
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
                 <span>Grocery items with unit conventions ({shoppingListNames.length})</span>
-                <Dialog open={showCreateShoppingName} onOpenChange={setShowCreateShoppingName}>
-                  <DialogTrigger asChild>
-                    <Button size="sm" data-testid="button-add-shopping-list-name">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add name
-                    </Button>
-                  </DialogTrigger>
+                <div className="flex gap-2">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button size="sm" variant="outline" data-testid="button-bulk-import">
+                        <Upload className="h-4 w-4 mr-2" />
+                        Bulk import
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-2xl">
+                      <DialogHeader>
+                        <DialogTitle>Bulk import system ingredients</DialogTitle>
+                        <CardDescription>
+                          Paste JSON array with items (format: [{"{name: string, category: string, defaultUnit: string}"}])
+                        </CardDescription>
+                      </DialogHeader>
+                      <Textarea
+                        id="bulk-import-data"
+                        placeholder='[{"name": "Chicken breast", "category": "Protein", "defaultUnit": "g"}, ...]'
+                        className="min-h-[200px] font-mono text-sm"
+                        data-testid="textarea-bulk-import"
+                      />
+                      <DialogFooter>
+                        <Button
+                          onClick={() => {
+                            const textarea = document.getElementById('bulk-import-data') as HTMLTextAreaElement;
+                            try {
+                              const items = JSON.parse(textarea.value);
+                              bulkImportShoppingListNamesMutation.mutate(items);
+                              textarea.value = '';
+                            } catch (e) {
+                              toast({ 
+                                title: "Invalid JSON", 
+                                description: "Please check the format and try again",
+                                variant: "destructive" 
+                              });
+                            }
+                          }}
+                          disabled={bulkImportShoppingListNamesMutation.isPending}
+                          data-testid="button-execute-bulk-import"
+                        >
+                          {bulkImportShoppingListNamesMutation.isPending ? "Importing..." : "Import"}
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                  <Dialog open={showCreateShoppingName} onOpenChange={setShowCreateShoppingName}>
+                    <DialogTrigger asChild>
+                      <Button size="sm" data-testid="button-add-shopping-list-name">
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add name
+                      </Button>
+                    </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>
                       <DialogTitle>Create shopping list name</DialogTitle>
@@ -702,6 +777,112 @@ function IngredientMappingManager() {
                   {shoppingListNames.length === 0 && (
                     <div className="text-center text-gray-500 py-8">
                       No shopping list names found. Create your first name to get started.
+                    </div>
+                  )}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Recipe Ingredients Tab - ALL ingredients from recipes */}
+        <TabsContent value="recipe-ingredients" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <span>All recipe ingredients ({allRecipeIngredientsData?.total || 0})</span>
+                <div className="text-sm text-gray-600">
+                  Map recipe ingredients to system grocery items
+                </div>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {recipeIngredientsLoading ? (
+                <div className="text-center py-8 text-gray-500">Loading recipe ingredients...</div>
+              ) : (
+                <div className="space-y-2">
+                  {/* Column headers */}
+                  <div className="grid grid-cols-5 gap-4 px-3 py-2 bg-gray-100 rounded font-medium text-sm text-gray-700">
+                    <div>Normalized ingredient</div>
+                    <div>Used in recipes</div>
+                    <div>Original forms</div>
+                    <div>Map to system item</div>
+                    <div>Actions</div>
+                  </div>
+                  {allRecipeIngredientsData?.ingredients.map((item, index) => {
+                    const existingMapping = ingredientMappings.find(
+                      m => m.normalizedIngredient === item.ingredient
+                    );
+                    
+                    return (
+                      <div key={index} className="grid grid-cols-5 gap-4 items-center p-3 border rounded hover:bg-gray-50">
+                        <div className="font-medium text-sm">{item.ingredient}</div>
+                        <div className="text-sm">
+                          <Badge variant="outline" className="text-xs">
+                            {item.count} {item.count === 1 ? 'recipe' : 'recipes'}
+                          </Badge>
+                        </div>
+                        <div className="text-xs text-gray-600">
+                          <details className="cursor-pointer">
+                            <summary>{item.originalForms.length} forms</summary>
+                            <div className="mt-1 space-y-1">
+                              {item.originalForms.slice(0, 3).map((form, i) => (
+                                <div key={i} className="text-xs text-gray-500">• {form}</div>
+                              ))}
+                              {item.originalForms.length > 3 && (
+                                <div className="text-xs text-gray-400">+ {item.originalForms.length - 3} more</div>
+                              )}
+                            </div>
+                          </details>
+                        </div>
+                        <div>
+                          {existingMapping ? (
+                            <div className="flex items-center gap-2">
+                              <Badge variant="secondary" className="text-xs">
+                                {existingMapping.shoppingListName?.name || 'No mapping'}
+                              </Badge>
+                            </div>
+                          ) : (
+                            <Select
+                              onValueChange={(value) => {
+                                createIngredientMappingMutation.mutate({
+                                  originalIngredient: item.originalForms[0],
+                                  normalizedIngredient: item.ingredient,
+                                  shoppingListNameId: parseInt(value),
+                                  isManualOverride: true
+                                });
+                              }}
+                            >
+                              <SelectTrigger className="h-8 text-xs">
+                                <SelectValue placeholder="Select item" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {shoppingListNames.map((name) => (
+                                  <SelectItem key={name.id} value={name.id.toString()}>
+                                    {name.name} ({name.category})
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          )}
+                        </div>
+                        <div>
+                          {existingMapping && (
+                            <Button 
+                              size="sm" 
+                              variant="ghost"
+                              onClick={() => deleteIngredientMappingMutation.mutate(existingMapping.id)}
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                  {(!allRecipeIngredientsData?.ingredients || allRecipeIngredientsData.ingredients.length === 0) && (
+                    <div className="text-center text-gray-500 py-8">
+                      No recipe ingredients found.
                     </div>
                   )}
                 </div>
