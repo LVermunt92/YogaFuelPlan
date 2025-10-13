@@ -3857,6 +3857,150 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // POST /api/admin/shopping-list-names/bulk - Bulk create shopping list names
+  app.post("/api/admin/shopping-list-names/bulk", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Authentication required" });
+      }
+
+      const user = await storage.getUser(req.session.userId);
+      if (!user || user.username !== 'admin') {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const { items } = req.body;
+      if (!Array.isArray(items)) {
+        return res.status(400).json({ message: "Items must be an array" });
+      }
+
+      const results: Array<{status: 'success' | 'duplicate' | 'error', item: any, error?: string}> = [];
+      
+      for (const item of items) {
+        // Validate required fields
+        if (!item.name || !item.category) {
+          results.push({
+            status: 'error',
+            item,
+            error: 'Missing required fields: name and category'
+          });
+          continue;
+        }
+
+        try {
+          const created = await storage.createShoppingListName({
+            name: item.name,
+            category: item.category,
+            defaultUnit: item.defaultUnit || 'g'
+          });
+          results.push({
+            status: 'success',
+            item: created
+          });
+        } catch (err: any) {
+          // Distinguish duplicates from other errors
+          if (err.message && err.message.includes('unique')) {
+            results.push({
+              status: 'duplicate',
+              item,
+              error: 'Item already exists'
+            });
+          } else {
+            results.push({
+              status: 'error',
+              item,
+              error: err.message || 'Unknown error'
+            });
+          }
+        }
+      }
+
+      const successCount = results.filter(r => r.status === 'success').length;
+      const duplicateCount = results.filter(r => r.status === 'duplicate').length;
+      const errorCount = results.filter(r => r.status === 'error').length;
+
+      res.json({ 
+        summary: {
+          total: items.length,
+          success: successCount,
+          duplicates: duplicateCount,
+          errors: errorCount
+        },
+        results 
+      });
+    } catch (error) {
+      console.error("Error bulk creating shopping list names:", error);
+      res.status(500).json({ message: "Failed to bulk create shopping list names" });
+    }
+  });
+
+  // GET /api/admin/all-recipe-ingredients - Get all unique ingredients from all recipes
+  app.get("/api/admin/all-recipe-ingredients", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Authentication required" });
+      }
+
+      const user = await storage.getUser(req.session.userId);
+      if (!user || user.username !== 'admin') {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      // Get all recipes
+      const recipes = await getCompleteEnhancedMealDatabase();
+      
+      // Single-pass extraction with normalization
+      // Map: normalized ingredient -> { originalForms: Set, recipes: Set, count: number }
+      const ingredientMap = new Map<string, {
+        normalizedName: string;
+        originalForms: Set<string>;
+        recipes: Set<string>;
+        count: number;
+      }>();
+      
+      recipes.forEach(recipe => {
+        if (recipe.ingredients && Array.isArray(recipe.ingredients)) {
+          recipe.ingredients.forEach((originalIngredient: string) => {
+            // Normalize ingredient (strip quantities, clean up)
+            const normalized = cleanIngredientName(originalIngredient);
+            
+            if (!ingredientMap.has(normalized)) {
+              ingredientMap.set(normalized, {
+                normalizedName: normalized,
+                originalForms: new Set(),
+                recipes: new Set(),
+                count: 0
+              });
+            }
+            
+            const entry = ingredientMap.get(normalized)!;
+            entry.originalForms.add(originalIngredient);
+            entry.recipes.add(recipe.name);
+            entry.count = entry.recipes.size;
+          });
+        }
+      });
+
+      // Convert to array and sort by usage count (most used first)
+      const ingredientDetails = Array.from(ingredientMap.values())
+        .map(entry => ({
+          ingredient: entry.normalizedName,
+          originalForms: Array.from(entry.originalForms),
+          recipes: Array.from(entry.recipes),
+          count: entry.count
+        }))
+        .sort((a, b) => b.count - a.count);
+
+      res.json({
+        total: ingredientDetails.length,
+        ingredients: ingredientDetails
+      });
+    } catch (error) {
+      console.error("Error fetching all recipe ingredients:", error);
+      res.status(500).json({ message: "Failed to fetch recipe ingredients" });
+    }
+  });
+
   // ============================================================================
   // ADMIN: Ingredient Mapping Management
   // ============================================================================
