@@ -26,10 +26,6 @@ const DIETARY_TAGS = [
   "Soy-Free",
   "Low-Carb",
   "Keto",
-  "Paleo",
-  "Mediterranean",
-  "Whole30",
-  "Raw",
   "Pescatarian",
   "Ayurvedic"
 ] as const;
