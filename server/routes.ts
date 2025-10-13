@@ -602,6 +602,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "Meal plan not found" });
       }
       
+      // Enhance meals with recipe ingredients for rainbow chart calculation
+      if (mealPlan.meals) {
+        const mealsWithIngredients = await Promise.all(mealPlan.meals.map(async meal => {
+          if (meal.recipeId) {
+            try {
+              // Convert integer recipeId to string for lookup
+              const recipe = await storage.getRecipeById(String(meal.recipeId));
+              if (recipe) {
+                return {
+                  ...meal,
+                  ingredients: recipe.ingredients || []
+                };
+              }
+            } catch (error) {
+              console.error(`Failed to fetch ingredients for recipe ${meal.recipeId}:`, error);
+            }
+          }
+          return meal;
+        }));
+        mealPlan.meals = mealsWithIngredients;
+      }
+      
       // Translate meal names and types if Dutch is requested
       if (language === 'nl' && mealPlan.meals) {
         // Collect unique recipe IDs for batch translation lookup
