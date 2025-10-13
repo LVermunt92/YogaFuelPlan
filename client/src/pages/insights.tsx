@@ -87,6 +87,10 @@ export default function Insights() {
     const totalFats = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fats || 0), 0);
     const totalCarbs = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.carbohydrates || 0), 0);
     const totalFiber = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fiber || 0), 0);
+    const totalVitaminK = currentMealPlan.meals.reduce((sum, meal) => {
+      const nutrition = meal.nutrition as any;
+      return sum + (nutrition?.vitaminK || 0);
+    }, 0);
 
     // Count unique days covered by the meal plan
     const uniqueDays = new Set(currentMealPlan.meals.map(meal => meal.day));
@@ -110,6 +114,7 @@ export default function Insights() {
     const avgFatsPerDay = daysCovered > 0 ? totalFats / daysCovered : 0;
     const avgCarbsPerDay = daysCovered > 0 ? totalCarbs / daysCovered : 0;
     const avgFiberPerDay = daysCovered > 0 ? totalFiber / daysCovered : 0;
+    const avgVitaminKPerDay = daysCovered > 0 ? totalVitaminK / daysCovered : 0;
 
     // Calculate net carbs (total carbs - fiber)
     const avgNetCarbsPerDay = avgCarbsPerDay - avgFiberPerDay;
@@ -183,6 +188,11 @@ export default function Insights() {
         percentage: rainbowScore,
         target: totalColorGroups,
         colors: Array.from(allColors)
+      },
+      vitaminK: {
+        value: Math.round(avgVitaminKPerDay),
+        percentage: Math.round((avgVitaminKPerDay / 90) * 100), // 90 mcg is the daily recommendation for women
+        target: 90
       }
     };
   };
@@ -641,6 +651,55 @@ export default function Insights() {
                 </Dialog>
               </div>
               <p className="text-xs text-gray-500">{kpiData.rainbow.percentage}%</p>
+            </div>
+
+            {/* Vitamin K */}
+            <div className="text-center relative">
+              <div className="relative w-20 h-20 mx-auto mb-1">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { value: Math.min(kpiData.vitaminK.percentage, 100), fill: "#10b981" },
+                        { value: Math.max(100 - kpiData.vitaminK.percentage, 0), fill: "#f3f4f6" }
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={20}
+                      outerRadius={35}
+                      startAngle={90}
+                      endAngle={450}
+                      dataKey="value"
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-sm font-bold text-emerald-600">{kpiData.vitaminK.value}mcg</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-center gap-1">
+                <h3 className="text-xs font-semibold text-emerald-600">
+                  {language === "nl" ? "Vitamine K" : "Vitamin K"}
+                </h3>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-vitamin-k">
+                      <Info className="h-3 w-3" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-sm">
+                    <DialogHeader>
+                      <DialogTitle>{language === "nl" ? "Vitamine K voor gezondheid" : "Vitamin K for health"}</DialogTitle>
+                      <DialogDescription className="text-sm pt-2">
+                        {language === "nl" 
+                          ? "Vitamine K is essentieel voor bloedstolling en botgezondheid. De aanbevolen dagelijkse inname is 90 mcg voor vrouwen en 120 mcg voor mannen. Beste bronnen: groene bladgroenten, broccoli, spruitjes."
+                          : "Vitamin K is essential for blood clotting and bone health. The recommended daily intake is 90 mcg for women and 120 mcg for men. Best sources: leafy greens, broccoli, Brussels sprouts."}
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <p className="text-xs text-gray-500">{kpiData.vitaminK.percentage}%</p>
             </div>
 
           </div>

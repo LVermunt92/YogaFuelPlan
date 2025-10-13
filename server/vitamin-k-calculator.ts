@@ -116,9 +116,12 @@ export function calculateVitaminK(ingredients: string[]): number {
     // Try to match ingredient with vitamin K database
     for (const [food, vitaminK] of Object.entries(vitaminKContent)) {
       if (lowerIngredient.includes(food)) {
-        // Extract quantity if available (default to 100g if not specified)
-        const quantityMatch = ingredient.match(/(\d+)\s*g/);
-        const quantity = quantityMatch ? parseInt(quantityMatch[1]) : 100;
+        // Extract quantity - supports formats like:
+        // "150g", "150 g", "37.5g", "150 grams", "100 gm", etc.
+        // Explicitly match gram units: g, grams, gm, gms
+        // Exclude all metric prefixes: k(g), m(g), mc(g), u(g), µ(g), μ(g)
+        const quantityMatch = ingredient.match(/(\d+(?:\.\d+)?)\s*(?:grams?|gms?|(?<![kmcuµμ])g)(?![a-z])/i);
+        const quantity = quantityMatch ? parseFloat(quantityMatch[1]) : 100;
         
         // Calculate vitamin K for this ingredient
         const ingredientVitaminK = (vitaminK * quantity) / 100;

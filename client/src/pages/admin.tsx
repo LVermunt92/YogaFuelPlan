@@ -2119,6 +2119,32 @@ function AdminPanelMain() {
                       <Download className="h-4 w-4" />
                       Export
                     </Button>
+                    <Button
+                      onClick={async () => {
+                        try {
+                          const response = await apiRequest('/api/admin/update-vitamin-k', {
+                            method: 'POST'
+                          });
+                          toast({
+                            title: "Success",
+                            description: `Updated ${response.updatedCount} recipes with Vitamin K values`
+                          });
+                        } catch (error) {
+                          toast({
+                            title: "Error",
+                            description: "Failed to update recipes",
+                            variant: "destructive"
+                          });
+                        }
+                      }}
+                      variant="outline"
+                      size="sm"
+                      className="flex items-center gap-2"
+                      data-testid="button-update-vitamin-k"
+                    >
+                      <Leaf className="h-4 w-4" />
+                      Update Vitamin K
+                    </Button>
                   </div>
                 </div>
               </CardHeader>
