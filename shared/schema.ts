@@ -33,6 +33,7 @@ export const users = pgTable("users", {
   cycleSupportRecipes: boolean("cycle_support_recipes").default(false),
   menstrualPhase: text("menstrual_phase").default("off"), // off, menstrual, follicular, ovulation, luteal
   longevityFocusedRecipes: boolean("longevity_focused_recipes").default(false), // enable longevity-focused recipes
+  hasSeenWelcome: boolean("has_seen_welcome").default(false), // track if user has seen welcome message
   lastLoginAt: timestamp("last_login_at"), // track when user last logged in
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
