@@ -449,7 +449,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = req.query.userId ? parseInt(req.query.userId as string) : 2; // Default to user 2
       const mealPlans = await storage.getMealPlans(userId);
-      res.json(mealPlans);
+      
+      // Enhance meal plans with meal count for accurate daily protein calculation
+      const enhancedPlans = await Promise.all(mealPlans.map(async (plan) => {
+        const planWithMeals = await storage.getMealPlanWithMeals(plan.id);
+        const mealCount = planWithMeals?.meals?.length || 0;
+        return {
+          ...plan,
+          mealCount
+        };
+      }));
+      
+      res.json(enhancedPlans);
     } catch (error) {
       console.error("Error fetching meal plans:", error);
       res.status(500).json({ message: "Failed to fetch meal plans" });
