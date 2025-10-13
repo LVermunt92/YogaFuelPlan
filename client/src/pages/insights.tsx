@@ -1,12 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 import { PieChart, Pie, ResponsiveContainer } from "recharts";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Info } from "lucide-react";
 import { Link } from "wouter";
 import { useTranslations } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { countUniquePlants } from "@/lib/plant-diversity";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 interface MealPlan {
   id: number;
@@ -91,7 +98,7 @@ export default function Insights() {
     // Targets
     const proteinTarget = nutritionTargets?.protein || 95;
     const caloriesTarget = nutritionTargets?.calories || 2000;
-    const netCarbsTarget = 160; // Example target for net carbs
+    const netCarbsTarget = 160;
 
     return {
       protein: {
@@ -102,7 +109,7 @@ export default function Insights() {
       goodFats: {
         value: Math.round(avgFatsPerDay),
         percentage: Math.round(Math.min(fatPercentage, 100)),
-        target: 30 // 30% of calories
+        target: 30
       },
       fiber: {
         value: Math.round(avgFiberPerDay),
@@ -163,315 +170,371 @@ export default function Insights() {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg w-full">
             
             {/* Protein Chart */}
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="text-center cursor-help">
-                    <div className="relative w-20 h-20 mx-auto mb-1">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={[
-                              { value: Math.min(kpiData.protein.percentage, 100), fill: "#10b981" },
-                              { value: Math.max(100 - kpiData.protein.percentage, 0), fill: "#f3f4f6" }
-                            ]}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={20}
-                            outerRadius={35}
-                            startAngle={90}
-                            endAngle={450}
-                            dataKey="value"
-                          />
-                        </PieChart>
-                      </ResponsiveContainer>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-sm font-bold text-emerald-600">{kpiData.protein.value}g</div>
-                      </div>
-                    </div>
-                    <h3 className="text-xs font-semibold text-emerald-600">{t.protein}</h3>
-                    <p className="text-xs text-gray-500">{kpiData.protein.percentage}%</p>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
-                  <p className="font-semibold mb-1">{t.whyProteinMatters}</p>
-                  <p className="text-sm">{t.proteinTooltip}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <div className="text-center relative">
+              <div className="relative w-20 h-20 mx-auto mb-1">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { value: Math.min(kpiData.protein.percentage, 100), fill: "#10b981" },
+                        { value: Math.max(100 - kpiData.protein.percentage, 0), fill: "#f3f4f6" }
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={20}
+                      outerRadius={35}
+                      startAngle={90}
+                      endAngle={450}
+                      dataKey="value"
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-sm font-bold text-emerald-600">{kpiData.protein.value}g</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-center gap-1">
+                <h3 className="text-xs font-semibold text-emerald-600">{t.protein}</h3>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="text-emerald-600/60 hover:text-emerald-600" data-testid="info-protein">
+                      <Info className="h-3 w-3" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-sm">
+                    <DialogHeader>
+                      <DialogTitle>{t.whyProteinMatters}</DialogTitle>
+                      <DialogDescription className="text-sm pt-2">
+                        {t.proteinTooltip}
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <p className="text-xs text-gray-500">{kpiData.protein.percentage}%</p>
+            </div>
 
             {/* Good Fats */}
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="text-center cursor-help">
-                    <div className="relative w-20 h-20 mx-auto mb-1">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={[
-                              { value: kpiData.goodFats.percentage, fill: "#eab308" },
-                              { value: 100 - kpiData.goodFats.percentage, fill: "#f3f4f6" }
-                            ]}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={20}
-                            outerRadius={35}
-                            startAngle={90}
-                            endAngle={450}
-                            dataKey="value"
-                          />
-                        </PieChart>
-                      </ResponsiveContainer>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-sm font-bold text-yellow-600">{kpiData.goodFats.value}g</div>
-                      </div>
-                    </div>
-                    <h3 className="text-xs font-semibold text-yellow-600">{t.goodFats || 'Good fats'}</h3>
-                    <p className="text-xs text-gray-500">{kpiData.goodFats.percentage}%</p>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
-                  <p className="font-semibold mb-1">{t.whyHealthyFatsMatters}</p>
-                  <p className="text-sm">{t.fatsTooltip}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <div className="text-center relative">
+              <div className="relative w-20 h-20 mx-auto mb-1">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { value: kpiData.goodFats.percentage, fill: "#eab308" },
+                        { value: 100 - kpiData.goodFats.percentage, fill: "#f3f4f6" }
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={20}
+                      outerRadius={35}
+                      startAngle={90}
+                      endAngle={450}
+                      dataKey="value"
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-sm font-bold text-yellow-600">{kpiData.goodFats.value}g</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-center gap-1">
+                <h3 className="text-xs font-semibold text-yellow-600">{t.goodFats || 'Good fats'}</h3>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="text-yellow-600/60 hover:text-yellow-600" data-testid="info-fats">
+                      <Info className="h-3 w-3" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-sm">
+                    <DialogHeader>
+                      <DialogTitle>{t.whyHealthyFatsMatters}</DialogTitle>
+                      <DialogDescription className="text-sm pt-2">
+                        {t.fatsTooltip}
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <p className="text-xs text-gray-500">{kpiData.goodFats.percentage}%</p>
+            </div>
 
             {/* Fiber */}
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="text-center cursor-help">
-                    <div className="relative w-20 h-20 mx-auto mb-1">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={[
-                              { value: Math.min(kpiData.fiber.percentage, 100), fill: "#f97316" },
-                              { value: Math.max(100 - kpiData.fiber.percentage, 0), fill: "#f3f4f6" }
-                            ]}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={20}
-                            outerRadius={35}
-                            startAngle={90}
-                            endAngle={450}
-                            dataKey="value"
-                          />
-                        </PieChart>
-                      </ResponsiveContainer>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-sm font-bold text-orange-600">{kpiData.fiber.value}g</div>
-                      </div>
-                    </div>
-                    <h3 className="text-xs font-semibold text-orange-600">{t.fiber}</h3>
-                    <p className="text-xs text-gray-500">{kpiData.fiber.percentage}%</p>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
-                  <p className="font-semibold mb-1">{t.whyFiberMatters}</p>
-                  <p className="text-sm mb-2">{t.fiberTooltip}</p>
-                  <p className="text-xs text-amber-200 font-medium">{t.fiberWarning}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <div className="text-center relative">
+              <div className="relative w-20 h-20 mx-auto mb-1">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { value: Math.min(kpiData.fiber.percentage, 100), fill: "#f97316" },
+                        { value: Math.max(100 - kpiData.fiber.percentage, 0), fill: "#f3f4f6" }
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={20}
+                      outerRadius={35}
+                      startAngle={90}
+                      endAngle={450}
+                      dataKey="value"
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-sm font-bold text-orange-600">{kpiData.fiber.value}g</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-center gap-1">
+                <h3 className="text-xs font-semibold text-orange-600">{t.fiber}</h3>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="text-orange-600/60 hover:text-orange-600" data-testid="info-fiber">
+                      <Info className="h-3 w-3" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-sm">
+                    <DialogHeader>
+                      <DialogTitle>{t.whyFiberMatters}</DialogTitle>
+                      <DialogDescription className="text-sm pt-2">
+                        {t.fiberTooltip}
+                        <p className="text-xs text-amber-600 font-medium mt-2">{t.fiberWarning}</p>
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <p className="text-xs text-gray-500">{kpiData.fiber.percentage}%</p>
+            </div>
 
             {/* Vegetables */}
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="text-center cursor-help">
-                    <div className="relative w-20 h-20 mx-auto mb-1">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={[
-                              { value: Math.min(kpiData.vegetables.percentage, 100), fill: "#22c55e" },
-                              { value: Math.max(100 - kpiData.vegetables.percentage, 0), fill: "#f3f4f6" }
-                            ]}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={20}
-                            outerRadius={35}
-                            startAngle={90}
-                            endAngle={450}
-                            dataKey="value"
-                          />
-                        </PieChart>
-                      </ResponsiveContainer>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-sm font-bold text-green-600">{kpiData.vegetables.value}g</div>
-                      </div>
-                    </div>
-                    <h3 className="text-xs font-semibold text-green-600">{t.vegetables}</h3>
-                    <p className="text-xs text-gray-500">{kpiData.vegetables.percentage}%</p>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
-                  <p className="font-semibold mb-1">{t.whyVegetablesMatters}</p>
-                  <p className="text-sm">{t.vegetablesTooltip}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <div className="text-center relative">
+              <div className="relative w-20 h-20 mx-auto mb-1">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { value: Math.min(kpiData.vegetables.percentage, 100), fill: "#22c55e" },
+                        { value: Math.max(100 - kpiData.vegetables.percentage, 0), fill: "#f3f4f6" }
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={20}
+                      outerRadius={35}
+                      startAngle={90}
+                      endAngle={450}
+                      dataKey="value"
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-sm font-bold text-green-600">{kpiData.vegetables.value}g</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-center gap-1">
+                <h3 className="text-xs font-semibold text-green-600">{t.vegetables}</h3>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="text-green-600/60 hover:text-green-600" data-testid="info-vegetables">
+                      <Info className="h-3 w-3" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-sm">
+                    <DialogHeader>
+                      <DialogTitle>{t.whyVegetablesMatters}</DialogTitle>
+                      <DialogDescription className="text-sm pt-2">
+                        {t.vegetablesTooltip}
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <p className="text-xs text-gray-500">{kpiData.vegetables.percentage}%</p>
+            </div>
 
             {/* Plant Diversity */}
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="text-center cursor-help">
-                    <div className="relative w-20 h-20 mx-auto mb-1">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={[
-                              { value: Math.min(kpiData.plantDiversity.percentage, 100), fill: "#16a34a" },
-                              { value: Math.max(100 - kpiData.plantDiversity.percentage, 0), fill: "#f3f4f6" }
-                            ]}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={20}
-                            outerRadius={35}
-                            startAngle={90}
-                            endAngle={450}
-                            dataKey="value"
-                          />
-                        </PieChart>
-                      </ResponsiveContainer>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-sm font-bold text-green-700">{kpiData.plantDiversity.value}</div>
-                      </div>
-                    </div>
-                    <h3 className="text-xs font-semibold text-green-700">{t.plantDiversity}</h3>
-                    <p className="text-xs text-gray-500">{kpiData.plantDiversity.percentage}%</p>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
-                  <p className="font-semibold mb-1">{t.whyPlantDiversityMatters}</p>
-                  <p className="text-sm mb-2">{t.plantDiversityTooltip}</p>
-                  <p className="text-xs text-green-200 font-medium">{t.plantDiversityTarget}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <div className="text-center relative">
+              <div className="relative w-20 h-20 mx-auto mb-1">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { value: Math.min(kpiData.plantDiversity.percentage, 100), fill: "#16a34a" },
+                        { value: Math.max(100 - kpiData.plantDiversity.percentage, 0), fill: "#f3f4f6" }
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={20}
+                      outerRadius={35}
+                      startAngle={90}
+                      endAngle={450}
+                      dataKey="value"
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-sm font-bold text-green-700">{kpiData.plantDiversity.value}</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-center gap-1">
+                <h3 className="text-xs font-semibold text-green-700">{t.plantDiversity}</h3>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="text-green-700/60 hover:text-green-700" data-testid="info-plant-diversity">
+                      <Info className="h-3 w-3" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-sm">
+                    <DialogHeader>
+                      <DialogTitle>{t.whyPlantDiversityMatters}</DialogTitle>
+                      <DialogDescription className="text-sm pt-2">
+                        {t.plantDiversityTooltip}
+                        <p className="text-xs text-green-600 font-medium mt-2">{t.plantDiversityTarget}</p>
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <p className="text-xs text-gray-500">{kpiData.plantDiversity.percentage}%</p>
+            </div>
 
             {/* Cocoa Flavanols */}
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="text-center cursor-help">
-                    <div className="relative w-20 h-20 mx-auto mb-1">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={[
-                              { value: Math.min(kpiData.cocoaFlavanols.percentage, 100), fill: "#8b5cf6" },
-                              { value: Math.max(100 - kpiData.cocoaFlavanols.percentage, 0), fill: "#f3f4f6" }
-                            ]}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={20}
-                            outerRadius={35}
-                            startAngle={90}
-                            endAngle={450}
-                            dataKey="value"
-                          />
-                        </PieChart>
-                      </ResponsiveContainer>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-sm font-bold text-purple-600">{kpiData.cocoaFlavanols.value}mg</div>
-                      </div>
-                    </div>
-                    <h3 className="text-xs font-semibold text-purple-600">{t.cocoaFlavanols}</h3>
-                    <p className="text-xs text-gray-500">{kpiData.cocoaFlavanols.percentage}%</p>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
-                  <p className="font-semibold mb-1">{t.whyCocoaFlavanolsMatters}</p>
-                  <p className="text-sm mb-2">{t.cocoaFlavanolsTooltip}</p>
-                  <p className="text-xs text-purple-200 font-medium">{t.cocoaFlavanolsTarget}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <div className="text-center relative">
+              <div className="relative w-20 h-20 mx-auto mb-1">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { value: Math.min(kpiData.cocoaFlavanols.percentage, 100), fill: "#8b5cf6" },
+                        { value: Math.max(100 - kpiData.cocoaFlavanols.percentage, 0), fill: "#f3f4f6" }
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={20}
+                      outerRadius={35}
+                      startAngle={90}
+                      endAngle={450}
+                      dataKey="value"
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-sm font-bold text-purple-600">{kpiData.cocoaFlavanols.value}mg</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-center gap-1">
+                <h3 className="text-xs font-semibold text-purple-600">{t.cocoaFlavanols}</h3>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="text-purple-600/60 hover:text-purple-600" data-testid="info-cocoa">
+                      <Info className="h-3 w-3" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-sm">
+                    <DialogHeader>
+                      <DialogTitle>{t.whyCocoaFlavanolsMatters}</DialogTitle>
+                      <DialogDescription className="text-sm pt-2">
+                        {t.cocoaFlavanolsTooltip}
+                        <p className="text-xs text-purple-600 font-medium mt-2">{t.cocoaFlavanolsNote}</p>
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <p className="text-xs text-gray-500">{kpiData.cocoaFlavanols.percentage}%</p>
+            </div>
 
-            {/* Net Carbs (NEW) */}
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="text-center cursor-help">
-                    <div className="relative w-20 h-20 mx-auto mb-1">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={[
-                              { value: Math.min(kpiData.netCarbs.percentage, 100), fill: "#06b6d4" },
-                              { value: Math.max(100 - kpiData.netCarbs.percentage, 0), fill: "#f3f4f6" }
-                            ]}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={20}
-                            outerRadius={35}
-                            startAngle={90}
-                            endAngle={450}
-                            dataKey="value"
-                          />
-                        </PieChart>
-                      </ResponsiveContainer>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-sm font-bold text-cyan-600">{kpiData.netCarbs.value}g</div>
-                      </div>
-                    </div>
-                    <h3 className="text-xs font-semibold text-cyan-600">{language === "nl" ? "Netto koolh." : "Net carbs"}</h3>
-                    <p className="text-xs text-gray-500">{kpiData.netCarbs.percentage}%</p>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
-                  <p className="font-semibold mb-1">{language === "nl" ? "Over netto koolhydraten" : "About net carbs"}</p>
-                  <p className="text-sm">{language === "nl" 
-                    ? "Netto koolhydraten zijn de verteerbare koolhydraten die je lichaam gebruikt voor energie (totale koolhydraten minus vezels). Ze zijn een belangrijke brandstofbron — het verminderen van geraffineerde koolhydraten kan gunstig zijn, maar koolhydraten volledig vermijden kan essentiële voedingsstoffen beperken."
-                    : "Net carbs are the digestible carbs your body uses for energy (total carbs minus fiber). They're an important fuel source — reducing refined carbs can be beneficial, but completely avoiding carbs may limit essential nutrients."}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            {/* Net Carbs */}
+            <div className="text-center relative">
+              <div className="relative w-20 h-20 mx-auto mb-1">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { value: Math.min(kpiData.netCarbs.percentage, 100), fill: "#06b6d4" },
+                        { value: Math.max(100 - kpiData.netCarbs.percentage, 0), fill: "#f3f4f6" }
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={20}
+                      outerRadius={35}
+                      startAngle={90}
+                      endAngle={450}
+                      dataKey="value"
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-sm font-bold text-cyan-600">{kpiData.netCarbs.value}g</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-center gap-1">
+                <h3 className="text-xs font-semibold text-cyan-600">{language === "nl" ? "Netto koolh." : "Net carbs"}</h3>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="text-cyan-600/60 hover:text-cyan-600" data-testid="info-net-carbs">
+                      <Info className="h-3 w-3" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-sm">
+                    <DialogHeader>
+                      <DialogTitle>{language === "nl" ? "Over netto koolhydraten" : "About net carbs"}</DialogTitle>
+                      <DialogDescription className="text-sm pt-2">
+                        {language === "nl" 
+                          ? "Netto koolhydraten zijn de verteerbare koolhydraten die je lichaam gebruikt voor energie (totale koolhydraten minus vezels). Ze zijn een belangrijke brandstofbron — het verminderen van geraffineerde koolhydraten kan gunstig zijn, maar koolhydraten volledig vermijden kan essentiële voedingsstoffen beperken."
+                          : "Net carbs are the digestible carbs your body uses for energy (total carbs minus fiber). They're an important fuel source — reducing refined carbs can be beneficial, but completely avoiding carbs may limit essential nutrients."}
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <p className="text-xs text-gray-500">{kpiData.netCarbs.percentage}%</p>
+            </div>
 
-            {/* Calories (NEW) */}
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="text-center cursor-help">
-                    <div className="relative w-20 h-20 mx-auto mb-1">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={[
-                              { value: Math.min(kpiData.calories.percentage, 100), fill: "#3b82f6" },
-                              { value: Math.max(100 - kpiData.calories.percentage, 0), fill: "#f3f4f6" }
-                            ]}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={20}
-                            outerRadius={35}
-                            startAngle={90}
-                            endAngle={450}
-                            dataKey="value"
-                          />
-                        </PieChart>
-                      </ResponsiveContainer>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-sm font-bold text-blue-600">{kpiData.calories.value}</div>
-                      </div>
-                    </div>
-                    <h3 className="text-xs font-semibold text-blue-600">{t.calories}</h3>
-                    <p className="text-xs text-gray-500">{kpiData.calories.percentage}%</p>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
-                  <p className="font-semibold mb-1">{language === "nl" ? "Over calorieën" : "About calories"}</p>
-                  <p className="text-sm">{language === "nl" 
-                    ? "kcal weerspiegelen energie in voedsel, niet noodzakelijkelijk geabsorbeerde energie. Absorptie varieert met voedseltype, verwerking en macronutriënten (bijv. hele noten leveren vaak minder kcal dan op het etiket staat; eiwit heeft hogere verteringskosten)"
-                    : "kcal reflect energy in food, not necessarily energy absorbed. Absorption varies with food type, processing, and macronutrients (e.g., whole nuts often yield fewer kcal than labels; protein has a higher digestion cost)"}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            {/* Calories */}
+            <div className="text-center relative">
+              <div className="relative w-20 h-20 mx-auto mb-1">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { value: Math.min(kpiData.calories.percentage, 100), fill: "#3b82f6" },
+                        { value: Math.max(100 - kpiData.calories.percentage, 0), fill: "#f3f4f6" }
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={20}
+                      outerRadius={35}
+                      startAngle={90}
+                      endAngle={450}
+                      dataKey="value"
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-sm font-bold text-blue-600">{kpiData.calories.value}</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-center gap-1">
+                <h3 className="text-xs font-semibold text-blue-600">{t.calories}</h3>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="text-blue-600/60 hover:text-blue-600" data-testid="info-calories">
+                      <Info className="h-3 w-3" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-sm">
+                    <DialogHeader>
+                      <DialogTitle>{language === "nl" ? "Over calorieën" : "About calories"}</DialogTitle>
+                      <DialogDescription className="text-sm pt-2">
+                        {language === "nl" 
+                          ? "kcal weerspiegelen energie in voedsel, niet noodzakelijkelijk geabsorbeerde energie. Absorptie varieert met voedseltype, verwerking en macronutriënten (bijv. hele noten leveren vaak minder kcal dan op het etiket staat; eiwit heeft hogere verteringskosten)"
+                          : "kcal reflect energy in food, not necessarily energy absorbed. Absorption varies with food type, processing, and macronutrients (e.g., whole nuts often yield fewer kcal than labels; protein has a higher digestion cost)"}
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <p className="text-xs text-gray-500">{kpiData.calories.percentage}%</p>
+            </div>
 
           </div>
         )}
