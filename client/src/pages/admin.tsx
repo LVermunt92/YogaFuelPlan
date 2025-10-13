@@ -670,74 +670,75 @@ function IngredientMappingManager() {
                         Add name
                       </Button>
                     </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Create shopping list name</DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4">
-                      <div>
-                        <Label>Name</Label>
-                        <Input 
-                          placeholder="e.g., 'Chicken breast'" 
-                          data-testid="input-shopping-list-name"
-                          value={newShoppingListName.name}
-                          onChange={(e) => setNewShoppingListName({...newShoppingListName, name: e.target.value})}
-                        />
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Create shopping list name</DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4">
+                        <div>
+                          <Label>Name</Label>
+                          <Input 
+                            placeholder="e.g., 'Chicken breast'" 
+                            data-testid="input-shopping-list-name"
+                            value={newShoppingListName.name}
+                            onChange={(e) => setNewShoppingListName({...newShoppingListName, name: e.target.value})}
+                          />
+                        </div>
+                        <div>
+                          <Label>Category</Label>
+                          <Select 
+                            value={newShoppingListName.category}
+                            onValueChange={(value) => setNewShoppingListName({...newShoppingListName, category: value})}
+                          >
+                            <SelectTrigger data-testid="select-category">
+                              <SelectValue placeholder="Select category" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="Vegetables">Vegetables</SelectItem>
+                              <SelectItem value="Fruits">Fruits</SelectItem>
+                              <SelectItem value="Protein">Protein</SelectItem>
+                              <SelectItem value="Plant-Based Alternatives">Plant-Based Alternatives</SelectItem>
+                              <SelectItem value="Grains & Carbs">Grains & Carbs</SelectItem>
+                              <SelectItem value="Dairy & Alternatives">Dairy & Alternatives</SelectItem>
+                              <SelectItem value="Fats & Oils">Fats & Oils</SelectItem>
+                              <SelectItem value="Nuts & Seeds">Nuts & Seeds</SelectItem>
+                              <SelectItem value="Condiments & Sauces">Condiments & Sauces</SelectItem>
+                              <SelectItem value="Spices & Dried Herbs">Spices & Dried Herbs</SelectItem>
+                              <SelectItem value="Fresh Herbs">Fresh Herbs</SelectItem>
+                              <SelectItem value="Other Dry Goods">Other Dry Goods</SelectItem>
+                              <SelectItem value="Other">Other</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div>
+                          <Label>Default unit</Label>
+                          <Input 
+                            placeholder="e.g., 'g', 'kg', 'pieces'" 
+                            data-testid="input-default-unit"
+                            value={newShoppingListName.defaultUnit}
+                            onChange={(e) => setNewShoppingListName({...newShoppingListName, defaultUnit: e.target.value})}
+                          />
+                        </div>
                       </div>
-                      <div>
-                        <Label>Category</Label>
-                        <Select 
-                          value={newShoppingListName.category}
-                          onValueChange={(value) => setNewShoppingListName({...newShoppingListName, category: value})}
+                      <DialogFooter>
+                        <Button 
+                          variant="outline" 
+                          onClick={() => setShowCreateShoppingName(false)}
+                          data-testid="button-cancel-shopping-name"
                         >
-                          <SelectTrigger data-testid="select-category">
-                            <SelectValue placeholder="Select category" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="Vegetables">Vegetables</SelectItem>
-                            <SelectItem value="Fruits">Fruits</SelectItem>
-                            <SelectItem value="Protein">Protein</SelectItem>
-                            <SelectItem value="Plant-Based Alternatives">Plant-Based Alternatives</SelectItem>
-                            <SelectItem value="Grains & Carbs">Grains & Carbs</SelectItem>
-                            <SelectItem value="Dairy & Alternatives">Dairy & Alternatives</SelectItem>
-                            <SelectItem value="Fats & Oils">Fats & Oils</SelectItem>
-                            <SelectItem value="Nuts & Seeds">Nuts & Seeds</SelectItem>
-                            <SelectItem value="Condiments & Sauces">Condiments & Sauces</SelectItem>
-                            <SelectItem value="Spices & Dried Herbs">Spices & Dried Herbs</SelectItem>
-                            <SelectItem value="Fresh Herbs">Fresh Herbs</SelectItem>
-                            <SelectItem value="Other Dry Goods">Other Dry Goods</SelectItem>
-                            <SelectItem value="Other">Other</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div>
-                        <Label>Default unit</Label>
-                        <Input 
-                          placeholder="e.g., 'g', 'kg', 'pieces'" 
-                          data-testid="input-default-unit"
-                          value={newShoppingListName.defaultUnit}
-                          onChange={(e) => setNewShoppingListName({...newShoppingListName, defaultUnit: e.target.value})}
-                        />
-                      </div>
-                    </div>
-                    <DialogFooter>
-                      <Button 
-                        variant="outline" 
-                        onClick={() => setShowCreateShoppingName(false)}
-                        data-testid="button-cancel-shopping-name"
-                      >
-                        Cancel
-                      </Button>
-                      <Button 
-                        onClick={() => createShoppingListNameMutation.mutate(newShoppingListName)}
-                        disabled={!newShoppingListName.name || !newShoppingListName.category || createShoppingListNameMutation.isPending}
-                        data-testid="button-create-shopping-name"
-                      >
-                        {createShoppingListNameMutation.isPending ? "Creating..." : "Create name"}
-                      </Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
+                          Cancel
+                        </Button>
+                        <Button 
+                          onClick={() => createShoppingListNameMutation.mutate(newShoppingListName)}
+                          disabled={!newShoppingListName.name || !newShoppingListName.category || createShoppingListNameMutation.isPending}
+                          data-testid="button-create-shopping-name"
+                        >
+                          {createShoppingListNameMutation.isPending ? "Creating..." : "Create name"}
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                </div>
               </CardTitle>
             </CardHeader>
             <CardContent>
