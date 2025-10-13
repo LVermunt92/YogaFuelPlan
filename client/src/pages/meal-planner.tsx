@@ -17,6 +17,7 @@ import { Separator } from "@/components/ui/separator";
 import { useTranslations, translateDietaryTags, translateDietaryTag } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Textarea } from "@/components/ui/textarea";
+import { WelcomeDialog } from "@/components/WelcomeDialog";
 import type { User, MealPlan as MealPlanType, Meal as MealType } from "@shared/schema";
 
 // Type alias for easier use
@@ -114,6 +115,7 @@ export default function MealPlanner() {
   const [selectedMealId, setSelectedMealId] = useState<number | null>(null);
   const [showOuraPanel, setShowOuraPanel] = useState(false);
   const [newLeftover, setNewLeftover] = useState("");
+  const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -125,6 +127,24 @@ export default function MealPlanner() {
     enabled: !!authUser?.id,
     staleTime: 0, // Always fetch fresh data
     refetchOnMount: true, // Refetch when component mounts
+  });
+
+  // Check if user has seen welcome message
+  useEffect(() => {
+    if (userProfile && !userProfile.hasSeenWelcome) {
+      setShowWelcomeDialog(true);
+    }
+  }, [userProfile]);
+
+  // Mutation to mark welcome as seen
+  const markWelcomeSeenMutation = useMutation({
+    mutationFn: async () => {
+      const response = await apiRequest('POST', `/api/users/${authUser?.id}/welcome-seen`, {});
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/users', authUser?.id, 'profile'] });
+    },
   });
 
   // Get language from context
@@ -1542,16 +1562,6 @@ export default function MealPlanner() {
                   </div>
                 </div>
               )}
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-
-
-        
-
 
         {/* Recipe Dialog */}
         <Dialog open={!!selectedMealId} onOpenChange={() => setSelectedMealId(null)}>
@@ -1762,6 +1772,16 @@ export default function MealPlanner() {
           )}
         </DialogContent>
         </Dialog>
+
+        {/* Welcome Dialog for first-time users */}
+        <WelcomeDialog
+          open={showWelcomeDialog}
+          onClose={() => {
+            setShowWelcomeDialog(false);
+            markWelcomeSeenMutation.mutate();
+          }}
+          username={userProfile?.username || authUser?.username || ''}
+        />
       </main>
     </div>
   );
