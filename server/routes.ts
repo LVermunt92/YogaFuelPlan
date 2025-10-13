@@ -1704,6 +1704,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.patch('/api/users/:id/profile', handleProfileUpdate);
   app.put('/api/users/:id/profile', handleProfileUpdate);
 
+  // Mark welcome message as seen
+  app.post('/api/users/:id/welcome-seen', async (req, res) => {
+    try {
+      const userId = parseInt(req.params.id);
+      
+      // Check if user is authenticated and matches the ID
+      if (!req.session?.userId || req.session.userId !== userId) {
+        return res.status(401).json({ message: 'Unauthorized' });
+      }
+      
+      const updatedUser = await storage.updateUserProfile(userId, { hasSeenWelcome: true });
+      
+      if (!updatedUser) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      
+      res.json({ success: true, hasSeenWelcome: true });
+    } catch (error) {
+      console.error('Error marking welcome as seen:', error);
+      res.status(500).json({ message: 'Failed to update welcome status' });
+    }
+  });
+
   // Protein calculation endpoint using advanced system
   app.post("/api/protein/calculate", async (req, res) => {
     try {
