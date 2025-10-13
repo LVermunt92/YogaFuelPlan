@@ -144,6 +144,9 @@ export default function Insights() {
     const plantDiversityCount = Math.min(Math.round(avgFiberPerDay), 30);
     const plantDiversityTarget = 30;
 
+    // Vitamin K target (gender-specific)
+    const vitaminKTarget = userProfile?.gender === 'male' ? 120 : 90; // 120 mcg for men, 90 mcg for women
+
     // Targets
     const proteinTarget = nutritionTargets?.protein || 95;
     const caloriesTarget = nutritionTargets?.calories || 2000;
@@ -198,8 +201,8 @@ export default function Insights() {
       },
       vitaminK: {
         value: Math.round(avgVitaminKPerDay),
-        percentage: Math.round((avgVitaminKPerDay / 90) * 100), // 90 mcg is the daily recommendation for women
-        target: 90
+        percentage: Math.round((avgVitaminKPerDay / vitaminKTarget) * 100),
+        target: vitaminKTarget
       }
     };
   };
