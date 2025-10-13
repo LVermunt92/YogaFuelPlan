@@ -424,10 +424,10 @@ export default function Insights() {
                   </div>
                 </TooltipTrigger>
                 <TooltipContent className="max-w-xs">
-                  <p className="font-semibold mb-1">{language === "nl" ? "Waarom netto koolhydraten belangrijk zijn" : "Why net carbs matter"}</p>
+                  <p className="font-semibold mb-1">{language === "nl" ? "Over netto koolhydraten" : "About net carbs"}</p>
                   <p className="text-sm">{language === "nl" 
-                    ? "Netto koolhydraten (totale koolhydraten minus vezels) geven een nauwkeuriger beeld van de impact op je bloedsuikerspiegel."
-                    : "Net carbs (total carbs minus fiber) give a more accurate picture of the impact on your blood sugar levels."}</p>
+                    ? "Netto koolhydraten zijn de verteerbare koolhydraten die je lichaam gebruikt voor energie (totale koolhydraten minus vezels). Ze zijn een belangrijke brandstofbron — het verminderen van geraffineerde koolhydraten kan gunstig zijn, maar koolhydraten volledig vermijden kan essentiële voedingsstoffen beperken."
+                    : "Net carbs are the digestible carbs your body uses for energy (total carbs minus fiber). They're an important fuel source — reducing refined carbs can be beneficial, but completely avoiding carbs may limit essential nutrients."}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
