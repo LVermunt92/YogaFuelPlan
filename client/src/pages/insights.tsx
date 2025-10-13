@@ -104,14 +104,24 @@ export default function Insights() {
     const achievedColors = allColors.size;
     const rainbowScore = Math.round((achievedColors / totalColorGroups) * 100);
 
-    // Calculate daily averages - divide total by 7 days for weekly meal plan
-    // This accounts for days with varying meal counts (e.g., one day might have only 1 meal)
-    const avgProteinPerDay = totalProtein / 7;
-    const avgCaloriesPerDay = totalCalories / 7;
-    const avgFatsPerDay = totalFats / 7;
-    const avgCarbsPerDay = totalCarbs / 7;
-    const avgFiberPerDay = totalFiber / 7;
-    const avgVitaminKPerDay = totalVitaminK / 7;
+    // Calculate daily averages: average per meal × 3 meals per day
+    // This shows what a typical day with 3 meals would look like
+    const totalMeals = currentMealPlan.meals.length;
+    const avgPerMeal = {
+      protein: totalMeals > 0 ? totalProtein / totalMeals : 0,
+      calories: totalMeals > 0 ? totalCalories / totalMeals : 0,
+      fats: totalMeals > 0 ? totalFats / totalMeals : 0,
+      carbs: totalMeals > 0 ? totalCarbs / totalMeals : 0,
+      fiber: totalMeals > 0 ? totalFiber / totalMeals : 0,
+      vitaminK: totalMeals > 0 ? totalVitaminK / totalMeals : 0,
+    };
+    
+    const avgProteinPerDay = avgPerMeal.protein * 3;
+    const avgCaloriesPerDay = avgPerMeal.calories * 3;
+    const avgFatsPerDay = avgPerMeal.fats * 3;
+    const avgCarbsPerDay = avgPerMeal.carbs * 3;
+    const avgFiberPerDay = avgPerMeal.fiber * 3;
+    const avgVitaminKPerDay = avgPerMeal.vitaminK * 3;
 
     // Calculate net carbs (total carbs - fiber)
     const avgNetCarbsPerDay = avgCarbsPerDay - avgFiberPerDay;
