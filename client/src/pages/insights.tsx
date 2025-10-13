@@ -6,6 +6,7 @@ import { useTranslations } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { countUniquePlants } from "@/lib/plant-diversity";
+import { useState, useEffect } from "react";
 
 interface MealPlan {
   id: number;
@@ -22,8 +23,16 @@ export default function Insights() {
   const { language } = useLanguage();
   const t = useTranslations(language);
 
-  const { data: selectedMealPlan } = useQuery<MealPlan>({
-    queryKey: ["/api/selected-meal-plan"],
+  // Get selected meal plan ID from localStorage (same as meal planner)
+  const [selectedMealPlanId, setSelectedMealPlanId] = useState<number | null>(() => {
+    const stored = localStorage.getItem('selectedMealPlan');
+    return stored ? parseInt(stored) : null;
+  });
+
+  // Fetch the specific meal plan with all its meals
+  const { data: currentMealPlan } = useQuery<MealPlan>({
+    queryKey: [`/api/meal-plans/${selectedMealPlanId}`],
+    enabled: !!selectedMealPlanId,
   });
 
   const { data: userProfile } = useQuery<{ 
@@ -37,16 +46,16 @@ export default function Insights() {
     queryKey: ["/api/nutrition/targets"],
   });
 
-  // Calculate nutrition data from current meal plan
+  // Calculate nutrition data from current meal plan (same logic as meal planner)
   const calculateKPIs = () => {
-    if (!selectedMealPlan?.meals) return null;
+    if (!currentMealPlan?.meals) return null;
 
-    const totalProtein = selectedMealPlan.meals.reduce((sum, meal) => sum + (meal.protein || 0), 0);
-    const totalCalories = selectedMealPlan.meals.reduce((sum, meal) => sum + (meal.calories || 0), 0);
-    const totalFats = selectedMealPlan.meals.reduce((sum, meal) => sum + (meal.fats || 0), 0);
-    const totalCarbs = selectedMealPlan.meals.reduce((sum, meal) => sum + (meal.carbohydrates || 0), 0);
-    const totalFiber = selectedMealPlan.meals.reduce((sum, meal) => sum + (meal.fiber || 0), 0);
-    const totalMeals = selectedMealPlan.meals.length;
+    const totalProtein = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.protein || 0), 0);
+    const totalCalories = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.calories || 0), 0);
+    const totalFats = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fats || 0), 0);
+    const totalCarbs = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.carbohydrates || 0), 0);
+    const totalFiber = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fiber || 0), 0);
+    const totalMeals = currentMealPlan.meals.length;
     
     const mealsPerDay = userProfile?.mealsPerDay || 3;
 
