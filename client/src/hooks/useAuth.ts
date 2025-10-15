@@ -32,7 +32,8 @@ export function useAuth() {
             checkAuth(retryCount + 1);
           }, 300 * (retryCount + 1)); // 300ms, then 600ms
         } else {
-          // Session expired or invalid, clear localStorage
+          // Session expired or invalid, clear localStorage and state
+          console.log('Session expired, redirecting to login...');
           setUser(null);
           localStorage.removeItem('userId');
           localStorage.removeItem('username');
@@ -40,16 +41,11 @@ export function useAuth() {
         }
       } catch (error) {
         console.error('Auth check failed:', error);
-        // Fallback to localStorage if network error
-        const userId = localStorage.getItem('userId');
-        const username = localStorage.getItem('username');
-        
-        if (userId && username) {
-          setUser({
-            id: parseInt(userId),
-            username: username,
-          });
-        }
+        // On network error, set unauthenticated state
+        // Don't use localStorage fallback as it may be stale
+        setUser(null);
+        localStorage.removeItem('userId');
+        localStorage.removeItem('username');
         setIsLoading(false);
       }
     };
