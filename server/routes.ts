@@ -1589,13 +1589,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return multiplyIngredientAmount(scaledIngredient, PORTION_SIZE);
       });
       
+      // Add note about portion adjustment if ingredients were scaled down
+      let adjustmentNote = '';
+      if (ingredientScalingRatio < 0.99) {  // Allow 1% tolerance for rounding
+        const percentageReduction = Math.round((1 - ingredientScalingRatio) * 100);
+        if (language === 'nl') {
+          adjustmentNote = `\n\nℹ️ Ingrediëntenhoeveelheden zijn aangepast om de calorieën te verminderen (${percentageReduction}% kleinere porties voor betere voedingswaarde).`;
+        } else {
+          adjustmentNote = `\n\nℹ️ Ingredient amounts have been adjusted to reduce calories (${percentageReduction}% smaller portions for better nutritional balance).`;
+        }
+      }
+      
       res.json({
         name: translatedRecipe.name,
         portion: portionLabel,
         ingredients: adjustedIngredients,  // Adjusted for both portion size and cooking batch
         instructions: translatedRecipe.instructions,
         tips: translatedRecipe.tips,
-        notes: translatedRecipe.notes.join('\n'),
+        notes: translatedRecipe.notes.join('\n') + adjustmentNote,
         prepTime: targetMeal.prepTime || mealOption.nutrition?.prepTime || 30,
         nutrition: mealNutrition,  // Use meal's adjusted nutrition values
         tags: mealOption.tags || [],
