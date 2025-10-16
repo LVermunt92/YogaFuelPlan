@@ -1553,41 +1553,56 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
+      // Use the MEAL'S adjusted nutrition values, not the original recipe values
+      // This ensures the recipe dialog shows what the user is actually eating
+      const mealNutrition = {
+        protein: targetMeal.protein || 0,
+        calories: targetMeal.calories || 0,
+        carbohydrates: targetMeal.carbohydrates || 0,
+        fats: targetMeal.fats || 0,
+        fiber: targetMeal.fiber || 0,
+        sugar: targetMeal.sugar || 0,
+        sodium: targetMeal.sodium || 0,
+        costEuros: targetMeal.costEuros || 0,
+        proteinPerEuro: targetMeal.proteinPerEuro
+      };
+
+      // Calculate the scaling ratio for ingredients based on adjusted vs original nutrition
+      // Use calories as the primary indicator of portion adjustment
+      const originalCalories = mealOption.nutrition?.calories || 1;
+      const adjustedCalories = targetMeal.calories || originalCalories;
+      const ingredientScalingRatio = adjustedCalories / originalCalories;
+      
+      console.log(`📊 Ingredient scaling: ${adjustedCalories} kcal / ${originalCalories} kcal = ${ingredientScalingRatio.toFixed(2)}x`);
+
       // Check if this is a leftover meal or fresh cooking
       // Leftovers: show 1 serving (just reheating)
       // Fresh: show 2 servings (cooking batch for today + tomorrow's leftover)
       const PORTION_SIZE = targetMeal.isLeftover ? 1 : 2;
       const portionLabel = targetMeal.isLeftover ? '1 serving (leftover)' : '2 servings (cooking batch)';
       
-      const multipliedIngredients = translatedRecipe.ingredients.map(ingredient => 
-        multiplyIngredientAmount(ingredient, PORTION_SIZE)
-      );
+      // First scale ingredients based on portion adjustment, then multiply for cooking batch
+      const adjustedIngredients = translatedRecipe.ingredients.map(ingredient => {
+        // Scale for portion adjustment first
+        const scaledIngredient = multiplyIngredientAmount(ingredient, ingredientScalingRatio);
+        // Then multiply for cooking batch (1 for leftover, 2 for fresh)
+        return multiplyIngredientAmount(scaledIngredient, PORTION_SIZE);
+      });
       
       res.json({
         name: translatedRecipe.name,
         portion: portionLabel,
-        ingredients: multipliedIngredients,  // Multiply based on fresh vs leftover
+        ingredients: adjustedIngredients,  // Adjusted for both portion size and cooking batch
         instructions: translatedRecipe.instructions,
         tips: translatedRecipe.tips,
         notes: translatedRecipe.notes.join('\n'),
-        prepTime: mealOption.nutrition?.prepTime || 30,
-        nutrition: {
-          // Keep nutrition for 1 serving (actual portion eaten) - used for daily totals
-          protein: mealOption.nutrition?.protein || 0,
-          calories: mealOption.nutrition?.calories || 0,
-          carbohydrates: mealOption.nutrition?.carbohydrates || 0,
-          fats: mealOption.nutrition?.fats || 0,
-          fiber: mealOption.nutrition?.fiber || 0,
-          sugar: mealOption.nutrition?.sugar || 0,
-          sodium: mealOption.nutrition?.sodium || 0,
-          costEuros: mealOption.nutrition?.costEuros || 0,
-          proteinPerEuro: mealOption.nutrition?.proteinPerEuro
-        },
+        prepTime: targetMeal.prepTime || mealOption.nutrition?.prepTime || 30,
+        nutrition: mealNutrition,  // Use meal's adjusted nutrition values
         tags: mealOption.tags || [],
         vegetableContent: mealOption.vegetableContent || { servings: 0, vegetables: [], benefits: [] },
         recipeBenefits: getTopRecipeBenefits(
           finalIngredients,
-          mealOption.nutrition,
+          mealNutrition,
           mealOption.tags || [],
           6
         )

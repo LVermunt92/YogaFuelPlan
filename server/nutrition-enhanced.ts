@@ -17088,7 +17088,7 @@ export interface ShoppingListItem {
   unit: string;
 }
 
-export async function generateEnhancedShoppingList(meals: { foodDescription: string; isLeftover?: boolean }[], language: string = 'en', dietaryTags: string[] = [], leftoverIngredients: string[] = []): Promise<ShoppingListItem[]> {
+export async function generateEnhancedShoppingList(meals: { foodDescription: string; isLeftover?: boolean; calories?: number; protein?: number }[], language: string = 'en', dietaryTags: string[] = [], leftoverIngredients: string[] = []): Promise<ShoppingListItem[]> {
   const ingredientAmounts = new Map<string, { totalAmount: number; unit: string; count: number }>();
   
   // Debug: log that we're applying substitutions
@@ -17129,6 +17129,14 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
     const allRecipes = await getCompleteEnhancedMealDatabase();
     const mealOption = allRecipes.find(m => m.name === cleanMealName);
     if (mealOption) {
+      // Calculate ingredient scaling ratio based on adjusted vs original meal calories
+      // This accounts for portion adjustments in the meal plan
+      const originalCalories = mealOption.nutrition?.calories || 1;
+      const adjustedCalories = meal.calories || originalCalories;
+      const ingredientScalingRatio = adjustedCalories / originalCalories;
+      
+      console.log(`📊 Shopping list scaling for "${cleanMealName}": ${adjustedCalories} kcal / ${originalCalories} kcal = ${ingredientScalingRatio.toFixed(2)}x`);
+      
       // Apply dietary substitutions to ingredients before processing
       const substitutionResult = substituteIngredients(mealOption.ingredients, dietaryTags);
       const substitutedIngredients = substitutionResult.ingredients;
@@ -17138,8 +17146,12 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
         console.log(`🔄 Applied ${substitutionResult.substitutions.length} dietary substitutions for ${cleanMealName}`);
       }
       
-      // Use substituted ingredients for shopping list
-      substitutedIngredients.forEach(ingredient => {
+      // Scale ingredients based on portion adjustment, then use for shopping list
+      const scaledIngredients = substitutedIngredients.map(ingredient => 
+        multiplyIngredientAmount(ingredient, ingredientScalingRatio)
+      );
+      
+      scaledIngredients.forEach(ingredient => {
         // Extract clean ingredient name from formatted text like "3 large free-range eggs" -> "Eggs"
         const cleanIngredient = cleanIngredientName(ingredient);
         
