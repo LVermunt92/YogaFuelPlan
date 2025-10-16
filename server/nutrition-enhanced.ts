@@ -18169,6 +18169,18 @@ function parseEnhancedRecipeIngredients(instructions: string[], ingredientAmount
   });
 }
 
+/**
+ * Round grams to nearest 10g for easier measurement
+ * Examples: 237g -> 240g, 143g -> 140g, 8g -> 10g
+ */
+function roundGramsToNearest10(amount: number, unit: string): number {
+  // Only round grams (g, gram, grams) to nearest 10
+  if (unit.match(/^g$|^gram|^grams$/i)) {
+    return Math.round(amount / 10) * 10;
+  }
+  return amount;
+}
+
 // Helper function to format amounts with Dutch translation
 function formatAmountWithLanguage(amount: number, unit: string, language: string = 'en', ingredientName?: string): string {
   // Round grams to nearest 10 for easier measurement
@@ -18233,18 +18245,6 @@ function formatAmountWithLanguage(amount: number, unit: string, language: string
  * - "1 red bell pepper" × 2 → "2 red bell peppers"
  * - "2 tbsp tahini" × 2 → "4 tbsp tahini"
  */
-/**
- * Round grams to nearest 10g for easier measurement
- * Examples: 237g -> 240g, 143g -> 140g, 8g -> 10g
- */
-function roundGramsToNearest10(amount: number, unit: string): number {
-  // Only round grams (g, gram, grams) to nearest 10
-  if (unit.match(/^g$|^gram|^grams$/i)) {
-    return Math.round(amount / 10) * 10;
-  }
-  return amount;
-}
-
 export function multiplyIngredientAmount(ingredientString: string, multiplier: number): string {
   if (multiplier === 1) return ingredientString;
   
@@ -18286,6 +18286,7 @@ export function multiplyIngredientAmount(ingredientString: string, multiplier: n
       const afterNumber = ingredientString.substring(match[0].length).trim();
       const unitMatch = afterNumber.match(/^(g|gram|grams)(?:\s|$)/i);
       if (unitMatch) {
+        console.log(`🔢 Rounding grams: ${newAmount}g → ${roundGramsToNearest10(newAmount, unitMatch[1])}g for "${ingredientString}"`);
         // Round grams to nearest 10
         newAmount = roundGramsToNearest10(newAmount, unitMatch[1]);
       }
