@@ -230,6 +230,7 @@ function calculateBMI(weight: number, height: number): number {
 
 /**
  * Calculate caloric adjustment factor based on user's goals, BMI, and timeline
+ * Includes maintenance week logic: every 6th week returns to normal calories
  */
 function calculateCaloricAdjustment(user: User): number {
   if (!user.weight) return 1.0;
@@ -244,7 +245,17 @@ function calculateCaloricAdjustment(user: User): number {
     const isGainingWeight = weightDifference > 0;
 
     if (isLosingWeight) {
-      adjustment = 0.85; // Reduce portions for weight loss
+      // Check if this is a maintenance week (every 6th week)
+      const weekNumber = user.weightLossWeekNumber || 1;
+      const isMaintenanceWeek = weekNumber % 6 === 0;
+      
+      if (isMaintenanceWeek) {
+        console.log(`🔄 MAINTENANCE WEEK ${weekNumber}: Normal calorie intake (no reduction)`);
+        adjustment = 1.0; // No calorie reduction during maintenance weeks
+      } else {
+        console.log(`📉 WEIGHT LOSS WEEK ${weekNumber}: 15% calorie reduction applied`);
+        adjustment = 0.85; // 15% calorie reduction for weight loss (maximum cap)
+      }
     } else if (isGainingWeight) {
       adjustment = 1.15; // Increase portions for weight gain
     }

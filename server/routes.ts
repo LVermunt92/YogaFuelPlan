@@ -390,6 +390,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Automatically cleanup old meal plans, keeping only 3 most recent
       await storage.cleanupOldMealPlans(request.userId, 3);
       
+      // Increment weight loss week number for users with weight loss goals
+      if (user && user.goalWeight && user.weight && user.goalWeight < user.weight) {
+        const currentWeek = user.weightLossWeekNumber || 1;
+        const nextWeek = currentWeek + 1;
+        
+        // Initialize start date if not set
+        if (!user.weightLossStartDate) {
+          await storage.updateUser(user.id, {
+            weightLossStartDate: new Date().toISOString().split('T')[0], // YYYY-MM-DD format
+            weightLossWeekNumber: 1
+          });
+          console.log(`🎯 WEIGHT LOSS JOURNEY: Starting week 1 for user ${user.id}`);
+        } else {
+          await storage.updateUser(user.id, {
+            weightLossWeekNumber: nextWeek
+          });
+          console.log(`🎯 WEIGHT LOSS JOURNEY: Advanced to week ${nextWeek} for user ${user.id}`);
+        }
+      }
+      
       // Auto-generate shopping list for the meal plan
       try {
         const dietaryTags = user?.dietaryTags || [];

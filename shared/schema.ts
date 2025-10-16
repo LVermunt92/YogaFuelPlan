@@ -35,6 +35,8 @@ export const users = pgTable("users", {
   longevityFocusedRecipes: boolean("longevity_focused_recipes").default(false), // enable longevity-focused recipes
   hasSeenWelcome: boolean("has_seen_welcome").default(false), // track if user has seen welcome message
   lastLoginAt: timestamp("last_login_at"), // track when user last logged in
+  weightLossWeekNumber: integer("weight_loss_week_number").default(1), // track current week for weight loss journey (resets maintenance weeks)
+  weightLossStartDate: date("weight_loss_start_date"), // when user started weight loss journey
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
