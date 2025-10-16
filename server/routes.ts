@@ -1610,13 +1610,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
       
       // Add note about portion adjustment if ingredients were scaled down
-      let adjustmentNote = '';
+      let portionAdjustmentNote = '';
       if (ingredientScalingRatio < 0.99) {  // Allow 1% tolerance for rounding
         const percentageReduction = Math.round((1 - ingredientScalingRatio) * 100);
         if (language === 'nl') {
-          adjustmentNote = `\n\nℹ️ Ingrediëntenhoeveelheden zijn aangepast om de calorieën te verminderen (${percentageReduction}% kleinere porties voor betere voedingswaarde).`;
+          portionAdjustmentNote = `${percentageReduction}% kleinere porties voor betere voedingswaarde`;
         } else {
-          adjustmentNote = `\n\nℹ️ Ingredient amounts have been adjusted to reduce calories (${percentageReduction}% smaller portions for better nutritional balance).`;
+          portionAdjustmentNote = `${percentageReduction}% smaller portions for better nutritional balance`;
         }
       }
       
@@ -1626,7 +1626,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         ingredients: adjustedIngredients,  // Adjusted for both portion size and cooking batch
         instructions: translatedRecipe.instructions,
         tips: translatedRecipe.tips,
-        notes: translatedRecipe.notes.join('\n') + adjustmentNote,
+        notes: translatedRecipe.notes.join('\n'),
+        portionAdjustmentNote: portionAdjustmentNote,  // Separate field for portion adjustment message
         prepTime: targetMeal.prepTime || mealOption.nutrition?.prepTime || 30,
         nutrition: mealNutrition,  // Use meal's adjusted nutrition values
         tags: mealOption.tags || [],
