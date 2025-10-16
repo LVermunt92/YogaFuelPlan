@@ -18171,6 +18171,11 @@ function parseEnhancedRecipeIngredients(instructions: string[], ingredientAmount
 
 // Helper function to format amounts with Dutch translation
 function formatAmountWithLanguage(amount: number, unit: string, language: string = 'en', ingredientName?: string): string {
+  // Round grams to nearest 10 for easier measurement
+  if (unit === 'g') {
+    amount = roundGramsToNearest10(amount, unit);
+  }
+  
   // Use the enhanced formatAmount function for herbs and spices
   if (ingredientName && unit === 'g') {
     const formatted = formatAmount(amount, unit, ingredientName);
