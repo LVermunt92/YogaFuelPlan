@@ -59,6 +59,7 @@ Preferred communication style: Simple, everyday language.
     - **Resistant Starch Logic**: Prioritizes meals with resistant starch for users with weight loss goals or BMI >25.
     - **Anti-Aging Tag System**: 116 recipes tagged with "Anti-Aging" tag for recipes containing avocado, sweet potatoes, blueberries, or almonds to support healthy aging and longevity.
     - **Vitamin K Tracking**: Comprehensive Vitamin K content calculation from recipe ingredients with insights KPI chart. Ingredient mapping covers leafy greens, cruciferous vegetables, herbs, and oils. Admin endpoint available to update all recipes with Vitamin K values. Supports bone health and blood clotting monitoring with 90 mcg/day target for women.
+    - **Weight Loss Support**: Sustainable weight loss tracking with maximum 15% calorie reduction cap and automatic maintenance weeks. System tracks weight loss journey week by week, applying calorie reduction for 5 consecutive weeks followed by 1 maintenance week (normal calories) on weeks 6, 12, 18, etc. This prevents metabolic adaptation and supports long-term adherence. User schema includes `weightLossWeekNumber` and `weightLossStartDate` fields to track progress.
 - **System Design Choices**:
     - **Data Flow**: User input drives meal generation, stored in PostgreSQL, displayed via React Query.
     - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, favorite meals, and user-created custom recipes.
