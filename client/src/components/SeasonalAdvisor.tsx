@@ -32,6 +32,24 @@ function useGeolocation() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // Check for saved location in localStorage
+    const savedLocation = localStorage.getItem('userLocation');
+    const savedTimestamp = localStorage.getItem('userLocationTimestamp');
+    
+    if (savedLocation && savedTimestamp) {
+      const locationAge = Date.now() - parseInt(savedTimestamp);
+      const sevenDays = 7 * 24 * 60 * 60 * 1000;
+      
+      // Use saved location if it's less than 7 days old
+      if (locationAge < sevenDays) {
+        const savedCoords = JSON.parse(savedLocation);
+        setCoords(savedCoords);
+        console.log("Using saved location from localStorage");
+        return;
+      }
+    }
+
+    // Only request location if not in localStorage or expired
     if (!navigator.geolocation) {
       setError("Geolocation is not supported");
       return;
@@ -39,10 +57,16 @@ function useGeolocation() {
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        setCoords({
+        const newCoords = {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
-        });
+        };
+        setCoords(newCoords);
+        
+        // Save to localStorage for future use
+        localStorage.setItem('userLocation', JSON.stringify(newCoords));
+        localStorage.setItem('userLocationTimestamp', Date.now().toString());
+        console.log("Location saved to localStorage");
       },
       (err) => {
         setError(err.message);
