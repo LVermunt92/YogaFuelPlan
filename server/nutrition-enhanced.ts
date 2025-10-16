@@ -18228,6 +18228,18 @@ function formatAmountWithLanguage(amount: number, unit: string, language: string
  * - "1 red bell pepper" × 2 → "2 red bell peppers"
  * - "2 tbsp tahini" × 2 → "4 tbsp tahini"
  */
+/**
+ * Round grams to nearest 10g for easier measurement
+ * Examples: 237g -> 240g, 143g -> 140g, 8g -> 10g
+ */
+function roundGramsToNearest10(amount: number, unit: string): number {
+  // Only round grams (g, gram, grams) to nearest 10
+  if (unit.match(/^g$|^gram|^grams$/i)) {
+    return Math.round(amount / 10) * 10;
+  }
+  return amount;
+}
+
 export function multiplyIngredientAmount(ingredientString: string, multiplier: number): string {
   if (multiplier === 1) return ingredientString;
   
@@ -18263,7 +18275,16 @@ export function multiplyIngredientAmount(ingredientString: string, multiplier: n
       else if (originalAmount === '⅛') numericAmount = 0.125;
       else numericAmount = parseFloat(originalAmount);
       
-      const newAmount = numericAmount * multiplier;
+      let newAmount = numericAmount * multiplier;
+      
+      // Detect if this is a gram measurement by checking what comes after the number
+      const afterNumber = ingredientString.substring(match[0].length).trim();
+      const unitMatch = afterNumber.match(/^(g|gram|grams)(?:\s|$)/i);
+      if (unitMatch) {
+        // Round grams to nearest 10
+        newAmount = roundGramsToNearest10(newAmount, unitMatch[1]);
+      }
+      
       // Format the new amount: whole numbers as integers, decimals with max 1 decimal place
       const formattedAmount = newAmount % 1 === 0 ? newAmount.toString() : newAmount.toFixed(1).replace('.0', '');
       
