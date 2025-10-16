@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Calendar, Clock, Target, Eye, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Separator } from "@/components/ui/separator";
@@ -1571,6 +1571,9 @@ export default function MealPlanner() {
               <ChefHat className="h-5 w-5 text-emerald-600" />
               {t.recipeDetails}
             </DialogTitle>
+            <DialogDescription>
+              {loadingRecipe ? "Loading recipe details..." : recipeData?.name || "View complete recipe details including ingredients and instructions"}
+            </DialogDescription>
           </DialogHeader>
           
           {loadingRecipe ? (
