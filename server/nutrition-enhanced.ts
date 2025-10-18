@@ -16729,12 +16729,12 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
       // Check for meat/fish ingredients in meals not tagged as vegetarian
       const meatIngredients = ['chicken', 'beef', 'pork', 'turkey', 'fish', 'salmon', 'tuna', 'cod', 'shrimp', 'meat', 'ground meat', 'bacon', 'ham', 'sausage', 'anchovy', 'prosciutto', 'lamb', 'duck', 'crab', 'lobster', 'ground turkey'];
       const hasMeat = meal.ingredients.some(ingredient => 
-        meatIngredients.some(meat => ingredient.toLowerCase().includes(meat))
+        ingredient && meatIngredients.some(meat => ingredient.toLowerCase().includes(meat))
       );
       
       // If meal contains meat ingredients, exclude it
       if (hasMeat) {
-        const meatFound = meal.ingredients.filter(ing => meatIngredients.some(meat => ing.toLowerCase().includes(meat)));
+        const meatFound = meal.ingredients.filter(ing => ing && meatIngredients.some(meat => ing.toLowerCase().includes(meat)));
         console.log(`🚫 SMART VEGETARIAN: "${meal.name}" excluded - contains meat/fish: ${meatFound.join(', ')}`);
         return false;
       }
