@@ -1852,12 +1852,15 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         console.log(`🚨 Using emergency fallback meal: ${selectedMeal.name}`);
       }
       
-      const adjustedPortion = adjustMealPortion(selectedMeal.portion, portionMultiplier, servingMultiplier);
+      // BREAKFAST: Always 1 serving (no batch cooking multiplier for breakfast)
+      const breakfastServingMultiplier = mealCategory === 'breakfast' ? 1 : servingMultiplier;
+      
+      const adjustedPortion = adjustMealPortion(selectedMeal.portion, portionMultiplier, breakfastServingMultiplier);
       // When cooking in batch (servingMultiplier > 1), each meal only counts 1 serving worth of nutrients
       // This applies to BOTH fresh and leftover meals since you eat 1 serving per meal
       const baseProtein = Math.round(selectedMeal.nutrition.protein * portionMultiplier);
-      const adjustedProtein = servingMultiplier > 1 
-        ? Math.round(baseProtein / servingMultiplier)
+      const adjustedProtein = breakfastServingMultiplier > 1 
+        ? Math.round(baseProtein / breakfastServingMultiplier)
         : baseProtein;
       const prepTimeForDay = isLeftover ? 5 : selectedMeal.nutrition.prepTime;
       
@@ -2427,12 +2430,12 @@ async function generateMealPrepPlan(
         console.log(`Day ${day} (${isWeekend ? 'weekend' : 'weekday'}) breakfast: ${selectedBreakfast.name} (prep: ${selectedBreakfast.nutrition.prepTime}min)`);
         const householdSize = user?.householdSize || 1;
         
-        // servingMultiplier already handles batch cooking for multiple days
+        // BREAKFAST: Always 1 serving (no batch cooking multiplier for breakfast)
         // Only apply household size multiplier (no additional leftover doubling)
         const portionFactor = caloricAdjustment * householdSize;
         
-        // Portion shows "2x" for batch cooking, but protein is per eating day (not total cooked)
-        let adjustedPortion = adjustMealPortion(selectedBreakfast.portion, portionFactor, servingMultiplier);
+        // Breakfast always uses servingMultiplier = 1 (single serving)
+        let adjustedPortion = adjustMealPortion(selectedBreakfast.portion, portionFactor, 1);
         let adjustedProtein = Math.round(selectedBreakfast.nutrition.protein * portionFactor);
         
         // Create descriptive meal name
