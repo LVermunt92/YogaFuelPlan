@@ -885,6 +885,67 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       notes: "Nutrient-dense breakfast packed with plant-based protein and greens"
     }
   },
+  
+  {
+    name: "Green spirit smoothie",
+    portion: "1 large glass (400ml)",
+    nutrition: {
+      protein: 26,
+      prepTime: 8,
+      calories: 320,
+      carbohydrates: 32,
+      fats: 10,
+      fiber: 14,
+      sugar: 18,
+      sodium: 95,
+      potassium: 680,
+      calcium: 220,
+      iron: 3.5,
+      vitaminC: 42,
+      costEuros: 4.80,
+      proteinPerEuro: 5.4
+    },
+    category: "smoothie",
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Protein", "High-Fiber", "Antioxidant", "Quick", "Ayurvedic", "Longevity", "Post-Workout"],
+    ingredients: [
+      "30g fresh spinach",
+      "1/2 frozen banana",
+      "200ml unsweetened almond milk",
+      "1 tbsp almond butter",
+      "1 scoop (30g) vanilla plant protein powder",
+      "1 tbsp hemp hearts",
+      "80g frozen mango",
+      "1 tsp spirulina (optional)",
+      "ice cubes"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 2,
+      vegetables: ["spinach", "mango"],
+      benefits: ["Iron", "Folate", "Vitamin C", "Beta-Carotene", "Energizing greens"]
+    },
+    recipe: {
+      instructions: [
+        "Add almond milk to blender first",
+        "Add fresh spinach and blend until smooth",
+        "Add frozen banana, mango, and almond butter",
+        "Add protein powder and hemp hearts",
+        "Add spirulina if using for extra green boost",
+        "Add ice cubes for desired consistency",
+        "Blend on high for 60-90 seconds until completely smooth",
+        "Pour into glass and serve immediately"
+      ],
+      tips: [
+        "Use more liquid (250ml) for thinner drinkable consistency",
+        "Freeze fruits in portions for convenience",
+        "Add spirulina gradually - it has a strong flavor",
+        "Blend spinach first for smoother texture"
+      ],
+      notes: "Energizing green smoothie perfect as a snack or post-workout drink. Packed with plant-based protein and greens"
+    },
+    createdAt: new Date('2025-10-18'),
+    active: true
+  },
 
   {
     name: "Fermented kefir bowl with granola and berries",
