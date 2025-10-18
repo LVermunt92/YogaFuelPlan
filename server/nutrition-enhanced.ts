@@ -17377,6 +17377,50 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
           defaultAmount = 0.5; // 0.5g chili flakes
           defaultUnit = 'g';
           console.log(`🧂 PANTRY DEFAULT: "Chili flakes to taste" → 0.5g chili flakes`);
+        }
+        // Fresh herbs with "handful" or no specific amount
+        else if (ingredientLower.includes('handful') && ingredientLower.includes('fresh')) {
+          // Extract herb name if possible
+          if (ingredientLower.includes('parsley')) {
+            adjustedIngredient = 'fresh parsley';
+            defaultAmount = 20; // handful = 20g
+          } else if (ingredientLower.includes('cilantro') || ingredientLower.includes('coriander')) {
+            adjustedIngredient = 'fresh cilantro';
+            defaultAmount = 20;
+          } else if (ingredientLower.includes('mint')) {
+            adjustedIngredient = 'fresh mint';
+            defaultAmount = 20;
+          } else if (ingredientLower.includes('basil')) {
+            adjustedIngredient = 'fresh basil';
+            defaultAmount = 20;
+          } else if (ingredientLower.includes('dill')) {
+            adjustedIngredient = 'fresh dill';
+            defaultAmount = 20;
+          } else {
+            adjustedIngredient = 'fresh herbs (mixed)';
+            defaultAmount = 20;
+          }
+          defaultUnit = 'g';
+          console.log(`🌿 HERB DEFAULT: "Handful fresh herbs" → ${defaultAmount}g ${adjustedIngredient}`);
+        }
+        // Fresh herbs without quantity
+        else if (ingredientLower.startsWith('fresh') && !ingredientLower.match(/\d+/)) {
+          if (ingredientLower.includes('parsley')) {
+            adjustedIngredient = 'fresh parsley';
+          } else if (ingredientLower.includes('cilantro') || ingredientLower.includes('coriander')) {
+            adjustedIngredient = 'fresh cilantro';
+          } else if (ingredientLower.includes('mint')) {
+            adjustedIngredient = 'fresh mint';
+          } else if (ingredientLower.includes('basil')) {
+            adjustedIngredient = 'fresh basil';
+          } else if (ingredientLower.includes('dill')) {
+            adjustedIngredient = 'fresh dill';
+          } else {
+            adjustedIngredient = 'fresh herbs (mixed)';
+          }
+          defaultAmount = 10; // fresh herbs without quantity = 10g
+          defaultUnit = 'g';
+          console.log(`🌿 HERB DEFAULT: "Fresh herbs (unspecified)" → ${defaultAmount}g ${adjustedIngredient}`);
         } else {
           // Skip this ingredient if it matches non-grocery patterns (after checking for pantry defaults)
           const shouldSkip = nonGroceryPatterns.some(pattern => pattern.test(cleanedForFilter));
