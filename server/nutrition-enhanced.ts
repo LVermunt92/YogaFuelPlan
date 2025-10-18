@@ -10444,20 +10444,20 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     name: "Matcha Cloud Smoothie",
     portion: "1 serving (about 400ml)",
     nutrition: {
-      protein: 24,
+      protein: 26,
       prepTime: 5,
-      calories: 320,
-      carbohydrates: 28,
-      fats: 14,
-      fiber: 6,
-      sugar: 18,
-      sodium: 110,
-      potassium: 580,
-      calcium: 220,
-      iron: 2.8,
-      vitaminC: 12,
-      costEuros: 3.80,
-      proteinPerEuro: 6.3
+      calories: 440,
+      carbohydrates: 48,
+      fats: 17,
+      fiber: 9,
+      sugar: 22,
+      sodium: 120,
+      potassium: 620,
+      calcium: 240,
+      iron: 3.2,
+      vitaminC: 14,
+      costEuros: 4.40,
+      proteinPerEuro: 5.9
     },
     category: "breakfast",
     tags: ["Vegetarian", "High-Protein", "Gluten-Free", "Antioxidants", "Energy", "Green", "Matcha", "Japanese", "Anti-Aging"],
@@ -10469,6 +10469,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "1 tsp ceremonial grade matcha powder",
       "1 scoop vanilla protein powder (25g)",
       "1 tbsp almond butter",
+      "30g granola",
       "1 tbsp honey or maple syrup",
       "1/2 tsp vanilla extract",
       "1 cup ice cubes"
@@ -10484,7 +10485,8 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "Spinach adds iron and folate without affecting taste",
       "High protein supports muscle recovery and satiety",
       "Antioxidants from matcha and spinach fight inflammation",
-      "Probiotics from yogurt support digestive health"
+      "Probiotics from yogurt support digestive health",
+      "Granola adds satisfying crunch and extra fiber"
     ],
     recipe: {
       instructions: [
@@ -10496,15 +10498,18 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Blend on low speed first to break down spinach",
         "Increase to high speed and blend for 90 seconds until completely smooth",
         "The color should be a beautiful pale green",
-        "Pour into glass and serve immediately"
+        "Pour into glass",
+        "Top with granola for satisfying crunch",
+        "Serve immediately"
       ],
       tips: [
         "Use ceremonial grade matcha for the best flavor and color",
         "Sift matcha powder to prevent lumps in your smoothie",
         "Start blending on low to properly break down the spinach",
-        "Frozen banana gives the smoothie a creamy, cloud-like texture"
+        "Frozen banana gives the smoothie a creamy, cloud-like texture",
+        "Add granola just before serving to keep it crunchy"
       ],
-      notes: "Elegant green smoothie with subtle matcha flavor and hidden vegetables - like drinking a nutritious cloud"
+      notes: "Elegant green smoothie with subtle matcha flavor and hidden vegetables - like drinking a nutritious cloud. Granola adds satisfying crunch and extra fiber"
     },
     createdAt: new Date('2025-09-09'),
     active: true
