@@ -383,6 +383,13 @@ function applyTDEEBasedPortionAdjustment(meals: InsertMeal[], user: User | undef
   const mealsPerDay = meals.length / 7; // Average meals per day
   const actualDailyCalories = actualTotalCalories / 7;
   
+  // Guard against zero or very low calorie plans
+  if (actualDailyCalories < 100) {
+    console.log(`⚠️ WARNING: Meal plan has unusually low calories (${Math.round(actualDailyCalories)} kcal/day)`);
+    console.log(`⚠️ Skipping TDEE adjustment - check meal calorie data`);
+    return meals;
+  }
+  
   // Calculate dynamic adjustment factor
   const adjustmentFactor = targetDailyCalories / actualDailyCalories;
   
@@ -404,10 +411,10 @@ function applyTDEEBasedPortionAdjustment(meals: InsertMeal[], user: User | undef
       ? meal.portion 
       : `${meal.portion} (${cappedFactor > 1 ? '+' : ''}${Math.round((cappedFactor - 1) * 100)}%)`,
     protein: Math.round(meal.protein * cappedFactor),
-    calories: Math.round(meal.calories * cappedFactor),
-    carbohydrates: Math.round(meal.carbohydrates * cappedFactor),
-    fats: Math.round(meal.fats * cappedFactor),
-    fiber: Math.round(meal.fiber * cappedFactor),
+    calories: Math.round((meal.calories || 0) * cappedFactor),
+    carbohydrates: Math.round((meal.carbohydrates || 0) * cappedFactor),
+    fats: Math.round((meal.fats || 0) * cappedFactor),
+    fiber: Math.round((meal.fiber || 0) * cappedFactor),
     sugar: Math.round((meal.sugar || 0) * cappedFactor),
     sodium: Math.round((meal.sodium || 0) * cappedFactor),
     vitaminK: Math.round((meal.vitaminK || 0) * cappedFactor),
@@ -1914,18 +1921,33 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   const totalDaysWithRealMeals = daysWithRealMeals.size;
   const averageProteinPerDay = totalDaysWithRealMeals > 0 ? totalWeeklyProtein / totalDaysWithRealMeals : 0;
   
-  console.log(`🎯 Protein optimization results: ${totalWeeklyProtein}g total / ${totalDaysWithRealMeals} full meal days = ${averageProteinPerDay.toFixed(1)}g per day`);
+  console.log(`🎯 Protein optimization results (pre-adjustment): ${totalWeeklyProtein}g total / ${totalDaysWithRealMeals} full meal days = ${averageProteinPerDay.toFixed(1)}g per day`);
   console.log(`🎯 Personal protein target: ${dailyProteinTarget}g/day | Achievement: ${((averageProteinPerDay / dailyProteinTarget) * 100).toFixed(1)}%`);
   console.log(`🌟 Anti-aging intake: ${antiAgingMealCount} anti-aging meals this week (target: 7 for daily longevity support)`);
 
   // Apply TDEE-based portion adjustment to match target daily calories
   const adjustedMeals = applyTDEEBasedPortionAdjustment(meals, user);
 
+  // Recalculate protein after TDEE adjustment
+  const daysWithAdjustedMeals = new Set();
+  let adjustedTotalProtein = 0;
+  adjustedMeals.forEach(meal => {
+    if (meal.protein > 0 && meal.foodDescription !== 'Eating out') {
+      daysWithAdjustedMeals.add(meal.day);
+      adjustedTotalProtein += meal.protein;
+    }
+  });
+  const adjustedAverageProteinPerDay = daysWithAdjustedMeals.size > 0 
+    ? adjustedTotalProtein / daysWithAdjustedMeals.size 
+    : 0;
+
+  console.log(`🎯 Protein after TDEE adjustment: ${adjustedAverageProteinPerDay.toFixed(1)}g per day`);
+
   const mealPlan: InsertMealPlan = {
     userId: request.userId || 1,
     weekStart: normalizedWeekStart,
     activityLevel: request.activityLevel,
-    totalProtein: Math.round(averageProteinPerDay), // Average protein per day
+    totalProtein: Math.round(adjustedAverageProteinPerDay), // Use adjusted protein
   };
 
   return { mealPlan, meals: adjustedMeals };
@@ -2704,7 +2726,7 @@ async function generateMealPrepPlan(
   const totalDaysWithMeals = actualDaysWithMeals.size;
   const averageProteinPerDay = totalDaysWithMeals > 0 ? totalWeeklyProtein / totalDaysWithMeals : 0;
   
-  console.log(`🥩 Protein calculation: ${totalWeeklyProtein}g total / ${totalDaysWithMeals} full meal days = ${averageProteinPerDay.toFixed(1)}g per day`);
+  console.log(`🥩 Protein calculation (pre-adjustment): ${totalWeeklyProtein}g total / ${totalDaysWithMeals} full meal days = ${averageProteinPerDay.toFixed(1)}g per day`);
 
   // Log which leftover ingredients were successfully used
   const usedIngredients = ingredientsToUseUp.filter(ingredient => {
@@ -2725,11 +2747,26 @@ async function generateMealPrepPlan(
   // Apply TDEE-based portion adjustment to match target daily calories
   const adjustedMeals = applyTDEEBasedPortionAdjustment(meals, user);
 
+  // Recalculate protein after TDEE adjustment
+  const daysWithAdjustedMeals = new Set();
+  let adjustedTotalProtein = 0;
+  adjustedMeals.forEach(meal => {
+    if (meal.protein > 0 && meal.foodDescription !== 'Eating out') {
+      daysWithAdjustedMeals.add(meal.day);
+      adjustedTotalProtein += meal.protein;
+    }
+  });
+  const adjustedAverageProteinPerDay = daysWithAdjustedMeals.size > 0 
+    ? adjustedTotalProtein / daysWithAdjustedMeals.size 
+    : 0;
+
+  console.log(`🥩 Protein after TDEE adjustment: ${adjustedAverageProteinPerDay.toFixed(1)}g per day`);
+
   const mealPlan: InsertMealPlan = {
     userId: request.userId || 1,
     weekStart: normalizedWeekStart,
     activityLevel: request.activityLevel,
-    totalProtein: Math.round(averageProteinPerDay), // Average daily protein for days with meals
+    totalProtein: Math.round(adjustedAverageProteinPerDay), // Use adjusted protein
   };
 
   return { mealPlan, meals: adjustedMeals, usedLeftoverIngredients: usedIngredients };
