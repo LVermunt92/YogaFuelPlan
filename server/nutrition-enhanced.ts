@@ -6573,7 +6573,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       tips: [
         "Make the stew ahead and reheat for quick assembly",
         "Adjust spice level with chili flakes to taste",
-        "For gluten-free option, serve with gluten-free sourdough bread or skip the bread",
+        "For gluten-free option, serve with sourdough bread or skip the bread",
         "The stew thickens as it sits - add a splash of stock when reheating",
         "Toast the sourdough for extra flavor and texture"
       ],
@@ -6609,7 +6609,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "150g broccoli (cut into 1 thick steak)",
       "15ml olive oil (1 tbsp)",
       "100g tempeh",
-      "1 slice gluten-free sourdough or 80g cooked quinoa",
+      "1 slice sourdough or 80g cooked quinoa",
       "30g rocket (arugula)",
       "50g cucumber (sliced)",
       "Fresh mint",
@@ -6634,7 +6634,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Pan-fry tempeh in olive oil with a little cumin, salt, and pepper until golden",
         "Make the vinaigrette: whisk together extra virgin olive oil, balsamic vinegar, chilli, parsley, and agave",
         "Spread hummus on the plate, top with broccoli and tempeh, drizzle with vinaigrette",
-        "Serve with rocket-cucumber-mint salad with lemon juice and gluten-free sourdough or quinoa"
+        "Serve with rocket-cucumber-mint salad with lemon juice and sourdough or quinoa"
       ],
       tips: [
         "Make hummus ahead and store in fridge for up to 5 days",
@@ -6674,7 +6674,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "150g broccoli (cut into 1 thick steak)",
       "15ml olive oil (1 tbsp)",
       "120g grilled chicken breast",
-      "1 slice gluten-free sourdough or 80g cooked quinoa",
+      "1 slice sourdough or 80g cooked quinoa",
       "30g rocket (arugula)",
       "50g cucumber (sliced)",
       "Fresh mint",
@@ -6699,7 +6699,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Grill chicken breast seasoned with cumin, salt, and pepper until cooked through (165°F internal temp)",
         "Make the vinaigrette: whisk together extra virgin olive oil, balsamic vinegar, chilli, parsley, and agave",
         "Spread hummus on the plate, top with broccoli and chicken, drizzle with vinaigrette",
-        "Serve with rocket-cucumber-mint salad with lemon juice and gluten-free sourdough or quinoa"
+        "Serve with rocket-cucumber-mint salad with lemon juice and sourdough or quinoa"
       ],
       tips: [
         "Make hummus ahead and store in fridge for up to 5 days",
