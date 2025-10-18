@@ -3022,6 +3022,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "User not found" });
       }
 
+      // Auto-detect weight loss goal from weight loss tracking
+      // If user has started weight loss journey (weightLossWeekNumber > 0), use fat_loss goal
+      let userGoal = (user.goal as any) || 'maintain';
+      if (user.weightLossWeekNumber && user.weightLossWeekNumber > 0) {
+        userGoal = 'fat_loss';
+        console.log(`🎯 Auto-detected fat_loss goal for user ${userId} (week ${user.weightLossWeekNumber} of weight loss)`);
+      }
+
       // Create nutrition profile from user data
       const profile: NutritionProfile = {
         age: user.age || 30,
@@ -3029,7 +3037,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         gender: (user.gender as 'male' | 'female' | 'other') || 'other',
         activityLevel: (user.activityLevel as any) || 'moderate',
         trainingType: (user.trainingType as any) || 'endurance',
-        goal: (user.goal as any) || 'maintain'
+        goal: userGoal
       };
 
       // Calculate comprehensive nutrition targets
