@@ -17349,11 +17349,41 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
           /^\d+\s*clove\s*$/
         ];
 
-        // Skip this ingredient if it matches non-grocery patterns
-        const shouldSkip = nonGroceryPatterns.some(pattern => pattern.test(cleanedForFilter));
-        if (shouldSkip) {
-          console.log(`🚫 SHOPPING LIST: Skipping non-grocery item: "${cleanIngredient}"`);
-          return;
+        // Check if this is a pantry item with "to taste" or "pinch" - assign default amounts instead of skipping
+        let adjustedIngredient = ingredient;
+        let defaultAmount = 0;
+        let defaultUnit = '';
+        
+        const ingredientLower = ingredient.toLowerCase();
+        
+        // Assign default amounts for pantry items used "to taste" or "pinch of"
+        if (ingredientLower.includes('salt') && (ingredientLower.includes('to taste') || ingredientLower.includes('pinch'))) {
+          adjustedIngredient = 'salt';
+          defaultAmount = 2; // 2g salt per usage
+          defaultUnit = 'g';
+          console.log(`🧂 PANTRY DEFAULT: "Salt to taste/pinch" → 2g salt`);
+        } else if (ingredientLower.includes('pepper') && (ingredientLower.includes('to taste') || ingredientLower.includes('pinch'))) {
+          adjustedIngredient = 'black pepper';
+          defaultAmount = 1; // 1g pepper per usage
+          defaultUnit = 'g';
+          console.log(`🧂 PANTRY DEFAULT: "Pepper to taste/pinch" → 1g pepper`);
+        } else if (ingredientLower.includes('olive oil') && (ingredientLower.includes('drizzle') || ingredientLower.includes('for cooking') || ingredientLower.includes('extra'))) {
+          adjustedIngredient = 'olive oil';
+          defaultAmount = 10; // 10ml olive oil for drizzling/cooking
+          defaultUnit = 'ml';
+          console.log(`🧂 PANTRY DEFAULT: "Olive oil for drizzling/cooking" → 10ml olive oil`);
+        } else if (ingredientLower.includes('chili flakes') && (ingredientLower.includes('to taste') || ingredientLower.includes('pinch'))) {
+          adjustedIngredient = 'chili flakes';
+          defaultAmount = 0.5; // 0.5g chili flakes
+          defaultUnit = 'g';
+          console.log(`🧂 PANTRY DEFAULT: "Chili flakes to taste" → 0.5g chili flakes`);
+        } else {
+          // Skip this ingredient if it matches non-grocery patterns (after checking for pantry defaults)
+          const shouldSkip = nonGroceryPatterns.some(pattern => pattern.test(cleanedForFilter));
+          if (shouldSkip) {
+            console.log(`🚫 SHOPPING LIST: Skipping non-grocery item: "${cleanIngredient}"`);
+            return;
+          }
         }
         
         // Skip ingredients that user already has (leftover ingredients)
@@ -17369,16 +17399,22 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
           return;
         }
         
-        const existing = ingredientAmounts.get(cleanIngredient);
-        // Parse actual quantity from ingredient string (recipes already stored for 2 servings)
-        const parsedAmount = parseIngredientAmount(ingredient);
+        // Use adjusted ingredient name for pantry items
+        const finalIngredientName = defaultAmount > 0 ? cleanIngredientName(adjustedIngredient) : cleanIngredient;
+        
+        const existing = ingredientAmounts.get(finalIngredientName);
+        
+        // Parse actual quantity from ingredient string OR use default amount for pantry items
+        const parsedAmount = defaultAmount > 0 
+          ? { amount: defaultAmount, unit: defaultUnit }
+          : parseIngredientAmount(ingredient);
         
         if (existing) {
           existing.count += 1;
           // Add the quantity for this meal
           existing.totalAmount += parsedAmount.amount;
         } else {
-          ingredientAmounts.set(cleanIngredient, { 
+          ingredientAmounts.set(finalIngredientName, { 
             totalAmount: parsedAmount.amount, 
             unit: parsedAmount.unit, 
             count: 1 
