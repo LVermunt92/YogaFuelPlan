@@ -3573,27 +3573,28 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     name: "Protein Ice Cream Bowl",
     portion: "1 serving",
     nutrition: { 
-      protein: 28, 
+      protein: 30, 
       prepTime: 5, 
-      calories: 220,
-      carbohydrates: 15,
-      fats: 8,
-      fiber: 6,
-      sugar: 12,
-      sodium: 150,
-      costEuros: 3.20, 
-      proteinPerEuro: 8.8 
+      calories: 340,
+      carbohydrates: 35,
+      fats: 11,
+      fiber: 9,
+      sugar: 16,
+      sodium: 160,
+      costEuros: 3.80, 
+      proteinPerEuro: 7.9 
     },
     category: "breakfast",
     tags: ["Viral", "Social-Media", "High-Protein", "Gluten-Free", "Vegetarian", "Quick", "Anti-Aging"],
     ingredients: [
       "150g frozen mixed berries",
-      "1 vanilla protein powder",
+      "1 scoop (30g) vanilla protein powder",
       "120g Greek yogurt",
       "30ml almond butter",
-      "15ml chia seeds",
-      "Fresh strawberries",
-      "Crushed almonds"
+      "15g chia seeds",
+      "30g granola",
+      "50g fresh strawberries",
+      "15g crushed almonds"
     ],
     wholeFoodLevel: "high",
     vegetableContent: {
@@ -3607,15 +3608,17 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Swirl in almond butter for viral marbled effect",
         "Transfer to chilled bowl for best presentation",
         "Top with fresh strawberries arranged in Instagram pattern",
-        "Sprinkle chia seeds and crushed almonds",
+        "Sprinkle granola for satisfying crunch",
+        "Add chia seeds and crushed almonds",
         "Serve immediately while frozen texture is perfect"
       ],
       tips: [
         "Use frozen fruit for thick ice cream texture",
         "Swirl technique is key for viral aesthetic",
+        "Add granola just before serving to keep it crunchy",
         "Film the swirl creation for social media"
       ],
-      notes: "This protein ice cream went viral for looking like dessert while packing 28g protein"
+      notes: "This protein ice cream went viral for looking like dessert while packing 30g protein. Granola adds satisfying crunch and extra fiber"
     }
   },
   {
