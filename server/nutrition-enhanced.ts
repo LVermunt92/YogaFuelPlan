@@ -17363,18 +17363,16 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
         }
         
         const existing = ingredientAmounts.get(cleanIngredient);
-        // Parse actual quantity from ingredient string and multiply by portion size (2 servings)
-        const PORTION_SIZE = 2;
+        // Parse actual quantity from ingredient string (recipes already stored for 2 servings)
         const parsedAmount = parseIngredientAmount(ingredient);
-        const portionedAmount = parsedAmount.amount * PORTION_SIZE;
         
         if (existing) {
           existing.count += 1;
-          // Add the portioned quantity for this meal
-          existing.totalAmount += portionedAmount;
+          // Add the quantity for this meal
+          existing.totalAmount += parsedAmount.amount;
         } else {
           ingredientAmounts.set(cleanIngredient, { 
-            totalAmount: portionedAmount, 
+            totalAmount: parsedAmount.amount, 
             unit: parsedAmount.unit, 
             count: 1 
           });
@@ -17439,18 +17437,16 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
           }
           
           const existing = ingredientAmounts.get(cleanIngredient);
-          // Parse actual quantity from ingredient string and multiply by portion size (2 servings)
-          const PORTION_SIZE = 2;
+          // Parse actual quantity from ingredient string (recipes already stored for 2 servings)
           const parsedAmount = parseIngredientAmount(ingredient);
-          const portionedAmount = parsedAmount.amount * PORTION_SIZE;
           
           if (existing) {
             existing.count += 1;
-            // Add the portioned quantity for this meal
-            existing.totalAmount += portionedAmount;
+            // Add the quantity for this meal
+            existing.totalAmount += parsedAmount.amount;
           } else {
             ingredientAmounts.set(cleanIngredient, { 
-              totalAmount: portionedAmount, 
+              totalAmount: parsedAmount.amount, 
               unit: parsedAmount.unit, 
               count: 1 
             });
