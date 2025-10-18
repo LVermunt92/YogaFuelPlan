@@ -17146,10 +17146,31 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
         console.log(`🔄 Applied ${substitutionResult.substitutions.length} dietary substitutions for ${cleanMealName}`);
       }
       
-      // Scale ingredients based on portion adjustment, then use for shopping list
-      const scaledIngredients = substitutedIngredients.map(ingredient => 
-        multiplyIngredientAmount(ingredient, ingredientScalingRatio)
-      );
+      // Define ingredients that should NOT be scaled by TDEE (herbs, spices, seasonings)
+      const doNotScaleKeywords = [
+        'cilantro', 'coriander', 'mint', 'basil', 'parsley', 'thyme', 'rosemary', 'oregano', 'dill',
+        'sage', 'tarragon', 'bay leaf', 'bay leaves', 'chives', 'lemongrass', 'curry leaves',
+        'cinnamon', 'cumin', 'coriander', 'turmeric', 'paprika', 'chili powder', 'curry powder',
+        'garam masala', 'cayenne', 'nutmeg', 'cardamom', 'cloves', 'allspice', 'star anise',
+        'salt', 'pepper', 'black pepper', 'white pepper', 'sea salt', 'kosher salt',
+        'vanilla extract', 'almond extract', 'lemon zest', 'lime zest', 'orange zest',
+        'lime juice', 'lemon juice', 'vinegar', 'balsamic vinegar', 'apple cider vinegar',
+        'soy sauce', 'tamari', 'worcestershire sauce', 'hot sauce', 'sriracha',
+        'mustard', 'dijon mustard', 'whole grain mustard'
+      ];
+      
+      // Scale ingredients based on portion adjustment, BUT skip herbs/spices/seasonings
+      const scaledIngredients = substitutedIngredients.map(ingredient => {
+        const ingredientLower = ingredient.toLowerCase();
+        const shouldSkipScaling = doNotScaleKeywords.some(keyword => ingredientLower.includes(keyword));
+        
+        if (shouldSkipScaling) {
+          console.log(`🌿 HERB/SPICE: Skipping TDEE scaling for "${ingredient}"`);
+          return ingredient; // Return original amount without scaling
+        }
+        
+        return multiplyIngredientAmount(ingredient, ingredientScalingRatio);
+      });
       
       scaledIngredients.forEach(ingredient => {
         // Extract clean ingredient name from formatted text like "3 large free-range eggs" -> "Eggs"
