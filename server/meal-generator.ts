@@ -277,49 +277,71 @@ function calculateTDEE(user: User): number {
 }
 
 /**
- * Calculate caloric adjustment factor based on user's goals, BMI, and timeline
+ * Calculate target daily calories based on TDEE and user goals
  * Includes maintenance week logic: every 6th week returns to normal calories
+ */
+function calculateTargetDailyCalories(user: User): number {
+  // Calculate TDEE (full daily energy needs)
+  const tdee = calculateTDEE(user);
+  
+  if (!user.weight || !user.goalWeight) {
+    console.log(`🎯 No weight goals set, using full TDEE: ${tdee} kcal/day`);
+    return tdee;
+  }
+
+  const weightDifference = user.goalWeight - user.weight;
+  const isLosingWeight = weightDifference < 0;
+  const isGainingWeight = weightDifference > 0;
+
+  if (isLosingWeight) {
+    // Check if this is a maintenance week (every 6th week)
+    const weekNumber = user.weightLossWeekNumber || 1;
+    const isMaintenanceWeek = weekNumber % 6 === 0;
+    
+    if (isMaintenanceWeek) {
+      console.log(`🔄 MAINTENANCE WEEK ${weekNumber}: Full TDEE = ${tdee} kcal/day (no reduction)`);
+      return tdee;
+    } else {
+      const targetCalories = Math.round(tdee * 0.85); // Max 15% calorie reduction
+      console.log(`📉 WEIGHT LOSS WEEK ${weekNumber}: Target = ${targetCalories} kcal/day (TDEE ${tdee} × 0.85)`);
+      return targetCalories;
+    }
+  } else if (isGainingWeight) {
+    const targetCalories = Math.round(tdee * 1.15); // 15% surplus for weight gain
+    console.log(`📈 WEIGHT GAIN: Target = ${targetCalories} kcal/day (TDEE ${tdee} × 1.15)`);
+    return targetCalories;
+  }
+
+  console.log(`⚖️ MAINTENANCE: Target = ${tdee} kcal/day (full TDEE)`);
+  return tdee;
+}
+
+/**
+ * DEPRECATED: Old caloric adjustment function (kept for backwards compatibility)
+ * Use calculateTargetDailyCalories() for new TDEE-based approach
  */
 function calculateCaloricAdjustment(user: User): number {
   if (!user.weight) return 1.0;
 
-  // Start with baseline adjustment
+  // For backwards compatibility, return a simple multiplier
+  // This will be phased out as we transition to TDEE-based portions
   let adjustment = 1.0;
 
-  // Weight goal adjustment
   if (user.goalWeight) {
     const weightDifference = user.goalWeight - user.weight;
     const isLosingWeight = weightDifference < 0;
     const isGainingWeight = weightDifference > 0;
 
     if (isLosingWeight) {
-      // Check if this is a maintenance week (every 6th week)
       const weekNumber = user.weightLossWeekNumber || 1;
       const isMaintenanceWeek = weekNumber % 6 === 0;
-      
-      if (isMaintenanceWeek) {
-        console.log(`🔄 MAINTENANCE WEEK ${weekNumber}: Normal calorie intake (no reduction)`);
-        adjustment = 1.0; // No calorie reduction during maintenance weeks
-      } else {
-        console.log(`📉 WEIGHT LOSS WEEK ${weekNumber}: 15% calorie reduction applied`);
-        adjustment = 0.85; // 15% calorie reduction for weight loss (maximum cap)
-      }
+      adjustment = isMaintenanceWeek ? 1.0 : 0.85;
     } else if (isGainingWeight) {
-      adjustment = 1.15; // Increase portions for weight gain
+      adjustment = 1.15;
     }
   }
 
-  // BMI-based adjustment (if height available)
-  if (user.height) {
-    const bmi = calculateBMI(user.weight, user.height);
-    if (bmi < 18.5) {
-      adjustment *= 1.1; // Increase portions for underweight
-    } else if (bmi > 25) {
-      adjustment *= 0.9; // Reduce portions for overweight
-    }
-  }
-
-  return Math.max(0.7, Math.min(1.3, adjustment)); // Keep within reasonable bounds
+  return adjustment;
 }
 
 /**
@@ -341,6 +363,55 @@ function calculateServingMultiplier(user?: User): number {
   
   // Cap at reasonable limits (max 4 servings per recipe)
   return Math.min(servingMultiplier, 4);
+}
+
+/**
+ * Apply TDEE-based portion adjustment to all meals
+ * Calculates dynamic adjustment factor based on target vs actual calories
+ */
+function applyTDEEBasedPortionAdjustment(meals: InsertMeal[], user: User | undefined): InsertMeal[] {
+  if (!user) {
+    console.log('⚠️ No user data, skipping TDEE-based adjustment');
+    return meals;
+  }
+
+  // Calculate target daily calories based on TDEE and goals
+  const targetDailyCalories = calculateTargetDailyCalories(user);
+  
+  // Sum actual calories from generated meal plan
+  const actualTotalCalories = meals.reduce((sum, meal) => sum + (meal.calories || 0), 0);
+  const mealsPerDay = meals.length / 7; // Average meals per day
+  const actualDailyCalories = actualTotalCalories / 7;
+  
+  // Calculate dynamic adjustment factor
+  const adjustmentFactor = targetDailyCalories / actualDailyCalories;
+  
+  console.log(`\n🎯 TDEE-BASED PORTION ADJUSTMENT:`);
+  console.log(`   Target: ${targetDailyCalories} kcal/day`);
+  console.log(`   Actual meal plan: ${Math.round(actualDailyCalories)} kcal/day (${Math.round(actualTotalCalories)} kcal/week)`);
+  console.log(`   Adjustment factor: ${adjustmentFactor.toFixed(3)}x`);
+  
+  // Don't apply extreme adjustments (keep between 0.7 and 1.3)
+  const cappedFactor = Math.max(0.7, Math.min(1.3, adjustmentFactor));
+  if (cappedFactor !== adjustmentFactor) {
+    console.log(`   ⚠️ Factor capped from ${adjustmentFactor.toFixed(3)}x to ${cappedFactor.toFixed(3)}x for safety`);
+  }
+  
+  // Apply adjustment to all meals
+  return meals.map(meal => ({
+    ...meal,
+    portion: cappedFactor === 1.0 
+      ? meal.portion 
+      : `${meal.portion} (${cappedFactor > 1 ? '+' : ''}${Math.round((cappedFactor - 1) * 100)}%)`,
+    protein: Math.round(meal.protein * cappedFactor),
+    calories: Math.round(meal.calories * cappedFactor),
+    carbohydrates: Math.round(meal.carbohydrates * cappedFactor),
+    fats: Math.round(meal.fats * cappedFactor),
+    fiber: Math.round(meal.fiber * cappedFactor),
+    sugar: Math.round((meal.sugar || 0) * cappedFactor),
+    sodium: Math.round((meal.sodium || 0) * cappedFactor),
+    vitaminK: Math.round((meal.vitaminK || 0) * cappedFactor),
+  }));
 }
 
 // Removed filterMealsByServingRequirements function - recipes now scale dynamically instead of being filtered
@@ -1847,6 +1918,9 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   console.log(`🎯 Personal protein target: ${dailyProteinTarget}g/day | Achievement: ${((averageProteinPerDay / dailyProteinTarget) * 100).toFixed(1)}%`);
   console.log(`🌟 Anti-aging intake: ${antiAgingMealCount} anti-aging meals this week (target: 7 for daily longevity support)`);
 
+  // Apply TDEE-based portion adjustment to match target daily calories
+  const adjustedMeals = applyTDEEBasedPortionAdjustment(meals, user);
+
   const mealPlan: InsertMealPlan = {
     userId: request.userId || 1,
     weekStart: normalizedWeekStart,
@@ -1854,7 +1928,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
     totalProtein: Math.round(averageProteinPerDay), // Average protein per day
   };
 
-  return { mealPlan, meals };
+  return { mealPlan, meals: adjustedMeals };
 }
 
 /**
@@ -2648,6 +2722,9 @@ async function generateMealPrepPlan(
     console.log(`⚠️ LEFTOVER INGREDIENTS: None of your ingredients (${ingredientsToUseUp.join(', ')}) were used this time. Try adjusting your dietary preferences for better matches.`);
   }
 
+  // Apply TDEE-based portion adjustment to match target daily calories
+  const adjustedMeals = applyTDEEBasedPortionAdjustment(meals, user);
+
   const mealPlan: InsertMealPlan = {
     userId: request.userId || 1,
     weekStart: normalizedWeekStart,
@@ -2655,7 +2732,7 @@ async function generateMealPrepPlan(
     totalProtein: Math.round(averageProteinPerDay), // Average daily protein for days with meals
   };
 
-  return { mealPlan, meals, usedLeftoverIngredients: usedIngredients };
+  return { mealPlan, meals: adjustedMeals, usedLeftoverIngredients: usedIngredients };
 }
 
 export function formatMealPlanForNotion(mealPlan: InsertMealPlan, meals: InsertMeal[]) {
