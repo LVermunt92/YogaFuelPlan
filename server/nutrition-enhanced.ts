@@ -18027,7 +18027,13 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
         const category = ingredientCategories[separateIngredient.toLowerCase()] || ingredientCategories[ingredient.toLowerCase()] || 'Other';
         
         // Convert amounts to grams using the formatAmount function (split proportionally)
-        const proportionalAmount = amounts.totalAmount / separateIngredients.length;
+        let proportionalAmount = amounts.totalAmount / separateIngredients.length;
+        
+        // Round eggs and garlic cloves to whole numbers
+        if (amounts.unit === 'eggs' || amounts.unit === 'cloves') {
+          proportionalAmount = Math.round(proportionalAmount);
+        }
+        
         const displayAmount = formatAmountWithLanguage(proportionalAmount, amounts.unit, language, separateIngredient);
         
         // For spices and small pantry items, show just the ingredient name
@@ -18066,8 +18072,14 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
       
       const category = ingredientCategories[ingredient.toLowerCase()] || 'Other';
       
+      // Round eggs and garlic cloves to whole numbers
+      let finalTotalAmount = amounts.totalAmount;
+      if (amounts.unit === 'eggs' || amounts.unit === 'cloves') {
+        finalTotalAmount = Math.round(finalTotalAmount);
+      }
+      
       // Convert amounts to grams using the formatAmount function
-      const displayAmount = formatAmountWithLanguage(amounts.totalAmount, amounts.unit, language, ingredient);
+      const displayAmount = formatAmountWithLanguage(finalTotalAmount, amounts.unit, language, ingredient);
       
       // For spices and small pantry items, show just the ingredient name
       const shouldShowClean = shouldShowCleanName(ingredient, category, amounts.totalAmount, amounts.unit);
@@ -18353,10 +18365,16 @@ export function parseIngredientAmount(ingredientString: string): { amount: numbe
       if (unit === 'tsp' || unit === 'teaspoon' || unit === 'teaspoons') return 5;
       return 1;
     }},
-    // Pieces/cloves: 1 pepper, 2 cloves, 3 eggs
-    { regex: /^(\d+(?:\.\d+)?)\s*(piece|pieces|clove|cloves|whole|halves|half)(?:\s|$)/i, unit: 'pieces', multiplier: (_unit?: string) => 1 },
+    // Cloves (preserve as cloves, not pieces): 2 cloves garlic
+    { regex: /^(\d+(?:\.\d+)?)\s*(clove|cloves)(?:\s|$)/i, unit: 'cloves', multiplier: (_unit?: string) => 1 },
+    // Bunches (preserve as bunches): 1 bunch cilantro
+    { regex: /^(\d+(?:\.\d+)?)\s*(bunch|bunches)(?:\s|$)/i, unit: 'bunches', multiplier: (_unit?: string) => 1 },
+    // Eggs (detect and preserve as eggs): "6 large eggs", "2 eggs"
+    { regex: /^(\d+(?:\.\d+)?)\s+(?:large|medium|small)?\s*eggs?(?:\s|$)/i, unit: 'eggs', multiplier: (_unit?: string) => 1 },
+    // Other pieces: 1 pepper, 1 piece, etc.
+    { regex: /^(\d+(?:\.\d+)?)\s*(piece|pieces|whole|halves|half)(?:\s|$)/i, unit: 'pieces', multiplier: (_unit?: string) => 1 },
     // Number at start (no unit): "1 red bell pepper" → 1 piece
-    { regex: /^(\d+(?:\.\d+)?)\s+(?!g|ml|tbsp|tsp|cup|kg|mg)/, unit: 'pieces', multiplier: (_unit?: string) => 1 },
+    { regex: /^(\d+(?:\.\d+)?)\s+(?!g|ml|tbsp|tsp|cup|kg|mg|clove|bunch|egg)/, unit: 'pieces', multiplier: (_unit?: string) => 1 },
   ];
 
   for (const pattern of patterns) {
