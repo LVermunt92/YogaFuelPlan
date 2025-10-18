@@ -397,13 +397,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         // Initialize start date if not set
         if (!user.weightLossStartDate) {
-          await storage.updateUser(user.id, {
+          await storage.updateUserProfile(user.id, {
             weightLossStartDate: new Date().toISOString().split('T')[0], // YYYY-MM-DD format
             weightLossWeekNumber: 1
           });
           console.log(`🎯 WEIGHT LOSS JOURNEY: Starting week 1 for user ${user.id}`);
         } else {
-          await storage.updateUser(user.id, {
+          await storage.updateUserProfile(user.id, {
             weightLossWeekNumber: nextWeek
           });
           console.log(`🎯 WEIGHT LOSS JOURNEY: Advanced to week ${nextWeek} for user ${user.id}`);
