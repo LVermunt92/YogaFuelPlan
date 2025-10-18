@@ -18036,6 +18036,17 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
           proportionalAmount = Math.round(proportionalAmount);
         }
         
+        // Round vegetables/fruits to nearest half piece (0.5) for practical shopping
+        if (amounts.unit === 'piece' || amounts.unit === 'pieces') {
+          const itemsToRoundToHalf = ['carrot', 'lemon', 'lime', 'bell pepper', 'pepper', 'onion', 'zucchini', 'courgette'];
+          const shouldRoundToHalf = itemsToRoundToHalf.some(item => 
+            separateIngredient.toLowerCase().includes(item)
+          );
+          if (shouldRoundToHalf) {
+            proportionalAmount = Math.round(proportionalAmount * 2) / 2; // Round to nearest 0.5
+          }
+        }
+        
         const displayAmount = formatAmountWithLanguage(proportionalAmount, amounts.unit, language, separateIngredient);
         
         // For spices and small pantry items, show just the ingredient name
@@ -18078,6 +18089,17 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
       let finalTotalAmount = amounts.totalAmount;
       if (amounts.unit === 'eggs' || amounts.unit === 'cloves') {
         finalTotalAmount = Math.round(finalTotalAmount);
+      }
+      
+      // Round vegetables/fruits to nearest half piece (0.5) for practical shopping
+      if (amounts.unit === 'piece' || amounts.unit === 'pieces') {
+        const itemsToRoundToHalf = ['carrot', 'lemon', 'lime', 'bell pepper', 'pepper', 'onion', 'zucchini', 'courgette'];
+        const shouldRoundToHalf = itemsToRoundToHalf.some(item => 
+          ingredient.toLowerCase().includes(item)
+        );
+        if (shouldRoundToHalf) {
+          finalTotalAmount = Math.round(finalTotalAmount * 2) / 2; // Round to nearest 0.5
+        }
       }
       
       // Convert amounts to grams using the formatAmount function
