@@ -16756,52 +16756,12 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
       // Check other critical tags (vegetarian, gluten-free, etc.)
       const otherCriticalTags = userCriticalTags.filter(tag => tag !== 'Lactose-Free');
       
-      // Smart gluten-free filtering: include meals that don't contain gluten ingredients
-      let glutenFreeSatisfied = true;
-      if (dietaryTags.includes('Gluten-Free')) {
-        const hasGlutenIngredients = meal.ingredients && meal.ingredients.some(ingredient => 
-          ingredient && (
-            ingredient.toLowerCase().includes('flour') && !ingredient.toLowerCase().includes('gluten-free') ||
-            ingredient.toLowerCase().includes('wheat') ||
-            ingredient.toLowerCase().includes('bread') && !ingredient.toLowerCase().includes('gluten-free') ||
-            ingredient.toLowerCase().includes('bagel') && !ingredient.toLowerCase().includes('gluten-free') ||
-            ingredient.toLowerCase().includes('bun') && !ingredient.toLowerCase().includes('gluten-free') ||
-            ingredient.toLowerCase().includes('roll') && !ingredient.toLowerCase().includes('gluten-free') ||
-            ingredient.toLowerCase().includes('croissant') ||
-            ingredient.toLowerCase().includes('pita') && !ingredient.toLowerCase().includes('gluten-free') ||
-            ingredient.toLowerCase().includes('tortilla') && !ingredient.toLowerCase().includes('gluten-free') ||
-            ingredient.toLowerCase().includes('wrap') && !ingredient.toLowerCase().includes('gluten-free') ||
-            ingredient.toLowerCase().includes('pasta') && !ingredient.toLowerCase().includes('gluten-free') ||
-            ingredient.toLowerCase().includes('noodle') && !ingredient.toLowerCase().includes('gluten-free') && !ingredient.toLowerCase().includes('rice noodle') ||
-            ingredient.toLowerCase().includes('couscous') ||
-            ingredient.toLowerCase().includes('barley') ||
-            ingredient.toLowerCase().includes('rye') ||
-            ingredient.toLowerCase().includes('soy sauce') && !ingredient.toLowerCase().includes('gluten-free') && !ingredient.toLowerCase().includes('tamari') ||
-            ingredient.toLowerCase().includes('seitan')
-          )
-        );
-        
-        glutenFreeSatisfied = meal.tags.includes('Gluten-Free') || !hasGlutenIngredients;
-        
-        // Log filtering decision for debugging
-        if (!glutenFreeSatisfied) {
-          const glutenItems = meal.ingredients.filter(ing => ing && (
-            ing.toLowerCase().includes('flour') && !ing.toLowerCase().includes('gluten-free') ||
-            ing.toLowerCase().includes('wheat') ||
-            ing.toLowerCase().includes('bread') && !ing.toLowerCase().includes('gluten-free') ||
-            ing.toLowerCase().includes('bagel') && !ing.toLowerCase().includes('gluten-free') ||
-            ing.toLowerCase().includes('pasta') && !ing.toLowerCase().includes('gluten-free')
-          ));
-          console.log(`🚫 GLUTEN FILTER: "${meal.name}" excluded - contains gluten: ${glutenItems.join(', ')}`);
-        }
-      }
+      // STRICT tag-based filtering: ALL critical tags must be present
+      const criticalSatisfied = userCriticalTags.every(tag => meal.tags.includes(tag));
       
-      // Check other critical tags (but allow smart gluten-free logic)
-      const remainingCriticalTags = otherCriticalTags.filter(tag => tag !== 'Gluten-Free');
-      const otherCriticalSatisfied = remainingCriticalTags.every(tag => meal.tags.includes(tag));
-      
-      if (!lactoseFreeSatisfied || !glutenFreeSatisfied || !otherCriticalSatisfied) {
-        console.log(`🚫 "${meal.name}" excluded - lactose: ${lactoseFreeSatisfied}, gluten: ${glutenFreeSatisfied}, other: ${otherCriticalSatisfied}`);
+      if (!criticalSatisfied) {
+        const missingTags = userCriticalTags.filter(tag => !meal.tags.includes(tag));
+        console.log(`🚫 "${meal.name}" excluded - missing required tags: ${missingTags.join(', ')}`);
         return false;
       }
     }
