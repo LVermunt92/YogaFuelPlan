@@ -16760,11 +16760,13 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
       let glutenFreeSatisfied = true;
       if (dietaryTags.includes('Gluten-Free')) {
         const hasGlutenIngredients = meal.ingredients && meal.ingredients.some(ingredient => 
-          ingredient.toLowerCase().includes('flour') && !ingredient.toLowerCase().includes('Gluten-Free') ||
-          ingredient.toLowerCase().includes('wheat') ||
-          ingredient.toLowerCase().includes('bread') && !ingredient.toLowerCase().includes('Gluten-Free') ||
-          ingredient.toLowerCase().includes('pasta') && !ingredient.toLowerCase().includes('Gluten-Free') ||
-          ingredient.toLowerCase().includes('soy sauce') && !ingredient.toLowerCase().includes('Gluten-Free')
+          ingredient && (
+            ingredient.toLowerCase().includes('flour') && !ingredient.toLowerCase().includes('Gluten-Free') ||
+            ingredient.toLowerCase().includes('wheat') ||
+            ingredient.toLowerCase().includes('bread') && !ingredient.toLowerCase().includes('Gluten-Free') ||
+            ingredient.toLowerCase().includes('pasta') && !ingredient.toLowerCase().includes('Gluten-Free') ||
+            ingredient.toLowerCase().includes('soy sauce') && !ingredient.toLowerCase().includes('Gluten-Free')
+          )
         );
         
         glutenFreeSatisfied = meal.tags.includes('Gluten-Free') || !hasGlutenIngredients;
@@ -18357,12 +18359,9 @@ export function parseIngredientAmount(ingredientString: string): { amount: numbe
       if (unit === 'mg') return 0.001;
       return 1;
     }},
-    // Volume: 200ml, 1 cup, 2 tbsp, 1 tsp
-    { regex: /^(\d+(?:\.\d+)?)\s*(ml|l|liter|cup|cups|tbsp|tablespoon|tablespoons|tsp|teaspoon|teaspoons)(?:\s|$)/i, unit: 'ml', multiplier: (unit?: string) => {
-      if (unit === 'l' || unit === 'liter') return 1000;
-      if (unit === 'cup' || unit === 'cups') return 240;
-      if (unit === 'tbsp' || unit === 'tablespoon' || unit === 'tablespoons') return 15;
-      if (unit === 'tsp' || unit === 'teaspoon' || unit === 'teaspoons') return 5;
+    // Volume: 200ml, 1 cup, 2 tbsp, 1 tsp - PRESERVE original units
+    { regex: /^(\d+(?:\.\d+)?)\s*(ml|l|liter|cup|cups|tbsp|tablespoon|tablespoons|tsp|teaspoon|teaspoons)(?:\s|$)/i, unit: '', multiplier: (unit?: string) => {
+      // Return the amount as-is and preserve the original unit (don't convert)
       return 1;
     }},
     // Cloves (preserve as cloves, not pieces): 2 cloves garlic
@@ -18397,7 +18396,9 @@ export function parseIngredientAmount(ingredientString: string): { amount: numbe
         amount = parseFloat(match[1]);
         const unitStr = match[2] || '';
         const multiplier = pattern.multiplier(unitStr);
-        return { amount: amount * multiplier, unit: pattern.unit };
+        // Use the matched unit if pattern.unit is empty (for volume/tbsp/tsp/etc preservation)
+        const finalUnit = pattern.unit || unitStr;
+        return { amount: amount * multiplier, unit: finalUnit };
       }
     }
   }
