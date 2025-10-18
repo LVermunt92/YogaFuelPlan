@@ -34,6 +34,15 @@ Preferred communication style: Simple, everyday language.
   - **Cauliflower**: Use cauliflower rice (e.g., "300g cauliflower rice") or florets in grams (e.g., "250g cauliflower florets") - NEVER use "1 head" as it's imprecise for portion control
   - **Lemon**: ALWAYS specify in pieces (e.g., "juice of 1 lemon", "1 lemon, zested", "juice of 1/2 lemon") - NEVER use ml for lemon juice
   - **Plant-based milk**: ALWAYS use "plant-based milk" instead of specific types (almond, soy, oat milk) - this allows users to choose their preferred plant milk. Exception: coconut milk stays separate when used for flavor in curries
+  - **Pantry items and seasonings** (CRITICAL - NEVER use "to taste" or vague descriptions):
+    - **Salt**: "2g salt" or "3g sea salt" - NEVER "salt to taste" or "pinch of salt"
+    - **Black pepper**: "1g black pepper" - NEVER "pepper to taste" or "pinch of pepper"
+    - **Olive oil** (for drizzling/cooking): "10ml olive oil" or "15ml olive oil" - NEVER "olive oil for drizzling" or "extra olive oil"
+    - **Chili flakes**: "0.5g chili flakes" or "1g red chili flakes" - NEVER "chili flakes to taste" or "pinch of chili flakes"
+  - **Fresh herbs** (CRITICAL - ALWAYS specify in grams, NEVER "handful" or unspecified):
+    - **Handful of herbs**: "20g fresh parsley" or "20g fresh cilantro" - NEVER "handful fresh parsley"
+    - **Fresh herbs (garnish)**: "10g fresh mint" or "10g fresh basil" - NEVER "fresh mint" or "fresh basil"
+    - **Examples**: "20g fresh parsley, chopped", "10g fresh cilantro", "15g fresh basil leaves", "10g fresh dill"
   - When AI generates new recipes, it MUST follow these ingredient format rules to ensure shopping list accuracy and consistency
 
 # System Architecture
