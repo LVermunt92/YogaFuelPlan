@@ -10441,8 +10441,8 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     active: true
   },
   {
-    name: "Matcha Cloud Smoothie",
-    portion: "1 serving (about 400ml)",
+    name: "Matcha Cloud Smoothie Bowl",
+    portion: "1 serving (bowl)",
     nutrition: {
       protein: 26,
       prepTime: 5,
@@ -10462,8 +10462,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     category: "breakfast",
     tags: ["Vegetarian", "High-Protein", "Gluten-Free", "Antioxidants", "Energy", "Green", "Matcha", "Japanese", "Anti-Aging"],
     ingredients: [
-      "200ml coconut milk (full-fat)",
-      "150ml Greek yogurt",
+      "200ml coconut yogurt",
       "50g fresh spinach (packed)",
       "1 medium banana (frozen)",
       "1 tsp ceremonial grade matcha powder",
@@ -10471,6 +10470,78 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "1 tbsp almond butter",
       "30g granola",
       "1 tbsp honey or maple syrup",
+      "1/2 tsp vanilla extract",
+      "1/2 cup ice cubes"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["spinach"],
+      benefits: ["Iron", "Folate", "Vitamin K", "Antioxidants"]
+    },
+    recipeBenefits: [
+      "Matcha provides sustained energy without caffeine crash",
+      "Spinach adds iron and folate without affecting taste",
+      "High protein supports muscle recovery and satiety",
+      "Antioxidants from matcha and spinach fight inflammation",
+      "Probiotics from coconut yogurt support digestive health",
+      "Granola adds satisfying crunch and extra fiber"
+    ],
+    recipe: {
+      instructions: [
+        "Add coconut yogurt to blender first",
+        "Add fresh spinach leaves, packing them down",
+        "Add frozen banana and ice cubes",
+        "Sift matcha powder to remove any lumps, then add to blender",
+        "Add protein powder, almond butter, honey, and vanilla extract",
+        "Blend on low speed first to break down spinach",
+        "Increase to high speed and blend for 60-90 seconds until thick and creamy",
+        "The color should be a beautiful pale green",
+        "Pour into bowl",
+        "Top with granola for satisfying crunch",
+        "Serve immediately"
+      ],
+      tips: [
+        "Use ceremonial grade matcha for the best flavor and color",
+        "Sift matcha powder to prevent lumps in your smoothie bowl",
+        "Start blending on low to properly break down the spinach",
+        "Frozen banana gives the bowl a thick, creamy texture",
+        "Add granola just before serving to keep it crunchy"
+      ],
+      notes: "Elegant green smoothie bowl with subtle matcha flavor and hidden vegetables. Thick, creamy texture makes it perfect for breakfast. Granola adds satisfying crunch and extra fiber"
+    },
+    createdAt: new Date('2025-09-09'),
+    active: true
+  },
+  {
+    name: "Matcha Cloud Smoothie",
+    portion: "1 serving (about 400ml)",
+    nutrition: {
+      protein: 22,
+      prepTime: 5,
+      calories: 310,
+      carbohydrates: 32,
+      fats: 12,
+      fiber: 6,
+      sugar: 18,
+      sodium: 100,
+      potassium: 560,
+      calcium: 200,
+      iron: 2.6,
+      vitaminC: 12,
+      costEuros: 3.60,
+      proteinPerEuro: 6.1
+    },
+    category: "smoothie",
+    tags: ["Vegetarian", "Vegan", "Dairy-Free", "Lactose-Free", "High-Protein", "Gluten-Free", "Antioxidants", "Energy", "Green", "Matcha", "Japanese", "Anti-Aging"],
+    ingredients: [
+      "250ml plant-based milk",
+      "50g fresh spinach (packed)",
+      "1 medium banana (frozen)",
+      "1 tsp ceremonial grade matcha powder",
+      "1 scoop vanilla protein powder (25g)",
+      "1 tbsp almond butter",
+      "1 tbsp maple syrup",
       "1/2 tsp vanilla extract",
       "1 cup ice cubes"
     ],
@@ -10485,31 +10556,27 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "Spinach adds iron and folate without affecting taste",
       "High protein supports muscle recovery and satiety",
       "Antioxidants from matcha and spinach fight inflammation",
-      "Probiotics from yogurt support digestive health",
-      "Granola adds satisfying crunch and extra fiber"
+      "Plant-based and dairy-free for easy digestion"
     ],
     recipe: {
       instructions: [
-        "Add coconut milk and Greek yogurt to blender first",
+        "Add plant-based milk to blender first",
         "Add fresh spinach leaves, packing them down",
         "Add frozen banana and ice cubes",
         "Sift matcha powder to remove any lumps, then add to blender",
-        "Add protein powder, almond butter, honey, and vanilla extract",
+        "Add protein powder, almond butter, maple syrup, and vanilla extract",
         "Blend on low speed first to break down spinach",
         "Increase to high speed and blend for 90 seconds until completely smooth",
         "The color should be a beautiful pale green",
-        "Pour into glass",
-        "Top with granola for satisfying crunch",
-        "Serve immediately"
+        "Pour into glass and serve immediately"
       ],
       tips: [
         "Use ceremonial grade matcha for the best flavor and color",
         "Sift matcha powder to prevent lumps in your smoothie",
         "Start blending on low to properly break down the spinach",
-        "Frozen banana gives the smoothie a creamy, cloud-like texture",
-        "Add granola just before serving to keep it crunchy"
+        "Frozen banana gives the smoothie a creamy, cloud-like texture"
       ],
-      notes: "Elegant green smoothie with subtle matcha flavor and hidden vegetables - like drinking a nutritious cloud. Granola adds satisfying crunch and extra fiber"
+      notes: "Elegant drinkable green smoothie with subtle matcha flavor and hidden vegetables - like drinking a nutritious cloud. Perfect as a snack or light meal"
     },
     createdAt: new Date('2025-09-09'),
     active: true
