@@ -1595,20 +1595,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       console.log(`📊 Ingredient scaling: ${adjustedCalories} kcal / ${originalCalories} kcal = ${ingredientScalingRatio.toFixed(2)}x`);
 
-      // Check if this is a leftover meal or fresh cooking
-      // Leftovers: show 1 serving (just reheating)
-      // Breakfast: ALWAYS 1 serving (no batch cooking for breakfast)
-      // Fresh lunch/dinner: show 2 servings (cooking batch for today + tomorrow's leftover)
+      // Recipes are stored with "2 servings" as the base in the database
+      // Conversion logic:
+      // - Fresh lunch/dinner: Show "2 servings" as-is (multiply by 1, recipes already have 2 servings)
+      // - Breakfast: Show "1 serving" (multiply by 0.5, breakfast doesn't batch cook)
+      // - Leftovers: Show "1 serving (leftover)" (multiply by 0.5, half the cooking batch)
       const isBreakfast = targetMeal.mealType === 'breakfast';
-      const PORTION_SIZE = targetMeal.isLeftover ? 1 : (isBreakfast ? 1 : 2);
+      const PORTION_SIZE = targetMeal.isLeftover ? 0.5 : (isBreakfast ? 0.5 : 1);
       const portionLabel = targetMeal.isLeftover ? '1 serving (leftover)' : 
                            (isBreakfast ? '1 serving' : '2 servings (cooking batch)');
       
-      // First scale ingredients based on portion adjustment, then multiply for cooking batch
+      // First scale ingredients based on TDEE adjustment, then apply portion conversion
       const adjustedIngredients = translatedRecipe.ingredients.map(ingredient => {
-        // Scale for portion adjustment first
+        // Scale for TDEE adjustment first
         const scaledIngredient = multiplyIngredientAmount(ingredient, ingredientScalingRatio);
-        // Then multiply for cooking batch (1 for leftover, 2 for fresh)
+        // Then convert portion size (0.5 for breakfast/leftover, 1 for fresh lunch/dinner)
         return multiplyIngredientAmount(scaledIngredient, PORTION_SIZE);
       });
       
