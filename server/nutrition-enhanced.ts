@@ -1383,7 +1383,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "200g tempeh (sliced)",
       "1 medium zucchini (sliced)",
       "1 small eggplant (cubed)",
-      "2 bell peppers (strips)",
+      "2 red bell peppers (strips)",
       "2 sprigs fresh thyme",
       "2 sprigs fresh oregano", 
       "4 tbsp fresh basil (chopped)",
@@ -2775,7 +2775,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Ayurvedic", "Quick"],
     ingredients: [
       "1 cup cooked brown rice",
-      "1 bell pepper (sliced)",
+      "1 red bell pepper (sliced)",
       "1 zucchini (sliced)",
       "150g green beans",
       "2 tbsp ghee or coconut oil",
@@ -5099,7 +5099,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     ingredients: [
       "150g firm tofu (cubed)",
       "90g cooked quinoa",
-      "1 bell pepper (sliced)",
+      "1 red bell pepper (sliced)",
       "100g broccoli florets",
       "1 carrot (julienned)",
       "2 tbsp soy sauce",
@@ -6286,7 +6286,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "200g lean ground beef (93/7)",
       "1 can (400g) black beans (drained)",
       "1 can (400g) diced tomatoes",
-      "1 bell pepper (diced)",
+      "1 red bell pepper (diced)",
       "1 onion (diced)",
       "3 cloves garlic (minced)",
       "2 tbsp tomato paste",
@@ -15739,6 +15739,309 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     active: true
   },
   
+  // NEW HIGH-PROTEIN BREAKFAST VERSIONS WITH PROTEIN POWDER
+  {
+    name: "High-protein steel-cut oats with berries and protein powder",
+    portion: "1 serving",
+    nutrition: { 
+      protein: 38, 
+      prepTime: 20, 
+      calories: 520,
+      carbohydrates: 60,
+      fats: 17,
+      fiber: 13,
+      sugar: 15,
+      sodium: 85,
+      potassium: 620,
+      calcium: 180,
+      iron: 4.8,
+      vitaminC: 14,
+      costEuros: 3.00, 
+      proteinPerEuro: 12.7 
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "Gluten-Free", "Dairy-Free", "Lactose-Free", "High-Protein", "Anti-Inflammatory", "Longevity", "Follicular", "Ovulation", "Anti-Aging"],
+    ingredients: [
+      "60g steel-cut oats",
+      "1 scoop (30g) vanilla protein powder",
+      "35g raw almonds and walnuts (chopped)",
+      "70g fresh blueberries and strawberries",
+      "15g ground flaxseed",
+      "2g cinnamon",
+      "5ml raw honey (optional)",
+      "360ml water for cooking"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["berries"],
+      benefits: ["High in antioxidants", "Rich in omega-3 fatty acids", "Supports heart health"]
+    },
+    recipe: {
+      instructions: [
+        "Soak steel-cut oats overnight in water",
+        "Drain and rinse oats, then cook in water for 15-20 minutes",
+        "Stir occasionally until creamy and tender",
+        "Remove from heat and let cool for 2 minutes",
+        "Stir in protein powder until fully dissolved",
+        "Top with mixed raw nuts (roughly chopped)",
+        "Add fresh mixed berries",
+        "Sprinkle ground flaxseed and cinnamon",
+        "Drizzle with raw honey if desired"
+      ],
+      tips: [
+        "Add protein powder after cooking to preserve quality",
+        "Cook larger batches and reheat throughout the week",
+        "Add nuts just before serving to maintain crunch"
+      ],
+      notes: "High-protein version with 38g protein - perfect for hitting your 95g daily target"
+    },
+    createdAt: new Date('2025-10-18'),
+    active: true
+  },
+  
+  {
+    name: "High-protein chia pudding with protein powder and fruit",
+    portion: "1 serving",
+    nutrition: { 
+      protein: 36, 
+      prepTime: 5, 
+      calories: 365,
+      carbohydrates: 27,
+      fats: 19,
+      fiber: 15,
+      sugar: 13,
+      sodium: 195,
+      potassium: 480,
+      calcium: 250,
+      iron: 4.2,
+      vitaminC: 48,
+      costEuros: 3.50, 
+      proteinPerEuro: 10.3 
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "Raw", "High-Protein", "Anti-Inflammatory", "Ayurvedic", "Longevity", "Follicular", "Ovulation", "Anti-Aging"],
+    ingredients: [
+      "3 tbsp chia seeds",
+      "180ml unsweetened almond milk",
+      "1 scoop (30g) vanilla protein powder",
+      "80g fresh mango (diced)",
+      "90g fresh kiwi (diced)",
+      "2 tbsp raw cashews (chopped)",
+      "1 tbsp raw coconut flakes",
+      "1/4 tsp vanilla extract",
+      "1 tsp pure maple syrup"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1.5,
+      vegetables: ["fruit"],
+      benefits: ["High in vitamin C", "Rich in fiber", "Supports digestive health"]
+    },
+    recipe: {
+      instructions: [
+        "Mix chia seeds with almond milk in a jar",
+        "Add vanilla extract and maple syrup",
+        "Whisk in protein powder until smooth",
+        "Stir well and refrigerate overnight (or 4+ hours)",
+        "Stir again before serving to ensure protein is mixed",
+        "Top with fresh diced mango and kiwi",
+        "Sprinkle with raw cashews and coconut flakes",
+        "Serve chilled"
+      ],
+      tips: [
+        "Make several portions at once for the week",
+        "Mix protein powder thoroughly to avoid clumping",
+        "Stir again before serving if mixture has separated"
+      ],
+      notes: "High-protein chia pudding with 36g protein from chia seeds and protein powder"
+    },
+    createdAt: new Date('2025-10-18'),
+    active: true
+  },
+  
+  {
+    name: "High-protein overnight oats with protein powder",
+    portion: "1 serving",
+    nutrition: {
+      protein: 35,
+      prepTime: 5,
+      calories: 420,
+      carbohydrates: 47,
+      fats: 9,
+      fiber: 13,
+      sugar: 16,
+      sodium: 165,
+      potassium: 580,
+      calcium: 280,
+      iron: 3.8,
+      vitaminC: 22,
+      costEuros: 2.90,
+      proteinPerEuro: 12.1
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Fiber", "High-Protein", "Make-Ahead", "Ayurvedic", "Longevity", "Anti-Aging"],
+    ingredients: [
+      "45g gluten-free rolled oats",
+      "120ml unsweetened almond milk",
+      "1 scoop (30g) vanilla protein powder",
+      "1 tbsp chia seeds",
+      "1 tbsp almond butter",
+      "75g mixed berries",
+      "1 tsp vanilla extract",
+      "Stevia to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["berries"],
+      benefits: ["Antioxidants", "Vitamin C", "Fiber"]
+    },
+    recipe: {
+      instructions: [
+        "Mix oats, almond milk, chia seeds, and vanilla in a jar",
+        "Add almond butter and stevia, stir well",
+        "Whisk in protein powder until fully dissolved",
+        "Refrigerate overnight (minimum 4 hours)",
+        "Stir well before serving to redistribute protein powder",
+        "Top with fresh berries",
+        "Can be eaten cold or warmed up"
+      ],
+      tips: [
+        "Prepare multiple jars for the week",
+        "Mix protein powder thoroughly to prevent clumping",
+        "Add more liquid if you prefer thinner consistency"
+      ],
+      notes: "High-protein overnight oats with 35g protein - perfect make-ahead breakfast"
+    },
+    createdAt: new Date('2025-10-18'),
+    active: true
+  },
+  
+  {
+    name: "High-protein quinoa breakfast bowl with protein powder",
+    portion: "1 serving",
+    nutrition: {
+      protein: 38,
+      prepTime: 15,
+      calories: 460,
+      carbohydrates: 44,
+      fats: 13,
+      fiber: 9,
+      sugar: 13,
+      sodium: 135,
+      potassium: 520,
+      calcium: 220,
+      iron: 4.5,
+      vitaminC: 8,
+      costEuros: 4.20,
+      proteinPerEuro: 9.0
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Protein", "Superfood", "Ayurvedic", "Longevity", "Menstrual", "Follicular", "Luteal", "Ovulation", "Anti-Aging"],
+    ingredients: [
+      "90g cooked quinoa",
+      "120g coconut yogurt",
+      "1 scoop (30g) vanilla protein powder",
+      "2 tbsp mixed nuts (almonds, walnuts)",
+      "1 tbsp hemp seeds",
+      "1/2 sliced banana",
+      "1 tsp maple syrup",
+      "Cinnamon to taste"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 0.5,
+      vegetables: ["banana"],
+      benefits: ["Potassium", "Natural Sugars"]
+    },
+    recipe: {
+      instructions: [
+        "Cook quinoa according to package directions and let cool",
+        "Mix coconut yogurt with protein powder until smooth",
+        "Layer protein yogurt mixture in a bowl",
+        "Add cooked quinoa on top",
+        "Sprinkle with hemp seeds and chopped nuts",
+        "Arrange banana slices and drizzle with maple syrup",
+        "Add a pinch of cinnamon"
+      ],
+      tips: [
+        "Cook quinoa in batches for the week",
+        "Mix protein powder into yogurt thoroughly",
+        "Toast nuts for extra flavor"
+      ],
+      notes: "Complete protein breakfast with 38g protein from quinoa, protein powder, and hemp seeds"
+    },
+    createdAt: new Date('2025-10-18'),
+    active: true
+  },
+  
+  {
+    name: "High-protein cashew yogurt bowl with protein powder",
+    portion: "1 bowl (300g)",
+    nutrition: {
+      protein: 38,
+      prepTime: 5,
+      calories: 430,
+      carbohydrates: 44,
+      fats: 15,
+      fiber: 11,
+      sugar: 23,
+      sodium: 80,
+      potassium: 520,
+      calcium: 280,
+      iron: 3.8,
+      vitaminC: 38,
+      cocoaFlavanols: 55,
+      costEuros: 5.20,
+      proteinPerEuro: 7.3
+    },
+    category: "breakfast",
+    tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "Quick", "No-Cook", "High-Protein", "Antioxidant", "Gut-Health"],
+    ingredients: [
+      "200g unsweetened cashew yogurt",
+      "1 scoop (30g) vanilla protein powder",
+      "1 tbsp (15g) raw cacao nibs",
+      "75g fresh blackberries",
+      "1 tbsp chia seeds",
+      "1 tsp honey (optional)",
+      "10g fresh mint for garnish"
+    ],
+    wholeFoodLevel: "high",
+    vegetableContent: {
+      servings: 1,
+      vegetables: ["blackberries"],
+      benefits: ["Rich in antioxidants", "Anti-inflammatory properties", "Gut-friendly probiotics"]
+    },
+    recipeBenefits: [
+      "55mg cocoa flavanols from cacao nibs and blackberries",
+      "38g protein from yogurt and protein powder",
+      "Probiotics support gut health",
+      "Anti-inflammatory benefits from berries"
+    ],
+    recipe: {
+      instructions: [
+        "Mix cashew yogurt with protein powder until smooth and creamy",
+        "Spoon into serving bowl",
+        "Top with fresh blackberries",
+        "Sprinkle cacao nibs evenly over the top",
+        "Add chia seeds",
+        "Drizzle with honey if desired",
+        "Garnish with fresh mint",
+        "Serve immediately"
+      ],
+      tips: [
+        "Use soy yogurt as alternative",
+        "Mix protein powder thoroughly to avoid lumps",
+        "Cacao nibs add satisfying crunch",
+        "Prepare chia pudding night before for extra creaminess"
+      ],
+      notes: "High-protein gut-friendly breakfast with 38g protein and 55mg flavanols"
+    },
+    createdAt: new Date('2025-10-18'),
+    active: true
+  },
+  
   {
     name: "Quinoa salad with apples and walnuts",
     portion: "1 bowl (400g)",
@@ -18383,6 +18686,15 @@ export function multiplyIngredientAmount(ingredientString: string, multiplier: n
         console.log(`🔢 Rounding grams: ${newAmount}g → ${roundGramsToNearest10(newAmount, unitMatch[1])}g for "${ingredientString}"`);
         // Round grams to nearest 10
         newAmount = roundGramsToNearest10(newAmount, unitMatch[1]);
+      }
+      
+      // Round piece-based ingredients to 1/2 or 1 (not decimals like 0.6 or 1.1)
+      const isPieceBased = /bell pepper|onion|zucchini|aubergine|eggplant|cucumber|avocado|lemon|lime|portobello|fennel/i.test(ingredientString);
+      if (isPieceBased && !unitMatch) {
+        // Round to nearest 0.5
+        const roundedAmount = Math.round(newAmount * 2) / 2;
+        console.log(`🔢 Rounding piece ingredient: ${newAmount} → ${roundedAmount} for "${ingredientString}"`);
+        newAmount = roundedAmount;
       }
       
       // Format the new amount: whole numbers as integers, decimals with max 1 decimal place
