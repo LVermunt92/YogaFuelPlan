@@ -18514,7 +18514,18 @@ export function getDefaultPortion(ingredient: string): { amount: number; unit: s
     'cornstarch': { amount: 200, unit: 'g' }, // Small box
     'gram flour': { amount: 500, unit: 'g' }, // Standard bag
     'carrots': { amount: 1, unit: 'piece' }, // 1 medium carrot
-    'kiwi': { amount: 4, unit: 'pieces' } // 4 kiwi fruits
+    'kiwi': { amount: 4, unit: 'pieces' }, // 4 kiwi fruits
+    // Onions - preserve as whole units
+    'onion': { amount: 1, unit: 'piece' }, // 1 onion
+    'onions': { amount: 2, unit: 'pieces' }, // 2 onions
+    'red onion': { amount: 1, unit: 'piece' }, // 1 red onion
+    'red onions': { amount: 2, unit: 'pieces' }, // 2 red onions
+    'white onion': { amount: 1, unit: 'piece' }, // 1 white onion
+    'yellow onion': { amount: 1, unit: 'piece' }, // 1 yellow onion
+    'green onion': { amount: 1, unit: 'piece' }, // 1 green onion (scallion)
+    'green onions': { amount: 2, unit: 'pieces' }, // 2 green onions
+    'spring onion': { amount: 1, unit: 'piece' }, // 1 spring onion
+    'spring onions': { amount: 2, unit: 'pieces' } // 2 spring onions
   };
   
   // Intelligent fallback logic based on ingredient type

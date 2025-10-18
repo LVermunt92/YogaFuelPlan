@@ -26,6 +26,7 @@ Preferred communication style: Simple, everyday language.
 
 **INGREDIENT FORMAT STANDARDS** (CRITICAL - ensures consistent shopping lists):
   - **Bell peppers**: ALWAYS specify in pieces (e.g., "1/2 bell pepper, diced", "1 red bell pepper, sliced") - NEVER use grams
+  - **Onions**: ALWAYS specify in pieces (e.g., "1 onion, diced", "1/2 red onion, sliced", "2 green onions") - NEVER use grams
   - **Ginger**: ALWAYS specify in grams (e.g., "15g fresh ginger", "10g fresh ginger, minced") - NEVER use tsp, tbsp, ml, or pieces. Conversion: 1 tsp = 5g, 1 tbsp = 15g, 1ml = 1g, 5cm piece = 20g
   - **Zucchini**: ALWAYS specify in pieces (e.g., "1 zucchini, sliced", "1/2 zucchini") - NEVER use grams
   - **Mushrooms (regular)**: ALWAYS specify in grams (e.g., "150g mushrooms, sliced", "100g button mushrooms") - NEVER use pieces
