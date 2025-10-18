@@ -8928,22 +8928,22 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     active: true
   },
   {
-    name: "Thai Red Lentil & Chickpea Curry",
+    name: "Thai Mixed Lentil & Chickpea Curry with Brown Rice",
     portion: "2 servings",
     nutrition: {
-      protein: 24,
+      protein: 28,
       prepTime: 45,
-      calories: 465,
-      carbohydrates: 52,
+      calories: 580,
+      carbohydrates: 78,
       fats: 18,
-      fiber: 16,
+      fiber: 18,
       sugar: 12,
       sodium: 680,
-      potassium: 980,
-      calcium: 145,
-      iron: 7.8,
+      potassium: 1080,
+      calcium: 160,
+      iron: 8.5,
       vitaminC: 85,
-      costEuros: 3.60,
+      costEuros: 4.20,
       proteinPerEuro: 6.7
     },
     category: "dinner",
@@ -8955,7 +8955,9 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "1 bird's eye chilli (finely chopped)",
       "30ml Thai red curry paste",
       "2 red bell peppers (sliced)",
-      "100g dried red lentils (rinsed)",
+      "50g dried green lentils (rinsed)",
+      "50g dried red lentils (rinsed)",
+      "140g brown rice",
       "200ml coconut milk",
       "10ml tamari",
       "10ml maple syrup",
@@ -8975,24 +8977,27 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
+        "Cook brown rice according to package instructions and set aside",
         "Warm olive oil in large saucepan set over medium-low heat",
         "Add garlic, ginger, chillies and curry paste",
         "Cook for 5-7 minutes, stirring often, until fragrant",
-        "Add red peppers, red lentils, coconut milk, tamari, maple syrup and vegetable stock",
-        "Bring to boil then reduce heat and simmer with lid on for 20-25 minutes until lentils are tender",
-        "Add chickpeas along with liquid from jar and simmer for 5-10 minutes",
+        "Add red peppers and green lentils first with vegetable stock",
+        "Bring to boil then reduce heat and simmer for 15 minutes",
+        "Add red lentils, coconut milk, tamari, and maple syrup",
+        "Continue simmering with lid on for 15-20 minutes until all lentils are tender",
+        "Add chickpeas and simmer for 5 minutes",
         "Add spinach and cook until just wilted",
-        "Stir in lime juice and three-quarters of Thai basil",
+        "Stir in lime juice and Thai basil",
         "Taste and adjust seasoning",
-        "Serve in bowls, topped with remaining Thai basil, extra chillies, and lime wedges",
-        "Delicious with steamed sticky rice or quinoa"
+        "Serve curry over brown rice, topped with extra Thai basil and lime wedges"
       ],
       tips: [
-        "Keep curry mild for sensitive palates or add extra chillies for heat lovers",
+        "Green lentils hold their shape better and add nice texture contrast to soft red lentils",
+        "Add green lentils first as they take longer to cook than red lentils",
         "Curry keeps well in fridge for up to 3 days or freezer for up to 3 months",
-        "Let cool completely before storing in airtight containers for best results"
+        "Brown rice adds extra fiber and makes this a complete meal"
       ],
-      notes: "One-pan curry perfect for batch-cooking - rich, fragrant, and packed with lentils, chickpeas and spinach for fiber, protein and iron"
+      notes: "One-pan curry perfect for batch-cooking - rich, fragrant, and packed with mixed lentils, chickpeas, spinach and brown rice for complete protein, fiber and iron"
     },
     createdAt: new Date('2025-08-30'),
     active: true
