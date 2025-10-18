@@ -122,8 +122,22 @@ export function proteinRangePerDay(
     baseMin = Math.max(baseMin, 1.4); // Minimum for muscle gain
     goalMultiplier = 1.05;
   } else if (goal === "fat_loss") {
-    baseMin = Math.max(baseMin, 1.2); // Higher protein helps preserve muscle during deficit
-    goalMultiplier = 1.1;
+    // Tiered protein approach for weight loss based on activity level
+    // Higher protein preserves muscle mass during calorie deficit
+    if (activityLevel === "sedentary" || activityLevel === "light") {
+      // Lower activity: 1.8g/kg for muscle preservation
+      baseMin = 1.8;
+      baseMax = 2.0;
+    } else if (activityLevel === "moderate" || activityLevel === "high") {
+      // Moderate/high activity: 2.0g/kg for optimal muscle retention
+      baseMin = 2.0;
+      baseMax = 2.2;
+    } else if (activityLevel === "athlete") {
+      // Athletes: 2.2g/kg (safe maximum for intensive training during deficit)
+      baseMin = 2.2;
+      baseMax = 2.2;
+    }
+    goalMultiplier = 1.0; // No additional multiplier needed, values are already set
   }
 
   // Calculate final range
