@@ -148,13 +148,16 @@ export function proteinRangePerDay(
   const absoluteMax = Math.round(2.2 * weightKg); // 2.2g/kg is generally considered safe upper limit
   maxProtein = Math.min(maxProtein, absoluteMax);
   
-  // Ensure minimum makes sense
-  minProtein = Math.max(minProtein, 40); // Absolute minimum for adults
+  // Ensure minimum makes sense (40g is absolute minimum for adults)
+  minProtein = Math.max(minProtein, 40);
   
-  // Ensure range is valid
-  if (minProtein >= maxProtein) {
-    maxProtein = minProtein + 10;
+  // Ensure range is valid: minProtein must never exceed maxProtein
+  if (minProtein > maxProtein) {
+    // Edge case: when body weight is very low (< 18kg), the absolute cap (2.2g/kg) 
+    // can be below the 40g minimum. In this case, respect the cap and lower the minimum.
+    minProtein = maxProtein;
   }
+  // Note: if minProtein == maxProtein (e.g., athlete fat_loss at 60kg = 132-132g), that's acceptable
 
   const explanation = generateExplanation(age, weightKg, activityLevel, goal, strategy, ageAdjusted, gender);
 
