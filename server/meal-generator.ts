@@ -229,6 +229,54 @@ function calculateBMI(weight: number, height: number): number {
 }
 
 /**
+ * Calculate TDEE (Total Daily Energy Expenditure) using Mifflin-St Jeor equation
+ * TDEE = BMR × Activity Level Multiplier
+ */
+function calculateTDEE(user: User): number {
+  if (!user.weight || !user.height || !user.age) {
+    console.log('⚠️ TDEE: Missing required user data (weight/height/age), returning default 2000 kcal');
+    return 2000; // Default fallback
+  }
+
+  // Mifflin-St Jeor BMR calculation
+  // Men: BMR = (10 × weight) + (6.25 × height) - (5 × age) + 5
+  // Women: BMR = (10 × weight) + (6.25 × height) - (5 × age) - 161
+  const weightKg = user.weight;
+  const heightCm = user.height;
+  const age = user.age;
+  
+  let bmr: number;
+  if (user.gender === 'male') {
+    bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) + 5;
+  } else if (user.gender === 'female') {
+    bmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) - 161;
+  } else {
+    // Default to average of male/female for 'other' or unspecified
+    const maleBmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) + 5;
+    const femaleBmr = (10 * weightKg) + (6.25 * heightCm) - (5 * age) - 161;
+    bmr = (maleBmr + femaleBmr) / 2;
+  }
+
+  // Activity level multipliers
+  const activityMultipliers = {
+    'sedentary': 1.2,    // Little/no exercise
+    'light': 1.375,      // Exercise 1-3 days/week
+    'moderate': 1.55,    // Exercise 3-5 days/week
+    'high': 1.725,       // Exercise 6-7 days/week
+    'athlete': 1.9       // Intense exercise 6-7 days/week
+  };
+
+  const activityLevel = user.activityLevel || 'moderate';
+  const multiplier = activityMultipliers[activityLevel as keyof typeof activityMultipliers] || 1.55;
+  
+  const tdee = Math.round(bmr * multiplier);
+  
+  console.log(`📊 TDEE Calculation: BMR=${Math.round(bmr)} × Activity(${activityLevel})=${multiplier} = ${tdee} kcal/day`);
+  
+  return tdee;
+}
+
+/**
  * Calculate caloric adjustment factor based on user's goals, BMI, and timeline
  * Includes maintenance week logic: every 6th week returns to normal calories
  */
