@@ -1597,9 +1597,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Check if this is a leftover meal or fresh cooking
       // Leftovers: show 1 serving (just reheating)
-      // Fresh: show 2 servings (cooking batch for today + tomorrow's leftover)
-      const PORTION_SIZE = targetMeal.isLeftover ? 1 : 2;
-      const portionLabel = targetMeal.isLeftover ? '1 serving (leftover)' : '2 servings (cooking batch)';
+      // Breakfast: ALWAYS 1 serving (no batch cooking for breakfast)
+      // Fresh lunch/dinner: show 2 servings (cooking batch for today + tomorrow's leftover)
+      const isBreakfast = targetMeal.mealType === 'breakfast';
+      const PORTION_SIZE = targetMeal.isLeftover ? 1 : (isBreakfast ? 1 : 2);
+      const portionLabel = targetMeal.isLeftover ? '1 serving (leftover)' : 
+                           (isBreakfast ? '1 serving' : '2 servings (cooking batch)');
       
       // First scale ingredients based on portion adjustment, then multiply for cooking batch
       const adjustedIngredients = translatedRecipe.ingredients.map(ingredient => {
