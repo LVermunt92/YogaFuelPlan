@@ -2087,7 +2087,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Serve over pasta with fresh herbs for Instagram appeal"
       ],
       tips: ["Called 'Marry Me' because it's proposal-worthy", "This vegetarian version went viral for being just as good as the original", "Perfect for date night content"],
-      notes: "This plant-based version maintains all the viral appeal while being completely vegetarian. For gluten-free diets, simply substitute with gluten-free pasta (rice, corn, or chickpea pasta work perfectly)."
+      notes: "This plant-based version maintains all the viral appeal while being completely vegetarian. For gluten-free diets, simply substitute with gluten-free pasta (rice, corn, or legume pasta work perfectly)."
     }
   },
 
@@ -6424,7 +6424,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     category: "dinner",
     tags: ["Vegetarian", "Gluten-Free", "Mediterranean"],
     ingredients: [
-      "200g chickpea or lentil pasta (uncooked weight)",
+      "200g legume pasta (uncooked weight)",
       "1 medium zucchini (150g)",
       "1 red bell pepper (120g)",
       "100g broccoli florets",
@@ -6442,7 +6442,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
-        "Cook chickpea or lentil pasta according to package instructions",
+        "Cook legume pasta according to package instructions",
         "Heat olive oil in large pan over medium-high heat",
         "Add zucchini, bell pepper, broccoli and mushrooms, roast for 8-10 minutes",
         "Add cooked pasta to pan with vegetables",
@@ -13608,7 +13608,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
 
   // GLUTEN-FREE PASTA WITH ENHANCED AVOCADO SAUCE
   {
-    name: "Gluten-Free Lentil Pasta with Protein-Enhanced Avocado Sauce",
+    name: "Gluten-Free Legume Pasta with Protein-Enhanced Avocado Sauce",
     portion: "1 serving",
     nutrition: {
       protein: 24,
@@ -13627,11 +13627,11 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       proteinPerEuro: 4.6
     },
     category: "dinner",
-    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Protein", "Plant-Based", "Italian", "Lentil-Pasta", "Anti-Aging"],
+    tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Protein", "Plant-Based", "Italian", "Anti-Aging"],
     ingredients: [
       "125g cherry tomatoes",
       "1 ripe avocado",
-      "125g gluten-free lentil pasta",
+      "125g legume pasta",
       "100ml lactose-free cream",
       "62g lactose-free mozzarella",
       "50g cooked edamame beans",
@@ -13642,10 +13642,10 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     vegetableContent: {
       servings: 2,
       vegetables: ["cherry tomatoes", "avocado", "edamame"],
-      benefits: ["Lycopene from roasted tomatoes", "Healthy fats from avocado", "Complete protein from lentil pasta and edamame", "High fiber content for satiation"]
+      benefits: ["Lycopene from roasted tomatoes", "Healthy fats from avocado", "Complete protein from legume pasta and edamame", "High fiber content for satiation"]
     },
     recipeBenefits: [
-      "Lentil pasta doubles protein and fiber compared to regular pasta",
+      "Legume pasta doubles protein and fiber compared to regular pasta",
       "Edamame adds complete amino acids and extra protein",
       "Lactose-free options suitable for dairy sensitivities",
       "Gluten-free for celiac and gluten-sensitive individuals",
@@ -13656,7 +13656,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Preheat oven to 200°C",
         "Place cherry tomatoes in an oven dish with olive oil, salt, and pepper",
         "Roast tomatoes for 15-20 minutes until soft and slightly caramelized",
-        "Cook lentil pasta according to package instructions (usually 8-10 minutes)",
+        "Cook legume pasta according to package instructions (usually 8-10 minutes)",
         "While pasta cooks, blend ripe avocado with lactose-free cream, salt, and pepper until smooth",
         "Drain pasta and mix immediately with the creamy avocado sauce",
         "Fold in cooked edamame beans for extra protein and texture",
@@ -13664,13 +13664,13 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Season with additional salt and pepper to taste"
       ],
       tips: [
-        "Lentil pasta can become mushy if overcooked - check frequently",
+        "Legume pasta can become mushy if overcooked - check frequently",
         "Edamame can be frozen (thawed) or fresh cooked",
         "The avocado sauce will be slightly thicker with lactose-free cream",
         "Add nutritional yeast for extra umami if desired",
         "This version provides exceptional protein content for plant-based eaters"
       ],
-      notes: "Protein-packed, allergen-friendly pasta featuring lentil pasta and edamame for exceptional nutrition. Perfect for those avoiding gluten and dairy while maximizing protein intake."
+      notes: "Protein-packed, allergen-friendly pasta featuring legume pasta and edamame for exceptional nutrition. Perfect for those avoiding gluten and dairy while maximizing protein intake."
     },
     createdAt: new Date('2025-09-09'),
     active: true
@@ -16394,7 +16394,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       ],
       tips: [
         "Cacao adds richness without sweetness",
-        "Use chickpea pasta for extra protein",
+        "Use legume pasta for extra protein",
         "Dark chocolate provides additional flavanols"
       ],
       notes: "Hearty pasta dish with 26mg flavanols from cacao and dark chocolate"
@@ -18333,8 +18333,7 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
     'orecchiette': 'Grains, Pasta & Canned Goods',
     'cavatappi': 'Grains, Pasta & Canned Goods',
     'whole wheat pasta': 'Grains, Pasta & Canned Goods',
-    'chickpea pasta': 'Grains, Pasta & Canned Goods',
-    'lentil pasta': 'Grains, Pasta & Canned Goods',
+    'legume pasta': 'Grains, Pasta & Canned Goods',
     'rice pasta': 'Grains, Pasta & Canned Goods',
     'corn pasta': 'Grains, Pasta & Canned Goods',
     'wheat gluten-free pasta': 'Grains, Pasta & Canned Goods', // Fix for incorrect conversion
