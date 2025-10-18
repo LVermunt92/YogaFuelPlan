@@ -1865,30 +1865,49 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     category: "dinner",
     tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Anti-Inflammatory", "High-Protein", "Longevity", "Middle-Eastern"],
-    ingredients: ["quinoa", "mixed wild mushrooms", "fresh herbs (parsley, thyme)", "1 zucchini", "red bell pepper", "carrots", "red onion", "olive oil", "vegetable stock", "tahini", "lemon juice", "hemp hearts", "pumpkin seeds", "chickpeas", "nutritional yeast"],
+    ingredients: [
+      "170g quinoa",
+      "150g mixed wild mushrooms (sliced)",
+      "20g fresh parsley",
+      "10g fresh thyme",
+      "1 zucchini (diced)",
+      "1 red bell pepper (diced)",
+      "1 carrot (diced)",
+      "1/2 red onion (diced)",
+      "50ml olive oil",
+      "480ml vegetable stock",
+      "30ml tahini",
+      "30ml lemon juice",
+      "30g hemp hearts",
+      "20g pumpkin seeds",
+      "240g canned chickpeas (drained)",
+      "15g nutritional yeast",
+      "2g salt",
+      "1g black pepper"
+    ],
     wholeFoodLevel: "high",
     vegetableContent: {
       servings: 4,
-      vegetables: ["mushrooms", "zucchini", "bell pepper", "carrots", "onion"],
+      vegetables: ["mushrooms", "zucchini", "bell pepper", "carrot", "onion"],
       benefits: ["High in antioxidants", "Supports immune system", "Rich in B vitamins", "High in beta-carotene"]
     },
     recipe: {
       instructions: [
-        "Rinse 1 cup quinoa until water runs clear",
+        "Rinse quinoa until water runs clear",
         "Toast quinoa in dry pan for 2-3 minutes for nuttier taste",
-        "Sauté sliced mushrooms in 1 tbsp olive oil until golden, set aside",
-        "Cook quinoa in 2 cups vegetable stock with 1 tbsp olive oil for 15 minutes",
-        "Meanwhile, dice zucchini, bell pepper, carrots, and onion",
-        "Drain and rinse 1 can chickpeas, pat dry",
-        "Toss vegetables and chickpeas with 2 tbsp olive oil, salt, and pepper",
+        "Sauté sliced mushrooms in olive oil until golden, set aside",
+        "Cook quinoa in vegetable stock with olive oil for 15 minutes",
+        "Meanwhile, dice zucchini, bell pepper, carrot, and onion",
+        "Drain and rinse chickpeas, pat dry",
+        "Toss vegetables and chickpeas with olive oil, salt, and pepper",
         "Roast vegetables and chickpeas at 200°C for 25 minutes until tender and slightly caramelized",
         "Toast pumpkin seeds in dry pan for 2-3 minutes until golden",
-        "Make protein-rich tahini dressing: whisk 2 tbsp tahini, 2 tbsp lemon juice, 1 tbsp olive oil, 1 tbsp nutritional yeast, and 2-3 tbsp water until smooth",
-        "Fluff cooked quinoa and mix with extra 1 tbsp olive oil and 2 tbsp hemp hearts",
+        "Make tahini dressing: whisk tahini, lemon juice, olive oil, nutritional yeast, and water until smooth",
+        "Fluff cooked quinoa and mix with olive oil and hemp hearts",
         "Stir in mushrooms, fresh herbs, and half the tahini dressing",
         "Top with roasted vegetables, chickpeas, and toasted pumpkin seeds",
-        "Drizzle with remaining tahini dressing and extra olive oil",
-        "Finish with extra nutritional yeast to taste and fresh herbs"
+        "Drizzle with remaining tahini dressing",
+        "Finish with extra nutritional yeast and fresh herbs"
       ],
       tips: [
         "Use a variety of mushrooms for complex flavour",
@@ -1897,7 +1916,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Hemp hearts and nutritional yeast boost protein while adding nutty flavor",
         "Roasted chickpeas add satisfying crunch and substantial protein"
       ],
-      notes: "This Middle Eastern inspired recipe delivers 30g protein through quinoa, chickpeas, hemp hearts, and tahini. The tahini dressing prevents quinoa from being dry while adding healthy fats. Nutritional yeast provides B-vitamins and umami depth, creating a completely plant-based, deeply satisfying meal."
+      notes: "This Middle Eastern inspired recipe delivers 32g protein through quinoa, chickpeas, hemp hearts, and tahini. The tahini dressing prevents quinoa from being dry while adding healthy fats. Nutritional yeast provides B-vitamins and umami depth, creating a completely plant-based, deeply satisfying meal."
     }
   },
   {
