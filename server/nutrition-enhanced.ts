@@ -428,7 +428,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Vegetarian", "Gluten-Free", "Dairy-Free", "Lactose-Free", "Ayurvedic", "Pitta-Balancing", "Anti-Inflammatory", "Whole30", "Longevity", "Follicular", "Ovulation", "Luteal"],
     ingredients: [
       "40g steel-cut oats",
-      "200ml oat milk", 
+      "200ml plant-based milk", 
       "1 ripe nectarine (150g), sliced",
       "15ml coconut chips",
       "2.5ml fennel seeds",
@@ -447,9 +447,9 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       instructions: [
         "Toast coconut chips in a dry pan over low heat for 2-3 minutes until golden brown, set aside",
         "Halve the nectarine, remove pit, and slice into small pieces", 
-        "Combine oats, oat milk, and fennel seeds in a small saucepan",
+        "Combine oats, plant-based milk, and fennel seeds in a small saucepan",
         "Bring to a boil, then reduce heat and simmer 3-5 minutes, stirring occasionally until thick",
-        "If mixture becomes too dry, add more oat milk",
+        "If mixture becomes too dry, add more plant-based milk",
         "Heat oil in a small pan and sauté nectarine pieces for 3-5 minutes until warm and soft",
         "Stir hemp hearts and flaxseed into finished oatmeal",
         "Serve in bowl topped with sautéed nectarine, toasted coconut chips, and fresh mint"
@@ -597,7 +597,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "125g oat flour (or ground oats)",
       "45g raw cacao powder",
       "60ml coconut oil (melted)",
-      "150ml oat milk",
+      "150ml plant-based milk",
       "150ml maple syrup",
       "15ml chia seeds",
       "45ml water",
@@ -620,7 +620,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Preheat oven to 180°C and line muffin tin with paper cases",
         "Mix chia seeds with water in small bowl, let sit 5 minutes to form gel",
         "Combine oat flour, cacao powder, and salt in large bowl",
-        "In separate bowl, whisk melted coconut oil, oat milk, maple syrup, vanilla, and chia gel",
+        "In separate bowl, whisk melted coconut oil, plant-based milk, maple syrup, vanilla, and chia gel",
         "Mix vinegar and baking soda in small glass - it will foam briefly",
         "Pour wet ingredients into dry ingredients, add vinegar mixture",
         "Fold in hemp hearts, then gently add raspberries and hazelnuts",
@@ -656,7 +656,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "Raw", "Anti-Inflammatory", "Ayurvedic", "Longevity", "Follicular", "Ovulation", "Anti-Aging"],
     ingredients: [
       "3 tbsp chia seeds",
-      "180ml unsweetened almond milk",
+      "180ml plant-based milk",
       "80g fresh mango (diced)",
       "90g fresh kiwi (diced)",
       "2 tbsp raw cashews (chopped)",
@@ -672,7 +672,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
-        "Mix 3 tbsp chia seeds with 3/4 cup almond milk",
+        "Mix 3 tbsp chia seeds with 3/4 cup plant-based milk",
         "Add 1/4 tsp vanilla extract and 1 tsp maple syrup",
         "Stir well and refrigerate overnight (or 4+ hours)",
         "Top with 1/2 cup fresh diced mango and kiwi",
@@ -689,7 +689,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
 
   // Additional gluten-free, lactose-free, vegetarian breakfast options
   {
-    name: "Overnight oats with almond milk and berries",
+    name: "Overnight oats with plant-based milk and berries",
     portion: "1 serving",
     nutrition: {
       protein: 15,
@@ -707,7 +707,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Fiber", "Make-Ahead", "Ayurvedic", "Longevity", "Anti-Aging"],
     ingredients: [
       "45g gluten-free rolled oats",
-      "120ml unsweetened almond milk",
+      "120ml plant-based milk",
       "1 tbsp chia seeds",
       "1 tbsp almond butter",
       "75g mixed berries",
@@ -722,7 +722,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
-        "Mix oats, almond milk, chia seeds, and vanilla in a jar",
+        "Mix oats, plant-based milk, chia seeds, and vanilla in a jar",
         "Add almond butter and stevia, stir well",
         "Refrigerate overnight (minimum 4 hours)",
         "Top with fresh berries before serving",
@@ -806,7 +806,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "30g coconut flour",
       "30g plant protein powder",
       "3 eggs",
-      "60ml almond milk",
+      "60ml plant-based milk",
       "1 tbsp coconut oil",
       "1 tsp vanilla extract",
       "½ tsp baking powder",
@@ -821,7 +821,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     recipe: {
       instructions: [
         "Mix coconut flour, protein powder, baking powder, and salt",
-        "Whisk eggs, almond milk, and vanilla in separate bowl",
+        "Whisk eggs, plant-based milk, and vanilla in separate bowl",
         "Combine wet and dry ingredients, let batter rest 5 minutes",
         "Heat coconut oil in non-stick pan over medium-low heat",
         "Pour batter to form 3-inch pancakes",
@@ -855,7 +855,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     ingredients: [
       "30g spinach",
       "½ frozen banana",
-      "120ml unsweetened almond milk",
+      "120ml plant-based milk",
       "1 tbsp almond butter",
       "30g vanilla plant protein powder",
       "2 tbsp hemp hearts",
@@ -871,7 +871,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
-        "Blend spinach, banana, almond milk, and almond butter until smooth",
+        "Blend spinach, banana, plant-based milk, and almond butter until smooth",
         "Add protein powder and blend until fully incorporated",
         "Add frozen mango and blend until thick consistency",
         "Pour into bowl",
@@ -910,7 +910,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     ingredients: [
       "30g fresh spinach",
       "1/2 frozen banana",
-      "200ml unsweetened almond milk",
+      "200ml plant-based milk",
       "1 tbsp almond butter",
       "1 scoop (30g) vanilla plant protein powder",
       "1 tbsp hemp hearts",
@@ -926,7 +926,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
-        "Add almond milk to blender first",
+        "Add plant-based milk to blender first",
         "Add fresh spinach and blend until smooth",
         "Add frozen banana, mango, and almond butter",
         "Add protein powder and hemp hearts",
@@ -3751,7 +3751,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "50g rolled oats",
       "1 vanilla protein powder", 
       "1/2 mashed banana",
-      "60ml almond milk",
+      "60ml plant-based milk",
       "15ml almond butter",
       "5ml cinnamon",
       "25g blueberries",
@@ -3768,7 +3768,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Preheat oven to 180°C",
         "Mash banana in oven-safe ramekin",
         "Mix in oats, protein powder, cinnamon",
-        "Add almond milk and almond butter, stir well",
+        "Add plant-based milk and almond butter, stir well",
         "Fold in half the blueberries",
         "Bake for 15-18 minutes until set and golden",
         "Top with remaining blueberries and maple syrup drizzle",
@@ -3805,7 +3805,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Vegetarian", "Lactose-Free", "High-Protein", "Make-Ahead", "Meal-Prep", "Anti-Aging"],
     ingredients: [
       "50g oats",
-      "125ml unsweetened almond milk",
+      "125ml plant-based milk",
       "½ ripe banana",
       "1 small egg",
       "1 tbsp almond paste",
@@ -3825,7 +3825,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       instructions: [
         "Preheat oven to 180°C",
         "Mash half the banana in a bowl",
-        "Mix mashed banana with oats, almond milk, egg, almond paste, protein powder, baking powder, cinnamon, and salt",
+        "Mix mashed banana with oats, plant-based milk, egg, almond paste, protein powder, baking powder, cinnamon, and salt",
         "Pour mixture into a small ovenproof ramekin or dish",
         "Top with remaining banana slices and almond flakes",
         "Bake for 20-25 minutes until golden and set",
@@ -3972,7 +3972,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Vegetarian", "Vegan", "Dairy-Free", "Lactose-Free", "Plant-Based", "Anti-Aging"],
     ingredients: [
       "30g raw cashews",
-      "30ml unsweetened almond milk",
+      "30ml plant-based milk",
       "1 tsp tamari",
       "1 tsp nutritional yeast (optional)",
       "1/3 lemon, juiced",
@@ -3993,7 +3993,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
-        "Make the sauce by placing cashews, almond milk, tamari, nutritional yeast, lemon juice and a sprinkling of salt into a powerful blender. Blitz to form a creamy sauce – you may wish to add a dash more almond milk, if needed",
+        "Make the sauce by placing cashews, plant-based milk, tamari, nutritional yeast, lemon juice and a sprinkling of salt into a powerful blender. Blitz to form a creamy sauce – you may wish to add a dash more plant-based milk, if needed",
         "Place a pan over medium heat and add a drizzle of olive oil. Once warm, add the diced onion, garlic and a sprinkling of salt. Cook for 10 minutes until the onion is soft",
         "Once soft, add the sliced mushrooms, dried rosemary and a sprinkling of salt. Mix well and cook for 10 minutes until the mushrooms reduce in size and soften",
         "While the mushrooms cook, cook the pasta according to the packet instructions. Once cooked, drain (reserving a little of the pasta water) and mix through the mushroom mixture",
@@ -4087,7 +4087,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Vegetarian", "Vegan", "Dairy-Free", "Lactose-Free", "Gluten-Free", "Plant-Based", "Anti-Aging"],
     ingredients: [
       "30g raw cashews",
-      "30ml unsweetened almond milk",
+      "30ml plant-based milk",
       "1 tsp tamari",
       "1 tsp nutritional yeast (optional)",
       "1/3 lemon, juiced",
@@ -4108,7 +4108,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
-        "Make the sauce by placing cashews, almond milk, tamari, nutritional yeast, lemon juice and a sprinkling of salt into a powerful blender. Blitz to form a creamy sauce – you may wish to add a dash more almond milk, if needed",
+        "Make the sauce by placing cashews, plant-based milk, tamari, nutritional yeast, lemon juice and a sprinkling of salt into a powerful blender. Blitz to form a creamy sauce – you may wish to add a dash more plant-based milk, if needed",
         "Place a pan over medium heat and add a drizzle of olive oil. Once warm, add the diced onion, garlic and a sprinkling of salt. Cook for 10 minutes until the onion is soft",
         "Once soft, add the sliced mushrooms, dried rosemary and a sprinkling of salt. Mix well and cook for 10 minutes until the mushrooms reduce in size and soften",
         "While the mushrooms cook, cook the gluten-free pasta according to the packet instructions. Once cooked, drain (reserving a little of the pasta water) and mix through the mushroom mixture",
@@ -4701,7 +4701,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "High-Protein", "overnight", "Anti-Aging"],
     ingredients: [
       "45ml chia seeds",
-      "240ml almond milk",
+      "240ml plant-based milk",
       "30ml almond butter",
       "15ml maple syrup",
       "2ml vanilla extract",
@@ -4716,7 +4716,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
-        "Mix chia seeds with almond milk in bowl",
+        "Mix chia seeds with plant-based milk in bowl",
         "Whisk in almond butter, maple syrup, and vanilla",
         "Refrigerate overnight or 4+ hours",
         "Stir before serving to break up any clumps",
@@ -5012,7 +5012,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     ingredients: [
       "1 vanilla protein powder",
       "150g frozen berries",
-      "120ml almond milk",
+      "120ml plant-based milk",
       "60g granola",
       "15ml almond butter",
       "30g fresh strawberries",
@@ -5026,7 +5026,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
-        "Blend protein powder, frozen berries, almond milk until thick",
+        "Blend protein powder, frozen berries, plant-based milk until thick",
         "Pour into bowl with thick smoothie consistency",
         "Top with granola in decorative pattern",
         "Add fresh strawberry slices",
@@ -5112,7 +5112,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "2 eggs",
       "1 vanilla protein powder",
       "30g oat flour",
-      "120ml almond milk",
+      "120ml plant-based milk",
       "5ml baking powder",
       "150g mixed berries",
       "15ml maple syrup"
@@ -5125,7 +5125,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
-        "Mix eggs, protein powder, oat flour, almond milk",
+        "Mix eggs, protein powder, oat flour, plant-based milk",
         "Add baking powder and whisk until smooth",
         "Heat non-stick pan over medium heat",
         "Pour batter to form 3 pancakes",
@@ -5532,7 +5532,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     ingredients: [
       "¼ cup coconut flour",
       "4 eggs",
-      "¼ cup almond milk",
+      "¼ cup plant-based milk",
       "2 tbsp cream cheese (softened)",
       "1 tsp vanilla extract",
       "½ tsp baking powder",
@@ -5549,7 +5549,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     recipe: {
       instructions: [
         "Mix coconut flour, baking powder, erythritol, and salt",
-        "Blend eggs, cream cheese, almond milk, and vanilla until smooth",
+        "Blend eggs, cream cheese, plant-based milk, and vanilla until smooth",
         "Combine wet and dry ingredients, let rest 5 minutes",
         "Heat coconut oil in non-stick pan over medium-low heat",
         "Pour small amounts of batter for 3-inch pancakes",
@@ -7571,7 +7571,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Vegetarian", "High-Protein", "Quick", "Gluten-Free", "Lactose-Free", "Anti-Aging"],
     ingredients: [
       "70g avocado (½ avocado)",
-      "200ml almond milk (unsweetened)",
+      "200ml plant-based milk (unsweetened)",
       "25g protein powder (1 scoop)",
       "½ small banana (50g)",
       "½ tsp cinnamon (1g)"
@@ -7586,7 +7586,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       instructions: [
         "Add all ingredients to a high-speed blender",
         "Blend on high speed until completely smooth and creamy (30-60 seconds)",
-        "Add more almond milk if you prefer a thinner consistency",
+        "Add more plant-based milk if you prefer a thinner consistency",
         "Pour into a glass and serve immediately"
       ],
       tips: [
@@ -7619,7 +7619,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Vegetarian", "High-Protein", "Quick", "Gluten-Free", "Lactose-Free", "Anti-Aging"],
     ingredients: [
       "70g avocado (½ avocado)",
-      "150ml almond milk (unsweetened)",
+      "150ml plant-based milk (unsweetened)",
       "25g protein powder (1 scoop)",
       "½ small banana (50g, frozen if possible)",
       "½ tsp cinnamon (1g)",
@@ -7633,7 +7633,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
-        "Add avocado, almond milk (use less milk for thicker consistency), protein powder, banana, and cinnamon to a high-speed blender",
+        "Add avocado, plant-based milk (use less milk for thicker consistency), protein powder, banana, and cinnamon to a high-speed blender",
         "Blend on high speed until thick and creamy (like soft-serve ice cream texture)",
         "Pour into a bowl",
         "Top with granola, fresh berries, chia seeds, and sliced banana",
@@ -7979,7 +7979,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "15ml balsamic vinegar",
       "60ml olive oil",
       "60ml plain flour",
-      "500ml oat milk",
+      "500ml plant-based milk",
       "30g nutritional yeast",
       "5ml Dijon mustard",
       "150g firm tofu, crumbled",
@@ -8003,7 +8003,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Meanwhile, cook pasta according to package instructions and drain",
         "For white sauce: heat remaining oil and flour in medium pan",
         "Whisk to form smooth paste, cook 2-3 minutes over medium-high heat",
-        "Gradually stream in oat milk, whisking constantly until smooth and thick",
+        "Gradually stream in plant-based milk, whisking constantly until smooth and thick",
         "Add nutritional yeast, mustard, crumbled tofu, salt and pepper",
         "Combine pasta with tomato sauce in baking dish",
         "Spoon white sauce over top and scatter with breadcrumbs",
@@ -8052,7 +8052,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "15ml balsamic vinegar",
       "60ml olive oil",
       "40ml rice flour + 15ml tapioca starch + 5ml xanthan gum (for better binding)",
-      "500ml oat milk",
+      "500ml plant-based milk",
       "30g nutritional yeast",
       "5ml Dijon mustard",
       "120g cooked lentils",
@@ -8077,7 +8077,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Meanwhile, cook gluten-free pasta according to package instructions and drain",
         "For white sauce: heat remaining oil and rice flour mixture in medium pan",
         "Whisk to form smooth paste, cook 2-3 minutes over medium-high heat (rice flour creates better texture)",
-        "Gradually stream in oat milk, whisking constantly until smooth and thick",
+        "Gradually stream in plant-based milk, whisking constantly until smooth and thick",
         "Add nutritional yeast, mustard, cooked lentils, hemp hearts, salt and pepper",
         "Combine pasta with tomato sauce in baking dish",
         "Spoon white sauce over top and scatter with breadcrumbs",
@@ -8118,7 +8118,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     ingredients: [
       "30ml quinoa (uncooked)",
       "30g porridge oats",
-      "100ml oat milk",
+      "100ml plant-based milk",
       "30ml frozen blueberries",
       "1 ripe banana, sliced",
       "15ml peanut butter",
@@ -8134,8 +8134,8 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
-        "Place cooked quinoa, porridge oats, oat milk, and frozen blueberries in small saucepan",
-        "Cook over medium heat, stirring frequently until oat milk is absorbed and oats are tender (4-5 minutes)",
+        "Place cooked quinoa, porridge oats, plant-based milk, and frozen blueberries in small saucepan",
+        "Cook over medium heat, stirring frequently until plant-based milk is absorbed and oats are tender (4-5 minutes)",
         "Alternatively, microwave on high for 1 minute at a time, stirring between intervals until tender",
         "Slice half the banana into the pan and gently mash with fork while stirring through porridge",
         "Transfer to serving bowl and top with remaining banana slices",
@@ -8315,7 +8315,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "30ml cooked quinoa",
       "30g porridge oats",
       "15ml shelled hemp seeds",
-      "100ml oat milk",
+      "100ml plant-based milk",
       "1 apple, roughly grated",
       "Small handful almonds, chopped",
       "15ml raisins",
@@ -8330,8 +8330,8 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
-        "Place cooked quinoa, porridge oats, hemp seeds, and oat milk in small saucepan over medium heat",
-        "Cook, stirring frequently, until oat milk has been absorbed and oats are tender (about 5 minutes)",
+        "Place cooked quinoa, porridge oats, hemp seeds, and plant-based milk in small saucepan over medium heat",
+        "Cook, stirring frequently, until plant-based milk has been absorbed and oats are tender (about 5 minutes)",
         "Alternatively, microwave on high for 1 minute at a time, stopping to stir until oats are tender (3-4 minutes total)",
         "Add grated apple, chopped almonds, raisins, and cinnamon to the pan",
         "Cook until heated through, stirring gently to combine",
@@ -9191,7 +9191,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Vegetarian", "High-Protein", "Mediterranean"],
     ingredients: [
       "2 large aubergines, sliced lengthwise",
-      "120ml oat milk",
+      "120ml plant-based milk",
       "80g spelt flour (for better texture and nutty flavor)",
       "60g panko breadcrumbs (vegan)",
       "30ml hemp hearts",
@@ -9220,7 +9220,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Add minced garlic, cook 1 minute, then add crushed tomatoes, sugar, salt, pepper",
         "Simmer sauce 15 minutes until thickened, stir in fresh basil at end",
         "Pat aubergine slices dry with paper towels",
-        "Set up breading station: spelt flour with salt and pepper, oat milk, panko mixed with hemp hearts and nutritional yeast",
+        "Set up breading station: spelt flour with salt and pepper, plant-based milk, panko mixed with hemp hearts and nutritional yeast",
         "Dredge aubergine: flour, then milk, then hemp heart panko mixture, pressing gently",
         "Heat olive oil in large pan over medium heat",
         "Fry breaded aubergine slices 3-4 minutes per side until golden and crispy",
@@ -9255,7 +9255,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Vegetarian", "Gluten-Free", "High-Protein", "Mediterranean"],
     ingredients: [
       "2 large aubergines, sliced lengthwise",
-      "120ml oat milk",
+      "120ml plant-based milk",
       "60g rice flour",
       "20g tapioca starch",
       "80g gluten-free panko breadcrumbs",
@@ -9283,7 +9283,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "This blend mimics wheat's binding properties while staying light",
         "Create enhanced coating: mix gluten-free panko, ground almonds, hemp hearts, nutritional yeast",
         "The almond-hemp combination provides superior protein and texture",
-        "Follow same breading process: flour blend, oat milk, then almond-panko mixture",
+        "Follow same breading process: flour blend, plant-based milk, then almond-panko mixture",
         "Fry at slightly lower heat to prevent almond coating from burning",
         "Cook 3-4 minutes per side until golden, watching carefully for even browning",
         "Season while hot with paprika, oregano, and chili flakes",
@@ -9882,7 +9882,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     ingredients: [
       "40g rolled oats",
       "40g quinoa, rinsed",
-      "350ml oat milk",
+      "350ml plant-based milk",
       "150ml strong Earl Grey tea, cooled",
       "20g vanilla protein powder",
       "20g hemp hearts",
@@ -9907,7 +9907,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       instructions: [
         "Prepare Earl Grey tea: Brew 2 strong tea bags in 200ml boiling water for 5 minutes, then remove bags and cool completely",
         "Cook quinoa ahead with tea: Rinse 200g quinoa and simmer in 300ml Earl Grey tea + 100ml water for 15 minutes until tender. Store in fridge for up to 5 days",
-        "In medium saucepan, combine oats, 80g tea-infused pre-cooked quinoa, oat milk, remaining Earl Grey tea, and pinch of salt",
+        "In medium saucepan, combine oats, 80g tea-infused pre-cooked quinoa, plant-based milk, remaining Earl Grey tea, and pinch of salt",
         "Bring to gentle boil, then reduce heat and simmer for 10-12 minutes, stirring occasionally",
         "Meanwhile, heat small frying pan over medium heat",
         "Add diced persimmon with half the maple syrup and cinnamon",
@@ -9953,7 +9953,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     ingredients: [
       "40g oats",
       "20g cocoa protein powder",
-      "80ml soy milk (or any plant milk)",
+      "80ml plant-based milk (or any plant milk)",
       "8ml flax seeds",
       "8ml chia seeds",
       "2.5ml sweetener (maple syrup or stevia)",
@@ -9973,7 +9973,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     recipe: {
       instructions: [
         "In a jar or container, mix together oats, cocoa protein powder, cocoa powder, flax seeds, and chia seeds",
-        "Add soy milk, sweetener, and vanilla extract, stir well to combine all dry ingredients",
+        "Add plant-based milk, sweetener, and vanilla extract, stir well to combine all dry ingredients",
         "Pour the mixture into your storage jar and refrigerate overnight or at least 1 hour",
         "In separate small bowl, mix vanilla yogurt - this will be your middle layer",
         "Melt dark chocolate with coconut oil in microwave or double boiler until smooth",
@@ -10512,7 +10512,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     category: "breakfast",
     tags: ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free", "Lactose-Free", "Antioxidants", "High-Protein", "Berry", "Quick", "Anti-Aging"],
     ingredients: [
-      "250ml almond milk (unsweetened)",
+      "250ml plant-based milk (unsweetened)",
       "1 medium banana (frozen)",
       "100g frozen strawberries",
       "80g frozen blueberries",
@@ -10538,7 +10538,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     ],
     recipe: {
       instructions: [
-        "Add almond milk to blender first",
+        "Add plant-based milk to blender first",
         "Add frozen banana, strawberries, and blueberries",
         "Add almond butter, chia seeds, and hemp hearts",
         "Pour in vanilla extract and maple syrup",
@@ -10958,7 +10958,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "1 lemon (juiced)",
       "50g nutritional yeast",
       "2 tsp Dijon mustard",
-      "400ml almond milk",
+      "400ml plant-based milk",
       "1 large handful fresh basil (chopped)",
       "Sea salt",
       "Black pepper"
@@ -10973,9 +10973,9 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       instructions: [
         "Cook the macaroni pasta according to packet instructions until al dente",
         "Once cooked, drain pasta and set aside until needed",
-        "Make the white sauce: place tapioca flour, lemon juice, nutritional yeast, Dijon mustard, almond milk and a pinch of salt in a pan over medium heat",
+        "Make the white sauce: place tapioca flour, lemon juice, nutritional yeast, Dijon mustard, plant-based milk and a pinch of salt in a pan over medium heat",
         "Continuously whisk the mixture to ensure it stays smooth and no lumps form",
-        "Add extra splash of almond milk if the mixture becomes too thick",
+        "Add extra splash of plant-based milk if the mixture becomes too thick",
         "In another large pan over medium heat, add olive oil",
         "Once warm, add diced garlic, halved cherry tomatoes and a sprinkling of salt",
         "Mix well and cook for 10 minutes until the tomatoes become really soft and begin to bubble",
@@ -11020,7 +11020,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "1 lemon (juiced)",
       "50g nutritional yeast",
       "2 tsp Dijon mustard",
-      "400ml almond milk",
+      "400ml plant-based milk",
       "1 large handful fresh basil (chopped)",
       "Sea salt",
       "Black pepper"
@@ -11035,9 +11035,9 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       instructions: [
         "Cook the gluten-free macaroni pasta according to packet instructions until al dente (may take slightly longer than regular pasta)",
         "Once cooked, drain pasta and set aside until needed",
-        "Make the white sauce: place tapioca flour, lemon juice, nutritional yeast, Dijon mustard, almond milk and a pinch of salt in a pan over medium heat",
+        "Make the white sauce: place tapioca flour, lemon juice, nutritional yeast, Dijon mustard, plant-based milk and a pinch of salt in a pan over medium heat",
         "Continuously whisk the mixture to ensure it stays smooth and no lumps form",
-        "Add extra splash of almond milk if the mixture becomes too thick",
+        "Add extra splash of plant-based milk if the mixture becomes too thick",
         "In another large pan over medium heat, add olive oil",
         "Once warm, add diced garlic, halved cherry tomatoes and a sprinkling of salt",
         "Mix well and cook for 10 minutes until the tomatoes become really soft and begin to bubble",
@@ -11286,7 +11286,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "5ml paprika",
       "6 vine tomatoes",
       "15ml harissa paste",
-      "100ml almond milk",
+      "100ml plant-based milk",
       "Handful fresh parsley (chopped, plus extra for garnish)",
       "15ml tahini",
       "1 lemon (juiced)",
@@ -11315,7 +11315,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Cut each tomato into 6 pieces",
         "Add tomato pieces and cook another 10-15 minutes until aubergine is soft",
         "Remove vegetables from oven and transfer to large bowl",
-        "Stir through harissa paste, dash of almond milk, chopped parsley, tahini, lemon juice, and salt",
+        "Stir through harissa paste, dash of plant-based milk, chopped parsley, tahini, lemon juice, and salt",
         "Mix vegetable mixture until everything comes together",
         "For pancakes: combine gram flour, chilli powder, 5ml paprika, salt, and pepper in bowl",
         "Mix flour mixture well to remove lumps",
@@ -11734,7 +11734,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "1 vanilla protein powder",
       "150g mixed berries",
       "1 medium banana",
-      "200ml almond milk", 
+      "200ml plant-based milk", 
       "1 tbsp almond butter",
       "1 tsp chia seeds",
       "1 tsp maple syrup",
@@ -11750,7 +11750,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       instructions: [
         "Add all ingredients to a high-speed blender",
         "Blend on high for 60-90 seconds until completely smooth",
-        "Add more almond milk if needed for desired consistency",
+        "Add more plant-based milk if needed for desired consistency",
         "Pour into a large glass and serve immediately"
       ],
       tips: [
@@ -11790,7 +11790,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "15ml ground cinnamon",
       "5ml baking powder",
       "2 tbsp almond butter",
-      "60ml almond milk",
+      "60ml plant-based milk",
       "1 tbsp maple syrup",
       "1 tsp vanilla extract",
       "Pinch sea salt",
@@ -11805,7 +11805,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     recipe: {
       instructions: [
         "Mix oat flour, protein powder, cinnamon, baking powder and salt in a bowl",
-        "In separate bowl, whisk almond butter, almond milk, maple syrup and vanilla",
+        "In separate bowl, whisk almond butter, plant-based milk, maple syrup and vanilla",
         "Combine wet and dry ingredients until smooth dough forms",
         "Let rest 10 minutes for oat flour to hydrate",
         "Roll dough into 8 small balls, then roll into finger shapes",
@@ -12955,7 +12955,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "1 vanilla protein powder",
       "20g cocoa powder",
       "1 egg",
-      "60ml almond milk",
+      "60ml plant-based milk",
       "1 tbsp almond butter",
       "5ml baking powder",
       "1 tsp vanilla extract",
@@ -12970,7 +12970,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     recipe: {
       instructions: [
         "Mix protein powder, cocoa powder, baking powder and salt in microwave-safe mug",
-        "In small bowl, whisk egg, almond milk, almond butter and vanilla",
+        "In small bowl, whisk egg, plant-based milk, almond butter and vanilla",
         "Pour wet ingredients into mug with dry ingredients",
         "Stir well until smooth batter forms",
         "Microwave 90 seconds, check doneness",
@@ -14122,7 +14122,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "17.5g old cheese (per serving from 70g total)",
       "12.5g walnuts (per serving from 50g total)",
       "1.5 tbsp mustard (per serving from 2 tbsp total)",
-      "25ml oat milk (per serving from 100ml total)",
+      "25ml plant-based milk (per serving from 100ml total)",
       "1 small onion (50g, diced)",
       "1 tbsp olive oil",
       "Salt and pepper to taste",
@@ -14149,7 +14149,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
         "Fry the diced onion until softened, then add the blanched Brussels sprouts",
         "Season Brussels sprouts and onion with salt and pepper, cook for 5-8 minutes until lightly browned",
         "In a dry pan, lightly roast the walnuts for 2-3 minutes until fragrant",
-        "Drain the sweet potatoes and mash until smooth, gradually adding oat milk and mustard",
+        "Drain the sweet potatoes and mash until smooth, gradually adding plant-based milk and mustard",
         "Season the mashed sweet potatoes with salt and pepper to taste",
         "Fold the sautéed Brussels sprouts and onion into the mashed sweet potatoes",
         "Serve topped with crumbled old cheese and roasted walnuts",
@@ -15019,7 +15019,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "2 tbsp (30ml) maple syrup",
       "20g lactose-free dark chocolate chips",
       "pinch of salt",
-      "2 tbsp (30ml) almond milk"
+      "2 tbsp (30ml) plant-based milk"
     ],
     wholeFoodLevel: "high",
     vegetableContent: {
@@ -15038,14 +15038,14 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       instructions: [
         "In a bowl, mix almond flour, protein powder, and salt",
         "Add almond butter and maple syrup, mix until crumbly",
-        "Add almond milk 1 tablespoon at a time until dough forms",
+        "Add plant-based milk 1 tablespoon at a time until dough forms",
         "Fold in lactose-free chocolate chips",
         "Roll into 4 equal-sized balls",
         "Refrigerate for at least 30 minutes before eating",
         "Store in airtight container in fridge for up to 1 week"
       ],
       tips: [
-        "Dough should be slightly sticky but hold together - add more almond milk if too dry",
+        "Dough should be slightly sticky but hold together - add more plant-based milk if too dry",
         "Use certified lactose-free chocolate chips for completely dairy-free",
         "Roll in cocoa powder or coconut for extra flavor",
         "Double the batch for meal prep"
@@ -15640,7 +15640,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "1 tbsp almond butter",
       "1/2 tsp cinnamon",
       "pinch of salt",
-      "250ml almond milk"
+      "250ml plant-based milk"
     ],
     wholeFoodLevel: "high",
     vegetableContent: {
@@ -15656,7 +15656,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     ],
     recipe: {
       instructions: [
-        "In a pot, combine oats, buckwheat flakes, and almond milk",
+        "In a pot, combine oats, buckwheat flakes, and plant-based milk",
         "Heat over medium heat, stirring occasionally, for 5-7 minutes until creamy",
         "Remove from heat and stir in cacao powder, protein powder, cinnamon, and salt",
         "Mix until protein powder is fully incorporated",
@@ -15762,7 +15762,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "High-Protein", "Quick", "Smoothie", "Post-Workout", "Anti-Aging"],
     ingredients: [
       "1 tbsp (5g) unsweetened cocoa powder",
-      "250ml unsweetened soy milk",
+      "250ml plant-based milk",
       "1/2 frozen banana",
       "50g frozen blueberries",
       "1 scoop (30g) vanilla protein powder",
@@ -15784,7 +15784,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     ],
     recipe: {
       instructions: [
-        "Add soy milk to blender first",
+        "Add plant-based milk to blender first",
         "Add frozen banana and blueberries",
         "Add cocoa powder and protein powder",
         "Add flaxseed and hemp hearts",
@@ -15887,7 +15887,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Vegetarian", "Vegan", "Gluten-Free", "Lactose-Free", "Dairy-Free", "Raw", "High-Protein", "Anti-Inflammatory", "Ayurvedic", "Longevity", "Follicular", "Ovulation", "Anti-Aging"],
     ingredients: [
       "3 tbsp chia seeds",
-      "180ml unsweetened almond milk",
+      "180ml plant-based milk",
       "1 scoop (30g) vanilla protein powder",
       "80g fresh mango (diced)",
       "90g fresh kiwi (diced)",
@@ -15904,7 +15904,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
-        "Mix chia seeds with almond milk in a jar",
+        "Mix chia seeds with plant-based milk in a jar",
         "Add vanilla extract and maple syrup",
         "Whisk in protein powder until smooth",
         "Stir well and refrigerate overnight (or 4+ hours)",
@@ -15947,7 +15947,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Fiber", "High-Protein", "Make-Ahead", "Ayurvedic", "Longevity", "Anti-Aging"],
     ingredients: [
       "45g gluten-free rolled oats",
-      "120ml unsweetened almond milk",
+      "120ml plant-based milk",
       "1 scoop (30g) vanilla protein powder",
       "1 tbsp chia seeds",
       "1 tbsp almond butter",
@@ -15963,7 +15963,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
-        "Mix oats, almond milk, chia seeds, and vanilla in a jar",
+        "Mix oats, plant-based milk, chia seeds, and vanilla in a jar",
         "Add almond butter and stevia, stir well",
         "Whisk in protein powder until fully dissolved",
         "Refrigerate overnight (minimum 4 hours)",
@@ -16762,7 +16762,7 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
         ingredients: recipe.ingredients?.map(ingredient => {
           // Convert dairy ingredients
           if (ingredient.toLowerCase().includes('milk') && !ingredient.toLowerCase().includes('almond') && !ingredient.toLowerCase().includes('coconut') && !ingredient.toLowerCase().includes('oat')) {
-            return ingredient.replace(/milk/gi, 'oat milk');
+            return ingredient.replace(/milk/gi, 'plant-based milk');
           }
           if (ingredient.toLowerCase().includes('cream') && !ingredient.toLowerCase().includes('coconut')) {
             return ingredient.replace(/cream/gi, 'coconut cream');
@@ -18041,11 +18041,11 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
     'coconut yogurt': 'Plant-Based Alternatives',
     'coconut coconut yogurt': 'Plant-Based Alternatives',
     'unsweetened coconut yogurt': 'Plant-Based Alternatives',
-    'oat milk': 'Plant-Based Alternatives',
-    'almond milk': 'Plant-Based Alternatives',
-    'almond oat milk': 'Plant-Based Alternatives',
-    'coconut oat milk': 'Plant-Based Alternatives',
-    'plant oat milk': 'Plant-Based Alternatives',
+    'plant-based milk': 'Plant-Based Alternatives',
+    'plant-based milk': 'Plant-Based Alternatives',
+    'almond plant-based milk': 'Plant-Based Alternatives',
+    'coconut plant-based milk': 'Plant-Based Alternatives',
+    'plant plant-based milk': 'Plant-Based Alternatives',
     'vegan butter': 'Plant-Based Alternatives',
     'coconut cream': 'Plant-Based Alternatives',
     'dairy-free sour cream': 'Plant-Based Alternatives',
@@ -18118,7 +18118,7 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
     'tamari': 'Pantry Essentials',
     'sage': 'Fresh Herbs',
     'cocoa protein powder': 'Other Dry Goods',
-    'soy milk': 'Plant-Based Alternatives',
+    'plant-based milk': 'Plant-Based Alternatives',
     'sweetener': 'Pantry Essentials',
     'half sweet red pepper': 'Vegetables',
     'plant-based protein': 'Other Dry Goods', // Consolidate all protein powders in same category
@@ -18334,30 +18334,30 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
     
     // Specify generic plant-based milk terms to specific types
     const milkSpecifications: Record<string, string> = {
-      'plant milk': 'oat milk',
-      'plant-based milk': 'oat milk', 
-      'non-dairy milk': 'oat milk',
-      'dairy-free milk': 'oat milk',
-      'unsweetened plant milk': 'oat milk',
-      'plant oat milk': 'oat milk', // Fix redundant naming
-      'almond oat milk': 'oat milk', // Standardize to oat milk as preferred
-      'coconut oat milk': 'oat milk',
-      // Comprehensive oat milk variations consolidation
-      'unsweetened oat milk': 'oat milk',
-      'organic oat milk': 'oat milk',
-      'barista oat milk': 'oat milk',
-      'sweetened oat milk': 'oat milk',
-      'vanilla oat milk': 'oat milk',
-      'chocolate oat milk': 'oat milk',
-      'enriched oat milk': 'oat milk',
-      'calcium enriched oat milk': 'oat milk',
-      'oat milk (unsweetened)': 'oat milk',
-      'oat milk (sweetened)': 'oat milk',
-      'oat milk (vanilla)': 'oat milk',
-      'oat milk (original)': 'oat milk',
-      'original oat milk': 'oat milk',
-      'fresh oat milk': 'oat milk',
-      'creamy oat milk': 'oat milk'
+      'plant milk': 'plant-based milk',
+      'plant-based milk': 'plant-based milk', 
+      'non-dairy milk': 'plant-based milk',
+      'dairy-free milk': 'plant-based milk',
+      'unsweetened plant milk': 'plant-based milk',
+      'plant plant-based milk': 'plant-based milk', // Fix redundant naming
+      'almond plant-based milk': 'plant-based milk', // Standardize to plant-based milk as preferred
+      'coconut plant-based milk': 'plant-based milk',
+      // Comprehensive plant-based milk variations consolidation
+      'plant-based milk': 'plant-based milk',
+      'organic plant-based milk': 'plant-based milk',
+      'barista plant-based milk': 'plant-based milk',
+      'sweetened plant-based milk': 'plant-based milk',
+      'vanilla plant-based milk': 'plant-based milk',
+      'chocolate plant-based milk': 'plant-based milk',
+      'enriched plant-based milk': 'plant-based milk',
+      'calcium enriched plant-based milk': 'plant-based milk',
+      'plant-based milk (unsweetened)': 'plant-based milk',
+      'plant-based milk (sweetened)': 'plant-based milk',
+      'plant-based milk (vanilla)': 'plant-based milk',
+      'plant-based milk (original)': 'plant-based milk',
+      'original plant-based milk': 'plant-based milk',
+      'fresh plant-based milk': 'plant-based milk',
+      'creamy plant-based milk': 'plant-based milk'
     };
     
     // Apply milk specifications
@@ -18858,7 +18858,7 @@ export function parseIngredientAmount(ingredientString: string): { amount: numbe
 export function getDefaultPortion(ingredient: string): { amount: number; unit: string } {
   // Default portions for common ingredients in grams (when no recipe amounts are found)
   const defaults: Record<string, { amount: number; unit: string }> = {
-    'almond milk': { amount: 240, unit: 'ml' }, // 1 cup = 240ml
+    'plant-based milk': { amount: 240, unit: 'ml' }, // 1 cup = 240ml
     'coconut milk': { amount: 240, unit: 'ml' }, // 1 cup = 240ml
     'chia seeds': { amount: 20, unit: 'g' }, // 2 tbsp = ~20g
     'hemp hearts': { amount: 20, unit: 'g' }, // 2 tbsp = ~20g
@@ -19330,8 +19330,8 @@ function cleanIngredientName(ingredient: string): string {
   if (cleaned.includes('kefir') || cleaned === 'kefir') {
     cleaned = 'fermented kefir';
   }
-  if (cleaned.includes('almond milk') || cleaned === 'almond milk') {
-    cleaned = 'almond milk';
+  if (cleaned.includes('plant-based milk') || cleaned === 'plant-based milk') {
+    cleaned = 'plant-based milk';
   }
   // Keep red onion distinct - don't consolidate with regular onions
   if (cleaned.includes('red onion') || cleaned === 'red onion') {
@@ -19556,27 +19556,27 @@ function cleanIngredientName(ingredient: string): string {
     'vegetable broth': 'vegetable stock',
     'vegetable stock': 'vegetable stock',
     // Consolidate all plant-based milks (except coconut milk for curries)
-    'almond milk': 'plant-based milk',
-    'unsweetened almond milk': 'plant-based milk',
-    'oat milk': 'plant-based milk',
-    'soy milk': 'plant-based milk',
-    'oat oat milk': 'plant-based milk',
-    'soy oat milk': 'plant-based milk',
-    'unsweetened oat milk': 'plant-based milk',
-    'organic oat milk': 'plant-based milk',
-    'barista oat milk': 'plant-based milk',
-    'sweetened oat milk': 'plant-based milk',
-    'vanilla oat milk': 'plant-based milk',
-    'chocolate oat milk': 'plant-based milk',
-    'enriched oat milk': 'plant-based milk',
-    'calcium enriched oat milk': 'plant-based milk',
-    'oat milk (unsweetened)': 'plant-based milk',
-    'oat milk (sweetened)': 'plant-based milk',
-    'oat milk (vanilla)': 'plant-based milk',
-    'oat milk (original)': 'plant-based milk',
-    'original oat milk': 'plant-based milk',
-    'fresh oat milk': 'plant-based milk',
-    'creamy oat milk': 'plant-based milk',
+    'plant-based milk': 'plant-based milk',
+    'plant-based milk': 'plant-based milk',
+    'plant-based milk': 'plant-based milk',
+    'plant-based milk': 'plant-based milk',
+    'oat plant-based milk': 'plant-based milk',
+    'soy plant-based milk': 'plant-based milk',
+    'plant-based milk': 'plant-based milk',
+    'organic plant-based milk': 'plant-based milk',
+    'barista plant-based milk': 'plant-based milk',
+    'sweetened plant-based milk': 'plant-based milk',
+    'vanilla plant-based milk': 'plant-based milk',
+    'chocolate plant-based milk': 'plant-based milk',
+    'enriched plant-based milk': 'plant-based milk',
+    'calcium enriched plant-based milk': 'plant-based milk',
+    'plant-based milk (unsweetened)': 'plant-based milk',
+    'plant-based milk (sweetened)': 'plant-based milk',
+    'plant-based milk (vanilla)': 'plant-based milk',
+    'plant-based milk (original)': 'plant-based milk',
+    'original plant-based milk': 'plant-based milk',
+    'fresh plant-based milk': 'plant-based milk',
+    'creamy plant-based milk': 'plant-based milk',
     'oat drink': 'plant-based milk',
     'oat beverage': 'plant-based milk',
     'plant-based milk': 'plant-based milk',
