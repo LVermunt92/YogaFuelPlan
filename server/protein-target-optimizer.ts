@@ -140,8 +140,9 @@ function scoreProteinForTarget(meal: MealOption, targetDailyProtein: number): nu
 
 /**
  * Select protein-optimized meals for a given category and target
- * NEW APPROACH: Returns diverse protein range (15-35g) for flexible daily balancing
- * System will mix and match to hit daily target (e.g., high dinner + low breakfast = 95g total)
+ * BREAKFAST: Prioritizes HIGH-PROTEIN options (25-35g+) with protein powder, eggs, etc.
+ * LUNCH/DINNER: More flexible range (15-35g) for daily balancing
+ * System will mix and match to hit daily target (e.g., high breakfast + moderate lunch/dinner = 95g total)
  */
 export function selectProteinOptimizedMealsForTarget(
   availableMeals: MealOption[],
@@ -161,26 +162,59 @@ export function selectProteinOptimizedMealsForTarget(
     return [];
   }
   
-  // NEW: Score meals to provide DIVERSE protein options (15-35g range)
-  // This allows daily balancing: high protein meal + low protein meal = target
+  // BREAKFAST: Prioritize HIGH-PROTEIN options (protein powder, eggs, high-protein yogurt, etc.)
+  // LUNCH/DINNER: Flexible protein range for daily balancing
   const scoredMeals = categoryMeals.map(meal => {
     const protein = meal.nutrition.protein;
     let score = 0;
     
-    // DIVERSE PROTEIN SCORING: Accept wide range, penalize extremes
-    if (protein >= 18 && protein <= 32) {
-      score += 100; // Ideal range for flexible balancing
-    } else if (protein >= 15 && protein <= 35) {
-      score += 90; // Good range
-    } else if (protein >= 12 && protein <= 38) {
-      score += 70; // Acceptable
-    } else if (protein > 40) {
-      score += 40; // Too high (limits flexibility)
-    } else if (protein < 12) {
-      score += 50; // Too low (limits flexibility)
+    if (category === 'breakfast') {
+      // BREAKFAST: Strongly favor HIGH-PROTEIN options (25g+)
+      if (protein >= 25 && protein <= 35) {
+        score += 120; // Excellent high-protein breakfast (protein powder, eggs + protein)
+      } else if (protein >= 20 && protein <= 38) {
+        score += 100; // Very good protein content (eggs, high-protein yogurt)
+      } else if (protein >= 15 && protein <= 40) {
+        score += 70; // Acceptable protein content
+      } else if (protein > 40) {
+        score += 50; // Too high (still usable but not ideal)
+      } else if (protein < 15) {
+        score += 30; // Low protein (last resort for breakfast)
+      }
+      
+      // Bonus for protein-rich ingredients in breakfast
+      const hasProteinPowder = meal.ingredients.some(ing => 
+        ing.toLowerCase().includes('protein powder') || 
+        ing.toLowerCase().includes('protein shake')
+      );
+      const hasEggs = meal.ingredients.some(ing => ing.toLowerCase().includes('egg'));
+      const hasHighProteinYogurt = meal.ingredients.some(ing => 
+        ing.toLowerCase().includes('yogurt') || 
+        ing.toLowerCase().includes('yoghurt') ||
+        ing.toLowerCase().includes('cottage cheese')
+      );
+      
+      if (hasProteinPowder) score += 30; // Strong preference for protein powder breakfast
+      if (hasEggs) score += 20; // Good preference for eggs
+      if (hasHighProteinYogurt) score += 15; // Bonus for high-protein yogurt
+      
+      console.log(`🥚 BREAKFAST "${meal.name}": ${protein}g protein, score: ${score}, powder: ${hasProteinPowder}, eggs: ${hasEggs}`);
+    } else {
+      // LUNCH/DINNER: More flexible range for daily balancing
+      if (protein >= 18 && protein <= 32) {
+        score += 100; // Ideal range for flexible balancing
+      } else if (protein >= 15 && protein <= 35) {
+        score += 90; // Good range
+      } else if (protein >= 12 && protein <= 38) {
+        score += 70; // Acceptable
+      } else if (protein > 40) {
+        score += 40; // Too high (limits flexibility)
+      } else if (protein < 12) {
+        score += 50; // Too low (limits flexibility)
+      }
     }
     
-    // Bonus for variety and efficiency
+    // Bonus for variety and efficiency (applies to all meal types)
     const proteinPerCalorie = protein / (meal.nutrition.calories || 400);
     if (proteinPerCalorie > 0.06) score += 10;
     else if (proteinPerCalorie > 0.04) score += 5;
