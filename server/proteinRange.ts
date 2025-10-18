@@ -232,7 +232,8 @@ export function getDetailedProteinRecommendation(
   weight: number,
   activityLevel: string,
   goals?: string[],
-  gender?: Gender
+  gender?: Gender,
+  weightLossWeekNumber?: number
 ): {
   recommended: number;
   range: [number, number];
@@ -250,9 +251,13 @@ export function getDetailedProteinRecommendation(
     default: mappedActivity = activityLevel === "high" ? "moderate" : "light"; // backward compatibility
   }
   
-  // Determine goal based on user's dietary tags or default to maintenance
+  // Determine goal based on user's dietary tags, weight loss tracking, or default to maintenance
   let goal: Goal = "maintenance";
-  if (goals?.includes("muscle_gain") || goals?.includes("strength")) {
+  
+  // Auto-detect fat_loss goal if user is tracking weight loss
+  if (weightLossWeekNumber && weightLossWeekNumber > 0) {
+    goal = "fat_loss";
+  } else if (goals?.includes("muscle_gain") || goals?.includes("strength")) {
     goal = "muscle_gain";
   } else if (goals?.includes("weight_loss") || goals?.includes("fat_loss")) {
     goal = "fat_loss";
