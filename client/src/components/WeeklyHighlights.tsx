@@ -146,8 +146,8 @@ export function WeeklyHighlights({ menstrualPhase = "off" }: WeeklyHighlightsPro
         icon: "🌸"
       },
       luteal: {
-        en: "In the luteal phase, your metabolic rate increases by 10-20%. Meet these increased energy needs with B vitamin-rich foods (legumes, whole grains), complex carbs, and protein-rich snacks. Consider adding caloric density to support your body's elevated metabolism.",
-        nl: "In de luteale fase stijgt je metabolisme met 10-20%. Voldoe aan deze verhoogde energiebehoeften met B-vitaminerijke voedingsmiddelen (peulvruchten, volkoren granen), complexe koolhydraten en eiwitrijke snacks. Overweeg om caloriedichtheid toe te voegen om je verhoogde metabolisme te ondersteunen.",
+        en: "In the luteal phase, your metabolic rate increases by 10-20%. Progesterone slows digestion, so focus on cooked, easy-to-digest foods. Don't cut carbs—complex carbohydrates stabilize blood sugar and boost serotonin (your natural mood stabilizer). Eat regularly (3 consistent meals daily) since blood sugar is less stable and cortisol levels are higher during this phase. Boost electrolytes and salt intake to prevent PMS symptoms and support fluid balance—low salt can trigger fluid retention. Pair fiber-rich carbs with quality protein and fat to prevent blood sugar spikes.",
+        nl: "In de luteale fase stijgt je metabolisme met 10-20%. Progesteron vertraagt de spijsvertering, dus focus op gekookte, gemakkelijk verteerbare voedingsmiddelen. Beperk koolhydraten niet—complexe koolhydraten stabiliseren bloedsuiker en verhogen serotonine (je natuurlijke stemmingsstabilisator). Eet regelmatig (3 consistente maaltijden per dag) aangezien bloedsuiker minder stabiel is en cortisolniveaus hoger zijn tijdens deze fase. Verhoog elektrolyten en zoutinname om PMS-symptomen te voorkomen en vochtbalans te ondersteunen—weinig zout kan vochtretentie veroorzaken. Combineer vezelrijke koolhydraten met kwaliteitseiwitten en vetten om bloedsuikerschommelingen te voorkomen.",
         icon: "🌙"
       }
     };
