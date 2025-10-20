@@ -20,7 +20,7 @@ import { useTranslations, translateDietaryTags, translateDietaryTag } from "@/li
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Textarea } from "@/components/ui/textarea";
 import { AlbertHeijnIntegration } from "@/components/albert-heijn-integration";
-import { SeasonalAdvisor } from "@/components/SeasonalAdvisor";
+import { WeeklyHighlights } from "@/components/WeeklyHighlights";
 import type { User, MealPlan as MealPlanType, Meal as MealType } from "@shared/schema";
 import { countUniquePlants } from "@/lib/plant-diversity";
 
@@ -1099,9 +1099,9 @@ function MealPlannerMain() {
             </div>
           )}
 
-          {/* 3. Seasonal Advisor */}
+          {/* 3. Weekly highlights (seasonal + menstrual cycle) */}
           <div className="container">
-            <SeasonalAdvisor />
+            <WeeklyHighlights menstrualPhase={userProfile?.menstrualPhase} />
           </div>
 
           {/* 4. Health Tracking (Oura Ring) */}
