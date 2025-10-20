@@ -227,52 +227,32 @@ export function WeeklyHighlights({ menstrualPhase = "off" }: WeeklyHighlightsPro
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-          <div>
-            <div className="flex items-center gap-2 mb-3">
-              <Leaf className="h-4 w-4 text-green-600" />
-              <h4 className="font-medium text-sm text-gray-700">
-                {language === 'nl' ? 'Piek Nederlandse seizoensgroenten' : 'Peak Dutch seasonal vegetables'}
-              </h4>
-            </div>
-            <div className="flex flex-wrap gap-1.5">
-              {/* Show only peak seasonal vegetables from Voedingscentrum data */}
-              {seasonalInfo.monthlyProduce?.peak?.map((veg, index) => (
-                <Badge 
-                  key={index} 
-                  variant="secondary" 
-                  className="text-xs capitalize bg-green-50 text-green-700 hover:bg-green-100"
-                >
-                  {veg}
-                </Badge>
-              )) || seasonalInfo.seasonalFoods.slice(0, 4).map((food, index) => (
-                <Badge 
-                  key={index} 
-                  variant="secondary" 
-                  className="text-xs capitalize bg-green-50 text-green-700 hover:bg-green-100"
-                >
-                  {food}
-                </Badge>
-              ))}
-            </div>
+        <div>
+          <div className="flex items-center gap-2 mb-3">
+            <Leaf className="h-4 w-4 text-green-600" />
+            <h4 className="font-medium text-sm text-gray-700">
+              {language === 'nl' ? 'Piek Nederlandse seizoensgroenten' : 'Peak Dutch seasonal vegetables'}
+            </h4>
           </div>
-          
-          <div>
-            <div className="flex items-center gap-2 mb-3">
-              <ThermometerSun className="h-4 w-4 text-blue-600" />
-              <h4 className="font-medium text-sm text-gray-700">{t.nutritionalFocus}</h4>
-            </div>
-            <div className="flex flex-wrap gap-1.5">
-              {seasonalInfo.nutritionalTips.slice(0, 4).map((tip, index) => (
-                <Badge 
-                  key={index} 
-                  variant="outline" 
-                  className="text-xs capitalize border-blue-200 text-blue-700 hover:bg-blue-50"
-                >
-                  {tip}
-                </Badge>
-              ))}
-            </div>
+          <div className="flex flex-wrap gap-1.5">
+            {/* Show only peak seasonal vegetables from Voedingscentrum data */}
+            {seasonalInfo.monthlyProduce?.peak?.map((veg, index) => (
+              <Badge 
+                key={index} 
+                variant="secondary" 
+                className="text-xs capitalize bg-green-50 text-green-700 hover:bg-green-100"
+              >
+                {veg}
+              </Badge>
+            )) || seasonalInfo.seasonalFoods.slice(0, 4).map((food, index) => (
+              <Badge 
+                key={index} 
+                variant="secondary" 
+                className="text-xs capitalize bg-green-50 text-green-700 hover:bg-green-100"
+              >
+                {food}
+              </Badge>
+            ))}
           </div>
         </div>
         

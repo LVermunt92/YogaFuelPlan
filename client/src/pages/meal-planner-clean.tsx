@@ -793,7 +793,217 @@ function MealPlannerMain() {
 {t.createPersonalizedMealPlan && <p className="text-lg text-gray-600">{t.createPersonalizedMealPlan}</p>}
           </div>
 
-          {/* 2. Weekly highlights (seasonal + menstrual cycle) */}
+          {/* 2. Compact Nutrition Charts - Top 4 KPIs */}
+          {currentMealPlan && kpiData && (
+            <div className="mb-6 relative">
+              <button
+                onClick={() => setLocation('/insights')}
+                className="absolute top-2 right-2 z-10 flex items-center gap-1 text-xs text-gray-500 hover:text-gray-700 transition-colors cursor-pointer group"
+              >
+                <span className="hidden sm:inline">{t.viewInsights || 'View insights'}</span>
+                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg w-full">
+              
+              {/* Protein Chart */}
+              <div className="text-center relative">
+                <div className="relative w-20 h-20 mx-auto mb-1">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={[
+                          { value: Math.min(kpiData.protein.percentage, 100), fill: "#10b981" },
+                          { value: Math.max(100 - kpiData.protein.percentage, 0), fill: "#f3f4f6" }
+                        ]}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={20}
+                        outerRadius={35}
+                        startAngle={90}
+                        endAngle={450}
+                        dataKey="value"
+                      >
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="text-sm font-bold text-emerald-600">{kpiData.protein.value}g</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-center gap-1">
+                  <h3 className="text-xs font-semibold text-emerald-600">{t.protein}</h3>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-protein">
+                        <Info className="h-3 w-3" />
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-sm">
+                      <DialogHeader>
+                        <DialogTitle>{t.whyProteinMatters}</DialogTitle>
+                        <DialogDescription className="text-sm pt-2">
+                          {t.proteinTooltip}
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+                <p className="text-xs text-gray-500">{kpiData.protein.percentage}%</p>
+              </div>
+
+              {/* Fiber Chart */}
+              <div className="text-center relative">
+                <div className="relative w-20 h-20 mx-auto mb-1">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={[
+                          { value: Math.min(kpiData.fiber.percentage, 100), fill: "#f97316" },
+                          { value: Math.max(100 - kpiData.fiber.percentage, 0), fill: "#f3f4f6" }
+                        ]}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={20}
+                        outerRadius={35}
+                        startAngle={90}
+                        endAngle={450}
+                        dataKey="value"
+                      >
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="text-sm font-bold text-orange-600">{kpiData.fiber.value}g</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-center gap-1">
+                  <h3 className="text-xs font-semibold text-orange-600">{t.fiber}</h3>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-fiber">
+                        <Info className="h-3 w-3" />
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-sm">
+                      <DialogHeader>
+                        <DialogTitle>{t.whyFiberMatters}</DialogTitle>
+                        <DialogDescription className="text-sm pt-2">
+                          {t.fiberTooltip}
+                          <p className="text-xs text-amber-600 font-medium mt-2">{t.fiberWarning}</p>
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+                <p className="text-xs text-gray-500">{kpiData.fiber.percentage}%</p>
+              </div>
+
+              {/* Vegetables Chart */}
+              <div className="text-center relative">
+                <div className="relative w-20 h-20 mx-auto mb-1">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={[
+                          { value: Math.min(kpiData.vegetables.percentage, 100), fill: "#22c55e" },
+                          { value: Math.max(100 - kpiData.vegetables.percentage, 0), fill: "#f3f4f6" }
+                        ]}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={20}
+                        outerRadius={35}
+                        startAngle={90}
+                        endAngle={450}
+                        dataKey="value"
+                      >
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="text-sm font-bold text-green-600">{kpiData.vegetables.value}g</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-center gap-1">
+                  <h3 className="text-xs font-semibold text-green-600">{t.vegetables}</h3>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-vegetables">
+                        <Info className="h-3 w-3" />
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-sm">
+                      <DialogHeader>
+                        <DialogTitle>{t.whyVegetablesMatters}</DialogTitle>
+                        <DialogDescription className="text-sm pt-2">
+                          {t.vegetablesTooltip}
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+                <p className="text-xs text-gray-500">{kpiData.vegetables.percentage}%</p>
+              </div>
+
+              {/* Plant Diversity Chart */}
+              <div className="text-center relative">
+                <div className="relative w-20 h-20 mx-auto mb-1">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={[
+                          { value: Math.min(kpiData.plantDiversity.percentage, 100), fill: "#16a34a" },
+                          { value: Math.max(100 - kpiData.plantDiversity.percentage, 0), fill: "#f3f4f6" }
+                        ]}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={20}
+                        outerRadius={35}
+                        startAngle={90}
+                        endAngle={450}
+                        dataKey="value"
+                      >
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="text-sm font-bold text-green-700">{kpiData.plantDiversity.value}</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-center gap-1">
+                  <h3 className="text-xs font-semibold text-green-700">{t.plantDiversity}</h3>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-plant-diversity">
+                        <Info className="h-3 w-3" />
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-sm">
+                      <DialogHeader>
+                        <DialogTitle>{t.whyPlantDiversityMatters}</DialogTitle>
+                        <DialogDescription className="text-sm pt-2">
+                          {t.plantDiversityTooltip}
+                          <p className="text-xs text-green-600 font-medium mt-2">{t.plantDiversityTarget}</p>
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+                <p className="text-xs text-gray-500">{kpiData.plantDiversity.percentage}%</p>
+              </div>
+
+              </div>
+            </div>
+          )}
+
+          {/* 3. Weekly highlights (seasonal + menstrual cycle) */}
           <div className="container">
             <WeeklyHighlights menstrualPhase={userProfile?.menstrualPhase || undefined} />
           </div>
