@@ -4,6 +4,7 @@ import "./types"; // Import session types
 import { storage } from "./storage";
 import { generateWeeklyMealPlan } from "./meal-generator";
 import { mealPlanRequestSchema } from "@shared/schema";
+import { generateAccessToken, generateRefreshToken, verifyToken, extractTokenFromHeader } from "./jwt-utils";
 
 import { generateEnhancedShoppingList, updateAllRecipesWithSpecificIngredients, validateAllRecipeIngredients, getDefaultPortion, multiplyIngredientAmount, getCompleteEnhancedMealDatabase, invalidateEnhancedMealDatabaseCache, type MealOption } from "./nutrition-enhanced";
 import { OuraService } from "./oura";
@@ -68,9 +69,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const user = await storage.createUser(userData);
       
-      // Set session for newly registered user
-      req.session.userId = user.id;
-      console.log('Session set for new user:', user.id);
+      // Generate JWT tokens
+      const accessToken = generateAccessToken({ userId: user.id, username: user.username });
+      const refreshToken = generateRefreshToken({ userId: user.id, username: user.username });
+      
+      // Store refresh token (30 days expiry)
+      const refreshTokenExpiry = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+      await storage.saveRefreshToken(user.id, refreshToken, refreshTokenExpiry);
+      
+      console.log('✅ JWT tokens generated for new user:', user.id);
       
       // Don't return password in response
       const { password, ...userWithoutPassword } = user;
@@ -78,6 +85,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(201).json({
         message: "Account created successfully",
         user: userWithoutPassword,
+        accessToken,
+        refreshToken,
       });
     } catch (error) {
       console.error("Registration error:", error);
@@ -100,20 +109,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         lastLoginAt: new Date()
       });
 
-      // Set session for authenticated user
-      req.session.userId = user.id;
-      req.session.rememberMe = rememberMe; // Store preference for rolling sessions
+      // Generate JWT tokens
+      const accessToken = generateAccessToken({ userId: user.id, username: user.username });
+      const refreshToken = generateRefreshToken({ userId: user.id, username: user.username });
       
-      // Set session duration based on rememberMe preference
-      if (rememberMe) {
-        // 30 days for "remember me"
-        req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;
-        console.log('Session set for user:', user.id, '(30 days, rolling)');
-      } else {
-        // 1 day for regular login
-        req.session.cookie.maxAge = 24 * 60 * 60 * 1000;
-        console.log('Session set for user:', user.id, '(1 day, rolling)');
-      }
+      // Store refresh token (30 days expiry - remember me stays logged in)
+      const refreshTokenExpiry = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+      await storage.saveRefreshToken(user.id, refreshToken, refreshTokenExpiry);
+      
+      console.log('✅ JWT tokens generated for user:', user.id, rememberMe ? '(30 days)' : '(session)');
 
       // Don't return password in response
       const { password: _, ...userWithoutPassword } = user;
@@ -121,6 +125,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({
         message: "Login successful",
         user: userWithoutPassword,
+        accessToken,
+        refreshToken,
       });
     } catch (error) {
       console.error("Login error:", error);
@@ -200,26 +206,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Check current authentication status
+  // Check current authentication status (JWT-based)
   app.get("/api/auth/me", async (req, res) => {
     try {
-      if (!req.session?.userId) {
+      const token = extractTokenFromHeader(req);
+      
+      if (!token) {
         return res.status(401).json({ message: "Not authenticated" });
       }
       
-      // Rolling session: extend session duration on each authenticated request
-      if (req.session.rememberMe) {
-        req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // Reset to 30 days
-        req.session.save(); // Explicitly save to persist the updated maxAge
-      } else {
-        req.session.cookie.maxAge = 24 * 60 * 60 * 1000; // Reset to 1 day
-        req.session.save(); // Explicitly save to persist the updated maxAge
+      const payload = verifyToken(token);
+      
+      if (!payload) {
+        return res.status(401).json({ message: "Invalid or expired token" });
       }
       
-      const user = await storage.getUser(req.session.userId);
+      const user = await storage.getUser(payload.userId);
       if (!user) {
-        // Session points to non-existent user, clear session
-        req.session.destroy(() => {});
         return res.status(401).json({ message: "User not found" });
       }
       
@@ -231,20 +234,53 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Logout route
+  // Refresh access token using refresh token
+  app.post("/api/auth/refresh", async (req, res) => {
+    try {
+      const { refreshToken } = z.object({
+        refreshToken: z.string(),
+      }).parse(req.body);
+      
+      // Verify the refresh token exists and is valid
+      const tokenData = await storage.getRefreshToken(refreshToken);
+      
+      if (!tokenData) {
+        return res.status(401).json({ message: "Invalid or expired refresh token" });
+      }
+      
+      // Get user to include in new access token
+      const user = await storage.getUser(tokenData.userId);
+      
+      if (!user) {
+        return res.status(401).json({ message: "User not found" });
+      }
+      
+      // Generate new access token
+      const accessToken = generateAccessToken({ userId: user.id, username: user.username });
+      
+      res.json({
+        accessToken,
+      });
+    } catch (error) {
+      console.error("Token refresh error:", error);
+      res.status(401).json({ message: "Token refresh failed" });
+    }
+  });
+
+  // Logout route (JWT-based)
   app.post("/api/auth/logout", async (req, res) => {
     try {
-      console.log('🚪 Logout request received for session:', req.session.id);
+      const { refreshToken } = z.object({
+        refreshToken: z.string().optional(),
+      }).parse(req.body);
       
-      req.session.destroy((err) => {
-        if (err) {
-          console.error('❌ Session destroy error:', err);
-          return res.status(500).json({ message: "Logout failed" });
-        }
-        console.log('✅ Session destroyed successfully');
-        res.clearCookie('connect.sid'); // Clear session cookie
-        res.json({ message: "Logout successful" });
-      });
+      if (refreshToken) {
+        // Delete the refresh token from storage
+        await storage.deleteRefreshToken(refreshToken);
+        console.log('✅ Refresh token deleted');
+      }
+      
+      res.json({ message: "Logout successful" });
     } catch (error) {
       console.error("Logout error:", error);
       res.status(500).json({ message: "Logout failed" });

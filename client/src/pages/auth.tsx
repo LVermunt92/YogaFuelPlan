@@ -13,6 +13,7 @@ import { Languages } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
+import { setTokens } from "@/lib/auth-storage";
 import { z } from "zod";
 
 const loginSchema = z.object({
@@ -48,6 +49,9 @@ export default function Auth() {
       return response.json();
     },
     onSuccess: (data) => {
+      // Store JWT tokens in localStorage
+      setTokens(data.accessToken, data.refreshToken);
+      
       login(data.user);
       toast({
         title: "Welcome back!",
@@ -71,6 +75,9 @@ export default function Auth() {
       return response.json();
     },
     onSuccess: (data) => {
+      // Store JWT tokens in localStorage
+      setTokens(data.accessToken, data.refreshToken);
+      
       login(data.user);
       toast({
         title: "Account Created!",

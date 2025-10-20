@@ -2,6 +2,7 @@ import {
   users, 
   mealPlans, 
   meals,
+  refreshTokens,
   ouraData,
   mealHistory,
   mealFavorites,
@@ -89,6 +90,12 @@ export interface IStorage {
   verifyPasswordResetCode(userId: number, resetCode: string): Promise<boolean>;
   deletePasswordResetCode(userId: number): Promise<void>;
   updateUserProfile(userId: number, profileData: UpdateUserProfile): Promise<User>;
+  
+  // Refresh Token methods for JWT authentication
+  saveRefreshToken(userId: number, token: string, expiresAt: Date): Promise<void>;
+  getRefreshToken(token: string): Promise<{ userId: number } | null>;
+  deleteRefreshToken(token: string): Promise<void>;
+  deleteAllUserRefreshTokens(userId: number): Promise<void>;
   createMealPlan(mealPlan: InsertMealPlan): Promise<MealPlan>;
   getMealPlans(userId?: number): Promise<MealPlan[]>;
   getMealPlanWithMeals(id: number): Promise<MealPlanWithMeals | undefined>;
@@ -376,6 +383,41 @@ export class MemStorage implements IStorage {
     
     this.users.set(userId, updatedUser);
     return updatedUser;
+  }
+
+  // Refresh Token methods (in-memory storage)
+  private refreshTokenStorage: Map<string, { userId: number; expiresAt: Date }> = new Map();
+
+  async saveRefreshToken(userId: number, token: string, expiresAt: Date): Promise<void> {
+    this.refreshTokenStorage.set(token, { userId, expiresAt });
+  }
+
+  async getRefreshToken(token: string): Promise<{ userId: number } | null> {
+    const tokenData = this.refreshTokenStorage.get(token);
+    
+    if (!tokenData) {
+      return null;
+    }
+    
+    // Check if token has expired
+    if (new Date() > tokenData.expiresAt) {
+      this.refreshTokenStorage.delete(token);
+      return null;
+    }
+    
+    return { userId: tokenData.userId };
+  }
+
+  async deleteRefreshToken(token: string): Promise<void> {
+    this.refreshTokenStorage.delete(token);
+  }
+
+  async deleteAllUserRefreshTokens(userId: number): Promise<void> {
+    for (const [token, data] of this.refreshTokenStorage.entries()) {
+      if (data.userId === userId) {
+        this.refreshTokenStorage.delete(token);
+      }
+    }
   }
 
   async createMealPlan(insertMealPlan: InsertMealPlan): Promise<MealPlan> {
@@ -920,6 +962,42 @@ export class DatabaseStorage implements IStorage {
       .where(eq(users.id, userId))
       .returning();
     return user;
+  }
+
+  // Refresh Token methods (database storage)
+  async saveRefreshToken(userId: number, token: string, expiresAt: Date): Promise<void> {
+    await db.insert(refreshTokens).values({
+      userId,
+      token,
+      expiresAt,
+    });
+  }
+
+  async getRefreshToken(token: string): Promise<{ userId: number } | null> {
+    const [tokenRecord] = await db
+      .select()
+      .from(refreshTokens)
+      .where(eq(refreshTokens.token, token));
+    
+    if (!tokenRecord) {
+      return null;
+    }
+    
+    // Check if token has expired
+    if (new Date() > tokenRecord.expiresAt) {
+      await db.delete(refreshTokens).where(eq(refreshTokens.id, tokenRecord.id));
+      return null;
+    }
+    
+    return { userId: tokenRecord.userId };
+  }
+
+  async deleteRefreshToken(token: string): Promise<void> {
+    await db.delete(refreshTokens).where(eq(refreshTokens.token, token));
+  }
+
+  async deleteAllUserRefreshTokens(userId: number): Promise<void> {
+    await db.delete(refreshTokens).where(eq(refreshTokens.userId, userId));
   }
 
   async createMealPlan(insertMealPlan: InsertMealPlan): Promise<MealPlan> {

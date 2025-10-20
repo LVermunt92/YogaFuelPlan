@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { getAccessToken, getRefreshToken, clearTokens } from "@/lib/auth-storage";
 
 interface User {
   id: number;
@@ -11,11 +12,22 @@ export function useAuth() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check session validity with backend with retry logic
-    const checkAuth = async (retryCount = 0) => {
+    // Check authentication with JWT token
+    const checkAuth = async () => {
       try {
+        const token = getAccessToken();
+        
+        if (!token) {
+          // No token, not authenticated
+          setUser(null);
+          setIsLoading(false);
+          return;
+        }
+        
         const response = await fetch('/api/auth/me', {
-          credentials: 'include'
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
         });
         
         if (response.ok) {
@@ -25,16 +37,11 @@ export function useAuth() {
           localStorage.setItem('userId', data.user.id.toString());
           localStorage.setItem('username', data.user.username);
           setIsLoading(false);
-        } else if (response.status === 401 && retryCount < 2) {
-          // Retry on 401 (session might be establishing)
-          // Wait briefly before retrying
-          setTimeout(() => {
-            checkAuth(retryCount + 1);
-          }, 300 * (retryCount + 1)); // 300ms, then 600ms
         } else {
-          // Session expired or invalid, clear localStorage and state
-          console.log('Session expired, redirecting to login...');
+          // Token expired or invalid, clear tokens and state
+          console.log('Token expired or invalid');
           setUser(null);
+          clearTokens();
           localStorage.removeItem('userId');
           localStorage.removeItem('username');
           setIsLoading(false);
@@ -42,8 +49,8 @@ export function useAuth() {
       } catch (error) {
         console.error('Auth check failed:', error);
         // On network error, set unauthenticated state
-        // Don't use localStorage fallback as it may be stale
         setUser(null);
+        clearTokens();
         localStorage.removeItem('userId');
         localStorage.removeItem('username');
         setIsLoading(false);
@@ -65,23 +72,22 @@ export function useAuth() {
     try {
       console.log('Logout initiated...');
       
-      // Call server logout endpoint to destroy session FIRST
+      const refreshToken = getRefreshToken();
+      
+      // Call server logout endpoint to delete refresh token
       const response = await fetch('/api/auth/logout', {
         method: 'POST',
-        credentials: 'include',
         headers: {
           'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify({ refreshToken })
       });
       
       console.log('Logout response:', response.status, response.statusText);
       
-      if (!response.ok) {
-        console.error('Logout failed with status:', response.status);
-      }
-      
       // Clear client state
       setUser(null);
+      clearTokens(); // Clear JWT tokens
       localStorage.clear(); // Clear all localStorage items
       
       // Force a hard reload of the page to login
@@ -91,6 +97,7 @@ export function useAuth() {
       console.error('Logout error:', error);
       // Clear everything and reload even on error
       setUser(null);
+      clearTokens();
       localStorage.clear();
       window.location.replace('/');
     }

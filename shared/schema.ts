@@ -115,6 +115,15 @@ export const meals = pgTable("meals", {
   isLeftover: boolean("is_leftover").default(false), // true if this meal uses leftover ingredients
 });
 
+// Refresh tokens for JWT authentication
+export const refreshTokens = pgTable("refresh_tokens", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id, { onDelete: "cascade" }).notNull(),
+  token: text("token").notNull().unique(),
+  expiresAt: timestamp("expires_at").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
 export const ouraData = pgTable("oura_data", {
   id: serial("id").primaryKey(),
   userId: integer("user_id").references(() => users.id, { onDelete: "cascade" }).notNull(),

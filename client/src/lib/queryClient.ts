@@ -1,4 +1,5 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
+import { getAccessToken, getRefreshToken, setTokens, clearTokens } from "./auth-storage";
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
@@ -7,17 +8,68 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
+// Automatic token refresh when access token expires
+async function refreshAccessToken(): Promise<string | null> {
+  const refreshToken = getRefreshToken();
+  
+  if (!refreshToken) {
+    return null;
+  }
+  
+  try {
+    const res = await fetch('/api/auth/refresh', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refreshToken }),
+    });
+    
+    if (!res.ok) {
+      // Refresh token is invalid/expired, clear everything
+      clearTokens();
+      return null;
+    }
+    
+    const data = await res.json();
+    setTokens(data.accessToken, refreshToken);
+    return data.accessToken;
+  } catch (error) {
+    clearTokens();
+    return null;
+  }
+}
+
 export async function apiRequest(
   method: string,
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
-  const res = await fetch(url, {
+  const token = getAccessToken();
+  const headers: HeadersInit = data ? { "Content-Type": "application/json" } : {};
+  
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+  
+  let res = await fetch(url, {
     method,
-    headers: data ? { "Content-Type": "application/json" } : {},
+    headers,
     body: data ? JSON.stringify(data) : undefined,
-    credentials: "include",
   });
+  
+  // If 401 and we have a refresh token, try to refresh and retry
+  if (res.status === 401 && getRefreshToken()) {
+    const newAccessToken = await refreshAccessToken();
+    
+    if (newAccessToken) {
+      // Retry the original request with new token
+      headers.Authorization = `Bearer ${newAccessToken}`;
+      res = await fetch(url, {
+        method,
+        headers,
+        body: data ? JSON.stringify(data) : undefined,
+      });
+    }
+  }
 
   await throwIfResNotOk(res);
   return res;
@@ -29,9 +81,29 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
-    const res = await fetch(queryKey.join("/") as string, {
-      credentials: "include",
+    const token = getAccessToken();
+    const headers: HeadersInit = {};
+    
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+    
+    let res = await fetch(queryKey.join("/") as string, {
+      headers,
     });
+    
+    // If 401 and we have a refresh token, try to refresh and retry
+    if (res.status === 401 && getRefreshToken()) {
+      const newAccessToken = await refreshAccessToken();
+      
+      if (newAccessToken) {
+        // Retry the original request with new token
+        headers.Authorization = `Bearer ${newAccessToken}`;
+        res = await fetch(queryKey.join("/") as string, {
+          headers,
+        });
+      }
+    }
 
     if (unauthorizedBehavior === "returnNull" && res.status === 401) {
       return null;

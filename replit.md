@@ -51,10 +51,10 @@ Preferred communication style: Simple, everyday language.
     - **Frontend**: React 18, TypeScript, Wouter for routing, TanStack React Query for server state.
     - **Backend**: Express.js with TypeScript, RESTful API.
     - **Database**: PostgreSQL with Drizzle ORM.
-    - **Session Management**: Express sessions with PostgreSQL store.
+    - **Authentication**: JWT token-based authentication with access tokens (15min expiry) and refresh tokens (30 days expiry) stored in localStorage. Automatic token refresh on expiration for seamless mobile PWA experience.
     - **Build Tools**: Vite for frontend, esbuild for backend.
 - **Feature Specifications**:
-    - **Authentication & Multi-User Support**: Secure login/registration with "remember me for 30 days" rolling session support, password reset, isolated user data, and route protection. New user onboarding with step-by-step welcome dialog explaining profile setup, meal plan generation, and shopping list creation.
+    - **Authentication & Multi-User Support**: JWT-based secure login/registration with persistent mobile login (30 days via refresh tokens), automatic token refresh, password reset, isolated user data, and route protection. New user onboarding with step-by-step welcome dialog explaining profile setup, meal plan generation, and shopping list creation.
     - **Meal Generation**: Calculates protein targets, selects meals from a nutrition database, generates 7-day plans with variety, and creates shopping lists. Includes smart AI recipe generation, comprehensive ingredient specification, and alcohol-free recipes. Automatically includes 1 anti-aging meal per day (7 per week) for longevity support.
     - **Universal Meal Prep Engine**: Adapts to user cooking schedules, supporting batch cooking, proper meal distribution, and intelligent dietary fallbacks. Weekday meals (Mon-Fri) are limited to ≤45 minutes prep time; weekends have no time restrictions.
     - **Ayurvedic Integration**: Supports Ayurvedic dietary tags and seasonal adaptation.
