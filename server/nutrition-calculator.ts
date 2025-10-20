@@ -14,6 +14,7 @@ interface NutritionProfile {
   activityLevel: 'sedentary' | 'light' | 'moderate' | 'high' | 'athlete';
   trainingType: 'mobility' | 'endurance' | 'strength' | 'mixed';
   goal: 'lose_fat' | 'maintain' | 'bulk';
+  weightLossWeekNumber?: number; // For tracking weight loss progress
 }
 
 interface NutritionTargets {
@@ -29,6 +30,12 @@ interface NutritionTargets {
   palValue: number; // PAL multiplier
   carbFactor: number; // g/kg for transparency
   fatPercentage: number; // % of calories
+  weightLossInfo?: {
+    weekNumber: number; // Current week in weight loss journey
+    isMaintenanceWeek: boolean; // True on weeks 6, 12, 18, etc.
+    calorieReductionPercent: number; // Actual calorie reduction applied (0-15%)
+    nextMaintenanceWeek: number; // When is the next maintenance week
+  };
 }
 
 /**
@@ -104,12 +111,46 @@ const FAT_PERCENTAGES: Record<string, number> = {
 
 /**
  * Goal adjustment factors for calories
+ * Note: For weight loss, we use dynamic calculation based on week number
  */
 const GOAL_FACTORS: Record<string, number> = {
-  'lose_fat': 0.90,  // -10%
+  'lose_fat': 0.85,  // -15% max (but calculated dynamically with maintenance weeks)
   'maintain': 1.00,  // 0%
   'bulk': 1.10       // +10%
 };
+
+/**
+ * Calculate weight loss calorie adjustment
+ * Implements: 5 weeks at deficit, then 1 maintenance week (weeks 6, 12, 18, etc.)
+ * Maximum 15% calorie reduction for sustainable weight loss
+ */
+function getWeightLossAdjustment(weekNumber: number): {
+  factor: number;
+  isMaintenanceWeek: boolean;
+  reductionPercent: number;
+  nextMaintenanceWeek: number;
+} {
+  // Maintenance weeks are every 6th week (weeks 6, 12, 18, 24, etc.)
+  const isMaintenanceWeek = weekNumber > 0 && weekNumber % 6 === 0;
+  
+  if (isMaintenanceWeek) {
+    // Maintenance week: normal calories
+    return {
+      factor: 1.00,
+      isMaintenanceWeek: true,
+      reductionPercent: 0,
+      nextMaintenanceWeek: weekNumber + 6
+    };
+  } else {
+    // Deficit week: 15% reduction for sustainable weight loss
+    return {
+      factor: 0.85,
+      isMaintenanceWeek: false,
+      reductionPercent: 15,
+      nextMaintenanceWeek: Math.ceil(weekNumber / 6) * 6
+    };
+  }
+}
 
 /**
  * Calculate BMR using Mifflin-St Jeor equation
@@ -181,13 +222,31 @@ export function calculateNutritionTargets(profile: NutritionProfile, height?: nu
   const palValue = getPALValue(profile.activityLevel);
   const carbFactor = getCarbFactor(profile.trainingType);
   const fatPercentage = getFatPercentage(profile.trainingType);
-  const goalFactor = getGoalFactor(profile.goal);
   
   // Calculate BMR
   const bmr = calculateBMR(profile.weight, height || 0, profile.age, profile.gender);
   
-  // Calculate calories
+  // Calculate calories with weight loss logic
   const maintenanceCalories = bmr * palValue;
+  
+  let goalFactor: number;
+  let weightLossInfo: NutritionTargets['weightLossInfo'];
+  
+  // Apply weight loss week logic if user is on weight loss journey
+  if (profile.goal === 'lose_fat' && profile.weightLossWeekNumber && profile.weightLossWeekNumber > 0) {
+    const adjustment = getWeightLossAdjustment(profile.weightLossWeekNumber);
+    goalFactor = adjustment.factor;
+    weightLossInfo = {
+      weekNumber: profile.weightLossWeekNumber,
+      isMaintenanceWeek: adjustment.isMaintenanceWeek,
+      calorieReductionPercent: adjustment.reductionPercent,
+      nextMaintenanceWeek: adjustment.nextMaintenanceWeek
+    };
+  } else {
+    // Use standard goal factor for non-weight-loss or not yet started
+    goalFactor = getGoalFactor(profile.goal);
+  }
+  
   const targetCalories = maintenanceCalories * goalFactor;
   
   // Calculate macronutrients
@@ -227,7 +286,7 @@ export function calculateNutritionTargets(profile: NutritionProfile, height?: nu
     palValue,
     carbFactor,
     fatPercentage: fatPercentage * 100, // Convert to percentage
-    
+    weightLossInfo
   };
 }
 

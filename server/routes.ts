@@ -3063,11 +3063,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Auto-detect weight loss goal from weight loss tracking
-      // If user has started weight loss journey (weightLossWeekNumber > 0), use fat_loss goal
+      // If user has started weight loss journey (weightLossWeekNumber > 0), use lose_fat goal
       let userGoal = (user.goal as any) || 'maintain';
       if (user.weightLossWeekNumber && user.weightLossWeekNumber > 0) {
-        userGoal = 'fat_loss';
-        console.log(`🎯 Auto-detected fat_loss goal for user ${userId} (week ${user.weightLossWeekNumber} of weight loss)`);
+        userGoal = 'lose_fat';
+        console.log(`🎯 Auto-detected lose_fat goal for user ${userId} (week ${user.weightLossWeekNumber} of weight loss)`);
       }
 
       // Create nutrition profile from user data
@@ -3077,7 +3077,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         gender: (user.gender as 'male' | 'female' | 'other') || 'other',
         activityLevel: (user.activityLevel as any) || 'moderate',
         trainingType: (user.trainingType as any) || 'endurance',
-        goal: userGoal
+        goal: userGoal,
+        weightLossWeekNumber: user.weightLossWeekNumber || undefined
       };
 
       // Calculate comprehensive nutrition targets

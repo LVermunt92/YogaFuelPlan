@@ -72,6 +72,12 @@ interface NutritionTargets {
   palValue: number;
   carbFactor: number;
   fatPercentage: number;
+  weightLossInfo?: {
+    weekNumber: number;
+    isMaintenanceWeek: boolean;
+    calorieReductionPercent: number;
+    nextMaintenanceWeek: number;
+  };
 }
 
 export default function Profile() {
@@ -644,6 +650,43 @@ export default function Profile() {
                   </div>
                 </div>
               </div>
+              
+              {/* Weight Loss Progress Information */}
+              {nutritionTargets.weightLossInfo && (
+                <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
+                  <div className="text-sm font-medium text-green-900 mb-2 flex items-center gap-2">
+                    <TrendingUp className="h-4 w-4" />
+                    Weight Loss Progress
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div className="text-green-800">
+                      <span className="font-medium">Current Week:</span> Week {nutritionTargets.weightLossInfo.weekNumber}
+                    </div>
+                    <div className="text-green-800">
+                      <span className="font-medium">Week Type:</span>{' '}
+                      {nutritionTargets.weightLossInfo.isMaintenanceWeek ? (
+                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
+                          Maintenance Week 🎯
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-medium">
+                          Deficit Week (-{nutritionTargets.weightLossInfo.calorieReductionPercent}%)
+                        </span>
+                      )}
+                    </div>
+                    <div className="text-green-800">
+                      <span className="font-medium">Next Maintenance:</span> Week {nutritionTargets.weightLossInfo.nextMaintenanceWeek}
+                    </div>
+                  </div>
+                  <div className="mt-3 text-xs text-green-700">
+                    {nutritionTargets.weightLossInfo.isMaintenanceWeek ? (
+                      <p>✨ This is a maintenance week! Eat at your normal maintenance calories to prevent metabolic adaptation.</p>
+                    ) : (
+                      <p>🔥 You're in a calorie deficit week. After 5 weeks, you'll have a maintenance week to support long-term success.</p>
+                    )}
+                  </div>
+                </div>
+              )}
               
               <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
                 <div className="text-sm font-medium text-blue-900 mb-2">Calculation Details</div>
