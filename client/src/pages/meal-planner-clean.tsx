@@ -950,15 +950,15 @@ function MealPlannerMain() {
                 <p className="text-xs text-gray-500">{kpiData.vegetables.percentage}%</p>
               </div>
 
-              {/* Plant Diversity Chart */}
+              {/* Good Fats Chart */}
               <div className="text-center relative">
                 <div className="relative w-20 h-20 mx-auto mb-1">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
                         data={[
-                          { value: Math.min(kpiData.plantDiversity.percentage, 100), fill: "#16a34a" },
-                          { value: Math.max(100 - kpiData.plantDiversity.percentage, 0), fill: "#f3f4f6" }
+                          { value: kpiData.goodFats.percentage, fill: "#eab308" },
+                          { value: 100 - kpiData.goodFats.percentage, fill: "#f3f4f6" }
                         ]}
                         cx="50%"
                         cy="50%"
@@ -973,30 +973,29 @@ function MealPlannerMain() {
                   </ResponsiveContainer>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
-                      <div className="text-sm font-bold text-green-700">{kpiData.plantDiversity.value}</div>
+                      <div className="text-sm font-bold text-yellow-600">{kpiData.goodFats.value}g</div>
                     </div>
                   </div>
                 </div>
                 <div className="flex items-center justify-center gap-1">
-                  <h3 className="text-xs font-semibold text-green-700">{t.plantDiversity}</h3>
+                  <h3 className="text-xs font-semibold text-yellow-600">{t.goodFats || 'Good Fats'}</h3>
                   <Dialog>
                     <DialogTrigger asChild>
-                      <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-plant-diversity">
+                      <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-fats">
                         <Info className="h-3 w-3" />
                       </button>
                     </DialogTrigger>
                     <DialogContent className="max-w-sm">
                       <DialogHeader>
-                        <DialogTitle>{t.whyPlantDiversityMatters}</DialogTitle>
+                        <DialogTitle>{t.whyHealthyFatsMatters}</DialogTitle>
                         <DialogDescription className="text-sm pt-2">
-                          {t.plantDiversityTooltip}
-                          <p className="text-xs text-green-600 font-medium mt-2">{t.plantDiversityTarget}</p>
+                          {t.fatsTooltip}
                         </DialogDescription>
                       </DialogHeader>
                     </DialogContent>
                   </Dialog>
                 </div>
-                <p className="text-xs text-gray-500">{kpiData.plantDiversity.percentage}%</p>
+                <p className="text-xs text-gray-500">{kpiData.goodFats.percentage}%</p>
               </div>
 
               </div>
