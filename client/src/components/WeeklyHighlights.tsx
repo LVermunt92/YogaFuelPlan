@@ -199,22 +199,9 @@ export function WeeklyHighlights({ menstrualPhase = "off" }: WeeklyHighlightsPro
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4 sm:space-y-6 px-6 pb-6">
-        {/* Seasonal Description */}
-        <div>
-          <div className="flex items-center gap-2 mb-2">
-            <Calendar className="h-4 w-4 text-blue-600" />
-            <h4 className="font-medium text-sm text-gray-700">
-              {seasonNames[seasonalInfo.season]} {language === 'nl' ? 'voeding' : 'nutrition'}
-            </h4>
-          </div>
-          <p className="text-sm text-gray-600 leading-relaxed">
-            {seasonalInfo.weekDescription}
-          </p>
-        </div>
-        
         {/* Menstrual Cycle Information */}
         {menstrualInfo && (
-          <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+          <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="text-lg">{menstrualInfo.icon}</span>
               <h4 className="font-medium text-sm text-gray-700">
@@ -226,6 +213,19 @@ export function WeeklyHighlights({ menstrualPhase = "off" }: WeeklyHighlightsPro
             </p>
           </div>
         )}
+        
+        {/* Seasonal Description */}
+        <div className={menstrualInfo ? "border-t border-gray-200 dark:border-gray-700 pt-4" : ""}>
+          <div className="flex items-center gap-2 mb-2">
+            <Calendar className="h-4 w-4 text-blue-600" />
+            <h4 className="font-medium text-sm text-gray-700">
+              {seasonNames[seasonalInfo.season]} {language === 'nl' ? 'voeding' : 'nutrition'}
+            </h4>
+          </div>
+          <p className="text-sm text-gray-600 leading-relaxed">
+            {seasonalInfo.weekDescription}
+          </p>
+        </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           <div>
