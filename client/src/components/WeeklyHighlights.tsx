@@ -188,7 +188,7 @@ export function WeeklyHighlights({ menstrualPhase = "off" }: WeeklyHighlightsPro
     <Card className="w-full" padding="none">
       <CardHeader className="pb-4 px-6 pt-6">
         <CardTitle className="flex items-center gap-2">
-          <span className="text-gray-900">
+          <span className="text-gray-900 whitespace-nowrap">
             {language === 'nl' ? 'Wekelijkse hoogtepunten' : 'Weekly highlights'}
           </span>
           <div className="flex items-center gap-1 text-sm font-normal text-gray-500 ml-auto">
