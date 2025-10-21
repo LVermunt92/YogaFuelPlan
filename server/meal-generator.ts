@@ -1437,17 +1437,33 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
     }
     
     if (day === 1) {
-      // Day 1: Sunday evening - only dinner (start of meal plan)
-      mealsToGenerate = ['dinner'];
-      console.log(`🌅 Day ${day} (Sunday evening): ONLY dinner`);
-    } else {
-      // Other days: Generate meals based on mealsPerDay setting
-      if (mealsPerDay === 3) {
-        mealsToGenerate = ['breakfast', 'lunch', 'dinner'];
-        console.log(`🌅 Day ${day}: all 3 meals (breakfast, lunch, dinner)`);
+      // Day 1: Sunday evening - check if dinner is enabled
+      if (user?.includeDinner !== false) {
+        mealsToGenerate = ['dinner'];
+        console.log(`🌅 Day ${day} (Sunday evening): ONLY dinner`);
       } else {
-        mealsToGenerate = ['lunch', 'dinner'];
-        console.log(`🌅 Day ${day}: 2 meals (lunch, dinner)`);
+        console.log(`🌅 Day ${day} (Sunday evening): SKIPPED (dinner disabled in user preferences)`);
+        continue;
+      }
+    } else {
+      // Other days: Generate meals based on user's meal type preferences
+      mealsToGenerate = [];
+      
+      // Check which meals are enabled in user preferences
+      const breakfastEnabled = user?.includeBreakfast === true;
+      const lunchEnabled = user?.includeLunch !== false; // Default to true
+      const dinnerEnabled = user?.includeDinner !== false; // Default to true
+      
+      if (breakfastEnabled) mealsToGenerate.push('breakfast');
+      if (lunchEnabled) mealsToGenerate.push('lunch');
+      if (dinnerEnabled) mealsToGenerate.push('dinner');
+      
+      console.log(`🌅 Day ${day}: ${mealsToGenerate.length} meals (${mealsToGenerate.join(', ')}) - based on user preferences: breakfast=${breakfastEnabled}, lunch=${lunchEnabled}, dinner=${dinnerEnabled}`);
+      
+      // If no meals are enabled, skip this day
+      if (mealsToGenerate.length === 0) {
+        console.log(`🌅 Day ${day}: SKIPPED (no meal types enabled in user preferences)`);
+        continue;
       }
     }
 
