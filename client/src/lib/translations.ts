@@ -455,6 +455,10 @@ export const translations = {
     featureDietaryDesc: "Supports all major dietary restrictions and preferences with automatic filtering and alternatives.",
     featureShoppingTitle: "Supermarket-Organized Lists",
     featureShoppingDesc: "Shopping lists organized by supermarket flow with specific quantities and smart categorization.",
+    featureMenstrualTitle: "Menstrual Cycle Support",
+    featureMenstrualDesc: "Track your cycle phase and receive personalized nutrition guidance optimized for each phase of your menstrual cycle.",
+    featureNutritionTitle: "Comprehensive Nutrition Tracking",
+    featureNutritionDesc: "Track protein, fiber, vitamins, plant diversity, cocoa flavanols, and other key nutrients in your meal plan.",
     proteinDaily: "Protein daily",
     saving: "Saving...",
     savePlan: "Save Plan",
@@ -1063,6 +1067,10 @@ export const translations = {
     featureDietaryDesc: "Ondersteunt alle belangrijke dieetbeperkingen en voorkeuren met automatische filtering en alternatieven.",
     featureShoppingTitle: "Supermarkt-Georganiseerde Lijsten",
     featureShoppingDesc: "Boodschappenlijsten georganiseerd volgens supermarkt indeling met specifieke hoeveelheden en slimme categorisering.",
+    featureMenstrualTitle: "Menstruele Cyclus Ondersteuning",
+    featureMenstrualDesc: "Volg je cyclusfase en ontvang gepersonaliseerd voedingsadvies geoptimaliseerd voor elke fase van je menstruele cyclus.",
+    featureNutritionTitle: "Uitgebreide Voedingsvolging",
+    featureNutritionDesc: "Volg eiwit, vezels, vitamines, plantendiversiteit, cacao flavanolen en andere belangrijke voedingsstoffen in je maaltijdplan.",
 
     // Terms and Conditions page (Dutch)
     termsAndConditions: "Algemene voorwaarden",

@@ -345,6 +345,24 @@ export default function About() {
                   <p className="text-gray-600 text-sm">{t.featureShoppingDesc}</p>
                 </div>
               </div>
+              <div className="flex items-start">
+                <div className="bg-green-100 p-2 rounded-lg mr-3 mt-1">
+                  <Heart className="h-4 w-4 text-green-600" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-gray-900">{t.featureMenstrualTitle}</h4>
+                  <p className="text-gray-600 text-sm">{t.featureMenstrualDesc}</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <div className="bg-green-100 p-2 rounded-lg mr-3 mt-1">
+                  <Target className="h-4 w-4 text-green-600" />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-gray-900">{t.featureNutritionTitle}</h4>
+                  <p className="text-gray-600 text-sm">{t.featureNutritionDesc}</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
