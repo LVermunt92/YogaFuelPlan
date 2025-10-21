@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getAccessToken, getRefreshToken, clearTokens } from "@/lib/auth-storage";
+import { getAccessToken, getRefreshToken, clearTokens, setTokens } from "@/lib/auth-storage";
 
 interface User {
   id: number;
@@ -7,12 +7,42 @@ interface User {
   email?: string;
 }
 
+// Automatic token refresh when access token expires
+async function refreshAccessToken(): Promise<string | null> {
+  const refreshToken = getRefreshToken();
+  
+  if (!refreshToken) {
+    return null;
+  }
+  
+  try {
+    const res = await fetch('/api/auth/refresh', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refreshToken }),
+    });
+    
+    if (!res.ok) {
+      // Refresh token is invalid/expired, clear everything
+      clearTokens();
+      return null;
+    }
+    
+    const data = await res.json();
+    setTokens(data.accessToken, refreshToken);
+    return data.accessToken;
+  } catch (error) {
+    clearTokens();
+    return null;
+  }
+}
+
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check authentication with JWT token
+    // Check authentication with JWT token and automatic refresh
     const checkAuth = async () => {
       try {
         const token = getAccessToken();
@@ -24,11 +54,25 @@ export function useAuth() {
           return;
         }
         
-        const response = await fetch('/api/auth/me', {
+        let response = await fetch('/api/auth/me', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
+        
+        // If 401 and we have a refresh token, try to refresh and retry
+        if (response.status === 401 && getRefreshToken()) {
+          const newAccessToken = await refreshAccessToken();
+          
+          if (newAccessToken) {
+            // Retry the original request with new token
+            response = await fetch('/api/auth/me', {
+              headers: {
+                'Authorization': `Bearer ${newAccessToken}`
+              }
+            });
+          }
+        }
         
         if (response.ok) {
           const data = await response.json();
@@ -38,7 +82,7 @@ export function useAuth() {
           localStorage.setItem('username', data.user.username);
           setIsLoading(false);
         } else {
-          // Token expired or invalid, clear tokens and state
+          // Token expired or invalid even after refresh attempt
           console.log('Token expired or invalid');
           setUser(null);
           clearTokens();
