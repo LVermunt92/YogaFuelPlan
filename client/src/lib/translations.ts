@@ -413,7 +413,7 @@ export const translations = {
     aboutMealPlanner: "About our meal planner",
     aboutSubtitle: "Discover the philosophy behind our personalized healthy lifestyle planner that adapts to your unique needs and goals.",
     ourPhilosophy: "Our philosophy",
-    philosophyStatement: "We believe that healthy eating should be personalized, intelligent, and seamlessly integrated into your real life. Our meal planner combines cutting-edge nutrition science with AI-powered adaptability to create meal plans that evolve with your lifestyle, activity levels, and health goals.",
+    philosophyStatement: "We believe that healthy eating should be personalized, intelligent, and seamlessly integrated into your real life. Our meal planner uses AI-powered adaptability to create meal plans that evolve with your lifestyle, activity levels, and health goals.",
     corePrinciples: "Core principles",
     
     // Philosophy Points
@@ -424,7 +424,7 @@ export const translations = {
     adaptiveLifestyle: "Adaptive lifestyle",
     adaptiveLifestyleDesc: "Seamlessly integrates with your Oura Ring data to automatically adjust nutrition targets based on your real-time activity and recovery metrics.",
     precisionTargeting: "Precision targeting",
-    precisionTargetingDesc: "Advanced protein calculations based on age, gender, activity level, and goals ensure optimal nutrition for muscle maintenance and performance.",
+    precisionTargetingDesc: "Personalized nutrition calculations based on age, gender, activity level, and goals to support muscle maintenance and performance.",
     sustainableEating: "Sustainable eating",
     sustainableEatingDesc: "Focus on whole foods, seasonal ingredients, and practical cooking methods that promote long-term healthy eating habits.",
     realLifeIntegration: "Real-life integration",
@@ -444,7 +444,7 @@ export const translations = {
     // Key Features
     keyFeatures: "Key features",
     featureProteinTitle: "Advanced protein targeting",
-    featureProteinDesc: "Protein calculations with gender-specific age thresholds and activity considerations.",
+    featureProteinDesc: "Personalized protein calculations based on your age, gender, and activity level.",
     featureAiTitle: "AI-powered recipe generation",
     featureAiDesc: "Intelligent recipe creation that considers your preferences, restrictions, and nutritional needs.",
     featureOuraTitle: "Oura Ring Integration",
@@ -1025,7 +1025,7 @@ export const translations = {
     aboutMealPlanner: "Over Onze Maaltijdplanner",
     aboutSubtitle: "Ontdek de filosofie achter onze gepersonaliseerde gezonde levensstijl planner die zich aanpast aan jouw unieke behoeften en doelen.",
     ourPhilosophy: "Onze Filosofie",
-    philosophyStatement: "Wij geloven dat gezond eten gepersonaliseerd, intelligent en naadloos geïntegreerd moet zijn in je echte leven. Onze maaltijdplanner combineert geavanceerde voedingswetenschap met AI-aanpassing om maaltijdplannen te creëren die meegroeien met jouw levensstijl, activiteitsniveaus en gezondheidsdoelen.",
+    philosophyStatement: "Wij geloven dat gezond eten gepersonaliseerd, intelligent en naadloos geïntegreerd moet zijn in je echte leven. Onze maaltijdplanner gebruikt AI-aanpassing om maaltijdplannen te creëren die meegroeien met jouw levensstijl, activiteitsniveaus en gezondheidsdoelen.",
     corePrinciples: "Kernprincipes",
     
     // Philosophy Points (Dutch)
@@ -1036,7 +1036,7 @@ export const translations = {
     adaptiveLifestyle: "Adaptieve Levensstijl",
     adaptiveLifestyleDesc: "Integreert naadloos met jouw Oura Ring data om automatisch voedingsdoelen aan te passen op basis van je real-time activiteit en herstelmetingen.",
     precisionTargeting: "Precisie Targeting",
-    precisionTargetingDesc: "Geavanceerde eiwitberekeningen op basis van leeftijd, geslacht, activiteitsniveau en doelen zorgen voor optimale voeding voor spieronderhoud en prestaties.",
+    precisionTargetingDesc: "Gepersonaliseerde voedingsberekeningen op basis van leeftijd, geslacht, activiteitsniveau en doelen om spieronderhoud en prestaties te ondersteunen.",
     sustainableEating: "Duurzaam Eten",
     sustainableEatingDesc: "Focus op hele voeding, seizoensgebonden ingrediënten en praktische kookmethoden die langdurige gezonde eetgewoonten bevorderen.",
     realLifeIntegration: "Echte Leven Integratie",
@@ -1056,7 +1056,7 @@ export const translations = {
     // Key Features (Dutch)
     keyFeatures: "Hoofdkenmerken",
     featureProteinTitle: "Geavanceerde Eiwit Targeting",
-    featureProteinDesc: "Eiwitberekeningen met geslachtsspecifieke leeftijdsdrempels en activiteitsoverwegingen.",
+    featureProteinDesc: "Gepersonaliseerde eiwitberekeningen op basis van jouw leeftijd, geslacht en activiteitsniveau.",
     featureAiTitle: "AI-Aangedreven Receptgeneratie",
     featureAiDesc: "Intelligente receptcreatie die rekening houdt met jouw voorkeuren, beperkingen en voedingsbehoeften.",
     featureOuraTitle: "Oura Ring Integratie",
