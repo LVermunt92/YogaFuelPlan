@@ -346,6 +346,7 @@ function calculateCaloricAdjustment(user: User): number {
 
 /**
  * Calculate serving multiplier based on cooking vs eating frequency
+ * Database stores all recipes as 1 serving baseline, this function calculates the multiplier
  */
 function calculateServingMultiplier(user?: User): number {
   if (!user) return 1.0;
@@ -361,8 +362,7 @@ function calculateServingMultiplier(user?: User): number {
   
   console.log(`🍽️ SERVING CALCULATION: ${cookingDays} cooking days for ${eatingDays} eating days = ${servingMultiplier}x servings per recipe`);
   
-  // Cap at 1.0 maximum to prevent oversized portions (user preference)
-  return Math.min(servingMultiplier, 1.0);
+  return servingMultiplier;
 }
 
 /**
