@@ -50,6 +50,9 @@ interface UserProfile {
   proteinTarget: number;
   dietaryTags: string[];
   householdSize: number;
+  includeBreakfast: boolean;
+  includeLunch: boolean;
+  includeDinner: boolean;
   cookingDaysPerWeek: number;
   eatingDaysAtHome: number;
   mealsPerDay: number;
@@ -118,6 +121,9 @@ export default function Profile() {
     proteinTarget: '',
     dietaryTags: [] as string[],
     householdSize: '',
+    includeBreakfast: false,
+    includeLunch: true,
+    includeDinner: true,
     cookingDaysPerWeek: '',
     eatingDaysAtHome: '',
     mealsPerDay: '',
@@ -187,6 +193,9 @@ export default function Profile() {
         proteinTarget: isNewUser ? '' : dynamicProteinTarget.toString(),
         dietaryTags: user.dietaryTags || [],
         householdSize: isNewUser ? '' : (user.householdSize?.toString() || ''),
+        includeBreakfast: user.includeBreakfast ?? false,
+        includeLunch: user.includeLunch ?? true,
+        includeDinner: user.includeDinner ?? true,
         cookingDaysPerWeek: isNewUser ? '' : (user.cookingDaysPerWeek?.toString() || ''),
         eatingDaysAtHome: isNewUser ? '' : (user.eatingDaysAtHome?.toString() || ''),
         mealsPerDay: isNewUser ? '' : (user.mealsPerDay?.toString() || ''),
@@ -231,6 +240,9 @@ export default function Profile() {
           proteinTarget: dynamicProteinTarget.toString(),
           dietaryTags: updatedData.dietaryTags || [],
           householdSize: updatedData.householdSize?.toString() || '1',
+          includeBreakfast: updatedData.includeBreakfast ?? false,
+          includeLunch: updatedData.includeLunch ?? true,
+          includeDinner: updatedData.includeDinner ?? true,
           cookingDaysPerWeek: updatedData.cookingDaysPerWeek?.toString() || '7',
           eatingDaysAtHome: updatedData.eatingDaysAtHome?.toString() || '7',
           mealsPerDay: updatedData.mealsPerDay?.toString() || '2',
@@ -296,6 +308,9 @@ export default function Profile() {
       proteinTarget: formData.proteinTarget ? parseInt(formData.proteinTarget) : null,
       dietaryTags: formData.dietaryTags,
       householdSize: formData.householdSize ? parseInt(formData.householdSize) : 1,
+      includeBreakfast: formData.includeBreakfast,
+      includeLunch: formData.includeLunch,
+      includeDinner: formData.includeDinner,
       cookingDaysPerWeek: formData.cookingDaysPerWeek ? parseInt(formData.cookingDaysPerWeek) : 7,
       eatingDaysAtHome: formData.eatingDaysAtHome ? parseInt(formData.eatingDaysAtHome) : 7,
       mealsPerDay: formData.mealsPerDay ? parseInt(formData.mealsPerDay) : 2,
@@ -810,7 +825,63 @@ export default function Profile() {
                   {t.peopleYouCookFor}
                 </p>
               </div>
+            </div>
 
+            {/* Meals to Include */}
+            <div className="mt-6">
+              <Label className="text-sm font-medium text-foreground mb-3 block">
+                Meals to include
+              </Label>
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="includeBreakfast"
+                    checked={formData.includeBreakfast}
+                    onCheckedChange={(checked) => 
+                      setFormData(prev => ({ ...prev, includeBreakfast: checked as boolean }))
+                    }
+                  />
+                  <label
+                    htmlFor="includeBreakfast"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                  >
+                    Include breakfast
+                  </label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="includeLunch"
+                    checked={formData.includeLunch}
+                    onCheckedChange={(checked) => 
+                      setFormData(prev => ({ ...prev, includeLunch: checked as boolean }))
+                    }
+                  />
+                  <label
+                    htmlFor="includeLunch"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                  >
+                    Include lunch
+                  </label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="includeDinner"
+                    checked={formData.includeDinner}
+                    onCheckedChange={(checked) => 
+                      setFormData(prev => ({ ...prev, includeDinner: checked as boolean }))
+                    }
+                  />
+                  <label
+                    htmlFor="includeDinner"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                  >
+                    Include dinner
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
               <div>
                 <Label htmlFor="cookingDaysPerWeek" className="text-sm font-medium text-foreground mb-2 block">
                   {t.cookingDaysPerWeek}

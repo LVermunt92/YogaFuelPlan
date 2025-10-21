@@ -23,6 +23,9 @@ export const users = pgTable("users", {
   proteinTarget: integer("protein_target").default(130), // grams
   dietaryTags: text("dietary_tags").array().default([]),
   householdSize: integer("household_size").default(1),
+  includeBreakfast: boolean("include_breakfast").default(false),
+  includeLunch: boolean("include_lunch").default(true),
+  includeDinner: boolean("include_dinner").default(true),
   cookingDaysPerWeek: integer("cooking_days_per_week").default(7),
   eatingDaysAtHome: integer("eating_days_at_home").default(7),
   mealsPerDay: integer("meals_per_day").default(2), // 2 = lunch+dinner, 3 = breakfast+lunch+dinner, 4+ = includes snacks
@@ -369,6 +372,9 @@ export const updateUserProfileSchema = createInsertSchema(users).pick({
   proteinTarget: true,
   dietaryTags: true,
   householdSize: true,
+  includeBreakfast: true,
+  includeLunch: true,
+  includeDinner: true,
   cookingDaysPerWeek: true,
   eatingDaysAtHome: true,
   mealsPerDay: true,
