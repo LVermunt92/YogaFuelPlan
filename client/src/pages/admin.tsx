@@ -1045,14 +1045,9 @@ function AdminPanelMain() {
     queryFn: () => fetch('/api/admin/nutrition-config').then(res => res.json()),
   });
 
-  // Fetch unified recipes (all base + all variants in one list)
+  // Fetch unified recipes (all base + all variants in one list) - uses default authenticated queryFn
   const { data: unifiedRecipeData, isLoading: recipesLoading, refetch: refetchRecipes } = useQuery<UnifiedRecipesResponse>({
     queryKey: ['/api/admin/unified-recipes'],
-    queryFn: async () => {
-      const response = await fetch('/api/admin/unified-recipes');
-      if (!response.ok) throw new Error('Failed to fetch unified recipes');
-      return response.json();
-    },
   });
 
   // Apply client-side filtering for search and filters
@@ -1103,24 +1098,14 @@ function AdminPanelMain() {
     totalPages: totalPages
   }), [paginatedRecipes, filteredRecipes.length, currentPage, totalPages]);
 
-  // Fetch recipe statistics
+  // Fetch recipe statistics - uses default authenticated queryFn
   const { data: recipeStats, isLoading: recipeStatsLoading } = useQuery<RecipeStats>({
     queryKey: ['/api/recipes/stats'],
-    queryFn: async () => {
-      const response = await fetch('/api/recipes/stats');
-      if (!response.ok) throw new Error('Failed to fetch recipe stats');
-      return response.json();
-    },
   });
 
-  // Fetch recipe usage statistics (how often each recipe is used in meal plans)
+  // Fetch recipe usage statistics - uses default authenticated queryFn
   const { data: recipeUsage } = useQuery<Record<number, number>>({
     queryKey: ['/api/recipes/usage'],
-    queryFn: async () => {
-      const response = await fetch('/api/recipes/usage');
-      if (!response.ok) throw new Error('Failed to fetch recipe usage');
-      return response.json();
-    },
   });
 
   // Fetch all users
