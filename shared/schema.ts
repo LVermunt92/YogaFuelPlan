@@ -68,6 +68,12 @@ export const recipes = pgTable("recipes", {
   recipeTips: text("recipe_tips").array(),
   recipeNotes: text("recipe_notes"),
   
+  // Preparation time
+  prepTime: integer("prep_time").default(30), // minutes
+  
+  // Serving information
+  defaultBatchServings: integer("default_batch_servings").default(1), // Base recipe servings (default 1, meal generator multiplies as needed)
+  
   // Source tracking
   source: text("source").notNull().default("base"), // base, variant, custom, ai
   variantOf: text("variant_of"), // Reference to base recipe ID for variants
