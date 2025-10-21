@@ -601,6 +601,78 @@ export default function Profile() {
 
           </div>
 
+          {/* Health Goals */}
+          <div className="card-clean">
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-foreground mb-2">
+                {t.healthGoals}
+              </h2>
+              <p className="text-sm text-gray-500">
+                {t.healthGoalsHelp}
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <Label htmlFor="goalWeight" className="text-sm font-medium text-foreground mb-2 block">
+                  {t.goalWeight}
+                </Label>
+                <Input
+                  id="goalWeight"
+                  type="number"
+                  step="0.1"
+                  value={formData.goalWeight}
+                  onChange={(e) => setFormData(prev => ({ ...prev, goalWeight: e.target.value }))}
+                  className="input-clean"
+                  placeholder="Optional target weight"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="goalWaistline" className="text-sm font-medium text-foreground mb-2 block">
+                  Goal Waist Circumference (cm)
+                </Label>
+                <p className="text-xs text-muted-foreground mb-2">
+                  Your target waist measurement (optional)
+                </p>
+                <Input
+                  id="goalWaistline"
+                  type="number"
+                  step="0.1"
+                  value={formData.goalWaistline}
+                  onChange={(e) => setFormData(prev => ({ ...prev, goalWaistline: e.target.value }))}
+                  className="input-clean"
+                  placeholder="e.g., 80.0"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="targetDate" className="text-sm font-medium text-foreground mb-2 block">
+                  Target Date
+                </Label>
+                <p className="text-xs text-muted-foreground mb-2">
+                  When you want to reach your goals (optional)
+                </p>
+                <Input
+                  id="targetDate"
+                  type="date"
+                  value={formData.targetDate}
+                  onChange={(e) => setFormData(prev => ({ ...prev, targetDate: e.target.value }))}
+                  className="input-clean"
+                />
+              </div>
+            </div>
+
+            {/* Goal Timeline Display */}
+            {formData.targetDate && (
+              <div className="mt-4 p-3 bg-muted rounded-md">
+                <span className="text-sm text-gray-500">
+                  {t.timeline}: {Math.max(0, Math.ceil((new Date(formData.targetDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24 * 7)))} {t.weeksToReachGoals}
+                </span>
+              </div>
+            )}
+          </div>
+
           {/* Nutrition Targets */}
           {nutritionTargets && (
             <div className="card-clean">
@@ -707,78 +779,6 @@ export default function Profile() {
               </div>
             </div>
           )}
-
-          {/* Health Goals */}
-          <div className="card-clean">
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-foreground mb-2">
-                {t.healthGoals}
-              </h2>
-              <p className="text-sm text-gray-500">
-                {t.healthGoalsHelp}
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div>
-                <Label htmlFor="goalWeight" className="text-sm font-medium text-foreground mb-2 block">
-                  {t.goalWeight}
-                </Label>
-                <Input
-                  id="goalWeight"
-                  type="number"
-                  step="0.1"
-                  value={formData.goalWeight}
-                  onChange={(e) => setFormData(prev => ({ ...prev, goalWeight: e.target.value }))}
-                  className="input-clean"
-                  placeholder="Optional target weight"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="goalWaistline" className="text-sm font-medium text-foreground mb-2 block">
-                  Goal Waist Circumference (cm)
-                </Label>
-                <p className="text-xs text-muted-foreground mb-2">
-                  Your target waist measurement (optional)
-                </p>
-                <Input
-                  id="goalWaistline"
-                  type="number"
-                  step="0.1"
-                  value={formData.goalWaistline}
-                  onChange={(e) => setFormData(prev => ({ ...prev, goalWaistline: e.target.value }))}
-                  className="input-clean"
-                  placeholder="e.g., 80.0"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="targetDate" className="text-sm font-medium text-foreground mb-2 block">
-                  Target Date
-                </Label>
-                <p className="text-xs text-muted-foreground mb-2">
-                  When you want to reach your goals (optional)
-                </p>
-                <Input
-                  id="targetDate"
-                  type="date"
-                  value={formData.targetDate}
-                  onChange={(e) => setFormData(prev => ({ ...prev, targetDate: e.target.value }))}
-                  className="input-clean"
-                />
-              </div>
-            </div>
-
-            {/* Goal Timeline Display */}
-            {formData.targetDate && (
-              <div className="mt-4 p-3 bg-muted rounded-md">
-                <span className="text-sm text-gray-500">
-                  {t.timeline}: {Math.max(0, Math.ceil((new Date(formData.targetDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24 * 7)))} {t.weeksToReachGoals}
-                </span>
-              </div>
-            )}
-          </div>
 
           {/* Meal Planning Preferences */}
           <div className="card-clean">
