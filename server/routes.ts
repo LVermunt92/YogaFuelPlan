@@ -3158,6 +3158,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     return await getCompleteEnhancedMealDatabase();
   }
 
+  // Helper function to extract userId from JWT token
+  function getUserIdFromToken(req: any): number | null {
+    const token = extractTokenFromHeader(req);
+    if (!token) return null;
+    
+    const payload = verifyToken(token);
+    return payload?.userId || null;
+  }
+
   // Helper function to check admin access
   async function isAdminUser(userId: number): Promise<boolean> {
     const user = await storage.getUser(userId);
@@ -3167,11 +3176,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get current in-memory modifications (admin only)
   app.get("/api/admin/recipe-modifications", async (req, res) => {
     try {
-      if (!req.session?.userId) {
+      const userId = getUserIdFromToken(req);
+      if (!userId) {
         return res.status(401).json({ message: "Not authenticated" });
       }
 
-      const isAdmin = await isAdminUser(req.session.userId);
+      const isAdmin = await isAdminUser(userId);
       if (!isAdmin) {
         return res.status(403).json({ message: "Admin access required" });
       }
@@ -3203,11 +3213,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Save current modifications to database permanently (admin only)
   app.post("/api/admin/save-recipe-modifications", async (req, res) => {
     try {
-      if (!req.session?.userId) {
+      const userId = getUserIdFromToken(req);
+      if (!userId) {
         return res.status(401).json({ message: "Not authenticated" });
       }
 
-      const isAdmin = await isAdminUser(req.session.userId);
+      const isAdmin = await isAdminUser(userId);
       if (!isAdmin) {
         return res.status(403).json({ message: "Admin access required" });
       }
@@ -3260,11 +3271,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // GET /api/admin/unified-recipes - Get all recipes from database (admin view)
   app.get("/api/admin/unified-recipes", async (req, res) => {
     try {
-      if (!req.session?.userId) {
+      const userId = getUserIdFromToken(req);
+      if (!userId) {
         return res.status(401).json({ message: "Not authenticated" });
       }
 
-      const isAdmin = await isAdminUser(req.session.userId);
+      const isAdmin = await isAdminUser(userId);
       if (!isAdmin) {
         return res.status(403).json({ message: "Admin access required" });
       }
@@ -3320,11 +3332,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     const { recipeDeletionCache } = await import('./recipe-deletion-cache.js');
     
     try {
-      if (!req.session?.userId) {
+      const userId = getUserIdFromToken(req);
+      if (!userId) {
         return res.status(401).json({ message: "Not authenticated" });
       }
 
-      const isAdmin = await isAdminUser(req.session.userId);
+      const isAdmin = await isAdminUser(userId);
       if (!isAdmin) {
         return res.status(403).json({ message: "Admin access required" });
       }
@@ -3360,11 +3373,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     const { recipeDeletionCache } = await import('./recipe-deletion-cache.js');
     
     try {
-      if (!req.session?.userId) {
+      const userId = getUserIdFromToken(req);
+      if (!userId) {
         return res.status(401).json({ message: "Not authenticated" });
       }
 
-      const isAdmin = await isAdminUser(req.session.userId);
+      const isAdmin = await isAdminUser(userId);
       if (!isAdmin) {
         return res.status(403).json({ message: "Admin access required" });
       }
@@ -3398,11 +3412,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // GET /api/recipes - List all recipes with optional search and filtering
   app.get("/api/recipes", async (req, res) => {
     try {
-      if (!req.session?.userId) {
+      const userId = getUserIdFromToken(req);
+      if (!userId) {
         return res.status(401).json({ message: "Not authenticated" });
       }
 
-      const isAdmin = await isAdminUser(req.session.userId);
+      const isAdmin = await isAdminUser(userId);
       if (!isAdmin) {
         return res.status(403).json({ message: "Admin access required" });
       }
@@ -3479,11 +3494,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // GET /api/recipes/stats - Get recipe statistics
   app.get("/api/recipes/stats", async (req, res) => {
     try {
-      if (!req.session?.userId) {
+      const userId = getUserIdFromToken(req);
+      if (!userId) {
         return res.status(401).json({ message: "Not authenticated" });
       }
 
-      const isAdmin = await isAdminUser(req.session.userId);
+      const isAdmin = await isAdminUser(userId);
       if (!isAdmin) {
         return res.status(403).json({ message: "Admin access required" });
       }
@@ -3526,11 +3542,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // GET /api/recipes/usage - Get recipe usage statistics (how often each recipe is used in meal plans)
   app.get("/api/recipes/usage", async (req, res) => {
     try {
-      if (!req.session?.userId) {
+      const userId = getUserIdFromToken(req);
+      if (!userId) {
         return res.status(401).json({ message: "Not authenticated" });
       }
 
-      const isAdmin = await isAdminUser(req.session.userId);
+      const isAdmin = await isAdminUser(userId);
       if (!isAdmin) {
         return res.status(403).json({ message: "Admin access required" });
       }
@@ -3563,11 +3580,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // GET /api/recipes/:id - Get a specific recipe by ID
   app.get("/api/recipes/:id", async (req, res) => {
     try {
-      if (!req.session?.userId) {
+      const userId = getUserIdFromToken(req);
+      if (!userId) {
         return res.status(401).json({ message: "Not authenticated" });
       }
 
-      const isAdmin = await isAdminUser(req.session.userId);
+      const isAdmin = await isAdminUser(userId);
       if (!isAdmin) {
         return res.status(403).json({ message: "Admin access required" });
       }
@@ -3590,11 +3608,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // PUT /api/recipes/:id - Update a recipe (writes directly to database)
   app.put("/api/recipes/:id", async (req, res) => {
     try {
-      if (!req.session?.userId) {
+      const userId = getUserIdFromToken(req);
+      if (!userId) {
         return res.status(401).json({ message: "Not authenticated" });
       }
 
-      const isAdmin = await isAdminUser(req.session.userId);
+      const isAdmin = await isAdminUser(userId);
       if (!isAdmin) {
         return res.status(403).json({ message: "Admin access required" });
       }
@@ -3689,11 +3708,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // POST /api/recipes - Create a new recipe (writes directly to database)
   app.post("/api/recipes", async (req, res) => {
     try {
-      if (!req.session?.userId) {
+      const userId = getUserIdFromToken(req);
+      if (!userId) {
         return res.status(401).json({ message: "Not authenticated" });
       }
 
-      const isAdmin = await isAdminUser(req.session.userId);
+      const isAdmin = await isAdminUser(userId);
       if (!isAdmin) {
         return res.status(403).json({ message: "Admin access required" });
       }
@@ -3791,11 +3811,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // DELETE /api/recipes/:id - Delete a recipe (soft delete: marks as inactive)
   app.delete("/api/recipes/:id", async (req, res) => {
     try {
-      if (!req.session?.userId) {
+      const userId = getUserIdFromToken(req);
+      if (!userId) {
         return res.status(401).json({ message: "Not authenticated" });
       }
 
-      const isAdmin = await isAdminUser(req.session.userId);
+      const isAdmin = await isAdminUser(userId);
       if (!isAdmin) {
         return res.status(403).json({ message: "Admin access required" });
       }
@@ -3828,11 +3849,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // POST /api/recipes/bulk-update - Bulk update multiple recipes
   app.post("/api/recipes/bulk-update", async (req, res) => {
     try {
-      if (!req.session?.userId) {
+      const userId = getUserIdFromToken(req);
+      if (!userId) {
         return res.status(401).json({ message: "Not authenticated" });
       }
 
-      const isAdmin = await isAdminUser(req.session.userId);
+      const isAdmin = await isAdminUser(userId);
       if (!isAdmin) {
         return res.status(403).json({ message: "Admin access required" });
       }
@@ -3887,11 +3909,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // GET /api/recipes/export - Export all recipes as JSON
   app.get("/api/recipes/export", async (req, res) => {
     try {
-      if (!req.session?.userId) {
+      const userId = getUserIdFromToken(req);
+      if (!userId) {
         return res.status(401).json({ message: "Not authenticated" });
       }
 
-      const isAdmin = await isAdminUser(req.session.userId);
+      const isAdmin = await isAdminUser(userId);
       if (!isAdmin) {
         return res.status(403).json({ message: "Admin access required" });
       }

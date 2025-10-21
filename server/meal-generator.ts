@@ -361,8 +361,8 @@ function calculateServingMultiplier(user?: User): number {
   
   console.log(`🍽️ SERVING CALCULATION: ${cookingDays} cooking days for ${eatingDays} eating days = ${servingMultiplier}x servings per recipe`);
   
-  // Cap at reasonable limits (max 4 servings per recipe)
-  return Math.min(servingMultiplier, 4);
+  // Cap at 1.0 maximum to prevent oversized portions (user preference)
+  return Math.min(servingMultiplier, 1.0);
 }
 
 /**
