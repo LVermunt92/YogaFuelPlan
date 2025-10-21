@@ -156,13 +156,7 @@ function analyzeNutritionBenefits(nutrition: NutritionInfo): string[] {
 function analyzeDietaryBenefits(tags: string[]): string[] {
   const benefits: string[] = [];
   
-  if (tags.includes('Gluten-Free')) {
-    benefits.push('Suitable for gluten sensitivity and celiac disease');
-  }
-  
-  if (tags.includes('Lactose-Free')) {
-    benefits.push('Gentle on lactose-sensitive digestive systems');
-  }
+  // Removed gluten-free and lactose-free benefits as users already filter for these
   
   if (tags.includes('Vegan')) {
     benefits.push('Plant-based nutrition supports environmental sustainability');
