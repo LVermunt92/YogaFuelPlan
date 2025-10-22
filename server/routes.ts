@@ -3173,6 +3173,95 @@ export async function registerRoutes(app: Express): Promise<Server> {
     return user?.username === 'admin' || user?.email?.includes('admin') || false;
   }
 
+  // GET /api/admin/stats - Get system statistics
+  app.get("/api/admin/stats", async (req, res) => {
+    try {
+      const userId = getUserIdFromToken(req);
+      if (!userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+
+      const isAdmin = await isAdminUser(userId);
+      if (!isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      // Get total users
+      const allUsers = await storage.getAllUsers();
+      const totalUsers = allUsers.length;
+
+      // Get active users in last 7 days
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      const activeUsers7Days = allUsers.filter(u => u.lastLoginAt && new Date(u.lastLoginAt) > sevenDaysAgo).length;
+
+      // Get total meal plans (all users)
+      const allMealPlans = await storage.getMealPlans();
+      const totalMealPlans = allMealPlans.length;
+
+      // Get total recipes
+      const allRecipes = await storage.getAllRecipes(true);
+      const totalRecipes = allRecipes.length;
+
+      // Calculate average protein target
+      const usersWithProtein = allUsers.filter(u => u.proteinTarget);
+      const avgProteinTarget = usersWithProtein.length > 0
+        ? usersWithProtein.reduce((sum, u) => sum + (u.proteinTarget || 0), 0) / usersWithProtein.length
+        : 0;
+
+      // Get popular activity levels
+      const activityCounts = allUsers.reduce((acc, user) => {
+        const level = user.activityLevel || 'unknown';
+        acc[level] = (acc[level] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>);
+
+      const popularActivityLevels = Object.entries(activityCounts)
+        .map(([level, count]) => ({ level, count }))
+        .sort((a, b) => b.count - a.count);
+
+      // Get recent generations (last 7 days)
+      const recentGenerations = allMealPlans.filter(mp => {
+        const createdAt = new Date(mp.createdAt);
+        return createdAt > sevenDaysAgo;
+      }).length;
+
+      res.json({
+        totalUsers,
+        totalMealPlans,
+        totalRecipes,
+        activeUsers7Days,
+        avgProteinTarget: Math.round(avgProteinTarget),
+        popularActivityLevels,
+        recentGenerations
+      });
+    } catch (error) {
+      console.error("Error getting admin stats:", error);
+      res.status(500).json({ message: "Failed to get statistics" });
+    }
+  });
+
+  // GET /api/admin/users - Get all users (admin only)
+  app.get("/api/admin/users", async (req, res) => {
+    try {
+      const userId = getUserIdFromToken(req);
+      if (!userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+
+      const isAdmin = await isAdminUser(userId);
+      if (!isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const allUsers = await storage.getAllUsers();
+      res.json(allUsers);
+    } catch (error) {
+      console.error("Error getting users:", error);
+      res.status(500).json({ message: "Failed to get users" });
+    }
+  });
+
   // Get current in-memory modifications (admin only)
   app.get("/api/admin/recipe-modifications", async (req, res) => {
     try {
