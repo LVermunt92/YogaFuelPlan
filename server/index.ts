@@ -81,21 +81,39 @@ app.use((req, res, next) => {
     console.error("Failed to initialize recipe translation scheduler:", error);
   }
 
-  // Auto-seed recipes if database is empty (production bootstrap)
-  try {
-    const { storage } = await import("./storage");
-    const recipeCount = await storage.getRecipeCount();
-    
-    if (recipeCount === 0) {
-      console.log('🌱 Database has no recipes - auto-seeding from file...');
-      const result = await storage.seedRecipesFromFile();
-      console.log(`✅ Recipe seeding complete: ${result.imported} imported, ${result.skipped} skipped`);
-    } else {
-      console.log(`✓ Database already contains ${recipeCount} recipes`);
+  // Auto-seed recipes if database is empty (production bootstrap with retry logic)
+  const attemptRecipeSeed = async (retries = 3, delay = 2000): Promise<void> => {
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      try {
+        const { storage } = await import("./storage");
+        const recipeCount = await storage.getRecipeCount();
+        
+        if (recipeCount === 0) {
+          console.log(`🌱 Database has no recipes - auto-seeding from file (attempt ${attempt}/${retries})...`);
+          const result = await storage.seedRecipesFromFile();
+          console.log(`✅ Recipe seeding SUCCESS: ${result.imported} imported, ${result.skipped} skipped`);
+        } else {
+          console.log(`✓ Database already contains ${recipeCount} recipes - auto-seed not needed`);
+        }
+        return; // Success - exit retry loop
+      } catch (error) {
+        const isLastAttempt = attempt === retries;
+        if (isLastAttempt) {
+          console.error(`❌ Recipe auto-seed FAILED after ${retries} attempts:`, error);
+          console.error('⚠️  Production database may be empty! Use admin panel System tab to manually sync recipes.');
+        } else {
+          console.warn(`⚠️  Recipe auto-seed attempt ${attempt}/${retries} failed (database may be waking up), retrying in ${delay}ms...`);
+          await new Promise(resolve => setTimeout(resolve, delay));
+          delay *= 2; // Exponential backoff
+        }
+      }
     }
-  } catch (error) {
-    console.error("Recipe auto-seed check failed:", error);
-  }
+  };
+  
+  // Start seed attempt in background (non-blocking)
+  attemptRecipeSeed().catch(() => {
+    // Already logged above, just prevent unhandled rejection
+  });
 
   // Development-only: Keep database alive during active development
   if (process.env.NODE_ENV !== 'production') {
