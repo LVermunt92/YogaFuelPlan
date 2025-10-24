@@ -182,6 +182,10 @@ export interface IStorage {
   getAiRecipeByHash(recipeHash: string): Promise<AiRecipe | undefined>;
   getAiRecipeById(id: number): Promise<AiRecipe | undefined>;
   incrementAiRecipeUsage(id: number): Promise<void>;
+  
+  // Recipe Seeding methods
+  seedRecipesFromFile(): Promise<{ imported: number; skipped: number }>;
+  getRecipeCount(): Promise<number>;
 }
 
 export class MemStorage implements IStorage {
@@ -836,6 +840,14 @@ export class MemStorage implements IStorage {
 
   async incrementAiRecipeUsage(id: number): Promise<void> {
     // No-op for MemStorage
+  }
+
+  async getRecipeCount(): Promise<number> {
+    return 0; // MemStorage doesn't store recipes
+  }
+
+  async seedRecipesFromFile(): Promise<{ imported: number; skipped: number }> {
+    return { imported: 0, skipped: 0 }; // No-op for MemStorage
   }
 
 }
@@ -1904,6 +1916,77 @@ export class DatabaseStorage implements IStorage {
         lastUsedAt: new Date()
       })
       .where(eq(aiRecipes.id, id));
+  }
+
+  // Recipe Seeding methods
+  async getRecipeCount(): Promise<number> {
+    const result = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(recipes)
+      .where(eq(recipes.active, true));
+    
+    return result[0]?.count || 0;
+  }
+
+  async seedRecipesFromFile(): Promise<{ imported: number; skipped: number }> {
+    const fs = await import('fs/promises');
+    const path = await import('path');
+    
+    const seedFilePath = path.join(process.cwd(), 'server', 'recipe-seeds.json');
+    
+    try {
+      const fileContent = await fs.readFile(seedFilePath, 'utf-8');
+      const seedData = JSON.parse(fileContent);
+      const recipesToSeed = Array.isArray(seedData) ? seedData : (seedData[0] || []);
+      
+      let imported = 0;
+      let skipped = 0;
+      
+      for (const recipeData of recipesToSeed) {
+        try {
+          // Check if recipe already exists
+          const existing = await this.getRecipeById(recipeData.id);
+          
+          if (existing) {
+            skipped++;
+            continue;
+          }
+          
+          // Insert recipe with all fields from seed file
+          await db.insert(recipes).values({
+            id: recipeData.id,
+            name: recipeData.name,
+            category: recipeData.category,
+            ingredients: recipeData.ingredients,
+            instructions: recipeData.instructions,
+            portion: recipeData.portion,
+            nutrition: recipeData.nutrition,
+            tags: recipeData.tags || [],
+            wholeFoodLevel: recipeData.whole_food_level || recipeData.wholeFoodLevel,
+            vegetableContent: recipeData.vegetable_content || recipeData.vegetableContent,
+            recipeBenefits: recipeData.recipe_benefits || recipeData.recipeBenefits || [],
+            recipeTips: recipeData.recipe_tips || recipeData.recipeTips || [],
+            recipeNotes: recipeData.recipe_notes || recipeData.recipeNotes,
+            source: recipeData.source,
+            variantOf: recipeData.variant_of || recipeData.variantOf,
+            variantType: recipeData.variant_type || recipeData.variantType,
+            active: recipeData.active !== false,
+            prepTime: recipeData.prep_time || recipeData.prepTime || 30,
+            defaultBatchServings: recipeData.default_batch_servings || recipeData.defaultBatchServings || 1,
+          });
+          
+          imported++;
+        } catch (err) {
+          console.error(`Failed to seed recipe ${recipeData.id}:`, err);
+          skipped++;
+        }
+      }
+      
+      return { imported, skipped };
+    } catch (error) {
+      console.error('Failed to read recipe seed file:', error);
+      throw new Error('Recipe seeding failed');
+    }
   }
 
 }
