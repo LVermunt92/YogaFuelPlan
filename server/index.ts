@@ -81,6 +81,22 @@ app.use((req, res, next) => {
     console.error("Failed to initialize recipe translation scheduler:", error);
   }
 
+  // Auto-seed recipes if database is empty (production bootstrap)
+  try {
+    const { storage } = await import("./storage");
+    const recipeCount = await storage.getRecipeCount();
+    
+    if (recipeCount === 0) {
+      console.log('🌱 Database has no recipes - auto-seeding from file...');
+      const result = await storage.seedRecipesFromFile();
+      console.log(`✅ Recipe seeding complete: ${result.imported} imported, ${result.skipped} skipped`);
+    } else {
+      console.log(`✓ Database already contains ${recipeCount} recipes`);
+    }
+  } catch (error) {
+    console.error("Recipe auto-seed check failed:", error);
+  }
+
   // Development-only: Keep database alive during active development
   if (process.env.NODE_ENV !== 'production') {
     const { storage } = await import("./storage");

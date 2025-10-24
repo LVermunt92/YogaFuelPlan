@@ -543,4 +543,29 @@ adminRouter.post('/update-vitamin-k', async (req, res) => {
   }
 });
 
+// Recipe seeding endpoint - manually sync recipes from seed file
+adminRouter.post('/sync-recipes', async (req, res) => {
+  try {
+    console.log('🔄 Manual recipe sync requested...');
+    const result = await storage.seedRecipesFromFile();
+    const totalRecipes = await storage.getRecipeCount();
+    
+    res.json({
+      success: true,
+      imported: result.imported,
+      skipped: result.skipped,
+      totalRecipes,
+      message: result.imported > 0 
+        ? `Successfully imported ${result.imported} new recipes` 
+        : 'No new recipes to import - all recipes are up to date'
+    });
+  } catch (error) {
+    console.error('Error syncing recipes:', error);
+    res.status(500).json({ 
+      success: false,
+      error: 'Failed to sync recipes from seed file' 
+    });
+  }
+});
+
 export { adminRouter };

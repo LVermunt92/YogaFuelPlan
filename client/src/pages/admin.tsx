@@ -1124,6 +1124,33 @@ function AdminPanelMain() {
     queryFn: () => fetch('/api/admin/tags').then(res => res.json()),
   });
 
+  // Recipe sync mutation
+  const [isSyncingRecipes, setIsSyncingRecipes] = useState(false);
+  const syncRecipesMutation = useMutation({
+    mutationFn: async () => {
+      setIsSyncingRecipes(true);
+      const response = await apiRequest('POST', '/api/admin/sync-recipes', {});
+      return response.json();
+    },
+    onSuccess: (data) => {
+      setIsSyncingRecipes(false);
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/unified-recipes'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/recipes/stats'] });
+      toast({
+        title: "Success",
+        description: data.message || `Imported ${data.imported} recipes`,
+      });
+    },
+    onError: () => {
+      setIsSyncingRecipes(false);
+      toast({
+        title: "Error",
+        description: "Failed to sync recipes from seed file",
+        variant: "destructive",
+      });
+    }
+  });
+
   // Update nutrition configuration
   const updateConfigMutation = useMutation({
     mutationFn: async (config: NutritionConfig) => {
@@ -2609,10 +2636,77 @@ function AdminPanelMain() {
           <TabsContent value="system" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>System Settings</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <Database className="h-5 w-5" />
+                  Data management
+                </CardTitle>
+                <CardDescription>
+                  Manage recipe database and synchronization
+                </CardDescription>
               </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">System configuration features coming soon...</p>
+              <CardContent className="space-y-6">
+                <div className="space-y-4">
+                  <div className="border rounded-lg p-4 bg-gray-50">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                          <ChefHat className="h-4 w-4" />
+                          Recipe database sync
+                        </h3>
+                        <p className="text-sm text-gray-600 mb-3">
+                          Synchronize recipes from the seed file to the database. This imports new recipes while skipping existing ones. 
+                          Use this to bootstrap production or update recipes after making changes.
+                        </p>
+                        <div className="text-xs text-gray-500 space-y-1">
+                          <p>• Current database: {unifiedRecipeData?.total || 0} active recipes</p>
+                          <p>• Seed file location: server/recipe-seeds.json</p>
+                          <p>• Auto-sync on startup: Enabled (when database is empty)</p>
+                        </div>
+                      </div>
+                      <Button
+                        onClick={() => syncRecipesMutation.mutate()}
+                        disabled={isSyncingRecipes}
+                        size="sm"
+                        className="shrink-0"
+                        data-testid="button-sync-recipes"
+                      >
+                        {isSyncingRecipes ? (
+                          <>
+                            <Activity className="h-4 w-4 mr-2 animate-spin" />
+                            Syncing...
+                          </>
+                        ) : (
+                          <>
+                            <Download className="h-4 w-4 mr-2" />
+                            Sync recipes
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  <div className="border rounded-lg p-4 bg-blue-50">
+                    <div className="flex items-start gap-3">
+                      <div className="shrink-0 mt-0.5">
+                        <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
+                          <Database className="h-4 w-4 text-blue-600" />
+                        </div>
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-medium text-sm mb-1">Database architecture</h4>
+                        <p className="text-sm text-gray-700 leading-relaxed">
+                          <strong>Development:</strong> Your local database where recipes are actively managed<br />
+                          <strong>Production:</strong> Live database for published app<br />
+                          <strong>Seed file:</strong> Snapshot of recipes that auto-populates production on first startup
+                        </p>
+                        <p className="text-xs text-gray-600 mt-2">
+                          When you publish, schema changes sync automatically, but recipe data requires the seed file. 
+                          The app checks on startup and imports recipes if the database is empty.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
