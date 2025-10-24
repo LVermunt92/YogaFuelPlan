@@ -46,36 +46,36 @@ Preferred communication style: Simple, everyday language.
   - When AI generates new recipes, it MUST follow these ingredient format rules to ensure shopping list accuracy and consistency
 
 # System Architecture
-- **UI/UX Decisions**: Utilizes `shadcn/ui` built on `Radix UI` primitives with `Tailwind CSS` and CSS variables for theming, focusing on a streamlined interface. Color schemes are standardized across the application (emerald, yellow, green, blue, orange for KPIs; gray for general UI; green/blue/orange for meal cards). Mobile layouts are optimized for responsiveness.
+- **UI/UX Decisions**: Utilizes `shadcn/ui` built on `Radix UI` primitives with `Tailwind CSS` for theming. Focuses on a streamlined interface with standardized color schemes and optimized mobile responsiveness.
 - **Technical Implementations**:
     - **Frontend**: React 18, TypeScript, Wouter for routing, TanStack React Query for server state.
     - **Backend**: Express.js with TypeScript, RESTful API.
     - **Database**: PostgreSQL with Drizzle ORM.
-    - **Authentication**: JWT token-based authentication with access tokens (15min expiry) and refresh tokens (30 days expiry) stored in localStorage. Automatic token refresh on expiration for seamless mobile PWA experience.
+    - **Authentication**: JWT token-based authentication with access and refresh tokens, stored in localStorage, with automatic token refresh.
     - **Build Tools**: Vite for frontend, esbuild for backend.
 - **Feature Specifications**:
-    - **Authentication & Multi-User Support**: JWT-based secure login/registration with persistent mobile login (30 days via refresh tokens), automatic token refresh, password reset, isolated user data, and route protection. New user onboarding with step-by-step welcome dialog explaining profile setup, meal plan generation, and shopping list creation.
-    - **Meal Generation**: Calculates protein targets, selects meals from a nutrition database, generates 7-day plans with variety, and creates shopping lists. Includes smart AI recipe generation, comprehensive ingredient specification, and alcohol-free recipes. Automatically includes 1 anti-aging meal per day (7 per week) for longevity support.
-    - **Universal Meal Prep Engine**: Adapts to user cooking schedules, supporting batch cooking, proper meal distribution, and intelligent dietary fallbacks. Weekday meals (Mon-Fri) are limited to ≤45 minutes prep time; weekends have no time restrictions.
+    - **Authentication & Multi-User Support**: Secure login/registration, persistent mobile login, password reset, isolated user data, route protection, and new user onboarding.
+    - **Meal Generation**: Calculates protein targets, generates 7-day plans with variety, creates shopping lists, and includes smart AI recipe generation. Incorporates 1 anti-aging meal per day.
+    - **Universal Meal Prep Engine**: Adapts to user cooking schedules, supporting batch cooking, meal distribution, and dietary fallbacks. Weekday meals are limited to ≤45 minutes prep time.
     - **Ayurvedic Integration**: Supports Ayurvedic dietary tags and seasonal adaptation.
-    - **Menstrual Cycle Support**: Complete cycle phase tracking with dropdown selection that automatically prioritizes phase-appropriate recipes during meal generation. Integrated "Weekly highlights" section combines seasonal nutrition information with phase-specific guidance (e.g., luteal phase metabolic rate increase of 10-20%).
-    - **Meal Plan Management**: Meal plans persist across browser sessions with automatic loading and cleanup (max 3 plans). Users can delete individual saved meal plans. All meal plans automatically normalize to Sunday as the week start date. Meal plan generation is limited to the current and next week only.
-    - **Recipe Management**: Automated recipe updates for trending recipes, Dutch translation system for recipes, and comprehensive metric unit conversion. Includes intelligent ingredient-based recipe matching, automatic ingredient substitution, smart vegetarian filtering, and an enhanced high-protein meal database. User recipe management allows custom recipe creation and storage.
-    - **Shopping List Features**: Consolidated shopping list generation with supermarket-ordered categories, detailed dry goods separation, and comprehensive ingredient normalization and categorization.
-    - **Ingredient Mapping System**: Admin-controlled ingredient mapping for shopping list optimization. System ingredient list defines standardized grocery names with categories and default units. Recipe ingredients can be mapped to system ingredients via dropdown interface. Supports bulk import/export and multiple ingredient lists (base, Albert Heijn integration). API endpoints: `/api/admin/all-recipe-ingredients` (extracts all unique ingredients from recipes), `/api/admin/shopping-list-names/bulk` (bulk create system ingredients).
-    - **Nutritional Tracking**: Macronutrient distribution tracking and an advanced protein range calculator with gender-specific age thresholds and activity level considerations.
-    - **Admin Panel**: Full-featured admin interface for managing nutrition calculation parameters, monitoring system statistics, configuring meal planning logic, and tag management. Displays user activity via `lastLoginAt` timestamps.
-    - **AI-Powered Nutrition Analysis**: Automated generation of comprehensive nutritional values directly from recipe ingredients.
-    - **Longevity Optimization**: Longevity-focused recipes are automatically prioritized for all users.
-    - **Resistant Starch Logic**: Prioritizes meals with resistant starch for users with weight loss goals or BMI >25.
-    - **Anti-Aging Tag System**: 116 recipes tagged with "Anti-Aging" tag for recipes containing avocado, sweet potatoes, blueberries, or almonds to support healthy aging and longevity.
-    - **Vitamin K Tracking**: Comprehensive Vitamin K content calculation from recipe ingredients with insights KPI chart. Ingredient mapping covers leafy greens, cruciferous vegetables, herbs, and oils. Admin endpoint available to update all recipes with Vitamin K values. Supports bone health and blood clotting monitoring with 90 mcg/day target for women.
-    - **Weight Loss Support**: Sustainable weight loss tracking with maximum 15% calorie reduction cap and automatic maintenance weeks. System tracks weight loss journey week by week, applying calorie reduction for 5 consecutive weeks followed by 1 maintenance week (normal calories) on weeks 6, 12, 18, etc. This prevents metabolic adaptation and supports long-term adherence. User schema includes `weightLossWeekNumber` and `weightLossStartDate` fields to track progress.
-    - **TDEE-Based Dynamic Portion Adjustment**: Personalizes meal portions based on individual metabolic needs using Mifflin-St Jeor BMR formula with activity-specific multipliers (1.2-1.9x). Calculates target daily calories (TDEE × 0.85 for weight loss weeks, full TDEE for maintenance weeks), then dynamically adjusts all meal portions and macros to match target. Ensures sedentary users get smaller portions (~1481 kcal/day) while athletes get larger portions (~2891 kcal/day) from the same base recipes. Post-adjustment protein recalculation ensures dashboard analytics reflect actual portions. Safety caps prevent extreme adjustments (0.7-1.3x range) and zero-calorie plans are detected with diagnostic logging.
+    - **Menstrual Cycle Support**: Cycle phase tracking with dropdown selection prioritizes phase-appropriate recipes and provides weekly highlights.
+    - **Meal Plan Management**: Meal plans persist across sessions, with automatic loading and cleanup (max 3 plans). Plans normalize to Sunday start and are limited to current/next week.
+    - **Recipe Management**: Automated recipe updates, Dutch translation, metric unit conversion, intelligent ingredient-based matching, automatic ingredient substitution, smart vegetarian filtering, enhanced high-protein database, and user-created custom recipes.
+    - **Shopping List Features**: Consolidated shopping list generation with supermarket-ordered categories, dry goods separation, and ingredient normalization.
+    - **Ingredient Mapping System**: Admin-controlled mapping for shopping list optimization, defining standardized grocery names with categories and units. Supports bulk import/export and multiple ingredient lists.
+    - **Nutritional Tracking**: Macronutrient distribution tracking and advanced protein range calculator.
+    - **Admin Panel**: Full-featured interface for managing nutrition parameters, monitoring system statistics, configuring meal planning logic, and tag management. Displays user activity.
+    - **AI-Powered Nutrition Analysis**: Automated generation of comprehensive nutritional values from recipe ingredients.
+    - **Longevity Optimization**: Longevity-focused recipes are prioritized for all users, including those with resistant starch logic for weight loss.
+    - **Anti-Aging Tag System**: Recipes tagged for healthy aging (e.g., avocado, sweet potatoes, blueberries, almonds).
+    - **Vitamin K Tracking**: Comprehensive Vitamin K content calculation from recipe ingredients with KPI chart and admin tools for updates.
+    - **Weight Loss Support**: Sustainable weight loss tracking with a 15% calorie reduction cap and automatic maintenance weeks to prevent metabolic adaptation.
+    - **TDEE-Based Dynamic Portion Adjustment**: Personalizes meal portions based on individual metabolic needs (Mifflin-St Jeor BMR formula) with activity-specific multipliers, dynamically adjusting meal portions and macros to match target calories.
+    - **Automatic Recipe Sync System**: Solves dev/production database separation by exporting recipes to `server/recipe-seeds.json` and auto-importing on startup for cold database boots, skipping existing recipes. Admin panel provides manual sync.
 - **System Design Choices**:
     - **Data Flow**: User input drives meal generation, stored in PostgreSQL, displayed via React Query.
     - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, favorite meals, and user-created custom recipes.
-    - **Unified Recipe Database**: Consolidated all recipe databases into a single unified system, with pre-translated recipes stored for performance.
+    - **Unified Recipe Database**: Consolidated all recipe databases into a single system with pre-translated recipes.
 
 # External Dependencies
 - `@neondatabase/serverless` (PostgreSQL client)
