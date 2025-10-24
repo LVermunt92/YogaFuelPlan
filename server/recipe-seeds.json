@@ -16048,20 +16048,20 @@
     "ingredients": [
       "85g artichoke hearts, drained and chopped",
       "80g frozen spinach, thawed and squeezed dry",
-      "150g silken tofu, drained",
-      "60ml plant-based yogurt",
-      "15g plant-based mozzarella",
-      "2g garlic powder",
+      "100g lactose-free cottage cheese",
+      "50ml lactose-free Greek yogurt",
+      "2 garlic cloves, minced",
+      "15g lactose-free mozzarella",
       "2g sea salt",
       "1g black pepper",
       "30g tortilla chips (for serving)"
     ],
     "instructions": [
       "Preheat oven to 180°C (350°F)",
-      "Finely chop the artichoke hearts",
-      "Blend silken tofu in food processor until smooth and creamy",
-      "In an oven-safe dish, mix chopped artichokes, squeezed spinach, blended tofu, plant-based yogurt, garlic powder, salt, and pepper",
-      "Top with plant-based mozzarella",
+      "Finely chop the artichoke hearts and mince the garlic",
+      "Blend lactose-free cottage cheese and Greek yogurt in food processor until smooth and creamy",
+      "In an oven-safe dish, mix blended cheese mixture with chopped artichokes, squeezed spinach, garlic, salt, and pepper",
+      "Top with lactose-free mozzarella",
       "Bake for 20-25 minutes until golden and bubbly",
       "Let cool for 5 minutes before serving",
       "Serve warm with tortilla chips, crackers, or vegetable sticks"
@@ -16113,12 +16113,14 @@
       "Warm and comforting, great for hormonal cravings"
     ],
     "recipeTips": [
-      "Squeeze spinach very well to remove excess water",
-      "Blend tofu until completely smooth for creamy texture",
+      "Squeeze spinach VERY well to remove excess water - this prevents a watery dip",
+      "Blending the cottage cheese makes it ultra-smooth like the original recipe",
+      "Use brands like Arla Lactofree, Valio, or Green Valley for lactose-free dairy",
       "Can be made ahead and refrigerated, reheat at 180°C for 10 minutes",
+      "Fresh garlic cloves give much better flavor than garlic powder",
       "Serve with colorful bell pepper strips for extra nutrition"
     ],
-    "recipeNotes": "Inspired by a viral Instagram recipe from @thekelseyrose, this lactose-free version uses silken tofu for a creamy, protein-packed dip that's perfect for snacking. The 28g protein from the original recipe has been adapted to 21g to account for plant-based substitutions while maintaining delicious flavor and nutrition.",
+    "recipeNotes": "Inspired by a viral Instagram recipe from @thekelseyrose, this lactose-free version uses lactose-free cottage cheese and Greek yogurt for an authentic taste that's virtually identical to the original. Perfect for those avoiding lactose while still enjoying that creamy, protein-packed dip!",
     "prepTime": 30,
     "defaultBatchServings": 1,
     "source": "custom",
@@ -16128,7 +16130,7 @@
     "createdBy": null,
     "updatedBy": null,
     "createdAt": "2025-10-24T17:38:45.098Z",
-    "updatedAt": "2025-10-24T17:38:45.098Z"
+    "updatedAt": "2025-10-24T18:00:00.659Z"
   },
   {
     "id": "10163",
