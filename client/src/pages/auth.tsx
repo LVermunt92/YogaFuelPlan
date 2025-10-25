@@ -81,10 +81,10 @@ export default function Auth() {
       login(data.user);
       toast({
         title: "Account Created!",
-        description: `Welcome to the meal planner, ${data.user.username}!`,
+        description: `Welcome! Let's set up your profile.`,
       });
-      // Force a page refresh to ensure authentication state is properly updated
-      window.location.href = '/';
+      // New users land on profile page to fill in their details
+      window.location.href = '/profile';
     },
     onError: (error) => {
       toast({

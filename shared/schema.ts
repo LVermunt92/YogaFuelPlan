@@ -10,15 +10,15 @@ export const users = pgTable("users", {
   firstName: text("first_name"),
   lastName: text("last_name"),
   gender: text("gender"), // male, female, other
-  weight: integer("weight").default(60), // kg
+  weight: integer("weight"), // kg
   goalWeight: integer("goal_weight"), // target weight in kg
   height: integer("height"), // cm
   age: integer("age"), // years
-  waistline: real("waistline").default(75), // cm
+  waistline: real("waistline"), // cm
   goalWaistline: real("goal_waistline"), // target waistline in cm
   targetDate: date("target_date"), // when to reach goals by
-  activityLevel: text("activity_level").default("moderate"), // sedentary, light, moderate, high, athlete
-  trainingType: text("training_type").default("endurance"), // mobility, endurance, strength, mixed
+  activityLevel: text("activity_level"), // sedentary, light, moderate, high, athlete
+  trainingType: text("training_type"), // mobility, endurance, strength, mixed
   goal: text("goal").default("maintain"), // lose_fat, maintain, bulk
   proteinTarget: integer("protein_target").default(130), // grams
   dietaryTags: text("dietary_tags").array().default([]),
