@@ -16,6 +16,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
 import { setTokens } from "@/lib/auth-storage";
 import { z } from "zod";
+import { WelcomeDialog } from "@/components/WelcomeDialog";
 
 const loginSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
@@ -38,6 +39,8 @@ export default function Auth() {
   const [resetCode, setResetCode] = useState("");
   const [email, setEmail] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
+  const [newUserName, setNewUserName] = useState("");
   const [location, navigate] = useLocation();
   const { toast } = useToast();
   const { login } = useAuth();
@@ -82,10 +85,12 @@ export default function Auth() {
       login(data.user);
       toast({
         title: "Account Created!",
-        description: `Welcome! Let's set up your profile.`,
+        description: `Welcome! Let's get you started.`,
       });
-      // New users land on profile page to fill in their details
-      window.location.href = '/profile';
+      
+      // Show welcome dialog before redirecting to profile
+      setNewUserName(data.user.username);
+      setShowWelcomeDialog(true);
     },
     onError: (error) => {
       toast({
@@ -95,6 +100,23 @@ export default function Auth() {
       });
     },
   });
+
+  const handleWelcomeClose = async () => {
+    setShowWelcomeDialog(false);
+    
+    // Mark welcome as seen in the backend
+    try {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      if (user.id) {
+        await apiRequest('POST', `/api/users/${user.id}/mark-welcome-seen`, {});
+      }
+    } catch (error) {
+      console.error('Failed to mark welcome as seen:', error);
+    }
+    
+    // Redirect to profile page after closing welcome dialog
+    window.location.href = '/profile';
+  };
 
   const requestResetMutation = useMutation({
     mutationFn: async (data: { username: string }) => {
@@ -433,6 +455,13 @@ export default function Auth() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Welcome Dialog for new users */}
+      <WelcomeDialog
+        open={showWelcomeDialog}
+        onClose={handleWelcomeClose}
+        username={newUserName}
+      />
     </div>
   );
 }

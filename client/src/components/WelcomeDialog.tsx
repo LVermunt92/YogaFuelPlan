@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, User, Utensils, ShoppingCart } from "lucide-react";
+import { CheckCircle, User, Utensils, ShoppingCart, History } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface WelcomeDialogProps {
@@ -59,6 +59,18 @@ export function WelcomeDialog({ open, onClose, username }: WelcomeDialogProps) {
         "3. Je kunt de lijst opslaan of exporteren naar Albert Heijn",
         "4. Vink items af tijdens het winkelen"
       ]
+    },
+    {
+      icon: <History className="h-12 w-12 text-teal-600" />,
+      title: "Opgeslagen maaltijdplannen",
+      description: "Beheer je weekmenu's effectief.",
+      content: [
+        "De app bewaart automatisch je gegenereerde maaltijdplannen.",
+        "Je kunt maximaal 3 maaltijdplannen tegelijk opslaan.",
+        "Wanneer je een 4e plan genereert, wordt het oudste plan automatisch verwijderd.",
+        "Klik op een opgeslagen plan om het te bekijken en de boodschappenlijst te zien.",
+        "Je kunt oude plannen handmatig verwijderen met het X-icoon."
+      ]
     }
   ] : [
     {
@@ -104,6 +116,18 @@ export function WelcomeDialog({ open, onClose, username }: WelcomeDialogProps) {
         "2. The app will automatically group all ingredients by category",
         "3. You can save the list or export it to Albert Heijn",
         "4. Check off items while shopping"
+      ]
+    },
+    {
+      icon: <History className="h-12 w-12 text-teal-600" />,
+      title: "Saved meal plans",
+      description: "Manage your weekly menus effectively.",
+      content: [
+        "The app automatically saves your generated meal plans.",
+        "You can keep up to 3 meal plans at once.",
+        "When you generate a 4th plan, the oldest one is automatically removed.",
+        "Click on a saved plan to view it and see the shopping list.",
+        "You can manually delete old plans using the X icon."
       ]
     }
   ];
