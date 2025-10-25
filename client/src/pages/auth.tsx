@@ -269,9 +269,10 @@ export default function Auth() {
                     <DialogTrigger asChild>
                       <button 
                         type="button"
-                        className="text-muted-foreground hover:text-foreground transition-colors"
+                        className="text-gray-600/60 hover:text-gray-600"
+                        data-testid="info-email"
                       >
-                        <Info className="h-4 w-4" />
+                        <Info className="h-3 w-3" />
                       </button>
                     </DialogTrigger>
                     <DialogContent className="max-w-sm">
