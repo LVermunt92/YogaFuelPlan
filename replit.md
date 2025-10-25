@@ -24,6 +24,13 @@ Preferred communication style: Simple, everyday language.
   - **Check base recipe tags BEFORE creating any variant** - if tag exists, variant is unnecessary
   - **Portion sizing**: All recipes display ingredients for 2 servings (cooking batch), shopping lists calculate: ingredient amount × 2 servings × number of cooking sessions
 
+**REPLACEMENT INGREDIENT FILTERING** (CRITICAL - prevents inappropriate recipes):
+  - **Naturally free ingredients** (quinoa, rice, oats, plant-based milk) can appear for ALL users
+  - **Replacement ingredients** (gluten-free pasta, lactose-free milk, dairy-free cheese) ONLY appear when user selects that dietary restriction
+  - Users WITHOUT gluten-free restriction should NEVER receive recipes with: gluten-free pasta, legume pasta, chickpea pasta, lentil pasta, gluten-free bread, gluten-free flour
+  - Users WITHOUT lactose-free restriction should NEVER receive recipes with: lactose-free milk, lactose-free cheese, lactose-free yogurt, dairy-free cheese, vegan cheese
+  - This ensures users with no dietary restrictions receive conventional ingredients, not specialty replacement products
+
 **INGREDIENT FORMAT STANDARDS** (CRITICAL - ensures consistent shopping lists):
   - **Bell peppers**: ALWAYS specify in pieces (e.g., "1/2 bell pepper, diced", "1 red bell pepper, sliced") - NEVER use grams
   - **Onions**: ALWAYS specify in pieces (e.g., "1 onion, diced", "1/2 red onion, sliced", "2 green onions") - NEVER use grams

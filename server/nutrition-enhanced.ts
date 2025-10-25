@@ -17154,13 +17154,83 @@ export async function getEnhancedMealsByCategory(category: 'breakfast' | 'lunch'
   return categoryMeals;
 }
 
+/**
+ * Check if a recipe contains replacement ingredients that should only appear for specific dietary restrictions
+ */
+function hasReplacementIngredients(meal: MealOption, restriction: 'gluten-free' | 'lactose-free'): boolean {
+  const ingredientText = meal.ingredients.join(' ').toLowerCase();
+  const recipeName = meal.name.toLowerCase();
+  const combinedText = `${ingredientText} ${recipeName}`;
+  
+  if (restriction === 'gluten-free') {
+    const glutenFreeReplacements = [
+      'gluten-free pasta',
+      'gluten free pasta',
+      'legume pasta',
+      'chickpea pasta',
+      'lentil pasta',
+      'rice pasta',
+      'gluten-free bread',
+      'gluten free bread',
+      'gluten-free flour',
+      'gluten free flour',
+      'almond flour bread',
+      'coconut flour bread',
+      'gluten-free tortilla',
+      'gluten free tortilla'
+    ];
+    
+    return glutenFreeReplacements.some(replacement => combinedText.includes(replacement));
+  }
+  
+  if (restriction === 'lactose-free') {
+    const lactoseFreeReplacements = [
+      'lactose-free milk',
+      'lactose free milk',
+      'lactose-free cheese',
+      'lactose free cheese',
+      'lactose-free yogurt',
+      'lactose free yogurt',
+      'dairy-free cheese',
+      'dairy free cheese',
+      'vegan cheese',
+      'lactose-free cream',
+      'lactose free cream'
+    ];
+    
+    return lactoseFreeReplacements.some(replacement => combinedText.includes(replacement));
+  }
+  
+  return false;
+}
+
 export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTags: string[]): MealOption[] {
+  // Filter out replacement ingredient recipes when restrictions aren't selected
+  const hasGlutenFreeRestriction = dietaryTags.includes('Gluten-Free');
+  const hasLactoseFreeRestriction = dietaryTags.includes('Lactose-Free');
+  
+  let filteredMeals = meals.filter(meal => {
+    // If user doesn't have gluten-free restriction, exclude recipes with gluten-free replacement ingredients
+    if (!hasGlutenFreeRestriction && hasReplacementIngredients(meal, 'gluten-free')) {
+      console.log(`🚫 REPLACEMENT FILTER: "${meal.name}" excluded - contains gluten-free replacement ingredients but user has no gluten-free restriction`);
+      return false;
+    }
+    
+    // If user doesn't have lactose-free restriction, exclude recipes with lactose-free replacement ingredients
+    if (!hasLactoseFreeRestriction && hasReplacementIngredients(meal, 'lactose-free')) {
+      console.log(`🚫 REPLACEMENT FILTER: "${meal.name}" excluded - contains lactose-free replacement ingredients but user has no lactose-free restriction`);
+      return false;
+    }
+    
+    return true;
+  });
+  
   // For users with no dietary restrictions, prioritize non-vegetarian options
   if (dietaryTags.length === 0) {
-    const nonVegetarianMeals = meals.filter(meal => 
+    const nonVegetarianMeals = filteredMeals.filter(meal => 
       meal.tags.includes('Non-Vegetarian') || meal.tags.includes('Pescatarian')
     );
-    const vegetarianMeals = meals.filter(meal => 
+    const vegetarianMeals = filteredMeals.filter(meal => 
       meal.tags.includes('Vegetarian') && !meal.tags.includes('Non-Vegetarian') && !meal.tags.includes('Pescatarian')
     );
     
@@ -17176,7 +17246,7 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
     ];
   }
   
-  return meals.filter(meal => {
+  return filteredMeals.filter(meal => {
     // Handle critical dietary restrictions that must be enforced
     const criticalTags = ['Vegetarian', 'Vegan', 'Gluten-Free', 'Lactose-Free', 'dairy-free'];
     const userCriticalTags = dietaryTags.filter(tag => criticalTags.includes(tag));
