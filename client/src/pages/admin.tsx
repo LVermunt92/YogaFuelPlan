@@ -1032,6 +1032,7 @@ function AdminPanelMain() {
   const [viewingRecipe, setViewingRecipe] = useState<Recipe | null>(null);
   const [showCreateRecipe, setShowCreateRecipe] = useState(false);
   const [adminIngredientCategories, setAdminIngredientCategories] = useState<Record<number, { category: string; normalizedName: string }>>({});
+  const [userToDelete, setUserToDelete] = useState<AdminUser | null>(null);
 
   // Fetch system statistics
   const { data: systemStats, isLoading: statsLoading } = useQuery<SystemStats>({
@@ -1245,6 +1246,27 @@ function AdminPanelMain() {
       setSelectedRecipes(new Set());
       toast({ title: "Success", description: "Recipes updated successfully" });
     },
+  });
+
+  // Delete user mutation
+  const deleteUserMutation = useMutation({
+    mutationFn: async (userId: number) => {
+      const response = await apiRequest('DELETE', `/api/admin/users/${userId}`);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/users'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/stats'] });
+      setUserToDelete(null);
+      toast({ title: "Success", description: "User deleted successfully" });
+    },
+    onError: (error: Error) => {
+      toast({ 
+        title: "Error", 
+        description: error.message || "Failed to delete user",
+        variant: "destructive"
+      });
+    }
   });
 
   // Analyze ingredients for admin panel
@@ -2529,6 +2551,17 @@ function AdminPanelMain() {
                                 </p>
                               )}
                             </div>
+                            <Button 
+                              variant="ghost" 
+                              size="sm"
+                              onClick={() => setUserToDelete(user)}
+                              disabled={user.id === authUser?.id}
+                              className="mt-2 w-full text-red-600 hover:text-red-700"
+                              data-testid={`button-delete-user-mobile-${user.id}`}
+                            >
+                              <Trash2 className="h-4 w-4 mr-2" />
+                              Delete user
+                            </Button>
                           </div>
                         </Card>
                       ))}
@@ -2549,6 +2582,7 @@ function AdminPanelMain() {
                             <th className="p-3 text-left font-medium whitespace-nowrap">Diet Tags</th>
                             <th className="p-3 text-left font-medium whitespace-nowrap">Last Login</th>
                             <th className="p-3 text-left font-medium whitespace-nowrap">Created</th>
+                            <th className="p-3 text-center font-medium whitespace-nowrap">Actions</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -2620,6 +2654,55 @@ function AdminPanelMain() {
                                   ? new Date(user.createdAt).toLocaleDateString()
                                   : 'N/A'
                                 }
+                              </td>
+                              <td className="p-3 text-center">
+                                <Dialog open={userToDelete?.id === user.id} onOpenChange={(open) => !open && setUserToDelete(null)}>
+                                  <DialogTrigger asChild>
+                                    <Button 
+                                      variant="ghost" 
+                                      size="sm"
+                                      onClick={() => setUserToDelete(user)}
+                                      disabled={user.id === authUser?.id}
+                                      data-testid={`button-delete-user-${user.id}`}
+                                    >
+                                      <Trash2 className="h-4 w-4 text-red-600" />
+                                    </Button>
+                                  </DialogTrigger>
+                                  <DialogContent>
+                                    <DialogHeader>
+                                      <DialogTitle>Delete user "{user.username}"?</DialogTitle>
+                                    </DialogHeader>
+                                    <div className="space-y-2">
+                                      <p className="text-sm text-gray-600">
+                                        This will permanently delete the user and all their data:
+                                      </p>
+                                      <ul className="text-sm text-gray-600 list-disc list-inside">
+                                        <li>Meal plans and meals</li>
+                                        <li>Custom recipes</li>
+                                        <li>Meal history and favorites</li>
+                                        <li>All personal data</li>
+                                      </ul>
+                                      <p className="text-sm font-semibold text-red-600 mt-4">
+                                        This action cannot be undone!
+                                      </p>
+                                    </div>
+                                    <DialogFooter>
+                                      <Button 
+                                        variant="outline" 
+                                        onClick={() => setUserToDelete(null)}
+                                      >
+                                        Cancel
+                                      </Button>
+                                      <Button 
+                                        variant="destructive"
+                                        onClick={() => deleteUserMutation.mutate(user.id)}
+                                        disabled={deleteUserMutation.isPending}
+                                      >
+                                        {deleteUserMutation.isPending ? "Deleting..." : "Delete User"}
+                                      </Button>
+                                    </DialogFooter>
+                                  </DialogContent>
+                                </Dialog>
                               </td>
                             </tr>
                           ))}

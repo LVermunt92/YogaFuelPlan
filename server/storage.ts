@@ -84,6 +84,7 @@ export interface IStorage {
   getUserByUsername(username: string): Promise<User | undefined>;
   getAllUsers(): Promise<User[]>;
   createUser(user: InsertUser): Promise<User>;
+  deleteUser(userId: number): Promise<void>;
   authenticateUser(username: string, password: string): Promise<User | null>;
   updateUserPassword(userId: number, newPassword: string): Promise<void>;
   createPasswordResetCode(userId: number, resetCode: string): Promise<void>;
@@ -304,6 +305,17 @@ export class MemStorage implements IStorage {
     };
     this.users.set(id, user);
     return user;
+  }
+
+  async deleteUser(userId: number): Promise<void> {
+    this.users.delete(userId);
+    // Also clean up related data
+    this.passwordResetCodes = this.passwordResetCodes.filter(code => code.userId !== userId);
+    for (const [token, data] of this.refreshTokenStorage.entries()) {
+      if (data.userId === userId) {
+        this.refreshTokenStorage.delete(token);
+      }
+    }
   }
 
   async authenticateUser(username: string, password: string): Promise<User | null> {
@@ -880,6 +892,26 @@ export class DatabaseStorage implements IStorage {
       })
       .returning();
     return user;
+  }
+
+  async deleteUser(userId: number): Promise<void> {
+    // Delete user and all related data (cascade delete)
+    await db.delete(passwordResetCodes).where(eq(passwordResetCodes.userId, userId));
+    await db.delete(refreshTokens).where(eq(refreshTokens.userId, userId));
+    await db.delete(mealHistory).where(eq(mealHistory.userId, userId));
+    await db.delete(mealFavorites).where(eq(mealFavorites.userId, userId));
+    await db.delete(userRecipes).where(eq(userRecipes.userId, userId));
+    await db.delete(ouraData).where(eq(ouraData.userId, userId));
+    
+    // Delete meal plans and their meals
+    const userMealPlans = await db.select().from(mealPlans).where(eq(mealPlans.userId, userId));
+    for (const plan of userMealPlans) {
+      await db.delete(meals).where(eq(meals.mealPlanId, plan.id));
+    }
+    await db.delete(mealPlans).where(eq(mealPlans.userId, userId));
+    
+    // Finally delete the user
+    await db.delete(users).where(eq(users.id, userId));
   }
 
   async authenticateUser(username: string, password: string): Promise<User | null> {

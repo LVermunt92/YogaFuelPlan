@@ -3262,6 +3262,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // DELETE /api/admin/users/:id - Delete a user (admin only)
+  app.delete("/api/admin/users/:id", async (req, res) => {
+    try {
+      const userId = getUserIdFromToken(req);
+      if (!userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+
+      const isAdmin = await isAdminUser(userId);
+      if (!isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const userIdToDelete = parseInt(req.params.id);
+      
+      // Prevent deleting the admin user (yourself)
+      if (userIdToDelete === userId) {
+        return res.status(400).json({ message: "Cannot delete your own account" });
+      }
+
+      await storage.deleteUser(userIdToDelete);
+      res.json({ message: "User deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      res.status(500).json({ message: "Failed to delete user" });
+    }
+  });
+
   // Get current in-memory modifications (admin only)
   app.get("/api/admin/recipe-modifications", async (req, res) => {
     try {
