@@ -25,6 +25,7 @@ async function refreshAccessToken(): Promise<string | null> {
     
     if (!res.ok) {
       // Refresh token is invalid/expired, clear everything
+      console.log('Refresh token invalid or expired, clearing tokens');
       clearTokens();
       return null;
     }
@@ -33,7 +34,8 @@ async function refreshAccessToken(): Promise<string | null> {
     setTokens(data.accessToken, refreshToken);
     return data.accessToken;
   } catch (error) {
-    clearTokens();
+    // Network error - don't clear tokens, return null to retry later
+    console.error('Token refresh failed (network error):', error);
     return null;
   }
 }

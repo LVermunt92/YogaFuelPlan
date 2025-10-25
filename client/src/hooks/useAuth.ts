@@ -24,6 +24,7 @@ async function refreshAccessToken(): Promise<string | null> {
     
     if (!res.ok) {
       // Refresh token is invalid/expired, clear everything
+      console.log('Refresh token invalid or expired, clearing tokens');
       clearTokens();
       return null;
     }
@@ -32,7 +33,8 @@ async function refreshAccessToken(): Promise<string | null> {
     setTokens(data.accessToken, refreshToken);
     return data.accessToken;
   } catch (error) {
-    clearTokens();
+    // Network error - don't clear tokens, keep user logged in
+    console.error('Token refresh failed (network error) - keeping user logged in:', error);
     return null;
   }
 }
@@ -91,12 +93,23 @@ export function useAuth() {
           setIsLoading(false);
         }
       } catch (error) {
-        console.error('Auth check failed:', error);
-        // On network error, set unauthenticated state
-        setUser(null);
-        clearTokens();
-        localStorage.removeItem('userId');
-        localStorage.removeItem('username');
+        console.error('Auth check failed (network error):', error);
+        // On network error, keep user logged in - don't clear tokens
+        // This prevents logout on temporary network issues or database wake-up delays
+        const storedUserId = localStorage.getItem('userId');
+        const storedUsername = localStorage.getItem('username');
+        
+        if (storedUserId && storedUsername && getRefreshToken()) {
+          // Keep user logged in with cached data during network issues
+          console.log('Network error detected - keeping user logged in with cached data');
+          setUser({
+            id: parseInt(storedUserId),
+            username: storedUsername
+          });
+        } else {
+          // No cached data, set unauthenticated
+          setUser(null);
+        }
         setIsLoading(false);
       }
     };

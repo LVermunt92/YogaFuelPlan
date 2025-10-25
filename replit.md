@@ -58,7 +58,7 @@ Preferred communication style: Simple, everyday language.
     - **Frontend**: React 18, TypeScript, Wouter for routing, TanStack React Query for server state.
     - **Backend**: Express.js with TypeScript, RESTful API.
     - **Database**: PostgreSQL with Drizzle ORM.
-    - **Authentication**: JWT token-based authentication with access and refresh tokens, stored in localStorage, with automatic token refresh.
+    - **Authentication**: JWT token-based authentication with access and refresh tokens, stored in localStorage, with automatic token refresh. Resilient to network errors - users stay logged in during temporary connectivity issues.
     - **Build Tools**: Vite for frontend, esbuild for backend.
 - **Feature Specifications**:
     - **Authentication & Multi-User Support**: Secure login/registration, persistent mobile login, password reset, isolated user data, route protection, and new user onboarding.
