@@ -325,18 +325,65 @@ export function getSeasonalInfo(coords?: LocationCoords, language: string = 'nl'
     translatedLocalFocus = translateDutchToEnglish(monthlyData.localFocus) || monthlyData.localFocus;
   }
   
-  // Amsterdam local markets for seasonal produce
-  const localMarkets = language === 'en' ? [
-    'Noordermarkt (Saturday) - Fresh local vegetables and organic products',
-    'Nieuwmarkt Farmers Market (Saturday) - Organic local farmers',
-    'Albert Cuyp Market - Traditional market with seasonal Dutch products',
-    'Vondelpark Farmers Markets (Saturday) - Local growers'
-  ] : [
-    'Noordermarkt (zaterdag) - Verse lokale groenten en biologische producten',
-    'Boerenmarkt Nieuwmarkt (zaterdag) - Biologische lokale boeren',
-    'Albert Cuyp Markt - Traditionele markt met seizoensgebonden Nederlandse producten',
-    'Boerenmarkten in Vondelpark (zaterdag) - Lokale kwekers'
-  ];
+  // Determine region and provide location-specific market recommendations
+  let localMarkets: string[] | undefined = undefined;
+  
+  // North Brabant region (Eindhoven, Tilburg, Breda, 's-Hertogenbosch, Knegsel area)
+  // Latitude: ~51.0-51.8°N, Longitude: ~4.5-5.7°E
+  if (location.latitude >= 51.0 && location.latitude <= 51.8 && 
+      location.longitude >= 4.5 && location.longitude <= 5.7) {
+    localMarkets = language === 'en' ? [
+      'Eindhoven Farmers Market (Wednesday & Saturday mornings) - Local seasonal produce',
+      'Woenselse Markt Eindhoven - Traditional weekly market with regional farmers',
+      'Groene Afslag Tilburg - Direct from local farmers, seasonal vegetables',
+      'Check lokalekaart.nl for farm shops and pick-your-own farms in your area'
+    ] : [
+      'Boerenmarkt Eindhoven (woensdag & zaterdagochtend) - Lokale seizoensproducten',
+      'Woenselse Markt Eindhoven - Traditionele weekmarkt met regionale boeren',
+      'Groene Afslag Tilburg - Rechtstreeks van lokale boeren, seizoensgroenten',
+      'Kijk op lokalekaart.nl voor streekwinkels en pluktuinen bij jou in de buurt'
+    ];
+  }
+  // Amsterdam region (latitude ~52.2-52.5°N, longitude ~4.7-5.1°E)
+  else if (location.latitude >= 52.2 && location.latitude <= 52.5 && 
+           location.longitude >= 4.7 && location.longitude <= 5.1) {
+    localMarkets = language === 'en' ? [
+      'Noordermarkt (Saturday) - Fresh local vegetables and organic products',
+      'Nieuwmarkt Farmers Market (Saturday) - Organic local farmers',
+      'Albert Cuyp Market - Traditional market with seasonal Dutch products',
+      'Vondelpark Farmers Markets (Saturday) - Local growers'
+    ] : [
+      'Noordermarkt (zaterdag) - Verse lokale groenten en biologische producten',
+      'Boerenmarkt Nieuwmarkt (zaterdag) - Biologische lokale boeren',
+      'Albert Cuyp Markt - Traditionele markt met seizoensgebonden Nederlandse producten',
+      'Boerenmarkten in Vondelpark (zaterdag) - Lokale kwekers'
+    ];
+  }
+  // Rotterdam/Zuid-Holland region (latitude ~51.8-52.2°N)
+  else if (location.latitude >= 51.8 && location.latitude <= 52.2 && 
+           location.longitude >= 4.2 && location.longitude <= 4.8) {
+    localMarkets = language === 'en' ? [
+      'Binnenrotte Market Rotterdam (Tuesday & Saturday) - Large traditional market',
+      'Farmers Market Blijdorp (Saturday) - Local organic farmers',
+      'Check lokalekaart.nl for farm shops in Zuid-Holland region'
+    ] : [
+      'Binnenrotte Markt Rotterdam (dinsdag & zaterdag) - Grote traditionele markt',
+      'Boerenmarkt Blijdorp (zaterdag) - Lokale biologische boeren',
+      'Kijk op lokalekaart.nl voor streekwinkels in Zuid-Holland'
+    ];
+  }
+  // General Netherlands fallback
+  else if (locationName.includes('Netherlands')) {
+    localMarkets = language === 'en' ? [
+      'Visit lokalekaart.nl to find farm shops and farmers markets near you',
+      'Check your local weekly market (weekmarkt) for seasonal Dutch produce',
+      'Look for "streekproducten" (regional products) shops in your area'
+    ] : [
+      'Bezoek lokalekaart.nl om streekwinkels en boerenmarkten bij jou in de buurt te vinden',
+      'Kijk op je lokale weekmarkt voor seizoensgebonden Nederlandse producten',
+      'Zoek naar streekproductenwinkels in jouw regio'
+    ];
+  }
   
   // Helper function to translate arrays
   const translateArray = (arr: string[]) => {
@@ -362,7 +409,7 @@ export function getSeasonalInfo(coords?: LocationCoords, language: string = 'nl'
       localFocus: translatedLocalFocus,
       peak: translatedPeak
     } : undefined,
-    localMarkets: locationName.includes('Amsterdam') || locationName.includes('Netherlands') ? localMarkets : undefined
+    localMarkets
   };
 }
 
