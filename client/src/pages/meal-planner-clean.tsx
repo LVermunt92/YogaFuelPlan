@@ -21,6 +21,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Textarea } from "@/components/ui/textarea";
 import { AlbertHeijnIntegration } from "@/components/albert-heijn-integration";
 import { WeeklyHighlights } from "@/components/WeeklyHighlights";
+import { WelcomeDialog } from "@/components/WelcomeDialog";
 import type { User, MealPlan as MealPlanType, Meal as MealType } from "@shared/schema";
 import { countUniquePlants } from "@/lib/plant-diversity";
 
@@ -243,6 +244,7 @@ function MealPlannerMain() {
   const [showShoppingList, setShowShoppingList] = useState(false);
   const [newLeftover, setNewLeftover] = useState("");
   const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set());
+  const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -340,6 +342,27 @@ function MealPlannerMain() {
     staleTime: 0,
     refetchOnMount: true,
   });
+
+  // Check if user has seen welcome dialog
+  useEffect(() => {
+    if (userProfile && userProfile.hasSeenWelcome === false) {
+      setShowWelcomeDialog(true);
+    }
+  }, [userProfile]);
+
+  // Mark welcome as seen
+  const handleWelcomeClose = async () => {
+    setShowWelcomeDialog(false);
+    if (authUser?.id) {
+      try {
+        await apiRequest('POST', `/api/users/${authUser.id}/mark-welcome-seen`, {});
+        // Refetch user profile to update the hasSeenWelcome flag
+        queryClient.invalidateQueries({ queryKey: ['/api/users', authUser.id, 'profile'] });
+      } catch (error) {
+        console.error('Failed to mark welcome as seen:', error);
+      }
+    }
+  };
 
   // Fetch nutrition targets (includes gender-specific fiber target)
   const { data: nutritionTargets } = useQuery<NutritionTargets>({
@@ -2045,6 +2068,15 @@ function MealPlannerMain() {
             )}
           </DialogContent>
         </Dialog>
+
+        {/* Welcome Dialog for new users */}
+        {authUser && (
+          <WelcomeDialog
+            open={showWelcomeDialog}
+            onClose={handleWelcomeClose}
+            username={authUser.username}
+          />
+        )}
 
       </main>
     </div>

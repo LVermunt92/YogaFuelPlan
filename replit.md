@@ -61,7 +61,7 @@ Preferred communication style: Simple, everyday language.
     - **Authentication**: JWT token-based authentication with access and refresh tokens, stored in localStorage, with automatic token refresh. Resilient to network errors - users stay logged in during temporary connectivity issues.
     - **Build Tools**: Vite for frontend, esbuild for backend.
 - **Feature Specifications**:
-    - **Authentication & Multi-User Support**: Secure login/registration, persistent mobile login, password reset, isolated user data, route protection, and new user onboarding.
+    - **Authentication & Multi-User Support**: Secure login/registration, persistent mobile login, password reset, isolated user data, route protection, and interactive step-by-step onboarding tutorial for new users.
     - **Meal Generation**: Calculates protein targets, generates 7-day plans with variety, creates shopping lists, and includes smart AI recipe generation. Incorporates 1 anti-aging meal per day.
     - **Universal Meal Prep Engine**: Adapts to user cooking schedules, supporting batch cooking, meal distribution, and dietary fallbacks. Weekday meals are limited to ≤45 minutes prep time.
     - **Ayurvedic Integration**: Supports Ayurvedic dietary tags and seasonal adaptation.
