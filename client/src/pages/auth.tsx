@@ -7,9 +7,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTranslations } from "@/lib/translations";
-import { Languages } from "lucide-react";
+import { Languages, Info } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
@@ -262,7 +263,23 @@ export default function Auth() {
             
             {!isLogin && !isForgotPassword && (
               <div className="space-y-2">
-                <Label htmlFor="email">{t.email || 'Email'} (optional)</Label>
+                <div className="flex items-center gap-1">
+                  <Label htmlFor="email">{t.email || 'Email'} (optional)</Label>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-xs">
+                        <p className="text-sm">
+                          {language === 'nl' 
+                            ? 'Aanbevolen voor het geval je je wachtwoord vergeet. We gebruiken dit alleen voor wachtwoordherstel.'
+                            : 'Recommended in case you forget your password. We only use this for password recovery.'}
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
                 <Input
                   id="email"
                   name="email"
