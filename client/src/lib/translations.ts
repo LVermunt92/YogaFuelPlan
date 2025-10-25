@@ -390,6 +390,7 @@ export const translations = {
     
     // Additional Meal Plan Management
     savedMealPlans: "Saved meal plans", 
+    selected: "Selected",
     manageMultiplePlans: "Select and manage your meal plans",
     deletePlanConfirm: "Are you sure you want to delete this meal plan?",
     savePlanCopy: "Save Plan as Copy",
@@ -1002,7 +1003,8 @@ export const translations = {
     green: "Groene",
     
     // Additional Meal Plan Management (Dutch)
-    savedMealPlans: "Opgeslagen Maaltijdplannen", 
+    savedMealPlans: "Opgeslagen maaltijdplannen", 
+    selected: "Geselecteerd",
     manageMultiplePlans: "Selecteer en beheer je maaltijdplannen",
     deletePlanConfirm: "Weet je zeker dat je dit maaltijdplan wilt verwijderen?",
     savePlanCopy: "Plan Opslaan als Kopie",
