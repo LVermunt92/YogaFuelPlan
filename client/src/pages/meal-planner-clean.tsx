@@ -1317,14 +1317,14 @@ function MealPlannerMain() {
                 </p>
               </CardHeader>
               <CardContent className="pt-0 px-6 pb-6">
-                <div className="space-y-2">
+                <div className="space-y-1">
                   {mealPlans.map((plan, index) => (
                     <div 
                       key={plan.id}
-                      className={`relative p-4 border-2 rounded-xl cursor-pointer transition-all duration-200 ${
+                      className={`p-3 border-l-4 rounded-lg cursor-pointer transition-all ${
                         selectedMealPlan === plan.id 
-                          ? 'border-primary bg-primary/10 shadow-lg' 
-                          : 'border-gray-200 bg-white shadow-sm hover:border-gray-300 hover:shadow-md'
+                          ? 'border-l-primary bg-primary/5' 
+                          : 'border-l-transparent hover:bg-gray-50'
                       }`}
                       onClick={() => {
                         console.log('Selecting meal plan:', plan.id, plan.planName);
@@ -1334,24 +1334,10 @@ function MealPlannerMain() {
                         queryClient.invalidateQueries({ queryKey: ['/api/meal-plans', plan.id.toString(), language] });
                       }}
                     >
-                      {/* Selected indicator badge */}
-                      {selectedMealPlan === plan.id && (
-                        <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground rounded-full p-1.5 shadow-md">
-                          <Check className="h-4 w-4" />
-                        </div>
-                      )}
-                      
                       <div className="flex justify-between items-center">
                         <div className="flex-1">
-                          <div className="flex items-center gap-2">
-                            <h4 className="font-semibold text-base">{plan.planName || `Meal Plan ${mealPlans.length - index}`}</h4>
-                            {selectedMealPlan === plan.id && (
-                              <Badge variant="default" className="text-xs px-2 py-0">
-                                {t.selected || 'Selected'}
-                              </Badge>
-                            )}
-                          </div>
-                          <p className="text-sm text-gray-500 mt-0.5">{formatWeekRange(plan.weekStart)}</p>
+                          <h4 className="font-medium text-sm">{plan.planName || `Meal Plan ${mealPlans.length - index}`}</h4>
+                          <p className="text-xs text-gray-500">{formatWeekRange(plan.weekStart)}</p>
                         </div>
                         <div className="flex items-center gap-3">
                           <div className="text-right">
