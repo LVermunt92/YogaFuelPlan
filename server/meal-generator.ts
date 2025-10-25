@@ -1414,9 +1414,8 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   
   // Get user settings for meal planning
   const eatingDaysAtHome = user?.eatingDaysAtHome || 7;
-  const mealsPerDay = user?.mealsPerDay || 2; // 2 = lunch+dinner, 3 = breakfast+lunch+dinner
   
-  console.log(`🎯 USER SETTINGS: ${eatingDaysAtHome} eating days, ${mealsPerDay} meals/day`);
+  console.log(`🎯 USER SETTINGS: ${eatingDaysAtHome} eating days`);
   
   // Loop through days 1-7 (Sunday through Saturday)
   // Only generate meals for consecutive days based on eatingDaysAtHome

@@ -28,8 +28,6 @@ export const users = pgTable("users", {
   includeDinner: boolean("include_dinner").default(true),
   cookingDaysPerWeek: integer("cooking_days_per_week").default(7),
   eatingDaysAtHome: integer("eating_days_at_home").default(7),
-  mealsPerDay: integer("meals_per_day").default(2), // 2 = lunch+dinner, 3 = breakfast+lunch+dinner, 4+ = includes snacks
-  meatFishMealsPerWeek: integer("meat_fish_meals_per_week").default(0),
   language: text("language").default("en"), // en, nl
   leftovers: text("leftovers").array().default([]), // current leftovers to use in meal planning
   useOnlyMyRecipes: boolean("use_only_my_recipes").default(false), // preference for meal plan generation
@@ -383,8 +381,6 @@ export const updateUserProfileSchema = createInsertSchema(users).pick({
   includeDinner: true,
   cookingDaysPerWeek: true,
   eatingDaysAtHome: true,
-  mealsPerDay: true,
-  meatFishMealsPerWeek: true,
   language: true,
   leftovers: true,
   useOnlyMyRecipes: true,
