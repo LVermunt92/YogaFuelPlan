@@ -16437,6 +16437,96 @@
     "updatedAt": "2025-10-13T20:39:34.212Z"
   },
   {
+    "id": "1761370587621",
+    "name": "Vegan pecan caramel tart",
+    "category": "snack",
+    "ingredients": [
+      "125g almond flour (for 8 servings)",
+      "200g gluten-free rolled oats (for 8 servings)",
+      "80g plant-based butter (crust)",
+      "60ml maple syrup (crust)",
+      "2g salt (crust)",
+      "40g plant-based butter (caramel)",
+      "40g coconut oil",
+      "145g maple syrup (caramel)",
+      "50g almond butter",
+      "5ml cinnamon",
+      "2g salt (caramel)",
+      "30g pecans (topping)"
+    ],
+    "instructions": [
+      "Preheat the oven to 180°C (fan/convection)",
+      "In a food processor, grind the oats and almond flour until fine",
+      "Add the plant-based butter, maple syrup, and salt to processor; process again to combine",
+      "Press the mixture into a 20cm tart pan with removable bottom - firm up the sides first to make a rim about 0.5cm thick, then press the base evenly",
+      "Bake the crust for 15 minutes until golden, then let cool for 30 minutes",
+      "Toast the pecans in a skillet until golden to enhance flavor; set aside",
+      "Make the caramel: In a saucepan, warm the coconut oil, plant-based butter, and maple syrup over moderate heat, stirring until melted",
+      "Add the almond butter and cinnamon to caramel and stir until fully combined",
+      "Let the caramel cool for 15 minutes to thicken, then pour over the cooled crust",
+      "Refrigerate the tart for at least 4 hours to set",
+      "Before serving, top with the toasted pecans and slice into 8 pieces"
+    ],
+    "portion": "1 serving (1/8 tart, ~90g)",
+    "nutrition": {
+      "fats": 20,
+      "iron": 2.1,
+      "fiber": 5,
+      "sugar": 22,
+      "sodium": 180,
+      "calcium": 65,
+      "protein": 6,
+      "calories": 335,
+      "prepTime": 40,
+      "vitaminC": 0,
+      "potassium": 220,
+      "carbohydrates": 38
+    },
+    "tags": [
+      "Vegetarian",
+      "Vegan",
+      "Gluten-Free",
+      "Dairy-Free",
+      "Lactose-Free",
+      "Dessert"
+    ],
+    "wholeFoodLevel": "moderate",
+    "vegetableContent": {
+      "benefits": [
+        "Rich in healthy fats from nuts and seeds",
+        "Gluten-free and dairy-free",
+        "Natural sweetness from maple syrup"
+      ],
+      "servings": 0,
+      "vegetables": []
+    },
+    "recipeBenefits": [
+      "Completely plant-based and vegan-friendly",
+      "Gluten-free with almond flour and oat base",
+      "Rich in healthy fats from nuts and coconut oil",
+      "Natural sweetener (maple syrup) instead of refined sugar",
+      "Perfect make-ahead dessert for entertaining"
+    ],
+    "recipeTips": [
+      "Store the tart in the refrigerator for best texture - caramel softens at room temperature",
+      "Toast pecans just before serving for maximum crunch and flavor",
+      "Let caramel cool for 15 minutes before pouring to prevent it from soaking into the crust",
+      "Use a tart pan with removable bottom for easy serving",
+      "Can be made 1-2 days ahead and kept refrigerated"
+    ],
+    "recipeNotes": "This indulgent vegan caramel tart features a nutty oat crust, rich maple-cinnamon caramel layer, and toasted pecans. Requires 4 hours setting time in refrigerator. Serves 8 generous portions.",
+    "prepTime": 30,
+    "defaultBatchServings": 1,
+    "source": "custom",
+    "variantOf": null,
+    "variantType": null,
+    "active": true,
+    "createdBy": null,
+    "updatedBy": null,
+    "createdAt": "2025-10-25T05:36:28.079Z",
+    "updatedAt": "2025-10-25T05:36:28.079Z"
+  },
+  {
     "id": "210151",
     "name": "Crispy Aubergine with Spiced Tomato Sauce & Hemp Hearts",
     "category": "dinner",
