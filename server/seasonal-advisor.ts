@@ -152,8 +152,10 @@ function getLocationName(coords: LocationCoords): string {
   }
   
   // Default to Netherlands regions based on coordinates
-  if (coords.latitude >= 52.0 && coords.latitude <= 53.5 && 
-      coords.longitude >= 4.0 && coords.longitude <= 7.0) {
+  // Netherlands extends from ~50.75°N (Maastricht) to 53.5°N (Groningen)
+  // and from ~3.4°E (western coast) to ~7.2°E (eastern border)
+  if (coords.latitude >= 50.7 && coords.latitude <= 53.6 && 
+      coords.longitude >= 3.3 && coords.longitude <= 7.3) {
     return 'Netherlands';
   }
   
