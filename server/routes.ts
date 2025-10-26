@@ -1625,11 +1625,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Calculate the scaling ratio for ingredients based on adjusted vs original nutrition
       // Use calories as the primary indicator of portion adjustment
+      // CAP at 1.0 - TDEE adjustments should only reduce portions, never increase them
       const originalCalories = mealOption.nutrition?.calories || 1;
       const adjustedCalories = targetMeal.calories || originalCalories;
-      const ingredientScalingRatio = adjustedCalories / originalCalories;
+      const rawScalingRatio = adjustedCalories / originalCalories;
+      const ingredientScalingRatio = Math.min(1.0, rawScalingRatio); // Cap at 1.0
       
-      console.log(`📊 Ingredient scaling: ${adjustedCalories} kcal / ${originalCalories} kcal = ${ingredientScalingRatio.toFixed(2)}x`);
+      console.log(`📊 Ingredient scaling: ${adjustedCalories} kcal / ${originalCalories} kcal = ${rawScalingRatio.toFixed(2)}x → capped at ${ingredientScalingRatio.toFixed(2)}x`);
 
       // Recipes are stored with "1 serving" as the base in the database
       // Conversion logic (replit.md line 26: "All recipes display ingredients for 2 servings (cooking batch)"):
