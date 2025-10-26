@@ -18,16 +18,62 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script>
-      // Register service worker
+      // Register service worker with auto-update
       if ('serviceWorker' in navigator) {
+        // Helper function to apply updates immediately
+        const applyUpdate = (reg) => {
+          if (reg.waiting) {
+            console.log('[Client] Applying service worker update...');
+            reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+          }
+        };
+
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('/sw.js')
             .then((registration) => {
-              console.log('SW registered: ', registration);
+              console.log('[Client] SW registered successfully');
+
+              // Listen for updates to the service worker
+              registration.addEventListener('updatefound', () => {
+                const newWorker = registration.installing;
+                if (!newWorker) return;
+
+                newWorker.addEventListener('statechange', () => {
+                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    // New service worker available, apply immediately and reload
+                    console.log('[Client] New version detected, updating...');
+                    applyUpdate(registration);
+                    setTimeout(() => {
+                      console.log('[Client] Reloading to apply update');
+                      window.location.reload();
+                    }, 500);
+                  }
+                });
+              });
+
+              // Check for updates when tab becomes visible
+              document.addEventListener('visibilitychange', () => {
+                if (document.visibilityState === 'visible') {
+                  console.log('[Client] Tab visible, checking for updates...');
+                  registration.update();
+                }
+              });
+
+              // Periodic update check (every 60 seconds when tab is active)
+              setInterval(() => {
+                if (document.visibilityState === 'visible') {
+                  registration.update();
+                }
+              }, 60000);
             })
-            .catch((registrationError) => {
-              console.log('SW registration failed: ', registrationError);
+            .catch((error) => {
+              console.error('[Client] SW registration failed:', error);
             });
+
+          // Handle controllerchange (new SW took control)
+          navigator.serviceWorker.addEventListener('controllerchange', () => {
+            console.log('[Client] New service worker took control');
+          });
         });
       }
     </script>

@@ -8,11 +8,29 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Prevent browser caching issues - force revalidation on every request
+// Intelligent cache headers for PWA updates
 app.use((req, res, next) => {
-  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-  res.setHeader('Pragma', 'no-cache');
-  res.setHeader('Expires', '0');
+  const path = req.path;
+  
+  // No caching for HTML files, root path, and service worker (always fresh)
+  if (path === '/' || path === '/sw.js' || path === '/service-worker.js' || path.endsWith('.html')) {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+  }
+  // Long cache for content-hashed assets (Vite uses dash-separated hashes like index-79f5f7b4.js)
+  else if (/[-.]([a-f0-9]{8,})\.(js|css|png|jpg|jpeg|svg|woff2?|ttf|eot)$/i.test(path)) {
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+  }
+  // Moderate cache for API responses (revalidate)
+  else if (path.startsWith('/api/')) {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  }
+  // Default: allow caching but revalidate
+  else {
+    res.setHeader('Cache-Control', 'public, max-age=3600, must-revalidate');
+  }
+  
   next();
 });
 

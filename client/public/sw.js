@@ -1,106 +1,138 @@
-const CACHE_NAME = 'meal-planner-v2';
-const urlsToCache = [
-  '/',
-  '/manifest.json',
-  '/pwa-192x192.png',
-  '/pwa-512x512.png'
-];
+// Service Worker with safe caching strategy
+// Version changes on each deploy to trigger iOS PWA updates
+const SW_VERSION = "2025-10-26-1"; // Change this on each deploy
+const RUNTIME_CACHE = `runtime-${SW_VERSION}`;
 
-// Install event - cache essential resources
-self.addEventListener('install', (event) => {
-  console.log('[SW] Installing service worker');
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        console.log('[SW] Caching essential resources');
-        return cache.addAll(urlsToCache);
-      })
-  );
-  // Force activate immediately
+// Take control fast - apply updates immediately
+self.addEventListener("install", (event) => {
+  console.log(`[SW ${SW_VERSION}] Installing service worker`);
   self.skipWaiting();
 });
 
-// Activate event - clean up old caches
-self.addEventListener('activate', (event) => {
-  console.log('[SW] Activating service worker');
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            console.log('[SW] Deleting old cache:', cacheName);
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
-  );
-  // Take control of all pages immediately
-  self.clients.claim();
-});
-
-// Fetch event - serve cached content when offline
-self.addEventListener('fetch', (event) => {
-  // Skip cross-origin requests
-  if (!event.request.url.startsWith(self.location.origin)) {
-    return;
-  }
-
-  // Handle API requests with network-first strategy
-  if (event.request.url.includes('/api/')) {
-    event.respondWith(
-      fetch(event.request)
-        .then((response) => {
-          // If network succeeds, cache the response for meal plans and recipes
-          if (response.ok && (
-            event.request.url.includes('/meal-plans') ||
-            event.request.url.includes('/meals') ||
-            event.request.url.includes('/recipes')
-          )) {
-            const responseClone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, responseClone);
-            });
-          }
-          return response;
-        })
-        .catch(() => {
-          // If network fails, try to serve from cache
-          return caches.match(event.request);
-        })
+self.addEventListener("activate", (event) => {
+  console.log(`[SW ${SW_VERSION}] Activating service worker`);
+  event.waitUntil((async () => {
+    // Delete all old caches
+    const keys = await caches.keys();
+    await Promise.all(
+      keys.filter(k => k !== RUNTIME_CACHE).map(k => {
+        console.log(`[SW ${SW_VERSION}] Deleting old cache:`, k);
+        return caches.delete(k);
+      })
     );
+    // Take control of all pages immediately
+    await self.clients.claim();
+    console.log(`[SW ${SW_VERSION}] Now controlling all pages`);
+  })());
+});
+
+// Listen for skip waiting message from client
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") {
+    console.log(`[SW ${SW_VERSION}] Received SKIP_WAITING message`);
+    self.skipWaiting();
+  }
+});
+
+// Fetch handler with intelligent caching
+self.addEventListener("fetch", (event) => {
+  const req = event.request;
+  const url = new URL(req.url);
+
+  // Skip cross-origin requests
+  if (url.origin !== self.location.origin) {
     return;
   }
 
-  // Handle static resources with cache-first strategy
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Return cached version or fetch from network
-        return response || fetch(event.request).then((fetchResponse) => {
-          // Cache successful responses
-          if (fetchResponse.ok) {
-            const responseClone = fetchResponse.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, responseClone);
-            });
-          }
-          return fetchResponse;
-        });
-      })
-      .catch(() => {
-        // If both cache and network fail, return offline page for navigation requests
-        if (event.request.mode === 'navigate') {
-          return caches.match('/');
+  // Network-first for HTML navigations (always get fresh content)
+  if (req.mode === "navigate") {
+    event.respondWith((async () => {
+      try {
+        console.log(`[SW ${SW_VERSION}] Fetching fresh HTML:`, url.pathname);
+        const fresh = await fetch(req, { cache: "no-store" });
+        
+        // Cache the HTML for offline fallback
+        if (fresh.ok) {
+          const cache = await caches.open(RUNTIME_CACHE);
+          cache.put("/", fresh.clone());
         }
-      })
-  );
-});
-
-// Background sync for meal plan updates (when supported)
-self.addEventListener('sync', (event) => {
-  if (event.tag === 'meal-plan-sync') {
-    console.log('[SW] Background syncing meal plans');
-    // Could implement background sync for meal plan updates here
+        
+        return fresh;
+      } catch (error) {
+        console.error(`[SW ${SW_VERSION}] Network failed for navigation, trying cache:`, error);
+        const cache = await caches.open(RUNTIME_CACHE);
+        const cached = await cache.match("/");
+        return cached || Response.error();
+      }
+    })());
+    return;
   }
+
+  // Network-first for API requests (always get fresh data)
+  if (url.pathname.startsWith("/api/")) {
+    event.respondWith((async () => {
+      try {
+        const response = await fetch(req);
+        
+        // Optionally cache successful API responses for offline fallback
+        if (response.ok && (
+          url.pathname.includes("/recipes") ||
+          url.pathname.includes("/meals") ||
+          url.pathname.includes("/meal-plans")
+        )) {
+          const cache = await caches.open(RUNTIME_CACHE);
+          cache.put(req, response.clone());
+        }
+        
+        return response;
+      } catch (error) {
+        // Serve from cache if offline
+        const cache = await caches.open(RUNTIME_CACHE);
+        const cached = await cache.match(req);
+        return cached || Response.error();
+      }
+    })());
+    return;
+  }
+
+  // Cache-first ONLY for content-hashed assets (Vite uses dash-separated: index-79f5f7b4.js)
+  // These never change, so caching them is safe
+  if (/[-.]([a-f0-9]{8,})\.(js|css|png|jpg|jpeg|svg|woff2?|ttf|eot)$/i.test(url.pathname)) {
+    event.respondWith((async () => {
+      const cache = await caches.open(RUNTIME_CACHE);
+      const cached = await cache.match(req);
+      
+      if (cached) {
+        console.log(`[SW ${SW_VERSION}] Serving hashed asset from cache:`, url.pathname);
+        return cached;
+      }
+      
+      const resp = await fetch(req);
+      if (resp.ok) {
+        console.log(`[SW ${SW_VERSION}] Caching hashed asset:`, url.pathname);
+        cache.put(req, resp.clone());
+      }
+      return resp;
+    })());
+    return;
+  }
+
+  // Network-first for everything else (including non-hashed JS/CSS)
+  event.respondWith((async () => {
+    try {
+      const response = await fetch(req);
+      
+      // Cache static assets for offline fallback
+      if (response.ok && /\.(js|css|png|jpg|jpeg|svg|woff2?|ttf|eot|json)$/i.test(url.pathname)) {
+        const cache = await caches.open(RUNTIME_CACHE);
+        cache.put(req, response.clone());
+      }
+      
+      return response;
+    } catch (error) {
+      const cache = await caches.open(RUNTIME_CACHE);
+      const cached = await cache.match(req);
+      return cached || Response.error();
+    }
+  })());
 });
