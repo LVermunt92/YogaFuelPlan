@@ -76,6 +76,10 @@ export default function Auth() {
   const registerMutation = useMutation({
     mutationFn: async (data: { username: string; password: string; email?: string }) => {
       const response = await apiRequest('POST', '/api/auth/register', data);
+      if (!response.ok) {
+        const error = await response.json();
+        throw error;
+      }
       return response.json();
     },
     onSuccess: (data) => {
@@ -92,10 +96,26 @@ export default function Auth() {
       setNewUserName(data.user.username);
       setShowWelcomeDialog(true);
     },
-    onError: (error) => {
+    onError: (error: any) => {
+      let title = "Registration Failed";
+      let description = "Please check your information and try again";
+      
+      // Check for specific error messages
+      if (error?.message) {
+        if (error.message.includes("email already exists")) {
+          title = "Email Already Registered";
+          description = "An account with this email already exists. Please log in instead.";
+        } else if (error.message.includes("Username already exists")) {
+          title = "Username Taken";
+          description = "This username is already in use. Please choose another one.";
+        } else {
+          description = error.message;
+        }
+      }
+      
       toast({
-        title: "Registration Failed",
-        description: "Username might already exist or invalid data",
+        title,
+        description,
         variant: "destructive",
       });
     },

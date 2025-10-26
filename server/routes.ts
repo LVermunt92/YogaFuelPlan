@@ -67,6 +67,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(409).json({ message: "Username already exists" });
       }
 
+      // Check if email already exists (if provided)
+      if (userData.email) {
+        const existingEmailUser = await storage.getUserByEmail(userData.email);
+        if (existingEmailUser) {
+          return res.status(409).json({ 
+            message: "An account with this email already exists. Please log in instead.",
+            field: "email"
+          });
+        }
+      }
+
       const user = await storage.createUser(userData);
       
       // Generate JWT tokens
