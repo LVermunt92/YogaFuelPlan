@@ -1,0 +1,159 @@
+You’re running into service-worker + aggressive caching issues. Hard-refresh helps temporarily, but the old SW keeps serving an outdated cache. This is solvable with standard PWA update patterns and cache headers.
+
+What to change (concise checklist)
+	1.	Stop caching index.html and the service worker file.
+Serve both with: Cache-Control: no-cache, no-store, must-revalidate, plus ETag/Last-Modified.
+	2.	Give all build assets content-hashed filenames (e.g., app.7d9a3f.js, styles.a1f0.css).
+Then they can be cached long-term safely.
+	3.	Update your service worker strategy:
+	•	Network-first for navigations/HTML.
+	•	Cache-first (or stale-while-revalidate) only for hashed assets.
+	•	Version your cache names and delete old caches on activate.
+	•	Call self.skipWaiting() and clients.claim() so the new SW takes control immediately.
+	4.	Force an update check on visibility change and auto-apply it (no manual reinstall).
+	5.	If you can’t set headers on Replit’s static host, run via a tiny Node/Express server so you control headers (or deploy to a host that does).
+
+⸻
+
+Minimal server setup (Express example)
+
+import express from "express";
+import path from "path";
+const app = express();
+const dist = path.join(process.cwd(), "dist");
+
+app.use((req, res, next) => {
+  if (req.path === "/sw.js" || req.path === "/service-worker.js") {
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  }
+  next();
+});
+
+app.use(express.static(dist, {
+  etag: true,
+  lastModified: true,
+  maxAge: "1y",
+  immutable: true,
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith("index.html")) {
+      res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    }
+  }
+}));
+
+app.get("*", (_, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.sendFile(path.join(dist, "index.html"));
+});
+
+app.listen(process.env.PORT || 3000);
+
+Service worker (safe defaults)
+
+// sw.js
+const SW_VERSION = "2025-10-26-1";
+const RUNTIME_CACHE = `runtime-${SW_VERSION}`;
+
+// Take control fast
+self.addEventListener("install", (e) => { self.skipWaiting(); });
+self.addEventListener("activate", (e) => {
+  e.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys.filter(k => k !== RUNTIME_CACHE).map(k => caches.delete(k)));
+    await self.clients.claim();
+  })());
+});
+
+// Network-first for navigations/HTML
+self.addEventListener("fetch", (event) => {
+  const req = event.request;
+  const url = new URL(req.url);
+
+  // Treat top-level navigations as HTML
+  if (req.mode === "navigate") {
+    event.respondWith((async () => {
+      try {
+        const fresh = await fetch(req, { cache: "no-store" });
+        return fresh;
+      } catch {
+        const cache = await caches.open(RUNTIME_CACHE);
+        return (await cache.match("/index.html")) || Response.error();
+      }
+    })());
+    return;
+  }
+
+  // Hashed assets: cache-first (only if filename contains a hash)
+  if (/\.[a-f0-9]{8,}\.(?:js|css|png|jpg|svg|woff2?)$/.test(url.pathname)) {
+    event.respondWith((async () => {
+      const cache = await caches.open(RUNTIME_CACHE);
+      const cached = await cache.match(req);
+      if (cached) return cached;
+      const resp = await fetch(req);
+      if (resp.ok) cache.put(req, resp.clone());
+      return resp;
+    })());
+    return;
+  }
+
+  // Default: network-first
+  event.respondWith((async () => {
+    try {
+      return await fetch(req);
+    } catch {
+      const cache = await caches.open(RUNTIME_CACHE);
+      return (await cache.match(req)) || Response.error();
+    }
+  })());
+});
+
+Client registration (auto-apply updates)
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js");
+
+  const applyUpdate = (reg) => {
+    if (reg.waiting) {
+      reg.waiting.postMessage({ type: "SKIP_WAITING" });
+    }
+  };
+
+  navigator.serviceWorker.getRegistration().then((reg) => {
+    if (!reg) return;
+    reg.addEventListener("updatefound", () => {
+      const sw = reg.installing;
+      if (!sw) return;
+      sw.addEventListener("statechange", () => {
+        if (sw.state === "installed" && navigator.serviceWorker.controller) {
+          applyUpdate(reg);              // immediately activate
+          window.location.reload();      // load the new build
+        }
+      });
+    });
+  });
+
+  // Check for updates whenever the tab becomes visible
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
+      navigator.serviceWorker.getRegistration().then(reg => reg?.update());
+    }
+  });
+}
+
+Why this fixes your symptoms
+	•	Old versions persisted because the SW used cache-first for HTML/ungrouped assets and/or the SW file itself was cached.
+	•	With no-cache on index.html + sw.js, the browser discovers new releases.
+	•	With hashed assets, users keep fast caches without stale code.
+	•	With skipWaiting() + clients.claim() + auto-reload, users see the update without deleting the app or hard-refreshing.
+
+Notes for iOS (installed web app)
+	•	iOS updates a PWA when the sw.js file changes and the app is brought to foreground. No reinstall is required if the above pattern is used.
+	•	Ensure sw.js is tiny and its version string changes on each deploy (e.g., from your commit hash).
+
+If you want a quick temporary workaround while iterating rapidly: unregister your service worker during development so every load comes from the network:
+
+navigator.serviceWorker?.getRegistrations().then(rs => rs.forEach(r => r.unregister()));
+
+Re-enable the SW when you’re ready to ship stable updates.
+
+This is how other web/PWA developers deliver updates; for native iOS apps the App Store “software update” plays a similar role to changing sw.js + cache busting on the web.
