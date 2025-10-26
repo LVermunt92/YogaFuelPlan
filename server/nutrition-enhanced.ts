@@ -18914,25 +18914,25 @@ export function multiplyIngredientAmount(ingredientString: string, multiplier: n
       const afterNumber = ingredientString.substring(match[0].length).trim();
       const unitMatch = afterNumber.match(/^(g|gram|grams|ml|milliliter|milliliters)(?:\s|$)/i);
       
-      // Round piece-based ingredients to 1/2 or 1 (not decimals like 0.6 or 1.1)
-      const isPieceBased = /bell pepper|onion|zucchini|aubergine|eggplant|cucumber|avocado|lemon|lime|portobello|fennel/i.test(ingredientString);
+      // Round piece-based ingredients to whole numbers or halves (0 decimals or 0.5)
+      const isPieceBased = /bell pepper|onion|zucchini|aubergine|eggplant|cucumber|avocado|lemon|lime|portobello|fennel|clove|cloves/i.test(ingredientString);
       
       if (isPieceBased && !unitMatch) {
-        // Round to nearest 0.5 for piece-based ingredients
+        // Round to nearest 0.5 for piece-based ingredients (e.g., 1.3 → 1.5, 2.2 → 2.0)
         const roundedAmount = Math.round(newAmount * 2) / 2;
-        console.log(`🔢 Rounding piece ingredient: ${newAmount} → ${roundedAmount} for "${ingredientString}"`);
+        console.log(`🔢 Rounding piece ingredient: ${newAmount.toFixed(2)} → ${roundedAmount} for "${ingredientString}"`);
         newAmount = roundedAmount;
       } else if (unitMatch) {
-        // Round all gram/ml measurements to whole numbers (0 decimals)
+        // Round grams/ml to nearest 10 (-1 decimal: 237g → 240g, 143g → 140g)
         const beforeRound = newAmount;
-        newAmount = Math.round(newAmount);
-        console.log(`🔢 Rounding ${unitMatch[1]}: ${beforeRound}${unitMatch[1]} → ${newAmount}${unitMatch[1]} for "${ingredientString}"`);
+        newAmount = Math.round(newAmount / 10) * 10;
+        console.log(`🔢 Rounding ${unitMatch[1]} to nearest 10: ${beforeRound.toFixed(1)}${unitMatch[1]} → ${newAmount}${unitMatch[1]} for "${ingredientString}"`);
       } else {
-        // Round all other numeric measurements to whole numbers
+        // Round all other numeric measurements to nearest 0.5 (e.g., 2.3 → 2.5)
         const beforeRound = newAmount;
-        newAmount = Math.round(newAmount);
+        newAmount = Math.round(newAmount * 2) / 2;
         if (beforeRound !== newAmount) {
-          console.log(`🔢 Rounding amount: ${beforeRound} → ${newAmount} for "${ingredientString}"`);
+          console.log(`🔢 Rounding amount: ${beforeRound.toFixed(2)} → ${newAmount} for "${ingredientString}"`);
         }
       }
       
