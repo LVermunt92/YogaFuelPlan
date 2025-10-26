@@ -87,6 +87,14 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  // Auto-update service worker version on every server start
+  try {
+    const { updateServiceWorkerVersion } = await import("./update-sw-version");
+    updateServiceWorkerVersion();
+  } catch (error) {
+    console.error("Failed to update service worker version:", error);
+  }
+
   // Viral recipes are now permanently integrated into the unified database
   console.log('🔥 Viral recipes integrated into unified database - no separate scheduler needed');
 
