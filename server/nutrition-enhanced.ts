@@ -18910,25 +18910,33 @@ export function multiplyIngredientAmount(ingredientString: string, multiplier: n
       
       let newAmount = numericAmount * multiplier;
       
-      // Detect if this is a gram measurement by checking what comes after the number
+      // Detect if this is a gram/ml measurement by checking what comes after the number
       const afterNumber = ingredientString.substring(match[0].length).trim();
-      const unitMatch = afterNumber.match(/^(g|gram|grams)(?:\s|$)/i);
-      if (unitMatch) {
-        console.log(`🔢 Rounding grams: ${newAmount}g → ${roundGramsToNearest10(newAmount, unitMatch[1])}g for "${ingredientString}"`);
-        // Round grams to nearest 10
-        newAmount = roundGramsToNearest10(newAmount, unitMatch[1]);
-      }
+      const unitMatch = afterNumber.match(/^(g|gram|grams|ml|milliliter|milliliters)(?:\s|$)/i);
       
       // Round piece-based ingredients to 1/2 or 1 (not decimals like 0.6 or 1.1)
       const isPieceBased = /bell pepper|onion|zucchini|aubergine|eggplant|cucumber|avocado|lemon|lime|portobello|fennel/i.test(ingredientString);
+      
       if (isPieceBased && !unitMatch) {
-        // Round to nearest 0.5
+        // Round to nearest 0.5 for piece-based ingredients
         const roundedAmount = Math.round(newAmount * 2) / 2;
         console.log(`🔢 Rounding piece ingredient: ${newAmount} → ${roundedAmount} for "${ingredientString}"`);
         newAmount = roundedAmount;
+      } else if (unitMatch) {
+        // Round all gram/ml measurements to whole numbers (0 decimals)
+        const beforeRound = newAmount;
+        newAmount = Math.round(newAmount);
+        console.log(`🔢 Rounding ${unitMatch[1]}: ${beforeRound}${unitMatch[1]} → ${newAmount}${unitMatch[1]} for "${ingredientString}"`);
+      } else {
+        // Round all other numeric measurements to whole numbers
+        const beforeRound = newAmount;
+        newAmount = Math.round(newAmount);
+        if (beforeRound !== newAmount) {
+          console.log(`🔢 Rounding amount: ${beforeRound} → ${newAmount} for "${ingredientString}"`);
+        }
       }
       
-      // Format the new amount: whole numbers as integers, decimals with max 1 decimal place
+      // Format the new amount: whole numbers as integers, decimals with max 1 decimal place (for 0.5 pieces)
       const formattedAmount = newAmount % 1 === 0 ? newAmount.toString() : newAmount.toFixed(1).replace('.0', '');
       
       return ingredientString.replace(originalAmount, formattedAmount);
