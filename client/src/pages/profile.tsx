@@ -499,10 +499,10 @@ export default function Profile() {
 
               <div>
                 <Label htmlFor="waistline" className="text-sm font-medium text-foreground mb-2 block">
-                  Waist Circumference (cm)
+                  Current Waist Circumference (cm)
                 </Label>
                 <p className="text-xs text-muted-foreground mb-2">
-                  Measure around your waist at the narrowest point
+                  Your starting point - measure around your waist at the narrowest point
                 </p>
                 <Input
                   id="waistline"
@@ -635,10 +635,10 @@ export default function Profile() {
 
               <div>
                 <Label htmlFor="goalWaistline" className="text-sm font-medium text-foreground mb-2 block">
-                  Goal Waist Circumference (cm)
+                  Target Waist Circumference (cm)
                 </Label>
                 <p className="text-xs text-muted-foreground mb-2">
-                  Your target waist measurement (optional)
+                  Your goal waist measurement (optional)
                 </p>
                 <Input
                   id="goalWaistline"
