@@ -102,11 +102,17 @@ export function specifyIngredients(ingredients: string[]): string[] {
       return; // Skip further processing
     }
     
-    // Priority check for garlic - always specify as "garlic cloves" for proper quantities
-    if (lowerIngredient.includes('garlic') && !lowerIngredient.includes('clove') && !lowerIngredient.includes('powder')) {
-      const garlicSpecified = ingredient.replace(/\bgarlic\b/gi, 'garlic cloves');
+    // Priority check for garlic - normalize ALL garlic variations to "garlic cloves" (except garlic powder)
+    if (lowerIngredient.includes('garlic') && !lowerIngredient.includes('powder')) {
+      // Normalize all variations to "garlic cloves" for shopping list consolidation
+      let garlicSpecified = ingredient
+        .replace(/\b(\d+(?:\.\d+)?)\s*cloves?\s+garlic\b/gi, '$1 garlic cloves') // "2 cloves garlic" → "2 garlic cloves"
+        .replace(/\b(\d+(?:\.\d+)?)\s*garlic\s+cloves?\b/gi, '$1 garlic cloves')  // "2 garlic clove" → "2 garlic cloves"
+        .replace(/\bgarlic\s+cloves?\b/gi, 'garlic cloves')  // "garlic clove" → "garlic cloves"
+        .replace(/\bcloves?\s+garlic\b/gi, 'garlic cloves')  // "clove garlic" → "garlic cloves"
+        .replace(/\bgarlic\b(?!\s+cloves)/gi, 'garlic cloves'); // "garlic" → "garlic cloves" (if not already followed by "cloves")
       result.push(garlicSpecified);
-      console.log(`🧄 Garlic specification: "${ingredient}" → "${garlicSpecified}"`);
+      console.log(`🧄 Garlic normalization: "${ingredient}" → "${garlicSpecified}"`);
       return; // Skip further processing
     }
     
