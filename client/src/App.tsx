@@ -95,7 +95,8 @@ function Navigation() {
   
   const navItems = [
     { path: "/", label: t.mealPlanner, icon: Utensils },
-    ...(isAdmin ? [] : [{ path: "/my-recipes", label: t.myRecipes, icon: ChefHat }]),
+    // Temporarily hidden - user may revisit later
+    // ...(isAdmin ? [] : [{ path: "/my-recipes", label: t.myRecipes, icon: ChefHat }]),
     { path: "/profile", label: t.profile, icon: User },
     { path: "/about", label: t.about, icon: Info },
     ...(isAdmin ? [{ path: "/admin", label: "Admin", icon: Settings }] : [])
@@ -293,7 +294,8 @@ function Router() {
           <Route path="/" component={MealPlanner} />
           <Route path="/meal-planner" component={MealPlanner} />
           <Route path="/insights" component={Insights} />
-          <Route path="/my-recipes" component={MyRecipes} />
+          {/* Temporarily hidden - route still functional if accessed directly */}
+          {/* <Route path="/my-recipes" component={MyRecipes} /> */}
           <Route path="/profile" component={Profile} />
           <Route path="/about" component={About} />
           <Route path="/terms" component={TermsAndConditions} />

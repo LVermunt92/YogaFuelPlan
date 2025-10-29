@@ -85,6 +85,9 @@ Preferred communication style: Simple, everyday language.
     - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, favorite meals, and user-created custom recipes.
     - **Unified Recipe Database**: Consolidated all recipe databases into a single system with pre-translated recipes.
 
+# Pending Decisions
+- **My Recipes Page**: Temporarily hidden from navigation (Oct 29, 2025). Code remains intact in `client/src/pages/my-recipes.tsx`. User will decide later whether to reactivate or remove this feature. Reminder: Review this decision in the coming weeks.
+
 # External Dependencies
 - `@neondatabase/serverless` (PostgreSQL client)
 - `drizzle-orm` (ORM for PostgreSQL)
