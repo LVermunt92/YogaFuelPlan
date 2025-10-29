@@ -1341,7 +1341,9 @@ function MealPlannerMain() {
                         </div>
                         <div className="flex items-center gap-3">
                           <div className="text-right">
-                            <p className="text-xs text-gray-400">{plan.createdAt ? new Date(plan.createdAt).toLocaleDateString() : ''}</p>
+                            <p className="text-xs text-gray-400">
+                              {plan.createdAt ? `${language === 'nl' ? 'Gegenereerd' : 'Generated'}: ${new Date(plan.createdAt).toLocaleDateString()}` : ''}
+                            </p>
                           </div>
                           <Button
                             variant="ghost"
