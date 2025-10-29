@@ -826,6 +826,11 @@ function MealPlannerMain() {
                 <span className="hidden sm:inline">{t.viewInsights || 'View insights'}</span>
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </button>
+              <div className="text-center mb-2">
+                <p className="text-xs text-gray-500 italic" data-testid="kpi-daily-average-label">
+                  {t.kpiDailyAverageLabel}
+                </p>
+              </div>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg w-full">
               
               {/* Protein Chart */}

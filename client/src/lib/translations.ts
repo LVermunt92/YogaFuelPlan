@@ -64,6 +64,7 @@ export const translations = {
     plantDiversityTarget: "Target: 30 different plants per week based on American Gut Project research",
     cocoaFlavanols: "Cocoa flavanols",
     plantDiversity: "Plant diversity",
+    kpiDailyAverageLabel: "Daily average (normalized to 3-meal equivalent)",
     
     // My Recipes Page
     createPersonalRecipes: "Create and manage your personal recipe collection",
@@ -735,6 +736,7 @@ export const translations = {
     plantDiversityTarget: "Doel: 30 verschillende planten per week gebaseerd op American Gut Project onderzoek",
     cocoaFlavanols: "Cacaoflavanolen",
     plantDiversity: "Plantendiversiteit",
+    kpiDailyAverageLabel: "Dagelijks gemiddelde (genormaliseerd naar een 3-maaltijden-equivalent)",
     
     // My Recipes Page
     createPersonalRecipes: "Creëer en beheer je persoonlijke receptenverzameling",
