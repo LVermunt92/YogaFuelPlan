@@ -1341,14 +1341,6 @@ function MealPlannerMain() {
                         </div>
                         <div className="flex items-center gap-3">
                           <div className="text-right">
-                            <p className="text-sm font-medium text-emerald-600">
-                              {(() => {
-                                // Calculate daily average: (total ÷ meals) × 3
-                                const mealCount = (plan as any).mealCount || 0;
-                                const dailyAvg = mealCount > 0 ? (plan.totalProtein / mealCount) * 3 : plan.totalProtein;
-                                return dailyAvg.toFixed(0);
-                              })()}g {t.protein.toLowerCase()}/dag
-                            </p>
                             <p className="text-xs text-gray-400">{plan.createdAt ? new Date(plan.createdAt).toLocaleDateString() : ''}</p>
                           </div>
                           <Button
