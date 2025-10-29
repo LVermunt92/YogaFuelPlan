@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -245,6 +245,9 @@ function MealPlannerMain() {
   const [newLeftover, setNewLeftover] = useState("");
   const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set());
   const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
+  
+  // Ref for scrolling to generate section
+  const generateSectionRef = useRef<HTMLDivElement>(null);
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -816,6 +819,77 @@ function MealPlannerMain() {
 {t.createPersonalizedMealPlan && <p className="text-lg text-gray-600">{t.createPersonalizedMealPlan}</p>}
           </div>
 
+          {/* Empty State - Show when no meal plans exist */}
+          {mealPlans.length === 0 && (
+            <div className="max-w-2xl mx-auto">
+              <div className="bg-white rounded-lg shadow-md p-8 border border-gray-200">
+                <div className="text-center mb-6">
+                  <h2 className="text-2xl font-semibold text-gray-900 mb-3">
+                    {t.emptyStateWelcome}
+                  </h2>
+                </div>
+                
+                <div className="space-y-4 mb-8">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-semibold">
+                      1
+                    </div>
+                    <p className="text-gray-700 pt-1">{t.emptyStateStep1}</p>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-semibold">
+                      2
+                    </div>
+                    <p className="text-gray-700 pt-1">{t.emptyStateStep2}</p>
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-semibold">
+                      3
+                    </div>
+                    <p className="text-gray-700 pt-1">{t.emptyStateStep3}</p>
+                  </div>
+                </div>
+                
+                <div className="text-center">
+                  <Button
+                    onClick={() => {
+                      // Wait for profile to load before checking
+                      if (profileLoading) {
+                        return;
+                      }
+                      
+                      // Check if profile is complete
+                      const isProfileComplete = userProfile?.weight && userProfile?.height && userProfile?.age && userProfile?.activityLevel;
+                      
+                      if (!isProfileComplete) {
+                        // Redirect to profile page
+                        setLocation('/profile');
+                        toast({
+                          title: t.completeProfileFirst,
+                          variant: "default",
+                        });
+                      } else {
+                        // Scroll to generate meal plan section
+                        generateSectionRef.current?.scrollIntoView({
+                          behavior: 'smooth',
+                          block: 'start'
+                        });
+                      }
+                    }}
+                    disabled={profileLoading}
+                    className="inline-flex items-center px-6 py-3"
+                    data-testid="button-generate-first-meal-plan"
+                  >
+                    <Utensils className="mr-2 h-5 w-5" />
+                    {profileLoading ? t.loading : t.generateFirstMealPlan}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* 2. Compact Nutrition Charts - Top 4 KPIs */}
           {currentMealPlan && kpiData && (
             <div className="mb-6 relative">
@@ -1079,13 +1153,14 @@ function MealPlannerMain() {
           )}
 
           {/* 4. Generate Meal Plan (Combined Section) */}
-          <Card className="container" padding="none">
-            <CardHeader className="pb-4 px-6 pt-6">
-              <CardTitle className="flex items-center gap-2">
-                <ChefHat className="h-6 w-6" />
-                {t.generateMealPlan}
-              </CardTitle>
-            </CardHeader>
+          <div ref={generateSectionRef}>
+            <Card className="container" padding="none">
+              <CardHeader className="pb-4 px-6 pt-6">
+                <CardTitle className="flex items-center gap-2">
+                  <ChefHat className="h-6 w-6" />
+                  {t.generateMealPlan}
+                </CardTitle>
+              </CardHeader>
             <CardContent className="space-y-4 sm:space-y-6 px-6 pb-6">
               {/* Week Selection Subtitle */}
               <div>
@@ -1205,6 +1280,7 @@ function MealPlannerMain() {
               </Button>
             </CardContent>
           </Card>
+          </div>
 
           {/* Shopping List Dialog (moved outside) */}
           {currentMealPlan && (

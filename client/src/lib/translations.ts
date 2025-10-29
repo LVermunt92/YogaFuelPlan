@@ -66,6 +66,14 @@ export const translations = {
     plantDiversity: "Plant diversity",
     kpiDailyAverageLabel: "Daily average (normalized to 3-meal equivalent)",
     
+    // Empty State
+    emptyStateWelcome: "Welcome! Let's create your personalized meal plan",
+    emptyStateStep1: "Complete your profile with weight, activity level, and dietary preferences",
+    emptyStateStep2: "Click the button below to generate your first meal plan",
+    emptyStateStep3: "Get your personalized weekly meals tailored to your goals",
+    generateFirstMealPlan: "Generate my first meal plan",
+    completeProfileFirst: "Please complete your profile to generate your first meal plan",
+    
     // My Recipes Page
     createPersonalRecipes: "Create and manage your personal recipe collection",
     addRecipe: "Add recipe",
@@ -737,6 +745,14 @@ export const translations = {
     cocoaFlavanols: "Cacaoflavanolen",
     plantDiversity: "Plantendiversiteit",
     kpiDailyAverageLabel: "Dagelijks gemiddelde (genormaliseerd naar een 3-maaltijden-equivalent)",
+    
+    // Empty State
+    emptyStateWelcome: "Welkom! Laten we je gepersonaliseerde maaltijdplan maken",
+    emptyStateStep1: "Vul je profiel in met gewicht, activiteitsniveau en voedingsvoorkeuren",
+    emptyStateStep2: "Klik op de knop hieronder om je eerste maaltijdplan te genereren",
+    emptyStateStep3: "Ontvang je gepersonaliseerde weekmenu afgestemd op jouw doelen",
+    generateFirstMealPlan: "Genereer mijn eerste maaltijdplan",
+    completeProfileFirst: "Vul eerst je profiel in om je eerste maaltijdplan te genereren",
     
     // My Recipes Page
     createPersonalRecipes: "Creëer en beheer je persoonlijke receptenverzameling",
