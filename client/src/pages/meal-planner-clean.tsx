@@ -410,6 +410,47 @@ function MealPlannerMain() {
     retry: 1,
   });
 
+  // Screen Wake Lock - Keep screen on while viewing recipes
+  useEffect(() => {
+    let wakeLock: any = null;
+
+    const requestWakeLock = async () => {
+      try {
+        // Check if Wake Lock API is supported
+        if ('wakeLock' in navigator) {
+          wakeLock = await (navigator as any).wakeLock.request('screen');
+          console.log('✅ Screen wake lock activated - screen will stay on during cooking');
+        }
+      } catch (err) {
+        console.log('Wake lock not available or denied:', err);
+      }
+    };
+
+    const releaseWakeLock = async () => {
+      if (wakeLock !== null) {
+        try {
+          await wakeLock.release();
+          wakeLock = null;
+          console.log('🔓 Screen wake lock released');
+        } catch (err) {
+          console.error('Error releasing wake lock:', err);
+        }
+      }
+    };
+
+    // Activate wake lock when recipe dialog opens
+    if (selectedMealId) {
+      requestWakeLock();
+    } else {
+      releaseWakeLock();
+    }
+
+    // Cleanup on unmount or when selectedMealId changes
+    return () => {
+      releaseWakeLock();
+    };
+  }, [selectedMealId]);
+
   // Persistent shopping list - first try to load saved list, then generate fresh if needed
   const { data: persistentShoppingList, isLoading: loadingPersistentList, refetch: refetchShoppingList } = useQuery<PersistentShoppingList | null>({
     queryKey: ['/api/shopping-lists', authUser?.id, selectedMealPlan, language],
