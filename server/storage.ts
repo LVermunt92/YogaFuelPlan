@@ -106,6 +106,7 @@ export interface IStorage {
   deleteMealPlan(id: number): Promise<boolean>;
   cleanupOldMealPlans(userId: number, keepCount?: number): Promise<number>;
   cleanupAllOldMealPlans(keepCount?: number): Promise<number>;
+  deleteOldMealPlans(): Promise<number>; // Delete all meal plans before today
   createOuraData(data: InsertOuraData): Promise<OuraData>;
   getOuraData(userId: number, startDate: string, endDate?: string): Promise<OuraData[]>;
   getLatestOuraData(userId: number): Promise<OuraData | undefined>;
@@ -515,6 +516,36 @@ export class MemStorage implements IStorage {
     }
     
     console.log(`🧹 Cleaned up ${deletedCount} old meal plans for user ${userId}, keeping ${keepCount} most recent`);
+    return deletedCount;
+  }
+
+  async cleanupAllOldMealPlans(keepCount: number = 3): Promise<number> {
+    const users = await this.getAllUsers();
+    let totalDeleted = 0;
+    
+    for (const user of users) {
+      const deleted = await this.cleanupOldMealPlans(user.id, keepCount);
+      totalDeleted += deleted;
+    }
+    
+    console.log(`🧹 Total cleanup: Deleted ${totalDeleted} old meal plans across ${users.length} users`);
+    return totalDeleted;
+  }
+
+  async deleteOldMealPlans(): Promise<number> {
+    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    const allMealPlans = Array.from(this.mealPlans.values());
+    
+    let deletedCount = 0;
+    for (const plan of allMealPlans) {
+      // Delete if week_start is before today
+      if (plan.weekStart < today) {
+        const success = await this.deleteMealPlan(plan.id);
+        if (success) deletedCount++;
+      }
+    }
+    
+    console.log(`🧹 Deleted ${deletedCount} meal plans with dates before ${today}`);
     return deletedCount;
   }
 
@@ -1139,13 +1170,16 @@ export class DatabaseStorage implements IStorage {
 
   async deleteMealPlan(id: number): Promise<boolean> {
     try {
-      // First delete associated meals
+      // First delete associated shopping lists
+      await db.delete(shoppingLists).where(eq(shoppingLists.mealPlanId, id));
+      
+      // Then delete associated meals
       await db.delete(meals).where(eq(meals.mealPlanId, id));
       
-      // Then delete the meal plan
+      // Finally delete the meal plan
       const result = await db.delete(mealPlans).where(eq(mealPlans.id, id));
       
-      console.log(`🗑️ Deleted meal plan ID ${id} and its meals`);
+      console.log(`🗑️ Deleted meal plan ID ${id}, its meals, and shopping lists`);
       return true;
     } catch (error) {
       console.error(`Failed to delete meal plan ${id}:`, error);
@@ -1178,6 +1212,46 @@ export class DatabaseStorage implements IStorage {
       return deletedCount;
     } catch (error) {
       console.error(`Failed to cleanup meal plans for user ${userId}:`, error);
+      return 0;
+    }
+  }
+
+  async cleanupAllOldMealPlans(keepCount: number = 3): Promise<number> {
+    try {
+      const users = await this.getAllUsers();
+      let totalDeleted = 0;
+      
+      for (const user of users) {
+        const deleted = await this.cleanupOldMealPlans(user.id, keepCount);
+        totalDeleted += deleted;
+      }
+      
+      console.log(`🧹 Total cleanup: Deleted ${totalDeleted} old meal plans across ${users.length} users`);
+      return totalDeleted;
+    } catch (error) {
+      console.error('Failed to cleanup all meal plans:', error);
+      return 0;
+    }
+  }
+
+  async deleteOldMealPlans(): Promise<number> {
+    try {
+      const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+      
+      // Get all meal plans before today
+      const oldMealPlans = await db.select().from(mealPlans)
+        .where(sql`${mealPlans.weekStart}::date < CURRENT_DATE`);
+      
+      let deletedCount = 0;
+      for (const plan of oldMealPlans) {
+        const success = await this.deleteMealPlan(plan.id);
+        if (success) deletedCount++;
+      }
+      
+      console.log(`🧹 Deleted ${deletedCount} meal plans with dates before ${today}`);
+      return deletedCount;
+    } catch (error) {
+      console.error('Failed to delete old meal plans:', error);
       return 0;
     }
   }

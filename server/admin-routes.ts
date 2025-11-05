@@ -575,4 +575,35 @@ adminRouter.post('/sync-recipes', async (req, res) => {
   }
 });
 
+// Cleanup old meal plans endpoint - manually delete old meal plans
+adminRouter.post('/cleanup-meal-plans', async (req, res) => {
+  try {
+    const { deleteAllBeforeToday = true } = req.body;
+    
+    let deletedCount = 0;
+    if (deleteAllBeforeToday) {
+      console.log(`🧹 Manual cleanup requested: deleting all meal plans before today...`);
+      deletedCount = await storage.deleteOldMealPlans();
+    } else {
+      const { keepCount = 3 } = req.body;
+      console.log(`🧹 Manual cleanup requested: keeping ${keepCount} most recent meal plans per user...`);
+      deletedCount = await storage.cleanupAllOldMealPlans(keepCount);
+    }
+    
+    res.json({
+      success: true,
+      deletedCount,
+      message: deletedCount > 0 
+        ? `Successfully deleted ${deletedCount} old meal plans (with their meals and shopping lists)` 
+        : 'No old meal plans to clean up'
+    });
+  } catch (error) {
+    console.error('Error cleaning up meal plans:', error);
+    res.status(500).json({ 
+      success: false,
+      error: 'Failed to cleanup meal plans' 
+    });
+  }
+});
+
 export { adminRouter };
