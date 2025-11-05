@@ -13,10 +13,15 @@ adminRouter.get('/stats', async (req, res) => {
     // Calculate statistics
     const totalUsers = users.length;
     const totalMealPlans = mealPlans.length;
-    const totalRecipes = 76; // Our current recipe count
     
-    // Active users in last 7 days (mock data for now)
-    const activeUsers7Days = Math.floor(totalUsers * 0.6);
+    // Get actual recipe count from database
+    const totalRecipes = await storage.getRecipeCount();
+    
+    // Active users in last 7 days (real data from lastLoginAt)
+    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+    const activeUsers7Days = users.filter(user => 
+      user.lastLoginAt && new Date(user.lastLoginAt) >= sevenDaysAgo
+    ).length;
     
     // Average protein target
     const avgProteinTarget = users.reduce((sum, user) => {
@@ -38,8 +43,10 @@ adminRouter.get('/stats', async (req, res) => {
       count
     }));
     
-    // Recent generations (mock data)
-    const recentGenerations = Math.floor(totalMealPlans * 0.3);
+    // Recent meal plan generations (last 7 days) - real data
+    const recentGenerations = mealPlans.filter(plan => 
+      plan.createdAt && new Date(plan.createdAt) >= sevenDaysAgo
+    ).length;
     
     res.json({
       totalUsers,
