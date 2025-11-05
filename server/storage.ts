@@ -105,6 +105,7 @@ export interface IStorage {
 
   deleteMealPlan(id: number): Promise<boolean>;
   cleanupOldMealPlans(userId: number, keepCount?: number): Promise<number>;
+  cleanupAllOldMealPlans(keepCount?: number): Promise<number>;
   createOuraData(data: InsertOuraData): Promise<OuraData>;
   getOuraData(userId: number, startDate: string, endDate?: string): Promise<OuraData[]>;
   getLatestOuraData(userId: number): Promise<OuraData | undefined>;
