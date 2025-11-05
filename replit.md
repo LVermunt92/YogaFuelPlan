@@ -67,7 +67,7 @@ Preferred communication style: Simple, everyday language.
     - **Universal Meal Prep Engine**: Adapts to user cooking schedules, supporting batch cooking, meal distribution, and dietary fallbacks. Weekday meals are limited to ≤45 minutes prep time.
     - **Ayurvedic Integration**: Supports Ayurvedic dietary tags and seasonal adaptation.
     - **Menstrual Cycle Support**: Cycle phase tracking with dropdown selection prioritizes phase-appropriate recipes and provides weekly highlights.
-    - **Meal Plan Management**: Meal plans persist across sessions, with automatic loading and cleanup (max 3 plans). Plans normalize to Sunday start and are limited to current/next week.
+    - **Meal Plan Management**: Meal plans persist across sessions, with automatic cleanup deleting plans older than 14 days (keeps current week + next week if generated in advance). Plans normalize to Sunday start and are limited to current/next week.
     - **Recipe Management**: Automated recipe updates, Dutch translation, metric unit conversion, intelligent ingredient-based matching, automatic ingredient substitution, smart vegetarian filtering, enhanced high-protein database, and user-created custom recipes.
     - **Shopping List Features**: Consolidated shopping list generation with supermarket-ordered categories, dry goods separation, and ingredient normalization.
     - **Ingredient Mapping System**: Admin-controlled mapping for shopping list optimization, defining standardized grocery names with categories and units. Supports bulk import/export and multiple ingredient lists.

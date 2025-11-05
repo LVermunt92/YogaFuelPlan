@@ -533,23 +533,24 @@ export class MemStorage implements IStorage {
   }
 
   async deleteOldMealPlans(): Promise<number> {
-    const today = new Date();
-    const currentWeekStart = new Date(today);
-    currentWeekStart.setDate(today.getDate() - today.getDay()); // Get Sunday of current week
-    const currentWeekStartStr = currentWeekStart.toISOString().split('T')[0];
+    // Keep any meal plan from the last 14 days (2 weeks)
+    // This ensures we keep: current week + next week (if generated in advance)
+    const cutoffDate = new Date();
+    cutoffDate.setDate(cutoffDate.getDate() - 14);
+    const cutoffStr = cutoffDate.toISOString().split('T')[0];
     
     const allMealPlans = Array.from(this.mealPlans.values());
     
     let deletedCount = 0;
     for (const plan of allMealPlans) {
-      // Delete if week_start is before the current week's Sunday
-      if (plan.weekStart < currentWeekStartStr) {
+      // Delete if week_start is more than 14 days ago
+      if (plan.weekStart < cutoffStr) {
         const success = await this.deleteMealPlan(plan.id);
         if (success) deletedCount++;
       }
     }
     
-    console.log(`🧹 Deleted ${deletedCount} meal plans from weeks before ${currentWeekStartStr} (keeping current week)`);
+    console.log(`🧹 Deleted ${deletedCount} meal plans older than 14 days (before ${cutoffStr})`);
     return deletedCount;
   }
 
@@ -1240,14 +1241,14 @@ export class DatabaseStorage implements IStorage {
 
   async deleteOldMealPlans(): Promise<number> {
     try {
-      // Calculate cutoff: 7 days ago from today
-      // This keeps any meal plan from the last 7 days (current week)
+      // Calculate cutoff: 14 days ago from today
+      // This keeps any meal plan from the last 14 days (current week + next week)
+      // Ensures we don't delete next week's plan if user generates it in advance
       const cutoffDate = new Date();
-      cutoffDate.setDate(cutoffDate.getDate() - 7);
+      cutoffDate.setDate(cutoffDate.getDate() - 14);
       const cutoffStr = cutoffDate.toISOString().split('T')[0];
       
-      // Get all meal plans that started more than 7 days ago
-      // This safely keeps the current week regardless of which day it starts
+      // Get all meal plans that started more than 14 days ago
       const oldMealPlans = await db.select().from(mealPlans)
         .where(sql`${mealPlans.weekStart}::date < ${cutoffStr}::date`);
       
@@ -1257,7 +1258,7 @@ export class DatabaseStorage implements IStorage {
         if (success) deletedCount++;
       }
       
-      console.log(`🧹 Deleted ${deletedCount} meal plans older than 7 days (before ${cutoffStr})`);
+      console.log(`🧹 Deleted ${deletedCount} meal plans older than 14 days (before ${cutoffStr}) - keeping current and next week`);
       return deletedCount;
     } catch (error) {
       console.error('Failed to delete old meal plans:', error);
