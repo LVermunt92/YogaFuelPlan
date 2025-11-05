@@ -533,19 +533,23 @@ export class MemStorage implements IStorage {
   }
 
   async deleteOldMealPlans(): Promise<number> {
-    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    const today = new Date();
+    const currentWeekStart = new Date(today);
+    currentWeekStart.setDate(today.getDate() - today.getDay()); // Get Sunday of current week
+    const currentWeekStartStr = currentWeekStart.toISOString().split('T')[0];
+    
     const allMealPlans = Array.from(this.mealPlans.values());
     
     let deletedCount = 0;
     for (const plan of allMealPlans) {
-      // Delete if week_start is before today
-      if (plan.weekStart < today) {
+      // Delete if week_start is before the current week's Sunday
+      if (plan.weekStart < currentWeekStartStr) {
         const success = await this.deleteMealPlan(plan.id);
         if (success) deletedCount++;
       }
     }
     
-    console.log(`🧹 Deleted ${deletedCount} meal plans with dates before ${today}`);
+    console.log(`🧹 Deleted ${deletedCount} meal plans from weeks before ${currentWeekStartStr} (keeping current week)`);
     return deletedCount;
   }
 
@@ -1236,11 +1240,16 @@ export class DatabaseStorage implements IStorage {
 
   async deleteOldMealPlans(): Promise<number> {
     try {
-      const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+      // Calculate cutoff: 7 days ago from today
+      // This keeps any meal plan from the last 7 days (current week)
+      const cutoffDate = new Date();
+      cutoffDate.setDate(cutoffDate.getDate() - 7);
+      const cutoffStr = cutoffDate.toISOString().split('T')[0];
       
-      // Get all meal plans before today
+      // Get all meal plans that started more than 7 days ago
+      // This safely keeps the current week regardless of which day it starts
       const oldMealPlans = await db.select().from(mealPlans)
-        .where(sql`${mealPlans.weekStart}::date < CURRENT_DATE`);
+        .where(sql`${mealPlans.weekStart}::date < ${cutoffStr}::date`);
       
       let deletedCount = 0;
       for (const plan of oldMealPlans) {
@@ -1248,7 +1257,7 @@ export class DatabaseStorage implements IStorage {
         if (success) deletedCount++;
       }
       
-      console.log(`🧹 Deleted ${deletedCount} meal plans with dates before ${today}`);
+      console.log(`🧹 Deleted ${deletedCount} meal plans older than 7 days (before ${cutoffStr})`);
       return deletedCount;
     } catch (error) {
       console.error('Failed to delete old meal plans:', error);
