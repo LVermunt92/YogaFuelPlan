@@ -1,0 +1,45 @@
+I have a web app on Replit that is very slow and sometimes shows a blank white screen, especially on first load or when the phone screen turns off and I come back to the tab.
+
+Context:
+- The app is a meal-planning tool.
+- I have one large, static database of meals (for example a big JSON or JS array).
+- When the user clicks “Create meal plan”, the app filters this database to produce a meal plan.
+- The database itself is static; only the filters change.
+- It feels like the app processes a lot of data every time the page loads, and possibly re-runs heavy logic too often.
+
+Goals:
+1. Diagnose why the app is slow or shows a white screen.
+2. Ensure the big database is only loaded and parsed once, and then reused.
+3. Ensure the heavy meal-plan filtering only runs:
+   - When the user clicks “Create meal plan”, or
+   - When filters actually change,
+   not on every render or page load.
+4. Avoid infinite loops or repeated re-renders in the frontend.
+5. Reduce any unnecessary work on initial page load.
+
+Tasks for you:
+1. Show me how to add simple performance measurements around:
+   - Loading/parsing the database.
+   - Running the meal-plan filter function.
+   So I can see in the browser console how long these steps take.
+
+2. Based on my current stack (front-end framework or plain JS), propose a concrete pattern for:
+   - Loading the static database once (for example with a single `fetch("meals.json")` cached in a variable or promise).
+   - Reusing that in the “Create meal plan” handler without reloading or reparsing the file.
+
+3. If I am using React or a similar framework, show me how to:
+   - Avoid running the meal-plan computation on every render.
+   - Use memoization (for example `useMemo`) so the plan is only recomputed when filters change.
+   - Check that I am not triggering re-renders in a loop.
+
+4. Help me inspect and interpret:
+   - Browser DevTools Console errors related to the white screen.
+   - Network tab (slow or failing requests).
+   - Any hints that the bundle is too large or that I am doing heavy work synchronously on load.
+
+5. Based on my existing code (which I will paste), refactor the relevant parts so that:
+   - Initial page load is as light as possible.
+   - The database is handled efficiently.
+   - The “Create meal plan” action is responsive and does not block the UI.
+
+Please guide me step by step and propose concrete code changes directly in my files.

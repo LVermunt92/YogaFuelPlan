@@ -737,8 +737,7 @@ adminRouter.post('/shopping-list-names/bulk', async (req, res) => {
 // GET /all-recipe-ingredients - Get all unique ingredients from all recipes
 adminRouter.get('/all-recipe-ingredients', async (req, res) => {
   try {
-    const { getCompleteEnhancedMealDatabase } = await import('./nutrition-enhanced');
-    const { cleanIngredientName } = await import('./shopping-list-generator');
+    const { getCompleteEnhancedMealDatabase, cleanIngredientName } = await import('./nutrition-enhanced');
     
     const recipes = await getCompleteEnhancedMealDatabase();
     
