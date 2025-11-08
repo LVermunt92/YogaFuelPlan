@@ -53,24 +53,43 @@ Preferred communication style: Simple, everyday language.
     - **Examples**: "20g fresh parsley, chopped", "10g fresh cilantro", "15g fresh basil leaves", "10g fresh dill"
   - When AI generates new recipes, it MUST follow these ingredient format rules to ensure shopping list accuracy and consistency
 
+**SIMPLIFIED INGREDIENT LIST PREFERENCE** (User's preferred style):
+  - **Keep it simple**: Use format `[amount] [item]` without excessive detail
+  - **Remove parenthetical explanations**: ❌ "35g chickpeas (canned, drained and rinsed)" → ✅ "35g chickpeas"
+  - **Remove preparation methods from ingredients**: ❌ "100g mushrooms, finely sliced" → ✅ "100g mushrooms" (preparation goes in instructions)
+  - **Simplify item names**: ❌ "old-fashioned rolled oats" → ✅ "oats", ❌ "baby pak choi" → ✅ "pak choi"
+  - **Use pieces for practical items**: ✅ "1/4 ripe banana", "1 clove garlic", "1/4 onion", "4 spring onions", "1/2 red chilli", "1/2 lime"
+  - **Use grams/ml for measurable items**: ✅ "35g chickpeas", "75g mushrooms", "50g edamame beans", "138g noodles"
+  - **Avoid overly specific conversions**: ❌ "2g garlic (about 1/2 large clove)" → ✅ "1 clove garlic"
+  - **Keep lime/lemon simple**: ❌ "juice and zest of 1/2 lime" → ✅ "1/2 lime"
+  - **Accept calculated decimal amounts**: Amounts like 0.8ml, 4.6g, 3.75ml are fine - they round when meal plans calculate servings anyway
+  - **Examples of good formatting**:
+    - ✅ "1/4 ripe banana" (piece)
+    - ✅ "35g chickpeas" (weight, no details)
+    - ✅ "15ml peanut butter" (volume)
+    - ✅ "24g oats" (simplified name)
+    - ✅ "1 clove garlic" (piece, not weight)
+    - ✅ "75g mushrooms" (weight, no prep method)
+    - ✅ "4 spring onions" (pieces)
+    - ✅ "1/2 lime" (piece, not "juice and zest")
+
 # System Architecture
 - **UI/UX Decisions**: Utilizes `shadcn/ui` built on `Radix UI` primitives with `Tailwind CSS` for theming. Focuses on a streamlined interface with standardized color schemes and optimized mobile responsiveness.
 - **Technical Implementations**:
     - **Frontend**: React 18, TypeScript, Wouter for routing, TanStack React Query for server state.
     - **Backend**: Express.js with TypeScript, RESTful API.
     - **Database**: PostgreSQL with Drizzle ORM.
-    - **Authentication**: JWT token-based authentication with access and refresh tokens, stored in localStorage, with automatic token refresh. Resilient to network errors - users stay logged in during temporary connectivity issues.
-    - **Build Tools**: Vite for frontend, esbuild for backend.
+    - **Authentication**: JWT token-based authentication with access and refresh tokens, stored in localStorage, with automatic token refresh.
 - **Feature Specifications**:
     - **Authentication & Multi-User Support**: Secure login/registration, persistent mobile login, password reset, isolated user data, route protection, and interactive step-by-step onboarding tutorial for new users.
     - **Meal Generation**: Calculates protein targets, generates 7-day plans with variety, creates shopping lists, and includes smart AI recipe generation. Incorporates 1 anti-aging meal per day.
     - **Universal Meal Prep Engine**: Adapts to user cooking schedules, supporting batch cooking, meal distribution, and dietary fallbacks. Weekday meals are limited to ≤45 minutes prep time.
     - **Ayurvedic Integration**: Supports Ayurvedic dietary tags and seasonal adaptation.
     - **Menstrual Cycle Support**: Cycle phase tracking with dropdown selection prioritizes phase-appropriate recipes and provides weekly highlights.
-    - **Meal Plan Management**: Meal plans persist across sessions, with automatic cleanup deleting plans older than 14 days (keeps current week + next week if generated in advance). Plans normalize to Sunday start and are limited to current/next week.
+    - **Meal Plan Management**: Meal plans persist across sessions, with automatic cleanup deleting plans older than 14 days. Plans normalize to Sunday start and are limited to current/next week.
     - **Recipe Management**: Automated recipe updates, Dutch translation, metric unit conversion, intelligent ingredient-based matching, automatic ingredient substitution, smart vegetarian filtering, enhanced high-protein database, and user-created custom recipes.
     - **Shopping List Features**: Consolidated shopping list generation with supermarket-ordered categories, dry goods separation, and ingredient normalization.
-    - **Ingredient Mapping System**: Admin-controlled mapping for shopping list optimization, defining standardized grocery names with categories and units. Supports bulk import/export and multiple ingredient lists.
+    - **Ingredient Mapping System**: Admin-controlled mapping for shopping list optimization, defining standardized grocery names with categories and units.
     - **Nutritional Tracking**: Macronutrient distribution tracking and advanced protein range calculator.
     - **Admin Panel**: Full-featured interface for managing nutrition parameters, monitoring system statistics, configuring meal planning logic, and tag management. Displays user activity.
     - **AI-Powered Nutrition Analysis**: Automated generation of comprehensive nutritional values from recipe ingredients.
@@ -84,9 +103,6 @@ Preferred communication style: Simple, everyday language.
     - **Data Flow**: User input drives meal generation, stored in PostgreSQL, displayed via React Query.
     - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, favorite meals, and user-created custom recipes.
     - **Unified Recipe Database**: Consolidated all recipe databases into a single system with pre-translated recipes.
-
-# Pending Decisions
-- **My Recipes Page**: Temporarily hidden from navigation (Oct 29, 2025). Code remains intact in `client/src/pages/my-recipes.tsx`. User will decide later whether to reactivate or remove this feature. Reminder: Review this decision in the coming weeks.
 
 # External Dependencies
 - `@neondatabase/serverless` (PostgreSQL client)
