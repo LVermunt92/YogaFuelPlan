@@ -49,6 +49,60 @@ function parseQuantityAndUnit(totalAmount: string): { quantity: number; unit: st
 // Store app start time as version identifier
 const APP_VERSION = Date.now().toString();
 
+// Helper function to generate shopping list in background (async, non-blocking)
+async function generateShoppingListInBackground(
+  userId: string,
+  mealPlanId: number,
+  savedMeals: any[],
+  weekStart: string
+): Promise<void> {
+  try {
+    console.time('⏱️  Shopping list generation');
+    
+    const user = await storage.getUser(userId);
+    const dietaryTags = user?.dietaryTags || [];
+    const leftoverIngredients = user?.leftovers || [];
+    
+    let shoppingList = await generateEnhancedShoppingList(savedMeals, 'en', dietaryTags, leftoverIngredients);
+    
+    // Convert shopping list to persistent format and save it
+    const itemsToSave = shoppingList.map((item, index) => {
+      const { quantity, unit } = parseQuantityAndUnit(item.totalAmount);
+      
+      return {
+        productName: item.ingredient,
+        quantity: quantity,
+        unit: unit,
+        price: 0,
+        category: item.category,
+        sortOrder: index
+      };
+    });
+    
+    // Save the shopping list
+    await storage.createShoppingList({
+      userId: userId,
+      mealPlanId: mealPlanId,
+      title: `Shopping List - Week ${weekStart}`,
+      listType: 'regular',
+      totalItems: shoppingList.length,
+      checkedItems: 0,
+      isActive: true
+    });
+    
+    // Get the saved shopping list to add items
+    const savedShoppingList = await storage.getShoppingList(userId, mealPlanId, 'regular');
+    if (savedShoppingList) {
+      await storage.addShoppingListItems(savedShoppingList.id, itemsToSave);
+      console.log('🛒 Background: Auto-generated shopping list with', shoppingList.length, 'items');
+    }
+    
+    console.timeEnd('⏱️  Shopping list generation');
+  } catch (error) {
+    console.error('❌ Background shopping list generation failed:', error);
+  }
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
   
   // Version endpoint for auto-update detection
@@ -317,57 +371,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
         await storage.cleanupOldMealPlans(request.userId, 3);
       }
       
-      // Auto-generate shopping list for the meal plan
-      if (request.userId) {
-        try {
-          const user = await storage.getUser(request.userId);
-          const dietaryTags = user?.dietaryTags || [];
-          const leftoverIngredients = user?.leftovers || [];
-          
-          let shoppingList = await generateEnhancedShoppingList(savedMeals, 'en', dietaryTags, leftoverIngredients);
-          
-          // Convert shopping list to persistent format and save it
-          const itemsToSave = shoppingList.map((item, index) => {
-            // Parse quantity and unit from totalAmount (e.g., "200g" -> quantity: 200, unit: "g")
-            const { quantity, unit } = parseQuantityAndUnit(item.totalAmount);
-            
-            return {
-              productName: item.ingredient,
-              quantity: quantity,
-              unit: unit,
-              price: 0,
-              category: item.category,
-              sortOrder: index
-            };
-          });
-          
-          // Save the shopping list
-          await storage.createShoppingList({
-            userId: request.userId,
-            mealPlanId: savedMealPlan.id,
-            title: `Shopping List - Week ${savedMealPlan.weekStart}`,
-            listType: 'regular',
-            totalItems: shoppingList.length,
-            checkedItems: 0,
-            isActive: true
-          });
-          
-          // Get the saved shopping list to add items
-          const savedShoppingList = await storage.getShoppingList(request.userId, savedMealPlan.id, 'regular');
-          if (savedShoppingList) {
-            await storage.addShoppingListItems(savedShoppingList.id, itemsToSave);
-            console.log('🛒 Auto-generated shopping list with', shoppingList.length, 'items');
-          }
-        } catch (error) {
-          console.error('Failed to auto-generate shopping list:', error);
-          // Don't fail the meal plan creation if shopping list fails
-        }
-      }
-      
+      // Return meal plan immediately, generate shopping list in background
       res.json({
         mealPlan: savedMealPlan,
         meals: savedMeals,
       });
+      
+      // Generate shopping list in background (non-blocking)
+      if (request.userId) {
+        generateShoppingListInBackground(
+          request.userId,
+          savedMealPlan.id,
+          savedMeals,
+          savedMealPlan.weekStart
+        ).catch(err => console.error('Background shopping list failed:', err));
+      }
     } catch (error) {
       console.error("Error generating meal plan:", error);
       res.status(500).json({ message: "Failed to generate meal plan" });
@@ -457,54 +475,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
       
-      // Auto-generate shopping list for the meal plan
-      try {
-        const dietaryTags = user?.dietaryTags || [];
-        const leftoverIngredients = user?.leftovers || [];
-        
-        let shoppingList = await generateEnhancedShoppingList(savedMeals, 'en', dietaryTags, leftoverIngredients);
-        
-        // Convert shopping list to persistent format and save it
-        const itemsToSave = shoppingList.map((item, index) => {
-          // Parse quantity and unit from totalAmount (e.g., "200g" -> quantity: 200, unit: "g")
-          const { quantity, unit } = parseQuantityAndUnit(item.totalAmount);
-          
-          return {
-            productName: item.ingredient,
-            quantity: quantity,
-            unit: unit,
-            price: 0,
-            category: item.category,
-            sortOrder: index
-          };
-        });
-        
-        // Save the shopping list
-        await storage.createShoppingList({
-          userId: request.userId,
-          mealPlanId: savedMealPlan.id,
-          title: `Shopping List - Week ${savedMealPlan.weekStart}`,
-          listType: 'regular',
-          totalItems: shoppingList.length,
-          checkedItems: 0,
-          isActive: true
-        });
-        
-        // Get the saved shopping list to add items
-        const savedShoppingList = await storage.getShoppingList(request.userId, savedMealPlan.id, 'regular');
-        if (savedShoppingList) {
-          await storage.addShoppingListItems(savedShoppingList.id, itemsToSave);
-          console.log('🛒 Auto-generated shopping list with', shoppingList.length, 'items');
-        }
-      } catch (error) {
-        console.error('Failed to auto-generate shopping list:', error);
-        // Don't fail the meal plan creation if shopping list fails
-      }
-      
+      // Return meal plan immediately, generate shopping list in background
       res.json({
         mealPlan: savedMealPlan,
         meals: savedMeals,
       });
+      
+      // Generate shopping list in background (non-blocking)
+      generateShoppingListInBackground(
+        request.userId,
+        savedMealPlan.id,
+        savedMeals,
+        savedMealPlan.weekStart
+      ).catch(err => console.error('Background shopping list failed:', err));
     } catch (error) {
       console.error("Error generating meal plan:", error);
       res.status(500).json({ message: "Failed to generate meal plan" });
@@ -2056,50 +2039,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const savedMealPlan = await storage.createMealPlan(generated.mealPlan);
       const savedMeals = await storage.createMeals(savedMealPlan.id, generated.meals);
       
-      // Auto-generate shopping list for the meal plan
-      try {
-        const dietaryTags = user?.dietaryTags || [];
-        const leftoverIngredients = user?.leftovers || [];
-        
-        let shoppingList = await generateEnhancedShoppingList(savedMeals, 'en', dietaryTags, leftoverIngredients);
-        
-        // Convert shopping list to persistent format and save it
-        const itemsToSave = shoppingList.map((item, index) => {
-          // Parse quantity and unit from totalAmount (e.g., "200g" -> quantity: 200, unit: "g")
-          const { quantity, unit } = parseQuantityAndUnit(item.totalAmount);
-          
-          return {
-            productName: item.ingredient,
-            quantity: quantity,
-            unit: unit,
-            price: 0,
-            category: item.category,
-            sortOrder: index
-          };
-        });
-        
-        // Save the shopping list
-        await storage.createShoppingList({
-          userId: userId,
-          mealPlanId: savedMealPlan.id,
-          title: `Shopping List - Week ${savedMealPlan.weekStart}`,
-          listType: 'regular',
-          totalItems: shoppingList.length,
-          checkedItems: 0,
-          isActive: true
-        });
-        
-        // Get the saved shopping list to add items
-        const savedShoppingList = await storage.getShoppingList(userId, savedMealPlan.id, 'regular');
-        if (savedShoppingList) {
-          await storage.addShoppingListItems(savedShoppingList.id, itemsToSave);
-          console.log('🛒 Auto-generated shopping list with', shoppingList.length, 'items');
-        }
-      } catch (error) {
-        console.error('Failed to auto-generate shopping list:', error);
-        // Don't fail the meal plan creation if shopping list fails
-      }
-      
+      // Return meal plan immediately, generate shopping list in background
       res.json({
         mealPlan: savedMealPlan,
         meals: savedMeals,
@@ -2107,6 +2047,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
         ouraDataUsed: ouraData.length > 0,
         message: `Meal plan generated based on ${ouraData.length > 0 ? 'Oura activity data' : 'default settings'}`
       });
+      
+      // Generate shopping list in background (non-blocking)
+      generateShoppingListInBackground(
+        userId.toString(),
+        savedMealPlan.id,
+        savedMeals,
+        savedMealPlan.weekStart
+      ).catch(err => console.error('Background shopping list failed:', err));
     } catch (error) {
       console.error("Error generating smart meal plan:", error);
       res.status(500).json({ message: "Failed to generate smart meal plan" });

@@ -1207,6 +1207,8 @@ function planCookingDays(user?: User): { cookingDays: number[], eatingDays: numb
 }
 
 export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: User): Promise<GeneratedMealPlan> {
+  console.time('⏱️  Total meal plan generation');
+  
   // Normalize weekStart to Sunday for consistent week boundaries
   const normalizedWeekStart = normalizeToSunday(request.weekStart);
   console.log(`📅 Week normalized: ${request.weekStart} → ${normalizedWeekStart} (Sunday start)`);
@@ -2787,6 +2789,7 @@ async function generateMealPrepPlan(
     totalProtein: Math.round(adjustedAverageProteinPerDay), // Use adjusted protein
   };
 
+  console.timeEnd('⏱️  Total meal plan generation');
   return { mealPlan, meals: adjustedMeals, usedLeftoverIngredients: usedIngredients };
 }
 

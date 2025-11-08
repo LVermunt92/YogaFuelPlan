@@ -17000,69 +17000,16 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
   return variants;
 }
 
-// Module-level cache for enhanced meal database
-let cachedMealDatabase: MealOption[] | null = null;
-let cachePromise: Promise<MealOption[]> | null = null;
+import { recipeCache } from './recipe-cache';
 
 // Function to invalidate the meal database cache (call after recipe updates)
 export function invalidateEnhancedMealDatabaseCache(): void {
-  cachedMealDatabase = null;
-  cachePromise = null;
-  console.log('🔄 Enhanced meal database cache invalidated');
+  recipeCache.invalidate();
 }
 
 // Function to get complete unified meal database (reads from PostgreSQL database)
 export async function getCompleteEnhancedMealDatabase(): Promise<MealOption[]> {
-  // Return cached data if available
-  if (cachedMealDatabase) {
-    return cachedMealDatabase;
-  }
-  
-  // If cache is being built, wait for it
-  if (cachePromise) {
-    return cachePromise;
-  }
-  
-  // Build cache
-  cachePromise = (async () => {
-    // Load all active recipes from database
-    const { storage } = await import('./storage');
-    const dbRecipes = await storage.getAllRecipes(true); // Only active recipes
-    
-    // Convert database Recipe format to MealOption format
-    const mealOptions: MealOption[] = dbRecipes.map(recipe => {
-      const nutritionData = recipe.nutrition as any || {};
-      const vegContent = recipe.vegetableContent as any || {};
-      
-      return {
-        id: parseInt(recipe.id) || recipe.id as any, // Keep as number if possible, otherwise as string
-        name: recipe.name,
-        category: recipe.category as any,
-        ingredients: recipe.ingredients,
-        instructions: recipe.instructions,
-        portion: recipe.portion,
-        wholeFoodLevel: recipe.wholeFoodLevel || 'moderate',
-        nutrition: nutritionData,
-        tags: recipe.tags || [],
-        vegetableContent: vegContent.vegetables || [],
-        specificIngredients: [], // Not stored in database, computed on-demand if needed
-        recipe: {
-          name: recipe.name,
-          instructions: recipe.instructions,
-          tips: recipe.recipeTips || [],
-          notes: recipe.recipeNotes ? [recipe.recipeNotes] : []
-        }
-      } as MealOption;
-    });
-    
-    console.log(`📊 LOADED FROM DATABASE: ${mealOptions.length} active recipes`);
-    
-    // Store in cache
-    cachedMealDatabase = mealOptions;
-    return mealOptions;
-  })();
-  
-  return cachePromise;
+  return recipeCache.getRecipes();
 }
 
 // Permanent ID system:
