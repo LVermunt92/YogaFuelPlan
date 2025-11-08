@@ -343,11 +343,10 @@ function IngredientMappingManager() {
       ingredient: string;
       originalForms: string[];
       recipes: string[];
-      count: number;
+      count?: number;
     }>;
   }>({
     queryKey: ['/api/admin/all-recipe-ingredients'],
-    queryFn: () => fetch('/api/admin/all-recipe-ingredients').then(res => res.json()),
   });
 
   // Create shopping list name
