@@ -606,4 +606,335 @@ adminRouter.post('/cleanup-meal-plans', async (req, res) => {
   }
 });
 
+// ============================================================================
+// Shopping List Name Management
+// ============================================================================
+
+// GET /shopping-list-names - Get all shopping list names
+adminRouter.get('/shopping-list-names', async (req, res) => {
+  try {
+    const shoppingListNames = await storage.getShoppingListNames();
+    res.json(shoppingListNames);
+  } catch (error) {
+    console.error("Error fetching shopping list names:", error);
+    res.status(500).json({ message: "Failed to fetch shopping list names" });
+  }
+});
+
+// POST /shopping-list-names - Create shopping list name
+adminRouter.post('/shopping-list-names', async (req, res) => {
+  try {
+    const { name, category, defaultUnit } = req.body;
+    if (!name || !category) {
+      return res.status(400).json({ message: "Name and category are required" });
+    }
+
+    const shoppingListName = await storage.createShoppingListName({
+      name,
+      category,
+      defaultUnit: defaultUnit || 'g'
+    });
+
+    res.json(shoppingListName);
+  } catch (error) {
+    console.error("Error creating shopping list name:", error);
+    res.status(500).json({ message: "Failed to create shopping list name" });
+  }
+});
+
+// PUT /shopping-list-names/:id - Update shopping list name
+adminRouter.put('/shopping-list-names/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body;
+
+    const shoppingListName = await storage.updateShoppingListName(parseInt(id), updates);
+    res.json(shoppingListName);
+  } catch (error) {
+    console.error("Error updating shopping list name:", error);
+    res.status(500).json({ message: "Failed to update shopping list name" });
+  }
+});
+
+// DELETE /shopping-list-names/:id - Delete shopping list name
+adminRouter.delete('/shopping-list-names/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await storage.deleteShoppingListName(parseInt(id));
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Error deleting shopping list name:", error);
+    res.status(500).json({ message: "Failed to delete shopping list name" });
+  }
+});
+
+// POST /shopping-list-names/bulk - Bulk create shopping list names
+adminRouter.post('/shopping-list-names/bulk', async (req, res) => {
+  try {
+    const { items } = req.body;
+    if (!Array.isArray(items)) {
+      return res.status(400).json({ message: "Items must be an array" });
+    }
+
+    const results: Array<{status: 'success' | 'duplicate' | 'error', item: any, error?: string}> = [];
+    
+    for (const item of items) {
+      if (!item.name || !item.category) {
+        results.push({
+          status: 'error',
+          item,
+          error: 'Missing required fields: name and category'
+        });
+        continue;
+      }
+
+      try {
+        const created = await storage.createShoppingListName({
+          name: item.name,
+          category: item.category,
+          defaultUnit: item.defaultUnit || 'g'
+        });
+        results.push({
+          status: 'success',
+          item: created
+        });
+      } catch (err: any) {
+        if (err.message && err.message.includes('unique')) {
+          results.push({
+            status: 'duplicate',
+            item,
+            error: 'Item already exists'
+          });
+        } else {
+          results.push({
+            status: 'error',
+            item,
+            error: err.message || 'Unknown error'
+          });
+        }
+      }
+    }
+
+    const successCount = results.filter(r => r.status === 'success').length;
+    const duplicateCount = results.filter(r => r.status === 'duplicate').length;
+    const errorCount = results.filter(r => r.status === 'error').length;
+
+    res.json({ 
+      summary: {
+        total: items.length,
+        success: successCount,
+        duplicates: duplicateCount,
+        errors: errorCount
+      },
+      results 
+    });
+  } catch (error) {
+    console.error("Error bulk creating shopping list names:", error);
+    res.status(500).json({ message: "Failed to bulk create shopping list names" });
+  }
+});
+
+// GET /all-recipe-ingredients - Get all unique ingredients from all recipes
+adminRouter.get('/all-recipe-ingredients', async (req, res) => {
+  try {
+    const { getCompleteEnhancedMealDatabase } = await import('./nutrition-enhanced');
+    const { cleanIngredientName } = await import('./shopping-list-generator');
+    
+    const recipes = await getCompleteEnhancedMealDatabase();
+    
+    const ingredientMap = new Map<string, {
+      normalizedName: string;
+      originalForms: Set<string>;
+      recipes: Set<string>;
+      count: number;
+    }>();
+    
+    recipes.forEach(recipe => {
+      if (recipe.ingredients && Array.isArray(recipe.ingredients)) {
+        recipe.ingredients.forEach((originalIngredient: string) => {
+          const normalized = cleanIngredientName(originalIngredient);
+          
+          if (!ingredientMap.has(normalized)) {
+            ingredientMap.set(normalized, {
+              normalizedName: normalized,
+              originalForms: new Set(),
+              recipes: new Set(),
+              count: 0
+            });
+          }
+          
+          const entry = ingredientMap.get(normalized)!;
+          entry.originalForms.add(originalIngredient);
+          entry.recipes.add(recipe.name);
+          entry.count = entry.recipes.size;
+        });
+      }
+    });
+
+    const ingredientDetails = Array.from(ingredientMap.values())
+      .map(entry => ({
+        ingredient: entry.normalizedName,
+        originalForms: Array.from(entry.originalForms),
+        recipes: Array.from(entry.recipes),
+        count: entry.count
+      }))
+      .sort((a, b) => b.count - a.count);
+
+    res.json({
+      total: ingredientDetails.length,
+      ingredients: ingredientDetails
+    });
+  } catch (error) {
+    console.error("Error fetching all recipe ingredients:", error);
+    res.status(500).json({ message: "Failed to fetch recipe ingredients" });
+  }
+});
+
+// ============================================================================
+// Ingredient Mapping Management
+// ============================================================================
+
+// GET /ingredient-mappings - Get all ingredient mappings
+adminRouter.get('/ingredient-mappings', async (req, res) => {
+  try {
+    const mappings = await storage.getIngredientMappings();
+    res.json(mappings);
+  } catch (error) {
+    console.error("Error fetching ingredient mappings:", error);
+    res.status(500).json({ message: "Failed to fetch ingredient mappings" });
+  }
+});
+
+// POST /ingredient-mappings - Create ingredient mapping
+adminRouter.post('/ingredient-mappings', async (req, res) => {
+  try {
+    const { originalIngredient, normalizedIngredient, shoppingListNameId, quantity, unit, isManualOverride } = req.body;
+    
+    if (!originalIngredient || !normalizedIngredient) {
+      return res.status(400).json({ message: "Original and normalized ingredients are required" });
+    }
+
+    const mapping = await storage.createIngredientMapping({
+      originalIngredient,
+      normalizedIngredient,
+      shoppingListNameId,
+      quantity,
+      unit,
+      isManualOverride: isManualOverride || false
+    });
+
+    res.json(mapping);
+  } catch (error) {
+    console.error("Error creating ingredient mapping:", error);
+    res.status(500).json({ message: "Failed to create ingredient mapping" });
+  }
+});
+
+// PUT /ingredient-mappings/:id - Update ingredient mapping
+adminRouter.put('/ingredient-mappings/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body;
+
+    const mapping = await storage.updateIngredientMapping(parseInt(id), updates);
+    res.json(mapping);
+  } catch (error) {
+    console.error("Error updating ingredient mapping:", error);
+    res.status(500).json({ message: "Failed to update ingredient mapping" });
+  }
+});
+
+// DELETE /ingredient-mappings/:id - Delete ingredient mapping
+adminRouter.delete('/ingredient-mappings/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await storage.deleteIngredientMapping(parseInt(id));
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Error deleting ingredient mapping:", error);
+    res.status(500).json({ message: "Failed to delete ingredient mapping" });
+  }
+});
+
+// POST /analyze-ingredients - Analyze meal plan ingredients for mapping
+adminRouter.post('/analyze-ingredients', async (req, res) => {
+  try {
+    const { mealPlanId } = req.body;
+    
+    if (!mealPlanId) {
+      return res.status(400).json({ message: "Meal plan ID is required" });
+    }
+
+    const mealPlan = await storage.getMealPlanWithMeals(mealPlanId);
+    if (!mealPlan) {
+      return res.status(404).json({ message: "Meal plan not found" });
+    }
+
+    const { getCompleteEnhancedMealDatabase } = await import("./nutrition-enhanced");
+    const allRecipes = await getCompleteEnhancedMealDatabase();
+    
+    const ingredientAnalysis = [];
+    
+    for (const meal of mealPlan.meals) {
+      const recipe = allRecipes.find(r => r.name === meal.foodDescription);
+      if (recipe) {
+        for (const ingredient of recipe.ingredients) {
+          const parseQuantityAndUnit = (ingredient: string): { quantity: number; unit: string; productName: string } => {
+            if (!ingredient || ingredient === '') {
+              return { quantity: 1, unit: '', productName: ingredient };
+            }
+            const cleanIngredient = ingredient.trim();
+            const match = cleanIngredient.match(/^(\d+(?:\.\d+)?)\s*([a-zA-Z]*)\s+(.+)/);
+            if (match) {
+              const quantity = parseFloat(match[1]);
+              const unit = match[2].trim();
+              const productName = match[3].trim();
+              return { quantity, unit, productName };
+            }
+            return { quantity: 1, unit: '', productName: cleanIngredient };
+          };
+
+          const { quantity, unit, productName } = parseQuantityAndUnit(ingredient);
+          
+          const cleanedIngredient = productName
+            .replace(/\([^)]*\)/g, '')
+            .replace(/,.*$/g, '')
+            .replace(/\s+/g, ' ')
+            .trim();
+
+          const existingMapping = await storage.getIngredientMappingByIngredient(cleanedIngredient);
+          
+          ingredientAnalysis.push({
+            originalIngredient: ingredient,
+            normalizedIngredient: cleanedIngredient,
+            extractedQuantity: quantity,
+            extractedUnit: unit,
+            hasMapping: !!existingMapping,
+            mappingId: existingMapping?.id,
+            shoppingListNameId: existingMapping?.shoppingListNameId,
+            isManualOverride: existingMapping?.isManualOverride,
+            recipeName: recipe.name,
+            mealType: meal.mealType
+          });
+        }
+      }
+    }
+
+    res.json({
+      mealPlan: {
+        id: mealPlan.id,
+        weekStart: mealPlan.weekStart,
+        totalMeals: mealPlan.meals.length
+      },
+      ingredientAnalysis,
+      totalIngredients: ingredientAnalysis.length,
+      mappedIngredients: ingredientAnalysis.filter(i => i.hasMapping).length,
+      unmappedIngredients: ingredientAnalysis.filter(i => !i.hasMapping).length
+    });
+  } catch (error) {
+    console.error("Error analyzing ingredients:", error);
+    res.status(500).json({ message: "Failed to analyze ingredients" });
+  }
+});
+
 export { adminRouter };
