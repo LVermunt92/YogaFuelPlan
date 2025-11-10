@@ -33,38 +33,24 @@
             .then((registration) => {
               console.log('[Client] SW registered successfully');
 
-              // Listen for updates to the service worker
+              // Listen for updates to the service worker (manual update only)
               registration.addEventListener('updatefound', () => {
                 const newWorker = registration.installing;
                 if (!newWorker) return;
 
                 newWorker.addEventListener('statechange', () => {
                   if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                    // New service worker available, apply immediately and reload
-                    console.log('[Client] New version detected, updating...');
-                    applyUpdate(registration);
-                    setTimeout(() => {
-                      console.log('[Client] Reloading to apply update');
-                      window.location.reload();
-                    }, 500);
+                    console.log('[Client] New version available (update on next page load)');
                   }
                 });
               });
 
-              // Check for updates when tab becomes visible
-              document.addEventListener('visibilitychange', () => {
-                if (document.visibilityState === 'visible') {
-                  console.log('[Client] Tab visible, checking for updates...');
-                  registration.update();
-                }
-              });
-
-              // Periodic update check (every 60 seconds when tab is active)
+              // Check for updates once per hour (not on screen wake to prevent reload loops)
               setInterval(() => {
                 if (document.visibilityState === 'visible') {
                   registration.update();
                 }
-              }, 60000);
+              }, 60 * 60 * 1000); // 1 hour instead of 60 seconds
             })
             .catch((error) => {
               console.error('[Client] SW registration failed:', error);

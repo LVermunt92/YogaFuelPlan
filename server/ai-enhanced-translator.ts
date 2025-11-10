@@ -132,6 +132,11 @@ export async function translateRecipeEnhanced(
     return recipe;
   }
 
+  // Warn if recipe ID is missing (caching will not work)
+  if (!recipe.id) {
+    console.warn('⚠️ Recipe translation called without ID - caching disabled for:', recipe.name);
+  }
+
   // Check cache first using recipe ID
   const cacheKey = getCacheKey(recipe.id, language);
   if (cacheKey && translationCache.has(cacheKey)) {

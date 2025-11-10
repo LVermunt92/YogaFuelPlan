@@ -714,6 +714,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             // Fall back to on-demand translation
             console.log(`🔄 Translating recipe ID: ${meal.recipeId} - ${meal.foodDescription}`);
             const translatedRecipe = await translateRecipeEnhanced({
+              id: meal.recipeId,
               name: meal.foodDescription,
               ingredients: [],
               instructions: [],
