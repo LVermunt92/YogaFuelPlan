@@ -195,6 +195,12 @@ class AlbertHeijnService {
 
         console.log(`🔍 Pre-filter check: "${ingredient}" → cleaned: "${cleanedIngredient}"`);
 
+        // Whitelist legumes and pulses BEFORE non-grocery filter to ensure they always appear
+        const isLegume = /\b(bean|beans|lentil|lentils|chickpea|chickpeas|pea|peas|black bean|kidney bean|white bean|cannellini)\b/i.test(cleanedIngredient);
+        if (isLegume) {
+          console.log(`✅ Legume detected (bypassing filter): "${ingredient}"`);
+        }
+
         // Filter out non-grocery items (cooking instructions, temperatures, etc.)
         const nonGroceryPatterns = [
           // Time and temperature patterns
@@ -395,8 +401,8 @@ class AlbertHeijnService {
           /^total\s+time$/
         ];
 
-        // Skip this ingredient if it matches non-grocery patterns
-        const shouldSkip = nonGroceryPatterns.some(pattern => pattern.test(cleanedIngredient));
+        // Skip this ingredient if it matches non-grocery patterns (but NEVER skip legumes)
+        const shouldSkip = !isLegume && nonGroceryPatterns.some(pattern => pattern.test(cleanedIngredient));
         if (shouldSkip) {
           console.log(`🚫 Skipping non-grocery item: "${ingredient}"`);
           continue; // Skip this ingredient entirely
@@ -480,6 +486,12 @@ class AlbertHeijnService {
 
             // Debug logging to see what we're testing
             console.log(`🔍 Testing ingredient: "${ingredient}" → cleaned: "${cleanedIngredient}"`);
+
+            // Whitelist legumes for manual items too (same as above)
+            const isLegumeManual = /\b(bean|beans|lentil|lentils|chickpea|chickpeas|pea|peas|black bean|kidney bean|white bean|cannellini)\b/i.test(cleanedIngredient);
+            if (isLegumeManual) {
+              console.log(`✅ Legume detected in manual items (bypassing filter): "${ingredient}"`);
+            }
 
             // Filter out non-grocery items (cooking instructions, temperatures, etc.)
             const nonGroceryPatterns = [
@@ -681,8 +693,8 @@ class AlbertHeijnService {
               /^total\s+time$/
             ];
 
-            // Skip this ingredient if it matches non-grocery patterns
-            const shouldSkip = nonGroceryPatterns.some(pattern => pattern.test(cleanedIngredient));
+            // Skip this ingredient if it matches non-grocery patterns (but NEVER skip legumes)
+            const shouldSkip = !isLegumeManual && nonGroceryPatterns.some(pattern => pattern.test(cleanedIngredient));
             if (shouldSkip) {
               console.log(`🚫 Skipping non-grocery item: "${ingredient}"`);
               continue; // Skip this ingredient entirely
@@ -805,8 +817,44 @@ class AlbertHeijnService {
       }
     }
 
-    // Convert Map back to array
-    const shoppingItems = Array.from(consolidatedItems.values());
+    // Helper function to check if an item should be rounded to whole numbers
+    const shouldRoundAsPiece = (item: AHShoppingListItem): boolean => {
+      const unit = item.unit.toLowerCase();
+      const name = item.productName.toLowerCase();
+      
+      // Check if unit indicates pieces
+      if (unit === 'piece' || unit === 'pieces' || unit === 'stuk' || unit === 'stuks' || unit === 'clove' || unit === 'cloves') {
+        return true;
+      }
+      
+      // Check against allowlist of items that should always be whole numbers (sold as pieces)
+      const pieceItems = [
+        'bell pepper', 'paprika', 'pepper',
+        'onion', 'ui',
+        'zucchini', 'courgette',
+        'portobello', 'mushroom',
+        'lemon', 'citroen',
+        'lime', 'limoen',
+        'avocado'
+      ];
+      
+      return pieceItems.some(pieceItem => name.includes(pieceItem));
+    };
+
+    // Convert Map back to array and apply rounding for piece-based items
+    const shoppingItems = Array.from(consolidatedItems.values()).map(item => {
+      if (shouldRoundAsPiece(item)) {
+        // Round up to whole numbers for items sold as pieces
+        const roundedQuantity = Math.ceil(item.quantity);
+        console.log(`🔢 Rounding ${item.productName}: ${item.quantity} → ${roundedQuantity} ${item.unit}`);
+        return {
+          ...item,
+          quantity: roundedQuantity,
+          unit: item.unit || 'stuks'
+        };
+      }
+      return item;
+    });
 
     const shoppingList: ShoppingListExport = {
       title: `Meal Plan - ${new Date().toLocaleDateString('nl-NL')}`,
