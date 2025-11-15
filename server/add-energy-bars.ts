@@ -4,6 +4,7 @@ async function addEnergyBars() {
   console.log('Adding Chocolate Peanut Butter Energy Bars recipe...');
 
   const recipe = {
+    id: "310242",
     name: "Chocolate peanut butter energy bars",
     category: "snack" as const,
     portion: "1 bar (makes 12)",

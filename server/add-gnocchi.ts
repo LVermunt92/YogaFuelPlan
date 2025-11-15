@@ -5,6 +5,7 @@ async function addGnocchiRecipes() {
 
   // Base recipe with lactose (original version)
   const baseRecipe = {
+    id: "310240",
     name: "Creamy mushroom spinach gnocchi",
     category: "dinner" as const,
     portion: "1 serving",
@@ -56,6 +57,7 @@ async function addGnocchiRecipes() {
   // Lactose-free version - replace cream with plant-based cream, keep pecorino
   const lactoseFreeRecipe = {
     ...baseRecipe,
+    id: "310241",
     name: "Creamy mushroom spinach gnocchi (lactose-free)",
     tags: ["Vegetarian", "Lactose-Free", "High-Protein"],
     ingredients: [
