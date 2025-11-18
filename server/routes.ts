@@ -395,7 +395,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Generate meal plan with leftovers support
   app.post("/api/meal-plans/generate", async (req, res) => {
     try {
-      const { userId, weekStart, activityLevel, dietaryTags, leftovers } = req.body;
+      const { userId, weekStart, activityLevel, dietaryTags, leftovers, weekendMealPrepEnabled } = req.body;
       
       if (!userId) {
         return res.status(400).json({ message: "User ID is required" });
@@ -418,6 +418,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         activityLevel: activityLevel || 'high',
         dietaryTags: dietaryTags || [],
         leftovers: leftovers || [],
+        weekendMealPrepEnabled: weekendMealPrepEnabled || false,
       };
       
       // Fetch user data for meal prep logic and caloric adjustments

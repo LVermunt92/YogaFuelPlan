@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
@@ -240,6 +241,7 @@ function MealPlannerMain() {
     return stored ? parseInt(stored) : null;
   });
   const [selectedWeekType, setSelectedWeekType] = useState<"current" | "next">("current");
+  const [weekendMealPrepEnabled, setWeekendMealPrepEnabled] = useState(false);
   const [selectedMealId, setSelectedMealId] = useState<number | null>(null);
   const [showShoppingList, setShowShoppingList] = useState(false);
   const [newLeftover, setNewLeftover] = useState("");
@@ -583,6 +585,7 @@ function MealPlannerMain() {
         weekStart: weekStart,
         dietaryTags: userProfile?.dietaryTags || [],
         leftovers: userProfile?.leftovers || [],
+        weekendMealPrepEnabled: weekendMealPrepEnabled,
       });
       return response.json();
     },
@@ -1215,6 +1218,26 @@ function MealPlannerMain() {
                     <SelectItem value="next">{t.nextWeek}</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+
+              {/* Weekend Meal Prep Toggle */}
+              <div className="flex items-center justify-between space-x-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                <div className="flex-1">
+                  <Label htmlFor="weekend-meal-prep" className="text-sm font-medium text-gray-900 dark:text-gray-100 cursor-pointer">
+                    {language === 'nl' ? 'Weekend maaltijdbereiding' : 'Weekend meal prep'}
+                  </Label>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                    {language === 'nl' 
+                      ? 'Bereid componenten van je weekmaaltijden dit weekend voor' 
+                      : 'Prepare components of your weekday meals this weekend'}
+                  </p>
+                </div>
+                <Switch
+                  id="weekend-meal-prep"
+                  checked={weekendMealPrepEnabled}
+                  onCheckedChange={setWeekendMealPrepEnabled}
+                  data-testid="switch-weekend-meal-prep"
+                />
               </div>
 
               {/* Ingredients to Use Subtitle */}

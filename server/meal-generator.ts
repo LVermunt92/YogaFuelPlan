@@ -1968,6 +1968,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
     weekStart: normalizedWeekStart,
     activityLevel: request.activityLevel,
     totalProtein: Math.round(adjustedAverageProteinPerDay), // Use adjusted protein
+    weekendMealPrepEnabled: request.weekendMealPrepEnabled || false,
   };
 
   return { mealPlan, meals: adjustedMeals };
@@ -2816,6 +2817,7 @@ async function generateMealPrepPlan(
     weekStart: normalizedWeekStart,
     activityLevel: request.activityLevel,
     totalProtein: Math.round(adjustedAverageProteinPerDay), // Use adjusted protein
+    weekendMealPrepEnabled: request.weekendMealPrepEnabled || false,
   };
 
   console.timeEnd('⏱️  Total meal plan generation');

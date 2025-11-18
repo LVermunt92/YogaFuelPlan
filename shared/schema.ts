@@ -448,6 +448,7 @@ export const mealPlanRequestSchema = z.object({
   userId: z.number().optional(),
   dietaryTags: z.array(z.enum(DIETARY_TAGS)).optional(),
   leftovers: z.array(z.string()).optional(),
+  weekendMealPrepEnabled: z.boolean().optional(),
 });
 
 export const insertOuraDataSchema = createInsertSchema(ouraData).omit({
