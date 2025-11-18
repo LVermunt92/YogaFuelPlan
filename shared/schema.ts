@@ -98,6 +98,7 @@ export const mealPlans = pgTable("meal_plans", {
   planName: text("plan_name"), // Optional name for the plan like "Week 1" or "Backup Plan"
   planType: text("plan_type").default("current"), // 'current', 'next', 'saved', 'backup'
   isActive: boolean("is_active").default(true), // Whether this plan is currently being used
+  weekendMealPrepEnabled: boolean("weekend_meal_prep_enabled").default(false), // Whether to generate weekend prep list
 });
 
 export const meals = pgTable("meals", {
@@ -231,6 +232,33 @@ export const userRecipes = pgTable("user_recipes", {
   isActive: boolean("is_active").default(false), // Default inactive - recipes must be explicitly activated to be used in meal plans
 }, (table) => ({
   uniqueUserRecipe: unique().on(table.userId, table.name),
+}));
+
+// Meal prep components - reusable components that can be prepped in advance
+export const mealPrepComponents = pgTable("meal_prep_components", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull().unique(), // e.g., "Roasted vegetables", "Cooked quinoa", "Marinated tofu"
+  description: text("description"), // What it is and how it's used
+  prepInstructions: text("prep_instructions").array().notNull(), // Step-by-step prep instructions
+  storageInstructions: text("storage_instructions"), // How to store (e.g., "Refrigerate in airtight container for up to 5 days")
+  prepTime: integer("prep_time").notNull(), // minutes to prepare
+  yield: text("yield"), // e.g., "4 cups", "500g"
+  tags: text("tags").array().default([]), // vegetarian, vegan, gluten-free, etc.
+  active: boolean("active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Links recipes to their prep components
+export const recipeMealPrepComponents = pgTable("recipe_meal_prep_components", {
+  id: serial("id").primaryKey(),
+  recipeId: text("recipe_id").references(() => recipes.id, { onDelete: "cascade" }).notNull(),
+  componentId: integer("component_id").references(() => mealPrepComponents.id, { onDelete: "cascade" }).notNull(),
+  amount: text("amount"), // e.g., "200g", "1 cup" - how much of the component this recipe uses
+  notes: text("notes"), // Optional notes about how the component is used in this recipe
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => ({
+  uniqueRecipeComponent: unique().on(table.recipeId, table.componentId),
 }));
 
 // AI-generated recipes storage
@@ -739,3 +767,29 @@ export const insertRecipeTranslationSchema = createInsertSchema(recipeTranslatio
 
 export type RecipeTranslation = typeof recipeTranslations.$inferSelect;
 export type InsertRecipeTranslation = z.infer<typeof insertRecipeTranslationSchema>;
+
+// Meal prep component schemas
+export const insertMealPrepComponentSchema = createInsertSchema(mealPrepComponents).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const updateMealPrepComponentSchema = createInsertSchema(mealPrepComponents).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+}).partial();
+
+export type MealPrepComponent = typeof mealPrepComponents.$inferSelect;
+export type InsertMealPrepComponent = z.infer<typeof insertMealPrepComponentSchema>;
+export type UpdateMealPrepComponent = z.infer<typeof updateMealPrepComponentSchema>;
+
+// Recipe meal prep component schemas
+export const insertRecipeMealPrepComponentSchema = createInsertSchema(recipeMealPrepComponents).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type RecipeMealPrepComponent = typeof recipeMealPrepComponents.$inferSelect;
+export type InsertRecipeMealPrepComponent = z.infer<typeof insertRecipeMealPrepComponentSchema>;
