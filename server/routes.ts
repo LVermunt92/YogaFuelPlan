@@ -2699,6 +2699,172 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Admin routes
   app.use('/api/admin', adminRouter);
 
+  // Meal Prep Component routes (Admin only)
+  app.get("/api/admin/meal-prep-components", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+      
+      const user = await storage.getUser(req.session.userId);
+      if (!user?.isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+      
+      const components = await storage.getAllMealPrepComponents(true);
+      res.json(components);
+    } catch (error) {
+      console.error("Error fetching meal prep components:", error);
+      res.status(500).json({ message: "Failed to fetch meal prep components" });
+    }
+  });
+
+  app.post("/api/admin/meal-prep-components", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+      
+      const user = await storage.getUser(req.session.userId);
+      if (!user?.isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+      
+      const component = await storage.createMealPrepComponent(req.body);
+      res.json(component);
+    } catch (error) {
+      console.error("Error creating meal prep component:", error);
+      res.status(500).json({ message: "Failed to create meal prep component" });
+    }
+  });
+
+  app.patch("/api/admin/meal-prep-components/:id", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+      
+      const user = await storage.getUser(req.session.userId);
+      if (!user?.isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+      
+      const id = parseInt(req.params.id);
+      const component = await storage.updateMealPrepComponent(id, req.body);
+      res.json(component);
+    } catch (error) {
+      console.error("Error updating meal prep component:", error);
+      res.status(500).json({ message: "Failed to update meal prep component" });
+    }
+  });
+
+  app.delete("/api/admin/meal-prep-components/:id", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+      
+      const user = await storage.getUser(req.session.userId);
+      if (!user?.isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+      
+      const id = parseInt(req.params.id);
+      await storage.deleteMealPrepComponent(id);
+      res.json({ message: "Meal prep component deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting meal prep component:", error);
+      res.status(500).json({ message: "Failed to delete meal prep component" });
+    }
+  });
+
+  // Link recipe to prep component (Admin only)
+  app.post("/api/admin/recipes/:recipeId/prep-components", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+      
+      const user = await storage.getUser(req.session.userId);
+      if (!user?.isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+      
+      const recipeId = req.params.recipeId;
+      const link = await storage.linkRecipeToComponent({
+        recipeId,
+        ...req.body
+      });
+      res.json(link);
+    } catch (error) {
+      console.error("Error linking recipe to component:", error);
+      res.status(500).json({ message: "Failed to link recipe to component" });
+    }
+  });
+
+  app.delete("/api/admin/recipes/:recipeId/prep-components/:componentId", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+      
+      const user = await storage.getUser(req.session.userId);
+      if (!user?.isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+      
+      const recipeId = req.params.recipeId;
+      const componentId = parseInt(req.params.componentId);
+      await storage.unlinkRecipeFromComponent(recipeId, componentId);
+      res.json({ message: "Recipe unlinked from component successfully" });
+    } catch (error) {
+      console.error("Error unlinking recipe from component:", error);
+      res.status(500).json({ message: "Failed to unlink recipe from component" });
+    }
+  });
+
+  // Get components for a recipe (Admin only)
+  app.get("/api/admin/recipes/:recipeId/prep-components", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+      
+      const user = await storage.getUser(req.session.userId);
+      if (!user?.isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+      
+      const recipeId = req.params.recipeId;
+      const components = await storage.getComponentsForRecipe(recipeId);
+      res.json(components);
+    } catch (error) {
+      console.error("Error fetching components for recipe:", error);
+      res.status(500).json({ message: "Failed to fetch components for recipe" });
+    }
+  });
+
+  // Get recipes using a component (Admin only)
+  app.get("/api/admin/meal-prep-components/:componentId/recipes", async (req, res) => {
+    try {
+      if (!req.session?.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+      
+      const user = await storage.getUser(req.session.userId);
+      if (!user?.isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+      
+      const componentId = parseInt(req.params.componentId);
+      const recipes = await storage.getRecipesUsingComponent(componentId);
+      res.json(recipes);
+    } catch (error) {
+      console.error("Error fetching recipes using component:", error);
+      res.status(500).json({ message: "Failed to fetch recipes using component" });
+    }
+  });
+
   // User Recipe routes
   // Get all user recipes
   app.get("/api/user-recipes", async (req, res) => {
