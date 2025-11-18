@@ -2437,23 +2437,51 @@ async function generateMealPrepPlan(
   
   console.log(`✓ Breakfast pool: ${breakfastPool.map(b => b.name).join(' | ')}`);
   
+  // Track breakfast for 2-day batch cooking pattern
+  let previousDayBreakfast: MealOption | null = null;
+  
   for (let day = 1; day <= 7; day++) {
     // BREAKFAST: Skip Day 1 (Sunday evening only has dinner), start from Day 2
+    // 2-day batch cooking pattern: Cook on Day 2, 4, 6 → Leftover on Day 3, 5, 7
     if (day !== 1) {
-      const selectedBreakfast = breakfastPool[day - 2]; // Adjust index since breakfastPool starts from day 2
       const isWeekend = day === 6 || day === 7; // Saturday or Sunday
       
+      // Determine if this is a fresh cooking day or leftover day
+      // Day 2 (Monday): Cook for 2 days
+      // Day 3 (Tuesday): Leftover from Day 2
+      // Day 4 (Wednesday): Cook for 2 days
+      // Day 5 (Thursday): Leftover from Day 4
+      // Day 6 (Friday): Cook for 2 days
+      // Day 7 (Saturday): Leftover from Day 6
+      const isLeftoverDay = day % 2 === 1 && day !== 1; // Odd days after day 1 are leftover days
+      
+      let selectedBreakfast: MealOption;
+      let isBreakfastLeftover = false;
+      
+      if (isLeftoverDay && previousDayBreakfast) {
+        // Use leftover from previous day
+        selectedBreakfast = previousDayBreakfast;
+        isBreakfastLeftover = true;
+        console.log(`Day ${day} (${isWeekend ? 'weekend' : 'weekday'}) breakfast: ${selectedBreakfast.name} (LEFTOVER from previous day)`);
+      } else {
+        // Fresh breakfast - cook for 2 days (today + tomorrow)
+        selectedBreakfast = breakfastPool[Math.floor((day - 2) / 2)]; // Select from pool based on cooking day
+        previousDayBreakfast = selectedBreakfast; // Save for next day's leftover
+        console.log(`Day ${day} (${isWeekend ? 'weekend' : 'weekday'}) breakfast: ${selectedBreakfast.name} (COOKING for 2 days - prep: ${selectedBreakfast.nutrition.prepTime}min)`);
+      }
+      
       if (selectedBreakfast) {
-        console.log(`Day ${day} (${isWeekend ? 'weekend' : 'weekday'}) breakfast: ${selectedBreakfast.name} (prep: ${selectedBreakfast.nutrition.prepTime}min)`);
         const householdSize = user?.householdSize || 1;
         
-        // BREAKFAST: Always 1 serving (no batch cooking multiplier for breakfast)
-        // Only apply household size multiplier (no additional leftover doubling)
+        // BREAKFAST BATCH COOKING: Cook for 2 days on fresh days, 1 day on leftover days
+        // Fresh days: servingMultiplier = 2 (cooking for 2 days)
+        // Leftover days: servingMultiplier = 1 (already cooked)
+        const breakfastServingMultiplier = isBreakfastLeftover ? 1 : 2;
         const portionFactor = caloricAdjustment * householdSize;
         
-        // Breakfast always uses servingMultiplier = 1 (single serving)
-        let adjustedPortion = adjustMealPortion(selectedBreakfast.portion, portionFactor, 1);
+        let adjustedPortion = adjustMealPortion(selectedBreakfast.portion, portionFactor, breakfastServingMultiplier);
         let adjustedProtein = Math.round(selectedBreakfast.nutrition.protein * portionFactor);
+        const prepTime = isBreakfastLeftover ? 5 : selectedBreakfast.nutrition.prepTime;
         
         // Create descriptive meal name
         const mealDescription = selectedBreakfast.name;
@@ -2479,7 +2507,8 @@ async function generateMealPrepPlan(
           sugar: Math.round((selectedBreakfast.nutrition.sugar || 0) * portionFactor),
           sodium: Math.round((selectedBreakfast.nutrition.sodium || 0) * portionFactor),
           vitaminK: Math.round(((selectedBreakfast.nutrition as any).vitaminK || 0) * portionFactor),
-          prepTime: selectedBreakfast.nutrition.prepTime,
+          prepTime: prepTime,
+          isLeftover: isBreakfastLeftover,
         });
         
         totalWeeklyProtein += adjustedProtein;

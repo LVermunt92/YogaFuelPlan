@@ -84,6 +84,7 @@ Preferred communication style: Simple, everyday language.
     - **Authentication & Multi-User Support**: Secure login/registration, persistent mobile login, password reset, isolated user data, route protection, and interactive step-by-step onboarding tutorial for new users.
     - **Meal Generation**: Calculates protein targets, generates 7-day plans with variety, creates shopping lists, and includes smart AI recipe generation. Incorporates 1 anti-aging meal per day.
     - **Universal Meal Prep Engine**: Adapts to user cooking schedules, supporting batch cooking, meal distribution, and dietary fallbacks. Weekday meals are limited to ≤45 minutes prep time.
+    - **Breakfast Batch Cooking**: 2-day batch cooking pattern saves time - cook breakfast for 2 days on Day 2, 4, 6 (Monday, Wednesday, Friday), eat leftovers on Day 3, 5, 7 (Tuesday, Thursday, Saturday). Reduces breakfast prep from 6 days to 3 days per week.
     - **Ayurvedic Integration**: Supports Ayurvedic dietary tags and seasonal adaptation.
     - **Menstrual Cycle Support**: Cycle phase tracking with dropdown selection prioritizes phase-appropriate recipes and provides weekly highlights.
     - **Meal Plan Management**: Meal plans persist across sessions, with automatic cleanup deleting plans older than 14 days. Plans normalize to Sunday start and are limited to current/next week.
