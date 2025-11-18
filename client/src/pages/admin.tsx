@@ -987,6 +987,578 @@ function IngredientMappingManager() {
   );
 }
 
+// Meal Prep Components Manager Component
+function MealPrepComponentsManager() {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const [editingComponent, setEditingComponent] = useState<any | null>(null);
+  const [showCreateComponent, setShowCreateComponent] = useState(false);
+  const [viewingComponentRecipes, setViewingComponentRecipes] = useState<number | null>(null);
+  const [showLinkRecipe, setShowLinkRecipe] = useState<number | null>(null);
+  const [linkAmount, setLinkAmount] = useState("");
+  const [linkNotes, setLinkNotes] = useState("");
+  const [selectedRecipeId, setSelectedRecipeId] = useState("");
+
+  // Form state for new component
+  const [newComponent, setNewComponent] = useState({
+    name: "",
+    description: "",
+    prepInstructions: "",
+    storageInstructions: "",
+    prepTime: 30,
+    yield: "",
+    tags: "",
+  });
+
+  // Fetch all meal prep components
+  const { data: components = [], isLoading: componentsLoading } = useQuery<any[]>({
+    queryKey: ['/api/admin/meal-prep-components'],
+  });
+
+  // Fetch all recipes for linking
+  const { data: allRecipes = [], isLoading: recipesLoading } = useQuery<any[]>({
+    queryKey: ['/api/admin/unified-recipes'],
+    select: (data: any) => data?.recipes || [],
+  });
+
+  // Create component mutation
+  const createComponentMutation = useMutation({
+    mutationFn: async (data: any) => {
+      const response = await apiRequest('POST', '/api/admin/meal-prep-components', {
+        ...data,
+        prepInstructions: data.prepInstructions.split('\n').filter((line: string) => line.trim()),
+        tags: data.tags ? data.tags.split(',').map((tag: string) => tag.trim()) : [],
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/meal-prep-components'] });
+      setShowCreateComponent(false);
+      setNewComponent({
+        name: "",
+        description: "",
+        prepInstructions: "",
+        storageInstructions: "",
+        prepTime: 30,
+        yield: "",
+        tags: "",
+      });
+      toast({ title: "Success", description: "Meal prep component created successfully" });
+    },
+    onError: () => {
+      toast({ title: "Error", description: "Failed to create component", variant: "destructive" });
+    },
+  });
+
+  // Update component mutation
+  const updateComponentMutation = useMutation({
+    mutationFn: async ({ id, data }: { id: number; data: any }) => {
+      const response = await apiRequest('PATCH', `/api/admin/meal-prep-components/${id}`, {
+        ...data,
+        prepInstructions: Array.isArray(data.prepInstructions) 
+          ? data.prepInstructions 
+          : data.prepInstructions.split('\n').filter((line: string) => line.trim()),
+        tags: Array.isArray(data.tags) 
+          ? data.tags 
+          : (data.tags ? data.tags.split(',').map((tag: string) => tag.trim()) : []),
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/meal-prep-components'] });
+      setEditingComponent(null);
+      toast({ title: "Success", description: "Component updated successfully" });
+    },
+    onError: () => {
+      toast({ title: "Error", description: "Failed to update component", variant: "destructive" });
+    },
+  });
+
+  // Delete component mutation
+  const deleteComponentMutation = useMutation({
+    mutationFn: async (id: number) => {
+      const response = await apiRequest('DELETE', `/api/admin/meal-prep-components/${id}`);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/meal-prep-components'] });
+      toast({ title: "Success", description: "Component deleted successfully" });
+    },
+    onError: () => {
+      toast({ title: "Error", description: "Failed to delete component", variant: "destructive" });
+    },
+  });
+
+  // Link recipe to component mutation
+  const linkRecipeMutation = useMutation({
+    mutationFn: async ({ recipeId, componentId, amount, notes }: { recipeId: string; componentId: number; amount: string; notes: string }) => {
+      const response = await apiRequest('POST', `/api/admin/recipes/${recipeId}/prep-components`, {
+        componentId,
+        amount,
+        notes,
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/meal-prep-components'] });
+      setShowLinkRecipe(null);
+      setLinkAmount("");
+      setLinkNotes("");
+      setSelectedRecipeId("");
+      toast({ title: "Success", description: "Recipe linked to component" });
+    },
+    onError: () => {
+      toast({ title: "Error", description: "Failed to link recipe", variant: "destructive" });
+    },
+  });
+
+  // Unlink recipe from component mutation
+  const unlinkRecipeMutation = useMutation({
+    mutationFn: async ({ recipeId, componentId }: { recipeId: string; componentId: number }) => {
+      const response = await apiRequest('DELETE', `/api/admin/recipes/${recipeId}/prep-components/${componentId}`);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/meal-prep-components'] });
+      toast({ title: "Success", description: "Recipe unlinked from component" });
+    },
+    onError: () => {
+      toast({ title: "Error", description: "Failed to unlink recipe", variant: "destructive" });
+    },
+  });
+
+  return (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
+            <div>
+              <CardTitle className="flex items-center gap-2">
+                <ChefHat className="h-5 w-5" />
+                Meal prep components
+              </CardTitle>
+              <p className="text-sm text-gray-600 mt-1">
+                Manage reusable meal prep components and link them to recipes
+              </p>
+            </div>
+            <Dialog open={showCreateComponent} onOpenChange={setShowCreateComponent}>
+              <DialogTrigger asChild>
+                <Button data-testid="button-create-meal-prep-component">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Create component
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>Create meal prep component</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="name">Name</Label>
+                    <Input
+                      id="name"
+                      placeholder="e.g., Roasted vegetables"
+                      value={newComponent.name}
+                      onChange={(e) => setNewComponent({ ...newComponent, name: e.target.value })}
+                      data-testid="input-component-name"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="description">Description</Label>
+                    <Textarea
+                      id="description"
+                      placeholder="What it is and how it's used"
+                      value={newComponent.description}
+                      onChange={(e) => setNewComponent({ ...newComponent, description: e.target.value })}
+                      data-testid="input-component-description"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="prepInstructions">Prep instructions (one per line)</Label>
+                    <Textarea
+                      id="prepInstructions"
+                      placeholder="Step 1&#10;Step 2&#10;Step 3"
+                      rows={5}
+                      value={newComponent.prepInstructions}
+                      onChange={(e) => setNewComponent({ ...newComponent, prepInstructions: e.target.value })}
+                      data-testid="input-component-prep-instructions"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="storageInstructions">Storage instructions</Label>
+                    <Input
+                      id="storageInstructions"
+                      placeholder="e.g., Refrigerate in airtight container for up to 5 days"
+                      value={newComponent.storageInstructions}
+                      onChange={(e) => setNewComponent({ ...newComponent, storageInstructions: e.target.value })}
+                      data-testid="input-component-storage-instructions"
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="prepTime">Prep time (minutes)</Label>
+                      <Input
+                        id="prepTime"
+                        type="number"
+                        value={newComponent.prepTime}
+                        onChange={(e) => setNewComponent({ ...newComponent, prepTime: parseInt(e.target.value) })}
+                        data-testid="input-component-prep-time"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="yield">Yield</Label>
+                      <Input
+                        id="yield"
+                        placeholder="e.g., 4 cups, 500g"
+                        value={newComponent.yield}
+                        onChange={(e) => setNewComponent({ ...newComponent, yield: e.target.value })}
+                        data-testid="input-component-yield"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="tags">Tags (comma-separated)</Label>
+                    <Input
+                      id="tags"
+                      placeholder="vegetarian, vegan, gluten-free"
+                      value={newComponent.tags}
+                      onChange={(e) => setNewComponent({ ...newComponent, tags: e.target.value })}
+                      data-testid="input-component-tags"
+                    />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => setShowCreateComponent(false)}>
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={() => createComponentMutation.mutate(newComponent)}
+                    disabled={!newComponent.name || createComponentMutation.isPending}
+                    data-testid="button-save-component"
+                  >
+                    {createComponentMutation.isPending ? "Creating..." : "Create component"}
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {componentsLoading ? (
+            <div className="py-8 text-center text-gray-500">Loading components...</div>
+          ) : components.length === 0 ? (
+            <div className="py-8 text-center text-gray-500">
+              No meal prep components yet. Create your first one!
+            </div>
+          ) : (
+            <div className="space-y-4" data-testid="table-meal-prep-components">
+              {components.map((component) => (
+                <Card key={component.id} className="p-4">
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-lg">{component.name}</h3>
+                        {component.description && (
+                          <p className="text-sm text-gray-600 mt-1">{component.description}</p>
+                        )}
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          <Badge variant="outline">
+                            <span className="text-xs">{component.prepTime} min</span>
+                          </Badge>
+                          {component.yield && (
+                            <Badge variant="outline">
+                              <span className="text-xs">Yield: {component.yield}</span>
+                            </Badge>
+                          )}
+                          {component.tags?.map((tag: string) => (
+                            <Badge key={tag} variant="secondary">
+                              <span className="text-xs">{tag}</span>
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => setEditingComponent(component)}
+                          data-testid={`button-edit-component-${component.id}`}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              data-testid={`button-delete-component-${component.id}`}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>Delete component</DialogTitle>
+                            </DialogHeader>
+                            <p className="text-sm text-gray-600">
+                              Are you sure you want to delete "{component.name}"? This will unlink it from all recipes.
+                            </p>
+                            <DialogFooter>
+                              <Button variant="outline">Cancel</Button>
+                              <Button
+                                variant="destructive"
+                                onClick={() => deleteComponentMutation.mutate(component.id)}
+                                disabled={deleteComponentMutation.isPending}
+                              >
+                                {deleteComponentMutation.isPending ? "Deleting..." : "Delete"}
+                              </Button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+                      </div>
+                    </div>
+
+                    {component.prepInstructions && component.prepInstructions.length > 0 && (
+                      <div>
+                        <p className="text-sm font-medium mb-1">Prep instructions:</p>
+                        <ol className="list-decimal list-inside text-sm text-gray-700 space-y-1">
+                          {component.prepInstructions.map((instruction: string, idx: number) => (
+                            <li key={idx}>{instruction}</li>
+                          ))}
+                        </ol>
+                      </div>
+                    )}
+
+                    {component.storageInstructions && (
+                      <div>
+                        <p className="text-sm font-medium">Storage:</p>
+                        <p className="text-sm text-gray-700">{component.storageInstructions}</p>
+                      </div>
+                    )}
+
+                    <div className="border-t pt-3">
+                      <div className="flex justify-between items-center mb-2">
+                        <p className="text-sm font-medium">
+                          Recipes using this component ({component.recipes?.length || 0})
+                        </p>
+                        <Dialog open={showLinkRecipe === component.id} onOpenChange={(open) => !open && setShowLinkRecipe(null)}>
+                          <DialogTrigger asChild>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => setShowLinkRecipe(component.id)}
+                              data-testid={`button-link-recipe-${component.id}`}
+                            >
+                              <Plus className="h-4 w-4 mr-1" />
+                              Link recipe
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>Link recipe to {component.name}</DialogTitle>
+                            </DialogHeader>
+                            <div className="space-y-4">
+                              <div>
+                                <Label>Select recipe</Label>
+                                <Select value={selectedRecipeId} onValueChange={setSelectedRecipeId}>
+                                  <SelectTrigger data-testid="select-recipe">
+                                    <SelectValue placeholder="Choose a recipe" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {allRecipes.map((recipe: any) => (
+                                      <SelectItem key={recipe.id} value={recipe.id}>
+                                        {recipe.name}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                              <div>
+                                <Label htmlFor="amount">Amount used</Label>
+                                <Input
+                                  id="amount"
+                                  placeholder="e.g., 200g, 1 cup"
+                                  value={linkAmount}
+                                  onChange={(e) => setLinkAmount(e.target.value)}
+                                  data-testid="input-link-amount"
+                                />
+                              </div>
+                              <div>
+                                <Label htmlFor="notes">Notes (optional)</Label>
+                                <Textarea
+                                  id="notes"
+                                  placeholder="How the component is used in this recipe"
+                                  value={linkNotes}
+                                  onChange={(e) => setLinkNotes(e.target.value)}
+                                  data-testid="input-link-notes"
+                                />
+                              </div>
+                            </div>
+                            <DialogFooter>
+                              <Button variant="outline" onClick={() => setShowLinkRecipe(null)}>
+                                Cancel
+                              </Button>
+                              <Button
+                                onClick={() => linkRecipeMutation.mutate({
+                                  recipeId: selectedRecipeId,
+                                  componentId: component.id,
+                                  amount: linkAmount,
+                                  notes: linkNotes,
+                                })}
+                                disabled={!selectedRecipeId || linkRecipeMutation.isPending}
+                                data-testid="button-save-link"
+                              >
+                                {linkRecipeMutation.isPending ? "Linking..." : "Link recipe"}
+                              </Button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+                      </div>
+                      {component.recipes && component.recipes.length > 0 ? (
+                        <div className="space-y-2">
+                          {component.recipes.map((recipeLink: any) => (
+                            <div
+                              key={recipeLink.recipeId}
+                              className="flex justify-between items-center p-2 bg-gray-50 rounded text-sm"
+                              data-testid={`recipe-link-${recipeLink.recipeId}`}
+                            >
+                              <div>
+                                <p className="font-medium">{recipeLink.recipeName}</p>
+                                {recipeLink.amount && (
+                                  <p className="text-xs text-gray-600">Amount: {recipeLink.amount}</p>
+                                )}
+                                {recipeLink.notes && (
+                                  <p className="text-xs text-gray-600">{recipeLink.notes}</p>
+                                )}
+                              </div>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => unlinkRecipeMutation.mutate({
+                                  recipeId: recipeLink.recipeId,
+                                  componentId: component.id,
+                                })}
+                                data-testid={`button-unlink-recipe-${recipeLink.recipeId}`}
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-sm text-gray-500">No recipes linked yet</p>
+                      )}
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Edit Component Dialog */}
+      {editingComponent && (
+        <Dialog open={!!editingComponent} onOpenChange={() => setEditingComponent(null)}>
+          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Edit meal prep component</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="edit-name">Name</Label>
+                <Input
+                  id="edit-name"
+                  value={editingComponent.name}
+                  onChange={(e) => setEditingComponent({ ...editingComponent, name: e.target.value })}
+                  data-testid="input-edit-component-name"
+                />
+              </div>
+              <div>
+                <Label htmlFor="edit-description">Description</Label>
+                <Textarea
+                  id="edit-description"
+                  value={editingComponent.description || ""}
+                  onChange={(e) => setEditingComponent({ ...editingComponent, description: e.target.value })}
+                  data-testid="input-edit-component-description"
+                />
+              </div>
+              <div>
+                <Label htmlFor="edit-prepInstructions">Prep instructions (one per line)</Label>
+                <Textarea
+                  id="edit-prepInstructions"
+                  rows={5}
+                  value={Array.isArray(editingComponent.prepInstructions) 
+                    ? editingComponent.prepInstructions.join('\n') 
+                    : editingComponent.prepInstructions}
+                  onChange={(e) => setEditingComponent({ ...editingComponent, prepInstructions: e.target.value })}
+                  data-testid="input-edit-component-prep-instructions"
+                />
+              </div>
+              <div>
+                <Label htmlFor="edit-storageInstructions">Storage instructions</Label>
+                <Input
+                  id="edit-storageInstructions"
+                  value={editingComponent.storageInstructions || ""}
+                  onChange={(e) => setEditingComponent({ ...editingComponent, storageInstructions: e.target.value })}
+                  data-testid="input-edit-component-storage-instructions"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="edit-prepTime">Prep time (minutes)</Label>
+                  <Input
+                    id="edit-prepTime"
+                    type="number"
+                    value={editingComponent.prepTime}
+                    onChange={(e) => setEditingComponent({ ...editingComponent, prepTime: parseInt(e.target.value) })}
+                    data-testid="input-edit-component-prep-time"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="edit-yield">Yield</Label>
+                  <Input
+                    id="edit-yield"
+                    value={editingComponent.yield || ""}
+                    onChange={(e) => setEditingComponent({ ...editingComponent, yield: e.target.value })}
+                    data-testid="input-edit-component-yield"
+                  />
+                </div>
+              </div>
+              <div>
+                <Label htmlFor="edit-tags">Tags (comma-separated)</Label>
+                <Input
+                  id="edit-tags"
+                  value={Array.isArray(editingComponent.tags) 
+                    ? editingComponent.tags.join(', ') 
+                    : editingComponent.tags}
+                  onChange={(e) => setEditingComponent({ ...editingComponent, tags: e.target.value })}
+                  data-testid="input-edit-component-tags"
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setEditingComponent(null)}>
+                Cancel
+              </Button>
+              <Button
+                onClick={() => updateComponentMutation.mutate({ 
+                  id: editingComponent.id, 
+                  data: editingComponent 
+                })}
+                disabled={updateComponentMutation.isPending}
+                data-testid="button-update-component"
+              >
+                {updateComponentMutation.isPending ? "Saving..." : "Save changes"}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
+    </div>
+  );
+}
+
 // Access denied component for non-admin users
 function AccessDenied() {
   return (
@@ -1346,12 +1918,13 @@ function AdminPanelMain() {
         </div>
 
         <Tabs defaultValue="overview" className="space-y-4 sm:space-y-6">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-9 gap-1 h-auto p-1">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-10 gap-1 h-auto p-1">
             <TabsTrigger value="overview" className="text-xs sm:text-sm py-2 px-2">Overview</TabsTrigger>
             <TabsTrigger value="logic" className="bg-purple-100 text-xs sm:text-sm py-2 px-2">Logic</TabsTrigger>
             <TabsTrigger value="nutrition" className="text-xs sm:text-sm py-2 px-2">Nutrition</TabsTrigger>
             <TabsTrigger value="config" className="text-xs sm:text-sm py-2 px-2">Config</TabsTrigger>
             <TabsTrigger value="recipes" className="bg-green-100 text-xs sm:text-sm py-2 px-2">Recipes</TabsTrigger>
+            <TabsTrigger value="meal-prep" className="bg-yellow-100 text-xs sm:text-sm py-2 px-2">Meal prep</TabsTrigger>
             <TabsTrigger value="ingredient-mapping" className="bg-orange-100 text-xs sm:text-sm py-2 px-2">Ingredients</TabsTrigger>
             <TabsTrigger value="tags" className="bg-blue-100 text-xs sm:text-sm py-2 px-2">Tags</TabsTrigger>
             <TabsTrigger value="users" className="text-xs sm:text-sm py-2 px-2">Users</TabsTrigger>
@@ -2425,6 +2998,11 @@ function AdminPanelMain() {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Meal Prep Components Tab */}
+          <TabsContent value="meal-prep" className="space-y-6">
+            <MealPrepComponentsManager />
           </TabsContent>
 
           {/* Ingredient Mapping Tab */}
