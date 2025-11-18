@@ -12,6 +12,8 @@ import {
   shoppingListNames,
   ingredientMappings,
   recipeTranslations,
+  mealPrepComponents,
+  recipeMealPrepComponents,
 
   type User, 
   type InsertUser,
@@ -45,6 +47,11 @@ import {
   type UpdateIngredientMapping,
   type RecipeTranslation,
   type InsertRecipeTranslation,
+  type MealPrepComponent,
+  type InsertMealPrepComponent,
+  type UpdateMealPrepComponent,
+  type RecipeMealPrepComponent,
+  type InsertRecipeMealPrepComponent,
 
   passwordResetCodes,
   type PasswordResetCode,
@@ -190,6 +197,19 @@ export interface IStorage {
   // Recipe Seeding methods
   seedRecipesFromFile(): Promise<{ imported: number; skipped: number }>;
   getRecipeCount(): Promise<number>;
+  
+  // Meal Prep Component methods
+  createMealPrepComponent(data: InsertMealPrepComponent): Promise<MealPrepComponent>;
+  getAllMealPrepComponents(activeOnly?: boolean): Promise<MealPrepComponent[]>;
+  getMealPrepComponentById(id: number): Promise<MealPrepComponent | undefined>;
+  updateMealPrepComponent(id: number, updates: UpdateMealPrepComponent): Promise<MealPrepComponent>;
+  deleteMealPrepComponent(id: number): Promise<void>;
+  
+  // Recipe-Component Link methods
+  linkRecipeToComponent(data: InsertRecipeMealPrepComponent): Promise<RecipeMealPrepComponent>;
+  unlinkRecipeFromComponent(recipeId: string, componentId: number): Promise<void>;
+  getComponentsForRecipe(recipeId: string): Promise<Array<RecipeMealPrepComponent & { component: MealPrepComponent }>>;
+  getRecipesUsingComponent(componentId: number): Promise<Array<RecipeMealPrepComponent & { recipe: Recipe }>>;
 }
 
 export class MemStorage implements IStorage {
@@ -917,6 +937,44 @@ export class MemStorage implements IStorage {
 
   async seedRecipesFromFile(): Promise<{ imported: number; skipped: number }> {
     return { imported: 0, skipped: 0 }; // No-op for MemStorage
+  }
+
+  // Meal Prep Component methods (MemStorage - not implemented)
+  async createMealPrepComponent(data: InsertMealPrepComponent): Promise<MealPrepComponent> {
+    throw new Error("Meal prep components require DatabaseStorage implementation");
+  }
+
+  async getAllMealPrepComponents(activeOnly?: boolean): Promise<MealPrepComponent[]> {
+    throw new Error("Meal prep components require DatabaseStorage implementation");
+  }
+
+  async getMealPrepComponentById(id: number): Promise<MealPrepComponent | undefined> {
+    throw new Error("Meal prep components require DatabaseStorage implementation");
+  }
+
+  async updateMealPrepComponent(id: number, updates: UpdateMealPrepComponent): Promise<MealPrepComponent> {
+    throw new Error("Meal prep components require DatabaseStorage implementation");
+  }
+
+  async deleteMealPrepComponent(id: number): Promise<void> {
+    throw new Error("Meal prep components require DatabaseStorage implementation");
+  }
+
+  // Recipe-Component Link methods (MemStorage - not implemented)
+  async linkRecipeToComponent(data: InsertRecipeMealPrepComponent): Promise<RecipeMealPrepComponent> {
+    throw new Error("Recipe-component links require DatabaseStorage implementation");
+  }
+
+  async unlinkRecipeFromComponent(recipeId: string, componentId: number): Promise<void> {
+    throw new Error("Recipe-component links require DatabaseStorage implementation");
+  }
+
+  async getComponentsForRecipe(recipeId: string): Promise<Array<RecipeMealPrepComponent & { component: MealPrepComponent }>> {
+    throw new Error("Recipe-component links require DatabaseStorage implementation");
+  }
+
+  async getRecipesUsingComponent(componentId: number): Promise<Array<RecipeMealPrepComponent & { recipe: Recipe }>> {
+    throw new Error("Recipe-component links require DatabaseStorage implementation");
   }
 
 }
@@ -2134,6 +2192,119 @@ export class DatabaseStorage implements IStorage {
       console.error('Failed to read recipe seed file:', error);
       throw new Error('Recipe seeding failed');
     }
+  }
+
+  // Meal Prep Component methods
+  async createMealPrepComponent(data: InsertMealPrepComponent): Promise<MealPrepComponent> {
+    const [component] = await db
+      .insert(mealPrepComponents)
+      .values(data)
+      .returning();
+    
+    return component;
+  }
+
+  async getAllMealPrepComponents(activeOnly: boolean = true): Promise<MealPrepComponent[]> {
+    const query = db.select().from(mealPrepComponents);
+    
+    if (activeOnly) {
+      return await query.where(eq(mealPrepComponents.active, true));
+    }
+    
+    return await query;
+  }
+
+  async getMealPrepComponentById(id: number): Promise<MealPrepComponent | undefined> {
+    const [component] = await db
+      .select()
+      .from(mealPrepComponents)
+      .where(eq(mealPrepComponents.id, id))
+      .limit(1);
+    
+    return component;
+  }
+
+  async updateMealPrepComponent(id: number, updates: UpdateMealPrepComponent): Promise<MealPrepComponent> {
+    const [component] = await db
+      .update(mealPrepComponents)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(mealPrepComponents.id, id))
+      .returning();
+    
+    if (!component) {
+      throw new Error(`Meal prep component with id ${id} not found`);
+    }
+    
+    return component;
+  }
+
+  async deleteMealPrepComponent(id: number): Promise<void> {
+    await db
+      .delete(mealPrepComponents)
+      .where(eq(mealPrepComponents.id, id));
+  }
+
+  // Recipe-Component Link methods
+  async linkRecipeToComponent(data: InsertRecipeMealPrepComponent): Promise<RecipeMealPrepComponent> {
+    const [link] = await db
+      .insert(recipeMealPrepComponents)
+      .values(data)
+      .returning();
+    
+    return link;
+  }
+
+  async unlinkRecipeFromComponent(recipeId: string, componentId: number): Promise<void> {
+    await db
+      .delete(recipeMealPrepComponents)
+      .where(
+        and(
+          eq(recipeMealPrepComponents.recipeId, recipeId),
+          eq(recipeMealPrepComponents.componentId, componentId)
+        )
+      );
+  }
+
+  async getComponentsForRecipe(recipeId: string): Promise<Array<RecipeMealPrepComponent & { component: MealPrepComponent }>> {
+    const results = await db
+      .select({
+        id: recipeMealPrepComponents.id,
+        recipeId: recipeMealPrepComponents.recipeId,
+        componentId: recipeMealPrepComponents.componentId,
+        amount: recipeMealPrepComponents.amount,
+        notes: recipeMealPrepComponents.notes,
+        createdAt: recipeMealPrepComponents.createdAt,
+        component: mealPrepComponents
+      })
+      .from(recipeMealPrepComponents)
+      .innerJoin(
+        mealPrepComponents,
+        eq(recipeMealPrepComponents.componentId, mealPrepComponents.id)
+      )
+      .where(eq(recipeMealPrepComponents.recipeId, recipeId));
+    
+    return results;
+  }
+
+  async getRecipesUsingComponent(componentId: number): Promise<Array<RecipeMealPrepComponent & { recipe: Recipe }>> {
+    const results = await db
+      .select({
+        id: recipeMealPrepComponents.id,
+        recipeId: recipeMealPrepComponents.recipeId,
+        componentId: recipeMealPrepComponents.componentId,
+        amount: recipeMealPrepComponents.amount,
+        notes: recipeMealPrepComponents.notes,
+        createdAt: recipeMealPrepComponents.createdAt,
+        recipe: recipes
+      })
+      .from(recipeMealPrepComponents)
+      .innerJoin(
+        recipes,
+        eq(recipeMealPrepComponents.recipeId, recipes.id)
+      )
+      .where(eq(recipeMealPrepComponents.componentId, componentId));
+    
+    return results;
   }
 
 }
