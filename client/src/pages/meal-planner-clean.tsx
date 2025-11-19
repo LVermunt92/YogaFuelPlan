@@ -132,6 +132,7 @@ interface RecipeResponse {
     vegetables: string[];
     benefits: string[];
   };
+  recipeBenefits?: string[];
 }
 
 interface NutritionTargets {
@@ -1405,7 +1406,7 @@ function MealPlannerMain() {
                         
                         {/* Group items by category */}
                         {(() => {
-                          const categories = [...new Set(persistentShoppingList.items.map(item => item.category))];
+                          const categories = Array.from(new Set(persistentShoppingList.items.map(item => item.category)));
                           return (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                               {categories.map(category => (
@@ -2090,17 +2091,17 @@ function MealPlannerMain() {
                 )}
 
                 {/* Recipe Benefits */}
-                {(recipeData.recipeBenefits?.length > 0 || recipeData.vegetableContent?.benefits?.length > 0) && (
+                {((recipeData.recipeBenefits && recipeData.recipeBenefits.length > 0) || recipeData.vegetableContent?.benefits?.length > 0) && (
                   <div className="bg-green-50 rounded-lg p-4">
                     <h4 className="font-semibold text-green-900 mb-3 flex items-center gap-2">
                       ✨ {t.recipeBenefits || 'Recipe Benefits'}
                     </h4>
                     <div className="grid grid-cols-1 gap-4">
-                      {recipeData.recipeBenefits?.length > 0 && (
+                      {recipeData.recipeBenefits && recipeData.recipeBenefits.length > 0 && (
                         <div>
                           <p className="text-sm font-medium text-green-700 mb-1">{t.healthBenefits || 'Health Benefits'}:</p>
                           <ul className="space-y-1">
-                            {recipeData.recipeBenefits.map((benefit, index) => (
+                            {recipeData.recipeBenefits.map((benefit: string, index: number) => (
                               <li key={index} className="flex gap-2 text-sm text-green-600">
                                 <span className="text-green-500">•</span>
                                 {benefit}
