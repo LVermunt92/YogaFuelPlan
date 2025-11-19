@@ -12,7 +12,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
 import { getCurrentWeekSunday, formatWeekDisplay } from '../lib/date-utils';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Calendar, Clock, Target, Eye, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages, Users, Minus, Trash2, Euro, TrendingUp, Droplet, Apple, Leaf, Check, Wheat, Settings, ArrowRight, Info } from "lucide-react";
+import { Calendar, Clock, Target, Eye, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages, Users, Minus, Trash2, Euro, TrendingUp, Droplet, Apple, Leaf, Check, Wheat, Settings, ArrowRight, Info, Sparkles } from "lucide-react";
 import { useLocation } from "wouter";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Separator } from "@/components/ui/separator";
@@ -28,6 +28,34 @@ import { countUniquePlants } from "@/lib/plant-diversity";
 
 // Type alias for easier use
 type Meal = MealType;
+
+// Organic priority produce classification
+// High priority: soft/thin skin, leafy greens (better to buy organic)
+const HIGH_PRIORITY_ORGANIC = [
+  'strawberries', 'strawberry', 'aardbeien', 'aardbei',
+  'spinach', 'spinazie',
+  'kale', 'boerenkool',
+  'grapes', 'druiven',
+  'apples', 'apple', 'appels', 'appel',
+  'peaches', 'peach', 'perziken', 'perzik',
+  'pears', 'pear', 'peren', 'peer',
+  'cherries', 'cherry', 'kersen', 'kers',
+  'tomatoes', 'tomato', 'tomaten', 'tomaat',
+  'celery', 'selderij',
+  'bell pepper', 'peppers', 'paprika',
+  'cucumbers', 'cucumber', 'komkommer',
+  'lettuce', 'sla',
+  'nectarines', 'nectarine',
+  'snap peas', 'sugar snap peas', 'peultjes',
+  'blueberries', 'blueberry', 'blauwe bessen',
+  'raspberries', 'raspberry', 'frambozen',
+  'green beans', 'sperziebonen'
+];
+
+function shouldBuyOrganic(productName: string): boolean {
+  const lowerProduct = productName.toLowerCase();
+  return HIGH_PRIORITY_ORGANIC.some(organic => lowerProduct.includes(organic));
+}
 
 interface MealPlanWithMeals extends MealPlanType {
   meals: MealType[];
@@ -1404,12 +1432,19 @@ function MealPlannerMain() {
                                               className="flex items-center gap-2 flex-grow cursor-pointer"
                                               onClick={() => toggleItemChecked(item)}
                                             >
-                                              <span className={`font-medium leading-tight break-words flex-grow text-sm ${
+                                              <span className={`font-medium leading-tight break-words flex-grow text-sm flex items-center gap-1 ${
                                                 item.isChecked 
                                                   ? 'text-green-700 line-through decoration-2' 
                                                   : 'text-gray-800'
                                               }`}>
                                                 {item.productName}
+                                                {shouldBuyOrganic(item.productName) && (
+                                                  <Leaf 
+                                                    className="h-3.5 w-3.5 text-green-600 inline-block flex-shrink-0" 
+                                                    title={language === 'nl' ? 'Beter biologisch' : 'Better organic'}
+                                                    data-testid="icon-organic-indicator"
+                                                  />
+                                                )}
                                               </span>
                                               <span className={`font-semibold text-sm whitespace-nowrap ${
                                                 item.isChecked 
