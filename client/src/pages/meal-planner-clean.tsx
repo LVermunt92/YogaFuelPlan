@@ -376,13 +376,6 @@ function MealPlannerMain() {
     refetchOnMount: true,
   });
 
-  // Check if user has seen welcome dialog
-  useEffect(() => {
-    if (userProfile && userProfile.hasSeenWelcome === false) {
-      setShowWelcomeDialog(true);
-    }
-  }, [userProfile]);
-
   // Mark welcome as seen
   const handleWelcomeClose = async () => {
     setShowWelcomeDialog(false);
@@ -414,6 +407,13 @@ function MealPlannerMain() {
     staleTime: 0,
     refetchOnMount: true,
   });
+
+  // Check if user has seen welcome dialog - only show if no meal plans exist
+  useEffect(() => {
+    if (userProfile && userProfile.hasSeenWelcome === false && mealPlans.length === 0) {
+      setShowWelcomeDialog(true);
+    }
+  }, [userProfile, mealPlans]);
 
   // Fetch specific meal plan with meals
   const { data: currentMealPlan, isLoading: loadingCurrentPlan } = useQuery<MealPlanWithMeals>({
@@ -1439,11 +1439,19 @@ function MealPlannerMain() {
                                               }`}>
                                                 {item.productName}
                                                 {shouldBuyOrganic(item.productName) && (
-                                                  <Leaf 
-                                                    className="h-3.5 w-3.5 text-green-600 inline-block flex-shrink-0" 
-                                                    title={language === 'nl' ? 'Beter biologisch' : 'Better organic'}
-                                                    data-testid="icon-organic-indicator"
-                                                  />
+                                                  <TooltipProvider>
+                                                    <Tooltip>
+                                                      <TooltipTrigger asChild>
+                                                        <Leaf 
+                                                          className="h-3.5 w-3.5 text-green-600 inline-block flex-shrink-0" 
+                                                          data-testid="icon-organic-indicator"
+                                                        />
+                                                      </TooltipTrigger>
+                                                      <TooltipContent>
+                                                        <p>{language === 'nl' ? 'Beter biologisch' : 'Better organic'}</p>
+                                                      </TooltipContent>
+                                                    </Tooltip>
+                                                  </TooltipProvider>
                                                 )}
                                               </span>
                                               <span className={`font-semibold text-sm whitespace-nowrap ${
