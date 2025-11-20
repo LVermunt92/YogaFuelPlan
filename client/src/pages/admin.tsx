@@ -323,6 +323,10 @@ function IngredientMappingManager() {
     isManualOverride: false 
   });
   const [showCreateMapping, setShowCreateMapping] = useState(false);
+  
+  // Search states
+  const [recipeIngredientSearch, setRecipeIngredientSearch] = useState("");
+  const [shoppingListNameSearch, setShoppingListNameSearch] = useState("");
 
   // Fetch shopping list names
   const { data: shoppingListNames = [], isLoading: shoppingListNamesLoading } = useQuery<ShoppingListName[]>({
@@ -800,7 +804,28 @@ function IngredientMappingManager() {
               {recipeIngredientsLoading ? (
                 <div className="text-center py-8 text-gray-500">Loading recipe ingredients...</div>
               ) : (
-                <div className="space-y-2">
+                <div className="space-y-4">
+                  {/* Search bar */}
+                  <div className="flex items-center gap-2">
+                    <Search className="h-4 w-4 text-gray-400" />
+                    <Input
+                      placeholder="Search ingredients (e.g., 'chicken', 'tomato', 'rice')..."
+                      value={recipeIngredientSearch}
+                      onChange={(e) => setRecipeIngredientSearch(e.target.value)}
+                      className="max-w-md"
+                      data-testid="input-search-recipe-ingredients"
+                    />
+                    {recipeIngredientSearch && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setRecipeIngredientSearch("")}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
+                  <div className="space-y-2">
                   {/* Column headers */}
                   <div className="grid grid-cols-5 gap-4 px-3 py-2 bg-gray-100 rounded font-medium text-sm text-gray-700">
                     <div>Normalized ingredient</div>
@@ -809,7 +834,13 @@ function IngredientMappingManager() {
                     <div>Map to system item</div>
                     <div>Actions</div>
                   </div>
-                  {allRecipeIngredientsData?.ingredients.map((item, index) => {
+                  {allRecipeIngredientsData?.ingredients
+                    .filter(item => 
+                      !recipeIngredientSearch || 
+                      item.ingredient.toLowerCase().includes(recipeIngredientSearch.toLowerCase()) ||
+                      item.originalForms.some(form => form.toLowerCase().includes(recipeIngredientSearch.toLowerCase()))
+                    )
+                    .map((item, index) => {
                     const existingMapping = ingredientMappings.find(
                       m => m.normalizedIngredient === item.ingredient
                     );
@@ -885,6 +916,7 @@ function IngredientMappingManager() {
                       No recipe ingredients found.
                     </div>
                   )}
+                  </div>
                 </div>
               )}
             </CardContent>
