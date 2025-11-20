@@ -30,7 +30,7 @@ import { countUniquePlants } from "@/lib/plant-diversity";
 type Meal = MealType;
 
 // Organic priority produce classification
-// High priority: soft/thin skin, leafy greens (better to buy organic)
+// High priority: soft/thin skin, leafy greens, concentrated products (better to buy organic)
 const HIGH_PRIORITY_ORGANIC = [
   'strawberries', 'strawberry', 'aardbeien', 'aardbei',
   'spinach', 'spinazie',
@@ -41,6 +41,7 @@ const HIGH_PRIORITY_ORGANIC = [
   'pears', 'pear', 'peren', 'peer',
   'cherries', 'cherry', 'kersen', 'kers',
   'tomatoes', 'tomato', 'tomaten', 'tomaat',
+  'tomato paste', 'tomatenpuree', 'tomato puree', 'passata', // Concentrated tomato products
   'celery', 'selderij',
   'bell pepper', 'peppers', 'paprika',
   'cucumbers', 'cucumber', 'komkommer',
@@ -1381,6 +1382,12 @@ function MealPlannerMain() {
                   <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
                     <DialogHeader>
                       <DialogTitle>{t.shoppingListHeader}</DialogTitle>
+                      <DialogDescription className="flex items-center gap-2 text-sm text-muted-foreground pt-2">
+                        <Leaf className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
+                        {language === 'nl' 
+                          ? 'Groen blad = beter biologisch te kopen (producten met dunne schil of geconcentreerde producten)'
+                          : 'Green leaf = better to buy organic (thin-skinned produce or concentrated products)'}
+                      </DialogDescription>
                     </DialogHeader>
                     
                     {loadingPersistentList ? (
