@@ -412,10 +412,13 @@ function MealPlannerMain() {
 
   // Check if user has seen welcome dialog - only show if no meal plans exist
   useEffect(() => {
-    if (userProfile && userProfile.hasSeenWelcome === false && mealPlans.length === 0) {
-      setShowWelcomeDialog(true);
+    // Wait for both userProfile AND mealPlans to finish loading before deciding
+    if (userProfile && !loadingPlans) {
+      if (userProfile.hasSeenWelcome === false && mealPlans.length === 0) {
+        setShowWelcomeDialog(true);
+      }
     }
-  }, [userProfile, mealPlans]);
+  }, [userProfile, mealPlans, loadingPlans]);
 
   // Fetch specific meal plan with meals
   const { data: currentMealPlan, isLoading: loadingCurrentPlan } = useQuery<MealPlanWithMeals>({
