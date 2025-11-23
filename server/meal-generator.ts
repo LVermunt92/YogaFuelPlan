@@ -1506,6 +1506,30 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         }
       }
       
+      // Apply seasonal month filtering for ALL recipes
+      const currentMonth = new Date().toLocaleString('en-US', { month: 'long' }); // e.g., "November"
+      const monthTags = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      const originalCountBeforeMonthFilter = availableMeals.length;
+      availableMeals = availableMeals.filter(meal => {
+        // Check if recipe has any month tags
+        const recipeMonthTags = meal.tags.filter(tag => monthTags.includes(tag));
+        
+        // If recipe has no month tags, it's available year-round - keep it
+        if (recipeMonthTags.length === 0) return true;
+        
+        // If recipe has month tags, only keep it if current month is included
+        if (recipeMonthTags.includes(currentMonth)) {
+          return true;
+        } else {
+          console.log(`📅 Seasonal exclusion: "${meal.name}" removed (available in ${recipeMonthTags.join(', ')}, not ${currentMonth})`);
+          return false;
+        }
+      });
+      
+      if (originalCountBeforeMonthFilter !== availableMeals.length) {
+        console.log(`📅 Seasonal month filter: ${originalCountBeforeMonthFilter} → ${availableMeals.length} ${mealCategory} meals (current month: ${currentMonth})`);
+      }
+      
       // Apply 45-minute cooking time limit for weekdays (Monday-Friday)
       const isWeekday = day >= 2 && day <= 6; // Days 2-6 are Monday-Friday (Day 1 = Sunday)
       if (isWeekday && (mealCategory === 'lunch' || mealCategory === 'dinner')) {
