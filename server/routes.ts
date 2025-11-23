@@ -3573,9 +3573,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // DELETE /api/admin/unified-recipes/:id - Delete a recipe from unified database
+  // DELETE /api/admin/unified-recipes/:id - Delete a recipe from unified database (HARD DELETE)
   app.delete("/api/admin/unified-recipes/:id", async (req, res) => {
     const { recipeDeletionCache } = await import('./recipe-deletion-cache.js');
+    const { recipeCache } = await import('./recipe-cache.js');
     
     try {
       const userId = getUserIdFromToken(req);
@@ -3594,14 +3595,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Recipe ID is required" });
       }
 
-      // Save deletion to database FIRST
-      await storage.saveRecipeDeletion(id, req.session.userId);
+      // HARD DELETE: Actually remove the recipe from the database
+      await storage.deleteRecipe(id);
+      
+      // Also remove from soft-delete tracking if it exists
+      await storage.removeRecipeDeletion(id).catch(() => {
+        // Ignore error if no deletion record exists
+      });
 
-      // Only update cache after successful DB write
-      recipeDeletionCache.addDeletion(id);
+      console.log(`🗑️ Admin deleted recipe: ${id}`);
 
       res.json({
-        message: "Recipe deleted successfully",
+        message: "Recipe permanently deleted from database",
         recipeId: id
       });
     } catch (error) {
@@ -3611,6 +3616,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Always invalidate caches to ensure consistency
       invalidateEnhancedMealDatabaseCache();
       recipeDeletionCache.invalidate();
+      recipeCache.invalidate();
     }
   });
 
