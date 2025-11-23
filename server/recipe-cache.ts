@@ -51,15 +51,8 @@ class RecipeCache {
       const { storage } = await import('./storage');
       const dbRecipes = await storage.getAllRecipes(true); // Only active recipes
       
-      // Filter out deleted recipes (tracked in separate recipeDeletions table)
-      const deletedRecipeIds = await storage.getRecipeDeletions();
-      const deletedSet = new Set(deletedRecipeIds);
-      const activeRecipes = dbRecipes.filter(recipe => !deletedSet.has(recipe.id));
-      
-      console.log(`🗑️  Filtered out ${deletedRecipeIds.length} deleted recipes`);
-      
       // Convert database Recipe format to MealOption format
-      const mealOptions: MealOption[] = activeRecipes.map(recipe => {
+      const mealOptions: MealOption[] = dbRecipes.map(recipe => {
         const nutritionData = recipe.nutrition as any || {};
         const vegContent = recipe.vegetableContent as any || {};
         

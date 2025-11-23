@@ -3575,7 +3575,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // DELETE /api/admin/unified-recipes/:id - Delete a recipe from unified database (HARD DELETE)
   app.delete("/api/admin/unified-recipes/:id", async (req, res) => {
-    const { recipeDeletionCache } = await import('./recipe-deletion-cache.js');
     const { recipeCache } = await import('./recipe-cache.js');
     
     try {
@@ -3597,11 +3596,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // HARD DELETE: Actually remove the recipe from the database
       await storage.deleteRecipe(id);
-      
-      // Also remove from soft-delete tracking if it exists
-      await storage.removeRecipeDeletion(id).catch(() => {
-        // Ignore error if no deletion record exists
-      });
 
       console.log(`🗑️ Admin deleted recipe: ${id}`);
 
@@ -3615,49 +3609,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } finally {
       // Always invalidate caches to ensure consistency
       invalidateEnhancedMealDatabaseCache();
-      recipeDeletionCache.invalidate();
       recipeCache.invalidate();
-    }
-  });
-
-  // POST /api/admin/unified-recipes/:id/restore - Restore a deleted recipe
-  app.post("/api/admin/unified-recipes/:id/restore", async (req, res) => {
-    const { recipeDeletionCache } = await import('./recipe-deletion-cache.js');
-    
-    try {
-      const userId = getUserIdFromToken(req);
-      if (!userId) {
-        return res.status(401).json({ message: "Not authenticated" });
-      }
-
-      const isAdmin = await isAdminUser(userId);
-      if (!isAdmin) {
-        return res.status(403).json({ message: "Admin access required" });
-      }
-
-      const { id } = req.params;
-      
-      if (!id) {
-        return res.status(400).json({ message: "Recipe ID is required" });
-      }
-
-      // Remove deletion from database FIRST
-      await storage.removeRecipeDeletion(id);
-
-      // Only update cache after successful DB write
-      recipeDeletionCache.removeDeletion(id);
-
-      res.json({
-        message: "Recipe restored successfully",
-        recipeId: id
-      });
-    } catch (error) {
-      console.error("Error restoring recipe:", error);
-      res.status(500).json({ message: "Failed to restore recipe" });
-    } finally {
-      // Always invalidate caches to ensure consistency
-      invalidateEnhancedMealDatabaseCache();
-      recipeDeletionCache.invalidate();
     }
   });
 

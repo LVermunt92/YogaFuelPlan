@@ -164,10 +164,7 @@ export interface IStorage {
 
   // Recipe Modification methods
   saveRecipeModification(recipeId: string, modification: any): Promise<void>;
-  saveRecipeDeletion(recipeId: string, userId: number): Promise<void>;
-  removeRecipeDeletion(recipeId: string): Promise<void>;
   getRecipeModifications(): Promise<any[]>;
-  getRecipeDeletions(): Promise<string[]>;
   
   // Deleted Tags methods
   saveDeletedTag(tag: string, deletedBy?: number): Promise<void>;
@@ -759,19 +756,7 @@ export class MemStorage implements IStorage {
     // No-op for MemStorage - requires DatabaseStorage implementation
   }
 
-  async saveRecipeDeletion(recipeId: string, userId: number): Promise<void> {
-    // No-op for MemStorage - requires DatabaseStorage implementation
-  }
-
-  async removeRecipeDeletion(recipeId: string): Promise<void> {
-    // No-op for MemStorage - requires DatabaseStorage implementation
-  }
-
   async getRecipeModifications(): Promise<any[]> {
-    return [];
-  }
-
-  async getRecipeDeletions(): Promise<string[]> {
     return [];
   }
   
@@ -1885,16 +1870,6 @@ export class DatabaseStorage implements IStorage {
       });
   }
 
-  async saveRecipeDeletion(recipeId: string, userId: number): Promise<void> {
-    await db
-      .insert(recipeDeletions)
-      .values({
-        recipeId,
-        deletedBy: userId
-      })
-      .onConflictDoNothing(); // Don't duplicate deletions
-  }
-
   async getRecipeModifications(): Promise<any[]> {
     const modifications = await db.select().from(recipeModifications);
     return modifications.map(mod => ({
@@ -1909,19 +1884,6 @@ export class DatabaseStorage implements IStorage {
       modifiedBy: mod.modifiedBy,
       modifiedAt: mod.modifiedAt
     }));
-  }
-
-  async getRecipeDeletions(): Promise<string[]> {
-    // Note: Retry logic is now handled by RecipeDeletionCache
-    // This method should throw errors so the cache can handle retries properly
-    const deletions = await db.select().from(recipeDeletions);
-    return deletions.map(del => del.recipeId);
-  }
-
-  async removeRecipeDeletion(recipeId: string): Promise<void> {
-    await db
-      .delete(recipeDeletions)
-      .where(eq(recipeDeletions.recipeId, recipeId));
   }
   
   // Deleted Tags methods
