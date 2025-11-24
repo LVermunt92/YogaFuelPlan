@@ -1571,10 +1571,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
           console.log(`✅ Using pre-translated recipe from database for ${mealOption.id}`);
           translatedRecipe = {
             name: preTranslated.name,
-            ingredients: finalIngredients.length > 0 && finalIngredients !== mealOption.ingredients 
+            ingredients: incorporatedIngredients.length > 0 
               ? finalIngredients  // Use modified ingredients with leftovers
               : preTranslated.ingredients,
-            instructions: finalInstructions.length > 0 && finalInstructions !== mealOption.recipe?.instructions
+            instructions: incorporatedIngredients.length > 0
               ? finalInstructions  // Use modified instructions with leftovers
               : preTranslated.instructions,
             tips: preTranslated.tips || [],
