@@ -34,6 +34,7 @@ export const users = pgTable("users", {
   cycleSupportRecipes: boolean("cycle_support_recipes").default(false),
   menstrualPhase: text("menstrual_phase").default("off"), // off, menstrual, follicular, ovulation, luteal
   longevityFocusedRecipes: boolean("longevity_focused_recipes").default(false), // enable longevity-focused recipes
+  dinnerLowCarbMaxCarbs: integer("dinner_low_carb_max_carbs"), // max carbs for dinner (null = no limit, e.g. 20 for low-carb dinners)
   hasSeenWelcome: boolean("has_seen_welcome").default(false), // track if user has seen welcome message
   lastLoginAt: timestamp("last_login_at"), // track when user last logged in
   weightLossWeekNumber: integer("weight_loss_week_number").default(1), // track current week for weight loss journey (resets maintenance weeks)
