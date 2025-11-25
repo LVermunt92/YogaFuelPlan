@@ -57,6 +57,7 @@ interface UserProfile {
   eatingDaysAtHome: number;
   useOnlyMyRecipes: boolean;
   menstrualPhase: string;
+  dinnerLowCarbMaxCarbs: number | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -126,6 +127,7 @@ export default function Profile() {
     eatingDaysAtHome: '',
     useOnlyMyRecipes: false,
     menstrualPhase: 'off',
+    dinnerLowCarbMaxCarbs: '',
   });
 
   // Calculate dynamic protein target based on age, gender, and activity level
@@ -196,6 +198,7 @@ export default function Profile() {
         eatingDaysAtHome: isNewUser ? '' : (user.eatingDaysAtHome?.toString() || ''),
         useOnlyMyRecipes: user.useOnlyMyRecipes || false,
         menstrualPhase: user.menstrualPhase || 'off',
+        dinnerLowCarbMaxCarbs: user.dinnerLowCarbMaxCarbs?.toString() || '',
       });
       setIsFormInitialized(true);
     }
@@ -241,6 +244,7 @@ export default function Profile() {
           eatingDaysAtHome: updatedData.eatingDaysAtHome?.toString() || '7',
           useOnlyMyRecipes: updatedData.useOnlyMyRecipes || false,
           menstrualPhase: updatedData.menstrualPhase || 'off',
+          dinnerLowCarbMaxCarbs: updatedData.dinnerLowCarbMaxCarbs?.toString() || '',
         });
       }
       
@@ -307,6 +311,7 @@ export default function Profile() {
       eatingDaysAtHome: formData.eatingDaysAtHome ? parseInt(formData.eatingDaysAtHome) : 7,
       useOnlyMyRecipes: formData.useOnlyMyRecipes,
       menstrualPhase: formData.menstrualPhase,
+      dinnerLowCarbMaxCarbs: formData.dinnerLowCarbMaxCarbs ? parseInt(formData.dinnerLowCarbMaxCarbs) : null,
     };
 
     updateProfileMutation.mutate(updateData);
@@ -1009,6 +1014,38 @@ export default function Profile() {
                     <SelectItem value="luteal">Luteal - Days 15-28 (pre-menstruation)</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+
+              {/* Low-Carb Dinner Setting */}
+              <div className="p-4 border rounded-lg bg-green-50 border-green-200">
+                <Label htmlFor="dinnerLowCarbMaxCarbs" className="text-sm font-medium text-foreground mb-2 block">
+                  {language === 'nl' ? 'Laag koolhydraat avondeten' : 'Low-carb dinner limit'}
+                </Label>
+                <p className="text-xs text-muted-foreground mb-3">
+                  {language === 'nl' 
+                    ? 'Stel een maximaal koolhydraatlimiet in voor avondmaaltijden (leeg laten = geen limiet)'
+                    : 'Set a maximum carb limit for dinner recipes (leave empty = no limit)'}
+                </p>
+                <div className="flex items-center gap-2">
+                  <Input
+                    id="dinnerLowCarbMaxCarbs"
+                    type="number"
+                    min="0"
+                    max="100"
+                    placeholder={language === 'nl' ? 'bijv. 20' : 'e.g. 20'}
+                    value={formData.dinnerLowCarbMaxCarbs}
+                    onChange={(e) => setFormData(prev => ({ ...prev, dinnerLowCarbMaxCarbs: e.target.value }))}
+                    className="input-clean w-24"
+                  />
+                  <span className="text-sm text-muted-foreground">
+                    {language === 'nl' ? 'gram koolhydraten max' : 'grams carbs max'}
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground mt-2">
+                  {language === 'nl' 
+                    ? 'Aanbevolen: 20g voor keto, 30g voor laag-koolhydraat'
+                    : 'Recommended: 20g for keto, 30g for low-carb'}
+                </p>
               </div>
 
             </div>

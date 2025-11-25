@@ -119,6 +119,28 @@ function applyAntiAgingPreference(meals: MealOption[], currentAntiAgingCount: nu
 }
 
 /**
+ * Filter meals to only include low-carb options for dinner
+ * Used when user has dinnerLowCarbMaxCarbs setting configured
+ */
+function filterLowCarbMeals(meals: MealOption[], maxCarbs: number): MealOption[] {
+  const lowCarbMeals = meals.filter(meal => {
+    const carbs = meal.nutrition?.carbohydrates || 0;
+    return carbs <= maxCarbs;
+  });
+  
+  if (lowCarbMeals.length === 0) {
+    console.log(`⚠️ LOW-CARB FILTER: No meals found with ≤${maxCarbs}g carbs, falling back to all options`);
+    // Sort by carbs and return lowest-carb options
+    return [...meals].sort((a, b) => 
+      (a.nutrition?.carbohydrates || 0) - (b.nutrition?.carbohydrates || 0)
+    ).slice(0, Math.min(10, meals.length));
+  }
+  
+  console.log(`🥗 LOW-CARB FILTER: Found ${lowCarbMeals.length} meals with ≤${maxCarbs}g carbs`);
+  return lowCarbMeals;
+}
+
+/**
  * Get ingredients to use up from user profile
  */
 function getIngredientsToUseUp(user?: User): string[] {
@@ -2291,12 +2313,18 @@ async function generateMealPrepPlan(
   // Initialize global variety tracking for similar recipe filtering
   const allSelectedMealNames = new Set<string>();
   
-  // Declare dinner meal variables
+  // Declare dinner meal variables for same-type leftover pairing
   let sundayDinnerMeal: MealOption | null = null;
   let mondayDinnerMeal: MealOption | null = null;
   let tuesdayDinnerMeal: MealOption | null = null;
   let wednesdayDinnerMeal: MealOption | null = null;
   let thursdayDinnerMeal: MealOption | null = null;
+  let fridayDinnerMeal: MealOption | null = null;
+  
+  // Declare lunch meal variables for same-type leftover pairing
+  let mondayLunchMeal: MealOption | null = null;
+  let wednesdayLunchMeal: MealOption | null = null;
+  let fridayLunchMeal: MealOption | null = null;
   
   const cookingDaysPerWeek = user?.cookingDaysPerWeek || 3;
   const eatingDaysAtHome = user?.eatingDaysAtHome || 6;
@@ -2544,34 +2572,59 @@ async function generateMealPrepPlan(
     if (daysWithMeals.includes(day)) {
       // Days with home cooking - use Sunday night pattern
       
-      // LUNCH LOGIC
+      // LUNCH LOGIC - Same-meal-type pairing (lunch→lunch leftovers)
+      // Fresh cooking on Mon/Wed/Fri, leftovers on Tue/Thu/Sat
       let lunchMeal = null;
       let isLunchLeftover = false;
       
-      if (day === 2 && sundayDinnerMeal) {
-        // Day 2: Monday lunch - leftover from Sunday dinner
-        lunchMeal = sundayDinnerMeal;
+      // Track lunch meals for same-type leftover pairing
+      if (day === 2) {
+        // Day 2: Monday lunch - FRESH cooking
+        const isWeekday = day >= 2 && day <= 6;
+        const mealOptions = isWeekday ? weekdayLunchOptions : lunchOptions;
+        const lunchResult = await selectUnusedMealIntelligently(mealOptions, usedLunchMeals, allSelectedMealNames, false, ingredientsToUseUp, 'lunch', dietaryTags, dailyProteinTarget);
+        lunchMeal = lunchResult.meal;
+        mondayLunchMeal = lunchMeal;
+        usedLunchMeals.add(lunchMeal.name);
+        allSelectedMealNames.add(lunchMeal.name);
+        console.log(`🍽️ Day 2 Monday lunch (fresh): "${lunchMeal.name}"`);
+      } else if (day === 3 && mondayLunchMeal) {
+        // Day 3: Tuesday lunch - LEFTOVER from Monday lunch
+        lunchMeal = mondayLunchMeal;
         isLunchLeftover = true;
-      } else if (day === 3 && mondayDinnerMeal) {
-        // Day 3: Tuesday lunch - leftover from Monday dinner
-        lunchMeal = mondayDinnerMeal;
+        console.log(`🍽️ Day 3 Tuesday lunch (leftover): "${lunchMeal.name}"`);
+      } else if (day === 4) {
+        // Day 4: Wednesday lunch - FRESH cooking
+        const isWeekday = day >= 2 && day <= 6;
+        const mealOptions = isWeekday ? weekdayLunchOptions : lunchOptions;
+        const lunchResult = await selectUnusedMealIntelligently(mealOptions, usedLunchMeals, allSelectedMealNames, false, ingredientsToUseUp, 'lunch', dietaryTags, dailyProteinTarget);
+        lunchMeal = lunchResult.meal;
+        wednesdayLunchMeal = lunchMeal;
+        usedLunchMeals.add(lunchMeal.name);
+        allSelectedMealNames.add(lunchMeal.name);
+        console.log(`🍽️ Day 4 Wednesday lunch (fresh): "${lunchMeal.name}"`);
+      } else if (day === 5 && wednesdayLunchMeal) {
+        // Day 5: Thursday lunch - LEFTOVER from Wednesday lunch
+        lunchMeal = wednesdayLunchMeal;
         isLunchLeftover = true;
-      } else if (day === 4 && tuesdayDinnerMeal) {
-        // Day 4: Wednesday lunch - leftover from Tuesday dinner
-        lunchMeal = tuesdayDinnerMeal;
+        console.log(`🍽️ Day 5 Thursday lunch (leftover): "${lunchMeal.name}"`);
+      } else if (day === 6) {
+        // Day 6: Friday lunch - FRESH cooking
+        const isWeekday = day >= 2 && day <= 6;
+        const mealOptions = isWeekday ? weekdayLunchOptions : lunchOptions;
+        const lunchResult = await selectUnusedMealIntelligently(mealOptions, usedLunchMeals, allSelectedMealNames, false, ingredientsToUseUp, 'lunch', dietaryTags, dailyProteinTarget);
+        lunchMeal = lunchResult.meal;
+        fridayLunchMeal = lunchMeal;
+        usedLunchMeals.add(lunchMeal.name);
+        allSelectedMealNames.add(lunchMeal.name);
+        console.log(`🍽️ Day 6 Friday lunch (fresh): "${lunchMeal.name}"`);
+      } else if (day === 7 && fridayLunchMeal) {
+        // Day 7: Saturday lunch - LEFTOVER from Friday lunch
+        lunchMeal = fridayLunchMeal;
         isLunchLeftover = true;
-      } else if (day === 5 && wednesdayDinnerMeal) {
-        // Day 5: Thursday lunch - leftover from Wednesday dinner
-        lunchMeal = wednesdayDinnerMeal;
-        isLunchLeftover = true;
-      } else if (day === 6 && thursdayDinnerMeal) {
-        // Day 6: Friday lunch - leftover from Thursday dinner
-        lunchMeal = thursdayDinnerMeal;
-        isLunchLeftover = true;
+        console.log(`🍽️ Day 7 Saturday lunch (leftover): "${lunchMeal.name}"`);
       } else if (day !== 1) {
-        // Fresh lunch (Day 7, or when no previous dinner) - use unique meals
-        // Skip Day 1 (Sunday evening has no lunch)
-        // Apply weekday time limit (Monday-Friday = days 2-6)
+        // Fallback fresh lunch
         const isWeekday = day >= 2 && day <= 6;
         const mealOptions = isWeekday ? weekdayLunchOptions : lunchOptions;
         const lunchResult = await selectUnusedMealIntelligently(mealOptions, usedLunchMeals, allSelectedMealNames, false, ingredientsToUseUp, 'lunch', dietaryTags, dailyProteinTarget);
@@ -2581,11 +2634,22 @@ async function generateMealPrepPlan(
       }
       
       if (lunchMeal) {
+        // Check if this lunch will be used for tomorrow's lunch (same-type batch cooking)
+        const willBeLeftover = (day === 2 && daysWithMeals.includes(3)) || // Monday lunch → Tuesday lunch
+                               (day === 4 && daysWithMeals.includes(5)) || // Wednesday lunch → Thursday lunch
+                               (day === 6 && daysWithMeals.includes(7));   // Friday lunch → Saturday lunch
+        
         const householdSize = user?.householdSize || 1;
         
         // servingMultiplier already handles batch cooking for multiple days
-        // Only apply household size multiplier (no additional leftover doubling)
-        const portionFactor = caloricAdjustment * householdSize;
+        // Only apply household size multiplier if servingMultiplier = 1 (cooking every day)
+        let portionFactor = caloricAdjustment * householdSize;
+        
+        // Only apply leftover doubling if NOT using servingMultiplier
+        // (servingMultiplier already covers cooking for multiple eating days)
+        if (servingMultiplier === 1 && willBeLeftover && !isLunchLeftover && householdSize === 1) {
+          portionFactor *= 2; // Double for single person cooking for leftovers
+        }
         
         // Portion shows "2x" for batch cooking, but protein is per eating day (not total cooked)
         let adjustedPortion = adjustMealPortion(lunchMeal.portion, portionFactor, servingMultiplier);
@@ -2623,90 +2687,75 @@ async function generateMealPrepPlan(
         totalWeeklyProtein += adjustedProtein;
       }
       
-      // DINNER LOGIC  
+      // DINNER LOGIC - Same-meal-type pairing (dinner→dinner leftovers) with low-carb filtering
+      // Fresh cooking on Mon/Wed/Fri, leftovers on Tue/Thu/Sat
       let dinnerMeal = null;
       let isDinnerLeftover = false;
       
+      // Apply low-carb filter for dinners if user has dinnerLowCarbMaxCarbs set
+      const dinnerLowCarbMaxCarbs = user?.dinnerLowCarbMaxCarbs;
+      let lowCarbDinnerOptions = dinnerOptions;
+      let lowCarbWeekdayDinnerOptions = weekdayDinnerOptions;
+      
+      if (dinnerLowCarbMaxCarbs && dinnerLowCarbMaxCarbs > 0) {
+        console.log(`🥗 LOW-CARB DINNER: Filtering for ≤${dinnerLowCarbMaxCarbs}g carbs`);
+        lowCarbDinnerOptions = filterLowCarbMeals(dinnerOptions, dinnerLowCarbMaxCarbs);
+        lowCarbWeekdayDinnerOptions = filterLowCarbMeals(weekdayDinnerOptions, dinnerLowCarbMaxCarbs);
+      }
+      
       if (day === 1) {
-        // Day 1: Sunday dinner - FIRST cooking moment (use unique meals)
-        // Apply weekday time limit (Monday-Friday = days 2-6)
-        const isWeekday = day >= 2 && day <= 6;
-        const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        const selectedDinnerResult = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
-        let selectedDinnerMeal = selectedDinnerResult.meal;
-        usedDinnerMeals.add(selectedDinnerMeal.name);
-        allSelectedMealNames.add(selectedDinnerMeal.name);
-        
-        // Leftover ingredients are now handled by the intelligent ingredient matching system
-        
-        sundayDinnerMeal = selectedDinnerMeal;
-        dinnerMeal = sundayDinnerMeal;
+        // Day 1: Sunday - no dinner cooking (week starts fresh on Monday)
+        // User eats out or skips Sunday dinner
+        dinnerMeal = null;
       } else if (day === 2) {
-        // Day 2: Monday dinner - fresh cooking (use unique meals)
-        // Apply weekday time limit (Monday-Friday = days 2-6)
+        // Day 2: Monday dinner - FRESH cooking (low-carb)
         const isWeekday = day >= 2 && day <= 6;
-        const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
+        const mealOptions = isWeekday ? lowCarbWeekdayDinnerOptions : lowCarbDinnerOptions;
         const selectedMondayDinnerResult = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
-        let selectedDinnerMeal = selectedMondayDinnerResult.meal;
-        usedDinnerMeals.add(selectedDinnerMeal.name);
-        allSelectedMealNames.add(selectedDinnerMeal.name);
-        
-        // Leftover ingredients are now handled by the intelligent ingredient matching system
-        
-        mondayDinnerMeal = selectedDinnerMeal;
-        dinnerMeal = mondayDinnerMeal;
-      } else if (day === 3) {
-        // Day 3: Tuesday dinner - fresh cooking (use unique meals)
-        // Apply weekday time limit (Monday-Friday = days 2-6)
-        const isWeekday = day >= 2 && day <= 6;
-        const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        const selectedTuesdayDinnerResult = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
-        let selectedDinnerMeal = selectedTuesdayDinnerResult.meal;
-        usedDinnerMeals.add(selectedDinnerMeal.name);
-        allSelectedMealNames.add(selectedDinnerMeal.name);
-        
-        // Leftover ingredients are now handled by the intelligent ingredient matching system
-        
-        tuesdayDinnerMeal = selectedDinnerMeal;
-        dinnerMeal = tuesdayDinnerMeal;
-      } else if (day === 4) {
-        // Day 4: Wednesday dinner - fresh cooking (use unique meals)
-        // Apply weekday time limit (Monday-Friday = days 2-6)
-        const isWeekday = day >= 2 && day <= 6;
-        const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        const wednesdayDinnerResult = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
-        wednesdayDinnerMeal = wednesdayDinnerResult.meal;
-        usedDinnerMeals.add(wednesdayDinnerMeal.name);
-        allSelectedMealNames.add(wednesdayDinnerMeal.name);
-        dinnerMeal = wednesdayDinnerMeal;
-      } else if (day === 5) {
-        // Day 5: Thursday dinner - fresh cooking (use unique meals)
-        // Apply weekday time limit (Monday-Friday = days 2-6)
-        const isWeekday = day >= 2 && day <= 6;
-        const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        const thursdayDinnerResult = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
-        thursdayDinnerMeal = thursdayDinnerResult.meal;
-        usedDinnerMeals.add(thursdayDinnerMeal.name);
-        allSelectedMealNames.add(thursdayDinnerMeal.name);
-        dinnerMeal = thursdayDinnerMeal;
-      } else if (day === 6) {
-        // Day 6: Friday dinner - fresh cooking (3rd cooking day, use unique meals)
-        // Apply weekday time limit (Monday-Friday = days 2-6)
-        const isWeekday = day >= 2 && day <= 6;
-        const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
-        const fridayDinnerResult = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
-        dinnerMeal = fridayDinnerResult.meal;
+        dinnerMeal = selectedMondayDinnerResult.meal;
+        mondayDinnerMeal = dinnerMeal;
         usedDinnerMeals.add(dinnerMeal.name);
         allSelectedMealNames.add(dinnerMeal.name);
-      } else if (day === 7 && thursdayDinnerMeal) {
-        // Day 7: Saturday dinner - leftover from Thursday
-        dinnerMeal = thursdayDinnerMeal;
+        console.log(`🍽️ Day 2 Monday dinner (fresh, low-carb): "${dinnerMeal.name}" (${dinnerMeal.nutrition.carbohydrates}g carbs)`);
+      } else if (day === 3 && mondayDinnerMeal) {
+        // Day 3: Tuesday dinner - LEFTOVER from Monday dinner
+        dinnerMeal = mondayDinnerMeal;
         isDinnerLeftover = true;
-      } else {
-        // Fallback dinner - use unique meals
-        // Apply weekday time limit (Monday-Friday = days 2-6)
+        console.log(`🍽️ Day 3 Tuesday dinner (leftover): "${dinnerMeal.name}"`);
+      } else if (day === 4) {
+        // Day 4: Wednesday dinner - FRESH cooking (low-carb)
         const isWeekday = day >= 2 && day <= 6;
-        const mealOptions = isWeekday ? weekdayDinnerOptions : dinnerOptions;
+        const mealOptions = isWeekday ? lowCarbWeekdayDinnerOptions : lowCarbDinnerOptions;
+        const wednesdayDinnerResult = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        dinnerMeal = wednesdayDinnerResult.meal;
+        wednesdayDinnerMeal = dinnerMeal;
+        usedDinnerMeals.add(dinnerMeal.name);
+        allSelectedMealNames.add(dinnerMeal.name);
+        console.log(`🍽️ Day 4 Wednesday dinner (fresh, low-carb): "${dinnerMeal.name}" (${dinnerMeal.nutrition.carbohydrates}g carbs)`);
+      } else if (day === 5 && wednesdayDinnerMeal) {
+        // Day 5: Thursday dinner - LEFTOVER from Wednesday dinner
+        dinnerMeal = wednesdayDinnerMeal;
+        isDinnerLeftover = true;
+        console.log(`🍽️ Day 5 Thursday dinner (leftover): "${dinnerMeal.name}"`);
+      } else if (day === 6) {
+        // Day 6: Friday dinner - FRESH cooking (low-carb)
+        const isWeekday = day >= 2 && day <= 6;
+        const mealOptions = isWeekday ? lowCarbWeekdayDinnerOptions : lowCarbDinnerOptions;
+        const fridayDinnerResult = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
+        dinnerMeal = fridayDinnerResult.meal;
+        fridayDinnerMeal = dinnerMeal;
+        usedDinnerMeals.add(dinnerMeal.name);
+        allSelectedMealNames.add(dinnerMeal.name);
+        console.log(`🍽️ Day 6 Friday dinner (fresh, low-carb): "${dinnerMeal.name}" (${dinnerMeal.nutrition.carbohydrates}g carbs)`);
+      } else if (day === 7 && fridayDinnerMeal) {
+        // Day 7: Saturday dinner - LEFTOVER from Friday dinner
+        dinnerMeal = fridayDinnerMeal;
+        isDinnerLeftover = true;
+        console.log(`🍽️ Day 7 Saturday dinner (leftover): "${dinnerMeal.name}"`);
+      } else if (day !== 1) {
+        // Fallback dinner - fresh cooking with low-carb options
+        const isWeekday = day >= 2 && day <= 6;
+        const mealOptions = isWeekday ? lowCarbWeekdayDinnerOptions : lowCarbDinnerOptions;
         const fallbackDinnerResult = await selectUnusedMealIntelligently(mealOptions, usedDinnerMeals, allSelectedMealNames, false, ingredientsToUseUp, 'dinner', dietaryTags, dailyProteinTarget);
         dinnerMeal = fallbackDinnerResult.meal;
         usedDinnerMeals.add(dinnerMeal.name);
@@ -2714,12 +2763,10 @@ async function generateMealPrepPlan(
       }
       
       if (dinnerMeal) {
-        // Check if this dinner will be used for tomorrow's lunch (batch cooking)
-        const willBeLeftover = (day === 1 && daysWithMeals.includes(2)) || // Sunday dinner → Monday lunch
-                               (day === 2 && daysWithMeals.includes(3)) || // Monday dinner → Tuesday lunch
-                               (day === 3 && daysWithMeals.includes(4)) || // Tuesday dinner → Wednesday lunch
-                               (day === 4 && daysWithMeals.includes(5)) || // Wednesday dinner → Thursday lunch
-                               (day === 5 && daysWithMeals.includes(6));   // Thursday dinner → Friday lunch
+        // Check if this dinner will be used for tomorrow's dinner (same-type batch cooking)
+        const willBeLeftover = (day === 2 && daysWithMeals.includes(3)) || // Monday dinner → Tuesday dinner
+                               (day === 4 && daysWithMeals.includes(5)) || // Wednesday dinner → Thursday dinner
+                               (day === 6 && daysWithMeals.includes(7));   // Friday dinner → Saturday dinner
         
         const householdSize = user?.householdSize || 1;
         
