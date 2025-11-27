@@ -140,8 +140,17 @@ export async function translateRecipeEnhanced(
   // Check cache first using recipe ID
   const cacheKey = getCacheKey(recipe.id, language);
   if (cacheKey && translationCache.has(cacheKey)) {
-    console.log(`✅ Using cached translation for recipe ID: ${recipe.id}`);
-    return translationCache.get(cacheKey);
+    const cached = translationCache.get(cacheKey);
+    // Only use cached version if it has content OR if the current request also has no content (name-only)
+    const cachedHasContent = cached.ingredients?.length > 0 && cached.instructions?.length > 0;
+    const requestHasContent = recipe.ingredients?.length > 0 && recipe.instructions?.length > 0;
+    
+    if (cachedHasContent || !requestHasContent) {
+      console.log(`✅ Using cached translation for recipe ID: ${recipe.id}`);
+      return cached;
+    } else {
+      console.log(`⚠️ Cache has empty content but request has content - re-translating ${recipe.id}`);
+    }
   }
 
   // Try AI translation first if available
@@ -172,10 +181,14 @@ export async function translateRecipeEnhanced(
         translationMethod: 'ai-enhanced'
       };
 
-      // Cache the translation using recipe ID
-      if (cacheKey) {
+      // Only cache translations that have actual content (ingredients and instructions)
+      // This prevents caching incomplete translations from meal plan list views
+      const hasContent = translatedIngredients.length > 0 && translatedInstructions.length > 0;
+      if (cacheKey && hasContent) {
         translationCache.set(cacheKey, translatedRecipe);
         console.log(`💾 Cached translation for recipe ID: ${recipe.id}`);
+      } else if (cacheKey && !hasContent) {
+        console.log(`⚠️ Skipping cache for ${recipe.id} - no ingredients/instructions (name-only translation)`);
       }
 
       return translatedRecipe;
