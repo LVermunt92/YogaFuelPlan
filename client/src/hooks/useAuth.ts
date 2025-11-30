@@ -7,12 +7,17 @@ interface User {
   email?: string;
 }
 
+// Token refresh result types
+type RefreshResult = 
+  | { success: true; token: string }
+  | { success: false; reason: 'no_token' | 'invalid' | 'network_error' };
+
 // Automatic token refresh when access token expires
-async function refreshAccessToken(): Promise<string | null> {
+async function refreshAccessToken(): Promise<RefreshResult> {
   const refreshToken = getRefreshToken();
   
   if (!refreshToken) {
-    return null;
+    return { success: false, reason: 'no_token' };
   }
   
   try {
@@ -26,16 +31,16 @@ async function refreshAccessToken(): Promise<string | null> {
       // Refresh token is invalid/expired, clear everything
       console.log('Refresh token invalid or expired, clearing tokens');
       clearTokens();
-      return null;
+      return { success: false, reason: 'invalid' };
     }
     
     const data = await res.json();
     setTokens(data.accessToken, refreshToken);
-    return data.accessToken;
+    return { success: true, token: data.accessToken };
   } catch (error) {
     // Network error - don't clear tokens, keep user logged in
     console.error('Token refresh failed (network error) - keeping user logged in:', error);
-    return null;
+    return { success: false, reason: 'network_error' };
   }
 }
 
@@ -64,15 +69,31 @@ export function useAuth() {
         
         // If 401 and we have a refresh token, try to refresh and retry
         if (response.status === 401 && getRefreshToken()) {
-          const newAccessToken = await refreshAccessToken();
+          const refreshResult = await refreshAccessToken();
           
-          if (newAccessToken) {
+          if (refreshResult.success) {
             // Retry the original request with new token
             response = await fetch('/api/auth/me', {
               headers: {
-                'Authorization': `Bearer ${newAccessToken}`
+                'Authorization': `Bearer ${refreshResult.token}`
               }
             });
+          } else if (refreshResult.reason === 'network_error') {
+            // Network error during refresh - use cached user data
+            console.log('Network error during token refresh - using cached data');
+            const storedUserId = localStorage.getItem('userId');
+            const storedUsername = localStorage.getItem('username');
+            
+            if (storedUserId && storedUsername) {
+              setUser({
+                id: parseInt(storedUserId),
+                username: storedUsername
+              });
+            } else {
+              setUser(null);
+            }
+            setIsLoading(false);
+            return; // Exit early, don't continue to the response.ok check
           }
         }
         
@@ -85,6 +106,7 @@ export function useAuth() {
           setIsLoading(false);
         } else {
           // Token expired or invalid even after refresh attempt
+          // Only clear if we didn't already handle network error above
           console.log('Token expired or invalid');
           setUser(null);
           clearTokens();

@@ -8,12 +8,17 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
+// Token refresh result types
+type RefreshResult = 
+  | { success: true; token: string }
+  | { success: false; reason: 'no_token' | 'invalid' | 'network_error' };
+
 // Automatic token refresh when access token expires
-async function refreshAccessToken(): Promise<string | null> {
+async function refreshAccessToken(): Promise<RefreshResult> {
   const refreshToken = getRefreshToken();
   
   if (!refreshToken) {
-    return null;
+    return { success: false, reason: 'no_token' };
   }
   
   try {
@@ -27,16 +32,16 @@ async function refreshAccessToken(): Promise<string | null> {
       // Refresh token is invalid/expired, clear everything
       console.log('Refresh token invalid or expired, clearing tokens');
       clearTokens();
-      return null;
+      return { success: false, reason: 'invalid' };
     }
     
     const data = await res.json();
     setTokens(data.accessToken, refreshToken);
-    return data.accessToken;
+    return { success: true, token: data.accessToken };
   } catch (error) {
     // Network error - don't clear tokens, return null to retry later
     console.error('Token refresh failed (network error):', error);
-    return null;
+    return { success: false, reason: 'network_error' };
   }
 }
 
@@ -60,17 +65,19 @@ export async function apiRequest(
   
   // If 401 and we have a refresh token, try to refresh and retry
   if (res.status === 401 && getRefreshToken()) {
-    const newAccessToken = await refreshAccessToken();
+    const refreshResult = await refreshAccessToken();
     
-    if (newAccessToken) {
+    if (refreshResult.success) {
       // Retry the original request with new token
-      headers.Authorization = `Bearer ${newAccessToken}`;
+      headers.Authorization = `Bearer ${refreshResult.token}`;
       res = await fetch(url, {
         method,
         headers,
         body: data ? JSON.stringify(data) : undefined,
       });
     }
+    // If network error, don't throw - let the request fail gracefully
+    // The UI should handle this by showing cached data or retry option
   }
 
   await throwIfResNotOk(res);
@@ -96,15 +103,16 @@ export const getQueryFn: <T>(options: {
     
     // If 401 and we have a refresh token, try to refresh and retry
     if (res.status === 401 && getRefreshToken()) {
-      const newAccessToken = await refreshAccessToken();
+      const refreshResult = await refreshAccessToken();
       
-      if (newAccessToken) {
+      if (refreshResult.success) {
         // Retry the original request with new token
-        headers.Authorization = `Bearer ${newAccessToken}`;
+        headers.Authorization = `Bearer ${refreshResult.token}`;
         res = await fetch(queryKey.join("/") as string, {
           headers,
         });
       }
+      // If network error, don't clear tokens - let UI handle gracefully
     }
 
     if (unauthorizedBehavior === "returnNull" && res.status === 401) {
