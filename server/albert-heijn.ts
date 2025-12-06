@@ -715,21 +715,28 @@ class AlbertHeijnService {
                       cleanedIngredient.includes('potato') || cleanedIngredient.includes('sweet potato') ||
                       cleanedIngredient.includes('bean') || cleanedIngredient.includes('lentil') ||
                       cleanedIngredient.includes('chickpea') || cleanedIngredient.includes('pea') ||
+                      cleanedIngredient.includes('peas') || cleanedIngredient.includes('frozen peas') ||
+                      cleanedIngredient.includes('snap peas') || cleanedIngredient.includes('sugar snap') ||
+                      cleanedIngredient.includes('edamame') || cleanedIngredient.includes('black-eyed') ||
                       cleanedIngredient.includes('corn') || cleanedIngredient.includes('cabbage') ||
                       cleanedIngredient.includes('kale') || cleanedIngredient.includes('celery') ||
-                      cleanedIngredient.includes('leek') || cleanedIngredient.includes('radish') ||
+                      cleanedIngredient.includes('leek') || cleanedIngredient.includes('leeks') ||
+                      cleanedIngredient.includes('radish') || cleanedIngredient.includes('daikon') ||
                       cleanedIngredient.includes('beet') || cleanedIngredient.includes('turnip') ||
                       cleanedIngredient.includes('parsnip') || cleanedIngredient.includes('squash') ||
                       cleanedIngredient.includes('pumpkin') || cleanedIngredient.includes('eggplant') ||
+                      cleanedIngredient.includes('aubergine') || cleanedIngredient.includes('courgette') ||
                       cleanedIngredient.includes('artichoke') || cleanedIngredient.includes('asparagus') ||
                       cleanedIngredient.includes('brussels sprout') || cleanedIngredient.includes('fennel') ||
+                      cleanedIngredient.includes('pak choi') || cleanedIngredient.includes('bok choy') ||
                       cleanedIngredient.includes('apple') || cleanedIngredient.includes('banana') ||
                       cleanedIngredient.includes('orange') || cleanedIngredient.includes('berr') ||
                       cleanedIngredient.includes('grape') || cleanedIngredient.includes('melon') ||
                       cleanedIngredient.includes('pear') || cleanedIngredient.includes('peach') ||
                       cleanedIngredient.includes('plum') || cleanedIngredient.includes('kiwi') ||
                       cleanedIngredient.includes('mango') || cleanedIngredient.includes('pineapple') ||
-                      cleanedIngredient.includes('lime') || cleanedIngredient.includes('lemon')) {
+                      cleanedIngredient.includes('lime') || cleanedIngredient.includes('lemon') ||
+                      cleanedIngredient.includes('ginger')) {
               itemCategory = 'Groente & fruit';
             } else if (cleanedIngredient.includes('milk') || cleanedIngredient.includes('cheese') ||
                       cleanedIngredient.includes('egg') || cleanedIngredient.includes('yogurt') ||
