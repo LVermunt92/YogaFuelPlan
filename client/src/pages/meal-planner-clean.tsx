@@ -1254,15 +1254,26 @@ function MealPlannerMain() {
 
               {/* Ingredients to Use Subtitle */}
               <div className="space-y-3">
-                <Label className="text-sm font-medium text-gray-700">
-                  {t.ingredientsToUseUp || 'Ingredients to Use Up'}
-                </Label>
-                <p className="text-xs text-gray-500">
-                  {language === 'nl' 
-                    ? 'Heb je ingrediënten in je koelkast die op moeten? Voeg ze hier toe en we zorgen dat ze worden gebruikt in de maaltijden van volgende week.' 
-                    : 'Got ingredients in your fridge that need to be used up? Add them here and we\'ll make sure they\'re included in next week\'s meals.'
-                  }
-                </p>
+                <div className="flex items-center gap-1.5">
+                  <Label className="text-sm font-medium text-gray-700">
+                    {t.ingredientsToUseUp || 'Ingredients to use up'}
+                  </Label>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Info className="h-3.5 w-3.5 text-gray-400 cursor-help" />
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-xs">
+                        <p className="text-xs">
+                          {language === 'nl' 
+                            ? 'Heb je ingrediënten in je koelkast die op moeten? Voeg ze hier toe en we zorgen dat ze worden gebruikt in de maaltijden van volgende week.' 
+                            : 'Got ingredients in your fridge that need to be used up? Add them here and we\'ll make sure they\'re included in next week\'s meals.'
+                          }
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
                 
                 <div className="flex gap-2">
                   <Input
