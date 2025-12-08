@@ -1234,15 +1234,24 @@ function MealPlannerMain() {
 
               {/* Weekend Meal Prep Toggle */}
               <div className="flex items-center justify-between space-x-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                <div className="flex-1">
+                <div className="flex-1 flex items-center gap-1.5">
                   <Label htmlFor="weekend-meal-prep" className="text-sm font-medium text-gray-900 dark:text-gray-100 cursor-pointer">
                     {language === 'nl' ? 'Weekend maaltijdbereiding' : 'Weekend meal prep'}
                   </Label>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                    {language === 'nl' 
-                      ? 'Bereid componenten van je weekmaaltijden dit weekend voor' 
-                      : 'Prepare components of your weekday meals this weekend'}
-                  </p>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Info className="h-3.5 w-3.5 text-gray-400 cursor-help" />
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-xs">
+                        <p className="text-xs">
+                          {language === 'nl' 
+                            ? 'Bereid componenten van je weekmaaltijden dit weekend voor' 
+                            : 'Prepare components of your weekday meals this weekend'}
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </div>
                 <Switch
                   id="weekend-meal-prep"
