@@ -896,8 +896,8 @@ function MealPlannerMain() {
 {t.createPersonalizedMealPlan && <p className="text-lg text-gray-600">{t.createPersonalizedMealPlan}</p>}
           </div>
 
-          {/* Empty State - Show when no meal plans exist AND data has finished loading */}
-          {!loadingPlans && mealPlans.length === 0 && (
+          {/* Empty State - Show when no meal plans exist AND data has finished loading AND user is authenticated */}
+          {authUser?.id && !loadingPlans && mealPlans.length === 0 && (
             <div className="max-w-2xl mx-auto">
               <div className="bg-white rounded-lg shadow-md p-8 border border-gray-200">
                 <div className="text-center mb-6">
