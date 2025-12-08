@@ -233,11 +233,11 @@ export default function Insights() {
             <p className="text-xs text-gray-500 italic text-center mb-3" data-testid="kpi-daily-average-label">
               {t.kpiDailyAverageLabel}
             </p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-4 gap-2">
             
             {/* Protein Chart */}
             <div className="text-center relative">
-              <div className="relative w-20 h-20 mx-auto mb-1">
+              <div className="relative w-14 h-14 mx-auto">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
@@ -247,8 +247,8 @@ export default function Insights() {
                       ]}
                       cx="50%"
                       cy="50%"
-                      innerRadius={20}
-                      outerRadius={35}
+                      innerRadius={14}
+                      outerRadius={24}
                       startAngle={90}
                       endAngle={450}
                       dataKey="value"
@@ -256,15 +256,15 @@ export default function Insights() {
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-sm font-bold text-emerald-600">{kpiData.protein.value}g</div>
+                  <div className="text-xs font-bold text-emerald-600">{kpiData.protein.value}g</div>
                 </div>
               </div>
-              <div className="flex items-center justify-center gap-1">
-                <h3 className="text-xs font-semibold text-emerald-600">{t.protein}</h3>
+              <div className="flex items-center justify-center gap-0.5">
+                <h3 className="text-[10px] font-semibold text-emerald-600">{t.protein}</h3>
                 <Dialog>
                   <DialogTrigger asChild>
                     <button className="text-emerald-600/60 hover:text-emerald-600" data-testid="info-protein">
-                      <Info className="h-3 w-3" />
+                      <Info className="h-2.5 w-2.5" />
                     </button>
                   </DialogTrigger>
                   <DialogContent className="max-w-sm">
@@ -277,12 +277,12 @@ export default function Insights() {
                   </DialogContent>
                 </Dialog>
               </div>
-              <p className="text-xs text-gray-500">{kpiData.protein.percentage}%</p>
+              <p className="text-[10px] text-gray-500">{kpiData.protein.percentage}%</p>
             </div>
 
             {/* Good Fats */}
             <div className="text-center relative">
-              <div className="relative w-20 h-20 mx-auto mb-1">
+              <div className="relative w-14 h-14 mx-auto">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
@@ -292,8 +292,8 @@ export default function Insights() {
                       ]}
                       cx="50%"
                       cy="50%"
-                      innerRadius={20}
-                      outerRadius={35}
+                      innerRadius={14}
+                      outerRadius={24}
                       startAngle={90}
                       endAngle={450}
                       dataKey="value"
@@ -301,15 +301,15 @@ export default function Insights() {
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-sm font-bold text-yellow-600">{kpiData.goodFats.value}g</div>
+                  <div className="text-xs font-bold text-yellow-600">{kpiData.goodFats.value}g</div>
                 </div>
               </div>
-              <div className="flex items-center justify-center gap-1">
-                <h3 className="text-xs font-semibold text-yellow-600">{t.goodFats || 'Good fats'}</h3>
+              <div className="flex items-center justify-center gap-0.5">
+                <h3 className="text-[10px] font-semibold text-yellow-600">{t.goodFats || 'Fats'}</h3>
                 <Dialog>
                   <DialogTrigger asChild>
                     <button className="text-yellow-600/60 hover:text-yellow-600" data-testid="info-fats">
-                      <Info className="h-3 w-3" />
+                      <Info className="h-2.5 w-2.5" />
                     </button>
                   </DialogTrigger>
                   <DialogContent className="max-w-sm">
@@ -322,12 +322,12 @@ export default function Insights() {
                   </DialogContent>
                 </Dialog>
               </div>
-              <p className="text-xs text-gray-500">{kpiData.goodFats.percentage}%</p>
+              <p className="text-[10px] text-gray-500">{kpiData.goodFats.percentage}%</p>
             </div>
 
             {/* Fiber */}
             <div className="text-center relative">
-              <div className="relative w-20 h-20 mx-auto mb-1">
+              <div className="relative w-14 h-14 mx-auto">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
@@ -337,8 +337,8 @@ export default function Insights() {
                       ]}
                       cx="50%"
                       cy="50%"
-                      innerRadius={20}
-                      outerRadius={35}
+                      innerRadius={14}
+                      outerRadius={24}
                       startAngle={90}
                       endAngle={450}
                       dataKey="value"
@@ -346,15 +346,15 @@ export default function Insights() {
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-sm font-bold text-orange-600">{kpiData.fiber.value}g</div>
+                  <div className="text-xs font-bold text-orange-600">{kpiData.fiber.value}g</div>
                 </div>
               </div>
-              <div className="flex items-center justify-center gap-1">
-                <h3 className="text-xs font-semibold text-orange-600">{t.fiber}</h3>
+              <div className="flex items-center justify-center gap-0.5">
+                <h3 className="text-[10px] font-semibold text-orange-600">{t.fiber}</h3>
                 <Dialog>
                   <DialogTrigger asChild>
                     <button className="text-orange-600/60 hover:text-orange-600" data-testid="info-fiber">
-                      <Info className="h-3 w-3" />
+                      <Info className="h-2.5 w-2.5" />
                     </button>
                   </DialogTrigger>
                   <DialogContent className="max-w-sm">
@@ -368,12 +368,12 @@ export default function Insights() {
                   </DialogContent>
                 </Dialog>
               </div>
-              <p className="text-xs text-gray-500">{kpiData.fiber.percentage}%</p>
+              <p className="text-[10px] text-gray-500">{kpiData.fiber.percentage}%</p>
             </div>
 
             {/* Vegetables */}
             <div className="text-center relative">
-              <div className="relative w-20 h-20 mx-auto mb-1">
+              <div className="relative w-14 h-14 mx-auto">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
@@ -383,8 +383,8 @@ export default function Insights() {
                       ]}
                       cx="50%"
                       cy="50%"
-                      innerRadius={20}
-                      outerRadius={35}
+                      innerRadius={14}
+                      outerRadius={24}
                       startAngle={90}
                       endAngle={450}
                       dataKey="value"
@@ -392,15 +392,15 @@ export default function Insights() {
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-sm font-bold text-green-600">{kpiData.vegetables.value}g</div>
+                  <div className="text-xs font-bold text-green-600">{kpiData.vegetables.value}g</div>
                 </div>
               </div>
-              <div className="flex items-center justify-center gap-1">
-                <h3 className="text-xs font-semibold text-green-600">{t.vegetables}</h3>
+              <div className="flex items-center justify-center gap-0.5">
+                <h3 className="text-[10px] font-semibold text-green-600">{t.vegetables}</h3>
                 <Dialog>
                   <DialogTrigger asChild>
                     <button className="text-green-600/60 hover:text-green-600" data-testid="info-vegetables">
-                      <Info className="h-3 w-3" />
+                      <Info className="h-2.5 w-2.5" />
                     </button>
                   </DialogTrigger>
                   <DialogContent className="max-w-sm">
@@ -413,12 +413,12 @@ export default function Insights() {
                   </DialogContent>
                 </Dialog>
               </div>
-              <p className="text-xs text-gray-500">{kpiData.vegetables.percentage}%</p>
+              <p className="text-[10px] text-gray-500">{kpiData.vegetables.percentage}%</p>
             </div>
 
             {/* Plant Diversity */}
             <div className="text-center relative">
-              <div className="relative w-20 h-20 mx-auto mb-1">
+              <div className="relative w-14 h-14 mx-auto">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
@@ -428,8 +428,8 @@ export default function Insights() {
                       ]}
                       cx="50%"
                       cy="50%"
-                      innerRadius={20}
-                      outerRadius={35}
+                      innerRadius={14}
+                      outerRadius={24}
                       startAngle={90}
                       endAngle={450}
                       dataKey="value"
@@ -437,15 +437,15 @@ export default function Insights() {
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-sm font-bold text-green-700">{kpiData.plantDiversity.value}</div>
+                  <div className="text-xs font-bold text-green-700">{kpiData.plantDiversity.value}</div>
                 </div>
               </div>
-              <div className="flex items-center justify-center gap-1">
-                <h3 className="text-xs font-semibold text-green-700">{t.plantDiversity}</h3>
+              <div className="flex items-center justify-center gap-0.5">
+                <h3 className="text-[10px] font-semibold text-green-700">{t.plantDiversity}</h3>
                 <Dialog>
                   <DialogTrigger asChild>
                     <button className="text-green-700/60 hover:text-green-700" data-testid="info-plant-diversity">
-                      <Info className="h-3 w-3" />
+                      <Info className="h-2.5 w-2.5" />
                     </button>
                   </DialogTrigger>
                   <DialogContent className="max-w-sm">
@@ -459,12 +459,12 @@ export default function Insights() {
                   </DialogContent>
                 </Dialog>
               </div>
-              <p className="text-xs text-gray-500">{kpiData.plantDiversity.percentage}%</p>
+              <p className="text-[10px] text-gray-500">{kpiData.plantDiversity.percentage}%</p>
             </div>
 
             {/* Cocoa Flavanols */}
             <div className="text-center relative">
-              <div className="relative w-20 h-20 mx-auto mb-1">
+              <div className="relative w-14 h-14 mx-auto">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
@@ -474,8 +474,8 @@ export default function Insights() {
                       ]}
                       cx="50%"
                       cy="50%"
-                      innerRadius={20}
-                      outerRadius={35}
+                      innerRadius={14}
+                      outerRadius={24}
                       startAngle={90}
                       endAngle={450}
                       dataKey="value"
@@ -483,15 +483,15 @@ export default function Insights() {
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-sm font-bold text-purple-600">{kpiData.cocoaFlavanols.value}mg</div>
+                  <div className="text-xs font-bold text-purple-600">{kpiData.cocoaFlavanols.value}mg</div>
                 </div>
               </div>
-              <div className="flex items-center justify-center gap-1">
-                <h3 className="text-xs font-semibold text-purple-600">{t.cocoaFlavanols}</h3>
+              <div className="flex items-center justify-center gap-0.5">
+                <h3 className="text-[10px] font-semibold text-purple-600">{t.cocoaFlavanols}</h3>
                 <Dialog>
                   <DialogTrigger asChild>
                     <button className="text-purple-600/60 hover:text-purple-600" data-testid="info-cocoa">
-                      <Info className="h-3 w-3" />
+                      <Info className="h-2.5 w-2.5" />
                     </button>
                   </DialogTrigger>
                   <DialogContent className="max-w-sm">
@@ -505,12 +505,12 @@ export default function Insights() {
                   </DialogContent>
                 </Dialog>
               </div>
-              <p className="text-xs text-gray-500">{kpiData.cocoaFlavanols.percentage}%</p>
+              <p className="text-[10px] text-gray-500">{kpiData.cocoaFlavanols.percentage}%</p>
             </div>
 
             {/* Net Carbs */}
             <div className="text-center relative">
-              <div className="relative w-20 h-20 mx-auto mb-1">
+              <div className="relative w-14 h-14 mx-auto">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
@@ -520,8 +520,8 @@ export default function Insights() {
                       ]}
                       cx="50%"
                       cy="50%"
-                      innerRadius={20}
-                      outerRadius={35}
+                      innerRadius={14}
+                      outerRadius={24}
                       startAngle={90}
                       endAngle={450}
                       dataKey="value"
@@ -529,15 +529,15 @@ export default function Insights() {
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-sm font-bold text-cyan-600">{kpiData.netCarbs.value}g</div>
+                  <div className="text-xs font-bold text-cyan-600">{kpiData.netCarbs.value}g</div>
                 </div>
               </div>
-              <div className="flex items-center justify-center gap-1">
-                <h3 className="text-xs font-semibold text-cyan-600">{language === "nl" ? "Netto koolh." : "Net carbs"}</h3>
+              <div className="flex items-center justify-center gap-0.5">
+                <h3 className="text-[10px] font-semibold text-cyan-600">{language === "nl" ? "Netto koolh." : "Net carbs"}</h3>
                 <Dialog>
                   <DialogTrigger asChild>
                     <button className="text-cyan-600/60 hover:text-cyan-600" data-testid="info-net-carbs">
-                      <Info className="h-3 w-3" />
+                      <Info className="h-2.5 w-2.5" />
                     </button>
                   </DialogTrigger>
                   <DialogContent className="max-w-sm">
@@ -552,12 +552,12 @@ export default function Insights() {
                   </DialogContent>
                 </Dialog>
               </div>
-              <p className="text-xs text-gray-500">{kpiData.netCarbs.percentage}%</p>
+              <p className="text-[10px] text-gray-500">{kpiData.netCarbs.percentage}%</p>
             </div>
 
             {/* Calories */}
             <div className="text-center relative">
-              <div className="relative w-20 h-20 mx-auto mb-1">
+              <div className="relative w-14 h-14 mx-auto">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
@@ -567,8 +567,8 @@ export default function Insights() {
                       ]}
                       cx="50%"
                       cy="50%"
-                      innerRadius={20}
-                      outerRadius={35}
+                      innerRadius={14}
+                      outerRadius={24}
                       startAngle={90}
                       endAngle={450}
                       dataKey="value"
@@ -576,15 +576,15 @@ export default function Insights() {
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-sm font-bold text-blue-600">{kpiData.calories.value}</div>
+                  <div className="text-xs font-bold text-blue-600">{kpiData.calories.value}</div>
                 </div>
               </div>
-              <div className="flex items-center justify-center gap-1">
-                <h3 className="text-xs font-semibold text-blue-600">{t.calories}</h3>
+              <div className="flex items-center justify-center gap-0.5">
+                <h3 className="text-[10px] font-semibold text-blue-600">{t.calories}</h3>
                 <Dialog>
                   <DialogTrigger asChild>
                     <button className="text-blue-600/60 hover:text-blue-600" data-testid="info-calories">
-                      <Info className="h-3 w-3" />
+                      <Info className="h-2.5 w-2.5" />
                     </button>
                   </DialogTrigger>
                   <DialogContent className="max-w-sm">
@@ -599,12 +599,12 @@ export default function Insights() {
                   </DialogContent>
                 </Dialog>
               </div>
-              <p className="text-xs text-gray-500">{kpiData.calories.percentage}%</p>
+              <p className="text-[10px] text-gray-500">{kpiData.calories.percentage}%</p>
             </div>
 
             {/* Eating the Rainbow */}
             <div className="text-center relative">
-              <div className="relative w-20 h-20 mx-auto mb-1">
+              <div className="relative w-14 h-14 mx-auto">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
@@ -614,8 +614,8 @@ export default function Insights() {
                       ]}
                       cx="50%"
                       cy="50%"
-                      innerRadius={20}
-                      outerRadius={35}
+                      innerRadius={14}
+                      outerRadius={24}
                       startAngle={90}
                       endAngle={450}
                       dataKey="value"
@@ -633,17 +633,17 @@ export default function Insights() {
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-sm font-bold bg-gradient-to-r from-red-500 via-green-500 to-purple-500 bg-clip-text text-transparent">{kpiData.rainbow.value}/{kpiData.rainbow.target}</div>
+                  <div className="text-xs font-bold bg-gradient-to-r from-red-500 via-green-500 to-purple-500 bg-clip-text text-transparent">{kpiData.rainbow.value}/{kpiData.rainbow.target}</div>
                 </div>
               </div>
-              <div className="flex items-center justify-center gap-1">
-                <h3 className="text-xs font-semibold bg-gradient-to-r from-red-500 via-green-500 to-purple-500 bg-clip-text text-transparent">
+              <div className="flex items-center justify-center gap-0.5">
+                <h3 className="text-[10px] font-semibold bg-gradient-to-r from-red-500 via-green-500 to-purple-500 bg-clip-text text-transparent">
                   {language === "nl" ? "Regenboog" : "Rainbow"}
                 </h3>
                 <Dialog>
                   <DialogTrigger asChild>
                     <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-rainbow">
-                      <Info className="h-3 w-3" />
+                      <Info className="h-2.5 w-2.5" />
                     </button>
                   </DialogTrigger>
                   <DialogContent className="max-w-sm">
@@ -663,12 +663,12 @@ export default function Insights() {
                   </DialogContent>
                 </Dialog>
               </div>
-              <p className="text-xs text-gray-500">{kpiData.rainbow.percentage}%</p>
+              <p className="text-[10px] text-gray-500">{kpiData.rainbow.percentage}%</p>
             </div>
 
             {/* Vitamin K */}
             <div className="text-center relative">
-              <div className="relative w-20 h-20 mx-auto mb-1">
+              <div className="relative w-14 h-14 mx-auto">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
@@ -678,8 +678,8 @@ export default function Insights() {
                       ]}
                       cx="50%"
                       cy="50%"
-                      innerRadius={20}
-                      outerRadius={35}
+                      innerRadius={14}
+                      outerRadius={24}
                       startAngle={90}
                       endAngle={450}
                       dataKey="value"
@@ -687,17 +687,17 @@ export default function Insights() {
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-sm font-bold text-emerald-600">{kpiData.vitaminK.value}mcg</div>
+                  <div className="text-xs font-bold text-emerald-600">{kpiData.vitaminK.value}mcg</div>
                 </div>
               </div>
-              <div className="flex items-center justify-center gap-1">
-                <h3 className="text-xs font-semibold text-emerald-600">
+              <div className="flex items-center justify-center gap-0.5">
+                <h3 className="text-[10px] font-semibold text-emerald-600">
                   {language === "nl" ? "Vitamine K" : "Vitamin K"}
                 </h3>
                 <Dialog>
                   <DialogTrigger asChild>
                     <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-vitamin-k">
-                      <Info className="h-3 w-3" />
+                      <Info className="h-2.5 w-2.5" />
                     </button>
                   </DialogTrigger>
                   <DialogContent className="max-w-sm">
@@ -712,7 +712,7 @@ export default function Insights() {
                   </DialogContent>
                 </Dialog>
               </div>
-              <p className="text-xs text-gray-500">{kpiData.vitaminK.percentage}%</p>
+              <p className="text-[10px] text-gray-500">{kpiData.vitaminK.percentage}%</p>
             </div>
 
             </div>
