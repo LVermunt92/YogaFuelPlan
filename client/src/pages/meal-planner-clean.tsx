@@ -982,11 +982,11 @@ function MealPlannerMain() {
                   {t.kpiDailyAverageLabel}
                 </p>
               </div>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg w-full">
+              <div className="grid grid-cols-4 gap-2 bg-gray-50 p-2 sm:p-3 rounded-lg w-full">
               
               {/* Protein Chart */}
               <div className="text-center relative">
-                <div className="relative w-20 h-20 mx-auto mb-1">
+                <div className="relative w-14 h-14 mx-auto">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
@@ -996,8 +996,8 @@ function MealPlannerMain() {
                         ]}
                         cx="50%"
                         cy="50%"
-                        innerRadius={20}
-                        outerRadius={35}
+                        innerRadius={14}
+                        outerRadius={24}
                         startAngle={90}
                         endAngle={450}
                         dataKey="value"
@@ -1006,17 +1006,15 @@ function MealPlannerMain() {
                     </PieChart>
                   </ResponsiveContainer>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="text-sm font-bold text-emerald-600">{kpiData.protein.value}g</div>
-                    </div>
+                    <div className="text-xs font-bold text-emerald-600">{kpiData.protein.value}g</div>
                   </div>
                 </div>
-                <div className="flex items-center justify-center gap-1">
-                  <h3 className="text-xs font-semibold text-emerald-600">{t.protein}</h3>
+                <div className="flex items-center justify-center gap-0.5">
+                  <h3 className="text-[10px] font-semibold text-emerald-600">{t.protein}</h3>
                   <Dialog>
                     <DialogTrigger asChild>
                       <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-protein">
-                        <Info className="h-3 w-3" />
+                        <Info className="h-2.5 w-2.5" />
                       </button>
                     </DialogTrigger>
                     <DialogContent className="max-w-sm">
@@ -1029,12 +1027,12 @@ function MealPlannerMain() {
                     </DialogContent>
                   </Dialog>
                 </div>
-                <p className="text-xs text-gray-500">{kpiData.protein.percentage}%</p>
+                <p className="text-[10px] text-gray-500">{kpiData.protein.percentage}%</p>
               </div>
 
               {/* Fiber Chart */}
               <div className="text-center relative">
-                <div className="relative w-20 h-20 mx-auto mb-1">
+                <div className="relative w-14 h-14 mx-auto">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
@@ -1044,8 +1042,8 @@ function MealPlannerMain() {
                         ]}
                         cx="50%"
                         cy="50%"
-                        innerRadius={20}
-                        outerRadius={35}
+                        innerRadius={14}
+                        outerRadius={24}
                         startAngle={90}
                         endAngle={450}
                         dataKey="value"
@@ -1054,17 +1052,15 @@ function MealPlannerMain() {
                     </PieChart>
                   </ResponsiveContainer>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="text-sm font-bold text-orange-600">{kpiData.fiber.value}g</div>
-                    </div>
+                    <div className="text-xs font-bold text-orange-600">{kpiData.fiber.value}g</div>
                   </div>
                 </div>
-                <div className="flex items-center justify-center gap-1">
-                  <h3 className="text-xs font-semibold text-orange-600">{t.fiber}</h3>
+                <div className="flex items-center justify-center gap-0.5">
+                  <h3 className="text-[10px] font-semibold text-orange-600">{t.fiber}</h3>
                   <Dialog>
                     <DialogTrigger asChild>
                       <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-fiber">
-                        <Info className="h-3 w-3" />
+                        <Info className="h-2.5 w-2.5" />
                       </button>
                     </DialogTrigger>
                     <DialogContent className="max-w-sm">
@@ -1078,12 +1074,12 @@ function MealPlannerMain() {
                     </DialogContent>
                   </Dialog>
                 </div>
-                <p className="text-xs text-gray-500">{kpiData.fiber.percentage}%</p>
+                <p className="text-[10px] text-gray-500">{kpiData.fiber.percentage}%</p>
               </div>
 
               {/* Vegetables Chart */}
               <div className="text-center relative">
-                <div className="relative w-20 h-20 mx-auto mb-1">
+                <div className="relative w-14 h-14 mx-auto">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
@@ -1093,8 +1089,8 @@ function MealPlannerMain() {
                         ]}
                         cx="50%"
                         cy="50%"
-                        innerRadius={20}
-                        outerRadius={35}
+                        innerRadius={14}
+                        outerRadius={24}
                         startAngle={90}
                         endAngle={450}
                         dataKey="value"
@@ -1103,17 +1099,15 @@ function MealPlannerMain() {
                     </PieChart>
                   </ResponsiveContainer>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="text-sm font-bold text-green-600">{kpiData.vegetables.value}g</div>
-                    </div>
+                    <div className="text-xs font-bold text-green-600">{kpiData.vegetables.value}g</div>
                   </div>
                 </div>
-                <div className="flex items-center justify-center gap-1">
-                  <h3 className="text-xs font-semibold text-green-600">{t.vegetables}</h3>
+                <div className="flex items-center justify-center gap-0.5">
+                  <h3 className="text-[10px] font-semibold text-green-600">{t.vegetables}</h3>
                   <Dialog>
                     <DialogTrigger asChild>
                       <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-vegetables">
-                        <Info className="h-3 w-3" />
+                        <Info className="h-2.5 w-2.5" />
                       </button>
                     </DialogTrigger>
                     <DialogContent className="max-w-sm">
@@ -1126,12 +1120,12 @@ function MealPlannerMain() {
                     </DialogContent>
                   </Dialog>
                 </div>
-                <p className="text-xs text-gray-500">{kpiData.vegetables.percentage}%</p>
+                <p className="text-[10px] text-gray-500">{kpiData.vegetables.percentage}%</p>
               </div>
 
               {/* Good Fats Chart */}
               <div className="text-center relative">
-                <div className="relative w-20 h-20 mx-auto mb-1">
+                <div className="relative w-14 h-14 mx-auto">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
@@ -1141,8 +1135,8 @@ function MealPlannerMain() {
                         ]}
                         cx="50%"
                         cy="50%"
-                        innerRadius={20}
-                        outerRadius={35}
+                        innerRadius={14}
+                        outerRadius={24}
                         startAngle={90}
                         endAngle={450}
                         dataKey="value"
@@ -1151,17 +1145,15 @@ function MealPlannerMain() {
                     </PieChart>
                   </ResponsiveContainer>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="text-sm font-bold text-yellow-600">{kpiData.goodFats.value}g</div>
-                    </div>
+                    <div className="text-xs font-bold text-yellow-600">{kpiData.goodFats.value}g</div>
                   </div>
                 </div>
-                <div className="flex items-center justify-center gap-1">
-                  <h3 className="text-xs font-semibold text-yellow-600">{t.goodFats || 'Good Fats'}</h3>
+                <div className="flex items-center justify-center gap-0.5">
+                  <h3 className="text-[10px] font-semibold text-yellow-600">{t.goodFats || 'Fats'}</h3>
                   <Dialog>
                     <DialogTrigger asChild>
                       <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-fats">
-                        <Info className="h-3 w-3" />
+                        <Info className="h-2.5 w-2.5" />
                       </button>
                     </DialogTrigger>
                     <DialogContent className="max-w-sm">
@@ -1174,7 +1166,7 @@ function MealPlannerMain() {
                     </DialogContent>
                   </Dialog>
                 </div>
-                <p className="text-xs text-gray-500">{kpiData.goodFats.percentage}%</p>
+                <p className="text-[10px] text-gray-500">{kpiData.goodFats.percentage}%</p>
               </div>
 
               </div>
