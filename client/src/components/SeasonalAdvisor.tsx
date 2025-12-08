@@ -158,13 +158,13 @@ export function SeasonalAdvisor() {
   return (
     <Card className="w-full" padding="none">
       <CardHeader className="pb-4 px-6 pt-6">
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle className="flex items-center gap-2 flex-wrap">
           <span className="text-xl">{seasonIcons[seasonalInfo.season]}</span>
           <span className="text-gray-900">
             {seasonNames[seasonalInfo.season]} {t.seasonalNutrition}
           </span>
-          <div className="flex items-center gap-1 text-sm font-normal text-gray-500 ml-auto">
-            <MapPin className="h-4 w-4" />
+          <div className="flex items-center gap-1 text-sm font-normal text-gray-500">
+            <MapPin className="h-3.5 w-3.5" />
             {seasonalInfo.location}
           </div>
         </CardTitle>
