@@ -972,16 +972,10 @@ function MealPlannerMain() {
             <div className="mb-6 relative">
               <button
                 onClick={() => setLocation('/insights')}
-                className="absolute top-2 right-2 z-10 flex items-center gap-1 text-xs text-gray-500 hover:text-gray-700 transition-colors cursor-pointer group"
+                className="absolute top-1 right-1 z-10 flex items-center gap-1 text-xs text-gray-500 hover:text-gray-700 transition-colors cursor-pointer group"
               >
-                <span className="hidden sm:inline">{t.viewInsights || 'View insights'}</span>
-                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
               </button>
-              <div className="text-center mb-2">
-                <p className="text-xs text-gray-500 italic" data-testid="kpi-daily-average-label">
-                  {t.kpiDailyAverageLabel}
-                </p>
-              </div>
               <div className="grid grid-cols-4 gap-2 bg-gray-50 p-2 sm:p-3 rounded-lg w-full">
               
               {/* Protein Chart */}

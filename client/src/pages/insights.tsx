@@ -229,7 +229,11 @@ export default function Insights() {
 
         {/* Compact Nutrition Charts - Same format as meal planner */}
         {kpiData && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg w-full">
+          <div className="bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg w-full">
+            <p className="text-xs text-gray-500 italic text-center mb-3" data-testid="kpi-daily-average-label">
+              {t.kpiDailyAverageLabel}
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             
             {/* Protein Chart */}
             <div className="text-center relative">
@@ -711,6 +715,7 @@ export default function Insights() {
               <p className="text-xs text-gray-500">{kpiData.vitaminK.percentage}%</p>
             </div>
 
+            </div>
           </div>
         )}
 
