@@ -105,7 +105,7 @@ function Navigation() {
   return (
     <nav className="topbar bg-background border-b border-gray-200 sticky top-0 z-50">
       <div className="w-full mx-0 px-0">
-        <div className="flex justify-between h-12">
+        <div className="flex justify-between h-10">
           {/* Mobile menu button - moved to left */}
           <div className="sm:hidden flex items-center">
             <button
