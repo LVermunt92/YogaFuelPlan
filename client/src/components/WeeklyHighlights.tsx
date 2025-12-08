@@ -131,23 +131,31 @@ export function WeeklyHighlights({ menstrualPhase = "off" }: WeeklyHighlightsPro
     
     const phaseInfo = {
       menstrual: {
-        en: "During the menstrual phase, your body needs extra iron and magnesium. Focus on iron-rich foods like lentils, spinach, and quinoa, plus magnesium sources like nuts, seeds, and whole grains.",
-        nl: "Tijdens de menstruatiefase heeft je lichaam extra ijzer en magnesium nodig. Focus op ijzerrijke voedingsmiddelen zoals linzen, spinazie en quinoa, plus magnesiumbronnen zoals noten, zaden en volkoren granen.",
+        nameEn: "menstrual phase",
+        nameNl: "menstruatiefase",
+        en: "Your body needs extra iron and magnesium. Focus on iron-rich foods like lentils, spinach, and quinoa, plus magnesium sources like nuts, seeds, and whole grains.",
+        nl: "Je lichaam heeft extra ijzer en magnesium nodig. Focus op ijzerrijke voedingsmiddelen zoals linzen, spinazie en quinoa, plus magnesiumbronnen zoals noten, zaden en volkoren granen.",
         icon: "🩸"
       },
       follicular: {
-        en: "The follicular phase is a great time for lighter meals. Focus on fresh vegetables, sprouted grains, and probiotic-rich foods to support increasing energy levels.",
-        nl: "De folliculaire fase is een goede tijd voor lichtere maaltijden. Focus op verse groenten, ontkiemde granen en probiotica-rijke voedingsmiddelen om stijgende energieniveaus te ondersteunen.",
+        nameEn: "follicular phase",
+        nameNl: "folliculaire fase",
+        en: "A great time for lighter meals. Focus on fresh vegetables, sprouted grains, and probiotic-rich foods to support increasing energy levels.",
+        nl: "Een goede tijd voor lichtere maaltijden. Focus op verse groenten, ontkiemde granen en probiotica-rijke voedingsmiddelen om stijgende energieniveaus te ondersteunen.",
         icon: "🌱"
       },
       ovulation: {
-        en: "During ovulation, support your body with antioxidant-rich foods like berries and leafy greens, plus plenty of fiber and anti-inflammatory ingredients.",
-        nl: "Tijdens de eisprong ondersteun je je lichaam met antioxidant-rijke voedingsmiddelen zoals bessen en bladgroenten, plus veel vezels en ontstekingsremmende ingrediënten.",
+        nameEn: "ovulation phase",
+        nameNl: "ovulatiefase",
+        en: "Support your body with antioxidant-rich foods like berries and leafy greens, plus plenty of fiber and anti-inflammatory ingredients.",
+        nl: "Ondersteun je lichaam met antioxidant-rijke voedingsmiddelen zoals bessen en bladgroenten, plus veel vezels en ontstekingsremmende ingrediënten.",
         icon: "🌸"
       },
       luteal: {
-        en: "In the luteal phase, your metabolism increases by about 10–20%. Focus on warm, easy-to-digest meals and keep complex carbs to steady blood sugar. Eat three balanced meals a day to support energy and manage higher cortisol. Add electrolytes and salt to ease PMS and maintain fluid balance.",
-        nl: "In de luteale fase stijgt je metabolisme met ongeveer 10-20%. Focus op warme, gemakkelijk verteerbare maaltijden en behoud complexe koolhydraten om bloedsuiker stabiel te houden. Eet drie uitgebalanceerde maaltijden per dag om energie te ondersteunen en hoger cortisol te beheersen. Voeg elektrolyten en zout toe om PMS te verlichten en vochtbalans te behouden.",
+        nameEn: "luteal phase",
+        nameNl: "luteale fase",
+        en: "Your metabolism increases by about 10–20%. Focus on warm, easy-to-digest meals and keep complex carbs to steady blood sugar. Eat three balanced meals a day to support energy and manage higher cortisol. Add electrolytes and salt to ease PMS and maintain fluid balance.",
+        nl: "Je metabolisme stijgt met ongeveer 10-20%. Focus op warme, gemakkelijk verteerbare maaltijden en behoud complexe koolhydraten om bloedsuiker stabiel te houden. Eet drie uitgebalanceerde maaltijden per dag om energie te ondersteunen en hoger cortisol te beheersen. Voeg elektrolyten en zout toe om PMS te verlichten en vochtbalans te behouden.",
         icon: "🌙"
       }
     };
@@ -204,7 +212,9 @@ export function WeeklyHighlights({ menstrualPhase = "off" }: WeeklyHighlightsPro
             <div className="flex items-center gap-2 mb-2">
               <span className="text-lg">{menstrualInfo.icon}</span>
               <h4 className="font-medium text-sm text-gray-700">
-                {language === 'nl' ? 'Cyclus ondersteuning' : 'Cycle support'}
+                {language === 'nl' 
+                  ? `Cyclus ondersteuning: ${menstrualInfo.nameNl}` 
+                  : `Cycle support: ${menstrualInfo.nameEn}`}
               </h4>
             </div>
             <p className="text-sm text-gray-600 leading-relaxed">
