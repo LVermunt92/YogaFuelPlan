@@ -275,18 +275,15 @@ export function WeeklyHighlights({ menstrualPhase = "off" }: WeeklyHighlightsPro
               </h4>
             </div>
             <div className="flex flex-wrap gap-1.5">
-              {seasonalInfo.localMarkets.map((market, index) => {
-                const shortName = market.split(' - ')[0];
-                return (
-                  <Badge 
-                    key={index} 
-                    variant="secondary" 
-                    className="text-xs bg-blue-50 text-blue-700 hover:bg-blue-100"
-                  >
-                    {shortName}
-                  </Badge>
-                );
-              })}
+              {seasonalInfo.localMarkets.map((market, index) => (
+                <Badge 
+                  key={index} 
+                  variant="secondary" 
+                  className="text-xs bg-blue-50 text-blue-700 hover:bg-blue-100"
+                >
+                  {market}
+                </Badge>
+              ))}
             </div>
           </div>
         )}
