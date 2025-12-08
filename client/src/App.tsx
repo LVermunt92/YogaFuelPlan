@@ -237,13 +237,10 @@ function Navigation() {
             </div>
           )}
           
-          {/* Mobile user info */}
+          {/* Mobile logout */}
           {authUser && (
             <div className="pt-2 pb-3 border-t border-gray-200">
               <div className="px-3 py-2">
-                <div className="text-sm text-gray-600 mb-2">
-                  Welcome, {getDisplayName()}
-                </div>
                 <button
                   onClick={() => {
                     setIsMenuOpen(false);
