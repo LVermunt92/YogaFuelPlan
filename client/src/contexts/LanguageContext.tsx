@@ -1,8 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { Language } from '@/lib/translations';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiRequest } from '@/lib/queryClient';
-import { useAuth } from '@/hooks/useAuth';
 
 interface LanguageContextType {
   language: Language;
@@ -13,58 +10,27 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
+export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>("en");
-  const { user } = useAuth();
-  const queryClient = useQueryClient();
+  const [isChangingLanguage, setIsChangingLanguage] = useState(false);
 
-  // Fetch user profile for language
-  const { data: userProfile } = useQuery({
-    queryKey: ['/api/users', user?.id, 'profile'],
-    enabled: !!user?.id,
-  });
-
-  // Update user language mutation
-  const updateLanguageMutation = useMutation({
-    mutationFn: async (newLanguage: Language) => {
-      if (!user?.id) throw new Error('User not authenticated');
-      const response = await apiRequest('PUT', `/api/users/${user.id}/profile`, { language: newLanguage });
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/users', user?.id, 'profile'] });
-    },
-  });
-
-  // Set language from user profile or localStorage
+  // Load language from localStorage on mount
   useEffect(() => {
-    if (userProfile && 'language' in userProfile && userProfile.language) {
-      setLanguage(userProfile.language as Language);
-      localStorage.setItem('preferred_language', userProfile.language);
-    } else {
-      // Use localStorage as fallback
-      const savedLanguage = localStorage.getItem('preferred_language') as Language;
-      if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'nl')) {
-        setLanguage(savedLanguage);
-      }
+    const savedLanguage = localStorage.getItem('preferred_language') as Language;
+    if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'nl')) {
+      setLanguage(savedLanguage);
     }
-  }, [userProfile]);
+  }, []);
 
   const changeLanguage = (newLanguage: Language) => {
+    setIsChangingLanguage(true);
     setLanguage(newLanguage);
-    // Save language to localStorage immediately
     localStorage.setItem('preferred_language', newLanguage);
     
-    updateLanguageMutation.mutate(newLanguage, {
-      onSuccess: () => {
-        // Force refresh of all components by invalidating all queries
-        queryClient.invalidateQueries();
-        // Reload the page to ensure all components re-render with new language
-        setTimeout(() => {
-          window.location.reload();
-        }, 100);
-      }
-    });
+    // Use setTimeout to allow state updates before reload
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
   };
 
   return (
@@ -72,7 +38,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       language,
       setLanguage,
       changeLanguage,
-      isChangingLanguage: updateLanguageMutation.isPending
+      isChangingLanguage
     }}>
       {children}
     </LanguageContext.Provider>

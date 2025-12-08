@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Heart, Zap, Users, Brain, Leaf, Target, Edit, Save, X } from "lucide-react";
 import { useTranslations } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";

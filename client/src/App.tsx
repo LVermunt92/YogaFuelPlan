@@ -15,7 +15,7 @@ import Auth from "@/pages/auth";
 import NotFound from "@/pages/not-found";
 import { Utensils, User, Info, Settings, Menu, LogOut, Languages, ChefHat } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import React, { useState, useEffect, Component, ErrorInfo, ReactNode } from "react";
+import { useState, useEffect, Component, ErrorInfo, type ReactNode } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTranslations } from "@/lib/translations";
 import { LanguageProvider, useLanguage } from "@/contexts/LanguageContext";
