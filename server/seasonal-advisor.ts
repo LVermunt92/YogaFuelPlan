@@ -333,55 +333,47 @@ export function getSeasonalInfo(coords?: LocationCoords, language: string = 'nl'
   if (location.latitude >= 51.0 && location.latitude <= 51.8 && 
       location.longitude >= 4.5 && location.longitude <= 5.7) {
     localMarkets = language === 'en' ? [
-      'Eindhoven Farmers Market (Wednesday & Saturday mornings) - Local seasonal produce',
-      'Woenselse Markt Eindhoven - Traditional weekly market with regional farmers',
-      'Groene Afslag Tilburg - Direct from local farmers, seasonal vegetables',
-      'Check lokalekaart.nl for farm shops and pick-your-own farms in your area'
+      'Eindhoven Farmers Market - Wednesday & Saturday',
+      'Woenselse Markt Eindhoven - Weekly',
+      'Groene Afslag Tilburg - Daily'
     ] : [
-      'Boerenmarkt Eindhoven (woensdag & zaterdagochtend) - Lokale seizoensproducten',
-      'Woenselse Markt Eindhoven - Traditionele weekmarkt met regionale boeren',
-      'Groene Afslag Tilburg - Rechtstreeks van lokale boeren, seizoensgroenten',
-      'Kijk op lokalekaart.nl voor streekwinkels en pluktuinen bij jou in de buurt'
+      'Boerenmarkt Eindhoven - woensdag & zaterdag',
+      'Woenselse Markt Eindhoven - wekelijks',
+      'Groene Afslag Tilburg - dagelijks'
     ];
   }
   // Amsterdam region (latitude ~52.2-52.5°N, longitude ~4.7-5.1°E)
   else if (location.latitude >= 52.2 && location.latitude <= 52.5 && 
            location.longitude >= 4.7 && location.longitude <= 5.1) {
     localMarkets = language === 'en' ? [
-      'Noordermarkt (Saturday) - Fresh local vegetables and organic products',
-      'Nieuwmarkt Farmers Market (Saturday) - Organic local farmers',
-      'Albert Cuyp Market - Traditional market with seasonal Dutch products',
-      'Vondelpark Farmers Markets (Saturday) - Local growers'
+      'Noordermarkt - Saturday',
+      'Nieuwmarkt Farmers Market - Saturday',
+      'Albert Cuyp Market - Daily',
+      'Vondelpark Farmers Market - Saturday'
     ] : [
-      'Noordermarkt (zaterdag) - Verse lokale groenten en biologische producten',
-      'Boerenmarkt Nieuwmarkt (zaterdag) - Biologische lokale boeren',
-      'Albert Cuyp Markt - Traditionele markt met seizoensgebonden Nederlandse producten',
-      'Boerenmarkten in Vondelpark (zaterdag) - Lokale kwekers'
+      'Noordermarkt - zaterdag',
+      'Boerenmarkt Nieuwmarkt - zaterdag',
+      'Albert Cuyp Markt - dagelijks',
+      'Boerenmarkt Vondelpark - zaterdag'
     ];
   }
   // Rotterdam/Zuid-Holland region (latitude ~51.8-52.2°N)
   else if (location.latitude >= 51.8 && location.latitude <= 52.2 && 
            location.longitude >= 4.2 && location.longitude <= 4.8) {
     localMarkets = language === 'en' ? [
-      'Binnenrotte Market Rotterdam (Tuesday & Saturday) - Large traditional market',
-      'Farmers Market Blijdorp (Saturday) - Local organic farmers',
-      'Check lokalekaart.nl for farm shops in Zuid-Holland region'
+      'Binnenrotte Market Rotterdam - Tuesday & Saturday',
+      'Farmers Market Blijdorp - Saturday'
     ] : [
-      'Binnenrotte Markt Rotterdam (dinsdag & zaterdag) - Grote traditionele markt',
-      'Boerenmarkt Blijdorp (zaterdag) - Lokale biologische boeren',
-      'Kijk op lokalekaart.nl voor streekwinkels in Zuid-Holland'
+      'Binnenrotte Markt Rotterdam - dinsdag & zaterdag',
+      'Boerenmarkt Blijdorp - zaterdag'
     ];
   }
   // General Netherlands fallback
   else if (locationName.includes('Netherlands')) {
     localMarkets = language === 'en' ? [
-      'Visit lokalekaart.nl to find farm shops and farmers markets near you',
-      'Check your local weekly market (weekmarkt) for seasonal Dutch produce',
-      'Look for "streekproducten" (regional products) shops in your area'
+      'Check lokalekaart.nl for markets near you'
     ] : [
-      'Bezoek lokalekaart.nl om streekwinkels en boerenmarkten bij jou in de buurt te vinden',
-      'Kijk op je lokale weekmarkt voor seizoensgebonden Nederlandse producten',
-      'Zoek naar streekproductenwinkels in jouw regio'
+      'Kijk op lokalekaart.nl voor markten bij jou in de buurt'
     ];
   }
   

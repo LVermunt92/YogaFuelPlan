@@ -274,17 +274,13 @@ export function WeeklyHighlights({ menstrualPhase = "off" }: WeeklyHighlightsPro
                 {language === 'nl' ? 'Lokale markten' : 'Local markets'}
               </h4>
             </div>
-            <div className="flex flex-wrap gap-1.5">
+            <ul className="space-y-1">
               {seasonalInfo.localMarkets.map((market, index) => (
-                <Badge 
-                  key={index} 
-                  variant="secondary" 
-                  className="text-xs bg-blue-50 text-blue-700 hover:bg-blue-100"
-                >
-                  {market}
-                </Badge>
+                <li key={index} className="text-sm text-gray-600">
+                  • {market}
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         )}
       </CardContent>
