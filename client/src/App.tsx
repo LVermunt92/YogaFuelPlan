@@ -105,9 +105,9 @@ function Navigation() {
   return (
     <nav className="topbar bg-background border-b border-gray-200 sticky top-0 z-50">
       <div className="w-full mx-0 px-0">
-        <div className="flex justify-between h-10">
+        <div className="flex justify-between h-10 relative">
           {/* Mobile menu button */}
-          <div className="sm:hidden flex items-center">
+          <div className="sm:hidden flex items-center z-10">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="inline-flex items-center justify-center p-1.5 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 ml-2"
@@ -116,9 +116,9 @@ function Navigation() {
             </button>
           </div>
           
-          {/* Mobile centered welcome message */}
+          {/* Mobile centered welcome message - absolutely centered on page */}
           {authUser && (
-            <div className="sm:hidden flex-1 flex items-center justify-center">
+            <div className="sm:hidden absolute inset-0 flex items-center justify-center pointer-events-none">
               <span className="text-xs font-medium text-gray-700 truncate max-w-[180px]">
                 {t.welcomeBack} {getDisplayName()}
               </span>
