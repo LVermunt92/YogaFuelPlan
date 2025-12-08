@@ -884,9 +884,9 @@ function MealPlannerMain() {
 
   return (
     <div className="bg-background min-h-screen">
-      <main className="container py-6 lg:py-8">
+      <main className="container py-4 lg:py-6">
         {/* Centered Content Container */}
-        <div className="space-y-6 lg:space-y-8">
+        <div className="space-y-2 lg:space-y-3">
           
 
           {/* Empty State - Show when no meal plans exist AND data has finished loading AND user is authenticated */}
