@@ -105,14 +105,14 @@ function Navigation() {
   return (
     <nav className="topbar bg-background border-b border-gray-200 sticky top-0 z-50">
       <div className="w-full mx-0 px-0">
-        <div className="flex justify-between h-16">
+        <div className="flex justify-between h-12">
           {/* Mobile menu button - moved to left */}
           <div className="sm:hidden flex items-center">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 mr-3"
+              className="inline-flex items-center justify-center p-1.5 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 ml-2"
             >
-              <Menu className="h-6 w-6" />
+              <Menu className="h-5 w-5" />
             </button>
           </div>
           
