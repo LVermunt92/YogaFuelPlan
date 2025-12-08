@@ -116,22 +116,7 @@ function Navigation() {
             </button>
           </div>
           
-          {/* Mobile centered welcome message - absolutely centered on page */}
-          {authUser && (
-            <div className="sm:hidden absolute inset-0 flex items-center justify-center pointer-events-none">
-              <span className="text-xs font-medium text-gray-700 truncate max-w-[180px]">
-                {t.welcomeBack} {getDisplayName()}
-              </span>
-            </div>
-          )}
-          
           <div className="flex items-center">
-            {/* Desktop welcome message */}
-            {authUser && (
-              <span className="hidden sm:block text-xs font-medium text-gray-700 ml-3 whitespace-nowrap">
-                {t.welcomeBack} {getDisplayName()}
-              </span>
-            )}
             <div className="hidden sm:ml-4 sm:flex sm:space-x-6">
               {navItems.map((item) => {
                 const Icon = item.icon;
