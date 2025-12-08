@@ -106,7 +106,7 @@ function Navigation() {
     <nav className="topbar bg-background border-b border-gray-200 sticky top-0 z-50">
       <div className="w-full mx-0 px-0">
         <div className="flex justify-between h-10">
-          {/* Mobile menu button - moved to left */}
+          {/* Mobile menu button and welcome */}
           <div className="sm:hidden flex items-center">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -114,13 +114,21 @@ function Navigation() {
             >
               <Menu className="h-5 w-5" />
             </button>
+            {authUser && (
+              <span className="ml-2 text-xs font-medium text-gray-700 truncate max-w-[120px]">
+                {t.welcomeBack}, {getDisplayName()}
+              </span>
+            )}
           </div>
           
-          <div className="flex">
-            <div className="flex-shrink-0 flex items-center">
-              {/* Navigation logo/brand space - removed text */}
-            </div>
-            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+          <div className="flex items-center">
+            {/* Desktop welcome message */}
+            {authUser && (
+              <span className="hidden sm:block text-xs font-medium text-gray-700 ml-3 whitespace-nowrap">
+                {t.welcomeBack}, {getDisplayName()}
+              </span>
+            )}
+            <div className="hidden sm:ml-4 sm:flex sm:space-x-6">
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = location === item.path;

@@ -888,13 +888,6 @@ function MealPlannerMain() {
         {/* Centered Content Container */}
         <div className="space-y-6 lg:space-y-8">
           
-          {/* 1. Welcome Section */}
-          <div className="text-center mb-6">
-            <h1 className="text-3xl font-bold text-foreground mb-2">
-              {t.welcomeBack} {userProfile?.firstName || userProfile?.username || ''}
-            </h1>
-{t.createPersonalizedMealPlan && <p className="text-lg text-gray-600">{t.createPersonalizedMealPlan}</p>}
-          </div>
 
           {/* Empty State - Show when no meal plans exist AND data has finished loading AND user is authenticated */}
           {authUser?.id && !loadingPlans && mealPlans.length === 0 && (
