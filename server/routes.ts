@@ -2527,21 +2527,80 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return 'Te zoeken'; // Default/uncategorized
       };
 
-      // Helper function to normalize ingredient name
-      const normalizeIngredient = (ingredient: string): string => {
-        return ingredient
-          .replace(/\d+g?/g, '') // Remove quantities
-          .replace(/\([^)]*\)/g, '') // Remove parentheses
-          .replace(/,.*$/g, '') // Remove everything after comma
-          .replace(/\s+/g, ' ')
-          .trim();
+      // Helper function to parse ingredient into quantity, unit, and name
+      const parseIngredient = (ingredient: string): { quantity: string; unit: string; name: string } => {
+        if (!ingredient || ingredient === '') {
+          return { quantity: '', unit: '', name: ingredient };
+        }
+        
+        const cleanIngredient = ingredient.trim();
+        
+        // Handle numeric fractions (1/2, 1/4, etc.)
+        const numericFractionMatch = cleanIngredient.match(/^(\d+\/\d+)\s*([a-zA-Z]*)\s+(.+)/);
+        if (numericFractionMatch) {
+          const quantity = numericFractionMatch[1];
+          const unit = numericFractionMatch[2].trim();
+          const name = numericFractionMatch[3]
+            .replace(/\([^)]*\)/g, '') // Remove parentheses
+            .replace(/,.*$/g, '') // Remove everything after comma
+            .replace(/\s+/g, ' ')
+            .trim();
+          return { quantity, unit, name };
+        }
+        
+        // Handle standard numeric quantities with optional units (e.g., "200g quinoa", "15ml olive oil")
+        const match = cleanIngredient.match(/^(\d+(?:\.\d+)?)\s*([a-zA-Z]*)\s+(.+)/);
+        if (match) {
+          const quantity = match[1];
+          const unit = match[2].trim();
+          const name = match[3]
+            .replace(/\([^)]*\)/g, '') // Remove parentheses
+            .replace(/,.*$/g, '') // Remove everything after comma
+            .replace(/\s+/g, ' ')
+            .trim();
+          return { quantity, unit, name };
+        }
+        
+        // Handle piece-based ingredients (e.g., "1 onion", "2 eggs")
+        const pieceMatch = cleanIngredient.match(/^(\d+(?:\.\d+)?)\s+(.+)/);
+        if (pieceMatch) {
+          const quantity = pieceMatch[1];
+          const name = pieceMatch[2]
+            .replace(/\([^)]*\)/g, '')
+            .replace(/,.*$/g, '')
+            .replace(/\s+/g, ' ')
+            .trim();
+          return { quantity, unit: '', name };
+        }
+        
+        // No quantity found, return just the name
+        return { 
+          quantity: '', 
+          unit: '', 
+          name: cleanIngredient
+            .replace(/\([^)]*\)/g, '')
+            .replace(/,.*$/g, '')
+            .replace(/\s+/g, ' ')
+            .trim()
+        };
       };
 
-      const analysis = ingredients.map((ingredient: string) => ({
-        ingredient,
-        normalizedIngredient: normalizeIngredient(ingredient),
-        category: categorizeIngredient(ingredient)
-      }));
+      const analysis = ingredients.map((ingredient: string) => {
+        const parsed = parseIngredient(ingredient);
+        // Format the display: combine quantity and unit for display, but show ingredient name separately
+        const quantityDisplay = parsed.quantity && parsed.unit 
+          ? `${parsed.quantity}${parsed.unit}` 
+          : parsed.quantity || '';
+        
+        return {
+          ingredient,
+          normalizedIngredient: parsed.name, // Just the ingredient name without quantity/unit
+          quantity: parsed.quantity,
+          unit: parsed.unit,
+          quantityDisplay, // e.g., "15ml" or "200g"
+          category: categorizeIngredient(ingredient)
+        };
+      });
 
       res.json({ analysis });
     } catch (error) {

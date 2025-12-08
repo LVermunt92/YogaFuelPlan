@@ -74,7 +74,7 @@ export default function MyRecipes() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingRecipe, setEditingRecipe] = useState<UserRecipe | null>(null);
   const [useOnlyMyRecipes, setUseOnlyMyRecipes] = useState(false);
-  const [ingredientCategories, setIngredientCategories] = useState<Record<number, { category: string; normalizedName: string }>>({});
+  const [ingredientCategories, setIngredientCategories] = useState<Record<number, { category: string; normalizedName: string; quantityDisplay?: string }>>({});
 
   // Fetch user recipes
   const { data: recipes = [], isLoading, error: recipesError } = useQuery<UserRecipe[]>({
@@ -186,11 +186,12 @@ export default function MyRecipes() {
       
       if (response.ok) {
         const data = await response.json();
-        const categories: Record<number, { category: string; normalizedName: string }> = {};
-        data.analysis.forEach((item: {ingredient: string, category: string, normalizedIngredient?: string}, index: number) => {
+        const categories: Record<number, { category: string; normalizedName: string; quantityDisplay?: string }> = {};
+        data.analysis.forEach((item: {ingredient: string, category: string, normalizedIngredient?: string, quantityDisplay?: string}, index: number) => {
           categories[index] = {
             category: item.category,
-            normalizedName: item.normalizedIngredient || item.ingredient
+            normalizedName: item.normalizedIngredient || item.ingredient,
+            quantityDisplay: item.quantityDisplay || ''
           };
         });
         setIngredientCategories(categories);
@@ -578,6 +579,9 @@ export default function MyRecipes() {
                                 {ingredientCategories[index] ? (
                                   <div>
                                     <div className="font-medium text-gray-900">
+                                      {ingredientCategories[index].quantityDisplay && (
+                                        <span className="text-blue-600 mr-1">{ingredientCategories[index].quantityDisplay}</span>
+                                      )}
                                       {ingredientCategories[index].normalizedName || 'No mapping'}
                                     </div>
                                     <div className="text-xs text-gray-500">
