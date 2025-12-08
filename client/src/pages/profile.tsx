@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -161,10 +161,10 @@ export default function Profile() {
   };
 
   // Track if form has been initialized to prevent reset after saves
-  const [isFormInitialized, setIsFormInitialized] = React.useState(false);
+  const [isFormInitialized, setIsFormInitialized] = useState(false);
 
   // Update form data when user data loads (only on initial load)
-  React.useEffect(() => {
+  useEffect(() => {
     if (user && !isFormInitialized) {
       const dynamicProteinTarget = calculateProteinTarget(user.age, user.activityLevel, user.gender || undefined);
       

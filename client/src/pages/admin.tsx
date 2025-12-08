@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -1655,7 +1655,7 @@ function AdminPanelMain() {
   });
 
   // Apply client-side filtering for search and filters
-  const filteredRecipes = React.useMemo(() => {
+  const filteredRecipes = useMemo(() => {
     if (!unifiedRecipeData?.recipes) return [];
     
     let filtered = [...unifiedRecipeData.recipes];
@@ -1694,7 +1694,7 @@ function AdminPanelMain() {
   );
 
   // Create recipeData compatible with existing UI
-  const recipeData = React.useMemo(() => ({
+  const recipeData = useMemo(() => ({
     recipes: paginatedRecipes,
     total: filteredRecipes.length,
     page: currentPage,
@@ -1898,7 +1898,7 @@ function AdminPanelMain() {
   };
 
   // Watch for recipe ingredient changes in admin panel
-  React.useEffect(() => {
+  useEffect(() => {
     if (editingRecipe && editingRecipe.ingredients.length > 0) {
       analyzeAdminIngredients(editingRecipe.ingredients);
     }

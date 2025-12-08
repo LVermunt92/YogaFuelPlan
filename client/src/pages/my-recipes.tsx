@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -89,7 +89,7 @@ export default function MyRecipes() {
   });
 
   // Debug authentication
-  React.useEffect(() => {
+  useEffect(() => {
     console.log('Auth status:', { user: !!user, userId: user?.id });
     if (recipesError) {
       console.error('Recipes fetch error:', recipesError);
@@ -103,7 +103,7 @@ export default function MyRecipes() {
   });
 
   // Update local state when profile data loads
-  React.useEffect(() => {
+  useEffect(() => {
     if (userProfile && 'useOnlyMyRecipes' in userProfile && userProfile.useOnlyMyRecipes !== undefined) {
       setUseOnlyMyRecipes(userProfile.useOnlyMyRecipes);
     }
@@ -201,7 +201,7 @@ export default function MyRecipes() {
   };
 
   // Watch for ingredient changes and analyze them
-  React.useEffect(() => {
+  useEffect(() => {
     const subscription = form.watch((value, { name }) => {
       if (name?.startsWith('ingredients') && value.ingredients) {
         analyzeIngredients(value.ingredients as string[]);
