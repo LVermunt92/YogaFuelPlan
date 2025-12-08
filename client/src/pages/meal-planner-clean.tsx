@@ -1309,9 +1309,25 @@ function MealPlannerMain() {
 
                 {userProfile?.leftovers && userProfile.leftovers.length > 0 && (
                   <div className="space-y-2">
-                    <Label className="text-sm font-medium">
-                      {language === 'nl' ? 'Ingrediënten om op te maken:' : 'Ingredients to use up:'}
-                    </Label>
+                    <div className="flex items-center gap-1.5">
+                      <Label className="text-sm font-medium">
+                        {language === 'nl' ? 'Ingrediënten om op te maken:' : 'Ingredients to use up:'}
+                      </Label>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Info className="h-3.5 w-3.5 text-gray-400 cursor-help" />
+                          </TooltipTrigger>
+                          <TooltipContent className="max-w-xs">
+                            <p className="text-xs">
+                              {language === 'nl' 
+                                ? 'Deze ingrediënten worden verwerkt in recepten gemarkeerd met het + icoon' 
+                                : 'These ingredients are incorporated in recipes marked with the + icon'}
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </div>
                     <div className="flex flex-wrap gap-2">
                       {userProfile.leftovers.map((leftover, index) => (
                         <Badge 
