@@ -962,7 +962,7 @@ function MealPlannerMain() {
 
           {/* 2. Compact Nutrition Charts - Top 4 KPIs */}
           {currentMealPlan && kpiData && (
-            <div className="mb-6 relative">
+            <div className="mb-2 relative">
               <button
                 onClick={() => setLocation('/insights')}
                 className="absolute top-1 right-1 z-10 flex items-center gap-1 text-xs text-gray-500 hover:text-gray-700 transition-colors cursor-pointer group"
