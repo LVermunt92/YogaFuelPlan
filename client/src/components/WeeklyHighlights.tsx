@@ -267,20 +267,27 @@ export function WeeklyHighlights({ menstrualPhase = "off" }: WeeklyHighlightsPro
         
         {/* Local Markets Section */}
         {seasonalInfo.localMarkets && (
-          <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-lg">🏪</span>
+          <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-sm">🏪</span>
               <h4 className="font-medium text-sm text-gray-700">
-                {language === 'nl' ? 'Waar verse lokale groenten te vinden' : 'Where to find fresh local produce'}
+                {language === 'nl' ? 'Lokale markten' : 'Local markets'}
               </h4>
             </div>
-            <ul className="space-y-2">
-              {seasonalInfo.localMarkets.map((market, index) => (
-                <li key={index} className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                  • {market}
-                </li>
-              ))}
-            </ul>
+            <div className="flex flex-wrap gap-1.5">
+              {seasonalInfo.localMarkets.map((market, index) => {
+                const shortName = market.split(' - ')[0];
+                return (
+                  <Badge 
+                    key={index} 
+                    variant="secondary" 
+                    className="text-xs bg-blue-50 text-blue-700 hover:bg-blue-100"
+                  >
+                    {shortName}
+                  </Badge>
+                );
+              })}
+            </div>
           </div>
         )}
       </CardContent>
