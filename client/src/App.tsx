@@ -143,32 +143,27 @@ function Navigation() {
           </div>
           
           {/* User info and controls */}
-          <div className="hidden sm:flex sm:items-center sm:space-x-4">
+          <div className="hidden sm:flex sm:items-center sm:space-x-3 pr-2">
             {authUser && (
               <>
-                {/* Language Selector */}
-                <div className="flex items-center space-x-2">
-                  <Languages className="h-4 w-4 text-gray-500" />
-                  <Select value={language} onValueChange={changeLanguage} disabled={isChangingLanguage}>
-                    <SelectTrigger className="w-[80px] h-8 text-sm">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="en">EN</SelectItem>
-                      <SelectItem value="nl">NL</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                
-                <span className="text-sm text-muted-foreground">
-                  Welcome, {getDisplayName()}
+                <span className="text-xs text-muted-foreground whitespace-nowrap">
+                  {getDisplayName()}
                 </span>
+                {/* Language Selector */}
+                <Select value={language} onValueChange={changeLanguage} disabled={isChangingLanguage}>
+                  <SelectTrigger className="w-[60px] h-6 text-xs px-2">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="en">EN</SelectItem>
+                    <SelectItem value="nl">NL</SelectItem>
+                  </SelectContent>
+                </Select>
                 <button
                   onClick={logout}
-                  className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors duration-200"
+                  className="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-500 hover:text-gray-700 transition-colors duration-200"
                 >
-                  <LogOut className="mr-2 h-4 w-4" />
-                  {t.logout}
+                  <LogOut className="h-3.5 w-3.5" />
                 </button>
               </>
             )}
