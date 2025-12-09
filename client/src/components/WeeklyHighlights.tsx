@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Leaf, Calendar, ThermometerSun, Heart } from "lucide-react";
+import { MapPin, Leaf, Calendar, ChevronDown } from "lucide-react";
 import { useTranslations } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -244,7 +244,6 @@ export function WeeklyHighlights({ menstrualPhase = "off" }: WeeklyHighlightsPro
             </h4>
           </div>
           <div className="flex flex-wrap gap-1.5">
-            {/* Show only peak seasonal vegetables from Voedingscentrum data */}
             {seasonalInfo.monthlyProduce?.peak?.map((veg, index) => (
               <Badge 
                 key={index} 

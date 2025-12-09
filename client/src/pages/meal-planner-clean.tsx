@@ -17,7 +17,6 @@ import { useLocation } from "wouter";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Separator } from "@/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useTranslations, translateDietaryTags, translateDietaryTag } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Textarea } from "@/components/ui/textarea";
@@ -170,22 +169,6 @@ interface OuraData {
 interface OuraStatus {
   connected: boolean;
   message: string;
-}
-
-// InfoPopover component - touch-friendly info icon that works on mobile
-function InfoPopover({ children }: { children: React.ReactNode }) {
-  return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <button type="button" className="inline-flex items-center justify-center">
-          <Info className="h-3.5 w-3.5 text-gray-400 cursor-help hover:text-gray-600" />
-        </button>
-      </PopoverTrigger>
-      <PopoverContent className="max-w-xs p-3" side="top">
-        <p className="text-xs">{children}</p>
-      </PopoverContent>
-    </Popover>
-  );
 }
 
 // SeasonalMonthTag component - displays month tags with seasonal ingredient tooltips
@@ -1255,11 +1238,20 @@ function MealPlannerMain() {
                   <Label htmlFor="weekend-meal-prep" className="text-sm font-medium text-gray-900 dark:text-gray-100 cursor-pointer">
                     {language === 'nl' ? 'Weekend maaltijdbereiding' : 'Weekend meal prep'}
                   </Label>
-                  <InfoPopover>
-                    {language === 'nl' 
-                      ? 'Bereid componenten van je weekmaaltijden dit weekend voor' 
-                      : 'Prepare components of your weekday meals this weekend'}
-                  </InfoPopover>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Info className="h-3.5 w-3.5 text-gray-400 cursor-help" />
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-xs">
+                        <p className="text-xs">
+                          {language === 'nl' 
+                            ? 'Bereid componenten van je weekmaaltijden dit weekend voor' 
+                            : 'Prepare components of your weekday meals this weekend'}
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </div>
                 <Switch
                   id="weekend-meal-prep"
@@ -1275,12 +1267,21 @@ function MealPlannerMain() {
                   <Label className="text-sm font-medium text-gray-700">
                     {t.ingredientsToUseUp || 'Ingredients to use up'}
                   </Label>
-                  <InfoPopover>
-                    {language === 'nl' 
-                      ? 'Heb je ingrediënten in je koelkast die op moeten? Voeg ze hier toe en we zorgen dat ze worden gebruikt in de maaltijden van volgende week.' 
-                      : 'Got ingredients in your fridge that need to be used up? Add them here and we\'ll make sure they\'re included in next week\'s meals.'
-                    }
-                  </InfoPopover>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Info className="h-3.5 w-3.5 text-gray-400 cursor-help" />
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-xs">
+                        <p className="text-xs">
+                          {language === 'nl' 
+                            ? 'Heb je ingrediënten in je koelkast die op moeten? Voeg ze hier toe en we zorgen dat ze worden gebruikt in de maaltijden van volgende week.' 
+                            : 'Got ingredients in your fridge that need to be used up? Add them here and we\'ll make sure they\'re included in next week\'s meals.'
+                          }
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </div>
                 
                 <div className="flex gap-2">
@@ -1312,11 +1313,20 @@ function MealPlannerMain() {
                       <Label className="text-sm font-medium">
                         {language === 'nl' ? 'Ingrediënten om op te maken:' : 'Ingredients to use up:'}
                       </Label>
-                      <InfoPopover>
-                        {language === 'nl' 
-                          ? 'Deze ingrediënten worden verwerkt in recepten gemarkeerd met het + icoon' 
-                          : 'These ingredients are incorporated in recipes marked with the + icon'}
-                      </InfoPopover>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Info className="h-3.5 w-3.5 text-gray-400 cursor-help" />
+                          </TooltipTrigger>
+                          <TooltipContent className="max-w-xs">
+                            <p className="text-xs">
+                              {language === 'nl' 
+                                ? 'Deze ingrediënten worden verwerkt in recepten gemarkeerd met het + icoon' 
+                                : 'These ingredients are incorporated in recipes marked with the + icon'}
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {userProfile.leftovers.map((leftover, index) => (
