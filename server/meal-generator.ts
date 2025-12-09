@@ -1436,6 +1436,14 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   let wednesdayDinnerMeal: MealOption | null = null;
   let thursdayDinnerMeal: MealOption | null = null;
   
+  // BREAKFAST BATCH COOKING: Track breakfast for 2-day pairing
+  // Day 2 (Mon): Cook breakfast A → Day 3 (Tue): Leftover A
+  // Day 4 (Wed): Cook breakfast B → Day 5 (Thu): Leftover B
+  // Day 6 (Fri): Cook breakfast C → Day 7 (Sat): Leftover C
+  let mondayBreakfastMeal: MealOption | null = null;
+  let wednesdayBreakfastMeal: MealOption | null = null;
+  let fridayBreakfastMeal: MealOption | null = null;
+  
   // Get user settings for meal planning
   const eatingDaysAtHome = user?.eatingDaysAtHome || 7;
   
@@ -1741,54 +1749,74 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
           allSelectedMealNames.add(selectedMeal.name);
         }
       } else if (mealCategory === 'breakfast') {
-        // Smart breakfast scheduling: easy options for weekdays, elaborate for weekends
-        const isWeekend = day === 6 || day === 7; // Saturday or Sunday
+        // BREAKFAST 2-DAY BATCH COOKING PATTERN:
+        // Day 2 (Mon): Cook fresh breakfast A → Day 3 (Tue): Leftover A
+        // Day 4 (Wed): Cook fresh breakfast B → Day 5 (Thu): Leftover B
+        // Day 6 (Fri): Cook fresh breakfast C → Day 7 (Sat): Leftover C
         
-        if (isWeekend) {
-          // Weekend breakfasts: pancakes, elaborate options (higher prep time)
-          const weekendBreakfasts = availableMeals.filter(meal => 
-            meal.nutrition.prepTime >= 15 || 
-            meal.name.toLowerCase().includes('pancake') ||
-            meal.name.toLowerCase().includes('bowl') ||
-            meal.name.toLowerCase().includes('quinoa')
-          );
-          
-          if (weekendBreakfasts.length > 0) {
-            const weekendBreakfastResult = await selectUnusedMealIntelligently(weekendBreakfasts, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget, user?.id);
-            selectedMeal = weekendBreakfastResult.meal;
-            intelligentlyUsedIngredients = weekendBreakfastResult.usedIngredients || [];
-            usedBreakfastMeals.add(selectedMeal.name);
-            allSelectedMealNames.add(selectedMeal.name);
-            console.log(`Day ${day} (weekend) breakfast: ${selectedMeal.name} (prep: ${selectedMeal.nutrition.prepTime}min)`);
+        // Determine if this is a cooking day or leftover day
+        const isFreshBreakfastDay = (day === 2 || day === 4 || day === 6); // Mon, Wed, Fri
+        const isLeftoverBreakfastDay = (day === 3 || day === 5 || day === 7); // Tue, Thu, Sat
+        
+        if (isLeftoverBreakfastDay) {
+          // LEFTOVER DAY: Use previous day's breakfast
+          if (day === 3 && mondayBreakfastMeal) {
+            selectedMeal = mondayBreakfastMeal;
+            isLeftover = true;
+            console.log(`🍳 Day ${day} (Tue) breakfast: ${selectedMeal.name} (LEFTOVER from Monday)`);
+          } else if (day === 5 && wednesdayBreakfastMeal) {
+            selectedMeal = wednesdayBreakfastMeal;
+            isLeftover = true;
+            console.log(`🍳 Day ${day} (Thu) breakfast: ${selectedMeal.name} (LEFTOVER from Wednesday)`);
+          } else if (day === 7 && fridayBreakfastMeal) {
+            selectedMeal = fridayBreakfastMeal;
+            isLeftover = true;
+            console.log(`🍳 Day ${day} (Sat) breakfast: ${selectedMeal.name} (LEFTOVER from Friday)`);
           } else {
-            const fallbackWeekendBreakfastResult = await selectUnusedMealIntelligently(availableMeals, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget, user?.id);
-            selectedMeal = fallbackWeekendBreakfastResult.meal;
+            // Fallback if no previous meal found - select fresh
+            const fallbackResult = await selectUnusedMealIntelligently(availableMeals, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget, user?.id);
+            selectedMeal = fallbackResult.meal;
             usedBreakfastMeals.add(selectedMeal.name);
             allSelectedMealNames.add(selectedMeal.name);
+            console.log(`🍳 Day ${day} breakfast: ${selectedMeal.name} (FRESH - no leftover available)`);
           }
-        } else {
-          // Weekday breakfasts: quick and easy options (lower prep time)
+        } else if (isFreshBreakfastDay) {
+          // FRESH COOKING DAY: Select new breakfast and save for next day
+          // Use weekday-friendly quick options for Mon/Wed, can be more elaborate for Fri
+          const isWeekday = day <= 5;
           const weekdayBreakfasts = availableMeals.filter(meal => 
-            meal.nutrition.prepTime <= 10 ||
+            meal.nutrition.prepTime <= 15 ||
             meal.name.toLowerCase().includes('overnight') ||
             meal.name.toLowerCase().includes('chia') ||
             meal.name.toLowerCase().includes('smoothie') ||
-            meal.name.toLowerCase().includes('kefir')
+            meal.name.toLowerCase().includes('kefir') ||
+            meal.name.toLowerCase().includes('oats')
           );
           
-          if (weekdayBreakfasts.length > 0) {
-            const weekdayBreakfastResult = await selectUnusedMealIntelligently(weekdayBreakfasts, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget);
-            selectedMeal = weekdayBreakfastResult.meal;
-            intelligentlyUsedIngredients = weekdayBreakfastResult.usedIngredients || [];
-            usedBreakfastMeals.add(selectedMeal.name);
-            allSelectedMealNames.add(selectedMeal.name);
-            console.log(`Day ${day} (weekday) breakfast: ${selectedMeal.name} (prep: ${selectedMeal.nutrition.prepTime}min)`);
-          } else {
-            const fallbackWeekdayBreakfastResult = await selectUnusedMealIntelligently(availableMeals, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget, user?.id);
-            selectedMeal = fallbackWeekdayBreakfastResult.meal;
-            usedBreakfastMeals.add(selectedMeal.name);
-            allSelectedMealNames.add(selectedMeal.name);
+          const breakfastPool = isWeekday && weekdayBreakfasts.length > 0 ? weekdayBreakfasts : availableMeals;
+          const breakfastResult = await selectUnusedMealIntelligently(breakfastPool, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget, user?.id);
+          selectedMeal = breakfastResult.meal;
+          intelligentlyUsedIngredients = breakfastResult.usedIngredients || [];
+          usedBreakfastMeals.add(selectedMeal.name);
+          allSelectedMealNames.add(selectedMeal.name);
+          
+          // Save for leftover the next day
+          if (day === 2) {
+            mondayBreakfastMeal = selectedMeal;
+            console.log(`🍳 Day ${day} (Mon) breakfast: ${selectedMeal.name} (COOKING for Mon+Tue - prep: ${selectedMeal.nutrition.prepTime}min)`);
+          } else if (day === 4) {
+            wednesdayBreakfastMeal = selectedMeal;
+            console.log(`🍳 Day ${day} (Wed) breakfast: ${selectedMeal.name} (COOKING for Wed+Thu - prep: ${selectedMeal.nutrition.prepTime}min)`);
+          } else if (day === 6) {
+            fridayBreakfastMeal = selectedMeal;
+            console.log(`🍳 Day ${day} (Fri) breakfast: ${selectedMeal.name} (COOKING for Fri+Sat - prep: ${selectedMeal.nutrition.prepTime}min)`);
           }
+        } else {
+          // Day 1 (Sunday) - shouldn't have breakfast anyway
+          const generalResult = await selectUnusedMealIntelligently(availableMeals, usedBreakfastMeals, allSelectedMealNames, false, ingredientsToUseUp, 'breakfast', dietaryTags, dailyProteinTarget, user?.id);
+          selectedMeal = generalResult.meal;
+          usedBreakfastMeals.add(selectedMeal.name);
+          allSelectedMealNames.add(selectedMeal.name);
         }
       } else {
         // Fresh lunch/dinner for other days - use freshness-based selection
@@ -1915,8 +1943,15 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         console.log(`🚨 Using emergency fallback meal: ${selectedMeal.name}`);
       }
       
-      // BREAKFAST: Always 1 serving (no batch cooking multiplier for breakfast)
-      const breakfastServingMultiplier = mealCategory === 'breakfast' ? 1 : servingMultiplier;
+      // BREAKFAST BATCH COOKING: 2x multiplier on fresh days (Mon/Wed/Fri), 1x on leftover days
+      // Lunch/Dinner: Use standard serving multiplier
+      let breakfastServingMultiplier = servingMultiplier;
+      if (mealCategory === 'breakfast') {
+        // Fresh breakfast days (Mon=2, Wed=4, Fri=6) get 2x for shopping list
+        // Leftover days (Tue=3, Thu=5, Sat=7) get 1x (already cooked)
+        const isFreshBreakfastDay = (day === 2 || day === 4 || day === 6);
+        breakfastServingMultiplier = isFreshBreakfastDay ? 2 : 1;
+      }
       
       const adjustedPortion = adjustMealPortion(selectedMeal.portion, portionMultiplier, breakfastServingMultiplier);
       // When cooking in batch (servingMultiplier > 1), each meal only counts 1 serving worth of nutrients
