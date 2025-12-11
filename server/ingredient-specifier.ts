@@ -57,6 +57,8 @@ export const INGREDIENT_SPECIFICATIONS: IngredientSpecification[] = [
   // Proteins
   { generic: 'plant protein', specific: ['tofu', 'tempeh', 'chickpeas'], category: 'proteins' },
   { generic: 'legumes', specific: ['chickpeas', 'black beans', 'lentils'], category: 'proteins' },
+  // Note: "edamame beans" should NOT be matched by the generic "beans" pattern below
+  // Edamame is already specific - it's soybeans, not a generic bean term
   { generic: 'beans', specific: ['chickpeas', 'black beans', 'white beans'], category: 'proteins' },
 
   // Grains
@@ -118,6 +120,19 @@ export function specifyIngredients(ingredients: string[]): string[] {
     
     // Find matching specification
     for (const spec of INGREDIENT_SPECIFICATIONS) {
+      // Skip generic "beans" replacement for specific bean types that should remain as-is
+      if (spec.generic === 'beans' && (
+        lowerIngredient.includes('edamame') ||
+        lowerIngredient.includes('kidney') ||
+        lowerIngredient.includes('pinto') ||
+        lowerIngredient.includes('cannellini') ||
+        lowerIngredient.includes('butter bean') ||
+        lowerIngredient.includes('broad bean') ||
+        lowerIngredient.includes('fava')
+      )) {
+        continue; // Skip this mapping - ingredient is already specific
+      }
+      
       if (lowerIngredient.includes(spec.generic.toLowerCase())) {
         let specificIngredients: string[];
         
