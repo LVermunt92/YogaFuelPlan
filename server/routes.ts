@@ -320,6 +320,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: "User not found" });
       }
       
+      // Update lastLoginAt to track active users (helps admin panel "active this week" counter)
+      await storage.updateUserProfile(tokenData.userId, {
+        lastLoginAt: new Date()
+      });
+      
       // Generate new access token
       const accessToken = generateAccessToken({ userId: user.id, username: user.username });
       
