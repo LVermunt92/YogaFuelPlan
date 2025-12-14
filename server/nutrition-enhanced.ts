@@ -18099,6 +18099,10 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
     'cabbage': 'Vegetables',
     'white cabbage': 'Vegetables',
     'savoy cabbage': 'Vegetables',
+    'pak choi': 'Vegetables',
+    'pak choy': 'Vegetables',
+    'bok choy': 'Vegetables',
+    'baby pak choi': 'Vegetables',
     'sweet potato milk': 'Dairy Alternatives',
     
     // Fruits (Fresh Produce section 2)
