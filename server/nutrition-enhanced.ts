@@ -18093,6 +18093,12 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
     'spring onions': 'Vegetables',
     'sweet potatoes': 'Vegetables',
     'sweet potato': 'Vegetables',
+    'leek': 'Vegetables',
+    'leeks': 'Vegetables',
+    'red cabbage': 'Vegetables',
+    'cabbage': 'Vegetables',
+    'white cabbage': 'Vegetables',
+    'savoy cabbage': 'Vegetables',
     'sweet potato milk': 'Dairy Alternatives',
     
     // Fruits (Fresh Produce section 2)
