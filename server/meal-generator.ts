@@ -134,21 +134,32 @@ function getSeasonTagFromAyurvedic(ayurvedicSeason: string): string {
 }
 
 /**
- * Apply seasonal preference - prioritize recipes tagged with the current season
- * This is a SOFT preference: seasonal recipes appear first, then all other recipes
+ * Get current month name for recipe tag matching
+ */
+function getCurrentMonthTag(): string {
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                  'July', 'August', 'September', 'October', 'November', 'December'];
+  return months[new Date().getMonth()];
+}
+
+/**
+ * Apply seasonal preference - prioritize recipes tagged with the current season OR current month
+ * This is a SOFT preference: seasonal/monthly recipes appear first, then all other recipes
  */
 function applySeasonalPreference(meals: MealOption[], currentSeason: string): MealOption[] {
   const seasonTag = getSeasonTagFromAyurvedic(currentSeason);
+  const monthTag = getCurrentMonthTag();
   
+  // Recipes matching either the season tag OR the month tag get prioritized
   const seasonalMeals = meals.filter(meal => 
-    meal.tags && meal.tags.includes(seasonTag)
+    meal.tags && (meal.tags.includes(seasonTag) || meal.tags.includes(monthTag))
   );
   const nonSeasonalMeals = meals.filter(meal => 
-    !meal.tags || !meal.tags.includes(seasonTag)
+    !meal.tags || (!meal.tags.includes(seasonTag) && !meal.tags.includes(monthTag))
   );
   
   if (seasonalMeals.length > 0) {
-    console.log(`🌸 SEASONAL PREFERENCE: Found ${seasonalMeals.length} ${seasonTag} recipes, prioritizing them first`);
+    console.log(`🌸 SEASONAL PREFERENCE: Found ${seasonalMeals.length} recipes for ${seasonTag}/${monthTag}, prioritizing them first`);
   }
   
   return [...seasonalMeals, ...nonSeasonalMeals];
