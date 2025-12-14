@@ -10,6 +10,7 @@ import AdminPanel from "@/pages/admin";
 import MyRecipes from "@/pages/my-recipes";
 import TermsAndConditions from "@/pages/terms-and-conditions";
 import Insights from "@/pages/insights";
+import SeasonalNutrition from "@/pages/seasonal-nutrition";
 
 import Auth from "@/pages/auth";
 import NotFound from "@/pages/not-found";
@@ -299,6 +300,7 @@ function Router() {
           {/* <Route path="/my-recipes" component={MyRecipes} /> */}
           <Route path="/profile" component={Profile} />
           <Route path="/about" component={About} />
+          <Route path="/seasonal" component={SeasonalNutrition} />
           <Route path="/terms" component={TermsAndConditions} />
           <Route path="/admin" component={AdminPanel} />
           <Route component={NotFound} />

@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Leaf, Calendar, ThermometerSun } from "lucide-react";
+import { MapPin, Leaf, Calendar, ThermometerSun, ChevronRight } from "lucide-react";
+import { Link } from "wouter";
 import { useTranslations } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -176,12 +177,15 @@ export function SeasonalAdvisor() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           <div>
-            <div className="flex items-center gap-2 mb-3">
-              <Leaf className="h-4 w-4 text-green-600" />
-              <h4 className="font-medium text-sm text-gray-700">
-                {language === 'nl' ? 'Piek Nederlandse Seizoensgroenten' : 'Peak Dutch seasonal vegetables'}
-              </h4>
-            </div>
+            <Link href="/seasonal">
+              <div className="flex items-center gap-2 mb-3 cursor-pointer hover:opacity-80 transition-opacity group">
+                <Leaf className="h-4 w-4 text-green-600" />
+                <h4 className="font-medium text-sm text-gray-700">
+                  {language === 'nl' ? 'Piek Nederlandse Seizoensgroenten' : 'Peak Dutch seasonal vegetables'}
+                </h4>
+                <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-green-600 transition-colors ml-auto" data-testid="link-seasonal-page" />
+              </div>
+            </Link>
             <div className="flex flex-wrap gap-1.5">
               {/* Show only peak seasonal vegetables from Voedingscentrum data */}
               {seasonalInfo.monthlyProduce?.peak?.map((veg, index) => (
