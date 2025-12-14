@@ -119,21 +119,6 @@ function applyAntiAgingPreference(meals: MealOption[], currentAntiAgingCount: nu
 }
 
 /**
- * Map Ayurvedic season to recipe tag format
- */
-function getSeasonTagFromAyurvedic(ayurvedicSeason: string): string {
-  const seasonMap: Record<string, string> = {
-    'vasanta': 'Spring',
-    'grishma': 'Summer',
-    'varsha': 'Summer', // Monsoon maps to Summer for Europe
-    'sharad': 'Autumn',
-    'hemanta': 'Winter',
-    'shishira': 'Winter'
-  };
-  return seasonMap[ayurvedicSeason] || 'Spring';
-}
-
-/**
  * Get current month name for recipe tag matching
  */
 function getCurrentMonthTag(): string {
@@ -143,26 +128,24 @@ function getCurrentMonthTag(): string {
 }
 
 /**
- * Apply seasonal preference - prioritize recipes tagged with the current season OR current month
- * This is a SOFT preference: seasonal/monthly recipes appear first, then all other recipes
+ * Apply monthly preference - prioritize recipes tagged with the current month
+ * This is a SOFT preference: monthly recipes appear first, then all other recipes
  */
-function applySeasonalPreference(meals: MealOption[], currentSeason: string): MealOption[] {
-  const seasonTag = getSeasonTagFromAyurvedic(currentSeason);
+function applySeasonalPreference(meals: MealOption[]): MealOption[] {
   const monthTag = getCurrentMonthTag();
   
-  // Recipes matching either the season tag OR the month tag get prioritized
-  const seasonalMeals = meals.filter(meal => 
-    meal.tags && (meal.tags.includes(seasonTag) || meal.tags.includes(monthTag))
+  const monthlyMeals = meals.filter(meal => 
+    meal.tags && meal.tags.includes(monthTag)
   );
-  const nonSeasonalMeals = meals.filter(meal => 
-    !meal.tags || (!meal.tags.includes(seasonTag) && !meal.tags.includes(monthTag))
+  const nonMonthlyMeals = meals.filter(meal => 
+    !meal.tags || !meal.tags.includes(monthTag)
   );
   
-  if (seasonalMeals.length > 0) {
-    console.log(`🌸 SEASONAL PREFERENCE: Found ${seasonalMeals.length} recipes for ${seasonTag}/${monthTag}, prioritizing them first`);
+  if (monthlyMeals.length > 0) {
+    console.log(`🌸 MONTHLY PREFERENCE: Found ${monthlyMeals.length} recipes for ${monthTag}, prioritizing them first`);
   }
   
-  return [...seasonalMeals, ...nonSeasonalMeals];
+  return [...monthlyMeals, ...nonMonthlyMeals];
 }
 
 /**
@@ -1025,10 +1008,9 @@ async function selectUnusedMealIntelligently(
     console.log(`🔍 SIMILARITY DEBUG: No selected meals to check against yet`);
   }
   
-  // SEASONAL PREFERENCE: Prioritize recipes matching the current season (soft preference)
+  // MONTHLY PREFERENCE: Prioritize recipes matching the current month (soft preference)
   if (unusedMeals.length > 1) {
-    const currentSeason = getCurrentAyurvedicSeason();
-    unusedMeals = applySeasonalPreference(unusedMeals, currentSeason);
+    unusedMeals = applySeasonalPreference(unusedMeals);
   }
   
   // MENSTRUAL PHASE PREFERENCE: Prioritize recipes matching the user's cycle phase (soft preference)
