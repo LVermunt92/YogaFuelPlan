@@ -512,7 +512,6 @@ export default function Insights() {
                       <DialogTitle>{t.whyCocoaFlavanolsMatters}</DialogTitle>
                       <DialogDescription className="text-sm pt-2">
                         {t.cocoaFlavanolsTooltip}
-                        <p className="text-xs text-purple-600 font-medium mt-2">{t.cocoaFlavanolsNote}</p>
                       </DialogDescription>
                     </DialogHeader>
                   </DialogContent>
