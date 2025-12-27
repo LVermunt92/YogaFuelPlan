@@ -90,6 +90,9 @@ export default function Insights() {
     const totalVitaminK = currentMealPlan.meals.reduce((sum, meal) => {
       return sum + ((meal as any).vitaminK || 0);
     }, 0);
+    const totalSugar = currentMealPlan.meals.reduce((sum, meal) => {
+      return sum + ((meal as any).sugar || 0);
+    }, 0);
 
     // Calculate Eating the Rainbow score
     const allColors = new Set<string>();
@@ -113,6 +116,7 @@ export default function Insights() {
       carbs: totalMeals > 0 ? totalCarbs / totalMeals : 0,
       fiber: totalMeals > 0 ? totalFiber / totalMeals : 0,
       vitaminK: totalMeals > 0 ? totalVitaminK / totalMeals : 0,
+      sugar: totalMeals > 0 ? totalSugar / totalMeals : 0,
     };
     
     const avgProteinPerDay = avgPerMeal.protein * 3;
@@ -121,6 +125,7 @@ export default function Insights() {
     const avgCarbsPerDay = avgPerMeal.carbs * 3;
     const avgFiberPerDay = avgPerMeal.fiber * 3;
     const avgVitaminKPerDay = avgPerMeal.vitaminK * 3;
+    const avgSugarPerDay = avgPerMeal.sugar * 3;
 
     // Calculate net carbs (total carbs - fiber)
     const avgNetCarbsPerDay = avgCarbsPerDay - avgFiberPerDay;
@@ -145,6 +150,9 @@ export default function Insights() {
 
     // Vitamin K target (gender-specific)
     const vitaminKTarget = userProfile?.gender === 'male' ? 120 : 90; // 120 mcg for men, 90 mcg for women
+
+    // Sugar target (gender-specific) - AHA recommends max 25g for women, 36g for men
+    const sugarTarget = userProfile?.gender === 'male' ? 36 : 25;
 
     // Targets
     const proteinTarget = nutritionTargets?.protein || 95;
@@ -202,6 +210,11 @@ export default function Insights() {
         value: Math.round(avgVitaminKPerDay),
         percentage: Math.round((avgVitaminKPerDay / vitaminKTarget) * 100),
         target: vitaminKTarget
+      },
+      sugar: {
+        value: Math.round(avgSugarPerDay),
+        percentage: Math.round((avgSugarPerDay / sugarTarget) * 100),
+        target: sugarTarget
       }
     };
   };
@@ -713,6 +726,60 @@ export default function Insights() {
                 </Dialog>
               </div>
               <p className="text-[10px] text-gray-500">{kpiData.vitaminK.percentage}%</p>
+            </div>
+
+            {/* Sugar */}
+            <div className="text-center relative">
+              <div className="relative w-14 h-14 mx-auto">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { value: Math.min(kpiData.sugar.percentage, 100), fill: kpiData.sugar.percentage > 100 ? "#ef4444" : "#f472b6" },
+                        { value: Math.max(100 - kpiData.sugar.percentage, 0), fill: "#f3f4f6" }
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={14}
+                      outerRadius={24}
+                      startAngle={90}
+                      endAngle={450}
+                      dataKey="value"
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className={`text-xs font-bold ${kpiData.sugar.percentage > 100 ? 'text-red-500' : 'text-pink-400'}`}>{kpiData.sugar.value}g</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-center gap-0.5">
+                <h3 className={`text-[10px] font-semibold ${kpiData.sugar.percentage > 100 ? 'text-red-500' : 'text-pink-400'}`}>
+                  {language === "nl" ? "Suiker" : "Sugar"}
+                </h3>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="text-pink-400/60 hover:text-pink-400" data-testid="info-sugar">
+                      <Info className="h-2.5 w-2.5" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-sm">
+                    <DialogHeader>
+                      <DialogTitle>{language === "nl" ? "Over suiker" : "About sugar"}</DialogTitle>
+                      <DialogDescription className="text-sm pt-2">
+                        {language === "nl" 
+                          ? "De American Heart Association beveelt maximaal 25g toegevoegde suiker per dag aan voor vrouwen en 36g voor mannen. Te veel suiker kan leiden tot gewichtstoename, hartziekten en diabetes type 2."
+                          : "The American Heart Association recommends a maximum of 25g added sugar per day for women and 36g for men. Excess sugar can lead to weight gain, heart disease and type 2 diabetes."}
+                        <p className={`text-xs font-medium mt-2 ${kpiData.sugar.percentage > 100 ? 'text-red-500' : 'text-pink-500'}`}>
+                          {language === "nl" 
+                            ? `Doel: max ${kpiData.sugar.target}g per dag`
+                            : `Target: max ${kpiData.sugar.target}g per day`}
+                        </p>
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <p className="text-[10px] text-gray-500">{kpiData.sugar.percentage}%</p>
             </div>
 
             </div>
