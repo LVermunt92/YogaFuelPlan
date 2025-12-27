@@ -182,6 +182,13 @@ export const translations = {
     warning: "Warning",
     info: "Info",
     
+    // Profile Page
+    physiologyGender: "Physiology gender",
+    proteinNeedsExplanation: "Protein needs differ with hormones, muscle mass and age. If unsure, choose the range you feel fits your physiology best.",
+    selectPhysiologyGender: "Select physiology gender",
+    female: "Female",
+    male: "Male",
+    
     // Auth Toast Messages
     welcomeBackToast: "Welcome back!",
     loggedInAs: "Logged in as",
@@ -690,6 +697,13 @@ export const translations = {
     success: "Succes",
     warning: "Waarschuwing",
     info: "Info",
+    
+    // Profile Page
+    physiologyGender: "Fysiologisch geslacht",
+    proteinNeedsExplanation: "Eiwitbehoeften verschillen per hormonen, spiermassa en leeftijd. Kies bij twijfel het bereik dat het beste past bij je fysiologie.",
+    selectPhysiologyGender: "Selecteer fysiologisch geslacht",
+    female: "Vrouw",
+    male: "Man",
     
     // Auth Toast Messages
     welcomeBackToast: "Welkom terug!",

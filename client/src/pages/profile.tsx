@@ -434,21 +434,21 @@ export default function Profile() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               <div>
                 <Label htmlFor="gender" className="text-sm font-medium text-foreground mb-2 block">
-                  Physiology Gender
+                  {t.physiologyGender}
                 </Label>
                 <p className="text-xs text-muted-foreground mb-3">
-                  Protein needs differ with hormones, muscle mass and age. If unsure, choose the range you feel fits your physiology best.
+                  {t.proteinNeedsExplanation}
                 </p>
                 <Select
                   value={formData.gender}
                   onValueChange={(value) => handleActivityOrAgeChange('gender', value)}
                 >
                   <SelectTrigger className="input-clean">
-                    <SelectValue placeholder="Select physiology gender" />
+                    <SelectValue placeholder={t.selectPhysiologyGender} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="female">Female</SelectItem>
-                    <SelectItem value="male">Male</SelectItem>
+                    <SelectItem value="female">{t.female}</SelectItem>
+                    <SelectItem value="male">{t.male}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
