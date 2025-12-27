@@ -188,6 +188,10 @@ export const translations = {
     selectPhysiologyGender: "Select physiology gender",
     female: "Female",
     male: "Male",
+    mealsToInclude: "Meals to include",
+    includeBreakfast: "Include breakfast",
+    includeLunch: "Include lunch",
+    includeDinner: "Include dinner",
     
     // Auth Toast Messages
     welcomeBackToast: "Welcome back!",
@@ -704,6 +708,10 @@ export const translations = {
     selectPhysiologyGender: "Selecteer fysiologisch geslacht",
     female: "Vrouw",
     male: "Man",
+    mealsToInclude: "Maaltijden om op te nemen",
+    includeBreakfast: "Ontbijt opnemen",
+    includeLunch: "Lunch opnemen",
+    includeDinner: "Avondeten opnemen",
     
     // Auth Toast Messages
     welcomeBackToast: "Welkom terug!",

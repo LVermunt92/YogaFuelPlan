@@ -825,52 +825,52 @@ export default function Profile() {
             {/* Meals to Include */}
             <div className="mt-6">
               <Label className="text-sm font-medium text-foreground mb-3 block">
-                Meals to include
+                {t.mealsToInclude}
               </Label>
               <div className="flex flex-col gap-3">
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="includeBreakfast"
-                    checked={formData.includeBreakfast}
+                    checked={formData.includeBreakfast === true}
                     onCheckedChange={(checked) => 
-                      setFormData(prev => ({ ...prev, includeBreakfast: checked as boolean }))
+                      setFormData(prev => ({ ...prev, includeBreakfast: checked === true }))
                     }
                   />
                   <label
                     htmlFor="includeBreakfast"
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
                   >
-                    Include breakfast
+                    {t.includeBreakfast}
                   </label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="includeLunch"
-                    checked={formData.includeLunch}
+                    checked={formData.includeLunch === true}
                     onCheckedChange={(checked) => 
-                      setFormData(prev => ({ ...prev, includeLunch: checked as boolean }))
+                      setFormData(prev => ({ ...prev, includeLunch: checked === true }))
                     }
                   />
                   <label
                     htmlFor="includeLunch"
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
                   >
-                    Include lunch
+                    {t.includeLunch}
                   </label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="includeDinner"
-                    checked={formData.includeDinner}
+                    checked={formData.includeDinner === true}
                     onCheckedChange={(checked) => 
-                      setFormData(prev => ({ ...prev, includeDinner: checked as boolean }))
+                      setFormData(prev => ({ ...prev, includeDinner: checked === true }))
                     }
                   />
                   <label
                     htmlFor="includeDinner"
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
                   >
-                    Include dinner
+                    {t.includeDinner}
                   </label>
                 </div>
               </div>
