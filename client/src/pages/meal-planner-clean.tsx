@@ -773,12 +773,11 @@ function MealPlannerMain() {
     const totalFats = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fats || 0), 0);
     const totalCarbs = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.carbohydrates || 0), 0);
     const totalFiber = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fiber || 0), 0);
-    const totalSugar = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).sugar || 0), 0);
+    const totalSugar = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.sugar || 0), 0);
 
     const totalMeals = currentMealPlan.meals.length;
 
     console.log('KPI Debug:', { totalProtein, totalCalories, totalFats, totalCarbs, totalFiber, totalSugar, totalMeals });
-    console.log('Sugar Debug:', { totalSugar, avgSugar: totalSugar / totalMeals, mealSugars: currentMealPlan.meals.map(m => (m as any).sugar) });
 
     // Calculate daily averages: average per meal × 3 meals per day
     // This shows what a typical day with 3 meals would look like
