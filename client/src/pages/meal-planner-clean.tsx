@@ -773,10 +773,11 @@ function MealPlannerMain() {
     const totalFats = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fats || 0), 0);
     const totalCarbs = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.carbohydrates || 0), 0);
     const totalFiber = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fiber || 0), 0);
+    const totalSugar = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).sugar || 0), 0);
 
     const totalMeals = currentMealPlan.meals.length;
 
-    console.log('KPI Debug:', { totalProtein, totalCalories, totalFats, totalCarbs, totalFiber, totalMeals });
+    console.log('KPI Debug:', { totalProtein, totalCalories, totalFats, totalCarbs, totalFiber, totalSugar, totalMeals });
 
     // Calculate daily averages: average per meal × 3 meals per day
     // This shows what a typical day with 3 meals would look like
@@ -786,6 +787,7 @@ function MealPlannerMain() {
       fats: totalMeals > 0 ? totalFats / totalMeals : 0,
       carbs: totalMeals > 0 ? totalCarbs / totalMeals : 0,
       fiber: totalMeals > 0 ? totalFiber / totalMeals : 0,
+      sugar: totalMeals > 0 ? totalSugar / totalMeals : 0,
     };
     
     const avgProteinPerDay = avgPerMeal.protein * 3;
@@ -793,6 +795,7 @@ function MealPlannerMain() {
     const avgFatsPerDay = avgPerMeal.fats * 3;
     const avgCarbsPerDay = avgPerMeal.carbs * 3;
     const avgFiberPerDay = avgPerMeal.fiber * 3;
+    const avgSugarPerDay = avgPerMeal.sugar * 3;
 
     // Estimate vegetables from fiber (roughly 30g fiber = 400g vegetables)
     const avgVegetablesPerDay = avgFiberPerDay * 13.3; // Approximate: 1g fiber ≈ 13.3g vegetables
@@ -856,6 +859,11 @@ function MealPlannerMain() {
         value: plantDiversityCount,
         percentage: Math.round((plantDiversityCount / plantDiversityTarget) * 100),
         target: `${plantDiversityTarget}/week`
+      },
+      sugar: {
+        value: Math.round(avgSugarPerDay),
+        percentage: Math.round((avgSugarPerDay / 25) * 100), // 25g target (AHA recommendation for women)
+        target: '25g/day'
       }
     };
   };
@@ -1154,6 +1162,54 @@ function MealPlannerMain() {
                   </Dialog>
                 </div>
                 <p className="text-[10px] text-gray-500">{kpiData.goodFats.percentage}%</p>
+              </div>
+
+              {/* Sugar KPI */}
+              <div className="text-center relative">
+                <div className="relative w-14 h-14 mx-auto">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={[
+                          { value: Math.min(kpiData.sugar.percentage, 100), fill: kpiData.sugar.percentage > 100 ? "#ef4444" : "#f472b6" },
+                          { value: Math.max(100 - kpiData.sugar.percentage, 0), fill: "#f3f4f6" }
+                        ]}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={14}
+                        outerRadius={24}
+                        startAngle={90}
+                        endAngle={450}
+                        dataKey="value"
+                      >
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className={`text-xs font-bold ${kpiData.sugar.percentage > 100 ? 'text-red-500' : 'text-pink-400'}`}>{kpiData.sugar.value}g</div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-center gap-0.5">
+                  <h3 className={`text-[10px] font-semibold ${kpiData.sugar.percentage > 100 ? 'text-red-500' : 'text-pink-400'}`}>{t.sugar}</h3>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button className="text-pink-400/60 hover:text-pink-400" data-testid="info-sugar">
+                        <Info className="h-2.5 w-2.5" />
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-sm">
+                      <DialogHeader>
+                        <DialogTitle>{language === "nl" ? "Over suiker" : "About sugar"}</DialogTitle>
+                        <DialogDescription className="text-sm pt-2">
+                          {language === "nl" 
+                            ? "De American Heart Association beveelt maximaal 25g toegevoegde suiker per dag aan voor vrouwen en 36g voor mannen. Te veel suiker kan leiden tot gewichtstoename, hartziekten en diabetes type 2."
+                            : "The American Heart Association recommends a maximum of 25g added sugar per day for women and 36g for men. Excess sugar can lead to weight gain, heart disease and type 2 diabetes."}
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+                <p className="text-[10px] text-gray-500">{kpiData.sugar.percentage}%</p>
               </div>
 
               </div>
