@@ -778,6 +778,7 @@ function MealPlannerMain() {
     const totalMeals = currentMealPlan.meals.length;
 
     console.log('KPI Debug:', { totalProtein, totalCalories, totalFats, totalCarbs, totalFiber, totalSugar, totalMeals });
+    console.log('Sugar Debug:', { totalSugar, avgSugar: totalSugar / totalMeals, mealSugars: currentMealPlan.meals.map(m => (m as any).sugar) });
 
     // Calculate daily averages: average per meal × 3 meals per day
     // This shows what a typical day with 3 meals would look like
