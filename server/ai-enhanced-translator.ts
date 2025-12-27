@@ -1,8 +1,12 @@
 // AI-Enhanced Recipe Translation System
 // Uses OpenAI for natural Dutch translation when available
 // Falls back to pattern-based translation when AI is unavailable
+// Saves translations to database for permanent caching
 
 import { translateRecipe as patternTranslateRecipe } from './recipe-translator';
+import { db } from './db';
+import { recipes } from '@shared/schema';
+import { eq } from 'drizzle-orm';
 
 interface EnhancedTranslationOptions {
   preserveNutrition?: boolean;
@@ -122,6 +126,54 @@ Only return the translated tip, nothing else.`;
   }
 }
 
+// Save Dutch translation to database
+async function saveDutchTranslationToDb(
+  recipeId: string,
+  dutchName: string,
+  dutchIngredients: string[],
+  dutchInstructions: string[]
+): Promise<void> {
+  try {
+    await db.update(recipes)
+      .set({
+        dutchName,
+        dutchIngredients,
+        dutchInstructions,
+        updatedAt: new Date()
+      })
+      .where(eq(recipes.id, recipeId));
+    console.log(`💾 Saved Dutch translation to database for recipe ID: ${recipeId}`);
+  } catch (error) {
+    console.error(`Failed to save Dutch translation for recipe ${recipeId}:`, error);
+  }
+}
+
+// Load Dutch translation from database
+async function loadDutchTranslationFromDb(recipeId: string): Promise<{
+  dutchName: string | null;
+  dutchIngredients: string[] | null;
+  dutchInstructions: string[] | null;
+} | null> {
+  try {
+    const result = await db.select({
+      dutchName: recipes.dutchName,
+      dutchIngredients: recipes.dutchIngredients,
+      dutchInstructions: recipes.dutchInstructions
+    })
+    .from(recipes)
+    .where(eq(recipes.id, recipeId))
+    .limit(1);
+    
+    if (result.length > 0 && result[0].dutchName) {
+      return result[0];
+    }
+    return null;
+  } catch (error) {
+    console.error(`Failed to load Dutch translation for recipe ${recipeId}:`, error);
+    return null;
+  }
+}
+
 // Enhanced recipe translation with AI fallback
 export async function translateRecipeEnhanced(
   recipe: any, 
@@ -137,7 +189,22 @@ export async function translateRecipeEnhanced(
     console.warn('⚠️ Recipe translation called without ID - caching disabled for:', recipe.name);
   }
 
-  // Check cache first using recipe ID
+  // First check database for saved translation
+  if (recipe.id) {
+    const dbTranslation = await loadDutchTranslationFromDb(recipe.id.toString());
+    if (dbTranslation && dbTranslation.dutchName) {
+      console.log(`✅ Using database translation for recipe ID: ${recipe.id}`);
+      return {
+        ...recipe,
+        name: dbTranslation.dutchName,
+        ingredients: dbTranslation.dutchIngredients || recipe.ingredients,
+        instructions: dbTranslation.dutchInstructions || recipe.instructions,
+        translationMethod: 'database-cached'
+      };
+    }
+  }
+
+  // Check in-memory cache second
   const cacheKey = getCacheKey(recipe.id, language);
   if (cacheKey && translationCache.has(cacheKey)) {
     const cached = translationCache.get(cacheKey);
@@ -146,7 +213,7 @@ export async function translateRecipeEnhanced(
     const requestHasContent = recipe.ingredients?.length > 0 && recipe.instructions?.length > 0;
     
     if (cachedHasContent || !requestHasContent) {
-      console.log(`✅ Using cached translation for recipe ID: ${recipe.id}`);
+      console.log(`✅ Using memory cache translation for recipe ID: ${recipe.id}`);
       return cached;
     } else {
       console.log(`⚠️ Cache has empty content but request has content - re-translating ${recipe.id}`);
@@ -181,14 +248,21 @@ export async function translateRecipeEnhanced(
         translationMethod: 'ai-enhanced'
       };
 
-      // Only cache translations that have actual content (ingredients and instructions)
-      // This prevents caching incomplete translations from meal plan list views
+      // Save to database for permanent caching (only if we have content)
       const hasContent = translatedIngredients.length > 0 && translatedInstructions.length > 0;
-      if (cacheKey && hasContent) {
-        translationCache.set(cacheKey, translatedRecipe);
-        console.log(`💾 Cached translation for recipe ID: ${recipe.id}`);
-      } else if (cacheKey && !hasContent) {
-        console.log(`⚠️ Skipping cache for ${recipe.id} - no ingredients/instructions (name-only translation)`);
+      if (recipe.id && hasContent) {
+        await saveDutchTranslationToDb(
+          recipe.id.toString(),
+          translatedName,
+          translatedIngredients,
+          translatedInstructions
+        );
+        // Also cache in memory
+        if (cacheKey) {
+          translationCache.set(cacheKey, translatedRecipe);
+        }
+      } else if (recipe.id && !hasContent) {
+        console.log(`⚠️ Skipping save for ${recipe.id} - no ingredients/instructions (name-only translation)`);
       }
 
       return translatedRecipe;

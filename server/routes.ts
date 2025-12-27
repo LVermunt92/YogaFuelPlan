@@ -23,6 +23,9 @@ import cron from 'node-cron';
 import { normalizeToSunday, getNextSunday, getCurrentWeekSunday, isValidWeekStart, getAllowedWeekStarts } from './date-utils';
 import { isExemptFromMealPlanRequirements } from '@shared/admin-utils';
 import { getSeasonalInfo, getCurrentSeasonMonths, AMSTERDAM_MONTHLY_PRODUCE } from './seasonal-advisor';
+import { db } from './db';
+import { recipes as recipesTable } from '@shared/schema';
+import { isNull, isNotNull, sql } from 'drizzle-orm';
 
 // Helper function to parse quantity and unit from totalAmount string (e.g., "200g" -> {quantity: 200, unit: "g"})
 function parseQuantityAndUnit(totalAmount: string): { quantity: number; unit: string } {
@@ -1187,6 +1190,100 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Translation schedule status error:', error);
       res.status(500).json({ message: 'Failed to get translation schedule status' });
+    }
+  });
+
+  // Batch translate recipes to Dutch and save to database
+  app.post("/api/translate/batch-dutch", async (req, res) => {
+    try {
+      const maxRecipes = req.body.maxRecipes ? parseInt(req.body.maxRecipes as string) : 10;
+      
+      // Get recipes that don't have Dutch translations yet
+      const untranslatedRecipes = await db.select()
+        .from(recipesTable)
+        .where(isNull(recipesTable.dutchName))
+        .limit(maxRecipes);
+      
+      if (untranslatedRecipes.length === 0) {
+        return res.json({
+          success: true,
+          message: "All recipes already have Dutch translations!",
+          translatedCount: 0
+        });
+      }
+      
+      console.log(`🔄 Starting batch Dutch translation for ${untranslatedRecipes.length} recipes...`);
+      
+      let translatedCount = 0;
+      const results: any[] = [];
+      
+      for (const recipe of untranslatedRecipes) {
+        try {
+          // Translate using the enhanced translator (which now saves to DB)
+          const translated = await translateRecipeEnhanced({
+            id: recipe.id,
+            name: recipe.name,
+            ingredients: recipe.ingredients || [],
+            instructions: recipe.instructions || []
+          }, 'nl');
+          
+          if (translated.translationMethod === 'ai-enhanced') {
+            translatedCount++;
+            results.push({
+              id: recipe.id,
+              originalName: recipe.name,
+              dutchName: translated.name,
+              method: translated.translationMethod
+            });
+          }
+        } catch (error: any) {
+          if (error.status === 429 || error.code === 'insufficient_quota') {
+            console.log('OpenAI quota reached, stopping batch translation');
+            break;
+          }
+          console.error(`Failed to translate recipe ${recipe.id}:`, error.message);
+        }
+      }
+      
+      res.json({
+        success: true,
+        message: `Translated ${translatedCount} recipes to Dutch`,
+        translatedCount,
+        totalUntranslated: untranslatedRecipes.length,
+        results
+      });
+    } catch (error) {
+      console.error('Batch Dutch translation failed:', error);
+      res.status(500).json({ 
+        success: false,
+        message: 'Failed to batch translate recipes', 
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // Get translation statistics
+  app.get("/api/translate/stats", async (req, res) => {
+    try {
+      const totalRecipes = await db.select({ count: sql<number>`count(*)` })
+        .from(recipesTable);
+      
+      const translatedRecipes = await db.select({ count: sql<number>`count(*)` })
+        .from(recipesTable)
+        .where(isNotNull(recipesTable.dutchName));
+      
+      const total = Number(totalRecipes[0]?.count || 0);
+      const translated = Number(translatedRecipes[0]?.count || 0);
+      
+      res.json({
+        total,
+        translated,
+        untranslated: total - translated,
+        percentComplete: total > 0 ? Math.round((translated / total) * 100) : 0
+      });
+    } catch (error) {
+      console.error('Failed to get translation stats:', error);
+      res.status(500).json({ message: 'Failed to get translation statistics' });
     }
   });
 

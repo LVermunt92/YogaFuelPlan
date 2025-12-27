@@ -81,6 +81,11 @@ export const recipes = pgTable("recipes", {
   // Status
   active: boolean("active").default(true),
   
+  // Dutch translations (cached from OpenAI)
+  dutchName: text("dutch_name"),
+  dutchIngredients: text("dutch_ingredients").array(),
+  dutchInstructions: text("dutch_instructions").array(),
+  
   // Audit fields
   createdBy: integer("created_by").references(() => users.id),
   updatedBy: integer("updated_by").references(() => users.id),
