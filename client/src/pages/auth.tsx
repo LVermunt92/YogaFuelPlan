@@ -58,16 +58,16 @@ export default function Auth() {
       
       login(data.user);
       toast({
-        title: "Welcome back!",
-        description: `Logged in as ${data.user.username}`,
+        title: t.welcomeBackToast,
+        description: `${t.loggedInAs} ${data.user.username}`,
       });
       // Force a page refresh to ensure authentication state is properly updated
       window.location.href = '/';
     },
     onError: (error) => {
       toast({
-        title: "Login Failed",
-        description: "Invalid username or password",
+        title: t.loginFailedTitle,
+        description: t.loginFailedDescription,
         variant: "destructive",
       });
     },
@@ -88,8 +88,8 @@ export default function Auth() {
       
       login(data.user);
       toast({
-        title: "Account Created!",
-        description: `Welcome! Let's get you started.`,
+        title: t.accountCreatedTitle,
+        description: t.accountCreatedDescription,
       });
       
       // Show welcome dialog before redirecting to profile
@@ -97,17 +97,17 @@ export default function Auth() {
       setShowWelcomeDialog(true);
     },
     onError: (error: any) => {
-      let title = "Registration Failed";
-      let description = "Please check your information and try again";
+      let title = t.registrationFailedTitle;
+      let description = t.registrationFailedDescription;
       
       // Check for specific error messages
       if (error?.message) {
         if (error.message.includes("email already exists")) {
-          title = "Email Already Registered";
-          description = "An account with this email already exists. Please log in instead.";
+          title = t.emailAlreadyRegisteredTitle;
+          description = t.emailAlreadyRegisteredDescription;
         } else if (error.message.includes("Username already exists")) {
-          title = "Username Taken";
-          description = "This username is already in use. Please choose another one.";
+          title = t.usernameTakenTitle;
+          description = t.usernameTakenDescription;
         } else {
           description = error.message;
         }
@@ -145,7 +145,7 @@ export default function Auth() {
     },
     onSuccess: (data) => {
       toast({
-        title: "Reset Code Sent!",
+        title: t.resetCodeSentTitle,
         description: data.message,
       });
       setResetStep("verify");
@@ -160,8 +160,8 @@ export default function Auth() {
     },
     onError: (error) => {
       toast({
-        title: "Request Failed",
-        description: error.message || "Could not send reset code",
+        title: t.requestFailedTitle,
+        description: error.message || t.couldNotSendResetCode,
         variant: "destructive",
       });
     },
@@ -174,8 +174,8 @@ export default function Auth() {
     },
     onSuccess: (data) => {
       toast({
-        title: "Password Reset Successful!",
-        description: "You can now log in with your new password.",
+        title: t.passwordResetSuccess,
+        description: t.canNowLogin,
       });
       setIsForgotPassword(false);
       setResetStep("request");
@@ -186,8 +186,8 @@ export default function Auth() {
     },
     onError: (error) => {
       toast({
-        title: "Reset Failed",
-        description: error.message || "Invalid reset code or expired",
+        title: t.resetFailedTitle,
+        description: error.message || t.invalidResetCode,
         variant: "destructive",
       });
     },
