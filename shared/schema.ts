@@ -122,7 +122,8 @@ export const meals = pgTable("meals", {
   fiber: real("fiber").default(0), // grams
   sugar: real("sugar").default(0), // grams (total sugar - kept for backwards compatibility)
   addedSugar: real("added_sugar").default(0), // grams (from sweeteners: honey, maple syrup, sugar, etc.)
-  naturalSugar: real("natural_sugar").default(0), // grams (from whole foods: fruits, vegetables)
+  freeSugar: real("free_sugar").default(0), // grams (added + juices/dried fruits - not bound in cell walls)
+  intrinsicSugar: real("intrinsic_sugar").default(0), // grams (naturally bound in whole fruits, vegetables, dairy)
   sodium: real("sodium").default(0), // mg
   vitaminK: real("vitamin_k").default(0), // mcg (micrograms)
   prepTime: integer("prep_time").default(30), // minutes
