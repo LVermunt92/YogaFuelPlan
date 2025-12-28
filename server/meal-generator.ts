@@ -20,6 +20,7 @@ import { normalizeToSunday } from "./date-utils";
 import { storage } from "./storage";
 import { applyDietarySubstitutions } from "./ingredient-substitution";
 import { getIntelligentRecipeRecommendation } from './intelligent-ingredient-matcher';
+import { classifySugarContent } from './sugar-classifier';
 
 /**
  * Resistant starch sources and their benefits for weight management
@@ -509,6 +510,8 @@ function applyTDEEBasedPortionAdjustment(meals: InsertMeal[], user: User | undef
     fats: Math.round((meal.fats || 0) * cappedFactor),
     fiber: Math.round((meal.fiber || 0) * cappedFactor),
     sugar: Math.round((meal.sugar || 0) * cappedFactor),
+    addedSugar: Math.round((meal.addedSugar || 0) * cappedFactor),
+    naturalSugar: Math.round((meal.naturalSugar || 0) * cappedFactor),
     sodium: Math.round((meal.sodium || 0) * cappedFactor),
     vitaminK: Math.round((meal.vitaminK || 0) * cappedFactor),
   }));
@@ -2062,6 +2065,13 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         throw new Error(`Recipe ID is undefined for "${selectedMeal.name}" - this indicates a bug in recipe conversion`);
       }
 
+      // Classify sugar content from ingredients
+      const mealSugar = Math.round((selectedMeal.nutrition.sugar || 0) * portionMultiplier);
+      const sugarClassification = classifySugarContent(
+        selectedMeal.ingredients || [],
+        mealSugar
+      );
+      
       const meal: InsertMeal = {
         mealPlanId: 0,
         day,
@@ -2074,7 +2084,9 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         carbohydrates: Math.round((selectedMeal.nutrition.carbohydrates || 0) * portionMultiplier),
         fats: Math.round((selectedMeal.nutrition.fats || 0) * portionMultiplier),
         fiber: Math.round((selectedMeal.nutrition.fiber || 0) * portionMultiplier),
-        sugar: Math.round((selectedMeal.nutrition.sugar || 0) * portionMultiplier),
+        sugar: mealSugar,
+        addedSugar: sugarClassification.addedSugar,
+        naturalSugar: sugarClassification.naturalSugar,
         sodium: Math.round((selectedMeal.nutrition.sodium || 0) * portionMultiplier),
         prepTime: prepTimeForDay,
         isLeftover: isLeftover, // Boolean flag instead of string marker
@@ -2662,6 +2674,13 @@ async function generateMealPrepPlan(
           throw new Error(`Recipe ID is undefined for "${selectedBreakfast.name}" - this would cause ID/description mismatch`);
         }
         
+        // Classify sugar content from ingredients
+        const breakfastSugar = Math.round((selectedBreakfast.nutrition.sugar || 0) * portionFactor);
+        const breakfastSugarClassification = classifySugarContent(
+          selectedBreakfast.ingredients || [],
+          breakfastSugar
+        );
+        
         meals.push({
           mealPlanId: 0,
           day,
@@ -2674,7 +2693,9 @@ async function generateMealPrepPlan(
           carbohydrates: Math.round((selectedBreakfast.nutrition.carbohydrates || 0) * portionFactor),
           fats: Math.round((selectedBreakfast.nutrition.fats || 0) * portionFactor),
           fiber: Math.round((selectedBreakfast.nutrition.fiber || 0) * portionFactor),
-          sugar: Math.round((selectedBreakfast.nutrition.sugar || 0) * portionFactor),
+          sugar: breakfastSugar,
+          addedSugar: breakfastSugarClassification.addedSugar,
+          naturalSugar: breakfastSugarClassification.naturalSugar,
           sodium: Math.round((selectedBreakfast.nutrition.sodium || 0) * portionFactor),
           vitaminK: Math.round(((selectedBreakfast.nutrition as any).vitaminK || 0) * portionFactor),
           prepTime: prepTime,
@@ -2782,6 +2803,13 @@ async function generateMealPrepPlan(
           throw new Error(`Recipe ID is undefined for "${lunchMeal.name}" - this would cause ID/description mismatch`);
         }
         
+        // Classify sugar content from ingredients
+        const lunchSugar = Math.round((lunchMeal.nutrition.sugar || 0) * portionFactor);
+        const lunchSugarClassification = classifySugarContent(
+          lunchMeal.ingredients || [],
+          lunchSugar
+        );
+        
         meals.push({
           mealPlanId: 0,
           day,
@@ -2794,7 +2822,9 @@ async function generateMealPrepPlan(
           carbohydrates: Math.round((lunchMeal.nutrition.carbohydrates || 0) * portionFactor),
           fats: Math.round((lunchMeal.nutrition.fats || 0) * portionFactor),
           fiber: Math.round((lunchMeal.nutrition.fiber || 0) * portionFactor),
-          sugar: Math.round((lunchMeal.nutrition.sugar || 0) * portionFactor),
+          sugar: lunchSugar,
+          addedSugar: lunchSugarClassification.addedSugar,
+          naturalSugar: lunchSugarClassification.naturalSugar,
           sodium: Math.round((lunchMeal.nutrition.sodium || 0) * portionFactor),
           vitaminK: Math.round(((lunchMeal.nutrition as any).vitaminK || 0) * portionFactor),
           prepTime: prepTime,
@@ -2912,6 +2942,13 @@ async function generateMealPrepPlan(
           throw new Error(`Recipe ID is undefined for "${dinnerMeal.name}" - this would cause ID/description mismatch`);
         }
         
+        // Classify sugar content from ingredients
+        const dinnerSugar = Math.round((dinnerMeal.nutrition.sugar || 0) * portionFactor);
+        const dinnerSugarClassification = classifySugarContent(
+          dinnerMeal.ingredients || [],
+          dinnerSugar
+        );
+        
         meals.push({
           mealPlanId: 0,
           day,
@@ -2924,7 +2961,9 @@ async function generateMealPrepPlan(
           carbohydrates: Math.round((dinnerMeal.nutrition.carbohydrates || 0) * portionFactor),
           fats: Math.round((dinnerMeal.nutrition.fats || 0) * portionFactor),
           fiber: Math.round((dinnerMeal.nutrition.fiber || 0) * portionFactor),
-          sugar: Math.round((dinnerMeal.nutrition.sugar || 0) * portionFactor),
+          sugar: dinnerSugar,
+          addedSugar: dinnerSugarClassification.addedSugar,
+          naturalSugar: dinnerSugarClassification.naturalSugar,
           sodium: Math.round((dinnerMeal.nutrition.sodium || 0) * portionFactor),
           vitaminK: Math.round(((dinnerMeal.nutrition as any).vitaminK || 0) * portionFactor),
           prepTime: prepTime,
