@@ -12,7 +12,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
 import { getCurrentWeekSunday, formatWeekDisplay } from '../lib/date-utils';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Calendar, Clock, Target, Eye, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages, Users, Minus, Trash2, Euro, TrendingUp, Droplet, Apple, Leaf, Check, Wheat, Settings, ArrowRight, Info, Sparkles } from "lucide-react";
+import { Calendar, Clock, Target, Eye, CheckCircle, Utensils, Activity, ShoppingCart, BookOpen, Timer, ChefHat, Heart, History, RefreshCw, Plus, X, Languages, Users, Minus, Trash2, Euro, TrendingUp, Droplet, Apple, Leaf, Check, Wheat, Settings, ArrowRight, Info, Sparkles, Factory } from "lucide-react";
 import { useLocation } from "wouter";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Separator } from "@/components/ui/separator";
@@ -56,6 +56,34 @@ const HIGH_PRIORITY_ORGANIC = [
 function shouldBuyOrganic(productName: string): boolean {
   const lowerProduct = productName.toLowerCase();
   return HIGH_PRIORITY_ORGANIC.some(organic => lowerProduct.includes(organic));
+}
+
+// Processed products that should be highlighted for awareness
+// These are replacement/specialty products that undergo more processing
+const PROCESSED_PRODUCTS = [
+  // Gluten-free replacements
+  'gluten-free pasta', 'glutenvrije pasta', 'gluten free pasta',
+  'gluten-free bread', 'glutenvrij brood', 'gluten free bread',
+  'gluten-free flour', 'glutenvrij meel', 'gluten free flour',
+  'chickpea pasta', 'kikkererwten pasta', 'lentil pasta', 'linzen pasta',
+  'legume pasta', 'peulvruchten pasta', 'rice pasta', 'rijst pasta',
+  // Lactose-free replacements
+  'lactose-free milk', 'lactosevrije melk', 'lactose free milk',
+  'lactose-free cheese', 'lactosevrije kaas', 'lactose free cheese',
+  'lactose-free yogurt', 'lactosevrije yoghurt', 'lactose free yogurt',
+  'dairy-free cheese', 'zuivelvrije kaas', 'vegan cheese', 'veganistische kaas',
+  // Plant-based meat alternatives
+  'plant-based', 'plantaardig', 'meat substitute', 'vleesvervanger',
+  'veggie burger', 'vegetarische burger', 'vegan burger',
+  'tofu', 'tempeh', 'seitan',
+  // Other processed items
+  'protein powder', 'eiwitpoeder', 'whey', 'wei',
+  'energy bar', 'energiereep', 'protein bar', 'eiwitreep'
+];
+
+function isProcessedProduct(productName: string): boolean {
+  const lowerProduct = productName.toLowerCase();
+  return PROCESSED_PRODUCTS.some(processed => lowerProduct.includes(processed));
 }
 
 interface MealPlanWithMeals extends MealPlanType {
@@ -1408,11 +1436,19 @@ function MealPlannerMain() {
                   <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
                     <DialogHeader>
                       <DialogTitle>{t.shoppingListHeader}</DialogTitle>
-                      <DialogDescription className="flex items-center gap-2 text-sm text-muted-foreground pt-2">
-                        <Leaf className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
-                        {language === 'nl' 
-                          ? 'Groen blad = beter biologisch te kopen (producten met dunne schil of geconcentreerde producten)'
-                          : 'Green leaf = better to buy organic (thin-skinned produce or concentrated products)'}
+                      <DialogDescription className="flex flex-col gap-1 text-sm text-muted-foreground pt-2">
+                        <span className="flex items-center gap-2">
+                          <Leaf className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
+                          {language === 'nl' 
+                            ? 'Groen blad = beter biologisch te kopen (producten met dunne schil of geconcentreerde producten)'
+                            : 'Green leaf = better to buy organic (thin-skinned produce or concentrated products)'}
+                        </span>
+                        <span className="flex items-center gap-2">
+                          <Factory className="h-3.5 w-3.5 text-amber-600 flex-shrink-0" />
+                          {language === 'nl' 
+                            ? 'Fabriek = bewerkt product (vervangingsproduct of speciaal dieetproduct)'
+                            : 'Factory = processed product (replacement or specialty diet product)'}
+                        </span>
                       </DialogDescription>
                     </DialogHeader>
                     
@@ -1483,6 +1519,21 @@ function MealPlannerMain() {
                                                       </TooltipTrigger>
                                                       <TooltipContent>
                                                         <p>{language === 'nl' ? 'Beter biologisch' : 'Better organic'}</p>
+                                                      </TooltipContent>
+                                                    </Tooltip>
+                                                  </TooltipProvider>
+                                                )}
+                                                {isProcessedProduct(item.productName) && (
+                                                  <TooltipProvider>
+                                                    <Tooltip>
+                                                      <TooltipTrigger asChild>
+                                                        <Factory 
+                                                          className="h-3.5 w-3.5 text-amber-600 inline-block flex-shrink-0" 
+                                                          data-testid="icon-processed-indicator"
+                                                        />
+                                                      </TooltipTrigger>
+                                                      <TooltipContent>
+                                                        <p>{language === 'nl' ? 'Bewerkt product' : 'Processed product'}</p>
                                                       </TooltipContent>
                                                     </Tooltip>
                                                   </TooltipProvider>
