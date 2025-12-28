@@ -58,32 +58,41 @@ function shouldBuyOrganic(productName: string): boolean {
   return HIGH_PRIORITY_ORGANIC.some(organic => lowerProduct.includes(organic));
 }
 
-// Processed products that should be highlighted for awareness
-// These are replacement/specialty products that undergo more processing
-const PROCESSED_PRODUCTS = [
-  // Gluten-free replacements
-  'gluten-free pasta', 'glutenvrije pasta', 'gluten free pasta',
-  'gluten-free bread', 'glutenvrij brood', 'gluten free bread',
-  'gluten-free flour', 'glutenvrij meel', 'gluten free flour',
-  'chickpea pasta', 'kikkererwten pasta', 'lentil pasta', 'linzen pasta',
-  'legume pasta', 'peulvruchten pasta', 'rice pasta', 'rijst pasta',
-  // Lactose-free replacements
-  'lactose-free milk', 'lactosevrije melk', 'lactose free milk',
-  'lactose-free cheese', 'lactosevrije kaas', 'lactose free cheese',
-  'lactose-free yogurt', 'lactosevrije yoghurt', 'lactose free yogurt',
-  'dairy-free cheese', 'zuivelvrije kaas', 'vegan cheese', 'veganistische kaas',
-  // Plant-based meat alternatives
-  'plant-based', 'plantaardig', 'meat substitute', 'vleesvervanger',
+// Ultra-processed foods (NOVA Group 4) - industrial formulations with additives
+// These contain ingredients not typically used in home cooking
+const ULTRA_PROCESSED_FOODS = [
+  // Plant-based meat alternatives (contain protein isolates, methylcellulose, flavors)
+  'meat substitute', 'vleesvervanger', 'meat alternative', 'vleesalternatief',
   'veggie burger', 'vegetarische burger', 'vegan burger',
-  'tofu', 'tempeh', 'seitan',
-  // Other processed items
-  'protein powder', 'eiwitpoeder', 'whey', 'wei',
-  'energy bar', 'energiereep', 'protein bar', 'eiwitreep'
+  'beyond meat', 'impossible', 'plant-based mince', 'plantaardig gehakt',
+  'vegan chicken', 'veganistische kip', 'vegan bacon', 'veganistisch spek',
+  'seitan', // Highly processed wheat gluten
+  // Protein supplements (contain isolates, sweeteners, additives)
+  'protein powder', 'eiwitpoeder', 'whey protein', 'wei-eiwit',
+  'protein isolate', 'eiwit isolaat', 'casein', 'caseïne',
+  'protein shake', 'eiwitshake',
+  // Energy/protein bars (contain syrups, isolates, emulsifiers)
+  'energy bar', 'energiereep', 'protein bar', 'eiwitreep',
+  'granola bar', 'mueslireep', 'cereal bar', 'ontbijtreep',
+  // Vegan cheese (contains starches, oils, flavors, colorings)
+  'vegan cheese', 'veganistische kaas', 'dairy-free cheese', 'zuivelvrije kaas',
+  'plant-based cheese', 'plantaardige kaas',
+  // Instant/ready meals
+  'instant noodles', 'instantnoedels', 'cup noodles',
+  'ready meal', 'kant-en-klaar', 'tv dinner',
+  // Sweetened cereals
+  'breakfast cereal', 'ontbijtgranen', 'corn flakes', 'cornflakes',
+  'frosted', 'gesuikerd', 'crunchy muesli',
+  // Processed spreads
+  'margarine', 'halvarine', 'spreadable',
+  // Sweetened drinks
+  'energy drink', 'energiedrank', 'sports drink', 'sportdrank',
+  'protein drink', 'eiwitdrank'
 ];
 
-function isProcessedProduct(productName: string): boolean {
+function isUltraProcessed(productName: string): boolean {
   const lowerProduct = productName.toLowerCase();
-  return PROCESSED_PRODUCTS.some(processed => lowerProduct.includes(processed));
+  return ULTRA_PROCESSED_FOODS.some(upf => lowerProduct.includes(upf));
 }
 
 interface MealPlanWithMeals extends MealPlanType {
@@ -1446,8 +1455,8 @@ function MealPlannerMain() {
                         <span className="flex items-center gap-2">
                           <Factory className="h-3.5 w-3.5 text-amber-600 flex-shrink-0" />
                           {language === 'nl' 
-                            ? 'Fabriek = bewerkt product (vervangingsproduct of speciaal dieetproduct)'
-                            : 'Factory = processed product (replacement or specialty diet product)'}
+                            ? 'Fabriek = ultra-bewerkt voedsel (NOVA groep 4 - industriële formules met additieven)'
+                            : 'Factory = ultra-processed food (NOVA group 4 - industrial formulations with additives)'}
                         </span>
                       </DialogDescription>
                     </DialogHeader>
@@ -1523,17 +1532,17 @@ function MealPlannerMain() {
                                                     </Tooltip>
                                                   </TooltipProvider>
                                                 )}
-                                                {isProcessedProduct(item.productName) && (
+                                                {isUltraProcessed(item.productName) && (
                                                   <TooltipProvider>
                                                     <Tooltip>
                                                       <TooltipTrigger asChild>
                                                         <Factory 
                                                           className="h-3.5 w-3.5 text-amber-600 inline-block flex-shrink-0" 
-                                                          data-testid="icon-processed-indicator"
+                                                          data-testid="icon-ultra-processed-indicator"
                                                         />
                                                       </TooltipTrigger>
                                                       <TooltipContent>
-                                                        <p>{language === 'nl' ? 'Bewerkt product' : 'Processed product'}</p>
+                                                        <p>{language === 'nl' ? 'Ultra-bewerkt voedsel' : 'Ultra-processed food'}</p>
                                                       </TooltipContent>
                                                     </Tooltip>
                                                   </TooltipProvider>
