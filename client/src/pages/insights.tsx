@@ -902,8 +902,8 @@ export default function Insights() {
                       <DialogTitle>{language === "nl" ? "Gebonden suiker" : "Intrinsic sugar"}</DialogTitle>
                       <DialogDescription className="text-sm pt-2">
                         {language === "nl" 
-                          ? "Gebonden suikers zitten nog vast in de celstructuur van volle voedingsmiddelen zoals vers fruit, groenten en zuivel. Ze worden langzamer opgenomen en bieden gezondheidsvoordelen."
-                          : "Intrinsic sugars are still bound within the cell structure of whole foods like fresh fruits, vegetables, and dairy. They are absorbed more slowly and provide health benefits."}
+                          ? "Gebonden suikers zitten nog vast in de celstructuur van volle voedingsmiddelen zoals vers fruit, groenten en zuivel. Ze worden langzamer opgenomen en bieden gezondheidsvoordelen. Meestal geen strikte limiet; voor energie of glucosestabiliteit zijn totale koolhydraten en vezels vaak informatiever."
+                          : "Intrinsic sugars are still bound within the cell structure of whole foods like fresh fruits, vegetables, and dairy. They are absorbed more slowly and provide health benefits. Typically not a main limit; for energy or glucose stability, total carbs and fiber are often more informative."}
                         <p className="text-xs font-medium mt-2 text-violet-500">
                           {language === "nl" 
                             ? "Gezond - geen strikte limiet"
