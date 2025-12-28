@@ -227,12 +227,12 @@ export function classifySugarContent(
   freeSugar = Math.round(freeSugar * 10) / 10;
   intrinsicSugar = Math.round(intrinsicSugar * 10) / 10;
   
-  // If we have total sugar data, use it to validate/adjust
+  // If we have total sugar data, clamp and adjust to never exceed it
   if (totalSugar > 0) {
     const calculatedTotal = addedSugar + freeSugar + intrinsicSugar;
     
-    // If our calculation is way off, distribute proportionally
-    if (calculatedTotal > 0 && Math.abs(calculatedTotal - totalSugar) > totalSugar * 0.5) {
+    if (calculatedTotal > totalSugar) {
+      // Clamp: scale down proportionally so sum equals totalSugar
       const ratio = totalSugar / calculatedTotal;
       addedSugar = Math.round(addedSugar * ratio * 10) / 10;
       freeSugar = Math.round(freeSugar * ratio * 10) / 10;
@@ -240,6 +240,17 @@ export function classifySugarContent(
     } else if (calculatedTotal === 0 && totalSugar > 0) {
       // If we couldn't classify any ingredients, assume all intrinsic (healthier default)
       intrinsicSugar = totalSugar;
+    }
+    // If calculated < total, that's fine - some sugar sources may not be in our lists
+  } else {
+    // No total sugar data - keep calculated values but ensure they're reasonable
+    const maxReasonable = 50; // Cap at 50g if no reference
+    const calculatedTotal = addedSugar + freeSugar + intrinsicSugar;
+    if (calculatedTotal > maxReasonable) {
+      const ratio = maxReasonable / calculatedTotal;
+      addedSugar = Math.round(addedSugar * ratio * 10) / 10;
+      freeSugar = Math.round(freeSugar * ratio * 10) / 10;
+      intrinsicSugar = Math.round(intrinsicSugar * ratio * 10) / 10;
     }
   }
   

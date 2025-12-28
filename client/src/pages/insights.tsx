@@ -96,8 +96,11 @@ export default function Insights() {
     const totalAddedSugar = currentMealPlan.meals.reduce((sum, meal) => {
       return sum + ((meal as any).addedSugar || 0);
     }, 0);
-    const totalNaturalSugar = currentMealPlan.meals.reduce((sum, meal) => {
-      return sum + ((meal as any).naturalSugar || 0);
+    const totalFreeSugar = currentMealPlan.meals.reduce((sum, meal) => {
+      return sum + ((meal as any).freeSugar || 0);
+    }, 0);
+    const totalIntrinsicSugar = currentMealPlan.meals.reduce((sum, meal) => {
+      return sum + ((meal as any).intrinsicSugar || 0);
     }, 0);
 
     // Calculate Eating the Rainbow score
@@ -124,7 +127,8 @@ export default function Insights() {
       vitaminK: totalMeals > 0 ? totalVitaminK / totalMeals : 0,
       sugar: totalMeals > 0 ? totalSugar / totalMeals : 0,
       addedSugar: totalMeals > 0 ? totalAddedSugar / totalMeals : 0,
-      naturalSugar: totalMeals > 0 ? totalNaturalSugar / totalMeals : 0,
+      freeSugar: totalMeals > 0 ? totalFreeSugar / totalMeals : 0,
+      intrinsicSugar: totalMeals > 0 ? totalIntrinsicSugar / totalMeals : 0,
     };
     
     const avgProteinPerDay = avgPerMeal.protein * 3;
@@ -135,7 +139,8 @@ export default function Insights() {
     const avgVitaminKPerDay = avgPerMeal.vitaminK * 3;
     const avgSugarPerDay = avgPerMeal.sugar * 3;
     const avgAddedSugarPerDay = avgPerMeal.addedSugar * 3;
-    const avgNaturalSugarPerDay = avgPerMeal.naturalSugar * 3;
+    const avgFreeSugarPerDay = avgPerMeal.freeSugar * 3;
+    const avgIntrinsicSugarPerDay = avgPerMeal.intrinsicSugar * 3;
 
     // Calculate net carbs (total carbs - fiber)
     const avgNetCarbsPerDay = avgCarbsPerDay - avgFiberPerDay;
@@ -231,9 +236,14 @@ export default function Insights() {
         percentage: Math.round((avgAddedSugarPerDay / sugarTarget) * 100),
         target: sugarTarget
       },
-      naturalSugar: {
-        value: Math.round(avgNaturalSugarPerDay),
-        percentage: 100, // No strict limit for natural sugar
+      freeSugar: {
+        value: Math.round(avgFreeSugarPerDay),
+        percentage: 100, // Informational - no strict limit but should be mindful
+        target: null
+      },
+      intrinsicSugar: {
+        value: Math.round(avgIntrinsicSugarPerDay),
+        percentage: 100, // No strict limit for intrinsic sugar (bound in whole foods)
         target: null
       }
     };
@@ -801,7 +811,60 @@ export default function Insights() {
               <p className="text-[10px] text-gray-500">{kpiData.addedSugar.percentage}%</p>
             </div>
 
-            {/* Natural Sugar */}
+            {/* Free Sugar */}
+            <div className="text-center relative">
+              <div className="relative w-14 h-14 mx-auto">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { value: 100, fill: "#f97316" }
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={14}
+                      outerRadius={24}
+                      startAngle={90}
+                      endAngle={450}
+                      dataKey="value"
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-xs font-bold text-orange-500">{kpiData.freeSugar.value}g</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-center gap-0.5">
+                <h3 className="text-[10px] font-semibold text-orange-500">
+                  {language === "nl" ? "Vrije suiker" : "Free sugar"}
+                </h3>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="text-orange-500/60 hover:text-orange-500" data-testid="info-free-sugar">
+                      <Info className="h-2.5 w-2.5" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-sm">
+                    <DialogHeader>
+                      <DialogTitle>{language === "nl" ? "Vrije suiker" : "Free sugar"}</DialogTitle>
+                      <DialogDescription className="text-sm pt-2">
+                        {language === "nl" 
+                          ? "Vrije suikers zijn suikers die niet meer gebonden zijn in celstructuren. Dit omvat vruchtensappen, smoothies, gedroogd fruit en purees. WHO adviseert hier voorzichtig mee te zijn."
+                          : "Free sugars are sugars no longer bound in cell structures. This includes fruit juices, smoothies, dried fruits, and purees. WHO advises to be mindful of these."}
+                        <p className="text-xs font-medium mt-2 text-orange-500">
+                          {language === "nl" 
+                            ? "Informatief - wees voorzichtig"
+                            : "Informational - be mindful"}
+                        </p>
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <p className="text-[10px] text-gray-500">{language === "nl" ? "Info" : "Info"}</p>
+            </div>
+
+            {/* Intrinsic Sugar */}
             <div className="text-center relative">
               <div className="relative w-14 h-14 mx-auto">
                 <ResponsiveContainer width="100%" height="100%">
@@ -821,30 +884,30 @@ export default function Insights() {
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-xs font-bold text-violet-400">{kpiData.naturalSugar.value}g</div>
+                  <div className="text-xs font-bold text-violet-400">{kpiData.intrinsicSugar.value}g</div>
                 </div>
               </div>
               <div className="flex items-center justify-center gap-0.5">
                 <h3 className="text-[10px] font-semibold text-violet-400">
-                  {language === "nl" ? "Natuurlijke suiker" : "Natural sugar"}
+                  {language === "nl" ? "Gebonden suiker" : "Intrinsic sugar"}
                 </h3>
                 <Dialog>
                   <DialogTrigger asChild>
-                    <button className="text-violet-400/60 hover:text-violet-400" data-testid="info-natural-sugar">
+                    <button className="text-violet-400/60 hover:text-violet-400" data-testid="info-intrinsic-sugar">
                       <Info className="h-2.5 w-2.5" />
                     </button>
                   </DialogTrigger>
                   <DialogContent className="max-w-sm">
                     <DialogHeader>
-                      <DialogTitle>{language === "nl" ? "Natuurlijke suiker" : "Natural sugar"}</DialogTitle>
+                      <DialogTitle>{language === "nl" ? "Gebonden suiker" : "Intrinsic sugar"}</DialogTitle>
                       <DialogDescription className="text-sm pt-2">
                         {language === "nl" 
-                          ? "Natuurlijke suikers komen van volle voedingsmiddelen zoals fruit, groenten en zuivel. Deze suikers bevatten vezels, vitaminen en mineralen die de opname vertragen en gezondheidsvoordelen bieden."
-                          : "Natural sugars come from whole foods like fruits, vegetables and dairy. These sugars include fiber, vitamins and minerals that slow absorption and provide health benefits."}
+                          ? "Gebonden suikers zitten nog vast in de celstructuur van volle voedingsmiddelen zoals vers fruit, groenten en zuivel. Ze worden langzamer opgenomen en bieden gezondheidsvoordelen."
+                          : "Intrinsic sugars are still bound within the cell structure of whole foods like fresh fruits, vegetables, and dairy. They are absorbed more slowly and provide health benefits."}
                         <p className="text-xs font-medium mt-2 text-violet-500">
                           {language === "nl" 
-                            ? "Informatief - geen strikte limiet"
-                            : "Informational - no strict limit"}
+                            ? "Gezond - geen strikte limiet"
+                            : "Healthy - no strict limit"}
                         </p>
                       </DialogDescription>
                     </DialogHeader>
