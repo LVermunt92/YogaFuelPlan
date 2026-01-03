@@ -1445,18 +1445,14 @@ function MealPlannerMain() {
                   <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
                     <DialogHeader>
                       <DialogTitle>{t.shoppingListHeader}</DialogTitle>
-                      <DialogDescription className="flex flex-col gap-1 text-sm text-muted-foreground pt-2">
-                        <span className="flex items-center gap-2">
-                          <Leaf className="h-3.5 w-3.5 text-green-600 flex-shrink-0" />
-                          {language === 'nl' 
-                            ? 'Groen blad = beter biologisch te kopen (producten met dunne schil of geconcentreerde producten)'
-                            : 'Green leaf = better to buy organic (thin-skinned produce or concentrated products)'}
+                      <DialogDescription className="flex items-center gap-4 text-xs text-muted-foreground pt-2">
+                        <span className="flex items-center gap-1">
+                          <Leaf className="h-3 w-3 text-green-600" />
+                          {language === 'nl' ? 'Beter biologisch' : 'Better organic'}
                         </span>
-                        <span className="flex items-center gap-2">
-                          <Factory className="h-3.5 w-3.5 text-amber-600 flex-shrink-0" />
-                          {language === 'nl' 
-                            ? 'Fabriek = ultra-bewerkt voedsel (NOVA groep 4 - industriële formules met additieven)'
-                            : 'Factory = ultra-processed food (NOVA group 4 - industrial formulations with additives)'}
+                        <span className="flex items-center gap-1">
+                          <Factory className="h-3 w-3 text-amber-600" />
+                          {language === 'nl' ? 'Ultra-bewerkt' : 'Ultra-processed'}
                         </span>
                       </DialogDescription>
                     </DialogHeader>
