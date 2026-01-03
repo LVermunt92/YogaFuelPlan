@@ -2843,16 +2843,14 @@ async function generateMealPrepPlan(
       let dinnerMeal = null;
       let isDinnerLeftover = false;
       
-      // Apply low-carb filter for dinners if user has dinnerLowCarbMaxCarbs set
-      const dinnerLowCarbMaxCarbs = user?.dinnerLowCarbMaxCarbs;
-      let lowCarbDinnerOptions = dinnerOptions;
-      let lowCarbWeekdayDinnerOptions = weekdayDinnerOptions;
+      // Apply low-carb filter for all dinners (default 40g max carbs for healthy eating)
+      // This is now the default for everyone to promote balanced evening meals
+      const DEFAULT_LOW_CARB_LIMIT = 40; // 40g carbs is a moderate low-carb approach
+      const dinnerLowCarbMaxCarbs = user?.dinnerLowCarbMaxCarbs || DEFAULT_LOW_CARB_LIMIT;
       
-      if (dinnerLowCarbMaxCarbs && dinnerLowCarbMaxCarbs > 0) {
-        console.log(`🥗 LOW-CARB DINNER: Filtering for ≤${dinnerLowCarbMaxCarbs}g carbs`);
-        lowCarbDinnerOptions = filterLowCarbMeals(dinnerOptions, dinnerLowCarbMaxCarbs);
-        lowCarbWeekdayDinnerOptions = filterLowCarbMeals(weekdayDinnerOptions, dinnerLowCarbMaxCarbs);
-      }
+      console.log(`🥗 LOW-CARB DINNER: Filtering for ≤${dinnerLowCarbMaxCarbs}g carbs (default for all users)`);
+      const lowCarbDinnerOptions = filterLowCarbMeals(dinnerOptions, dinnerLowCarbMaxCarbs);
+      const lowCarbWeekdayDinnerOptions = filterLowCarbMeals(weekdayDinnerOptions, dinnerLowCarbMaxCarbs);
       
       if (day === 1) {
         // Day 1: Sunday - no dinner cooking (week starts fresh on Monday)

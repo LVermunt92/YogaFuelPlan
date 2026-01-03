@@ -1019,12 +1019,12 @@ export default function Profile() {
               {/* Low-Carb Dinner Setting */}
               <div className="p-4 border rounded-lg bg-green-50 border-green-200">
                 <Label htmlFor="dinnerLowCarbMaxCarbs" className="text-sm font-medium text-foreground mb-2 block">
-                  {language === 'nl' ? 'Laag koolhydraat avondeten' : 'Low-carb dinner limit'}
+                  {language === 'nl' ? 'Laag koolhydraat avondeten limiet' : 'Low-carb dinner limit'}
                 </Label>
                 <p className="text-xs text-muted-foreground mb-3">
                   {language === 'nl' 
-                    ? 'Stel een maximaal koolhydraatlimiet in voor avondmaaltijden (leeg laten = geen limiet)'
-                    : 'Set a maximum carb limit for dinner recipes (leave empty = no limit)'}
+                    ? 'Alle avondmaaltijden zijn standaard laag-koolhydraat (max 40g). Stel een striktere limiet in als gewenst.'
+                    : 'All dinners are low-carb by default (max 40g). Set a stricter limit if desired.'}
                 </p>
                 <div className="flex items-center gap-2">
                   <Input
@@ -1032,7 +1032,7 @@ export default function Profile() {
                     type="number"
                     min="0"
                     max="100"
-                    placeholder={language === 'nl' ? 'bijv. 20' : 'e.g. 20'}
+                    placeholder="40"
                     value={formData.dinnerLowCarbMaxCarbs}
                     onChange={(e) => setFormData(prev => ({ ...prev, dinnerLowCarbMaxCarbs: e.target.value }))}
                     className="input-clean w-24"
@@ -1043,8 +1043,8 @@ export default function Profile() {
                 </div>
                 <p className="text-xs text-muted-foreground mt-2">
                   {language === 'nl' 
-                    ? 'Aanbevolen: 20g voor keto, 30g voor laag-koolhydraat'
-                    : 'Recommended: 20g for keto, 30g for low-carb'}
+                    ? 'Standaard: 40g | Laag-koolhydraat: 30g | Keto: 20g'
+                    : 'Default: 40g | Low-carb: 30g | Keto: 20g'}
                 </p>
               </div>
 
