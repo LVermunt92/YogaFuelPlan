@@ -1023,8 +1023,8 @@ export default function Profile() {
                 </Label>
                 <p className="text-xs text-muted-foreground mb-3">
                   {language === 'nl' 
-                    ? 'Alle avondmaaltijden zijn standaard laag-koolhydraat (max 40g). Stel een striktere limiet in als gewenst.'
-                    : 'All dinners are low-carb by default (max 40g). Set a stricter limit if desired.'}
+                    ? 'Alle avondmaaltijden zijn standaard laag-koolhydraat (max 50g). Stel een striktere limiet in als gewenst.'
+                    : 'All dinners are low-carb by default (max 50g). Set a stricter limit if desired.'}
                 </p>
                 <div className="flex items-center gap-2">
                   <Input
@@ -1032,7 +1032,7 @@ export default function Profile() {
                     type="number"
                     min="0"
                     max="100"
-                    placeholder="40"
+                    placeholder="50"
                     value={formData.dinnerLowCarbMaxCarbs}
                     onChange={(e) => setFormData(prev => ({ ...prev, dinnerLowCarbMaxCarbs: e.target.value }))}
                     className="input-clean w-24"
@@ -1043,8 +1043,8 @@ export default function Profile() {
                 </div>
                 <p className="text-xs text-muted-foreground mt-2">
                   {language === 'nl' 
-                    ? 'Standaard: 40g | Laag-koolhydraat: 30g | Keto: 20g'
-                    : 'Default: 40g | Low-carb: 30g | Keto: 20g'}
+                    ? 'Standaard: 50g | Laag-koolhydraat: 30g | Keto: 20g'
+                    : 'Default: 50g | Low-carb: 30g | Keto: 20g'}
                 </p>
               </div>
 

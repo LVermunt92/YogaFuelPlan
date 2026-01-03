@@ -2843,9 +2843,9 @@ async function generateMealPrepPlan(
       let dinnerMeal = null;
       let isDinnerLeftover = false;
       
-      // Apply low-carb filter for all dinners (default 40g max carbs for healthy eating)
+      // Apply low-carb filter for all dinners (default 50g max carbs for healthy eating)
       // This is now the default for everyone to promote balanced evening meals
-      const DEFAULT_LOW_CARB_LIMIT = 40; // 40g carbs is a moderate low-carb approach
+      const DEFAULT_LOW_CARB_LIMIT = 50; // 50g carbs gives good variety while staying low-carb
       const dinnerLowCarbMaxCarbs = user?.dinnerLowCarbMaxCarbs || DEFAULT_LOW_CARB_LIMIT;
       
       console.log(`🥗 LOW-CARB DINNER: Filtering for ≤${dinnerLowCarbMaxCarbs}g carbs (default for all users)`);

@@ -106,6 +106,35 @@ async function generateShoppingListInBackground(
   }
 }
 
+// Helper function to record meals to history for variety tracking
+async function recordMealsToHistory(
+  userId: number,
+  meals: any[],
+  weekStart: string
+): Promise<void> {
+  try {
+    for (const meal of meals) {
+      if (meal.foodDescription) {
+        // Extract recipe name from foodDescription (before any portion info)
+        const mealName = meal.foodDescription.split(' (')[0].trim();
+        
+        await storage.addToMealHistory({
+          userId,
+          mealName,
+          mealType: meal.mealType || 'unknown',
+          portion: meal.portion || '1 serving',
+          protein: meal.protein || 0,
+          prepTime: meal.prepTime || 0
+        });
+      }
+    }
+    
+    console.log(`📝 Recorded ${meals.length} meals to history for user ${userId}`);
+  } catch (error) {
+    console.error('Failed to record meal history:', error);
+  }
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
   
   // Version endpoint for auto-update detection
@@ -377,6 +406,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Automatically cleanup old meal plans, keeping only 3 most recent
       if (request.userId) {
         await storage.cleanupOldMealPlans(request.userId, 3);
+      }
+      
+      // Record meals to history for variety tracking (non-blocking)
+      if (request.userId) {
+        recordMealsToHistory(request.userId, savedMeals, savedMealPlan.weekStart)
+          .catch(err => console.error('Failed to record meal history:', err));
       }
       
       // Return meal plan immediately, generate shopping list in background
