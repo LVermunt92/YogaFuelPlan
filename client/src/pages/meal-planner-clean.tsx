@@ -16,6 +16,8 @@ import { Calendar, Clock, Target, Eye, CheckCircle, Utensils, Activity, Shopping
 import { useLocation } from "wouter";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Separator } from "@/components/ui/separator";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ChevronDown } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useTranslations, translateDietaryTags, translateDietaryTag } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -311,6 +313,7 @@ function MealPlannerMain() {
   const [weekendMealPrepEnabled, setWeekendMealPrepEnabled] = useState(false);
   const [selectedMealId, setSelectedMealId] = useState<number | null>(null);
   const [showShoppingList, setShowShoppingList] = useState(false);
+  const [nutritionOpen, setNutritionOpen] = useState(false);
   const [newLeftover, setNewLeftover] = useState("");
   const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set());
   const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
@@ -2101,56 +2104,148 @@ function MealPlannerMain() {
                   </div>
                 </div>
 
-                {/* Nutrition Information Box */}
-                <div className="border border-gray-200 rounded-lg p-4 bg-white">
-                  <div className="text-center mb-3">
-                    <h3 className="text-lg font-semibold text-gray-800">Nutrition Information</h3>
-                    <p className="text-xs text-gray-500 italic">All values are per serving</p>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
-                    <div className="text-center">
-                      <Activity className="w-4 h-4 text-orange-600 mx-auto mb-0.5" />
-                      <p className="text-xs text-gray-500 font-medium">{t.calories}</p>
-                      <p className="text-sm font-bold text-gray-800">{Math.round(recipeData.nutrition.calories)}</p>
+                {/* Nutrition Information Dropdown */}
+                <Collapsible open={nutritionOpen} onOpenChange={setNutritionOpen}>
+                  <CollapsibleTrigger className="w-full">
+                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
+                      <div className="flex items-center gap-2">
+                        <Activity className="w-4 h-4 text-gray-600" />
+                        <span className="text-sm font-medium text-gray-700">{t.nutritionInfo || 'Nutrition information'}</span>
+                        <span className="text-xs text-gray-500 italic">({t.perServing || 'per serving'})</span>
+                      </div>
+                      <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform ${nutritionOpen ? 'rotate-180' : ''}`} />
                     </div>
-                    <div className="text-center">
-                      <Target className="w-4 h-4 text-emerald-600 mx-auto mb-0.5" />
-                      <p className="text-xs text-gray-500 font-medium">{t.protein}</p>
-                      <p className="text-sm font-bold text-gray-800">{Math.round(recipeData.nutrition.protein)}g</p>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <div className="mt-2 p-3 bg-gray-50 rounded-lg">
+                      <div className="grid grid-cols-4 gap-2">
+                        {/* Calories Chart */}
+                        <div className="text-center">
+                          <div className="relative w-12 h-12 mx-auto">
+                            <ResponsiveContainer width="100%" height="100%">
+                              <PieChart>
+                                <Pie
+                                  data={[
+                                    { value: Math.min((recipeData.nutrition.calories / 800) * 100, 100), fill: "#f97316" },
+                                    { value: Math.max(100 - (recipeData.nutrition.calories / 800) * 100, 0), fill: "#f3f4f6" }
+                                  ]}
+                                  cx="50%"
+                                  cy="50%"
+                                  innerRadius={12}
+                                  outerRadius={20}
+                                  startAngle={90}
+                                  endAngle={450}
+                                  dataKey="value"
+                                />
+                              </PieChart>
+                            </ResponsiveContainer>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <div className="text-[10px] font-bold text-orange-600">{Math.round(recipeData.nutrition.calories)}</div>
+                            </div>
+                          </div>
+                          <h3 className="text-[10px] font-semibold text-orange-600">{t.calories}</h3>
+                        </div>
+
+                        {/* Protein Chart */}
+                        <div className="text-center">
+                          <div className="relative w-12 h-12 mx-auto">
+                            <ResponsiveContainer width="100%" height="100%">
+                              <PieChart>
+                                <Pie
+                                  data={[
+                                    { value: Math.min((recipeData.nutrition.protein / 40) * 100, 100), fill: "#10b981" },
+                                    { value: Math.max(100 - (recipeData.nutrition.protein / 40) * 100, 0), fill: "#f3f4f6" }
+                                  ]}
+                                  cx="50%"
+                                  cy="50%"
+                                  innerRadius={12}
+                                  outerRadius={20}
+                                  startAngle={90}
+                                  endAngle={450}
+                                  dataKey="value"
+                                />
+                              </PieChart>
+                            </ResponsiveContainer>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <div className="text-[10px] font-bold text-emerald-600">{Math.round(recipeData.nutrition.protein)}g</div>
+                            </div>
+                          </div>
+                          <h3 className="text-[10px] font-semibold text-emerald-600">{t.protein}</h3>
+                        </div>
+
+                        {/* Fats Chart */}
+                        <div className="text-center">
+                          <div className="relative w-12 h-12 mx-auto">
+                            <ResponsiveContainer width="100%" height="100%">
+                              <PieChart>
+                                <Pie
+                                  data={[
+                                    { value: Math.min(((recipeData.nutrition.fats || 0) / 30) * 100, 100), fill: "#eab308" },
+                                    { value: Math.max(100 - ((recipeData.nutrition.fats || 0) / 30) * 100, 0), fill: "#f3f4f6" }
+                                  ]}
+                                  cx="50%"
+                                  cy="50%"
+                                  innerRadius={12}
+                                  outerRadius={20}
+                                  startAngle={90}
+                                  endAngle={450}
+                                  dataKey="value"
+                                />
+                              </PieChart>
+                            </ResponsiveContainer>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <div className="text-[10px] font-bold text-yellow-600">{Math.round(recipeData.nutrition.fats || 0)}g</div>
+                            </div>
+                          </div>
+                          <h3 className="text-[10px] font-semibold text-yellow-600">{t.goodFats || 'Fats'}</h3>
+                        </div>
+
+                        {/* Fiber Chart */}
+                        <div className="text-center">
+                          <div className="relative w-12 h-12 mx-auto">
+                            <ResponsiveContainer width="100%" height="100%">
+                              <PieChart>
+                                <Pie
+                                  data={[
+                                    { value: Math.min(((recipeData.nutrition.fiber || 0) / 10) * 100, 100), fill: "#f97316" },
+                                    { value: Math.max(100 - ((recipeData.nutrition.fiber || 0) / 10) * 100, 0), fill: "#f3f4f6" }
+                                  ]}
+                                  cx="50%"
+                                  cy="50%"
+                                  innerRadius={12}
+                                  outerRadius={20}
+                                  startAngle={90}
+                                  endAngle={450}
+                                  dataKey="value"
+                                />
+                              </PieChart>
+                            </ResponsiveContainer>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <div className="text-[10px] font-bold text-orange-600">{Math.round(recipeData.nutrition.fiber || 0)}g</div>
+                            </div>
+                          </div>
+                          <h3 className="text-[10px] font-semibold text-orange-600">{t.fiber}</h3>
+                        </div>
+                      </div>
+                      
+                      {/* Additional info row */}
+                      <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-gray-200">
+                        <div className="text-center">
+                          <p className="text-[10px] text-gray-500">{t.fruitsStarches || 'Carbs'}</p>
+                          <p className="text-xs font-bold text-gray-700">{Math.round(recipeData.nutrition.carbohydrates || 0)}g</p>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-[10px] text-gray-500">{t.cost}</p>
+                          <p className="text-xs font-bold text-gray-700">€{recipeData.nutrition.costEuros?.toFixed(2) || '0.00'}</p>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-[10px] text-gray-500">{t.proteinPerEuro}</p>
+                          <p className="text-xs font-bold text-gray-700">{recipeData.nutrition.proteinPerEuro?.toFixed(1) || '0.0'}g/€</p>
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-center">
-                      <Droplet className="w-4 h-4 text-yellow-600 mx-auto mb-0.5" />
-                      <p className="text-xs text-gray-500 font-medium">Good Fats</p>
-                      <p className="text-sm font-bold text-gray-800">{Math.round(recipeData.nutrition.fats || 0)}g</p>
-                    </div>
-                    <div className="text-center">
-                      <Wheat className="w-4 h-4 text-orange-600 mx-auto mb-0.5" />
-                      <p className="text-xs text-gray-500 font-medium">{t.fiber}</p>
-                      <p className="text-sm font-bold text-gray-800">{Math.round(recipeData.nutrition.fiber || 0)}g</p>
-                    </div>
-                    <div className="text-center">
-                      <Leaf className="w-4 h-4 text-blue-600 mx-auto mb-0.5" />
-                      <p className="text-xs text-gray-500 font-medium">{t.vegetables || 'Vegetables'}</p>
-                      <p className="text-sm font-bold text-gray-800">{Math.round((recipeData.vegetableContent?.servings || 0) * 80)}g</p>
-                    </div>
-                    <div className="text-center">
-                      <Apple className="w-4 h-4 text-blue-600 mx-auto mb-0.5" />
-                      <p className="text-xs text-gray-500 font-medium">{t.fruitsStarches || 'Fruits/Starches'}</p>
-                      <p className="text-sm font-bold text-gray-800">{Math.round(recipeData.nutrition.carbohydrates || 0)}g</p>
-                    </div>
-                    <div className="text-center">
-                      <Euro className="w-4 h-4 text-gray-600 mx-auto mb-0.5" />
-                      <p className="text-xs text-gray-500 font-medium">{t.cost}</p>
-                      <p className="text-sm font-bold text-gray-800">€{recipeData.nutrition.costEuros?.toFixed(2) || '0.00'}</p>
-                    </div>
-                    <div className="text-center">
-                      <TrendingUp className="w-4 h-4 text-gray-600 mx-auto mb-0.5" />
-                      <p className="text-xs text-gray-500 font-medium">{t.proteinPerEuro}</p>
-                      <p className="text-sm font-bold text-gray-800">{recipeData.nutrition.proteinPerEuro?.toFixed(1) || '0.0'}g/€</p>
-                    </div>
-                  </div>
-                </div>
+                  </CollapsibleContent>
+                </Collapsible>
 
                 {/* Dietary Tags */}
                 {recipeData.tags && recipeData.tags.length > 0 && (
@@ -2199,34 +2294,6 @@ function MealPlannerMain() {
                           </ul>
                         </div>
                       )}
-                    </div>
-                  </div>
-                )}
-
-                {/* Vegetable Content */}
-                {recipeData.vegetableContent && (
-                  <div className="bg-green-50 rounded-lg p-4">
-                    <h4 className="font-semibold text-green-900 mb-3 flex items-center gap-2">
-                      🥬 {t.vegetableContent}
-                    </h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <p className="text-sm text-green-700 mb-2">
-                          <span className="font-medium">{t.servings}:</span> {recipeData.vegetableContent.servings}
-                        </p>
-                        {recipeData.vegetableContent?.vegetables?.length > 0 && (
-                          <div>
-                            <p className="text-sm font-medium text-green-700 mb-1">{t.vegetables}:</p>
-                            <div className="flex flex-wrap gap-1">
-                              {recipeData?.vegetableContent?.vegetables?.map((veg, index) => (
-                                <Badge key={index} variant="secondary" className="bg-green-100 text-green-800 text-xs">
-                                  {veg}
-                                </Badge>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      </div>
                     </div>
                   </div>
                 )}

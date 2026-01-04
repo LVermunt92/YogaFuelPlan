@@ -43,6 +43,8 @@ export const translations = {
     cost: "Cost",
     proteinPerEuro: "Protein per euro",
     goodFats: "Good fats",
+    nutritionInfo: "Nutrition information",
+    perServing: "per serving",
     vegetables: "Vegetables",
     fruitsStarches: "Fruits/starches",
     
@@ -645,6 +647,8 @@ export const translations = {
     carbs: "Koolhydraten",
     fats: "Vetten",
     goodFats: "Gezonde vetten",
+    nutritionInfo: "Voedingswaarden",
+    perServing: "per portie",
     fiber: "Vezels",
     fruitsStarches: "Fruit/zetmeel",
     sugar: "Suiker",
