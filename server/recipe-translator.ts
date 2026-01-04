@@ -71,6 +71,8 @@ const ingredientTranslations: Record<string, string> = {
   'vegan egg substitute (flax eggs or aquafaba)': 'veganistisch ei-alternatief (lijnzaad-eieren of aquafaba)',
   'tofu': 'tofu',
   'tempeh': 'tempeh',
+  'dried soy mince': 'gedroogd sojagehakt',
+  'soy mince': 'sojagehakt',
   'fermented': 'gefermenteerd',
   'lentils': 'linzen',
   'chickpeas': 'kikkererwten',
