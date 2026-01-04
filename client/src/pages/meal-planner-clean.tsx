@@ -2235,7 +2235,7 @@ function MealPlannerMain() {
                         <div>
                           <p className="text-sm font-medium text-green-700 mb-1">{t.healthBenefits || 'Health Benefits'}:</p>
                           <ul className="space-y-1">
-                            {recipeData.recipeBenefits.map((benefit: string, index: number) => (
+                            {recipeData.recipeBenefits.slice(0, 3).map((benefit: string, index: number) => (
                               <li key={index} className="flex gap-2 text-sm text-green-600">
                                 <span className="text-green-500">•</span>
                                 {benefit}
