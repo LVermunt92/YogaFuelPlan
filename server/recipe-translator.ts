@@ -253,6 +253,8 @@ const ingredientTranslations: Record<string, string> = {
   'coriander': 'koriander',
   'fresh herbs': 'verse kruiden',
   'bay leaves': 'laurierbladeren',
+  'nutmeg': 'nootmuskaat',
+  'ground nutmeg': 'gemalen nootmuskaat',
   
   // Oils & Vinegars
   'oil': 'olie',
