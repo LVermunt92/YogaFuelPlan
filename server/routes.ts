@@ -1744,6 +1744,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Use the MEAL'S adjusted nutrition values, not the original recipe values
       // This ensures the recipe dialog shows what the user is actually eating
+      // For micronutrients (potassium, calcium, iron, vitaminC, vitaminK), use recipe values from DB
+      const recipeNutrition = mealOption.nutrition || {};
       const mealNutrition = {
         protein: targetMeal.protein || 0,
         calories: targetMeal.calories || 0,
@@ -1752,8 +1754,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         fiber: targetMeal.fiber || 0,
         sugar: targetMeal.sugar || 0,
         sodium: targetMeal.sodium || 0,
-        costEuros: targetMeal.costEuros || 0,
-        proteinPerEuro: targetMeal.proteinPerEuro
+        vitaminK: recipeNutrition.vitaminK || 0,
+        potassium: recipeNutrition.potassium || 0,
+        calcium: recipeNutrition.calcium || 0,
+        iron: recipeNutrition.iron || 0,
+        vitaminC: recipeNutrition.vitaminC || 0,
+        costEuros: targetMeal.costEuros || recipeNutrition.costEuros || 0,
+        proteinPerEuro: targetMeal.proteinPerEuro || recipeNutrition.proteinPerEuro
       };
 
       // Calculate the scaling ratio for ingredients based on adjusted vs original nutrition
