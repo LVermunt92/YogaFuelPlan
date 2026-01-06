@@ -5,6 +5,7 @@ import { Link } from "wouter";
 import { useTranslations } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { countUniquePlants } from "@/lib/plant-diversity";
+import { getIngredientColors as getColorsFromConfig, kpiOrder } from "@/lib/kpi-config";
 import { useState } from "react";
 import {
   Dialog,
@@ -53,30 +54,8 @@ export default function Insights() {
     queryKey: ["/api/nutrition/targets"],
   });
 
-  // Ingredient to color group mapping
-  const getIngredientColors = (ingredients: string[]): Set<string> => {
-    const colorGroups = {
-      red: ['tomato', 'red pepper', 'bell pepper red', 'strawberr', 'raspberr', 'red cabbage', 'beet', 'red onion', 'cherry tomato', 'radish'],
-      orange: ['carrot', 'sweet potato', 'orange', 'pumpkin', 'butternut squash', 'mango', 'papaya', 'apricot', 'peach'],
-      yellow: ['yellow pepper', 'corn', 'banana', 'pineapple', 'yellow squash', 'lemon', 'ginger'],
-      green: ['spinach', 'broccoli', 'kale', 'lettuce', 'green bean', 'pea', 'zucchini', 'cucumber', 'avocado', 'arugula', 'bok choy', 'celery', 'asparagus', 'edamame', 'lime'],
-      purple: ['blueberr', 'purple cabbage', 'eggplant', 'blackberr', 'plum', 'purple potato', 'acai', 'grape'],
-      white: ['cauliflower', 'mushroom', 'onion', 'garlic', 'potato', 'white bean', 'chickpea', 'tahini', 'tofu', 'banana']
-    };
-
-    const foundColors = new Set<string>();
-    
-    ingredients.forEach(ingredient => {
-      const lowerIngredient = ingredient.toLowerCase();
-      Object.entries(colorGroups).forEach(([color, keywords]) => {
-        if (keywords.some(keyword => lowerIngredient.includes(keyword))) {
-          foundColors.add(color);
-        }
-      });
-    });
-
-    return foundColors;
-  };
+  // Use shared color group mapping from kpi-config.ts
+  const getIngredientColors = getColorsFromConfig;
 
   // Calculate nutrition data from current meal plan (same logic as meal planner)
   const calculateKPIs = () => {

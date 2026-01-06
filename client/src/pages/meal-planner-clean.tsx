@@ -27,6 +27,7 @@ import { WeeklyHighlights } from "@/components/WeeklyHighlights";
 import { WelcomeDialog } from "@/components/WelcomeDialog";
 import type { User, MealPlan as MealPlanType, Meal as MealType } from "@shared/schema";
 import { countUniquePlants } from "@/lib/plant-diversity";
+import { getIngredientColors, estimateVegetableContent, countPlantDiversity, kpiOrder } from "@/lib/kpi-config";
 
 // Type alias for easier use
 type Meal = MealType;
@@ -2122,31 +2123,77 @@ function MealPlannerMain() {
                   </CollapsibleTrigger>
                   <CollapsibleContent>
                     <div className="mt-2 p-3 bg-gray-50 rounded-lg">
-                      {/* Main macros - 4 columns */}
+                      {/* Row 1: Main macros (following KPI order) - Protein, Fats, Fiber, Calories */}
                       <div className="grid grid-cols-4 gap-2 text-center">
-                        <div>
-                          <p className="text-xs font-bold text-orange-600">{Math.round(recipeData.nutrition.calories)}</p>
-                          <p className="text-[10px] text-gray-500">{t.calories}</p>
-                        </div>
                         <div>
                           <p className="text-xs font-bold text-emerald-600">{Math.round(recipeData.nutrition.protein)}g</p>
                           <p className="text-[10px] text-gray-500">{t.protein}</p>
                         </div>
                         <div>
-                          <p className="text-xs font-bold text-blue-600">{Math.round(recipeData.nutrition.carbohydrates || 0)}g</p>
-                          <p className="text-[10px] text-gray-500">{t.carbs}</p>
-                        </div>
-                        <div>
                           <p className="text-xs font-bold text-yellow-600">{Math.round(recipeData.nutrition.fats || 0)}g</p>
                           <p className="text-[10px] text-gray-500">{t.goodFats || 'Fats'}</p>
                         </div>
-                      </div>
-                      
-                      {/* Secondary nutrients - 4 columns */}
-                      <div className="grid grid-cols-4 gap-2 text-center mt-2 pt-2 border-t border-gray-200">
                         <div>
                           <p className="text-xs font-bold text-orange-500">{Math.round(recipeData.nutrition.fiber || 0)}g</p>
                           <p className="text-[10px] text-gray-500">{t.fiber}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-blue-600">{Math.round(recipeData.nutrition.calories)}</p>
+                          <p className="text-[10px] text-gray-500">{t.calories}</p>
+                        </div>
+                      </div>
+                      
+                      {/* Row 2: Wellness metrics - Vegetables, Plant Diversity, Rainbow, Net Carbs */}
+                      <div className="grid grid-cols-4 gap-2 text-center mt-2 pt-2 border-t border-gray-200">
+                        <div>
+                          <p className="text-xs font-bold text-green-600">{estimateVegetableContent(recipeData.nutrition.fiber || 0)}g</p>
+                          <p className="text-[10px] text-gray-500">{t.vegetables || 'Vegetables'}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-green-700">{countPlantDiversity(recipeData.ingredients || [])}</p>
+                          <p className="text-[10px] text-gray-500">{t.plantDiversity || 'Plant div.'}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold bg-gradient-to-r from-red-500 via-green-500 to-purple-500 bg-clip-text text-transparent">
+                            {getIngredientColors(recipeData.ingredients || []).size}/6
+                          </p>
+                          <p className="text-[10px] text-gray-500">{language === 'nl' ? 'Regenboog' : 'Rainbow'}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-cyan-600">{Math.round((recipeData.nutrition.carbohydrates || 0) - (recipeData.nutrition.fiber || 0))}g</p>
+                          <p className="text-[10px] text-gray-500">{language === 'nl' ? 'Netto koolh.' : 'Net carbs'}</p>
+                        </div>
+                      </div>
+
+                      {/* Row 3: Micronutrients - Vitamin K, Zinc, Calcium, Potassium */}
+                      <div className="grid grid-cols-4 gap-2 text-center mt-2 pt-2 border-t border-gray-200">
+                        <div>
+                          <p className="text-xs font-bold text-green-600">{Math.round((recipeData.nutrition as any).vitaminK || 0)}µg</p>
+                          <p className="text-[10px] text-gray-500">{t.vitaminK || 'Vitamin K'}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-violet-500">{((recipeData.nutrition as any).zinc || 0).toFixed(1)}mg</p>
+                          <p className="text-[10px] text-gray-500">{t.zinc || 'Zinc'}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-slate-600">{Math.round((recipeData.nutrition as any).calcium || 0)}mg</p>
+                          <p className="text-[10px] text-gray-500">{t.calcium || 'Calcium'}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-teal-600">{Math.round((recipeData.nutrition as any).potassium || 0)}mg</p>
+                          <p className="text-[10px] text-gray-500">{t.potassium || 'Potassium'}</p>
+                        </div>
+                      </div>
+
+                      {/* Row 4: More nutrients - Iron, Vitamin C, Sugar, Sodium */}
+                      <div className="grid grid-cols-4 gap-2 text-center mt-2 pt-2 border-t border-gray-200">
+                        <div>
+                          <p className="text-xs font-bold text-red-600">{((recipeData.nutrition as any).iron || 0).toFixed(1)}mg</p>
+                          <p className="text-[10px] text-gray-500">{t.iron || 'Iron'}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-amber-500">{Math.round((recipeData.nutrition as any).vitaminC || 0)}mg</p>
+                          <p className="text-[10px] text-gray-500">{t.vitaminC || 'Vitamin C'}</p>
                         </div>
                         <div>
                           <p className="text-xs font-bold text-pink-500">{Math.round((recipeData.nutrition as any).sugar || 0)}g</p>
@@ -2156,37 +2203,9 @@ function MealPlannerMain() {
                           <p className="text-xs font-bold text-gray-600">{Math.round((recipeData.nutrition as any).sodium || 0)}mg</p>
                           <p className="text-[10px] text-gray-500">{t.sodium}</p>
                         </div>
-                        <div>
-                          <p className="text-xs font-bold text-green-600">{Math.round((recipeData.nutrition as any).vitaminK || 0)}µg</p>
-                          <p className="text-[10px] text-gray-500">{t.vitaminK || 'Vitamin K'}</p>
-                        </div>
-                      </div>
-
-                      {/* Minerals and vitamins - 5 columns */}
-                      <div className="grid grid-cols-5 gap-2 text-center mt-2 pt-2 border-t border-gray-200">
-                        <div>
-                          <p className="text-xs font-bold text-teal-600">{Math.round((recipeData.nutrition as any).potassium || 0)}mg</p>
-                          <p className="text-[10px] text-gray-500">{t.potassium || 'Potassium'}</p>
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-slate-600">{Math.round((recipeData.nutrition as any).calcium || 0)}mg</p>
-                          <p className="text-[10px] text-gray-500">{t.calcium || 'Calcium'}</p>
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-red-600">{((recipeData.nutrition as any).iron || 0).toFixed(1)}mg</p>
-                          <p className="text-[10px] text-gray-500">{t.iron || 'Iron'}</p>
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-violet-500">{((recipeData.nutrition as any).zinc || 0).toFixed(1)}mg</p>
-                          <p className="text-[10px] text-gray-500">{t.zinc || 'Zinc'}</p>
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-amber-500">{Math.round((recipeData.nutrition as any).vitaminC || 0)}mg</p>
-                          <p className="text-[10px] text-gray-500">{t.vitaminC || 'Vitamin C'}</p>
-                        </div>
                       </div>
                       
-                      {/* Cost info - 2 columns */}
+                      {/* Row 5: Cost info */}
                       <div className="grid grid-cols-2 gap-2 text-center mt-2 pt-2 border-t border-gray-200">
                         <div>
                           <p className="text-xs font-bold text-gray-700">€{recipeData.nutrition.costEuros?.toFixed(2) || '0.00'}</p>
