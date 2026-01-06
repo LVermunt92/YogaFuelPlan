@@ -87,6 +87,18 @@ export default function Insights() {
     const totalIntrinsicSugar = currentMealPlan.meals.reduce((sum, meal) => {
       return sum + ((meal as any).intrinsicSugar || 0);
     }, 0);
+    const totalVitaminC = currentMealPlan.meals.reduce((sum, meal) => {
+      return sum + ((meal as any).vitaminC || 0);
+    }, 0);
+    const totalSodium = currentMealPlan.meals.reduce((sum, meal) => {
+      return sum + ((meal as any).sodium || 0);
+    }, 0);
+    const totalPotassium = currentMealPlan.meals.reduce((sum, meal) => {
+      return sum + ((meal as any).potassium || 0);
+    }, 0);
+    const totalIron = currentMealPlan.meals.reduce((sum, meal) => {
+      return sum + ((meal as any).iron || 0);
+    }, 0);
 
     // Calculate Eating the Rainbow score
     const allColors = new Set<string>();
@@ -116,6 +128,10 @@ export default function Insights() {
       addedSugar: totalMeals > 0 ? totalAddedSugar / totalMeals : 0,
       freeSugar: totalMeals > 0 ? totalFreeSugar / totalMeals : 0,
       intrinsicSugar: totalMeals > 0 ? totalIntrinsicSugar / totalMeals : 0,
+      vitaminC: totalMeals > 0 ? totalVitaminC / totalMeals : 0,
+      sodium: totalMeals > 0 ? totalSodium / totalMeals : 0,
+      potassium: totalMeals > 0 ? totalPotassium / totalMeals : 0,
+      iron: totalMeals > 0 ? totalIron / totalMeals : 0,
     };
     
     const avgProteinPerDay = avgPerMeal.protein * 3;
@@ -130,6 +146,10 @@ export default function Insights() {
     const avgAddedSugarPerDay = avgPerMeal.addedSugar * 3;
     const avgFreeSugarPerDay = avgPerMeal.freeSugar * 3;
     const avgIntrinsicSugarPerDay = avgPerMeal.intrinsicSugar * 3;
+    const avgVitaminCPerDay = avgPerMeal.vitaminC * 3;
+    const avgSodiumPerDay = avgPerMeal.sodium * 3;
+    const avgPotassiumPerDay = avgPerMeal.potassium * 3;
+    const avgIronPerDay = avgPerMeal.iron * 3;
 
     // Calculate net carbs (total carbs - fiber)
     const avgNetCarbsPerDay = avgCarbsPerDay - avgFiberPerDay;
@@ -163,6 +183,18 @@ export default function Insights() {
 
     // Sugar target (gender-specific) - AHA recommends max 25g for women, 36g for men
     const sugarTarget = userProfile?.gender === 'male' ? 36 : 25;
+
+    // Vitamin C target - 90mg for men, 75mg for women
+    const vitaminCTarget = userProfile?.gender === 'male' ? 90 : 75;
+
+    // Sodium target - max 2300mg per day (less is better)
+    const sodiumTarget = 2300;
+
+    // Potassium target - 3400mg for men, 2600mg for women
+    const potassiumTarget = userProfile?.gender === 'male' ? 3400 : 2600;
+
+    // Iron target - 8mg for men, 18mg for women (higher for women due to menstruation)
+    const ironTarget = userProfile?.gender === 'male' ? 8 : 18;
 
     // Targets
     const proteinTarget = nutritionTargets?.protein || 95;
@@ -250,6 +282,26 @@ export default function Insights() {
         value: Math.round(avgIntrinsicSugarPerDay),
         percentage: 100, // No strict limit for intrinsic sugar (bound in whole foods)
         target: null
+      },
+      vitaminC: {
+        value: Math.round(avgVitaminCPerDay),
+        percentage: Math.round((avgVitaminCPerDay / vitaminCTarget) * 100),
+        target: vitaminCTarget
+      },
+      sodium: {
+        value: Math.round(avgSodiumPerDay),
+        percentage: Math.round((avgSodiumPerDay / sodiumTarget) * 100),
+        target: sodiumTarget
+      },
+      potassium: {
+        value: Math.round(avgPotassiumPerDay),
+        percentage: Math.round((avgPotassiumPerDay / potassiumTarget) * 100),
+        target: potassiumTarget
+      },
+      iron: {
+        value: Math.round(avgIronPerDay * 10) / 10,
+        percentage: Math.round((avgIronPerDay / ironTarget) * 100),
+        target: ironTarget
       }
     };
   };
@@ -858,6 +910,207 @@ export default function Insights() {
                 </Dialog>
               </div>
               <p className="text-[10px] text-gray-500">{kpiData.calcium.percentage}%</p>
+            </div>
+
+            {/* Potassium Chart */}
+            <div className="text-center relative">
+              <div className="relative w-14 h-14 mx-auto">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { value: Math.min(kpiData.potassium.percentage, 100), fill: "#14b8a6" },
+                        { value: Math.max(100 - kpiData.potassium.percentage, 0), fill: "#f3f4f6" }
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={14}
+                      outerRadius={24}
+                      startAngle={90}
+                      endAngle={450}
+                      dataKey="value"
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-xs font-bold text-teal-600">{kpiData.potassium.value}mg</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-center gap-0.5">
+                <h3 className="text-[10px] font-semibold text-teal-600">
+                  {language === "nl" ? "Kalium" : "Potassium"}
+                </h3>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-potassium">
+                      <Info className="h-2.5 w-2.5" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-sm">
+                    <DialogHeader>
+                      <DialogTitle>{language === "nl" ? "Kalium voor gezondheid" : "Potassium for health"}</DialogTitle>
+                      <DialogDescription className="text-sm pt-2">
+                        {language === "nl" 
+                          ? "Kalium is essentieel voor hartfunctie, spiersamentrekking en bloeddrukregulatie. De aanbevolen inname is 3400mg voor mannen en 2600mg voor vrouwen. Beste bronnen: bananen, aardappelen, spinazie, bonen."
+                          : "Potassium is essential for heart function, muscle contraction, and blood pressure regulation. The recommended intake is 3400mg for men and 2600mg for women. Best sources: bananas, potatoes, spinach, beans."}
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <p className="text-[10px] text-gray-500">{kpiData.potassium.percentage}%</p>
+            </div>
+
+            {/* Iron Chart */}
+            <div className="text-center relative">
+              <div className="relative w-14 h-14 mx-auto">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { value: Math.min(kpiData.iron.percentage, 100), fill: "#dc2626" },
+                        { value: Math.max(100 - kpiData.iron.percentage, 0), fill: "#f3f4f6" }
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={14}
+                      outerRadius={24}
+                      startAngle={90}
+                      endAngle={450}
+                      dataKey="value"
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-xs font-bold text-red-600">{kpiData.iron.value}mg</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-center gap-0.5">
+                <h3 className="text-[10px] font-semibold text-red-600">
+                  {language === "nl" ? "IJzer" : "Iron"}
+                </h3>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-iron">
+                      <Info className="h-2.5 w-2.5" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-sm">
+                    <DialogHeader>
+                      <DialogTitle>{language === "nl" ? "IJzer voor gezondheid" : "Iron for health"}</DialogTitle>
+                      <DialogDescription className="text-sm pt-2">
+                        {language === "nl" 
+                          ? "IJzer is essentieel voor zuurstoftransport in het bloed en energieproductie. De aanbevolen inname is 8mg voor mannen en 18mg voor vrouwen (hoger vanwege menstruatie). Beste bronnen: peulvruchten, spinazie, tofu, verrijkte granen."
+                          : "Iron is essential for oxygen transport in the blood and energy production. The recommended intake is 8mg for men and 18mg for women (higher due to menstruation). Best sources: legumes, spinach, tofu, fortified cereals."}
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <p className="text-[10px] text-gray-500">{kpiData.iron.percentage}%</p>
+            </div>
+
+            {/* Vitamin C Chart */}
+            <div className="text-center relative">
+              <div className="relative w-14 h-14 mx-auto">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { value: Math.min(kpiData.vitaminC.percentage, 100), fill: "#f59e0b" },
+                        { value: Math.max(100 - kpiData.vitaminC.percentage, 0), fill: "#f3f4f6" }
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={14}
+                      outerRadius={24}
+                      startAngle={90}
+                      endAngle={450}
+                      dataKey="value"
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-xs font-bold text-amber-500">{kpiData.vitaminC.value}mg</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-center gap-0.5">
+                <h3 className="text-[10px] font-semibold text-amber-500">
+                  {language === "nl" ? "Vitamine C" : "Vitamin C"}
+                </h3>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-vitamin-c">
+                      <Info className="h-2.5 w-2.5" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-sm">
+                    <DialogHeader>
+                      <DialogTitle>{language === "nl" ? "Vitamine C voor gezondheid" : "Vitamin C for health"}</DialogTitle>
+                      <DialogDescription className="text-sm pt-2">
+                        {language === "nl" 
+                          ? "Vitamine C is essentieel voor immuunfunctie, collageenproductie en ijzeropname. De aanbevolen inname is 90mg voor mannen en 75mg voor vrouwen. Beste bronnen: citrusvruchten, paprika, broccoli, aardbeien."
+                          : "Vitamin C is essential for immune function, collagen production, and iron absorption. The recommended intake is 90mg for men and 75mg for women. Best sources: citrus fruits, bell peppers, broccoli, strawberries."}
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <p className="text-[10px] text-gray-500">{kpiData.vitaminC.percentage}%</p>
+            </div>
+
+            {/* Sodium Chart */}
+            <div className="text-center relative">
+              <div className="relative w-14 h-14 mx-auto">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { value: Math.min(kpiData.sodium.percentage, 100), fill: kpiData.sodium.percentage > 100 ? "#ef4444" : "#6b7280" },
+                        { value: Math.max(100 - kpiData.sodium.percentage, 0), fill: "#f3f4f6" }
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={14}
+                      outerRadius={24}
+                      startAngle={90}
+                      endAngle={450}
+                      dataKey="value"
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className={`text-xs font-bold ${kpiData.sodium.percentage > 100 ? 'text-red-500' : 'text-gray-600'}`}>{kpiData.sodium.value}mg</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-center gap-0.5">
+                <h3 className={`text-[10px] font-semibold ${kpiData.sodium.percentage > 100 ? 'text-red-500' : 'text-gray-600'}`}>
+                  {language === "nl" ? "Natrium" : "Sodium"}
+                </h3>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-sodium">
+                      <Info className="h-2.5 w-2.5" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-sm">
+                    <DialogHeader>
+                      <DialogTitle>{language === "nl" ? "Natrium voor gezondheid" : "Sodium for health"}</DialogTitle>
+                      <DialogDescription className="text-sm pt-2">
+                        {language === "nl" 
+                          ? "Natrium is nodig voor vochtbalans en zenuwfunctie, maar te veel verhoogt de bloeddruk. De aanbevolen max is 2300mg per dag. Let op: de meeste natrium komt uit bewerkte voedingsmiddelen."
+                          : "Sodium is needed for fluid balance and nerve function, but too much raises blood pressure. The recommended max is 2300mg per day. Note: most sodium comes from processed foods."}
+                        <p className={`text-xs font-medium mt-2 ${kpiData.sodium.percentage > 100 ? 'text-red-500' : 'text-gray-500'}`}>
+                          {language === "nl" 
+                            ? `Doel: max ${kpiData.sodium.target}mg per dag`
+                            : `Target: max ${kpiData.sodium.target}mg per day`}
+                        </p>
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <p className="text-[10px] text-gray-500">{kpiData.sodium.percentage}%</p>
             </div>
 
             {/* Added Sugar */}
