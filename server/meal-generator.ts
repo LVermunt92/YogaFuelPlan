@@ -515,6 +515,7 @@ function applyTDEEBasedPortionAdjustment(meals: InsertMeal[], user: User | undef
     intrinsicSugar: Math.round((meal.intrinsicSugar || 0) * cappedFactor),
     sodium: Math.round((meal.sodium || 0) * cappedFactor),
     vitaminK: Math.round((meal.vitaminK || 0) * cappedFactor),
+    zinc: Math.round(((meal as any).zinc || 0) * cappedFactor * 10) / 10,
   }));
 }
 
@@ -2701,6 +2702,7 @@ async function generateMealPrepPlan(
           intrinsicSugar: breakfastSugarClassification.intrinsicSugar,
           sodium: Math.round((selectedBreakfast.nutrition.sodium || 0) * portionFactor),
           vitaminK: Math.round(((selectedBreakfast.nutrition as any).vitaminK || 0) * portionFactor),
+          zinc: Math.round(((selectedBreakfast.nutrition as any).zinc || 0) * portionFactor * 10) / 10,
           prepTime: prepTime,
           isLeftover: isBreakfastLeftover,
         });
@@ -2831,6 +2833,7 @@ async function generateMealPrepPlan(
           intrinsicSugar: lunchSugarClassification.intrinsicSugar,
           sodium: Math.round((lunchMeal.nutrition.sodium || 0) * portionFactor),
           vitaminK: Math.round(((lunchMeal.nutrition as any).vitaminK || 0) * portionFactor),
+          zinc: Math.round(((lunchMeal.nutrition as any).zinc || 0) * portionFactor * 10) / 10,
           prepTime: prepTime,
           isLeftover: isLunchLeftover, // Boolean flag instead of string marker
         });
@@ -2969,6 +2972,7 @@ async function generateMealPrepPlan(
           intrinsicSugar: dinnerSugarClassification.intrinsicSugar,
           sodium: Math.round((dinnerMeal.nutrition.sodium || 0) * portionFactor),
           vitaminK: Math.round(((dinnerMeal.nutrition as any).vitaminK || 0) * portionFactor),
+          zinc: Math.round(((dinnerMeal.nutrition as any).zinc || 0) * portionFactor * 10) / 10,
           prepTime: prepTime,
           isLeftover: isDinnerLeftover, // Boolean flag instead of string marker
         });

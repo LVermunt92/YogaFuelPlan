@@ -1755,6 +1755,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         sugar: targetMeal.sugar || 0,
         sodium: targetMeal.sodium || 0,
         vitaminK: recipeNutrition.vitaminK || 0,
+        zinc: recipeNutrition.zinc || 0,
         potassium: recipeNutrition.potassium || 0,
         calcium: recipeNutrition.calcium || 0,
         iron: recipeNutrition.iron || 0,

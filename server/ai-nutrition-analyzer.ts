@@ -81,6 +81,7 @@ Be as accurate as possible based on standard nutritional data for the ingredient
       calcium: Math.max(0, Math.round(nutritionData.calcium || 0)),
       iron: Math.max(0, Math.round((nutritionData.iron || 0) * 10) / 10), // Keep one decimal for iron
       vitaminC: Math.max(0, Math.round(nutritionData.vitaminC || 0)),
+      zinc: Math.max(0, Math.round((nutritionData.zinc || 0) * 10) / 10), // Keep one decimal for zinc
       costEuros: Math.max(0, Math.round((nutritionData.costEuros || 2.5) * 100) / 100), // Keep two decimals for cost, default €2.50
     };
 
@@ -106,6 +107,7 @@ function estimateNutritionFromIngredients(ingredients: string[], servings: numbe
   let totalCalcite = 0;
   let totalIron = 0;
   let totalVitaminC = 0;
+  let totalZinc = 0;
   let totalCost = 0;
 
   ingredients.forEach(ingredient => {
@@ -114,22 +116,22 @@ function estimateNutritionFromIngredients(ingredients: string[], servings: numbe
     // Protein sources
     if (lowerIngredient.includes('chicken')) {
       totalProtein += 25; totalCalories += 150; totalFats += 3; totalCost += 2.5;
-      totalPotassium += 220; totalIron += 0.9;
+      totalPotassium += 220; totalIron += 0.9; totalZinc += 1.3;
     } else if (lowerIngredient.includes('beef') || lowerIngredient.includes('meat')) {
       totalProtein += 22; totalCalories += 200; totalFats += 12; totalCost += 3.5;
-      totalPotassium += 300; totalIron += 2.5;
+      totalPotassium += 300; totalIron += 2.5; totalZinc += 4.5;
     } else if (lowerIngredient.includes('fish') || lowerIngredient.includes('salmon') || lowerIngredient.includes('tuna')) {
       totalProtein += 20; totalCalories += 140; totalFats += 6; totalCost += 4.0;
-      totalPotassium += 350; totalCalcite += 10; totalIron += 0.8;
+      totalPotassium += 350; totalCalcite += 10; totalIron += 0.8; totalZinc += 0.8;
     } else if (lowerIngredient.includes('egg')) {
       totalProtein += 6; totalCalories += 70; totalFats += 5; totalCost += 0.3;
-      totalPotassium += 70; totalCalcite += 25; totalIron += 0.9;
+      totalPotassium += 70; totalCalcite += 25; totalIron += 0.9; totalZinc += 0.6;
     } else if (lowerIngredient.includes('tofu') || lowerIngredient.includes('tempeh')) {
       totalProtein += 8; totalCalories += 80; totalFats += 4; totalCost += 1.5;
-      totalPotassium += 120; totalCalcite += 130; totalIron += 1.8;
+      totalPotassium += 120; totalCalcite += 130; totalIron += 1.8; totalZinc += 1.0;
     } else if (lowerIngredient.includes('beans') || lowerIngredient.includes('lentils') || lowerIngredient.includes('chickpea')) {
       totalProtein += 8; totalCalories += 120; totalCarbs += 20; totalFiber += 8; totalCost += 1.0;
-      totalPotassium += 400; totalCalcite += 40; totalIron += 3.3;
+      totalPotassium += 400; totalCalcite += 40; totalIron += 3.3; totalZinc += 1.5;
     }
     
     // Carbohydrate sources
@@ -209,10 +211,10 @@ function estimateNutritionFromIngredients(ingredients: string[], servings: numbe
     // Seeds
     else if (lowerIngredient.includes('chia') || lowerIngredient.includes('flax') || lowerIngredient.includes('hemp')) {
       totalProtein += 3; totalFats += 5; totalCalories += 70; totalFiber += 5; totalCost += 0.5;
-      totalPotassium += 100; totalCalcite += 80; totalIron += 1.2;
+      totalPotassium += 100; totalCalcite += 80; totalIron += 1.2; totalZinc += 1.0;
     } else if (lowerIngredient.includes('pumpkin seed') || lowerIngredient.includes('sunflower seed')) {
       totalProtein += 5; totalFats += 10; totalCalories += 120; totalCost += 0.6;
-      totalPotassium += 200; totalIron += 2.0;
+      totalPotassium += 200; totalIron += 2.0; totalZinc += 2.5;
     }
     
     // Coconut
@@ -241,10 +243,11 @@ function estimateNutritionFromIngredients(ingredients: string[], servings: numbe
     calcium: Math.round(totalCalcite / servings),
     iron: Math.round((totalIron / servings) * 10) / 10,
     vitaminC: Math.round(totalVitaminC / servings),
+    zinc: Math.round((totalZinc / servings) * 10) / 10,
     costEuros: Math.round((totalCost / servings) * 100) / 100,
   };
 
-  console.log(`✅ Estimated nutrition fallback: ${perServing.protein}g protein, ${perServing.calories} kcal, K=${perServing.potassium}mg, Ca=${perServing.calcium}mg, Fe=${perServing.iron}mg, VitC=${perServing.vitaminC}mg`);
+  console.log(`✅ Estimated nutrition fallback: ${perServing.protein}g protein, ${perServing.calories} kcal, K=${perServing.potassium}mg, Ca=${perServing.calcium}mg, Fe=${perServing.iron}mg, Zn=${perServing.zinc}mg`);
   
   return perServing;
 }

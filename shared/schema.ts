@@ -126,6 +126,7 @@ export const meals = pgTable("meals", {
   intrinsicSugar: real("intrinsic_sugar").default(0), // grams (naturally bound in whole fruits, vegetables, dairy)
   sodium: real("sodium").default(0), // mg
   vitaminK: real("vitamin_k").default(0), // mcg (micrograms)
+  zinc: real("zinc").default(0), // mg (milligrams)
   prepTime: integer("prep_time").default(30), // minutes
   costEuros: real("cost_euros"), // cost in euros
   proteinPerEuro: real("protein_per_euro"), // protein grams per euro
