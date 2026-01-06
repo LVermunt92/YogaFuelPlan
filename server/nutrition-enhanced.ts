@@ -22,6 +22,8 @@ export interface NutritionInfo {
   calcium?: number; // mg
   iron?: number; // mg
   vitaminC?: number; // mg
+  vitaminK?: number; // mcg
+  zinc?: number; // mg
   costEuros?: number;
   proteinPerEuro?: number;
 }
