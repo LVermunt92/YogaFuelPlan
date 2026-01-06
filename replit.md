@@ -37,6 +37,7 @@ Preferred communication style: Simple, everyday language.
   - **Onions**: ALWAYS specify in pieces (e.g., "1 onion, diced", "1/2 red onion, sliced", "2 green onions") - NEVER use grams
   - **Ginger**: ALWAYS specify in grams (e.g., "15g fresh ginger", "10g fresh ginger, minced") - NEVER use tsp, tbsp, ml, or pieces. Conversion: 1 tsp = 5g, 1 tbsp = 15g, 1ml = 1g, 5cm piece = 20g
   - **Zucchini**: ALWAYS specify in pieces (e.g., "1 zucchini, sliced", "1/2 zucchini") - NEVER use grams
+  - **Aubergine/Eggplant**: ALWAYS specify in pieces rounded to 0.5 (e.g., "1 aubergine", "0.5 eggplant") - NEVER use grams. Standard weight: 1 medium aubergine ≈ 300g, 1 small ≈ 150g. Auto-correction is applied on recipe save.
   - **Mushrooms (regular)**: ALWAYS specify in grams (e.g., "150g mushrooms, sliced", "100g button mushrooms") - NEVER use pieces
   - **Portobello mushrooms**: ALWAYS specify in pieces (e.g., "2 large portobello mushrooms", "1 portobello mushroom cap") - these are specialty items that stay separate on shopping lists
   - **Cauliflower**: Use cauliflower rice (e.g., "300g cauliflower rice") or florets in grams (e.g., "250g cauliflower florets") - NEVER use "1 head" as it's imprecise for portion control
@@ -84,22 +85,22 @@ Preferred communication style: Simple, everyday language.
     - **Authentication & Multi-User Support**: Secure login/registration, persistent mobile login, password reset, isolated user data, route protection, and interactive step-by-step onboarding tutorial for new users.
     - **Meal Generation**: Calculates protein targets, generates 7-day plans with variety, creates shopping lists, and includes smart AI recipe generation. Incorporates 1 anti-aging meal per day.
     - **Universal Meal Prep Engine**: Adapts to user cooking schedules, supporting batch cooking, meal distribution, and dietary fallbacks. Weekday meals are limited to ≤45 minutes prep time.
-    - **Breakfast Batch Cooking**: 2-day batch cooking pattern saves time - cook breakfast for 2 days on Day 2, 4, 6 (Monday, Wednesday, Friday), eat leftovers on Day 3, 5, 7 (Tuesday, Thursday, Saturday). Reduces breakfast prep from 6 days to 3 days per week.
+    - **Breakfast Batch Cooking**: Implements a 2-day batch cooking pattern to reduce breakfast prep time.
     - **Ayurvedic Integration**: Supports Ayurvedic dietary tags and seasonal adaptation.
     - **Menstrual Cycle Support**: Cycle phase tracking with dropdown selection prioritizes phase-appropriate recipes and provides weekly highlights.
-    - **Meal Plan Management**: Meal plans persist across sessions, with automatic cleanup deleting plans older than 14 days. Plans normalize to Sunday start and are limited to current/next week.
+    - **Meal Plan Management**: Meal plans persist across sessions, with automatic cleanup for older plans. Plans normalize to Sunday start and are limited to current/next week.
     - **Recipe Management**: Automated recipe updates, Dutch translation, metric unit conversion, intelligent ingredient-based matching, automatic ingredient substitution, smart vegetarian filtering, enhanced high-protein database, and user-created custom recipes.
     - **Shopping List Features**: Consolidated shopping list generation with supermarket-ordered categories, dry goods separation, and ingredient normalization.
-    - **Ingredient Mapping System**: Admin-controlled mapping for shopping list optimization, defining standardized grocery names with categories and units.
+    - **Ingredient Mapping System**: Admin-controlled mapping for shopping list optimization.
     - **Nutritional Tracking**: Macronutrient distribution tracking and advanced protein range calculator.
-    - **Admin Panel**: Full-featured interface for managing nutrition parameters, monitoring system statistics, configuring meal planning logic, and tag management. Displays user activity.
+    - **Admin Panel**: Full-featured interface for managing nutrition parameters, monitoring system statistics, configuring meal planning logic, and tag management.
     - **AI-Powered Nutrition Analysis**: Automated generation of comprehensive nutritional values from recipe ingredients.
     - **Longevity Optimization**: Longevity-focused recipes are prioritized for all users, including those with resistant starch logic for weight loss.
-    - **Anti-Aging Tag System**: Recipes tagged for healthy aging (e.g., avocado, sweet potatoes, blueberries, almonds).
-    - **Vitamin K Tracking**: Comprehensive Vitamin K content calculation from recipe ingredients with KPI chart and admin tools for updates.
-    - **Weight Loss Support**: Sustainable weight loss tracking with a 15% calorie reduction cap and automatic maintenance weeks to prevent metabolic adaptation.
-    - **TDEE-Based Dynamic Portion Adjustment**: Personalizes meal portions based on individual metabolic needs (Mifflin-St Jeor BMR formula) with activity-specific multipliers, dynamically adjusting meal portions and macros to match target calories.
-    - **Automatic Recipe Sync System**: Solves dev/production database separation by exporting recipes to `server/recipe-seeds.json` and auto-importing on startup for cold database boots, skipping existing recipes. Admin panel provides manual sync.
+    - **Anti-Aging Tag System**: Recipes tagged for healthy aging.
+    - **Vitamin K Tracking**: Comprehensive Vitamin K content calculation with KPI chart and admin tools.
+    - **Weight Loss Support**: Sustainable weight loss tracking with a 15% calorie reduction cap and automatic maintenance weeks.
+    - **TDEE-Based Dynamic Portion Adjustment**: Personalizes meal portions based on individual metabolic needs using the Mifflin-St Jeor BMR formula.
+    - **Automatic Recipe Sync System**: Solves dev/production database separation by exporting recipes to `server/recipe-seeds.json` and auto-importing on startup.
 - **System Design Choices**:
     - **Data Flow**: User input drives meal generation, stored in PostgreSQL, displayed via React Query.
     - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, favorite meals, and user-created custom recipes.
