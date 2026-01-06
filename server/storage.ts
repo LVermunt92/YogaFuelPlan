@@ -1196,6 +1196,7 @@ export class DatabaseStorage implements IStorage {
       isLeftover: meals.isLeftover,
       vitaminK: meals.vitaminK,
       zinc: meals.zinc,
+      calcium: meals.calcium,
       addedSugar: meals.addedSugar,
       freeSugar: meals.freeSugar,
       intrinsicSugar: meals.intrinsicSugar
