@@ -1193,7 +1193,11 @@ export class DatabaseStorage implements IStorage {
       prepTime: meals.prepTime,
       costEuros: meals.costEuros,
       proteinPerEuro: meals.proteinPerEuro,
-      isLeftover: meals.isLeftover // Explicitly select isLeftover
+      isLeftover: meals.isLeftover,
+      vitaminK: meals.vitaminK,
+      addedSugar: meals.addedSugar,
+      freeSugar: meals.freeSugar,
+      intrinsicSugar: meals.intrinsicSugar
     }).from(meals).where(eq(meals.mealPlanId, id));
     
     return {
