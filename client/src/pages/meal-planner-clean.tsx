@@ -2162,8 +2162,8 @@ function MealPlannerMain() {
                         </div>
                       </div>
 
-                      {/* Minerals and vitamins - 4 columns */}
-                      <div className="grid grid-cols-4 gap-2 text-center mt-2 pt-2 border-t border-gray-200">
+                      {/* Minerals and vitamins - 5 columns */}
+                      <div className="grid grid-cols-5 gap-2 text-center mt-2 pt-2 border-t border-gray-200">
                         <div>
                           <p className="text-xs font-bold text-teal-600">{Math.round((recipeData.nutrition as any).potassium || 0)}mg</p>
                           <p className="text-[10px] text-gray-500">{t.potassium || 'Potassium'}</p>
@@ -2175,6 +2175,10 @@ function MealPlannerMain() {
                         <div>
                           <p className="text-xs font-bold text-red-600">{((recipeData.nutrition as any).iron || 0).toFixed(1)}mg</p>
                           <p className="text-[10px] text-gray-500">{t.iron || 'Iron'}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-violet-500">{((recipeData.nutrition as any).zinc || 0).toFixed(1)}mg</p>
+                          <p className="text-[10px] text-gray-500">{t.zinc || 'Zinc'}</p>
                         </div>
                         <div>
                           <p className="text-xs font-bold text-amber-500">{Math.round((recipeData.nutrition as any).vitaminC || 0)}mg</p>

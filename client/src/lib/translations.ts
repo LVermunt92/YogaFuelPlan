@@ -50,6 +50,7 @@ export const translations = {
     calcium: "Calcium",
     iron: "Iron",
     vitaminC: "Vitamin C",
+    zinc: "Zinc",
     vegetables: "Vegetables",
     fruitsStarches: "Fruits/starches",
     
@@ -659,6 +660,7 @@ export const translations = {
     calcium: "Calcium",
     iron: "IJzer",
     vitaminC: "Vitamine C",
+    zinc: "Zink",
     fiber: "Vezels",
     fruitsStarches: "Fruit/zetmeel",
     sugar: "Suiker",
