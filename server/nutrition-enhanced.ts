@@ -18453,11 +18453,17 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
     });
     
     // Remove cooking methods - people buy the raw ingredient
+    // NOTE: 'canned' is NOT removed because it's an important product qualifier for lentils, beans, chickpeas, tomatoes
     const cookingMethods = [
       'steamed', 'roasted', 'sautéed', 'grilled', 'baked', 'boiled', 'fried',
       'fresh', 'cooked', 'raw', 'frozen', 'chopped', 'diced', 'sliced',
-      'minced', 'crushed', 'ground', 'whole', 'dried', 'canned'
+      'minced', 'crushed', 'ground', 'whole', 'dried'
     ];
+    
+    // Ingredients where "canned" or "ingeblikte" (Dutch) should be preserved (pre-cooked/ready-to-eat products)
+    const preserveCannedFor = ['lentils', 'linzen', 'beans', 'bonen', 'chickpeas', 'kikkererwten', 'tomatoes', 'tomaten', 'corn', 'mais', 'coconut milk', 'kokosmelk'];
+    const shouldPreserveCanned = preserveCannedFor.some(item => normalized.includes(item));
+    const hasCannedPrefix = normalized.startsWith('canned ') || normalized.startsWith('ingeblikte ') || normalized.includes(' canned ') || normalized.includes(' ingeblikte ');
     
     cookingMethods.forEach(method => {
       // Remove method at beginning (e.g., "steamed broccoli" → "broccoli")
@@ -18465,6 +18471,12 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
       // Remove method in middle (e.g., "broccoli, steamed" → "broccoli")
       normalized = normalized.replace(new RegExp(`\\s*,?\\s*${method}\\s*`, 'g'), ' ');
     });
+    
+    // Remove "canned" only for items where it's a cooking method, not a product type
+    if (!shouldPreserveCanned) {
+      normalized = normalized.replace(/^canned\s+/g, '');
+      normalized = normalized.replace(/\s*,?\s*canned\s*/g, ' ');
+    }
     
     // Specify generic plant-based milk terms to specific types
     const milkSpecifications: Record<string, string> = {
