@@ -19042,6 +19042,17 @@ export function getDefaultPortion(ingredient: string): { amount: number; unit: s
     'sugar snaps': { amount: 150, unit: 'g' }, // Sugar snap peas in grams
     'sugarsnaps': { amount: 150, unit: 'g' }, // Sugar snap peas in grams (alternative name)
     'zucchini': { amount: 1, unit: 'piece' }, // 1 medium zucchini
+    'aubergine': { amount: 1, unit: 'piece' }, // 1 medium aubergine (eggplant)
+    'aubergines': { amount: 2, unit: 'pieces' }, // 2 aubergines
+    'eggplant': { amount: 1, unit: 'piece' }, // 1 medium eggplant
+    'eggplants': { amount: 2, unit: 'pieces' }, // 2 eggplants
+    'small aubergine': { amount: 1, unit: 'piece' }, // 1 small aubergine
+    'small eggplant': { amount: 1, unit: 'piece' }, // 1 small eggplant
+    'large aubergine': { amount: 1, unit: 'piece' }, // 1 large aubergine
+    'large eggplant': { amount: 1, unit: 'piece' }, // 1 large eggplant
+    'baby aubergine': { amount: 1, unit: 'piece' }, // 1 baby aubergine
+    'baby eggplant': { amount: 1, unit: 'piece' }, // 1 baby eggplant
+    'japanese eggplant': { amount: 1, unit: 'piece' }, // 1 japanese eggplant
     'brussels sprouts': { amount: 150, unit: 'g' }, // 1 cup = ~150g
     'sweet potatoes': { amount: 200, unit: 'g' }, // 1 medium sweet potato
     'sweet potato milk': { amount: 1000, unit: 'ml' }, // 1 liter carton
@@ -19859,4 +19870,77 @@ function formatAmount(amount: number, unit: string, ingredientName?: string): st
   } else {
     return `${Math.round(finalAmount)} ${finalUnit}`;
   }
+}
+
+/**
+ * Convert aubergine/eggplant from grams to pieces
+ * Standard weights: 1 medium aubergine ≈ 300g, 1 small aubergine ≈ 150g
+ * Rounds to nearest 0.5 for practical shopping
+ * 
+ * Examples:
+ * - "100g aubergine" → "0.5 aubergine"
+ * - "200g eggplant" → "0.5 eggplant" 
+ * - "300g aubergine" → "1 aubergine"
+ * - "450g eggplant" → "1.5 eggplant"
+ */
+export function convertAubergineGramsToPieces(ingredient: string): string {
+  const lower = ingredient.toLowerCase();
+  
+  // Only process if it's aubergine/eggplant and has grams
+  if (!lower.includes('aubergine') && !lower.includes('eggplant')) {
+    return ingredient;
+  }
+  
+  // Check if it's already in pieces format (e.g., "1 aubergine", "0.5 eggplant")
+  const alreadyPieces = /^\s*\d+(?:\.\d+)?\s+(?:small\s+|medium\s+|large\s+)?(?:aubergine|eggplant)/i.test(ingredient);
+  if (alreadyPieces) {
+    return ingredient; // Already in pieces
+  }
+  
+  // Match grams pattern: "100g aubergine", "200g small eggplant", etc.
+  const gramsMatch = ingredient.match(/^(\d+(?:\.\d+)?)\s*g\s+(.*)/i);
+  if (!gramsMatch) {
+    return ingredient; // No grams found
+  }
+  
+  const grams = parseFloat(gramsMatch[1]);
+  const rest = gramsMatch[2].trim();
+  
+  // Determine weight per piece based on size descriptor
+  let weightPerPiece = 300; // Medium aubergine default
+  if (rest.toLowerCase().includes('small') || rest.toLowerCase().includes('baby')) {
+    weightPerPiece = 150;
+  } else if (rest.toLowerCase().includes('large')) {
+    weightPerPiece = 400;
+  }
+  
+  // Convert to pieces and round to nearest 0.5
+  const pieces = grams / weightPerPiece;
+  const roundedPieces = Math.round(pieces * 2) / 2;
+  
+  // Minimum 0.5 pieces
+  const finalPieces = Math.max(0.5, roundedPieces);
+  
+  // Format the amount (whole numbers as integers, decimals with .5)
+  const formattedAmount = finalPieces % 1 === 0 ? finalPieces.toString() : finalPieces.toFixed(1);
+  
+  // Clean up the ingredient name (remove size descriptors if included, they're implicit in piece count)
+  let cleanedName = rest
+    .replace(/^(small|medium|large|baby)\s+/i, '')
+    .trim();
+  
+  console.log(`🍆 Auto-correcting aubergine: "${ingredient}" → "${formattedAmount} ${cleanedName}"`);
+  
+  return `${formattedAmount} ${cleanedName}`;
+}
+
+/**
+ * Auto-correct all ingredients in a recipe that should use pieces instead of grams
+ * Currently handles: aubergine/eggplant
+ */
+export function autoCorrectIngredientUnits(ingredients: string[]): string[] {
+  return ingredients.map(ingredient => {
+    // Apply aubergine/eggplant conversion
+    return convertAubergineGramsToPieces(ingredient);
+  });
 }

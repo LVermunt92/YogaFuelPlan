@@ -85,6 +85,7 @@ import {
 import { db } from "./db";
 import { eq, and, gte, lte, desc, inArray, sql } from "drizzle-orm";
 import bcrypt from "bcrypt";
+import { autoCorrectIngredientUnits } from './nutrition-enhanced';
 
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
@@ -2022,18 +2023,29 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createRecipe(data: InsertRecipe): Promise<Recipe> {
+    // Auto-correct ingredient units (e.g., aubergine grams to pieces)
+    const correctedData = {
+      ...data,
+      ingredients: autoCorrectIngredientUnits(data.ingredients)
+    };
+    
     const [recipe] = await db
       .insert(recipes)
-      .values(data)
+      .values(correctedData)
       .returning();
     
     return recipe;
   }
 
   async updateRecipe(id: string, updates: UpdateRecipe): Promise<Recipe> {
+    // Auto-correct ingredient units if ingredients are being updated
+    const correctedUpdates = updates.ingredients 
+      ? { ...updates, ingredients: autoCorrectIngredientUnits(updates.ingredients) }
+      : updates;
+    
     const [recipe] = await db
       .update(recipes)
-      .set({ ...updates, updatedAt: new Date() })
+      .set({ ...correctedUpdates, updatedAt: new Date() })
       .where(eq(recipes.id, id))
       .returning();
     
