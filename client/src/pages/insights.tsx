@@ -93,6 +93,9 @@ export default function Insights() {
     const totalZinc = currentMealPlan.meals.reduce((sum, meal) => {
       return sum + ((meal as any).zinc || 0);
     }, 0);
+    const totalCalcium = currentMealPlan.meals.reduce((sum, meal) => {
+      return sum + ((meal as any).calcium || 0);
+    }, 0);
     const totalSugar = currentMealPlan.meals.reduce((sum, meal) => {
       return sum + ((meal as any).sugar || 0);
     }, 0);
@@ -129,6 +132,7 @@ export default function Insights() {
       fiber: totalMeals > 0 ? totalFiber / totalMeals : 0,
       vitaminK: totalMeals > 0 ? totalVitaminK / totalMeals : 0,
       zinc: totalMeals > 0 ? totalZinc / totalMeals : 0,
+      calcium: totalMeals > 0 ? totalCalcium / totalMeals : 0,
       sugar: totalMeals > 0 ? totalSugar / totalMeals : 0,
       addedSugar: totalMeals > 0 ? totalAddedSugar / totalMeals : 0,
       freeSugar: totalMeals > 0 ? totalFreeSugar / totalMeals : 0,
@@ -142,6 +146,7 @@ export default function Insights() {
     const avgFiberPerDay = avgPerMeal.fiber * 3;
     const avgVitaminKPerDay = avgPerMeal.vitaminK * 3;
     const avgZincPerDay = avgPerMeal.zinc * 3;
+    const avgCalciumPerDay = avgPerMeal.calcium * 3;
     const avgSugarPerDay = avgPerMeal.sugar * 3;
     const avgAddedSugarPerDay = avgPerMeal.addedSugar * 3;
     const avgFreeSugarPerDay = avgPerMeal.freeSugar * 3;
@@ -173,6 +178,9 @@ export default function Insights() {
 
     // Zinc target (gender-specific) - 11mg for men, 8mg for women
     const zincTarget = userProfile?.gender === 'male' ? 11 : 8;
+
+    // Calcium target - 1000mg for adults (same for both genders)
+    const calciumTarget = 1000;
 
     // Sugar target (gender-specific) - AHA recommends max 25g for women, 36g for men
     const sugarTarget = userProfile?.gender === 'male' ? 36 : 25;
@@ -238,6 +246,11 @@ export default function Insights() {
         value: Math.round(avgZincPerDay * 10) / 10,
         percentage: Math.round((avgZincPerDay / zincTarget) * 100),
         target: zincTarget
+      },
+      calcium: {
+        value: Math.round(avgCalciumPerDay),
+        percentage: Math.round((avgCalciumPerDay / calciumTarget) * 100),
+        target: calciumTarget
       },
       sugar: {
         value: Math.round(avgSugarPerDay),
@@ -817,6 +830,55 @@ export default function Insights() {
                 </Dialog>
               </div>
               <p className="text-[10px] text-gray-500">{kpiData.zinc.percentage}%</p>
+            </div>
+
+            {/* Calcium Chart */}
+            <div className="text-center relative">
+              <div className="relative w-14 h-14 mx-auto">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { value: Math.min(kpiData.calcium.percentage, 100), fill: "#64748b" },
+                        { value: Math.max(100 - kpiData.calcium.percentage, 0), fill: "#f3f4f6" }
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={14}
+                      outerRadius={24}
+                      startAngle={90}
+                      endAngle={450}
+                      dataKey="value"
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-xs font-bold text-slate-600">{kpiData.calcium.value}mg</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-center gap-0.5">
+                <h3 className="text-[10px] font-semibold text-slate-600">
+                  {language === "nl" ? "Calcium" : "Calcium"}
+                </h3>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-calcium">
+                      <Info className="h-2.5 w-2.5" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-sm">
+                    <DialogHeader>
+                      <DialogTitle>{language === "nl" ? "Calcium voor gezondheid" : "Calcium for health"}</DialogTitle>
+                      <DialogDescription className="text-sm pt-2">
+                        {language === "nl" 
+                          ? "Calcium is essentieel voor sterke botten en tanden, spiercontractie en zenuwfunctie. De aanbevolen dagelijkse inname is 1000 mg voor volwassenen. Beste bronnen: zuivel, groene bladgroenten, tofu, amandelen."
+                          : "Calcium is essential for strong bones and teeth, muscle contraction, and nerve function. The recommended daily intake is 1000 mg for adults. Best sources: dairy, leafy greens, tofu, almonds."}
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <p className="text-[10px] text-gray-500">{kpiData.calcium.percentage}%</p>
             </div>
 
             {/* Added Sugar */}

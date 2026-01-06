@@ -127,6 +127,7 @@ export const meals = pgTable("meals", {
   sodium: real("sodium").default(0), // mg
   vitaminK: real("vitamin_k").default(0), // mcg (micrograms)
   zinc: real("zinc").default(0), // mg (milligrams)
+  calcium: real("calcium").default(0), // mg (milligrams)
   prepTime: integer("prep_time").default(30), // minutes
   costEuros: real("cost_euros"), // cost in euros
   proteinPerEuro: real("protein_per_euro"), // protein grams per euro

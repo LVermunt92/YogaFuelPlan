@@ -2703,6 +2703,7 @@ async function generateMealPrepPlan(
           sodium: Math.round((selectedBreakfast.nutrition.sodium || 0) * portionFactor),
           vitaminK: Math.round(((selectedBreakfast.nutrition as any).vitaminK || 0) * portionFactor),
           zinc: Math.round(((selectedBreakfast.nutrition as any).zinc || 0) * portionFactor * 10) / 10,
+          calcium: Math.round(((selectedBreakfast.nutrition as any).calcium || 0) * portionFactor),
           prepTime: prepTime,
           isLeftover: isBreakfastLeftover,
         });
@@ -2834,6 +2835,7 @@ async function generateMealPrepPlan(
           sodium: Math.round((lunchMeal.nutrition.sodium || 0) * portionFactor),
           vitaminK: Math.round(((lunchMeal.nutrition as any).vitaminK || 0) * portionFactor),
           zinc: Math.round(((lunchMeal.nutrition as any).zinc || 0) * portionFactor * 10) / 10,
+          calcium: Math.round(((lunchMeal.nutrition as any).calcium || 0) * portionFactor),
           prepTime: prepTime,
           isLeftover: isLunchLeftover, // Boolean flag instead of string marker
         });
@@ -2973,6 +2975,7 @@ async function generateMealPrepPlan(
           sodium: Math.round((dinnerMeal.nutrition.sodium || 0) * portionFactor),
           vitaminK: Math.round(((dinnerMeal.nutrition as any).vitaminK || 0) * portionFactor),
           zinc: Math.round(((dinnerMeal.nutrition as any).zinc || 0) * portionFactor * 10) / 10,
+          calcium: Math.round(((dinnerMeal.nutrition as any).calcium || 0) * portionFactor),
           prepTime: prepTime,
           isLeftover: isDinnerLeftover, // Boolean flag instead of string marker
         });
