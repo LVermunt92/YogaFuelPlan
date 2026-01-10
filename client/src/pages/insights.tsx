@@ -118,6 +118,7 @@ export default function Insights() {
       return tags && Array.isArray(tags) && tags.includes('Fermented');
     }).length;
     const fermentedTarget = 7; // Target: 1 fermented food per day
+    console.log('Fermented Debug:', { fermentedMealsCount, fermentedTarget, mealsWithTags: currentMealPlan.meals.map(m => ({ name: m.foodDescription, tags: (m as any).recipeTags })) });
 
     // Calculate daily averages: average per meal × 3 meals per day
     // This shows what a typical day with 3 meals would look like
