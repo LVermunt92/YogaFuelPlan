@@ -112,6 +112,13 @@ export default function Insights() {
     const achievedColors = allColors.size;
     const rainbowScore = Math.round((achievedColors / totalColorGroups) * 100);
 
+    // Count fermented foods (meals with "Fermented" tag)
+    const fermentedMealsCount = currentMealPlan.meals.filter(meal => {
+      const tags = (meal as any).recipeTags;
+      return tags && Array.isArray(tags) && tags.includes('Fermented');
+    }).length;
+    const fermentedTarget = 7; // Target: 1 fermented food per day
+
     // Calculate daily averages: average per meal × 3 meals per day
     // This shows what a typical day with 3 meals would look like
     const totalMeals = currentMealPlan.meals.length;
@@ -247,6 +254,11 @@ export default function Insights() {
         percentage: rainbowScore,
         target: totalColorGroups,
         colors: Array.from(allColors)
+      },
+      fermented: {
+        value: fermentedMealsCount,
+        percentage: Math.round((fermentedMealsCount / fermentedTarget) * 100),
+        target: fermentedTarget
       },
       vitaminK: {
         value: Math.round(avgVitaminKPerDay),
@@ -763,6 +775,55 @@ export default function Insights() {
                 </Dialog>
               </div>
               <p className="text-[10px] text-gray-500">{kpiData.rainbow.percentage}%</p>
+            </div>
+
+            {/* Fermented Foods */}
+            <div className="text-center relative">
+              <div className="relative w-14 h-14 mx-auto">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { value: Math.min(kpiData.fermented.percentage, 100), fill: "#a855f7" },
+                        { value: Math.max(100 - kpiData.fermented.percentage, 0), fill: "#f3f4f6" }
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={14}
+                      outerRadius={24}
+                      startAngle={90}
+                      endAngle={450}
+                      dataKey="value"
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-xs font-bold text-purple-500">{kpiData.fermented.value}/{kpiData.fermented.target}</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-center gap-0.5">
+                <h3 className="text-[10px] font-semibold text-purple-500">
+                  {language === "nl" ? "Gefermenteerd" : "Fermented"}
+                </h3>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-fermented">
+                      <Info className="h-2.5 w-2.5" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-sm">
+                    <DialogHeader>
+                      <DialogTitle>{language === "nl" ? "Gefermenteerde voedingsmiddelen voor darmgezondheid" : "Fermented foods for gut health"}</DialogTitle>
+                      <DialogDescription className="text-sm pt-2">
+                        {language === "nl" 
+                          ? "Gefermenteerde voedingsmiddelen bevatten probiotica die de darmgezondheid ondersteunen. Streef naar 1 gefermenteerd voedingsmiddel per dag. Voorbeelden: yoghurt, kefir, kimchi, zuurkool, miso, tempeh."
+                          : "Fermented foods contain probiotics that support gut health. Aim for 1 fermented food per day. Examples: yogurt, kefir, kimchi, sauerkraut, miso, tempeh."}
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <p className="text-[10px] text-gray-500">{kpiData.fermented.percentage}%</p>
             </div>
 
             {/* Vitamin K */}

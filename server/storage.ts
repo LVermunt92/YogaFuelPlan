@@ -83,7 +83,7 @@ import {
   type UpdateRecipe,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, and, gte, lte, desc, inArray, sql } from "drizzle-orm";
+import { eq, and, gte, lte, desc, inArray, sql, or } from "drizzle-orm";
 import bcrypt from "bcrypt";
 import { autoCorrectIngredientUnits } from './nutrition-enhanced';
 
@@ -1203,8 +1203,15 @@ export class DatabaseStorage implements IStorage {
       vitaminC: meals.vitaminC,
       addedSugar: meals.addedSugar,
       freeSugar: meals.freeSugar,
-      intrinsicSugar: meals.intrinsicSugar
-    }).from(meals).where(eq(meals.mealPlanId, id));
+      intrinsicSugar: meals.intrinsicSugar,
+      recipeTags: recipes.tags
+    }).from(meals)
+      .leftJoin(recipes, or(
+        eq(sql`${meals.recipeId}::text`, recipes.id),
+        eq(recipes.variantOf, sql`${meals.recipeId}::text`),
+        eq(meals.foodDescription, recipes.name)
+      ))
+      .where(eq(meals.mealPlanId, id));
     
     return {
       ...mealPlan,

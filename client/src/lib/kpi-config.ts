@@ -15,6 +15,7 @@ export const kpiOrder: KPIConfig[] = [
   { id: 'vegetables', label: 'Vegetables', labelNl: 'Groenten', unit: 'g', color: 'green-600', type: 'wellness', showInRecipe: true },
   { id: 'plantDiversity', label: 'Plant diversity', labelNl: 'Plantdiversiteit', unit: '', color: 'green-700', type: 'wellness', showInRecipe: true },
   { id: 'rainbow', label: 'Rainbow', labelNl: 'Regenboog', unit: '/6', color: 'gradient', type: 'wellness', showInRecipe: true },
+  { id: 'fermented', label: 'Fermented', labelNl: 'Gefermenteerd', unit: '', color: 'purple-500', type: 'wellness', showInRecipe: true },
   { id: 'netCarbs', label: 'Net carbs', labelNl: 'Netto koolh.', unit: 'g', color: 'cyan-600', type: 'macro', showInRecipe: true },
   { id: 'calories', label: 'Calories', labelNl: 'Calorieën', unit: '', color: 'blue-600', type: 'macro', showInRecipe: true },
   { id: 'vitaminK', label: 'Vitamin K', labelNl: 'Vitamine K', unit: 'µg', color: 'green-600', type: 'micro', showInRecipe: true },
