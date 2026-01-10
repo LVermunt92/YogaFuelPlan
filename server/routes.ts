@@ -195,7 +195,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { username, password, rememberMe } = authLoginSchema.parse(req.body);
       
-      const user = await storage.authenticateUser(username, password);
+      // Retry logic for database wake-up timeouts
+      let user = null;
+      let lastError = null;
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+          user = await storage.authenticateUser(username, password);
+          break;
+        } catch (dbError: any) {
+          lastError = dbError;
+          if (dbError.message?.includes('timeout') || dbError.message?.includes('Connection terminated')) {
+            console.log(`🔄 Login attempt ${attempt}/3 failed (database waking up), retrying...`);
+            await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+          } else {
+            throw dbError;
+          }
+        }
+      }
+      
+      if (!user && lastError) {
+        throw lastError;
+      }
       
       if (!user) {
         return res.status(401).json({ message: "Invalid username or password" });
@@ -318,7 +338,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: "Invalid or expired token" });
       }
       
-      const user = await storage.getUser(payload.userId);
+      // Retry logic for database wake-up timeouts
+      let user = null;
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+          user = await storage.getUser(payload.userId);
+          break;
+        } catch (dbError: any) {
+          if (dbError.message?.includes('timeout') || dbError.message?.includes('Connection terminated')) {
+            console.log(`🔄 Auth check attempt ${attempt}/3 failed (database waking up), retrying...`);
+            await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+          } else {
+            throw dbError;
+          }
+        }
+      }
+      
       if (!user) {
         return res.status(401).json({ message: "User not found" });
       }
