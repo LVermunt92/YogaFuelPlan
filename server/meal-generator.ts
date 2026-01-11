@@ -23,6 +23,31 @@ import { getIntelligentRecipeRecommendation } from './intelligent-ingredient-mat
 import { classifySugarContent } from './sugar-classifier';
 
 /**
+ * Check if a meal contains eggs in its ingredients
+ * Used to limit egg-based meals to maximum 1 per day
+ */
+function mealContainsEggs(meal: MealOption): boolean {
+  const eggPatterns = [
+    /\beggs?\b/i,           // "egg" or "eggs"
+    /\begg\s+white/i,       // "egg white"
+    /\begg\s+yolk/i,        // "egg yolk"
+    /\bfried\s+egg/i,       // "fried egg"
+    /\bpoached\s+egg/i,     // "poached egg"
+    /\bscrambled\s+egg/i,   // "scrambled egg"
+    /\bomelette\b/i,        // "omelette"
+    /\bomelet\b/i,          // "omelet" (American spelling)
+    /\bfrittata\b/i,        // "frittata"
+    /\bshakshuka\b/i,       // "shakshuka"
+  ];
+  
+  const ingredientsText = meal.ingredients.join(' ').toLowerCase();
+  const nameText = meal.name.toLowerCase();
+  const combinedText = `${nameText} ${ingredientsText}`;
+  
+  return eggPatterns.some(pattern => pattern.test(combinedText));
+}
+
+/**
  * Resistant starch sources and their benefits for weight management
  */
 const RESISTANT_STARCH_SOURCES = {
@@ -1516,6 +1541,10 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   let antiAgingMealCount = 0;
   const targetAntiAgingMeals = 7; // 1 anti-aging meal per day for longevity support
 
+  // Track egg-based meals per day (max 1 egg meal per day)
+  const eggMealsPerDay: Map<number, number> = new Map();
+  const MAX_EGG_MEALS_PER_DAY = 1;
+
   // Track which meals to use as leftovers
   let sundayDinnerMeal: MealOption | null = null;
   let mondayDinnerMeal: MealOption | null = null;
@@ -1683,6 +1712,20 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         if (shouldOptimizeProtein) {
           availableMeals = selectProteinOptimizedMeals(availableMeals, availableMeals.length, true);
           console.log(`🥩 Applied fallback protein optimization for high activity level`);
+        }
+      }
+
+      // Apply egg limit constraint: max 1 egg-based meal per day
+      const currentDayEggCount = eggMealsPerDay.get(day) || 0;
+      if (currentDayEggCount >= MAX_EGG_MEALS_PER_DAY) {
+        const originalCount = availableMeals.length;
+        const nonEggMeals = availableMeals.filter(meal => !mealContainsEggs(meal));
+        // Only apply filter if we still have options without eggs
+        if (nonEggMeals.length > 0) {
+          availableMeals = nonEggMeals;
+          console.log(`🥚 Egg limit filter: ${originalCount} → ${availableMeals.length} ${mealCategory} meals (day ${day} already has ${currentDayEggCount} egg meal(s))`);
+        } else {
+          console.log(`🥚 Egg limit: All remaining ${mealCategory} options contain eggs, keeping them available`);
         }
       }
 
@@ -2109,6 +2152,13 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         antiAgingMealCount++;
         console.log(`🌟 Anti-aging meal selected: "${selectedMeal.name}" (${antiAgingMealCount}/${targetAntiAgingMeals} anti-aging meals this week)`);
       }
+      
+      // Track egg-based meals per day (for 1-per-day limit)
+      if (mealContainsEggs(selectedMeal)) {
+        const currentCount = eggMealsPerDay.get(day) || 0;
+        eggMealsPerDay.set(day, currentCount + 1);
+        console.log(`🥚 Egg meal tracked: "${selectedMeal.name}" (day ${day} now has ${currentCount + 1} egg meal(s))`);
+      }
     }
 
     totalWeeklyProtein += dailyProtein;
@@ -2450,6 +2500,10 @@ async function generateMealPrepPlan(
   const usedDinnerMeals: Set<string> = new Set();
   // Initialize global variety tracking for similar recipe filtering
   const allSelectedMealNames = new Set<string>();
+  
+  // Track egg-based meals per day (max 1 egg meal per day) for meal prep mode
+  const eggMealsPerDay: Map<number, number> = new Map();
+  const MAX_EGG_MEALS_PER_DAY = 1;
   
   // Declare dinner meal variables for same-type leftover pairing
   let sundayDinnerMeal: MealOption | null = null;
