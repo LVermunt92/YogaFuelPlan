@@ -128,7 +128,13 @@ export function specifyIngredients(ingredients: string[]): string[] {
         lowerIngredient.includes('cannellini') ||
         lowerIngredient.includes('butter bean') ||
         lowerIngredient.includes('broad bean') ||
-        lowerIngredient.includes('fava')
+        lowerIngredient.includes('fava') ||
+        lowerIngredient.includes('black bean') ||
+        lowerIngredient.includes('white bean') ||
+        lowerIngredient.includes('navy bean') ||
+        lowerIngredient.includes('lima bean') ||
+        lowerIngredient.includes('mung bean') ||
+        lowerIngredient.includes('adzuki')
       )) {
         continue; // Skip this mapping - ingredient is already specific
       }
