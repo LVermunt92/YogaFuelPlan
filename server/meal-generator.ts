@@ -2771,6 +2771,13 @@ async function generateMealPrepPlan(
           isLeftover: isBreakfastLeftover,
         });
         
+        // Track egg-based breakfast meals per day (for 1-per-day limit)
+        if (mealContainsEggs(selectedBreakfast)) {
+          const currentCount = eggMealsPerDay.get(day) || 0;
+          eggMealsPerDay.set(day, currentCount + 1);
+          console.log(`🥚 Egg breakfast tracked: "${selectedBreakfast.name}" (day ${day} now has ${currentCount + 1} egg meal(s))`);
+        }
+        
         totalWeeklyProtein += adjustedProtein;
       }
     }
@@ -2778,6 +2785,29 @@ async function generateMealPrepPlan(
     // LUNCH & DINNER: Use Sunday night cooking pattern
     if (daysWithMeals.includes(day)) {
       // Days with home cooking - use Sunday night pattern
+      
+      // Apply egg limit constraint for this day's lunch/dinner options
+      const currentDayEggCount = eggMealsPerDay.get(day) || 0;
+      let filteredWeekdayLunchOptions = weekdayLunchOptions;
+      let filteredLunchOptions = lunchOptions;
+      let filteredWeekdayDinnerOptions = weekdayDinnerOptions;
+      let filteredDinnerOptions = dinnerOptions;
+      
+      if (currentDayEggCount >= MAX_EGG_MEALS_PER_DAY) {
+        // Filter out egg-containing meals for lunch
+        const nonEggWeekdayLunch = weekdayLunchOptions.filter(meal => !mealContainsEggs(meal));
+        const nonEggLunch = lunchOptions.filter(meal => !mealContainsEggs(meal));
+        if (nonEggWeekdayLunch.length > 0) filteredWeekdayLunchOptions = nonEggWeekdayLunch;
+        if (nonEggLunch.length > 0) filteredLunchOptions = nonEggLunch;
+        console.log(`🥚 Day ${day} egg limit: Filtering lunch options (${weekdayLunchOptions.length} → ${filteredWeekdayLunchOptions.length} weekday, ${lunchOptions.length} → ${filteredLunchOptions.length} all)`);
+        
+        // Filter out egg-containing meals for dinner
+        const nonEggWeekdayDinner = weekdayDinnerOptions.filter(meal => !mealContainsEggs(meal));
+        const nonEggDinner = dinnerOptions.filter(meal => !mealContainsEggs(meal));
+        if (nonEggWeekdayDinner.length > 0) filteredWeekdayDinnerOptions = nonEggWeekdayDinner;
+        if (nonEggDinner.length > 0) filteredDinnerOptions = nonEggDinner;
+        console.log(`🥚 Day ${day} egg limit: Filtering dinner options (${weekdayDinnerOptions.length} → ${filteredWeekdayDinnerOptions.length} weekday, ${dinnerOptions.length} → ${filteredDinnerOptions.length} all)`);
+      }
       
       // LUNCH LOGIC - Same-meal-type pairing (lunch→lunch leftovers)
       // Fresh cooking on Mon/Wed/Fri, leftovers on Tue/Thu/Sat
@@ -2788,7 +2818,7 @@ async function generateMealPrepPlan(
       if (day === 2) {
         // Day 2: Monday lunch - FRESH cooking
         const isWeekday = day >= 2 && day <= 6;
-        const mealOptions = isWeekday ? weekdayLunchOptions : lunchOptions;
+        const mealOptions = isWeekday ? filteredWeekdayLunchOptions : filteredLunchOptions;
         const lunchResult = await selectUnusedMealIntelligently(mealOptions, usedLunchMeals, allSelectedMealNames, false, ingredientsToUseUp, 'lunch', dietaryTags, dailyProteinTarget, user?.id, user);
         lunchMeal = lunchResult.meal;
         mondayLunchMeal = lunchMeal;
@@ -2803,7 +2833,7 @@ async function generateMealPrepPlan(
       } else if (day === 4) {
         // Day 4: Wednesday lunch - FRESH cooking
         const isWeekday = day >= 2 && day <= 6;
-        const mealOptions = isWeekday ? weekdayLunchOptions : lunchOptions;
+        const mealOptions = isWeekday ? filteredWeekdayLunchOptions : filteredLunchOptions;
         const lunchResult = await selectUnusedMealIntelligently(mealOptions, usedLunchMeals, allSelectedMealNames, false, ingredientsToUseUp, 'lunch', dietaryTags, dailyProteinTarget, user?.id, user);
         lunchMeal = lunchResult.meal;
         wednesdayLunchMeal = lunchMeal;
@@ -2818,7 +2848,7 @@ async function generateMealPrepPlan(
       } else if (day === 6) {
         // Day 6: Friday lunch - FRESH cooking
         const isWeekday = day >= 2 && day <= 6;
-        const mealOptions = isWeekday ? weekdayLunchOptions : lunchOptions;
+        const mealOptions = isWeekday ? filteredWeekdayLunchOptions : filteredLunchOptions;
         const lunchResult = await selectUnusedMealIntelligently(mealOptions, usedLunchMeals, allSelectedMealNames, false, ingredientsToUseUp, 'lunch', dietaryTags, dailyProteinTarget, user?.id, user);
         lunchMeal = lunchResult.meal;
         fridayLunchMeal = lunchMeal;
@@ -2833,7 +2863,7 @@ async function generateMealPrepPlan(
       } else if (day !== 1) {
         // Fallback fresh lunch
         const isWeekday = day >= 2 && day <= 6;
-        const mealOptions = isWeekday ? weekdayLunchOptions : lunchOptions;
+        const mealOptions = isWeekday ? filteredWeekdayLunchOptions : filteredLunchOptions;
         const lunchResult = await selectUnusedMealIntelligently(mealOptions, usedLunchMeals, allSelectedMealNames, false, ingredientsToUseUp, 'lunch', dietaryTags, dailyProteinTarget, user?.id, user);
         lunchMeal = lunchResult.meal;
         usedLunchMeals.add(lunchMeal.name);
@@ -2906,6 +2936,13 @@ async function generateMealPrepPlan(
           isLeftover: isLunchLeftover, // Boolean flag instead of string marker
         });
         
+        // Track egg-based lunch meals per day (for 1-per-day limit)
+        if (mealContainsEggs(lunchMeal)) {
+          const currentCount = eggMealsPerDay.get(day) || 0;
+          eggMealsPerDay.set(day, currentCount + 1);
+          console.log(`🥚 Egg lunch tracked: "${lunchMeal.name}" (day ${day} now has ${currentCount + 1} egg meal(s))`);
+        }
+        
         totalWeeklyProtein += adjustedProtein;
       }
       
@@ -2920,8 +2957,18 @@ async function generateMealPrepPlan(
       const dinnerLowCarbMaxCarbs = user?.dinnerLowCarbMaxCarbs || DEFAULT_LOW_CARB_LIMIT;
       
       console.log(`🥗 LOW-CARB DINNER: Filtering for ≤${dinnerLowCarbMaxCarbs}g carbs (default for all users)`);
-      const lowCarbDinnerOptions = filterLowCarbMeals(dinnerOptions, dinnerLowCarbMaxCarbs);
-      const lowCarbWeekdayDinnerOptions = filterLowCarbMeals(weekdayDinnerOptions, dinnerLowCarbMaxCarbs);
+      let lowCarbDinnerOptions = filterLowCarbMeals(filteredDinnerOptions, dinnerLowCarbMaxCarbs);
+      let lowCarbWeekdayDinnerOptions = filterLowCarbMeals(filteredWeekdayDinnerOptions, dinnerLowCarbMaxCarbs);
+      
+      // Re-check egg count after lunch was added (if lunch had eggs, filter dinner options)
+      const updatedDayEggCount = eggMealsPerDay.get(day) || 0;
+      if (updatedDayEggCount >= MAX_EGG_MEALS_PER_DAY) {
+        const nonEggLowCarbDinner = lowCarbDinnerOptions.filter(meal => !mealContainsEggs(meal));
+        const nonEggLowCarbWeekday = lowCarbWeekdayDinnerOptions.filter(meal => !mealContainsEggs(meal));
+        if (nonEggLowCarbDinner.length > 0) lowCarbDinnerOptions = nonEggLowCarbDinner;
+        if (nonEggLowCarbWeekday.length > 0) lowCarbWeekdayDinnerOptions = nonEggLowCarbWeekday;
+        console.log(`🥚 Day ${day} egg limit (post-lunch): Filtering dinner options to exclude eggs`);
+      }
       
       if (day === 1) {
         // Day 1: Sunday - no dinner cooking (week starts fresh on Monday)
@@ -3048,6 +3095,13 @@ async function generateMealPrepPlan(
           prepTime: prepTime,
           isLeftover: isDinnerLeftover, // Boolean flag instead of string marker
         });
+        
+        // Track egg-based dinner meals per day (for 1-per-day limit)
+        if (mealContainsEggs(dinnerMeal)) {
+          const currentCount = eggMealsPerDay.get(day) || 0;
+          eggMealsPerDay.set(day, currentCount + 1);
+          console.log(`🥚 Egg dinner tracked: "${dinnerMeal.name}" (day ${day} now has ${currentCount + 1} egg meal(s))`);
+        }
         
         totalWeeklyProtein += adjustedProtein;
       }
