@@ -1084,6 +1084,55 @@ export default function Insights() {
               <p className="text-[10px] text-gray-500">{kpiData.iron.percentage}%</p>
             </div>
 
+            {/* Omega-3 Chart */}
+            <div className="text-center relative">
+              <div className="relative w-14 h-14 mx-auto">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { value: Math.min(kpiData.omega3.percentage, 100), fill: "#0ea5e9" },
+                        { value: Math.max(100 - kpiData.omega3.percentage, 0), fill: "#f3f4f6" }
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={14}
+                      outerRadius={24}
+                      startAngle={90}
+                      endAngle={450}
+                      dataKey="value"
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-xs font-bold text-sky-500">{kpiData.omega3.value}mg</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-center gap-0.5">
+                <h3 className="text-[10px] font-semibold text-sky-500">
+                  {language === "nl" ? "Omega-3" : "Omega-3"}
+                </h3>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-omega3">
+                      <Info className="h-2.5 w-2.5" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-sm">
+                    <DialogHeader>
+                      <DialogTitle>{language === "nl" ? "Omega-3 voor gezondheid" : "Omega-3 for health"}</DialogTitle>
+                      <DialogDescription className="text-sm pt-2">
+                        {language === "nl" 
+                          ? "Omega-3 vetzuren zijn essentieel voor hart- en hersengezondheid, ontstekingsremming en hormonale balans. De aanbevolen inname is 1600mg voor mannen en 1100mg voor vrouwen. Beste bronnen: chiazaad, lijnzaad, walnoten, hennepzaad."
+                          : "Omega-3 fatty acids are essential for heart and brain health, reducing inflammation, and hormonal balance. The recommended intake is 1600mg for men and 1100mg for women. Best sources: chia seeds, flaxseed, walnuts, hemp seeds."}
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <p className="text-[10px] text-gray-500">{kpiData.omega3.percentage}%</p>
+            </div>
+
             {/* Vitamin C Chart */}
             <div className="text-center relative">
               <div className="relative w-14 h-14 mx-auto">
