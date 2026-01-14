@@ -131,6 +131,7 @@ export const meals = pgTable("meals", {
   potassium: real("potassium").default(0), // mg (milligrams)
   iron: real("iron").default(0), // mg (milligrams)
   vitaminC: real("vitamin_c").default(0), // mg (milligrams)
+  omega3: real("omega_3").default(0), // mg (milligrams) - ALA, EPA, DHA combined
   prepTime: integer("prep_time").default(30), // minutes
   costEuros: real("cost_euros"), // cost in euros
   proteinPerEuro: real("protein_per_euro"), // protein grams per euro
