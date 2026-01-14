@@ -14,6 +14,7 @@ export interface NutritionAnalysis {
   calcium: number;
   iron: number;
   vitaminC: number;
+  omega3: number;
   costEuros: number;
 }
 
@@ -45,6 +46,7 @@ Respond with JSON in this exact format:
   "calcium": number (milligrams per serving),
   "iron": number (milligrams per serving, with one decimal),
   "vitaminC": number (milligrams per serving),
+  "omega3": number (milligrams per serving - total ALA, EPA, DHA combined),
   "costEuros": number (estimated cost in euros per serving, based on typical European grocery prices)
 }
 
@@ -82,6 +84,7 @@ Be as accurate as possible based on standard nutritional data for the ingredient
       iron: Math.max(0, Math.round((nutritionData.iron || 0) * 10) / 10), // Keep one decimal for iron
       vitaminC: Math.max(0, Math.round(nutritionData.vitaminC || 0)),
       zinc: Math.max(0, Math.round((nutritionData.zinc || 0) * 10) / 10), // Keep one decimal for zinc
+      omega3: Math.max(0, Math.round(nutritionData.omega3 || 0)), // mg of omega-3 fatty acids
       costEuros: Math.max(0, Math.round((nutritionData.costEuros || 2.5) * 100) / 100), // Keep two decimals for cost, default €2.50
     };
 
@@ -108,6 +111,7 @@ function estimateNutritionFromIngredients(ingredients: string[], servings: numbe
   let totalIron = 0;
   let totalVitaminC = 0;
   let totalZinc = 0;
+  let totalOmega3 = 0;
   let totalCost = 0;
 
   ingredients.forEach(ingredient => {
@@ -120,9 +124,22 @@ function estimateNutritionFromIngredients(ingredients: string[], servings: numbe
     } else if (lowerIngredient.includes('beef') || lowerIngredient.includes('meat')) {
       totalProtein += 22; totalCalories += 200; totalFats += 12; totalCost += 3.5;
       totalPotassium += 300; totalIron += 2.5; totalZinc += 4.5;
-    } else if (lowerIngredient.includes('fish') || lowerIngredient.includes('salmon') || lowerIngredient.includes('tuna')) {
+    } else if (lowerIngredient.includes('salmon')) {
+      totalProtein += 20; totalCalories += 180; totalFats += 10; totalCost += 5.0;
+      totalPotassium += 350; totalCalcite += 10; totalIron += 0.8; totalZinc += 0.8;
+      totalOmega3 += 2000; // Salmon: ~2000mg omega-3 per 100g
+    } else if (lowerIngredient.includes('mackerel')) {
+      totalProtein += 19; totalCalories += 200; totalFats += 13; totalCost += 4.0;
+      totalPotassium += 300; totalIron += 1.0; totalZinc += 0.6;
+      totalOmega3 += 1800; // Mackerel: ~1800mg omega-3 per 100g
+    } else if (lowerIngredient.includes('sardine')) {
+      totalProtein += 21; totalCalories += 150; totalFats += 8; totalCost += 3.0;
+      totalPotassium += 320; totalCalcite += 350; totalIron += 2.9;
+      totalOmega3 += 1500; // Sardines: ~1500mg omega-3 per 100g
+    } else if (lowerIngredient.includes('fish') || lowerIngredient.includes('tuna')) {
       totalProtein += 20; totalCalories += 140; totalFats += 6; totalCost += 4.0;
       totalPotassium += 350; totalCalcite += 10; totalIron += 0.8; totalZinc += 0.8;
+      totalOmega3 += 300; // Generic fish: ~300mg omega-3 per 100g
     } else if (lowerIngredient.includes('egg')) {
       totalProtein += 6; totalCalories += 70; totalFats += 5; totalCost += 0.3;
       totalPotassium += 70; totalCalcite += 25; totalIron += 0.9; totalZinc += 0.6;
@@ -194,9 +211,14 @@ function estimateNutritionFromIngredients(ingredients: string[], servings: numbe
     } else if (lowerIngredient.includes('avocado')) {
       totalFats += 15; totalCalories += 160; totalFiber += 7; totalCost += 1.5;
       totalPotassium += 500; totalVitaminC += 10; totalIron += 0.6;
-    } else if (lowerIngredient.includes('nuts') || lowerIngredient.includes('almond') || lowerIngredient.includes('walnut')) {
+    } else if (lowerIngredient.includes('walnut')) {
+      totalProtein += 4; totalFats += 18; totalCalories += 180; totalCost += 2.5;
+      totalPotassium += 130; totalCalcite += 28; totalIron += 0.8;
+      totalOmega3 += 2500; // Walnuts: ~2500mg omega-3 per 30g
+    } else if (lowerIngredient.includes('nuts') || lowerIngredient.includes('almond')) {
       totalProtein += 6; totalFats += 14; totalCalories += 160; totalCost += 2.0;
       totalPotassium += 200; totalCalcite += 75; totalIron += 1.0;
+      totalOmega3 += 50; // Most nuts: minimal omega-3
     }
     
     // Dairy
@@ -208,10 +230,19 @@ function estimateNutritionFromIngredients(ingredients: string[], servings: numbe
       totalCalcite += 200;
     }
     
-    // Seeds
-    else if (lowerIngredient.includes('chia') || lowerIngredient.includes('flax') || lowerIngredient.includes('hemp')) {
+    // Seeds - high omega-3 sources
+    else if (lowerIngredient.includes('chia')) {
       totalProtein += 3; totalFats += 5; totalCalories += 70; totalFiber += 5; totalCost += 0.5;
       totalPotassium += 100; totalCalcite += 80; totalIron += 1.2; totalZinc += 1.0;
+      totalOmega3 += 5000; // Chia seeds: ~5000mg omega-3 per 30g
+    } else if (lowerIngredient.includes('flax') || lowerIngredient.includes('linseed')) {
+      totalProtein += 3; totalFats += 6; totalCalories += 75; totalFiber += 4; totalCost += 0.4;
+      totalPotassium += 110; totalCalcite += 35; totalIron += 0.8; totalZinc += 0.6;
+      totalOmega3 += 6400; // Flaxseed: ~6400mg omega-3 per 30g
+    } else if (lowerIngredient.includes('hemp')) {
+      totalProtein += 5; totalFats += 7; totalCalories += 80; totalFiber += 1; totalCost += 0.6;
+      totalPotassium += 150; totalCalcite += 15; totalIron += 1.5; totalZinc += 1.5;
+      totalOmega3 += 2600; // Hemp seeds: ~2600mg omega-3 per 30g
     } else if (lowerIngredient.includes('pumpkin seed') || lowerIngredient.includes('sunflower seed')) {
       totalProtein += 5; totalFats += 10; totalCalories += 120; totalCost += 0.6;
       totalPotassium += 200; totalIron += 2.0; totalZinc += 2.5;
@@ -244,6 +275,7 @@ function estimateNutritionFromIngredients(ingredients: string[], servings: numbe
     iron: Math.round((totalIron / servings) * 10) / 10,
     vitaminC: Math.round(totalVitaminC / servings),
     zinc: Math.round((totalZinc / servings) * 10) / 10,
+    omega3: Math.round(totalOmega3 / servings),
     costEuros: Math.round((totalCost / servings) * 100) / 100,
   };
 
