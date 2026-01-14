@@ -2148,6 +2148,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         vitaminK: Math.round((selectedMeal.nutrition.vitaminK || 0) * portionMultiplier),
         zinc: Math.round(((selectedMeal.nutrition.zinc || 0) * portionMultiplier) * 10) / 10,
         calcium: Math.round((selectedMeal.nutrition.calcium || 0) * portionMultiplier),
+        omega3: Math.round((selectedMeal.nutrition.omega3 || 0) * portionMultiplier),
         prepTime: prepTimeForDay,
         isLeftover: isLeftover, // Boolean flag instead of string marker
       };
@@ -2775,6 +2776,7 @@ async function generateMealPrepPlan(
           vitaminK: Math.round(((selectedBreakfast.nutrition as any).vitaminK || 0) * portionFactor),
           zinc: Math.round(((selectedBreakfast.nutrition as any).zinc || 0) * portionFactor * 10) / 10,
           calcium: Math.round(((selectedBreakfast.nutrition as any).calcium || 0) * portionFactor),
+          omega3: Math.round(((selectedBreakfast.nutrition as any).omega3 || 0) * portionFactor),
           prepTime: prepTime,
           isLeftover: isBreakfastLeftover,
         });
@@ -2941,6 +2943,7 @@ async function generateMealPrepPlan(
           vitaminK: Math.round(((lunchMeal.nutrition as any).vitaminK || 0) * portionFactor),
           zinc: Math.round(((lunchMeal.nutrition as any).zinc || 0) * portionFactor * 10) / 10,
           calcium: Math.round(((lunchMeal.nutrition as any).calcium || 0) * portionFactor),
+          omega3: Math.round(((lunchMeal.nutrition as any).omega3 || 0) * portionFactor),
           prepTime: prepTime,
           isLeftover: isLunchLeftover, // Boolean flag instead of string marker
         });
@@ -3102,6 +3105,7 @@ async function generateMealPrepPlan(
           vitaminK: Math.round(((dinnerMeal.nutrition as any).vitaminK || 0) * portionFactor),
           zinc: Math.round(((dinnerMeal.nutrition as any).zinc || 0) * portionFactor * 10) / 10,
           calcium: Math.round(((dinnerMeal.nutrition as any).calcium || 0) * portionFactor),
+          omega3: Math.round(((dinnerMeal.nutrition as any).omega3 || 0) * portionFactor),
           prepTime: prepTime,
           isLeftover: isDinnerLeftover, // Boolean flag instead of string marker
         });

@@ -24,6 +24,7 @@ export interface NutritionInfo {
   vitaminC?: number; // mg
   vitaminK?: number; // mcg
   zinc?: number; // mg
+  omega3?: number; // mg - ALA, EPA, DHA combined
   costEuros?: number;
   proteinPerEuro?: number;
 }
