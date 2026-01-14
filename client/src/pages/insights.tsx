@@ -99,6 +99,9 @@ export default function Insights() {
     const totalIron = currentMealPlan.meals.reduce((sum, meal) => {
       return sum + ((meal as any).iron || 0);
     }, 0);
+    const totalOmega3 = currentMealPlan.meals.reduce((sum, meal) => {
+      return sum + ((meal as any).omega3 || 0);
+    }, 0);
 
     // Calculate Eating the Rainbow score
     const allColors = new Set<string>();
@@ -139,6 +142,7 @@ export default function Insights() {
       sodium: totalMeals > 0 ? totalSodium / totalMeals : 0,
       potassium: totalMeals > 0 ? totalPotassium / totalMeals : 0,
       iron: totalMeals > 0 ? totalIron / totalMeals : 0,
+      omega3: totalMeals > 0 ? totalOmega3 / totalMeals : 0,
     };
     
     const avgProteinPerDay = avgPerMeal.protein * 3;
@@ -157,6 +161,7 @@ export default function Insights() {
     const avgSodiumPerDay = avgPerMeal.sodium * 3;
     const avgPotassiumPerDay = avgPerMeal.potassium * 3;
     const avgIronPerDay = avgPerMeal.iron * 3;
+    const avgOmega3PerDay = avgPerMeal.omega3 * 3;
 
     // Calculate net carbs (total carbs - fiber)
     const avgNetCarbsPerDay = avgCarbsPerDay - avgFiberPerDay;
@@ -202,6 +207,9 @@ export default function Insights() {
 
     // Iron target - 8mg for men, 18mg for women (higher for women due to menstruation)
     const ironTarget = userProfile?.gender === 'male' ? 8 : 18;
+
+    // Omega-3 target - 1100mg for women, 1600mg for men (ALA adequate intake)
+    const omega3Target = userProfile?.gender === 'male' ? 1600 : 1100;
 
     // Targets
     const proteinTarget = nutritionTargets?.protein || 95;
@@ -314,6 +322,11 @@ export default function Insights() {
         value: Math.round(avgIronPerDay * 10) / 10,
         percentage: Math.round((avgIronPerDay / ironTarget) * 100),
         target: ironTarget
+      },
+      omega3: {
+        value: Math.round(avgOmega3PerDay),
+        percentage: Math.round((avgOmega3PerDay / omega3Target) * 100),
+        target: omega3Target
       }
     };
   };
