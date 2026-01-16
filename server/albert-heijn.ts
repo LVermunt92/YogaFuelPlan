@@ -729,6 +729,9 @@ class AlbertHeijnService {
                       cleanedIngredient.includes('artichoke') || cleanedIngredient.includes('asparagus') ||
                       cleanedIngredient.includes('brussels sprout') || cleanedIngredient.includes('fennel') ||
                       cleanedIngredient.includes('pak choi') || cleanedIngredient.includes('bok choy') ||
+                      cleanedIngredient.includes('arugula') || cleanedIngredient.includes('rucola') ||
+                      cleanedIngredient.includes('rocket') || cleanedIngredient.includes('red chili') ||
+                      cleanedIngredient.includes('fresh chili') || cleanedIngredient.includes('green chili') ||
                       cleanedIngredient.includes('apple') || cleanedIngredient.includes('banana') ||
                       cleanedIngredient.includes('orange') || cleanedIngredient.includes('berr') ||
                       cleanedIngredient.includes('grape') || cleanedIngredient.includes('melon') ||
@@ -783,7 +786,8 @@ class AlbertHeijnService {
                       cleanedIngredient.includes('rosemary') || cleanedIngredient.includes('sage') ||
                       cleanedIngredient.includes('parsley') || cleanedIngredient.includes('cilantro') ||
                       cleanedIngredient.includes('dill') || cleanedIngredient.includes('mint') ||
-                      cleanedIngredient.includes('chili') || cleanedIngredient.includes('pepper') ||
+                      cleanedIngredient.includes('chili flakes') || cleanedIngredient.includes('chili powder') ||
+                      cleanedIngredient.includes('black pepper') || cleanedIngredient.includes('white pepper') ||
                       cleanedIngredient.includes('garlic powder') || cleanedIngredient.includes('onion powder') ||
                       cleanedIngredient.includes('vanilla') || cleanedIngredient.includes('lemon juice') ||
                       cleanedIngredient.includes('lime juice') || cleanedIngredient.includes('coconut flakes') ||
