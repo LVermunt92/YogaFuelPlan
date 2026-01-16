@@ -51,6 +51,7 @@ export const translations = {
     iron: "Iron",
     vitaminC: "Vitamin C",
     zinc: "Zinc",
+    omega3: "Omega-3",
     vegetables: "Vegetables",
     fruitsStarches: "Fruits/starches",
     
@@ -661,6 +662,7 @@ export const translations = {
     iron: "IJzer",
     vitaminC: "Vitamine C",
     zinc: "Zink",
+    omega3: "Omega-3",
     fiber: "Vezels",
     fruitsStarches: "Fruit/zetmeel",
     sugar: "Suiker",
