@@ -164,6 +164,14 @@ class AlbertHeijnService {
             return { quantity, unit: 'piece', productName };
           }
           
+          // Handle decimal quantities without units (e.g., "0.5 avocado", "1.5 banana")
+          const decimalPieceMatch = cleanIngredient.match(/^(\d+\.\d+)\s+([a-zA-Z].*)/);
+          if (decimalPieceMatch) {
+            const quantity = parseFloat(decimalPieceMatch[1]);
+            const productName = decimalPieceMatch[2].trim();
+            return { quantity, unit: 'piece', productName };
+          }
+          
           // Handle standard numeric quantities with optional units
           const match = cleanIngredient.match(/^(\d+(?:\.\d+)?)\s*([a-zA-Z]*)\s+(.+)/);
           if (match) {
