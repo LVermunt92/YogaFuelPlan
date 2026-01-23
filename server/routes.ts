@@ -3800,10 +3800,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         recipes: sortedRecipes,
         total: sortedRecipes.length,
         breakdown: {
-          base: sortedRecipes.filter(r => r.id && parseInt(String(r.id)) < 100000).length,
-          glutenFree: sortedRecipes.filter(r => r.id && parseInt(String(r.id)) >= 100000 && parseInt(String(r.id)) < 200000).length,
-          lactoseFree: sortedRecipes.filter(r => r.id && parseInt(String(r.id)) >= 200000 && parseInt(String(r.id)) < 300000).length,
-          vegetarian: sortedRecipes.filter(r => r.id && parseInt(String(r.id)) >= 300000).length
+          base: sortedRecipes.length,
+          glutenFree: sortedRecipes.filter(r => r.tags && r.tags.includes('Gluten-Free')).length,
+          lactoseFree: sortedRecipes.filter(r => r.tags && r.tags.includes('Lactose-Free')).length,
+          vegetarian: sortedRecipes.filter(r => r.tags && r.tags.includes('Vegetarian')).length
         }
       });
     } catch (error) {
