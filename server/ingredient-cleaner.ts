@@ -1,6 +1,41 @@
 // Utility functions to clean and standardize recipe ingredients and portions
 
 /**
+ * Converts lemon/lime juice ml measurements to pieces
+ * Examples:
+ * "30ml lemon juice" → "juice of 1 lemon"
+ * "15ml lemon juice" → "juice of 1/2 lemon"
+ * "45ml lime juice" → "juice of 1.5 limes"
+ */
+export function convertCitrusTopieces(ingredient: string): string {
+  if (!ingredient) return ingredient;
+  
+  // Match patterns like "30ml lemon juice", "15ml lime juice"
+  const citrusPattern = /(\d+(?:\.\d+)?)\s*ml\s+(lemon|lime)\s+juice/i;
+  const match = ingredient.match(citrusPattern);
+  
+  if (match) {
+    const mlAmount = parseFloat(match[1]);
+    const citrusType = match[2].toLowerCase();
+    
+    // Approximate: 1 lemon/lime = 30ml juice
+    const pieces = mlAmount / 30;
+    
+    if (pieces <= 0.5) {
+      return `juice of 1/2 ${citrusType}`;
+    } else if (pieces <= 1) {
+      return `juice of 1 ${citrusType}`;
+    } else if (pieces <= 1.5) {
+      return `juice of 1.5 ${citrusType}s`;
+    } else {
+      return `juice of ${Math.round(pieces)} ${citrusType}s`;
+    }
+  }
+  
+  return ingredient;
+}
+
+/**
  * Removes parenthetical descriptions from ingredient strings
  * Examples:
  * "1 ripe nectarine (150g), sliced" → "1 ripe nectarine, sliced" 
@@ -20,9 +55,14 @@ export function cleanIngredientDescription(ingredient: string): string {
 
 /**
  * Cleans an entire array of ingredient strings
+ * Applies: citrus conversion, parenthetical removal
  */
 export function cleanIngredientList(ingredients: string[]): string[] {
-  return ingredients.map(ingredient => cleanIngredientDescription(ingredient));
+  return ingredients.map(ingredient => {
+    let cleaned = convertCitrusTopieces(ingredient);
+    cleaned = cleanIngredientDescription(cleaned);
+    return cleaned;
+  });
 }
 
 /**
