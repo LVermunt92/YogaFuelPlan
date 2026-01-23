@@ -2400,12 +2400,7 @@
       "name": "Cloud Bread",
       "category": "breakfast",
       "portion": "1 serving",
-      "ingredients": [
-        "Eggs",
-        "cream cheese",
-        "baking powder",
-        "salt"
-      ],
+      "ingredients": ["Eggs", "cream cheese", "baking powder", "salt"],
       "instructions": [
         "Separate 3 eggs (viral technique: use the shell to separate)",
         "Whip egg whites to stiff peaks for viral cloud effect",
@@ -20404,12 +20399,7 @@
         "Serve cold as a refreshing hydration drink",
         "Can be stored in the refrigerator for up to 3 days"
       ],
-      "tags": [
-        "Vegan",
-        "Gluten-Free",
-        "Lactose-Free",
-        "Anti-Aging"
-      ],
+      "tags": ["Vegan", "Gluten-Free", "Lactose-Free", "Anti-Aging"],
       "whole_food_level": "high",
       "recipe_tips": null,
       "recipe_notes": null,
@@ -20529,10 +20519,7 @@
         "Place the grilled halloumi slices on top of the paella",
         "Garnish with the remaining fresh parsley and serve immediately"
       ],
-      "tags": [
-        "Vegetarian",
-        "Gluten-Free"
-      ],
+      "tags": ["Vegetarian", "Gluten-Free"],
       "whole_food_level": "moderate",
       "recipe_tips": null,
       "recipe_notes": null,
@@ -20582,12 +20569,7 @@
         "Garnish with the remaining fresh parsley and serve immediately",
         "Note: This lactose-free version uses chickpeas for added protein instead of halloumi cheese"
       ],
-      "tags": [
-        "Vegan",
-        "Vegetarian",
-        "Gluten-Free",
-        "Lactose-Free"
-      ],
+      "tags": ["Vegan", "Vegetarian", "Gluten-Free", "Lactose-Free"],
       "whole_food_level": "moderate",
       "recipe_tips": null,
       "recipe_notes": null,
@@ -20641,10 +20623,7 @@
         "Garnish with the remaining fresh dill before serving",
         "Prep tip: You can prepare this quiche 1 day in advance and reheat before serving"
       ],
-      "tags": [
-        "Vegetarian",
-        "Follicular"
-      ],
+      "tags": ["Vegetarian", "Follicular"],
       "whole_food_level": "moderate",
       "recipe_tips": null,
       "recipe_notes": null,
@@ -20927,11 +20906,7 @@
         "Add the edamame beans and sliced spring onions. Cook for 2-3 minutes, tossing gently, until everything is heated through",
         "Serve immediately, garnished with red chilli slices (if using) and a sprinkle of black sesame seeds on top"
       ],
-      "tags": [
-        "Vegan",
-        "Vegetarian",
-        "Lactose-Free"
-      ],
+      "tags": ["Vegan", "Vegetarian", "Lactose-Free"],
       "whole_food_level": "moderate",
       "recipe_tips": [],
       "recipe_notes": "",
@@ -20984,12 +20959,7 @@
         "Add the edamame beans and sliced spring onions. Cook for 2-3 minutes, tossing gently, until everything is heated through",
         "Serve immediately, garnished with red chilli slices (if using) and a sprinkle of black sesame seeds on top"
       ],
-      "tags": [
-        "Vegan",
-        "Vegetarian",
-        "Gluten-Free",
-        "Lactose-Free"
-      ],
+      "tags": ["Vegan", "Vegetarian", "Gluten-Free", "Lactose-Free"],
       "whole_food_level": "moderate",
       "recipe_tips": [],
       "recipe_notes": "",
@@ -21167,11 +21137,7 @@
         "Remove from heat and stir in the grated Parmesan cheese. Season with salt and black pepper to taste",
         "Garnish with chopped fresh parsley and serve immediately while hot and creamy"
       ],
-      "tags": [
-        "Vegetarian",
-        "Gluten-Free",
-        "Anti-Aging"
-      ],
+      "tags": ["Vegetarian", "Gluten-Free", "Anti-Aging"],
       "whole_food_level": "moderate",
       "recipe_tips": null,
       "recipe_notes": null,
@@ -21860,10 +21826,7 @@
       "name": "Mung bean wraps",
       "category": "snack",
       "portion": "1 serving",
-      "ingredients": [
-        "25g mung beans",
-        "45ml water"
-      ],
+      "ingredients": ["25g mung beans", "45ml water"],
       "instructions": [
         "Wash mung beans with water and drain",
         "Soak the mung beans with filtered water in an airtight container and place in the fridge overnight or at least 8 hours",
@@ -23058,12 +23021,7 @@
         "Tear the mozzarella into pieces and scatter over the gnocchi. Let it melt slightly into the warm sauce.",
         "Taste and adjust seasoning if needed. Garnish with fresh basil leaves and serve immediately."
       ],
-      "tags": [
-        "quick-meals",
-        "comfort-food",
-        "one-pan",
-        "italian"
-      ],
+      "tags": ["quick-meals", "comfort-food", "one-pan", "italian"],
       "whole_food_level": "moderate",
       "recipe_tips": [
         "Save some gnocchi cooking water - the starchy water helps bind the sauce to the gnocchi",
@@ -23131,9 +23089,7 @@
         "Meanwhile, make the pesto: blend the parsley, walnuts, garlic, olive oil, chilli flakes and salt in a food processor until smooth.",
         "Serve the pasta e fagioli in a bowl, topped with a spoonful of walnut pesto and a drizzle of olive oil."
       ],
-      "tags": [
-        "Lactose-Free"
-      ],
+      "tags": ["Lactose-Free"],
       "whole_food_level": "moderate",
       "recipe_tips": null,
       "recipe_notes": null,
@@ -23183,10 +23139,7 @@
         "Freeze 10-15 minutes until chocolate sets.",
         "Break or slice into bars. Keep frozen for clean pieces. Eat straight from freezer or let sit 2-3 minutes for a softer bite."
       ],
-      "tags": [
-        "Luteal",
-        "Gluten-Free"
-      ],
+      "tags": ["Luteal", "Gluten-Free"],
       "whole_food_level": "moderate",
       "recipe_tips": null,
       "recipe_notes": null,
@@ -33172,9 +33125,7 @@
         "Meanwhile, make the pesto: blend the parsley, walnuts, garlic, olive oil, chilli flakes and salt in a food processor until smooth.",
         "Serve the pasta e fagioli in a bowl, topped with a spoonful of walnut pesto and a drizzle of olive oil."
       ],
-      "tags": [
-        "Lactose-Free"
-      ],
+      "tags": ["Lactose-Free"],
       "whole_food_level": "moderate",
       "recipe_tips": null,
       "recipe_notes": null,
@@ -33224,10 +33175,7 @@
         "Freeze 10-15 minutes until chocolate sets.",
         "Break or slice into bars. Keep frozen for clean pieces. Eat straight from freezer or let sit 2-3 minutes for a softer bite."
       ],
-      "tags": [
-        "Luteal",
-        "Gluten-Free"
-      ],
+      "tags": ["Luteal", "Gluten-Free"],
       "whole_food_level": "moderate",
       "recipe_tips": null,
       "recipe_notes": null,
@@ -33924,12 +33872,7 @@
         "Make the dip: Mix Greek yogurt with lemon juice, finely chopped dill, minced garlic, salt, and black pepper.",
         "Fold the tortilla into a wrap and serve with the herb yogurt dip on the side."
       ],
-      "tags": [
-        "Vegetarian",
-        "High-Protein",
-        "Quick Meal",
-        "Contains Dairy"
-      ],
+      "tags": ["Vegetarian", "High-Protein", "Quick Meal", "Contains Dairy"],
       "whole_food_level": "high",
       "recipe_tips": [
         "The egg and avocado mixture creates a creamy, protein-rich filling",
@@ -34587,12 +34530,7 @@
       "name": "Cloud Bread",
       "category": "breakfast",
       "portion": "1 serving",
-      "ingredients": [
-        "Eggs",
-        "coconut cream cheese",
-        "baking powder",
-        "salt"
-      ],
+      "ingredients": ["Eggs", "coconut cream cheese", "baking powder", "salt"],
       "instructions": [
         "Separate 3 eggs (viral technique: use the shell to separate)",
         "Whip egg whites to stiff peaks for viral cloud effect",
@@ -45761,10 +45699,7 @@
         "Add drained gnocchi to the pan and cook for a few minutes to coat in sauce",
         "Serve topped with reserved mushrooms and extra pecorino romano"
       ],
-      "tags": [
-        "Vegetarian",
-        "High-Protein"
-      ],
+      "tags": ["Vegetarian", "High-Protein"],
       "whole_food_level": "moderate",
       "recipe_tips": [
         "Black garlic adds a deep, umami-rich flavor but regular garlic works well too",
@@ -45824,12 +45759,7 @@
         "Add drained gnocchi to the pan and cook for a few minutes to coat in sauce",
         "Serve topped with reserved mushrooms and extra pecorino romano"
       ],
-      "tags": [
-        "Vegetarian",
-        "Lactose-Free",
-        "High-Protein",
-        "Lactose-Free"
-      ],
+      "tags": ["Vegetarian", "Lactose-Free", "High-Protein", "Lactose-Free"],
       "whole_food_level": "moderate",
       "recipe_tips": [
         "Black garlic adds a deep, umami-rich flavor but regular garlic works well too",
@@ -47554,10 +47484,7 @@
       "name": "Cassava tortillas (weekend meal prep)",
       "category": "snack",
       "portion": "2 tortillas (makes 6)",
-      "ingredients": [
-        "1kg fresh cassava",
-        "2g salt"
-      ],
+      "ingredients": ["1kg fresh cassava", "2g salt"],
       "instructions": [
         "Trim the ends off the cassava, then slice it into three pieces",
         "Holding one piece in your hand, carefully score down the side - cutting through both layers of skin (the thick brown outer layer and the pinkish inner layer). Use your fingers to peel both layers off completely and discard them. Repeat with the remaining pieces",
@@ -53427,12 +53354,7 @@
       "recipe_id": "216",
       "language": "nl",
       "name": "Cloud Bread",
-      "ingredients": [
-        "Eggs",
-        "coconut cream cheese",
-        "baking powder",
-        "salt"
-      ],
+      "ingredients": ["Eggs", "coconut cream cheese", "baking powder", "salt"],
       "instructions": []
     },
     {
@@ -53947,12 +53869,7 @@
       "recipe_id": "31",
       "language": "nl",
       "name": "Wolkbrood",
-      "ingredients": [
-        "eieren",
-        "roomkaas",
-        "bakpoeder",
-        "zout"
-      ],
+      "ingredients": ["eieren", "roomkaas", "bakpoeder", "zout"],
       "instructions": []
     },
     {
