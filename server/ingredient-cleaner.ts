@@ -36,6 +36,40 @@ export function convertCitrusTopieces(ingredient: string): string {
 }
 
 /**
+ * Converts avocado gram measurements to pieces
+ * Examples:
+ * "70g avocado" → "1/2 avocado"
+ * "150g avocado" → "1 avocado"
+ * "35g avocado" → "1/4 avocado"
+ */
+export function convertAvocadoToPieces(ingredient: string): string {
+  if (!ingredient) return ingredient;
+  
+  // Match patterns like "70g avocado", "100g ripe avocado"
+  const avocadoPattern = /(\d+(?:\.\d+)?)\s*g\s+(?:ripe\s+)?avocado/i;
+  const match = ingredient.match(avocadoPattern);
+  
+  if (match) {
+    const grams = parseFloat(match[1]);
+    
+    // 1 avocado ≈ 150g edible flesh
+    if (grams <= 40) {
+      return '1/4 avocado';
+    } else if (grams <= 90) {
+      return '1/2 avocado';
+    } else if (grams <= 170) {
+      return '1 avocado';
+    } else if (grams <= 250) {
+      return '1.5 avocados';
+    } else {
+      return `${Math.round(grams / 150)} avocados`;
+    }
+  }
+  
+  return ingredient;
+}
+
+/**
  * Removes parenthetical descriptions from ingredient strings
  * Examples:
  * "1 ripe nectarine (150g), sliced" → "1 ripe nectarine, sliced" 
@@ -55,11 +89,12 @@ export function cleanIngredientDescription(ingredient: string): string {
 
 /**
  * Cleans an entire array of ingredient strings
- * Applies: citrus conversion, parenthetical removal
+ * Applies: citrus conversion, avocado conversion, parenthetical removal
  */
 export function cleanIngredientList(ingredients: string[]): string[] {
   return ingredients.map(ingredient => {
     let cleaned = convertCitrusTopieces(ingredient);
+    cleaned = convertAvocadoToPieces(cleaned);
     cleaned = cleanIngredientDescription(cleaned);
     return cleaned;
   });

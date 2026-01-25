@@ -48,6 +48,7 @@ RECIPE REQUIREMENTS:
 - Calculate realistic European pricing
 - CRITICAL: Use ONLY metric measurements (grams for dry ingredients, milliliters for liquids, kilograms for large amounts). NEVER use cups, tablespoons, teaspoons, ounces, or pounds. Examples: "120g oats", "240ml milk", "15ml olive oil", "5ml vanilla", "2.5ml salt"
 - LEMON/LIME RULE: Always specify lemons and limes in pieces, NEVER in ml. Use "juice of 1 lemon", "juice of 1/2 lemon", "1 lemon, zested", "1/2 lime". NEVER use "30ml lemon juice" or similar ml measurements for citrus juice.
+- AVOCADO RULE: Always specify avocados in pieces, NEVER in grams. Use "1 avocado", "1/2 avocado", "1/4 avocado". NEVER use "70g avocado" or similar gram measurements.
 - IMPORTANT: Ingredients must be clean and simple. DO NOT include cooking method descriptions in parentheses like "(sliced)", "(diced)", "(chopped)", "(minced)", etc. Use only the ingredient name with quantity. Examples: "150g nectarine" NOT "150g nectarine (sliced)", "100g onion" NOT "100g onion (diced)"
 - IMPORTANT: Include a sauce or topping that makes the dish feel more indulgent or satisfying while remaining healthy and made from whole foods (examples: roasted pepper sauce with tomato paste and nuts, tahini-based dressings, herb-infused oils, nut-based creams, or vegetable-based salsas)
 - MANDATORY PROTEIN REQUIREMENT: Every recipe MUST include adequate protein sources to meet the target protein goal. Include at least one high-quality protein source such as:
