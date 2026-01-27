@@ -1049,16 +1049,17 @@ async function selectUnusedMealIntelligently(
     unusedMeals = applyMenstrualPhasePreference(unusedMeals, user);
   }
   
-  // BLOOD SUGAR OPTIMIZATION: Prioritize blood sugar-friendly meals for lunch
+  // LUNCH OPTIMIZATION: Prioritize balanced, energy-sustaining meals (NOT low-carb, save that for dinner)
+  // Focus on slow carbs, fiber, and protein for sustained afternoon energy
   if (category === 'lunch' && unusedMeals.length > 1) {
-    console.log(`🩸 BLOOD SUGAR: Applying blood sugar-friendly filtering for lunch meals (${unusedMeals.length} candidates)`);
+    console.log(`🍽️ LUNCH ENERGY: Applying balanced energy filtering for lunch meals (${unusedMeals.length} candidates)`);
     
-    // Score meals based on blood sugar stability factors
-    const bloodSugarScoredMeals = unusedMeals.map(meal => {
+    // Score meals based on sustained energy factors (NOT low-carb preference)
+    const lunchScoredMeals = unusedMeals.map(meal => {
       let score = 0;
       const nutrition = meal.nutrition;
       
-      // SLOW CARBS PRIORITY: Check for slow-release carbohydrate sources
+      // SLOW CARBS PRIORITY: Check for slow-release carbohydrate sources (great for lunch energy)
       const slowCarbIngredients = meal.ingredients.some(ingredient => {
         const ingredientLower = ingredient.toLowerCase();
         return ingredientLower.includes('quinoa') || 
@@ -1074,26 +1075,11 @@ async function selectUnusedMealIntelligently(
       });
       
       if (slowCarbIngredients) {
-        score += 3; // Major bonus for slow carbs
+        score += 4; // Major bonus for slow carbs - perfect for lunch energy
         console.log(`  ✅ Slow carbs detected in: ${meal.name}`);
       }
       
-      // CARB AMOUNT with emphasis on slow carbs
-      if (nutrition.carbohydrates <= 25 && slowCarbIngredients) {
-        score += 4; // Perfect: low carbs AND slow carbs
-      } else if (nutrition.carbohydrates <= 20) {
-        score += 3; // Very low carb
-      } else if (nutrition.carbohydrates <= 30 && slowCarbIngredients) {
-        score += 3; // Moderate carbs but slow release
-      } else if (nutrition.carbohydrates <= 30) {
-        score += 2; // Moderate carb
-      } else if (nutrition.carbohydrates <= 40 && slowCarbIngredients) {
-        score += 2; // Higher carbs but slow release
-      } else if (nutrition.carbohydrates <= 40) {
-        score += 1; // Slightly higher carb
-      }
-      
-      // FIBER CONTENT - critical for blood sugar stability
+      // FIBER CONTENT - critical for sustained energy and satiety
       if (nutrition.fiber >= 12) {
         score += 4; // Exceptional fiber
       } else if (nutrition.fiber >= 10) {
@@ -1103,13 +1089,14 @@ async function selectUnusedMealIntelligently(
       } else if (nutrition.fiber >= 5) {
         score += 1; // Moderate fiber
       }
-      // Below 5g fiber gets 0 points
       
       // Good protein content for satiety (target > 20g)
       if (nutrition.protein >= 25) {
-        score += 2; // High protein
+        score += 3; // High protein - great for afternoon
       } else if (nutrition.protein >= 20) {
-        score += 1; // Good protein
+        score += 2; // Good protein
+      } else if (nutrition.protein >= 15) {
+        score += 1; // Moderate protein
       }
       
       // Healthy fats for sustained energy (target > 10g)
@@ -1119,34 +1106,36 @@ async function selectUnusedMealIntelligently(
         score += 1; // Moderate fat content
       }
       
-      // Bonus for blood sugar-friendly tags
-      if (meal.tags.includes('Low-Carb') || meal.tags.includes('Keto')) {
+      // Bonus for energy-sustaining tags (NOT low-carb - that's for dinner)
+      if (meal.tags.includes('High-Fiber')) {
         score += 2;
       }
-      if (meal.tags.includes('High-Fiber')) {
-        score += 1;
-      }
       if (meal.tags.includes('Protein-Rich') || meal.tags.includes('High-Protein')) {
-        score += 1;
+        score += 2;
       }
+      if (meal.tags.includes('Slow-Carb') || meal.tags.includes('Complex-Carb')) {
+        score += 2;
+      }
+      
+      // NO bonus for Low-Carb or Keto - save those for dinner
       
       return { meal, score, carbs: nutrition.carbohydrates, fiber: nutrition.fiber };
     });
     
     // Sort by score (highest first) and log the top candidates
-    bloodSugarScoredMeals.sort((a, b) => b.score - a.score);
+    lunchScoredMeals.sort((a, b) => b.score - a.score);
     
-    console.log(`🩸 BLOOD SUGAR RANKINGS (Top 5):`);
-    bloodSugarScoredMeals.slice(0, 5).forEach((item, index) => {
+    console.log(`🍽️ LUNCH ENERGY RANKINGS (Top 5):`);
+    lunchScoredMeals.slice(0, 5).forEach((item, index) => {
       console.log(`  ${index + 1}. ${item.meal.name} (Score: ${item.score}, Carbs: ${item.carbs}g, Fiber: ${item.fiber}g)`);
     });
     
-    // Use top 50% of blood sugar-friendly meals for final selection
-    const topCandidatesCount = Math.max(1, Math.ceil(bloodSugarScoredMeals.length * 0.5));
-    const bloodSugarFriendlyMeals = bloodSugarScoredMeals.slice(0, topCandidatesCount).map(item => item.meal);
+    // Use top 50% of energy-sustaining meals for final selection
+    const topCandidatesCount = Math.max(1, Math.ceil(lunchScoredMeals.length * 0.5));
+    const energySustainingMeals = lunchScoredMeals.slice(0, topCandidatesCount).map(item => item.meal);
     
-    console.log(`🩸 BLOOD SUGAR: Selected top ${bloodSugarFriendlyMeals.length} blood sugar-friendly meals for lunch`);
-    unusedMeals = bloodSugarFriendlyMeals;
+    console.log(`🍽️ LUNCH ENERGY: Selected top ${energySustainingMeals.length} balanced-energy meals for lunch`);
+    unusedMeals = energySustainingMeals;
   }
   
   // Try intelligent ingredient matching first if we have ingredients to use up
