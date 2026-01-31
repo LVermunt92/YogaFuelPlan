@@ -18570,9 +18570,13 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
       'salt', 'black pepper', 'white pepper', 'ground pepper', 'cinnamon', 'paprika', 'cumin', 'turmeric', 'oregano', 'basil', 'thyme',
       'rosemary', 'sage', 'garlic powder', 'onion powder', 'ginger powder', 'chili powder',
       'vanilla extract', 'almond extract', 'baking powder', 'baking soda', 'cornstarch',
-      'flour', 'sugar', 'honey', 'maple syrup', 'olive oil', 'coconut oil', 'sesame oil',
-      'soy sauce', 'tamari', 'vinegar', 'lemon juice', 'lime juice', 'nutritional yeast',
       'fennel seeds', 'mustard powder', 'stevia'
+    ];
+    
+    // Items that need quantities shown when amounts are significant (> 30ml or > 20g)
+    const quantityRequiredItems = [
+      'olive oil', 'coconut oil', 'sesame oil', 'honey', 'maple syrup',
+      'soy sauce', 'tamari', 'vinegar', 'nutritional yeast', 'flour', 'sugar'
     ];
     
     // Bell peppers and vegetables should NEVER show clean name - they need quantities
@@ -18588,9 +18592,18 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
       return false; // Always show quantity for garlic cloves
     }
     
-    // Check if it's a spice/seasoning or very small quantity
+    // Check if ingredient needs quantity shown when amount is significant
+    const ingredientLower = ingredient.toLowerCase();
+    const needsQuantityWhenSignificant = quantityRequiredItems.some(item => ingredientLower.includes(item));
+    const isSignificantAmount = (unit === 'g' && totalAmount >= 20) || (unit === 'ml' && totalAmount >= 30);
+    
+    // If it's an oil/syrup/etc with significant quantity, always show the amount
+    if (needsQuantityWhenSignificant && isSignificantAmount) {
+      return false; // Show quantity for significant amounts of oils, honey, etc.
+    }
+    
+    // Check if it's a spice/seasoning
     const isSpice = spicesAndSeasonings.some(spice => {
-      const ingredientLower = ingredient.toLowerCase();
       // Exclude "bell pepper" when matching "pepper"
       if (spice === 'pepper' && ingredientLower.includes('bell pepper')) {
         return false;
@@ -18600,7 +18613,10 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
     const isSmallQuantity = (unit === 'g' && totalAmount < 20) || (unit === 'ml' && totalAmount < 30);
     const isPantryEssential = category === 'Pantry Essentials' || category === 'Baking & Cooking Basics';
     
-    return isSpice || (isSmallQuantity && isPantryEssential);
+    // Also hide quantity for small amounts of oils/syrups (drizzles)
+    const isSmallOilOrSyrup = needsQuantityWhenSignificant && isSmallQuantity;
+    
+    return isSpice || isSmallOilOrSyrup || (isSmallQuantity && isPantryEssential);
   };
 
   // Create shopping list with categories and converted amounts
@@ -18640,16 +18656,33 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
         // Convert amounts to grams using the formatAmount function (split proportionally)
         let proportionalAmount = amounts.totalAmount / separateIngredients.length;
         
-        const displayAmount = formatAmountWithLanguage(proportionalAmount, amounts.unit, language, separateIngredient);
+        // Infer unit from ingredient type if unit is empty
+        let inferredUnit = amounts.unit;
+        if (!inferredUnit || inferredUnit === '') {
+          const ingredientLower = separateIngredient.toLowerCase();
+          if (ingredientLower.includes('oil') || ingredientLower.includes('milk') || 
+              ingredientLower.includes('sauce') || ingredientLower.includes('vinegar') ||
+              ingredientLower.includes('tamari') || ingredientLower.includes('extract')) {
+            inferredUnit = 'ml';
+          } else if (ingredientLower.includes('seeds') || ingredientLower.includes('powder') ||
+                     ingredientLower.includes('cumin') || ingredientLower.includes('turmeric') ||
+                     ingredientLower.includes('paprika') || ingredientLower.includes('honey') ||
+                     ingredientLower.includes('yeast') || ingredientLower.includes('flour') ||
+                     ingredientLower.includes('granola')) {
+            inferredUnit = 'g';
+          }
+        }
+        
+        const displayAmount = formatAmountWithLanguage(proportionalAmount, inferredUnit, language, separateIngredient);
         
         // For spices and small pantry items, show just the ingredient name
-        const shouldShowClean = shouldShowCleanName(separateIngredient, category, proportionalAmount, amounts.unit);
+        const shouldShowClean = shouldShowCleanName(separateIngredient, category, proportionalAmount, inferredUnit);
         const finalDisplayAmount = shouldShowClean 
           ? '' // No amount display for pantry essentials 
           : displayAmount;
         
         // When showing clean names (spices/seasonings), don't show a separate unit
-        const finalUnit = shouldShowClean ? '' : amounts.unit;
+        const finalUnit = shouldShowClean ? '' : inferredUnit;
         
         shoppingList.push({
           ingredient: normalizedIngredient,
@@ -18678,17 +18711,34 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
       
       const category = ingredientCategories[ingredient.toLowerCase()] || 'Other';
       
+      // Infer unit from ingredient type if unit is empty
+      let inferredUnit = amounts.unit;
+      if (!inferredUnit || inferredUnit === '') {
+        const ingredientLower = ingredient.toLowerCase();
+        if (ingredientLower.includes('oil') || ingredientLower.includes('milk') || 
+            ingredientLower.includes('sauce') || ingredientLower.includes('vinegar') ||
+            ingredientLower.includes('tamari') || ingredientLower.includes('extract')) {
+          inferredUnit = 'ml';
+        } else if (ingredientLower.includes('seeds') || ingredientLower.includes('powder') ||
+                   ingredientLower.includes('cumin') || ingredientLower.includes('turmeric') ||
+                   ingredientLower.includes('paprika') || ingredientLower.includes('honey') ||
+                   ingredientLower.includes('yeast') || ingredientLower.includes('flour') ||
+                   ingredientLower.includes('granola')) {
+          inferredUnit = 'g';
+        }
+      }
+      
       // Convert amounts to grams using the formatAmount function
-      const displayAmount = formatAmountWithLanguage(amounts.totalAmount, amounts.unit, language, ingredient);
+      const displayAmount = formatAmountWithLanguage(amounts.totalAmount, inferredUnit, language, ingredient);
       
       // For spices and small pantry items, show just the ingredient name
-      const shouldShowClean = shouldShowCleanName(ingredient, category, amounts.totalAmount, amounts.unit);
+      const shouldShowClean = shouldShowCleanName(ingredient, category, amounts.totalAmount, inferredUnit);
       const finalDisplayAmount = shouldShowClean 
         ? '' // No amount display for pantry essentials
         : displayAmount;
       
       // When showing clean names (spices/seasonings), don't show a separate unit
-      const finalUnit = shouldShowClean ? '' : amounts.unit;
+      const finalUnit = shouldShowClean ? '' : inferredUnit;
       
       shoppingList.push({
         ingredient: normalizedIngredient,

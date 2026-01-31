@@ -1908,6 +1908,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log(`✅ SHOPPING LIST VALIDATION: Fixed all empty amounts`);
       }
       
+      // VALIDATION: Ensure no items have amounts but empty units - infer unit from ingredient type
+      const itemsWithMissingUnits = shoppingList.filter(item => {
+        const hasAmount = item.totalAmount && item.totalAmount !== '' && item.totalAmount !== '0';
+        const hasNoUnit = !item.unit || item.unit === '';
+        return hasAmount && hasNoUnit;
+      });
+      if (itemsWithMissingUnits.length > 0) {
+        console.warn(`⚠️ SHOPPING LIST UNIT FIX: Found ${itemsWithMissingUnits.length} items with amounts but no units, fixing...`);
+        itemsWithMissingUnits.forEach(item => {
+          const ingredientLower = item.ingredient.toLowerCase();
+          let inferredUnit = '';
+          if (ingredientLower.includes('oil') || ingredientLower.includes('milk') || 
+              ingredientLower.includes('sauce') || ingredientLower.includes('vinegar') ||
+              ingredientLower.includes('tamari') || ingredientLower.includes('extract') ||
+              ingredientLower.includes('syrup')) {
+            inferredUnit = 'ml';
+          } else if (ingredientLower.includes('seeds') || ingredientLower.includes('powder') ||
+                     ingredientLower.includes('cumin') || ingredientLower.includes('turmeric') ||
+                     ingredientLower.includes('paprika') || ingredientLower.includes('honey') ||
+                     ingredientLower.includes('yeast') || ingredientLower.includes('flour') ||
+                     ingredientLower.includes('granola') || ingredientLower.includes('fennel')) {
+            inferredUnit = 'g';
+          } else {
+            inferredUnit = 'g'; // Default fallback
+          }
+          console.warn(`  - Adding unit "${inferredUnit}" for: ${item.ingredient} (${item.totalAmount})`);
+          item.unit = inferredUnit;
+        });
+        console.log(`✅ SHOPPING LIST UNIT FIX: Fixed all missing units`);
+      }
+      
       // Create proper structure for translation
       // Define supermarket shopping order - must match nutrition-enhanced.ts
       const categoryOrder = [
