@@ -18485,9 +18485,10 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
     
     cookingMethods.forEach(method => {
       // Remove method at beginning (e.g., "steamed broccoli" → "broccoli")
-      normalized = normalized.replace(new RegExp(`^${method}\\s+`, 'g'), '');
+      // Use word boundary to avoid matching inside words (e.g., "raw" in "strawberries")
+      normalized = normalized.replace(new RegExp(`^${method}\\b\\s*`, 'g'), '');
       // Remove method in middle (e.g., "broccoli, steamed" → "broccoli")
-      normalized = normalized.replace(new RegExp(`\\s*,?\\s*${method}\\s*`, 'g'), ' ');
+      normalized = normalized.replace(new RegExp(`\\s*,?\\s*\\b${method}\\b\\s*`, 'g'), ' ');
     });
     
     // Remove "canned" only for items where it's a cooking method, not a product type
