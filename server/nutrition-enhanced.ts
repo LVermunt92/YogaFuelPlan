@@ -6,7 +6,7 @@ import { standardizePortion } from './portion-standardizer';
 import { convertAllRecipeUnits } from './bulk-unit-converter';
 import { validateAndEnhanceMealDatabase } from './protein-validator';
 import { validateAndEnhanceMealsForFiber } from './fiber-validator';
-import { cleanRecipeData } from './ingredient-cleaner';
+import { cleanRecipeData, convertCitrusTopieces, convertAvocadoToPieces } from './ingredient-cleaner';
 // Import functions from seasonal-advisor will be done dynamically to avoid circular dependencies
 
 export interface NutritionInfo {
@@ -18452,7 +18452,10 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
 
   // Function to normalize ingredient names for grocery shopping
   const normalizeIngredientForGrocery = (ingredient: string): string => {
-    let normalized = ingredient.toLowerCase().trim();
+    // First apply citrus and avocado conversions (ml → pieces, g → pieces)
+    let normalized = convertCitrusTopieces(ingredient);
+    normalized = convertAvocadoToPieces(normalized);
+    normalized = normalized.toLowerCase().trim();
     
     // Enhanced nut preparation normalization - remove all preparation methods from nuts
     const nutPreparationPatterns = [
