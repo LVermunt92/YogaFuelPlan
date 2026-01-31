@@ -2558,8 +2558,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (items.length > 0) {
         await storage.addShoppingListItems(shoppingList.id, items.map((item: any, index: number) => ({
           productName: item.productName || item.name || item.item,
-          quantity: item.quantity || 1,
-          unit: item.unit || "piece",
+          quantity: item.quantity ?? 1,
+          unit: item.unit ?? "",
           price: item.price || 0,
           category: item.category || "Other",
           sortOrder: index,
