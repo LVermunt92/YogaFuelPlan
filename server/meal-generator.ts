@@ -2138,6 +2138,7 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         zinc: Math.round(((selectedMeal.nutrition.zinc || 0) * portionMultiplier) * 10) / 10,
         calcium: Math.round((selectedMeal.nutrition.calcium || 0) * portionMultiplier),
         omega3: Math.round((selectedMeal.nutrition.omega3 || 0) * portionMultiplier),
+        polyphenols: Math.round((selectedMeal.nutrition.polyphenols || 0) * portionMultiplier),
         prepTime: prepTimeForDay,
         isLeftover: isLeftover, // Boolean flag instead of string marker
       };
@@ -2766,6 +2767,7 @@ async function generateMealPrepPlan(
           zinc: Math.round(((selectedBreakfast.nutrition as any).zinc || 0) * portionFactor * 10) / 10,
           calcium: Math.round(((selectedBreakfast.nutrition as any).calcium || 0) * portionFactor),
           omega3: Math.round(((selectedBreakfast.nutrition as any).omega3 || 0) * portionFactor),
+          polyphenols: Math.round(((selectedBreakfast.nutrition as any).polyphenols || 0) * portionFactor),
           prepTime: prepTime,
           isLeftover: isBreakfastLeftover,
         });
@@ -2933,6 +2935,7 @@ async function generateMealPrepPlan(
           zinc: Math.round(((lunchMeal.nutrition as any).zinc || 0) * portionFactor * 10) / 10,
           calcium: Math.round(((lunchMeal.nutrition as any).calcium || 0) * portionFactor),
           omega3: Math.round(((lunchMeal.nutrition as any).omega3 || 0) * portionFactor),
+          polyphenols: Math.round(((lunchMeal.nutrition as any).polyphenols || 0) * portionFactor),
           prepTime: prepTime,
           isLeftover: isLunchLeftover, // Boolean flag instead of string marker
         });
@@ -3095,6 +3098,7 @@ async function generateMealPrepPlan(
           zinc: Math.round(((dinnerMeal.nutrition as any).zinc || 0) * portionFactor * 10) / 10,
           calcium: Math.round(((dinnerMeal.nutrition as any).calcium || 0) * portionFactor),
           omega3: Math.round(((dinnerMeal.nutrition as any).omega3 || 0) * portionFactor),
+          polyphenols: Math.round(((dinnerMeal.nutrition as any).polyphenols || 0) * portionFactor),
           prepTime: prepTime,
           isLeftover: isDinnerLeftover, // Boolean flag instead of string marker
         });
