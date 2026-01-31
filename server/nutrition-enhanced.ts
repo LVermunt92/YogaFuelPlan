@@ -19198,8 +19198,9 @@ function cleanIngredientName(ingredient: string): string {
   
   // Remove leading measurements and quantities (including fractions, numbers, and decimals)
   // Updated to catch decimal amounts like ".5ml", "0.5ml", "2.5g", etc.
-  cleaned = cleaned.replace(/^[\d\.\/½¼¾⅓⅔⅛⅜⅝⅞]+\s*(cup|cups|tbsp|tsp|tablespoons?|teaspoons?|g|grams?|lb|lbs|pounds?|oz|ounces?|pieces?|slices?|cloves?|sprigs?|medium|large|small|ml|mL)\s*of\s*/i, '');
-  cleaned = cleaned.replace(/^[\d\.\/½¼¾⅓⅔⅛⅜⅝⅞]+\s*(cup|cups|tbsp|tsp|tablespoons?|teaspoons?|g|grams?|lb|lbs|pounds?|oz|ounces?|pieces?|slices?|cloves?|sprigs?|medium|large|small|ml|mL)\s*/i, '');
+  // Added word boundary \b after units to prevent matching "g" from "garlic" as "grams"
+  cleaned = cleaned.replace(/^[\d\.\/½¼¾⅓⅔⅛⅜⅝⅞]+\s*(cup|cups|tbsp|tsp|tablespoons?|teaspoons?|grams?|g\b|lb|lbs|pounds?|oz|ounces?|pieces?|slices?|cloves?|sprigs?|medium|large|small|ml|mL)\s*of\s*/i, '');
+  cleaned = cleaned.replace(/^[\d\.\/½¼¾⅓⅔⅛⅜⅝⅞]+\s*(cup|cups|tbsp|tsp|tablespoons?|teaspoons?|grams?|g\b|lb|lbs|pounds?|oz|ounces?|pieces?|slices?|cloves?|sprigs?|medium|large|small|ml|mL)\s*/i, '');
   
   // Remove leading numbers, decimals and fractions that might still be there  
   cleaned = cleaned.replace(/^[\d\.\/½¼¾⅓⅔⅛⅜⅝⅞]+\s*/, '');

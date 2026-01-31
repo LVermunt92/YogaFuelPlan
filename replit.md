@@ -84,25 +84,17 @@ Preferred communication style: Simple, everyday language.
     - **Database**: PostgreSQL with Drizzle ORM.
     - **Authentication**: JWT token-based authentication with access and refresh tokens, stored in localStorage, with automatic token refresh.
 - **Feature Specifications**:
-    - **Authentication & Multi-User Support**: Secure login/registration, persistent mobile login, password reset, isolated user data, route protection, and interactive step-by-step onboarding tutorial for new users.
-    - **Meal Generation**: Calculates protein targets, generates 7-day plans with variety, creates shopping lists, and includes smart AI recipe generation. Incorporates 1 anti-aging meal per day.
-    - **Universal Meal Prep Engine**: Adapts to user cooking schedules, supporting batch cooking, meal distribution, and dietary fallbacks. Weekday meals are limited to ≤45 minutes prep time.
-    - **Breakfast Batch Cooking**: Implements a 2-day batch cooking pattern to reduce breakfast prep time.
-    - **Ayurvedic Integration**: Supports Ayurvedic dietary tags and seasonal adaptation.
-    - **Menstrual Cycle Support**: Cycle phase tracking with dropdown selection prioritizes phase-appropriate recipes and provides weekly highlights.
-    - **Meal Plan Management**: Meal plans persist across sessions, with automatic cleanup for older plans. Plans normalize to Sunday start and are limited to current/next week.
-    - **Recipe Management**: Automated recipe updates, Dutch translation, metric unit conversion, intelligent ingredient-based matching, automatic ingredient substitution, smart vegetarian filtering, enhanced high-protein database, and user-created custom recipes.
-    - **Shopping List Features**: Consolidated shopping list generation with supermarket-ordered categories, dry goods separation, and ingredient normalization.
-    - **Ingredient Mapping System**: Admin-controlled mapping for shopping list optimization.
-    - **Nutritional Tracking**: Macronutrient distribution tracking and advanced protein range calculator.
-    - **Admin Panel**: Full-featured interface for managing nutrition parameters, monitoring system statistics, configuring meal planning logic, and tag management.
-    - **AI-Powered Nutrition Analysis**: Automated generation of comprehensive nutritional values from recipe ingredients.
-    - **Longevity Optimization**: Longevity-focused recipes are prioritized for all users, including those with resistant starch logic for weight loss.
-    - **Anti-Aging Tag System**: Recipes tagged for healthy aging.
-    - **Vitamin K Tracking**: Comprehensive Vitamin K content calculation with KPI chart and admin tools.
-    - **Weight Loss Support**: Sustainable weight loss tracking with a 15% calorie reduction cap and automatic maintenance weeks.
-    - **TDEE-Based Dynamic Portion Adjustment**: Personalizes meal portions based on individual metabolic needs using the Mifflin-St Jeor BMR formula.
-    - **Automatic Recipe Sync System**: Solves dev/production database separation by exporting recipes to `server/recipe-seeds.json` and auto-importing on startup.
+    - **User Management**: Secure authentication, persistent mobile login, password reset, isolated user data, route protection, and interactive onboarding tutorial.
+    - **Meal Planning**: Calculates protein targets, generates 7-day plans with variety, creates shopping lists, and includes smart AI recipe generation. Incorporates 1 anti-aging meal per day. Plans normalize to Sunday start and are limited to current/next week.
+    - **Meal Prep Engine**: Adapts to user cooking schedules, supporting batch cooking, meal distribution, and dietary fallbacks. Weekday meals are limited to ≤45 minutes prep time, with 2-day batch cooking for breakfasts.
+    - **Dietary Support**: Supports Ayurvedic dietary tags, seasonal adaptation, and menstrual cycle phase tracking with recipe prioritization and weekly highlights.
+    - **Recipe Management**: Automated updates, Dutch translation, metric unit conversion, intelligent ingredient-based matching, automatic substitution, smart vegetarian filtering, enhanced high-protein database, and user-created custom recipes.
+    - **Shopping List Generation**: Consolidated shopping lists with supermarket-ordered categories, dry goods separation, and ingredient normalization, driven by an admin-controlled ingredient mapping system.
+    - **Nutritional Analysis**: Macronutrient distribution tracking, advanced protein range calculator, and AI-powered generation of comprehensive nutritional values.
+    - **Longevity Optimization**: Prioritizes longevity-focused recipes for all users, including resistant starch logic and an anti-aging tag system, with comprehensive Vitamin K content calculation and tracking.
+    - **Weight Management**: Sustainable weight loss tracking with a 15% calorie reduction cap and automatic maintenance weeks. Personalizes meal portions based on individual metabolic needs using the Mifflin-St Jeor BMR formula.
+    - **Admin Panel**: Full-featured interface for managing nutrition parameters, system statistics, meal planning logic, and tag management.
+    - **Automatic Recipe Sync**: Exports recipes to `server/recipe-seeds.json` and auto-imports on startup to manage database separation.
 - **System Design Choices**:
     - **Data Flow**: User input drives meal generation, stored in PostgreSQL, displayed via React Query.
     - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, favorite meals, and user-created custom recipes.
