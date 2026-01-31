@@ -4,7 +4,7 @@ import { ArrowLeft, Info } from "lucide-react";
 import { Link } from "wouter";
 import { useTranslations } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { countUniquePlants } from "@/lib/plant-diversity";
+import { countUniquePlants, calculateVegetableGrams } from "@/lib/plant-diversity";
 import { getIngredientColors as getColorsFromConfig, kpiOrder } from "@/lib/kpi-config";
 import { useState } from "react";
 import {
@@ -171,8 +171,17 @@ export default function Insights() {
     // Calculate net carbs (total carbs - fiber)
     const avgNetCarbsPerDay = avgCarbsPerDay - avgFiberPerDay;
 
-    // Estimate vegetables from fiber
-    const avgVegetablesPerDay = avgFiberPerDay * 13.3;
+    // Collect all meal ingredients for plant-based calculations
+    const allMealIngredients: string[] = [];
+    currentMealPlan.meals.forEach(meal => {
+      if (meal.ingredients && Array.isArray(meal.ingredients)) {
+        allMealIngredients.push(...meal.ingredients);
+      }
+    });
+
+    // Calculate actual vegetables from meal ingredients
+    const totalVegetableGrams = calculateVegetableGrams(allMealIngredients);
+    const avgVegetablesPerDay = Math.round(totalVegetableGrams / 7);
     
     // Calculate fat percentage of calories
     const fatCalories = avgFatsPerDay * 9;
@@ -186,12 +195,6 @@ export default function Insights() {
     const cocoaFlavanolsTarget = 500;
     
     // Plant diversity - count actual unique plants from all meal ingredients using shared utility
-    const allMealIngredients: string[] = [];
-    currentMealPlan.meals.forEach(meal => {
-      if (meal.ingredients && Array.isArray(meal.ingredients)) {
-        allMealIngredients.push(...meal.ingredients);
-      }
-    });
     const plantDiversityResult = countUniquePlants(allMealIngredients);
     const plantDiversityCount = plantDiversityResult.count;
     const plantDiversityTarget = 30;
