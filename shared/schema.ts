@@ -133,6 +133,7 @@ export const meals = pgTable("meals", {
   vitaminC: real("vitamin_c").default(0), // mg (milligrams)
   omega3: real("omega_3").default(0), // mg (milligrams) - ALA, EPA, DHA combined
   polyphenols: real("polyphenols").default(0), // mg (milligrams) - total polyphenols from plant foods
+  cocoaFlavanols: real("cocoa_flavanols").default(0), // mg (milligrams) - cocoa flavanols for cardiovascular health
   prepTime: integer("prep_time").default(30), // minutes
   costEuros: real("cost_euros"), // cost in euros
   proteinPerEuro: real("protein_per_euro"), // protein grams per euro

@@ -27,6 +27,7 @@ import { getSeasonalInfo, getCurrentSeasonMonths, AMSTERDAM_MONTHLY_PRODUCE } fr
 import { db } from './db';
 import { recipes as recipesTable } from '@shared/schema';
 import { isNull, isNotNull, sql } from 'drizzle-orm';
+import { updateAllRecipePolyphenols } from './calculate-polyphenols';
 
 // Helper function to parse quantity and unit from totalAmount string (e.g., "200g" -> {quantity: 200, unit: "g"})
 function parseQuantityAndUnit(totalAmount: string): { quantity: number; unit: string } {
