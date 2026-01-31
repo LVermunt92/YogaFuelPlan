@@ -10,8 +10,9 @@
 export function convertCitrusTopieces(ingredient: string): string {
   if (!ingredient) return ingredient;
   
-  // Match patterns like "30ml lemon juice", "15ml lime juice"
-  const citrusPattern = /(\d+(?:\.\d+)?)\s*ml\s+(lemon|lime)\s+juice/i;
+  // Match patterns like "30ml lemon juice", "15ml lime juice", "15ml fresh lime juice"
+  // Allow optional "fresh" between ml and lemon/lime
+  const citrusPattern = /(\d+(?:\.\d+)?)\s*ml\s+(?:fresh\s+)?(lemon|lime)\s+juice/i;
   const match = ingredient.match(citrusPattern);
   
   if (match) {
