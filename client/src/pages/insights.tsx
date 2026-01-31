@@ -102,6 +102,9 @@ export default function Insights() {
     const totalOmega3 = currentMealPlan.meals.reduce((sum, meal) => {
       return sum + ((meal as any).omega3 || 0);
     }, 0);
+    const totalPolyphenols = currentMealPlan.meals.reduce((sum, meal) => {
+      return sum + ((meal as any).polyphenols || 0);
+    }, 0);
 
     // Calculate Eating the Rainbow score
     const allColors = new Set<string>();
@@ -143,6 +146,7 @@ export default function Insights() {
       potassium: totalMeals > 0 ? totalPotassium / totalMeals : 0,
       iron: totalMeals > 0 ? totalIron / totalMeals : 0,
       omega3: totalMeals > 0 ? totalOmega3 / totalMeals : 0,
+      polyphenols: totalMeals > 0 ? totalPolyphenols / totalMeals : 0,
     };
     
     const avgProteinPerDay = avgPerMeal.protein * 3;
@@ -162,6 +166,7 @@ export default function Insights() {
     const avgPotassiumPerDay = avgPerMeal.potassium * 3;
     const avgIronPerDay = avgPerMeal.iron * 3;
     const avgOmega3PerDay = avgPerMeal.omega3 * 3;
+    const avgPolyphenolsPerDay = avgPerMeal.polyphenols * 3;
 
     // Calculate net carbs (total carbs - fiber)
     const avgNetCarbsPerDay = avgCarbsPerDay - avgFiberPerDay;
@@ -210,6 +215,9 @@ export default function Insights() {
 
     // Omega-3 target - 1100mg for women, 1600mg for men (ALA adequate intake)
     const omega3Target = userProfile?.gender === 'male' ? 1600 : 1100;
+
+    // Polyphenols target - 500-1500mg daily recommended, using 800mg as target
+    const polyphenolsTarget = 800;
 
     // Targets
     const proteinTarget = nutritionTargets?.protein || 95;
@@ -327,6 +335,11 @@ export default function Insights() {
         value: Math.round(avgOmega3PerDay),
         percentage: Math.round((avgOmega3PerDay / omega3Target) * 100),
         target: omega3Target
+      },
+      polyphenols: {
+        value: Math.round(avgPolyphenolsPerDay),
+        percentage: Math.round((avgPolyphenolsPerDay / polyphenolsTarget) * 100),
+        target: polyphenolsTarget
       }
     };
   };
@@ -1131,6 +1144,55 @@ export default function Insights() {
                 </Dialog>
               </div>
               <p className="text-[10px] text-gray-500">{kpiData.omega3.percentage}%</p>
+            </div>
+
+            {/* Polyphenols Chart */}
+            <div className="text-center relative">
+              <div className="relative w-14 h-14 mx-auto">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { value: Math.min(kpiData.polyphenols.percentage, 100), fill: "#8b5cf6" },
+                        { value: Math.max(100 - kpiData.polyphenols.percentage, 0), fill: "#f3f4f6" }
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={14}
+                      outerRadius={24}
+                      startAngle={90}
+                      endAngle={450}
+                      dataKey="value"
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-xs font-bold text-violet-500">{kpiData.polyphenols.value}mg</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-center gap-0.5">
+                <h3 className="text-[10px] font-semibold text-violet-500">
+                  {language === "nl" ? "Polyfenolen" : "Polyphenols"}
+                </h3>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-polyphenols">
+                      <Info className="h-2.5 w-2.5" />
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-sm">
+                    <DialogHeader>
+                      <DialogTitle>{language === "nl" ? "Polyfenolen voor gezondheid" : "Polyphenols for health"}</DialogTitle>
+                      <DialogDescription className="text-sm pt-2">
+                        {language === "nl" 
+                          ? "Polyfenolen zijn krachtige antioxidanten die ontstekingen verminderen, hart- en hersengezondheid ondersteunen, en veroudering tegengaan. Aanbevolen inname: 500-1500mg per dag. Beste bronnen: bessen, cacao, olijfolie, groene thee, kruiden, bladgroenten."
+                          : "Polyphenols are powerful antioxidants that reduce inflammation, support heart and brain health, and combat aging. Recommended intake: 500-1500mg daily. Best sources: berries, cocoa, olive oil, green tea, spices, leafy greens."}
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <p className="text-[10px] text-gray-500">{kpiData.polyphenols.percentage}%</p>
             </div>
 
             {/* Vitamin C Chart */}
