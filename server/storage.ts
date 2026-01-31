@@ -1201,6 +1201,8 @@ export class DatabaseStorage implements IStorage {
       potassium: meals.potassium,
       iron: meals.iron,
       vitaminC: meals.vitaminC,
+      omega3: meals.omega3,
+      polyphenols: meals.polyphenols,
       addedSugar: meals.addedSugar,
       freeSugar: meals.freeSugar,
       intrinsicSugar: meals.intrinsicSugar,
