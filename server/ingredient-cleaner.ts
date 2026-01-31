@@ -23,13 +23,13 @@ export function convertCitrusTopieces(ingredient: string): string {
     const pieces = mlAmount / 30;
     
     if (pieces <= 0.5) {
-      return `juice of 1/2 ${citrusType}`;
+      return `1/2 ${citrusType}`;
     } else if (pieces <= 1) {
-      return `juice of 1 ${citrusType}`;
+      return `1 ${citrusType}`;
     } else if (pieces <= 1.5) {
-      return `juice of 1.5 ${citrusType}s`;
+      return `1.5 ${citrusType}s`;
     } else {
-      return `juice of ${Math.round(pieces)} ${citrusType}s`;
+      return `${Math.round(pieces)} ${citrusType}s`;
     }
   }
   

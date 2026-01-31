@@ -42,7 +42,7 @@ Preferred communication style: Simple, everyday language.
   - **Mushrooms (regular)**: ALWAYS specify in grams (e.g., "150g mushrooms, sliced", "100g button mushrooms") - NEVER use pieces
   - **Portobello mushrooms**: ALWAYS specify in pieces (e.g., "2 large portobello mushrooms", "1 portobello mushroom cap") - these are specialty items that stay separate on shopping lists
   - **Cauliflower**: Use cauliflower rice (e.g., "300g cauliflower rice") or florets in grams (e.g., "250g cauliflower florets") - NEVER use "1 head" as it's imprecise for portion control
-  - **Lemon/Lime**: ALWAYS specify in pieces (e.g., "juice of 1 lemon", "1 lemon, zested", "juice of 1/2 lemon", "1/2 lime") - NEVER use ml for lemon/lime juice. Auto-conversion: 30ml = 1 whole fruit
+  - **Lemon/Lime**: ALWAYS specify in pieces only (e.g., "1 lemon", "1/2 lemon", "1/4 lime", "2 limes") - NEVER use ml or "juice of". Just show the amount of fruit. Auto-conversion: 30ml = 1 whole fruit
   - **Avocado**: ALWAYS specify in pieces (e.g., "1 avocado", "1/2 avocado", "1/4 avocado") - NEVER use grams. Auto-conversion: 150g = 1 avocado, 75g = 1/2, 40g = 1/4
   - **Plant-based milk**: ALWAYS use "plant-based milk" instead of specific types (almond, soy, oat milk) - this allows users to choose their preferred plant milk. Exception: coconut milk stays separate when used for flavor in curries
   - **Pantry items and seasonings** (CRITICAL - NEVER use "to taste" or vague descriptions):
