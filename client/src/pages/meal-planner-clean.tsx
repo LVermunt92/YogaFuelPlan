@@ -555,7 +555,7 @@ function MealPlannerMain() {
           // Parse quantity and unit from totalAmount (e.g., "200g" -> quantity: 200, unit: "g")
           const parseQuantityAndUnit = (totalAmount: string): { quantity: number; unit: string } => {
             if (!totalAmount || totalAmount === '') {
-              return { quantity: 1, unit: '' };
+              return { quantity: 0, unit: '' };
             }
             const cleanAmount = totalAmount.trim();
             const match = cleanAmount.match(/^(\d+(?:\.\d+)?)\s*(.*)/);
@@ -1548,13 +1548,15 @@ function MealPlannerMain() {
                                                   </TooltipProvider>
                                                 )}
                                               </span>
-                                              <span className={`font-semibold text-sm whitespace-nowrap ${
-                                                item.isChecked 
-                                                  ? 'text-green-600 line-through decoration-2' 
-                                                  : 'text-gray-600'
-                                              }`}>
-                                                {item.quantity} {item.unit}
-                                              </span>
+                                              {item.quantity > 0 && (
+                                                <span className={`font-semibold text-sm whitespace-nowrap ${
+                                                  item.isChecked 
+                                                    ? 'text-green-600 line-through decoration-2' 
+                                                    : 'text-gray-600'
+                                                }`}>
+                                                  {item.quantity} {item.unit}
+                                                </span>
+                                              )}
                                             </div>
                                           </div>
                                         </div>
@@ -1571,7 +1573,9 @@ function MealPlannerMain() {
                         <div className="mt-3 pt-3 border-t border-border">
                           <AlbertHeijnIntegration 
                             ingredients={persistentShoppingList.items?.map(item => 
-                              `${item.quantity}${item.unit ? ` ${item.unit}` : ''} ${item.productName}`
+                              item.quantity > 0 
+                                ? `${item.quantity}${item.unit ? ` ${item.unit}` : ''} ${item.productName}`
+                                : item.productName
                             ) || []}
                             mealPlanId={persistentShoppingList.mealPlanId || selectedMealPlan || undefined}
                           />
