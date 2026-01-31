@@ -13,7 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
-import { Settings, Users, Calculator, Database, Activity, Target, ChefHat, Save, Edit, Trash2, Plus, AlertTriangle, Search, Filter, Download, Upload, Eye, Leaf, X } from "lucide-react";
+import { Settings, Users, Calculator, Database, Activity, Target, ChefHat, Save, Edit, Trash2, Plus, AlertTriangle, Search, Filter, Download, Upload, Eye, Leaf, X, RefreshCw } from "lucide-react";
 import { useTranslations } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -1755,6 +1755,33 @@ function AdminPanelMain() {
     }
   });
 
+  // Update nutrition values (polyphenols, omega-3) for all recipes
+  const [isUpdatingNutrition, setIsUpdatingNutrition] = useState(false);
+  const updateNutritionMutation = useMutation({
+    mutationFn: async () => {
+      setIsUpdatingNutrition(true);
+      const response = await apiRequest('POST', '/api/admin/update-polyphenols', {});
+      return response.json();
+    },
+    onSuccess: (data) => {
+      setIsUpdatingNutrition(false);
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/unified-recipes'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/recipes/stats'] });
+      toast({
+        title: "Success",
+        description: data.message || `Updated ${data.updatedRecipes} recipes`,
+      });
+    },
+    onError: () => {
+      setIsUpdatingNutrition(false);
+      toast({
+        title: "Error",
+        description: "Failed to update nutrition values",
+        variant: "destructive",
+      });
+    }
+  });
+
   // Update nutrition configuration
   const updateConfigMutation = useMutation({
     mutationFn: async (config: NutritionConfig) => {
@@ -3377,6 +3404,44 @@ function AdminPanelMain() {
                     </div>
                   </div>
                   
+                  <div className="border rounded-lg p-4 bg-green-50">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                          <Activity className="h-4 w-4" />
+                          Update nutrition values
+                        </h3>
+                        <p className="text-sm text-gray-600 mb-3">
+                          Batch update polyphenols and omega-3 values for all recipes based on ingredient analysis.
+                          This calculates values from ingredients using nutritional data.
+                        </p>
+                        <div className="text-xs text-gray-500 space-y-1">
+                          <p>• Polyphenols: berries, cocoa, olive oil, tea, spices, leafy greens</p>
+                          <p>• Omega-3: fatty fish, flax, chia, walnuts, hemp seeds</p>
+                        </div>
+                      </div>
+                      <Button
+                        onClick={() => updateNutritionMutation.mutate()}
+                        disabled={isUpdatingNutrition}
+                        size="sm"
+                        className="shrink-0"
+                        data-testid="button-update-nutrition"
+                      >
+                        {isUpdatingNutrition ? (
+                          <>
+                            <Activity className="h-4 w-4 mr-2 animate-spin" />
+                            Updating...
+                          </>
+                        ) : (
+                          <>
+                            <RefreshCw className="h-4 w-4 mr-2" />
+                            Update values
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+
                   <div className="border rounded-lg p-4 bg-blue-50">
                     <div className="flex items-start gap-3">
                       <div className="shrink-0 mt-0.5">

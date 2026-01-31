@@ -178,6 +178,44 @@ export function calculateVegetableGrams(allIngredients: string[]): number {
 }
 
 /**
+ * Calculate cocoa flavanols from ingredients
+ * Dark chocolate/cocoa contains ~200-500mg flavanols per 100g
+ * We estimate based on detected cocoa/chocolate ingredients
+ */
+export function calculateCocoaFlavanols(allIngredients: string[]): number {
+  let totalFlavanols = 0;
+  
+  const cocoaKeywords = [
+    { keyword: 'cocoa powder', flavanolsPer100g: 500 },
+    { keyword: 'cacao powder', flavanolsPer100g: 500 },
+    { keyword: 'raw cacao', flavanolsPer100g: 600 },
+    { keyword: 'dark chocolate', flavanolsPer100g: 200 },
+    { keyword: 'cocoa nibs', flavanolsPer100g: 700 },
+    { keyword: 'cacao nibs', flavanolsPer100g: 700 },
+    { keyword: 'chocolate', flavanolsPer100g: 100 }, // generic chocolate (milk chocolate has less)
+  ];
+  
+  allIngredients.forEach(ingredient => {
+    const lowerIngredient = ingredient.toLowerCase();
+    
+    for (const { keyword, flavanolsPer100g } of cocoaKeywords) {
+      if (lowerIngredient.includes(keyword)) {
+        const grams = extractGrams(ingredient);
+        if (grams > 0) {
+          totalFlavanols += (grams / 100) * flavanolsPer100g;
+        } else {
+          // Default estimate if no grams specified (e.g., "1 tbsp cocoa" ≈ 5g)
+          totalFlavanols += 25; // ~5g × 500mg/100g
+        }
+        break; // Only count once per ingredient
+      }
+    }
+  });
+  
+  return Math.round(totalFlavanols);
+}
+
+/**
  * Count unique plants from a list of ingredients
  */
 export function countUniquePlants(allIngredients: string[]): {

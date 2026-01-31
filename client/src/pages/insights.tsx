@@ -4,7 +4,7 @@ import { ArrowLeft, Info } from "lucide-react";
 import { Link } from "wouter";
 import { useTranslations } from "@/lib/translations";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { countUniquePlants, calculateVegetableGrams } from "@/lib/plant-diversity";
+import { countUniquePlants, calculateVegetableGrams, calculateCocoaFlavanols } from "@/lib/plant-diversity";
 import { getIngredientColors as getColorsFromConfig, kpiOrder } from "@/lib/kpi-config";
 import { useState } from "react";
 import {
@@ -190,8 +190,9 @@ export default function Insights() {
     // Fiber target (gender-specific)
     const fiberTarget = nutritionTargets?.fiber || 30;
     
-    // Cocoa flavanols estimate
-    const avgCocoaFlavanolsPerDay = Math.min(avgProteinPerDay * 8, 500);
+    // Cocoa flavanols - calculate from actual cocoa/chocolate ingredients
+    const totalCocoaFlavanols = calculateCocoaFlavanols(allMealIngredients);
+    const avgCocoaFlavanolsPerDay = Math.round(totalCocoaFlavanols / 7);
     const cocoaFlavanolsTarget = 500;
     
     // Plant diversity - count actual unique plants from all meal ingredients using shared utility

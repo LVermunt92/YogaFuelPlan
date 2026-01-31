@@ -4349,7 +4349,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // POST /api/admin/update-polyphenols - Batch update polyphenol values for all recipes
+  // POST /api/admin/update-polyphenols - Batch update polyphenol and omega-3 values for all recipes
   app.post("/api/admin/update-polyphenols", async (req, res) => {
     try {
       const userId = getUserIdFromToken(req);
@@ -4365,26 +4365,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const recipes = await getCompleteEnhancedMealDatabase();
       let updatedCount = 0;
 
+      // Helper to extract grams from ingredient string
+      const extractGrams = (ingredient: string): number => {
+        const match = ingredient.toLowerCase().match(/(\d+(?:\.\d+)?)\s*(?:g|gram|grams)\b/i);
+        return match ? parseFloat(match[1]) : 0;
+      };
+
       for (const recipe of recipes) {
         const ingredients = recipe.ingredients || [];
         let polyphenols = 0;
+        let omega3 = 0;
 
         for (const ingredient of ingredients) {
           const lower = ingredient.toLowerCase();
+          const grams = extractGrams(ingredient);
           
-          // Berries - very high in polyphenols
+          // === POLYPHENOLS ===
+          // Berries - very high in polyphenols (~300mg per 100g)
           if (lower.includes('berry') || lower.includes('berries') || lower.includes('blueberr') || 
               lower.includes('strawberr') || lower.includes('raspberr') || lower.includes('blackberr') ||
               lower.includes('açaí') || lower.includes('acai')) {
-            polyphenols += 300;
+            polyphenols += grams > 0 ? (grams / 100) * 300 : 300;
           }
-          // Cocoa/chocolate - extremely high
+          // Cocoa/chocolate - extremely high (~500mg per 100g)
           else if (lower.includes('cocoa') || lower.includes('cacao') || lower.includes('dark chocolate')) {
-            polyphenols += 500;
+            polyphenols += grams > 0 ? (grams / 100) * 500 : 500;
           }
-          // Olive oil - good source
+          // Olive oil - good source (~50mg per tbsp/15ml)
           else if (lower.includes('olive oil')) {
-            polyphenols += 50;
+            polyphenols += grams > 0 ? (grams / 15) * 50 : 50;
           }
           // Tea - very high
           else if (lower.includes('green tea') || lower.includes('matcha')) {
@@ -4402,24 +4411,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
           // Dark leafy greens
           else if (lower.includes('spinach') || lower.includes('kale') || lower.includes('arugula')) {
-            polyphenols += 100;
+            polyphenols += grams > 0 ? (grams / 100) * 100 : 100;
           }
           // Nuts
           else if (lower.includes('walnut') || lower.includes('pecan') || lower.includes('hazelnut')) {
-            polyphenols += 80;
+            polyphenols += grams > 0 ? (grams / 30) * 80 : 80;
           }
           else if (lower.includes('almond')) {
-            polyphenols += 40;
+            polyphenols += grams > 0 ? (grams / 30) * 40 : 40;
           }
           // Purple/red vegetables and fruits
           else if (lower.includes('red onion') || lower.includes('purple') || lower.includes('beet')) {
-            polyphenols += 60;
+            polyphenols += grams > 0 ? (grams / 100) * 60 : 60;
           }
           else if (lower.includes('pomegranate')) {
             polyphenols += 250;
           }
           else if (lower.includes('cherry') || lower.includes('plum') || lower.includes('grape')) {
-            polyphenols += 100;
+            polyphenols += grams > 0 ? (grams / 100) * 100 : 100;
           }
           // Coffee
           else if (lower.includes('coffee') || lower.includes('espresso')) {
@@ -4427,22 +4436,79 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
           // Legumes
           else if (lower.includes('black bean') || lower.includes('kidney bean') || lower.includes('lentil')) {
-            polyphenols += 40;
+            polyphenols += grams > 0 ? (grams / 100) * 40 : 40;
           }
           // Citrus
           else if (lower.includes('orange') || lower.includes('lemon') || lower.includes('lime') || lower.includes('grapefruit')) {
             polyphenols += 30;
           }
+
+          // === OMEGA-3 ===
+          // Fatty fish - very high (1000-2500mg per 100g)
+          if (lower.includes('salmon')) {
+            omega3 += grams > 0 ? (grams / 100) * 2000 : 2000;
+          }
+          else if (lower.includes('mackerel')) {
+            omega3 += grams > 0 ? (grams / 100) * 2500 : 2500;
+          }
+          else if (lower.includes('sardine')) {
+            omega3 += grams > 0 ? (grams / 100) * 1500 : 1500;
+          }
+          else if (lower.includes('herring') || lower.includes('anchov')) {
+            omega3 += grams > 0 ? (grams / 100) * 1800 : 1800;
+          }
+          else if (lower.includes('trout')) {
+            omega3 += grams > 0 ? (grams / 100) * 1000 : 1000;
+          }
+          else if (lower.includes('tuna')) {
+            omega3 += grams > 0 ? (grams / 100) * 300 : 300;
+          }
+          // Seeds - high in ALA
+          else if (lower.includes('flax') || lower.includes('linseed')) {
+            omega3 += grams > 0 ? (grams / 10) * 2300 : 2300; // per 10g serving
+          }
+          else if (lower.includes('chia')) {
+            omega3 += grams > 0 ? (grams / 10) * 1800 : 1800;
+          }
+          else if (lower.includes('hemp seed') || lower.includes('hemp heart')) {
+            omega3 += grams > 0 ? (grams / 30) * 900 : 900;
+          }
+          // Walnuts
+          else if (lower.includes('walnut')) {
+            omega3 += grams > 0 ? (grams / 30) * 2500 : 2500;
+          }
+          // Oils
+          else if (lower.includes('flaxseed oil') || lower.includes('linseed oil')) {
+            omega3 += grams > 0 ? (grams / 15) * 7000 : 7000;
+          }
+          // Edamame/soybeans
+          else if (lower.includes('edamame') || lower.includes('soybean')) {
+            omega3 += grams > 0 ? (grams / 100) * 400 : 400;
+          }
+          // Eggs (omega-3 enriched estimate)
+          else if (lower.includes('egg')) {
+            omega3 += 100; // per egg
+          }
+          // Seaweed/algae
+          else if (lower.includes('seaweed') || lower.includes('nori') || lower.includes('algae') || lower.includes('spirulina')) {
+            omega3 += 200;
+          }
         }
 
-        // Update nutrition with polyphenols
-        if (polyphenols > 0) {
-          const servings = recipe.nutrition?.servings || 1;
-          const polyphenolsPerServing = Math.round(polyphenols / servings);
-          
+        // Update nutrition with polyphenols and omega-3
+        const servings = recipe.nutrition?.servings || 1;
+        const polyphenolsPerServing = Math.round(polyphenols / servings);
+        const omega3PerServing = Math.round(omega3 / servings);
+        
+        // Only update if we calculated some values or if existing values are 0/missing
+        const existingPolyphenols = recipe.nutrition?.polyphenols || 0;
+        const existingOmega3 = recipe.nutrition?.omega3 || 0;
+        
+        if (polyphenolsPerServing > 0 || omega3PerServing > 0 || existingPolyphenols === 0 || existingOmega3 === 0) {
           const updatedNutrition = {
             ...recipe.nutrition,
-            polyphenols: polyphenolsPerServing
+            polyphenols: polyphenolsPerServing > 0 ? polyphenolsPerServing : existingPolyphenols,
+            omega3: omega3PerServing > 0 ? omega3PerServing : existingOmega3
           };
 
           await storage.saveRecipeModification(recipe.id || recipe.name, {
@@ -4462,13 +4528,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       invalidateEnhancedMealDatabaseCache();
       
       res.json({
-        message: `Updated polyphenol values for ${updatedCount} recipes`,
+        message: `Updated polyphenol and omega-3 values for ${updatedCount} recipes`,
         totalRecipes: recipes.length,
         updatedRecipes: updatedCount
       });
     } catch (error) {
-      console.error("Error updating polyphenols:", error);
-      res.status(500).json({ message: "Failed to update polyphenol values" });
+      console.error("Error updating polyphenols and omega-3:", error);
+      res.status(500).json({ message: "Failed to update nutritional values" });
     }
   });
 
