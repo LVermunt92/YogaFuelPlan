@@ -21,6 +21,7 @@ import { hasAdequateProteinSource, enhanceRecipeWithProtein } from './protein-va
 import { hasAdequateFiberSource, enhanceRecipeWithFiber } from './fiber-validator';
 import cron from 'node-cron';
 import { normalizeToSunday, getNextSunday, getCurrentWeekSunday, isValidWeekStart, getAllowedWeekStarts } from './date-utils';
+import { cleanIngredientList } from './ingredient-cleaner';
 import { isExemptFromMealPlanRequirements } from '@shared/admin-utils';
 import { getSeasonalInfo, getCurrentSeasonMonths, AMSTERDAM_MONTHLY_PRODUCE } from './seasonal-advisor';
 import { db } from './db';
@@ -4173,12 +4174,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // This ensures uniqueness and compatibility with translation table
         const customId = String(Date.now());
         
+        // Clean ingredients before saving (normalize pantry items, citrus, avocados)
+        const cleanedIngredients = cleanIngredientList(recipeData.ingredients);
+        
         // Create recipe directly in database
         const newRecipe = await storage.createRecipe({
           id: customId,
           name: recipeData.name,
           category: recipeData.category,
-          ingredients: recipeData.ingredients,
+          ingredients: cleanedIngredients,
           instructions: recipeData.recipe?.instructions || recipeData.instructions || [],
           portion: recipeData.portion || "1 serving",
           nutrition: recipeData.nutrition,

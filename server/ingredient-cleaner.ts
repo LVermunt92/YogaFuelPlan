@@ -89,13 +89,96 @@ export function cleanIngredientDescription(ingredient: string): string {
 }
 
 /**
+ * Normalizes pantry items to have specific amounts instead of vague descriptions
+ * Examples:
+ * "salt to taste" → "2g salt"
+ * "pinch of pepper" → "0.5g black pepper"
+ * "olive oil for drizzling" → "10ml olive oil"
+ * "handful fresh parsley" → "20g fresh parsley"
+ */
+export function normalizePantryItems(ingredient: string): string {
+  if (!ingredient) return ingredient;
+  
+  let normalized = ingredient;
+  
+  // Fix "to taste" patterns
+  if (/salt\s*(and\s+pepper\s*)?to\s+taste/i.test(normalized)) {
+    normalized = '2g salt';
+  } else if (/pepper\s*to\s+taste/i.test(normalized) || /black pepper,?\s+to\s+taste/i.test(normalized)) {
+    normalized = '1g black pepper';
+  } else if (/stevia\s+to\s+taste/i.test(normalized)) {
+    normalized = '1g stevia';
+  } else if (/to\s+taste/i.test(normalized)) {
+    // Generic "to taste" - remove it
+    normalized = normalized.replace(/,?\s*to\s+taste/gi, '').trim();
+  }
+  
+  // Fix "pinch of" patterns
+  if (/pinch\s+(of\s+)?salt/i.test(normalized)) {
+    normalized = '1g salt';
+  } else if (/pinch\s+(of\s+)?sea\s+salt/i.test(normalized)) {
+    normalized = '1g sea salt';
+  } else if (/pinch\s+(of\s+)?(black\s+)?pepper/i.test(normalized)) {
+    normalized = '0.5g black pepper';
+  } else if (/pinch\s+(of\s+)?dried\s+(\w+)/i.test(normalized)) {
+    normalized = normalized.replace(/pinch\s+(of\s+)?/i, '1g ');
+  } else if (/pinch\s+(of\s+)?/i.test(normalized)) {
+    normalized = normalized.replace(/pinch\s+(of\s+)?/i, '0.5g ');
+  }
+  
+  // Fix "for drizzling/cooking" patterns
+  if (/olive\s+oil\s+(for\s+)?(drizzling|cooking)/i.test(normalized)) {
+    normalized = '10ml olive oil';
+  } else if (/coconut\s+oil\s+for\s+cooking/i.test(normalized)) {
+    normalized = '15ml coconut oil';
+  } else if (/oil\s+for\s+cooking/i.test(normalized)) {
+    normalized = '15ml sunflower oil';
+  } else if (/drizzle\s+of\s+(toasted\s+)?sesame\s+oil/i.test(normalized)) {
+    normalized = '5ml sesame oil';
+  } else if (/extra\s+honey\s+for\s+drizzling/i.test(normalized)) {
+    normalized = '10ml honey';
+  } else if (/for\s+(drizzling|cooking)/i.test(normalized)) {
+    normalized = normalized.replace(/\s+for\s+(drizzling|cooking)/gi, '').trim();
+  }
+  
+  // Fix "handful" patterns
+  if (/handful\s+(of\s+)?(fresh\s+)?parsley/i.test(normalized)) {
+    normalized = '20g fresh parsley';
+  } else if (/handful\s+(of\s+)?(fresh\s+)?cilantro/i.test(normalized)) {
+    normalized = '20g fresh cilantro';
+  } else if (/handful\s+(of\s+)?(fresh\s+)?basil/i.test(normalized)) {
+    normalized = '20g fresh basil';
+  } else if (/handful\s+(of\s+)?(fresh\s+)?mint/i.test(normalized)) {
+    normalized = '20g fresh mint';
+  } else if (/handfuls?\s+(of\s+)?kale/i.test(normalized)) {
+    normalized = '60g kale';
+  } else if (/handfuls?\s+(of\s+)?(fresh\s+)?spinach/i.test(normalized)) {
+    normalized = '30g spinach';
+  } else if (/handful\s+(of\s+)?/i.test(normalized)) {
+    normalized = normalized.replace(/(\d+\s+)?(large\s+)?handfuls?\s+(of\s+)?/i, '20g ');
+  }
+  
+  // Fix bare "Salt" or "Pepper" without amounts (exact matches)
+  if (/^salt$/i.test(normalized) || /^sea salt$/i.test(normalized)) {
+    normalized = '2g salt';
+  } else if (/^pepper$/i.test(normalized) || /^black pepper$/i.test(normalized)) {
+    normalized = '1g black pepper';
+  } else if (/^salt and pepper$/i.test(normalized) || /^salt and black pepper$/i.test(normalized)) {
+    normalized = '2g salt, 1g black pepper';
+  }
+  
+  return normalized.trim();
+}
+
+/**
  * Cleans an entire array of ingredient strings
- * Applies: citrus conversion, avocado conversion, parenthetical removal
+ * Applies: citrus conversion, avocado conversion, pantry normalization, parenthetical removal
  */
 export function cleanIngredientList(ingredients: string[]): string[] {
   return ingredients.map(ingredient => {
     let cleaned = convertCitrusTopieces(ingredient);
     cleaned = convertAvocadoToPieces(cleaned);
+    cleaned = normalizePantryItems(cleaned);
     cleaned = cleanIngredientDescription(cleaned);
     return cleaned;
   });
