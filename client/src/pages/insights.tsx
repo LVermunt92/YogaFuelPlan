@@ -185,8 +185,15 @@ export default function Insights() {
     const avgCocoaFlavanolsPerDay = Math.min(avgProteinPerDay * 8, 500);
     const cocoaFlavanolsTarget = 500;
     
-    // Plant diversity estimate
-    const plantDiversityCount = Math.min(Math.round(avgFiberPerDay), 30);
+    // Plant diversity - count actual unique plants from all meal ingredients using shared utility
+    const allMealIngredients: string[] = [];
+    currentMealPlan.meals.forEach(meal => {
+      if (meal.ingredients && Array.isArray(meal.ingredients)) {
+        allMealIngredients.push(...meal.ingredients);
+      }
+    });
+    const plantDiversityResult = countUniquePlants(allMealIngredients);
+    const plantDiversityCount = plantDiversityResult.count;
     const plantDiversityTarget = 30;
 
     // Vitamin K target (gender-specific)

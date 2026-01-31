@@ -4349,6 +4349,129 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // POST /api/admin/update-polyphenols - Batch update polyphenol values for all recipes
+  app.post("/api/admin/update-polyphenols", async (req, res) => {
+    try {
+      const userId = getUserIdFromToken(req);
+      if (!userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+
+      const isAdmin = await isAdminUser(userId);
+      if (!isAdmin) {
+        return res.status(403).json({ message: "Admin access required" });
+      }
+
+      const recipes = await getCompleteEnhancedMealDatabase();
+      let updatedCount = 0;
+
+      for (const recipe of recipes) {
+        const ingredients = recipe.ingredients || [];
+        let polyphenols = 0;
+
+        for (const ingredient of ingredients) {
+          const lower = ingredient.toLowerCase();
+          
+          // Berries - very high in polyphenols
+          if (lower.includes('berry') || lower.includes('berries') || lower.includes('blueberr') || 
+              lower.includes('strawberr') || lower.includes('raspberr') || lower.includes('blackberr') ||
+              lower.includes('açaí') || lower.includes('acai')) {
+            polyphenols += 300;
+          }
+          // Cocoa/chocolate - extremely high
+          else if (lower.includes('cocoa') || lower.includes('cacao') || lower.includes('dark chocolate')) {
+            polyphenols += 500;
+          }
+          // Olive oil - good source
+          else if (lower.includes('olive oil')) {
+            polyphenols += 50;
+          }
+          // Tea - very high
+          else if (lower.includes('green tea') || lower.includes('matcha')) {
+            polyphenols += 200;
+          }
+          // Spices and herbs
+          else if (lower.includes('turmeric') || lower.includes('ginger')) {
+            polyphenols += 80;
+          }
+          else if (lower.includes('cinnamon')) {
+            polyphenols += 100;
+          }
+          else if (lower.includes('clove') || lower.includes('oregano') || lower.includes('thyme') || lower.includes('rosemary')) {
+            polyphenols += 60;
+          }
+          // Dark leafy greens
+          else if (lower.includes('spinach') || lower.includes('kale') || lower.includes('arugula')) {
+            polyphenols += 100;
+          }
+          // Nuts
+          else if (lower.includes('walnut') || lower.includes('pecan') || lower.includes('hazelnut')) {
+            polyphenols += 80;
+          }
+          else if (lower.includes('almond')) {
+            polyphenols += 40;
+          }
+          // Purple/red vegetables and fruits
+          else if (lower.includes('red onion') || lower.includes('purple') || lower.includes('beet')) {
+            polyphenols += 60;
+          }
+          else if (lower.includes('pomegranate')) {
+            polyphenols += 250;
+          }
+          else if (lower.includes('cherry') || lower.includes('plum') || lower.includes('grape')) {
+            polyphenols += 100;
+          }
+          // Coffee
+          else if (lower.includes('coffee') || lower.includes('espresso')) {
+            polyphenols += 150;
+          }
+          // Legumes
+          else if (lower.includes('black bean') || lower.includes('kidney bean') || lower.includes('lentil')) {
+            polyphenols += 40;
+          }
+          // Citrus
+          else if (lower.includes('orange') || lower.includes('lemon') || lower.includes('lime') || lower.includes('grapefruit')) {
+            polyphenols += 30;
+          }
+        }
+
+        // Update nutrition with polyphenols
+        if (polyphenols > 0) {
+          const servings = recipe.nutrition?.servings || 1;
+          const polyphenolsPerServing = Math.round(polyphenols / servings);
+          
+          const updatedNutrition = {
+            ...recipe.nutrition,
+            polyphenols: polyphenolsPerServing
+          };
+
+          await storage.saveRecipeModification(recipe.id || recipe.name, {
+            name: recipe.name,
+            ingredients: recipe.ingredients,
+            instructions: recipe.recipe?.instructions || [],
+            nutrition: updatedNutrition,
+            category: recipe.category,
+            tags: recipe.tags,
+            portion: recipe.portion
+          });
+          
+          updatedCount++;
+        }
+      }
+
+      invalidateEnhancedMealDatabaseCache();
+      
+      res.json({
+        message: `Updated polyphenol values for ${updatedCount} recipes`,
+        totalRecipes: recipes.length,
+        updatedRecipes: updatedCount
+      });
+    } catch (error) {
+      console.error("Error updating polyphenols:", error);
+      res.status(500).json({ message: "Failed to update polyphenol values" });
+    }
+  });
+
   // GET /api/recipes/export - Export all recipes as JSON
   app.get("/api/recipes/export", async (req, res) => {
     try {

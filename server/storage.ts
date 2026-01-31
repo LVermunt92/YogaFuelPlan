@@ -1206,7 +1206,8 @@ export class DatabaseStorage implements IStorage {
       addedSugar: meals.addedSugar,
       freeSugar: meals.freeSugar,
       intrinsicSugar: meals.intrinsicSugar,
-      recipeTags: recipes.tags
+      recipeTags: recipes.tags,
+      ingredients: recipes.ingredients
     }).from(meals)
       .leftJoin(recipes, or(
         eq(sql`${meals.recipeId}::text`, recipes.id),
