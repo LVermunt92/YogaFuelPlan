@@ -25,6 +25,7 @@ export const kpiOrder: KPIConfig[] = [
   { id: 'iron', label: 'Iron', labelNl: 'IJzer', unit: 'mg', color: 'red-600', type: 'micro', showInRecipe: true },
   { id: 'vitaminC', label: 'Vitamin C', labelNl: 'Vitamine C', unit: 'mg', color: 'amber-500', type: 'micro', showInRecipe: true },
   { id: 'omega3', label: 'Omega-3', labelNl: 'Omega-3', unit: 'mg', color: 'sky-500', type: 'micro', showInRecipe: true },
+  { id: 'polyphenols', label: 'Polyphenols', labelNl: 'Polyfenolen', unit: 'mg', color: 'purple-600', type: 'micro', showInRecipe: true },
   { id: 'sugar', label: 'Sugar', labelNl: 'Suiker', unit: 'g', color: 'pink-500', type: 'macro', showInRecipe: true },
   { id: 'sodium', label: 'Sodium', labelNl: 'Natrium', unit: 'mg', color: 'gray-600', type: 'micro', showInRecipe: true },
 ];

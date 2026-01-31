@@ -52,6 +52,7 @@ export const translations = {
     vitaminC: "Vitamin C",
     zinc: "Zinc",
     omega3: "Omega-3",
+    polyphenols: "Polyphenols",
     vegetables: "Vegetables",
     fruitsStarches: "Fruits/starches",
     
@@ -663,6 +664,7 @@ export const translations = {
     vitaminC: "Vitamine C",
     zinc: "Zink",
     omega3: "Omega-3",
+    polyphenols: "Polyfenolen",
     fiber: "Vezels",
     fruitsStarches: "Fruit/zetmeel",
     sugar: "Suiker",

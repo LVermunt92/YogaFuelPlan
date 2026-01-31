@@ -2205,11 +2205,15 @@ function MealPlannerMain() {
                         </div>
                       </div>
 
-                      {/* Row 5: Omega-3 */}
-                      <div className="grid grid-cols-1 gap-2 text-center mt-2 pt-2 border-t border-gray-200">
+                      {/* Row 5: Omega-3 and Polyphenols */}
+                      <div className="grid grid-cols-2 gap-2 text-center mt-2 pt-2 border-t border-gray-200">
                         <div>
                           <p className="text-xs font-bold text-sky-500">{Math.round((recipeData.nutrition as any).omega3 || 0)}mg</p>
                           <p className="text-[10px] text-gray-500">{t.omega3 || 'Omega-3'}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-purple-600">{Math.round((recipeData.nutrition as any).polyphenols || 0)}mg</p>
+                          <p className="text-[10px] text-gray-500">{t.polyphenols || 'Polyphenols'}</p>
                         </div>
                       </div>
                       

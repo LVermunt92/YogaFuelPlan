@@ -14,7 +14,9 @@ export interface NutritionAnalysis {
   calcium: number;
   iron: number;
   vitaminC: number;
+  zinc: number;
   omega3: number;
+  polyphenols: number;
   costEuros: number;
 }
 
@@ -47,6 +49,7 @@ Respond with JSON in this exact format:
   "iron": number (milligrams per serving, with one decimal),
   "vitaminC": number (milligrams per serving),
   "omega3": number (milligrams per serving - total ALA, EPA, DHA combined),
+  "polyphenols": number (milligrams per serving - total polyphenols from berries, dark chocolate, olive oil, tea, coffee, colorful vegetables, herbs, spices),
   "costEuros": number (estimated cost in euros per serving, based on typical European grocery prices)
 }
 
@@ -85,11 +88,12 @@ Be as accurate as possible based on standard nutritional data for the ingredient
       vitaminC: Math.max(0, Math.round(nutritionData.vitaminC || 0)),
       zinc: Math.max(0, Math.round((nutritionData.zinc || 0) * 10) / 10), // Keep one decimal for zinc
       omega3: Math.max(0, Math.round(nutritionData.omega3 || 0)), // mg of omega-3 fatty acids
+      polyphenols: Math.max(0, Math.round(nutritionData.polyphenols || 0)), // mg of polyphenols
       costEuros: Math.max(0, Math.round((nutritionData.costEuros || 2.5) * 100) / 100), // Keep two decimals for cost, default €2.50
     };
 
-  } catch (error) {
-    console.error('AI nutrition analysis failed:', error.message);
+  } catch (error: any) {
+    console.error('AI nutrition analysis failed:', error?.message || error);
     
     // Smart fallback based on ingredient analysis
     return estimateNutritionFromIngredients(ingredients, servings);
@@ -112,6 +116,7 @@ function estimateNutritionFromIngredients(ingredients: string[], servings: numbe
   let totalVitaminC = 0;
   let totalZinc = 0;
   let totalOmega3 = 0;
+  let totalPolyphenols = 0;
   let totalCost = 0;
 
   ingredients.forEach(ingredient => {
@@ -179,6 +184,7 @@ function estimateNutritionFromIngredients(ingredients: string[], servings: numbe
     } else if (lowerIngredient.includes('spinach') || lowerIngredient.includes('kale')) {
       totalCarbs += 2; totalCalories += 10; totalFiber += 2; totalProtein += 1; totalCost += 1.0;
       totalPotassium += 400; totalVitaminC += 30; totalCalcite += 100; totalIron += 2.7;
+      totalPolyphenols += 100; // Dark leafy greens: good polyphenol source
     } else if (lowerIngredient.includes('onion')) {
       totalCarbs += 5; totalCalories += 20; totalFiber += 1; totalCost += 0.3;
       totalPotassium += 150; totalVitaminC += 7;
@@ -200,13 +206,17 @@ function estimateNutritionFromIngredients(ingredients: string[], servings: numbe
     } else if (lowerIngredient.includes('strawberr') || lowerIngredient.includes('berries') || lowerIngredient.includes('blueberr')) {
       totalCarbs += 8; totalCalories += 35; totalFiber += 2; totalCost += 1.2;
       totalPotassium += 150; totalVitaminC += 60; totalIron += 0.4;
+      totalPolyphenols += 300; // Berries: very high in polyphenols
     } else if (lowerIngredient.includes('banana')) {
       totalCarbs += 23; totalCalories += 90; totalFiber += 2.5; totalCost += 0.3;
       totalPotassium += 400; totalVitaminC += 10;
     }
     
     // Fats and oils
-    else if (lowerIngredient.includes('oil') || lowerIngredient.includes('butter')) {
+    else if (lowerIngredient.includes('olive oil')) {
+      totalFats += 10; totalCalories += 90; totalCost += 0.4;
+      totalPolyphenols += 50; // Olive oil: good polyphenol source
+    } else if (lowerIngredient.includes('oil') || lowerIngredient.includes('butter')) {
       totalFats += 10; totalCalories += 90; totalCost += 0.3;
     } else if (lowerIngredient.includes('avocado')) {
       totalFats += 15; totalCalories += 160; totalFiber += 7; totalCost += 1.5;
@@ -254,6 +264,23 @@ function estimateNutritionFromIngredients(ingredients: string[], servings: numbe
       totalPotassium += 100; totalIron += 0.5;
     }
     
+    // High polyphenol foods
+    else if (lowerIngredient.includes('cocoa') || lowerIngredient.includes('dark chocolate') || lowerIngredient.includes('cacao')) {
+      totalFats += 3; totalCalories += 40; totalCost += 0.5;
+      totalPolyphenols += 500; // Cocoa: extremely high in polyphenols
+      totalIron += 2.0;
+    } else if (lowerIngredient.includes('turmeric') || lowerIngredient.includes('ginger')) {
+      totalPolyphenols += 80; // Spices: good polyphenol source
+    } else if (lowerIngredient.includes('cinnamon')) {
+      totalPolyphenols += 100; // Cinnamon: high in polyphenols
+    } else if (lowerIngredient.includes('green tea') || lowerIngredient.includes('matcha')) {
+      totalPolyphenols += 200; // Green tea: very high in polyphenols
+    } else if (lowerIngredient.includes('red onion') || lowerIngredient.includes('purple')) {
+      totalPolyphenols += 60; // Red/purple vegetables: good polyphenol source
+    } else if (lowerIngredient.includes('pomegranate')) {
+      totalPolyphenols += 250; // Pomegranate: very high in polyphenols
+    }
+    
     // Default for unrecognized ingredients
     else {
       totalCalories += 30; totalCarbs += 5; totalCost += 0.5;
@@ -276,6 +303,7 @@ function estimateNutritionFromIngredients(ingredients: string[], servings: numbe
     vitaminC: Math.round(totalVitaminC / servings),
     zinc: Math.round((totalZinc / servings) * 10) / 10,
     omega3: Math.round(totalOmega3 / servings),
+    polyphenols: Math.round(totalPolyphenols / servings),
     costEuros: Math.round((totalCost / servings) * 100) / 100,
   };
 
