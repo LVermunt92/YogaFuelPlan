@@ -1,6 +1,6 @@
 // Service Worker with safe caching strategy
 // Version changes on each deploy to trigger iOS PWA updates
-const SW_VERSION = "2026-02-08T14-47-08"; // Change this on each deploy
+const SW_VERSION = "2026-02-08T18-32-46"; // Change this on each deploy
 const RUNTIME_CACHE = `runtime-${SW_VERSION}`;
 
 // Take control fast - apply updates immediately
