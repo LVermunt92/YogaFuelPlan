@@ -17940,8 +17940,13 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
         
         if (existing) {
           existing.count += 1;
-          // Add the quantity for this meal
-          existing.totalAmount += parsedAmount.amount;
+          const existUnit = existing.unit.replace(/s$/, '');
+          const newUnit = parsedAmount.unit.replace(/s$/, '');
+          if (existUnit === newUnit) {
+            existing.totalAmount += parsedAmount.amount;
+          } else {
+            console.warn(`⚠️ UNIT MISMATCH SKIPPED: "${finalIngredientName}" has ${existing.totalAmount} ${existing.unit} but got ${parsedAmount.amount} ${parsedAmount.unit} - skipping mismatched entry to prevent corruption`);
+          }
         } else {
           ingredientAmounts.set(finalIngredientName, { 
             totalAmount: parsedAmount.amount, 
@@ -18014,8 +18019,13 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
           
           if (existing) {
             existing.count += 1;
-            // Add the quantity for this meal
-            existing.totalAmount += parsedAmount.amount;
+            const existUnit = existing.unit.replace(/s$/, '');
+            const newUnit = parsedAmount.unit.replace(/s$/, '');
+            if (existUnit === newUnit) {
+              existing.totalAmount += parsedAmount.amount;
+            } else {
+              console.warn(`⚠️ UNIT MISMATCH SKIPPED (fallback): "${cleanIngredient}" has ${existing.totalAmount} ${existing.unit} but got ${parsedAmount.amount} ${parsedAmount.unit} - skipping`);
+            }
           } else {
             ingredientAmounts.set(cleanIngredient, { 
               totalAmount: parsedAmount.amount, 
