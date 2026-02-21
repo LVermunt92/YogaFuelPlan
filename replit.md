@@ -56,6 +56,12 @@ Preferred communication style: Simple, everyday language.
     - **Examples**: "20g fresh parsley, chopped", "10g fresh cilantro", "15g fresh basil leaves", "10g fresh dill"
   - When AI generates new recipes, it MUST follow these ingredient format rules to ensure shopping list accuracy and consistency
 
+**FULL NUTRITION KPIs FOR ALL NEW RECIPES** (CRITICAL):
+  - Every new recipe MUST include estimates for ALL tracked KPIs in the nutrition object:
+    - **Required**: calories, protein, carbohydrates, fats, fiber, sugar, sodium, vitaminK, iron, calcium, potassium, vitaminC, prepTime, costEuros, proteinPerEuro
+    - **When applicable**: cocoaFlavanols (only for recipes containing cacao/cocoa/chocolate)
+  - Never add a recipe with only basic macros - always include the full micronutrient set
+
 **SIMPLIFIED INGREDIENT LIST PREFERENCE** (User's preferred style):
   - **Keep it simple**: Use format `[amount] [item]` without excessive detail
   - **Remove parenthetical explanations**: ❌ "35g chickpeas (canned, drained and rinsed)" → ✅ "35g chickpeas"

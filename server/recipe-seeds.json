@@ -44721,7 +44721,12 @@
       "vitaminK": 8,
       "prepTime": 25,
       "costEuros": 3.5,
-      "proteinPerEuro": 4.6
+      "proteinPerEuro": 4.6,
+      "iron": 4.2,
+      "calcium": 180,
+      "potassium": 620,
+      "vitaminC": 48,
+      "cocoaFlavanols": 350
     },
     "tags": [
       "Vegetarian",
@@ -44790,7 +44795,11 @@
       "vitaminK": 2,
       "prepTime": 25,
       "costEuros": 2.5,
-      "proteinPerEuro": 5.6
+      "proteinPerEuro": 5.6,
+      "iron": 3.0,
+      "calcium": 160,
+      "potassium": 520,
+      "vitaminC": 5
     },
     "tags": [
       "Vegetarian",
@@ -44877,7 +44886,11 @@
       "vitaminK": 12,
       "prepTime": 20,
       "costEuros": 3.0,
-      "proteinPerEuro": 7.3
+      "proteinPerEuro": 7.3,
+      "iron": 5.8,
+      "calcium": 195,
+      "potassium": 680,
+      "vitaminC": 8
     },
     "tags": [
       "Vegetarian",
@@ -44959,7 +44972,11 @@
       "vitaminK": 4,
       "prepTime": 15,
       "costEuros": 1.8,
-      "proteinPerEuro": 6.7
+      "proteinPerEuro": 6.7,
+      "iron": 2.8,
+      "calcium": 85,
+      "potassium": 340,
+      "vitaminC": 0
     },
     "tags": [
       "Vegetarian",
@@ -45041,7 +45058,11 @@
       "vitaminK": 4,
       "prepTime": 15,
       "costEuros": 2.0,
-      "proteinPerEuro": 5.0
+      "proteinPerEuro": 5.0,
+      "iron": 2.5,
+      "calcium": 80,
+      "potassium": 310,
+      "vitaminC": 0
     },
     "tags": [
       "Vegetarian",
