@@ -2097,12 +2097,12 @@ function MealPlannerMain() {
                     
                     return (
                       <div className="mt-6">
-                        <div className="flex items-center gap-2 mb-3">
-                          <ChefHat className="h-5 w-5 text-emerald-600" />
-                          <h3 className="font-semibold text-gray-900">{t.mealPrepOverview || 'Meal prep overview'}</h3>
-                          <span className="ml-auto text-sm text-gray-500">
-                            {totalPrepTime} min {t.totalPrepTime?.toLowerCase() || 'total prep time'}
-                          </span>
+                        <div className="flex justify-between items-center p-3 font-semibold text-base border rounded-lg bg-white border-gray-200 mb-2">
+                          <div className="flex items-center gap-2">
+                            <ChefHat className="h-4 w-4 text-emerald-600" />
+                            <span className="text-gray-900">{t.mealPrepOverview || 'Meal prep overview'}</span>
+                          </div>
+                          <span className="text-emerald-600 text-sm">{totalPrepTime} min</span>
                         </div>
                         
                         <div className="block sm:hidden space-y-2">
