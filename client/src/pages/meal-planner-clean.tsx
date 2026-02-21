@@ -2061,6 +2061,114 @@ function MealPlannerMain() {
                       </div>
                     </div>
                   </div>
+
+                  {currentMealPlan?.weekendMealPrepEnabled && (() => {
+                    const dayNames = [t.sunday, t.monday, t.tuesday, t.wednesday, t.thursday, t.friday, t.saturday];
+                    const cookingSessions: { day: number; dayName: string; mealType: string; recipeName: string; prepTime: number; servesdays: string }[] = [];
+                    
+                    if (!currentMealPlan?.meals) return null;
+                    
+                    currentMealPlan.meals.forEach(meal => {
+                      if (meal.isLeftover || meal.foodDescription === 'Eating out') return;
+                      
+                      const leftoverDays = currentMealPlan.meals!
+                        .filter(m => m.isLeftover && m.foodDescription.replace(' (leftover)', '') === meal.foodDescription && m.mealType === meal.mealType)
+                        .map(m => dayNames[m.day - 1]?.slice(0, 3));
+                      
+                      const servedDays = [dayNames[meal.day - 1]?.slice(0, 3), ...leftoverDays].join(', ');
+                      
+                      cookingSessions.push({
+                        day: meal.day,
+                        dayName: dayNames[meal.day - 1] || '',
+                        mealType: meal.mealType === 'breakfast' || meal.mealType === 'ontbijt' 
+                          ? t.breakfast 
+                          : meal.mealType === 'lunch' 
+                            ? 'Lunch' 
+                            : t.dinner,
+                        recipeName: meal.foodDescription,
+                        prepTime: meal.prepTime || 0,
+                        servesdays: servedDays,
+                      });
+                    });
+                    
+                    cookingSessions.sort((a, b) => a.day - b.day || a.mealType.localeCompare(b.mealType));
+                    
+                    const totalPrepTime = cookingSessions.reduce((sum, s) => sum + s.prepTime, 0);
+                    const sundaySessions = cookingSessions.filter(s => s.day === 1);
+                    const sundayPrepTime = sundaySessions.reduce((sum, s) => sum + s.prepTime, 0);
+                    
+                    return (
+                      <div className="mt-6">
+                        <Card className="border-amber-200 bg-amber-50/50">
+                          <CardContent className="p-4">
+                            <div className="flex items-center gap-2 mb-3">
+                              <ChefHat className="h-5 w-5 text-amber-600" />
+                              <h3 className="font-semibold text-amber-900">{t.mealPrepOverview || 'Meal prep overview'}</h3>
+                              <span className="ml-auto text-sm text-amber-700">
+                                {t.totalPrepTime || 'Total prep time'}: {totalPrepTime} min
+                              </span>
+                            </div>
+                            
+                            {sundaySessions.length > 0 && (
+                              <div className="mb-3">
+                                <div className="text-xs font-medium text-amber-700 uppercase tracking-wider mb-2">
+                                  {t.sundayEvening || 'Sunday evening'} — {sundayPrepTime} min
+                                </div>
+                                <div className="space-y-1">
+                                  {sundaySessions.map((session, idx) => (
+                                    <div key={`sun-${idx}`} className="flex items-center justify-between bg-white rounded-lg px-3 py-2 text-sm border border-amber-100">
+                                      <div className="flex items-center gap-2">
+                                        <span className="text-xs font-medium text-amber-600 w-16">{session.mealType}</span>
+                                        <span className="text-gray-900">{session.recipeName}</span>
+                                      </div>
+                                      <div className="flex items-center gap-3 text-xs text-gray-500">
+                                        <span>{session.prepTime} min</span>
+                                        <span className="text-amber-600">{session.servesdays}</span>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                            
+                            {(() => {
+                              const otherSessions = cookingSessions.filter(s => s.day !== 1);
+                              const groupedByDay = otherSessions.reduce((acc, s) => {
+                                if (!acc[s.day]) acc[s.day] = [];
+                                acc[s.day].push(s);
+                                return acc;
+                              }, {} as Record<number, typeof cookingSessions>);
+                              
+                              return Object.entries(groupedByDay).map(([dayNum, sessions]) => {
+                                const dayPrepTime = sessions.reduce((sum, s) => sum + s.prepTime, 0);
+                                return (
+                                  <div key={dayNum} className="mb-3">
+                                    <div className="text-xs font-medium text-amber-700 uppercase tracking-wider mb-2">
+                                      {sessions[0].dayName} ({t.freshCooking || 'Fresh cooking'}) — {dayPrepTime} min
+                                    </div>
+                                    <div className="space-y-1">
+                                      {sessions.map((session, idx) => (
+                                        <div key={`d${dayNum}-${idx}`} className="flex items-center justify-between bg-white rounded-lg px-3 py-2 text-sm border border-amber-100">
+                                          <div className="flex items-center gap-2">
+                                            <span className="text-xs font-medium text-amber-600 w-16">{session.mealType}</span>
+                                            <span className="text-gray-900">{session.recipeName}</span>
+                                          </div>
+                                          <div className="flex items-center gap-3 text-xs text-gray-500">
+                                            <span>{session.prepTime} min</span>
+                                            <span className="text-amber-600">{session.servesdays}</span>
+                                          </div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                );
+                              });
+                            })()}
+                          </CardContent>
+                        </Card>
+                      </div>
+                    );
+                  })()}
                 </div>
               ) : (
                 <div className="text-center py-12">

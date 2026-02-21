@@ -242,6 +242,14 @@ export const translations = {
     portions: "Portions",
     servings: "Servings",
     
+    // Meal prep overview
+    mealPrepOverview: "Meal prep overview",
+    cookingSession: "Cooking session",
+    totalPrepTime: "Total prep time",
+    mealsServed: "Meals served",
+    sundayEvening: "Sunday evening",
+    freshCooking: "Fresh cooking",
+    
     // Ingredients to Use Up
     ingredientsToUseUp: "Ingredients to use up",
     leftovers: "Leftovers",
@@ -933,6 +941,14 @@ export const translations = {
     
     // Portion sizes  
     portions: "Porties",
+    
+    // Meal prep overview
+    mealPrepOverview: "Overzicht maaltijdvoorbereiding",
+    cookingSession: "Kooksessie",
+    totalPrepTime: "Totale bereidingstijd",
+    mealsServed: "Maaltijden geserveerd",
+    sundayEvening: "Zondagavond",
+    freshCooking: "Vers koken",
     
     // Ingredients to Use Up
     ingredientsToUseUp: "Ingrediënten om Op te Maken",
