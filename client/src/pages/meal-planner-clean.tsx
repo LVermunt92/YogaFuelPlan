@@ -2069,109 +2069,90 @@ function MealPlannerMain() {
                   </div>
 
                   {(currentMealPlan?.weekendMealPrepEnabled || weekendMealPrepEnabled) && (() => {
-                    const dayNames = [t.sunday, t.monday, t.tuesday, t.wednesday, t.thursday, t.friday, t.saturday];
-                    const cookingSessions: { day: number; dayName: string; mealType: string; recipeName: string; prepTime: number; servesdays: string }[] = [];
-                    
                     if (!currentMealPlan?.meals) return null;
+                    
+                    const seen = new Set<string>();
+                    const prepRecipes: { name: string; mealType: string; prepTime: number; protein: number; recipeId: number | null; mealId: number }[] = [];
                     
                     currentMealPlan.meals.forEach(meal => {
                       if (meal.isLeftover || meal.foodDescription === 'Eating out') return;
-                      
-                      const leftoverDays = currentMealPlan.meals!
-                        .filter(m => m.isLeftover && m.foodDescription.replace(' (leftover)', '') === meal.foodDescription && m.mealType === meal.mealType)
-                        .map(m => dayNames[m.day - 1]?.slice(0, 3));
-                      
-                      const servedDays = [dayNames[meal.day - 1]?.slice(0, 3), ...leftoverDays].join(', ');
-                      
-                      cookingSessions.push({
-                        day: meal.day,
-                        dayName: dayNames[meal.day - 1] || '',
+                      const key = meal.foodDescription;
+                      if (seen.has(key)) return;
+                      seen.add(key);
+                      prepRecipes.push({
+                        name: meal.foodDescription,
                         mealType: meal.mealType === 'breakfast' || meal.mealType === 'ontbijt' 
                           ? t.breakfast 
-                          : meal.mealType === 'lunch' 
-                            ? 'Lunch' 
-                            : t.dinner,
-                        recipeName: meal.foodDescription,
+                          : meal.mealType === 'lunch' ? 'Lunch' : t.dinner,
                         prepTime: meal.prepTime || 0,
-                        servesdays: servedDays,
+                        protein: meal.protein || 0,
+                        recipeId: meal.recipeId,
+                        mealId: meal.id,
                       });
                     });
                     
-                    cookingSessions.sort((a, b) => a.day - b.day || a.mealType.localeCompare(b.mealType));
+                    if (prepRecipes.length === 0) return null;
                     
-                    const totalPrepTime = cookingSessions.reduce((sum, s) => sum + s.prepTime, 0);
-                    const sundaySessions = cookingSessions.filter(s => s.day === 1);
-                    const sundayPrepTime = sundaySessions.reduce((sum, s) => sum + s.prepTime, 0);
+                    const totalPrepTime = prepRecipes.reduce((sum, r) => sum + r.prepTime, 0);
                     
                     return (
                       <div className="mt-6">
-                        <Card className="border-amber-200 bg-amber-50/50">
-                          <CardContent className="p-4">
-                            <div className="flex items-center gap-2 mb-3">
-                              <ChefHat className="h-5 w-5 text-amber-600" />
-                              <h3 className="font-semibold text-amber-900">{t.mealPrepOverview || 'Meal prep overview'}</h3>
-                              <span className="ml-auto text-sm text-amber-700">
-                                {t.totalPrepTime || 'Total prep time'}: {totalPrepTime} min
-                              </span>
-                            </div>
-                            
-                            {sundaySessions.length > 0 && (
-                              <div className="mb-3">
-                                <div className="text-xs font-medium text-amber-700 uppercase tracking-wider mb-2">
-                                  {t.sundayEvening || 'Sunday evening'} — {sundayPrepTime} min
-                                </div>
-                                <div className="space-y-1">
-                                  {sundaySessions.map((session, idx) => (
-                                    <div key={`sun-${idx}`} className="flex items-center justify-between bg-white rounded-lg px-3 py-2 text-sm border border-amber-100">
-                                      <div className="flex items-center gap-2">
-                                        <span className="text-xs font-medium text-amber-600 w-16">{session.mealType}</span>
-                                        <span className="text-gray-900">{session.recipeName}</span>
-                                      </div>
-                                      <div className="flex items-center gap-3 text-xs text-gray-500">
-                                        <span>{session.prepTime} min</span>
-                                        <span className="text-amber-600">{session.servesdays}</span>
-                                      </div>
-                                    </div>
-                                  ))}
-                                </div>
+                        <div className="flex items-center gap-2 mb-3">
+                          <ChefHat className="h-5 w-5 text-emerald-600" />
+                          <h3 className="font-semibold text-gray-900">{t.mealPrepOverview || 'Meal prep overview'}</h3>
+                          <span className="ml-auto text-sm text-gray-500">
+                            {totalPrepTime} min {t.totalPrepTime?.toLowerCase() || 'total prep time'}
+                          </span>
+                        </div>
+                        
+                        <div className="block sm:hidden space-y-2">
+                          {prepRecipes.map((recipe, idx) => (
+                            <div
+                              key={idx}
+                              className="cursor-pointer hover:opacity-90 p-3 border-l-4 border-emerald-400 bg-emerald-50 rounded-r-lg"
+                              onClick={() => setSelectedMealId(recipe.mealId)}
+                            >
+                              <div className="flex items-center gap-2 mb-1">
+                                <div className="text-xs font-medium text-emerald-700">{recipe.mealType.toUpperCase()}</div>
                               </div>
-                            )}
-                            
-                            {(() => {
-                              const otherSessions = cookingSessions.filter(s => s.day !== 1);
-                              const groupedByDay = otherSessions.reduce((acc, s) => {
-                                if (!acc[s.day]) acc[s.day] = [];
-                                acc[s.day].push(s);
-                                return acc;
-                              }, {} as Record<number, typeof cookingSessions>);
-                              
-                              return Object.entries(groupedByDay).map(([dayNum, sessions]) => {
-                                const dayPrepTime = sessions.reduce((sum, s) => sum + s.prepTime, 0);
-                                return (
-                                  <div key={dayNum} className="mb-3">
-                                    <div className="text-xs font-medium text-amber-700 uppercase tracking-wider mb-2">
-                                      {sessions[0].dayName} ({t.freshCooking || 'Fresh cooking'}) — {dayPrepTime} min
-                                    </div>
-                                    <div className="space-y-1">
-                                      {sessions.map((session, idx) => (
-                                        <div key={`d${dayNum}-${idx}`} className="flex items-center justify-between bg-white rounded-lg px-3 py-2 text-sm border border-amber-100">
-                                          <div className="flex items-center gap-2">
-                                            <span className="text-xs font-medium text-amber-600 w-16">{session.mealType}</span>
-                                            <span className="text-gray-900">{session.recipeName}</span>
-                                          </div>
-                                          <div className="flex items-center gap-3 text-xs text-gray-500">
-                                            <span>{session.prepTime} min</span>
-                                            <span className="text-amber-600">{session.servesdays}</span>
-                                          </div>
-                                        </div>
-                                      ))}
-                                    </div>
-                                  </div>
-                                );
-                              });
-                            })()}
-                          </CardContent>
-                        </Card>
+                              <div className="text-sm font-medium text-gray-900 mb-1">{recipe.name}</div>
+                              <div className="text-sm text-gray-600">
+                                <span className="text-emerald-600">{recipe.protein}g {t.protein.toLowerCase()}</span> • {recipe.prepTime} min
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        
+                        <div className="hidden sm:block">
+                          <div className="w-full overflow-x-auto">
+                            <div className="bg-white rounded-lg border min-w-[600px]">
+                              <table className="w-full">
+                                <thead className="bg-gray-50">
+                                  <tr>
+                                    <th className="w-24 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{language === 'nl' ? 'Type' : 'Type'}</th>
+                                    <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.recipe}</th>
+                                    <th className="w-24 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.protein}</th>
+                                    <th className="w-24 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.prepTime}</th>
+                                  </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-gray-200">
+                                  {prepRecipes.map((recipe, idx) => (
+                                    <tr
+                                      key={idx}
+                                      className="hover:bg-gray-50 cursor-pointer"
+                                      onClick={() => setSelectedMealId(recipe.mealId)}
+                                    >
+                                      <td className="px-3 py-3 text-xs font-medium text-emerald-600">{recipe.mealType}</td>
+                                      <td className="px-3 py-3 text-sm font-medium text-gray-900">{recipe.name}</td>
+                                      <td className="px-3 py-3 text-xs font-bold text-emerald-600">{recipe.protein}g</td>
+                                      <td className="px-3 py-3 text-xs text-gray-500">{recipe.prepTime} min</td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     );
                   })()}
