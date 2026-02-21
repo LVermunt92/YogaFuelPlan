@@ -2106,8 +2106,7 @@ function MealPlannerMain() {
                       <div className="mt-6">
                         <div className="flex justify-between items-center p-3 font-semibold text-base border rounded-lg bg-white border-gray-200 mb-2">
                           <div className="flex items-center gap-2">
-                            <ChefHat className="h-4 w-4 text-emerald-600" />
-                            <span className="text-gray-900">{t.mealPrepOverview || 'Meal prep overview'}</span>
+                            <span className="text-gray-900">{t.mealPrepOverview || 'Weekend meal prep'}</span>
                           </div>
                           <span className="text-emerald-600 text-sm">{totalPrepTime} min</span>
                         </div>
