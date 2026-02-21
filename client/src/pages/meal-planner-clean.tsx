@@ -6,7 +6,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
@@ -1282,8 +1281,8 @@ function MealPlannerMain() {
               </div>
 
               {/* Weekend Meal Prep Toggle */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5">
+              <div>
+                <div className="flex items-center gap-1.5 mb-1">
                   <Label htmlFor="weekend-meal-prep" className="text-sm font-medium text-gray-700 cursor-pointer">
                     {language === 'nl' ? 'Weekend maaltijdbereiding' : 'Weekend meal prep'}
                   </Label>
@@ -1302,12 +1301,30 @@ function MealPlannerMain() {
                     </Tooltip>
                   </TooltipProvider>
                 </div>
-                <Switch
-                  id="weekend-meal-prep"
-                  checked={weekendMealPrepEnabled}
-                  onCheckedChange={setWeekendMealPrepEnabled}
-                  data-testid="switch-weekend-meal-prep"
-                />
+                <div className="flex gap-1">
+                  <button
+                    type="button"
+                    onClick={() => setWeekendMealPrepEnabled(false)}
+                    className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-colors ${
+                      !weekendMealPrepEnabled
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                    }`}
+                  >
+                    {language === 'nl' ? 'Uit' : 'Off'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setWeekendMealPrepEnabled(true)}
+                    className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-colors ${
+                      weekendMealPrepEnabled
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                    }`}
+                  >
+                    {language === 'nl' ? 'Aan' : 'On'}
+                  </button>
+                </div>
               </div>
 
               {/* Ingredients to Use Subtitle */}
