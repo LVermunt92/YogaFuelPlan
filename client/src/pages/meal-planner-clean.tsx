@@ -1282,9 +1282,9 @@ function MealPlannerMain() {
               </div>
 
               {/* Weekend Meal Prep Toggle */}
-              <div className="flex items-center justify-between space-x-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                <div className="flex-1 flex items-center gap-1.5">
-                  <Label htmlFor="weekend-meal-prep" className="text-sm font-medium text-gray-900 dark:text-gray-100 cursor-pointer">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <Label htmlFor="weekend-meal-prep" className="text-sm font-medium text-gray-700 cursor-pointer">
                     {language === 'nl' ? 'Weekend maaltijdbereiding' : 'Weekend meal prep'}
                   </Label>
                   <TooltipProvider>
