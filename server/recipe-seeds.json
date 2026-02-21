@@ -44837,5 +44837,92 @@
     "updatedBy": null,
     "createdAt": "2026-02-21T12:00:00.000Z",
     "updatedAt": "2026-02-21T12:00:00.000Z"
+  },
+  {
+    "id": "10552",
+    "name": "Kimchi pancakes with sesame dipping sauce",
+    "category": "lunch",
+    "ingredients": [
+      "150ml coconut milk",
+      "175g gram flour",
+      "15ml toasted sesame oil",
+      "40g kimchi",
+      "1g hot chilli powder",
+      "2g baking powder",
+      "9g sesame seeds",
+      "0.5g salt",
+      "15ml sesame oil",
+      "15ml tamari",
+      "1 spring onion",
+      "1/2 red chilli",
+      "3g sesame seeds",
+      "5ml brown rice vinegar",
+      "8ml maple syrup"
+    ],
+    "instructions": [
+      "Place the coconut milk, gram flour, toasted sesame oil, chilli powder, baking powder, 9g sesame seeds and salt into a large bowl and mix well until smooth. Stir through the chopped kimchi.",
+      "Place a pan over medium heat and add a drizzle of sesame oil. Once warm, spoon equal amounts of the batter into the pan and cook for 2-3 minutes until golden on one side.",
+      "Flip over and cook for another 3 minutes on the other side. Repeat until all of the mixture has finished.",
+      "Mix together the sesame oil, tamari, spring onion, red chilli, 3g sesame seeds, brown rice vinegar and maple syrup. Serve with the pancakes."
+    ],
+    "portion": "1 serving",
+    "nutrition": {
+      "calories": 620,
+      "protein": 22,
+      "carbohydrates": 48,
+      "fats": 38,
+      "fiber": 10,
+      "sugar": 8,
+      "sodium": 680,
+      "vitaminK": 12,
+      "prepTime": 20,
+      "costEuros": 3.0,
+      "proteinPerEuro": 7.3
+    },
+    "tags": [
+      "Vegetarian",
+      "Vegan",
+      "Gluten-Free",
+      "Lactose-Free",
+      "Anti-Aging",
+      "Ayurvedic",
+      "Fermented",
+      "Follicular",
+      "Ovulation",
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+      "Soy-Free",
+      "Nut-Free"
+    ],
+    "wholeFoodLevel": "high",
+    "vegetableContent": null,
+    "recipeBenefits": [
+      "Kimchi provides probiotics for gut health",
+      "Gram flour is high in protein and naturally gluten-free"
+    ],
+    "recipeTips": [
+      "Let batter rest a few minutes for best texture"
+    ],
+    "recipeNotes": null,
+    "prepTime": 20,
+    "defaultBatchServings": 1,
+    "source": "user",
+    "variantOf": null,
+    "variantType": null,
+    "active": true,
+    "createdBy": null,
+    "updatedBy": null,
+    "createdAt": "2026-02-21T12:00:00.000Z",
+    "updatedAt": "2026-02-21T12:00:00.000Z"
   }
 ]
