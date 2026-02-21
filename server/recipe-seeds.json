@@ -44924,5 +44924,86 @@
     "updatedBy": null,
     "createdAt": "2026-02-21T12:00:00.000Z",
     "updatedAt": "2026-02-21T12:00:00.000Z"
+  },
+  {
+    "id": "10553",
+    "name": "Seeded crepes with spelt and gram flour",
+    "category": "breakfast",
+    "ingredients": [
+      "31g white spelt flour",
+      "31g gram flour",
+      "3g baking powder",
+      "9g mixed seeds",
+      "125ml plant-based milk",
+      "1ml vanilla extract",
+      "15ml maple syrup",
+      "0.5g salt",
+      "5ml olive oil"
+    ],
+    "instructions": [
+      "Sift both flours, baking powder, seeds and salt into a large bowl and stir together.",
+      "Gradually whisk in the plant-based milk, vanilla extract and maple syrup until you have a smooth batter.",
+      "Warm a drizzle of olive oil in a large frying pan over medium-high heat. Once hot, add a ladleful of batter, swirl the mixture around the pan to create a large thin crepe. Cook for 1.5-3 minutes on each side until golden.",
+      "Repeat with the remaining batter, adding more oil to the pan as needed. Wrap finished crepes in a clean tea towel to keep warm.",
+      "Serve immediately with your favourite toppings."
+    ],
+    "portion": "1 serving",
+    "nutrition": {
+      "calories": 320,
+      "protein": 12,
+      "carbohydrates": 42,
+      "fats": 12,
+      "fiber": 5,
+      "sugar": 12,
+      "sodium": 280,
+      "vitaminK": 4,
+      "prepTime": 15,
+      "costEuros": 1.8,
+      "proteinPerEuro": 6.7
+    },
+    "tags": [
+      "Vegetarian",
+      "Vegan",
+      "Lactose-Free",
+      "Ayurvedic",
+      "Nut-Free",
+      "Menstrual",
+      "Follicular",
+      "Ovulation",
+      "Luteal",
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+      "Soy-Free"
+    ],
+    "wholeFoodLevel": "moderate",
+    "vegetableContent": null,
+    "recipeBenefits": [
+      "Mixed seeds provide omega-3 and minerals",
+      "Gram flour adds protein"
+    ],
+    "recipeTips": [
+      "Warm the pan thoroughly before cooking"
+    ],
+    "recipeNotes": null,
+    "prepTime": 15,
+    "defaultBatchServings": 1,
+    "source": "user",
+    "variantOf": null,
+    "variantType": null,
+    "active": true,
+    "createdBy": null,
+    "updatedBy": null,
+    "createdAt": "2026-02-21T12:00:00.000Z",
+    "updatedAt": "2026-02-21T12:00:00.000Z"
   }
 ]
