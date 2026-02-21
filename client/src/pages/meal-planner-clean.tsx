@@ -634,7 +634,7 @@ function MealPlannerMain() {
   });
 
   const { data: weekendPrepRecipes = [] } = useQuery<{ id: string; name: string; dutch_name: string; prep_time: number; protein: number; calories: number; portion: string }[]>({
-    queryKey: ["/api/weekend-prep-recipes", selectedMealPlan],
+    queryKey: [`/api/weekend-prep-recipes/${selectedMealPlan}`],
     enabled: !!authUser?.id && !!selectedMealPlan,
   });
 
