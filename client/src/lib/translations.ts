@@ -243,7 +243,7 @@ export const translations = {
     servings: "Servings",
     
     // Meal prep overview
-    mealPrepOverview: "Meal prep overview",
+    mealPrepOverview: "Weekend meal prep",
     cookingSession: "Cooking session",
     totalPrepTime: "Total prep time",
     mealsServed: "Meals served",
@@ -943,7 +943,7 @@ export const translations = {
     portions: "Porties",
     
     // Meal prep overview
-    mealPrepOverview: "Overzicht maaltijdvoorbereiding",
+    mealPrepOverview: "Weekend meal prep",
     cookingSession: "Kooksessie",
     totalPrepTime: "Totale bereidingstijd",
     mealsServed: "Maaltijden geserveerd",
