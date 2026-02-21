@@ -44755,5 +44755,87 @@
     "updatedBy": null,
     "createdAt": "2026-02-21T12:00:00.000Z",
     "updatedAt": "2026-02-21T12:00:00.000Z"
+  },
+  {
+    "id": "10551",
+    "name": "Banana oat pancakes with ground almonds",
+    "category": "breakfast",
+    "ingredients": [
+      "50g oats",
+      "40g ground almonds",
+      "2.5g ground cinnamon",
+      "10g chia seeds",
+      "100ml plant-based milk",
+      "1 ripe banana",
+      "15ml maple syrup",
+      "8ml coconut oil",
+      "0.5g salt"
+    ],
+    "instructions": [
+      "Place the oats in a food processor and pulse for about 2 minutes to form a dusty flour.",
+      "Add the oat flour to a bowl with the ground almonds, cinnamon, salt and chia seeds. Mix well to remove any lumps.",
+      "Add the plant-based milk, mashed banana and maple syrup. Mix well until a pancake batter forms. Leave for 10-15 minutes to thicken.",
+      "Place a frying pan over medium heat and add the coconut oil. Once warm, add a heaped tablespoon of the pancake mixture to the middle of the pan. Shape into circles and leave untouched for 2-3 minutes until the bottom has cooked.",
+      "Flip the pancakes over and cook on the other side for another 1-2 minutes. Serve topped with maple syrup and sliced banana."
+    ],
+    "portion": "1 serving",
+    "nutrition": {
+      "calories": 480,
+      "protein": 14,
+      "carbohydrates": 52,
+      "fats": 24,
+      "fiber": 10,
+      "sugar": 16,
+      "sodium": 200,
+      "vitaminK": 2,
+      "prepTime": 25,
+      "costEuros": 2.5,
+      "proteinPerEuro": 5.6
+    },
+    "tags": [
+      "Vegetarian",
+      "Vegan",
+      "Gluten-Free",
+      "Lactose-Free",
+      "Anti-Aging",
+      "Ayurvedic",
+      "Menstrual",
+      "Follicular",
+      "Ovulation",
+      "Luteal",
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+      "Soy-Free"
+    ],
+    "wholeFoodLevel": "high",
+    "vegetableContent": null,
+    "recipeBenefits": [
+      "Chia seeds provide omega-3 and fiber",
+      "Ground almonds add protein and healthy fats"
+    ],
+    "recipeTips": [
+      "Let the batter rest 10-15 minutes for best texture"
+    ],
+    "recipeNotes": null,
+    "prepTime": 25,
+    "defaultBatchServings": 1,
+    "source": "user",
+    "variantOf": null,
+    "variantType": null,
+    "active": true,
+    "createdBy": null,
+    "updatedBy": null,
+    "createdAt": "2026-02-21T12:00:00.000Z",
+    "updatedAt": "2026-02-21T12:00:00.000Z"
   }
 ]
