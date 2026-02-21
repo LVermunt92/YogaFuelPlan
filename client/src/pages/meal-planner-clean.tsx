@@ -467,6 +467,12 @@ function MealPlannerMain() {
     enabled: !!selectedMealPlan,
   });
 
+  useEffect(() => {
+    if (currentMealPlan?.weekendMealPrepEnabled != null) {
+      setWeekendMealPrepEnabled(!!currentMealPlan.weekendMealPrepEnabled);
+    }
+  }, [currentMealPlan?.weekendMealPrepEnabled]);
+
   // Fetch recipe for selected meal
   const { data: recipeData, isLoading: loadingRecipe, error: recipeError } = useQuery<RecipeResponse>({
     queryKey: ['/api/meals', selectedMealId, 'recipe', language],
