@@ -633,9 +633,9 @@ function MealPlannerMain() {
     enabled: ouraStatus?.connected === true && !!authUser?.id,
   });
 
-  const { data: weekendPrepRecipeIds = [] } = useQuery<number[]>({
-    queryKey: ["/api/weekend-prep-recipe-ids"],
-    enabled: !!authUser?.id,
+  const { data: weekendPrepRecipes = [] } = useQuery<{ id: string; name: string; dutch_name: string; prep_time: number; protein: number; calories: number; portion: string }[]>({
+    queryKey: ["/api/weekend-prep-recipes", selectedMealPlan],
+    enabled: !!authUser?.id && !!selectedMealPlan,
   });
 
   // Update profile mutation for leftovers
@@ -2074,31 +2074,15 @@ function MealPlannerMain() {
                   </div>
 
                   {(currentMealPlan?.weekendMealPrepEnabled || weekendMealPrepEnabled) && (() => {
-                    if (!currentMealPlan?.meals) return null;
+                    if (weekendPrepRecipes.length === 0) return null;
                     
-                    const weekendPrepSet = new Set(weekendPrepRecipeIds);
-                    const seen = new Set<string>();
-                    const prepRecipes: { name: string; mealType: string; prepTime: number; protein: number; recipeId: number | null; mealId: number }[] = [];
-                    
-                    currentMealPlan.meals.forEach(meal => {
-                      if (meal.isLeftover || meal.foodDescription === 'Eating out') return;
-                      if (!meal.recipeId || !weekendPrepSet.has(meal.recipeId)) return;
-                      const key = meal.foodDescription;
-                      if (seen.has(key)) return;
-                      seen.add(key);
-                      prepRecipes.push({
-                        name: meal.foodDescription,
-                        mealType: meal.mealType === 'breakfast' || meal.mealType === 'ontbijt' 
-                          ? t.breakfast 
-                          : meal.mealType === 'lunch' ? 'Lunch' : t.dinner,
-                        prepTime: meal.prepTime || 0,
-                        protein: meal.protein || 0,
-                        recipeId: meal.recipeId,
-                        mealId: meal.id,
-                      });
-                    });
-                    
-                    if (prepRecipes.length === 0) return null;
+                    const prepRecipes = weekendPrepRecipes.map(r => ({
+                      name: language === 'nl' && r.dutch_name ? r.dutch_name : r.name,
+                      prepTime: r.prep_time || 0,
+                      protein: r.protein || 0,
+                      portion: r.portion || '',
+                      recipeId: r.id,
+                    }));
                     
                     const totalPrepTime = prepRecipes.reduce((sum, r) => sum + r.prepTime, 0);
                     
@@ -2115,15 +2099,11 @@ function MealPlannerMain() {
                           {prepRecipes.map((recipe, idx) => (
                             <div
                               key={idx}
-                              className="cursor-pointer hover:opacity-90 p-3 border-l-4 border-emerald-400 bg-emerald-50 rounded-r-lg"
-                              onClick={() => setSelectedMealId(recipe.mealId)}
+                              className="p-3 border-l-4 border-emerald-400 bg-emerald-50 rounded-r-lg"
                             >
-                              <div className="flex items-center gap-2 mb-1">
-                                <div className="text-xs font-medium text-emerald-700">{recipe.mealType.toUpperCase()}</div>
-                              </div>
                               <div className="text-sm font-medium text-gray-900 mb-1">{recipe.name}</div>
                               <div className="text-sm text-gray-600">
-                                <span className="text-emerald-600">{recipe.protein}g {t.protein.toLowerCase()}</span> • {recipe.prepTime} min
+                                <span className="text-emerald-600">{recipe.protein}g {t.protein.toLowerCase()}</span> • {recipe.prepTime} min • {recipe.portion}
                               </div>
                             </div>
                           ))}
@@ -2131,12 +2111,12 @@ function MealPlannerMain() {
                         
                         <div className="hidden sm:block">
                           <div className="w-full overflow-x-auto">
-                            <div className="bg-white rounded-lg border min-w-[600px]">
+                            <div className="bg-white rounded-lg border min-w-[400px]">
                               <table className="w-full">
                                 <thead className="bg-gray-50">
                                   <tr>
-                                    <th className="w-24 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{language === 'nl' ? 'Type' : 'Type'}</th>
                                     <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.recipe}</th>
+                                    <th className="w-24 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{language === 'nl' ? 'Portie' : 'Portion'}</th>
                                     <th className="w-24 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.protein}</th>
                                     <th className="w-24 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.prepTime}</th>
                                   </tr>
@@ -2145,11 +2125,10 @@ function MealPlannerMain() {
                                   {prepRecipes.map((recipe, idx) => (
                                     <tr
                                       key={idx}
-                                      className="hover:bg-gray-50 cursor-pointer"
-                                      onClick={() => setSelectedMealId(recipe.mealId)}
+                                      className="hover:bg-gray-50"
                                     >
-                                      <td className="px-3 py-3 text-xs font-medium text-emerald-600">{recipe.mealType}</td>
                                       <td className="px-3 py-3 text-sm font-medium text-gray-900">{recipe.name}</td>
+                                      <td className="px-3 py-3 text-xs text-gray-500">{recipe.portion}</td>
                                       <td className="px-3 py-3 text-xs font-bold text-emerald-600">{recipe.protein}g</td>
                                       <td className="px-3 py-3 text-xs text-gray-500">{recipe.prepTime} min</td>
                                     </tr>
