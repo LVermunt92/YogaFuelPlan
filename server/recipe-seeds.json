@@ -45005,5 +45005,88 @@
     "updatedBy": null,
     "createdAt": "2026-02-21T12:00:00.000Z",
     "updatedAt": "2026-02-21T12:00:00.000Z"
+  },
+  {
+    "id": "10553-gf",
+    "name": "Seeded crepes with gram flour (gluten-free)",
+    "category": "breakfast",
+    "ingredients": [
+      "31g rice flour",
+      "31g gram flour",
+      "1g xanthan gum",
+      "3g baking powder",
+      "9g mixed seeds",
+      "125ml plant-based milk",
+      "1ml vanilla extract",
+      "15ml maple syrup",
+      "0.5g salt",
+      "5ml olive oil"
+    ],
+    "instructions": [
+      "Sift the rice flour, gram flour, xanthan gum, baking powder, seeds and salt into a large bowl and stir together.",
+      "Gradually whisk in the plant-based milk, vanilla extract and maple syrup until you have a smooth batter.",
+      "Warm a drizzle of olive oil in a large frying pan over medium-high heat. Once hot, add a ladleful of batter, swirl the mixture around the pan to create a large thin crepe. Cook for 1.5-3 minutes on each side until golden.",
+      "Repeat with the remaining batter, adding more oil to the pan as needed. Wrap finished crepes in a clean tea towel to keep warm.",
+      "Serve immediately with your favourite toppings."
+    ],
+    "portion": "1 serving",
+    "nutrition": {
+      "calories": 310,
+      "protein": 10,
+      "carbohydrates": 42,
+      "fats": 12,
+      "fiber": 4,
+      "sugar": 12,
+      "sodium": 280,
+      "vitaminK": 4,
+      "prepTime": 15,
+      "costEuros": 2.0,
+      "proteinPerEuro": 5.0
+    },
+    "tags": [
+      "Vegetarian",
+      "Vegan",
+      "Gluten-Free",
+      "Lactose-Free",
+      "Ayurvedic",
+      "Nut-Free",
+      "Menstrual",
+      "Follicular",
+      "Ovulation",
+      "Luteal",
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+      "Soy-Free"
+    ],
+    "wholeFoodLevel": "moderate",
+    "vegetableContent": null,
+    "recipeBenefits": [
+      "Mixed seeds provide omega-3 and minerals",
+      "Gram flour adds protein"
+    ],
+    "recipeTips": [
+      "Xanthan gum helps bind the gluten-free flours for better texture"
+    ],
+    "recipeNotes": null,
+    "prepTime": 15,
+    "defaultBatchServings": 1,
+    "source": "variant",
+    "variantOf": "10553",
+    "variantType": "gluten_free",
+    "active": true,
+    "createdBy": null,
+    "updatedBy": null,
+    "createdAt": "2026-02-21T12:00:00.000Z",
+    "updatedAt": "2026-02-21T12:00:00.000Z"
   }
 ]
