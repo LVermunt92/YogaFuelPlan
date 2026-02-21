@@ -633,6 +633,11 @@ function MealPlannerMain() {
     enabled: ouraStatus?.connected === true && !!authUser?.id,
   });
 
+  const { data: weekendPrepRecipeIds = [] } = useQuery<number[]>({
+    queryKey: ["/api/weekend-prep-recipe-ids"],
+    enabled: !!authUser?.id,
+  });
+
   // Update profile mutation for leftovers
   const updateProfileMutation = useMutation({
     mutationFn: async (data: any) => {
@@ -2071,11 +2076,13 @@ function MealPlannerMain() {
                   {(currentMealPlan?.weekendMealPrepEnabled || weekendMealPrepEnabled) && (() => {
                     if (!currentMealPlan?.meals) return null;
                     
+                    const weekendPrepSet = new Set(weekendPrepRecipeIds);
                     const seen = new Set<string>();
                     const prepRecipes: { name: string; mealType: string; prepTime: number; protein: number; recipeId: number | null; mealId: number }[] = [];
                     
                     currentMealPlan.meals.forEach(meal => {
                       if (meal.isLeftover || meal.foodDescription === 'Eating out') return;
+                      if (!meal.recipeId || !weekendPrepSet.has(meal.recipeId)) return;
                       const key = meal.foodDescription;
                       if (seen.has(key)) return;
                       seen.add(key);

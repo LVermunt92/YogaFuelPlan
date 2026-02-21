@@ -3885,6 +3885,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // GET /api/weekend-prep-recipe-ids - Get IDs of recipes tagged Weekend-Prep
+  app.get("/api/weekend-prep-recipe-ids", async (req, res) => {
+    try {
+      const userId = getUserIdFromToken(req);
+      if (!userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+      const result = await db.execute(sql`SELECT id FROM recipes WHERE 'Weekend-Prep' = ANY(tags) AND active = true`);
+      const ids = (result.rows as any[]).map(r => Number(r.id));
+      res.json(ids);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
   // GET /api/recipes - List all recipes with optional search and filtering
   app.get("/api/recipes", async (req, res) => {
     try {
