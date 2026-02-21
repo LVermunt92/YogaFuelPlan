@@ -2062,7 +2062,7 @@ function MealPlannerMain() {
                     </div>
                   </div>
 
-                  {currentMealPlan?.weekendMealPrepEnabled && (() => {
+                  {(currentMealPlan?.weekendMealPrepEnabled || weekendMealPrepEnabled) && (() => {
                     const dayNames = [t.sunday, t.monday, t.tuesday, t.wednesday, t.thursday, t.friday, t.saturday];
                     const cookingSessions: { day: number; dayName: string; mealType: string; recipeName: string; prepTime: number; servesdays: string }[] = [];
                     
