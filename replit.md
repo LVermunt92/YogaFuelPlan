@@ -1,5 +1,5 @@
 # Overview
-This full-stack meal planning application generates personalized weekly meal plans based on user activity levels and dietary preferences. Its purpose is to provide a comprehensive, adaptable solution for healthy meal planning, enhancing healthy eating habits globally and addressing the market potential for personalized nutrition solutions by optimizing user experience and nutritional value. The project aims to be a complete personalized healthy lifestyle planner.
+This full-stack meal planning application generates personalized weekly meal plans based on user activity levels and dietary preferences. It aims to provide a comprehensive, adaptable solution for healthy meal planning, enhancing healthy eating habits globally, addressing the market potential for personalized nutrition solutions, and ultimately serving as a complete personalized healthy lifestyle planner.
 
 # User Preferences
 Preferred communication style: Simple, everyday language.
@@ -93,24 +93,24 @@ Preferred communication style: Simple, everyday language.
     - ✅ "1/2 lime" (piece, not "juice and zest")
 
 # System Architecture
-- **UI/UX Decisions**: Utilizes `shadcn/ui` built on `Radix UI` primitives with `Tailwind CSS` for theming. Focuses on a streamlined interface with standardized color schemes and optimized mobile responsiveness.
+- **UI/UX Decisions**: `shadcn/ui` based on `Radix UI` primitives with `Tailwind CSS` for theming, focusing on a streamlined interface, standardized color schemes, and mobile responsiveness.
 - **Technical Implementations**:
-    - **Frontend**: React 18, TypeScript, Wouter for routing, TanStack React Query for server state.
+    - **Frontend**: React 18, TypeScript, Wouter for routing, TanStack React Query.
     - **Backend**: Express.js with TypeScript, RESTful API.
     - **Database**: PostgreSQL with Drizzle ORM.
-    - **Authentication**: JWT token-based authentication with access and refresh tokens, stored in localStorage, with automatic token refresh.
+    - **Authentication**: JWT token-based (access and refresh tokens), stored in localStorage, with automatic refresh.
 - **Feature Specifications**:
-    - **User Management**: Secure authentication, persistent mobile login, password reset, isolated user data, route protection, and interactive onboarding tutorial.
-    - **Meal Planning**: Calculates protein targets, generates 7-day plans with variety, creates shopping lists, and includes smart AI recipe generation. Incorporates 1 anti-aging meal per day. Plans normalize to Sunday start and are limited to current/next week.
-    - **Meal Prep Engine**: Adapts to user cooking schedules, supporting batch cooking, meal distribution, and dietary fallbacks. Weekday meals are limited to ≤45 minutes prep time, with 2-day batch cooking for breakfasts.
-    - **Dietary Support**: Supports Ayurvedic dietary tags, seasonal adaptation, and menstrual cycle phase tracking with recipe prioritization and weekly highlights.
-    - **Recipe Management**: Automated updates, Dutch translation, metric unit conversion, intelligent ingredient-based matching, automatic substitution, smart vegetarian filtering, enhanced high-protein database, and user-created custom recipes.
-    - **Shopping List Generation**: Consolidated shopping lists with supermarket-ordered categories, dry goods separation, and ingredient normalization, driven by an admin-controlled ingredient mapping system.
-    - **Nutritional Analysis**: Macronutrient distribution tracking, advanced protein range calculator, and AI-powered generation of comprehensive nutritional values.
-    - **Longevity Optimization**: Prioritizes longevity-focused recipes for all users, including resistant starch logic and an anti-aging tag system, with comprehensive Vitamin K content calculation and tracking.
-    - **Weight Management**: Sustainable weight loss tracking with a 15% calorie reduction cap and automatic maintenance weeks. Personalizes meal portions based on individual metabolic needs using the Mifflin-St Jeor BMR formula.
+    - **User Management**: Secure authentication, persistent mobile login, password reset, isolated user data, route protection, interactive onboarding.
+    - **Meal Planning**: Calculates protein targets, generates 7-day plans with variety and 1 anti-aging meal/day, creates shopping lists, and includes smart AI recipe generation. Plans normalize to Sunday start and are limited to current/next week.
+    - **Meal Prep Engine**: Adapts to user cooking schedules, supports batch cooking (2-day for breakfasts), meal distribution, and dietary fallbacks. Weekday meals ≤45 minutes prep time.
+    - **Dietary Support**: Ayurvedic dietary tags, seasonal adaptation, menstrual cycle phase tracking with recipe prioritization.
+    - **Recipe Management**: Automated updates, Dutch translation, metric unit conversion, intelligent ingredient-based matching, automatic substitution, smart vegetarian filtering, enhanced high-protein database, user-created custom recipes.
+    - **Shopping List Generation**: Consolidated lists with supermarket-ordered categories, dry goods separation, ingredient normalization, and admin-controlled ingredient mapping.
+    - **Nutritional Analysis**: Macronutrient distribution tracking, advanced protein range calculator, AI-powered generation of comprehensive nutritional values.
+    - **Longevity Optimization**: Prioritizes longevity-focused recipes, resistant starch logic, anti-aging tag system, comprehensive Vitamin K tracking.
+    - **Weight Management**: Sustainable weight loss tracking (15% calorie reduction cap, automatic maintenance weeks). Personalizes meal portions via Mifflin-St Jeor BMR formula.
     - **Admin Panel**: Full-featured interface for managing nutrition parameters, system statistics, meal planning logic, and tag management.
-    - **Automatic Recipe Sync**: Exports recipes to `server/recipe-seeds.json` and auto-imports on startup to manage database separation.
+    - **Automatic Recipe Sync**: Exports recipes to `server/recipe-seeds.json` and auto-imports on startup.
 - **System Design Choices**:
     - **Data Flow**: User input drives meal generation, stored in PostgreSQL, displayed via React Query.
     - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, favorite meals, and user-created custom recipes.
