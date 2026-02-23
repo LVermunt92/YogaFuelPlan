@@ -340,7 +340,8 @@ function MealPlannerMain() {
     const start = new Date(weekStart);
     const end = new Date(start);
     end.setDate(start.getDate() + 6);
-    return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}-${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+    const locale = language === 'nl' ? 'nl-NL' : 'en-US';
+    return `${start.toLocaleDateString(locale, { month: 'short', day: 'numeric' })}-${end.toLocaleDateString(locale, { month: 'short', day: 'numeric', year: 'numeric' })}`;
   };
 
   // Get current week Sunday
@@ -1230,7 +1231,7 @@ function MealPlannerMain() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Activity className="h-6 w-6" />
-                  Recent Activity
+                  {t.recentActivity}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -1238,25 +1239,25 @@ function MealPlannerMain() {
                   {ouraData.slice(0, 4).map((data, index) => (
                     <div key={index} className="text-center p-3 bg-gray-50 rounded-lg">
                       <div className="text-sm text-gray-500 mb-1">
-                        {new Date(data.date).toLocaleDateString('en-US', { weekday: 'short' })}
+                        {new Date(data.date).toLocaleDateString(language === 'nl' ? 'nl-NL' : 'en-US', { weekday: 'short' })}
                       </div>
                       <div className="space-y-1">
                         {data.steps && (
                           <div className="text-xs">
                             <span className="font-medium">{data.steps.toLocaleString()}</span>
-                            <span className="text-gray-500 ml-1">steps</span>
+                            <span className="text-gray-500 ml-1">{t.stepsLabel}</span>
                           </div>
                         )}
                         {data.activityScore && (
                           <div className="text-xs">
                             <span className="font-medium">{data.activityScore}</span>
-                            <span className="text-gray-500 ml-1">activity</span>
+                            <span className="text-gray-500 ml-1">{t.activityLabel}</span>
                           </div>
                         )}
                         {data.sleepScore && (
                           <div className="text-xs">
                             <span className="font-medium">{data.sleepScore}</span>
-                            <span className="text-gray-500 ml-1">sleep</span>
+                            <span className="text-gray-500 ml-1">{t.sleepLabel}</span>
                           </div>
                         )}
                       </div>
@@ -1295,7 +1296,7 @@ function MealPlannerMain() {
               <div>
                 <div className="flex items-center gap-1.5 mb-1">
                   <Label htmlFor="weekend-meal-prep" className="text-sm font-medium text-gray-700 cursor-pointer">
-                    {language === 'nl' ? 'Weekend maaltijdbereiding' : 'Weekend meal prep'}
+                    {t.weekendMealPrep}
                   </Label>
                   <TooltipProvider>
                     <Tooltip>
@@ -1304,9 +1305,7 @@ function MealPlannerMain() {
                       </TooltipTrigger>
                       <TooltipContent className="max-w-xs">
                         <p className="text-xs">
-                          {language === 'nl' 
-                            ? 'Bereid componenten van je weekmaaltijden dit weekend voor' 
-                            : 'Prepare components of your weekday meals this weekend'}
+                          {t.weekendMealPrepTooltip}
                         </p>
                       </TooltipContent>
                     </Tooltip>
@@ -1322,7 +1321,7 @@ function MealPlannerMain() {
                         : 'bg-muted text-muted-foreground hover:bg-muted/80'
                     }`}
                   >
-                    {language === 'nl' ? 'Uit' : 'Off'}
+                    {t.offLabel}
                   </button>
                   <button
                     type="button"
@@ -1333,7 +1332,7 @@ function MealPlannerMain() {
                         : 'bg-muted text-muted-foreground hover:bg-muted/80'
                     }`}
                   >
-                    {language === 'nl' ? 'Aan' : 'On'}
+                    {t.onLabel}
                   </button>
                 </div>
               </div>
@@ -1351,10 +1350,7 @@ function MealPlannerMain() {
                       </TooltipTrigger>
                       <TooltipContent className="max-w-xs">
                         <p className="text-xs">
-                          {language === 'nl' 
-                            ? 'Heb je ingrediënten in je koelkast die op moeten? Voeg ze hier toe en we zorgen dat ze worden gebruikt in de maaltijden van volgende week.' 
-                            : 'Got ingredients in your fridge that need to be used up? Add them here and we\'ll make sure they\'re included in next week\'s meals.'
-                          }
+                          {t.ingredientsToUseUpTooltip}
                         </p>
                       </TooltipContent>
                     </Tooltip>
@@ -1366,7 +1362,7 @@ function MealPlannerMain() {
                     type="text"
                     value={newLeftover}
                     onChange={(e) => setNewLeftover(e.target.value)}
-                    placeholder={language === 'nl' ? 'bijv. restje spinazie, oude champignons...' : 'e.g. leftover spinach, aging mushrooms...'}
+                    placeholder={t.ingredientsToUsePlaceholder}
                     className="flex-1"
                     onKeyPress={(e) => {
                       if (e.key === 'Enter') {
@@ -1388,7 +1384,7 @@ function MealPlannerMain() {
                   <div className="space-y-2">
                     <div className="flex items-center gap-1.5">
                       <Label className="text-sm font-medium">
-                        {language === 'nl' ? 'Ingrediënten om op te maken:' : 'Ingredients to use up:'}
+                        {t.ingredientsToUseList}
                       </Label>
                       <TooltipProvider>
                         <Tooltip>
@@ -1397,9 +1393,7 @@ function MealPlannerMain() {
                           </TooltipTrigger>
                           <TooltipContent className="max-w-xs">
                             <p className="text-xs">
-                              {language === 'nl' 
-                                ? 'Deze ingrediënten worden verwerkt in recepten gemarkeerd met het + icoon' 
-                                : 'These ingredients are incorporated in recipes marked with the + icon'}
+                              {t.ingredientsIncorporatedTooltip}
                             </p>
                           </TooltipContent>
                         </Tooltip>
@@ -1480,11 +1474,11 @@ function MealPlannerMain() {
                       <DialogDescription className="flex items-center gap-4 text-xs text-muted-foreground pt-2">
                         <span className="flex items-center gap-1">
                           <Leaf className="h-3 w-3 text-green-600" />
-                          {language === 'nl' ? 'Beter biologisch' : 'Better organic'}
+                          {t.betterOrganic}
                         </span>
                         <span className="flex items-center gap-1">
                           <Factory className="h-3 w-3 text-amber-600" />
-                          {language === 'nl' ? 'Ultra-bewerkt' : 'Ultra-processed'}
+                          {t.ultraProcessed}
                         </span>
                       </DialogDescription>
                     </DialogHeader>
@@ -1501,11 +1495,11 @@ function MealPlannerMain() {
                             <div>
                               <h3 className="font-semibold text-gray-900">{persistentShoppingList.title}</h3>
                               <p className="text-sm text-gray-500">
-                                {persistentShoppingList.checkedItems} of {persistentShoppingList.totalItems} items checked
+                                {persistentShoppingList.checkedItems} {t.ofItems} {persistentShoppingList.totalItems} {t.itemsChecked}
                               </p>
                             </div>
                             <Badge variant="secondary" className="text-sm px-3 py-1">
-                              {persistentShoppingList.totalItems} items
+                              {persistentShoppingList.totalItems} {t.items}
                             </Badge>
                           </div>
                         </div>
@@ -1555,7 +1549,7 @@ function MealPlannerMain() {
                                                         />
                                                       </TooltipTrigger>
                                                       <TooltipContent>
-                                                        <p>{language === 'nl' ? 'Beter biologisch' : 'Better organic'}</p>
+                                                        <p>{t.betterOrganic}</p>
                                                       </TooltipContent>
                                                     </Tooltip>
                                                   </TooltipProvider>
@@ -1570,7 +1564,7 @@ function MealPlannerMain() {
                                                         />
                                                       </TooltipTrigger>
                                                       <TooltipContent>
-                                                        <p>{language === 'nl' ? 'Ultra-bewerkt voedsel' : 'Ultra-processed food'}</p>
+                                                        <p>{t.ultraProcessedFood}</p>
                                                       </TooltipContent>
                                                     </Tooltip>
                                                   </TooltipProvider>
@@ -1627,7 +1621,7 @@ function MealPlannerMain() {
                   {t.savedMealPlans || 'Saved Meal Plans'} ({mealPlans.length})
                 </CardTitle>
                 <p className="text-sm text-gray-500">
-                  Click on a meal plan to view its details
+                  {t.clickToViewDetails}
                 </p>
               </CardHeader>
               <CardContent className="pt-0 px-6 pb-6">
@@ -1656,7 +1650,7 @@ function MealPlannerMain() {
                         <div className="flex items-center gap-3">
                           <div className="text-right">
                             <p className="text-xs text-gray-400">
-                              {plan.createdAt ? `${language === 'nl' ? 'Gegenereerd' : 'Generated'}: ${new Date(plan.createdAt).toLocaleDateString()}` : ''}
+                              {plan.createdAt ? `${t.generated}: ${new Date(plan.createdAt).toLocaleDateString(language === 'nl' ? 'nl-NL' : 'en-US')}` : ''}
                             </p>
                           </div>
                           <Button
@@ -1694,26 +1688,26 @@ function MealPlannerMain() {
               {currentMealPlan?.meals && (
                 <div className="mt-3 px-6">
                   <p className="text-xs font-medium text-gray-700 mb-2">
-                    {language === 'nl' ? 'Kleurlegende:' : 'Color Legend:'}
+                    {t.colorLegend}
                   </p>
                   <div className="flex flex-wrap gap-3 text-xs">
                     <div className="flex items-center gap-1.5">
                       <div className="w-3 h-3 border-l-2 border-green-400 bg-green-50 rounded-sm"></div>
-                      <span className="text-green-700">{language === 'nl' ? 'Vers koken' : 'Fresh cooking'}</span>
+                      <span className="text-green-700">{t.freshCookingLabel}</span>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <div className="w-3 h-3 border-l-2 border-blue-400 bg-blue-50 rounded-sm"></div>
-                      <span className="text-blue-700">{language === 'nl' ? 'Restjes' : 'Leftovers'}</span>
+                      <span className="text-blue-700">{t.leftoversLabel}</span>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <div className="w-3 h-3 border-l-2 border-gray-400 bg-gray-50 rounded-sm"></div>
-                      <span className="text-gray-700">{language === 'nl' ? 'Uit eten' : 'Eating out'}</span>
+                      <span className="text-gray-700">{t.eatingOutLabel}</span>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <div className="flex items-center gap-0.5 text-xs text-orange-600 bg-orange-100 px-1 py-0.5 rounded">
                         <Plus className="h-2 w-2" />
                       </div>
-                      <span className="text-orange-700">{language === 'nl' ? 'Extra ingrediënten' : 'Added ingredients'}</span>
+                      <span className="text-orange-700">{t.addedIngredientsLabel}</span>
                     </div>
                   </div>
                 </div>
@@ -1733,7 +1727,7 @@ function MealPlannerMain() {
                         <div>
                           <div className="mb-2">
                             <p className="text-sm font-medium text-green-800 mb-1">
-                              ✅ {language === 'nl' ? 'Gebruikte restjes:' : 'Used leftovers:'}
+                              ✅ {t.usedLeftovers}
                             </p>
                             <div className="flex flex-wrap gap-1">
                               {userProfile.leftovers.map((ingredient, index) => (
@@ -1743,9 +1737,7 @@ function MealPlannerMain() {
                               ))}
                             </div>
                             <p className="text-xs text-green-600 mt-1">
-                              {language === 'nl' 
-                                ? 'Deze ingrediënten zijn verwerkt in recepten gemarkeerd met het + icoon'
-                                : 'These ingredients are incorporated in recipes marked with the + icon'}
+                              {t.ingredientsIncorporated}
                             </p>
                           </div>
                         </div>
@@ -1755,7 +1747,7 @@ function MealPlannerMain() {
                       return (
                         <div>
                           <p className="text-sm font-medium text-yellow-800 mb-1">
-                            ⏳ {language === 'nl' ? 'Nog te gebruiken:' : 'Still to use:'}
+                            ⏳ {t.stillToUse}
                           </p>
                           <div className="flex flex-wrap gap-1">
                             {userProfile.leftovers.map((ingredient, index) => (
@@ -1834,7 +1826,7 @@ function MealPlannerMain() {
                                   {isLeftoverMeal(dinner) && (
                                     <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">
                                       <RefreshCw className="h-3 w-3" />
-                                      Leftover
+                                      {t.leftover}
                                     </div>
                                   )}
                                 </div>
@@ -1872,7 +1864,7 @@ function MealPlannerMain() {
                                     {isLeftoverMeal(breakfast) && (
                                       <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">
                                         <RefreshCw className="h-3 w-3" />
-                                        Leftover
+                                        {t.leftover}
                                       </div>
                                     )}
                                   </div>
@@ -1903,12 +1895,12 @@ function MealPlannerMain() {
                                         ? 'text-gray-700'
                                         : isLeftoverMeal(lunch) ? 'text-blue-700' : 'text-green-700'
                                     }`}>
-                                      LUNCH
+                                      {t.lunch.toUpperCase()}
                                     </div>
                                     {isLeftoverMeal(lunch) && (
                                       <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">
                                         <RefreshCw className="h-3 w-3" />
-                                        Leftover
+                                        {t.leftover}
                                       </div>
                                     )}
                                   </div>
@@ -1944,7 +1936,7 @@ function MealPlannerMain() {
                                     {isLeftoverMeal(dinner) && (
                                       <div className="flex items-center gap-1 text-xs text-blue-600 bg-blue-100 px-1.5 py-0.5 rounded">
                                         <RefreshCw className="h-3 w-3" />
-                                        Leftover
+                                        {t.leftover}
                                       </div>
                                     )}
                                   </div>
@@ -1966,11 +1958,11 @@ function MealPlannerMain() {
                         <table className="w-full table-fixed">
                           <thead className="bg-gray-50">
                             <tr>
-                              <th className="w-20 px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Day</th>
-                              <th className="w-60 px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Breakfast</th>
-                              <th className="w-60 px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lunch</th>
-                              <th className="w-60 px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dinner</th>
-                              <th className="w-24 px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Protein</th>
+                              <th className="w-20 px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.day}</th>
+                              <th className="w-60 px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.breakfast}</th>
+                              <th className="w-60 px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.lunch}</th>
+                              <th className="w-60 px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.dinner}</th>
+                              <th className="w-24 px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.protein}</th>
                             </tr>
                           </thead>
                           <tbody className="bg-white divide-y divide-gray-200">
@@ -2116,7 +2108,7 @@ function MealPlannerMain() {
                                 <thead className="bg-gray-50">
                                   <tr>
                                     <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.recipe}</th>
-                                    <th className="w-24 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{language === 'nl' ? 'Portie' : 'Portion'}</th>
+                                    <th className="w-24 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.portion}</th>
                                     <th className="w-24 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.protein}</th>
                                     <th className="w-24 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.prepTime}</th>
                                   </tr>
@@ -2145,7 +2137,7 @@ function MealPlannerMain() {
               ) : (
                 <div className="text-center py-12">
                   <Activity className="mx-auto h-12 w-12 mb-4 text-gray-400" />
-                  <p className="text-gray-500">No meal plan selected</p>
+                  <p className="text-gray-500">{t.noMealPlanSelected}</p>
                 </div>
               )}
             </CardContent>
@@ -2178,16 +2170,16 @@ function MealPlannerMain() {
               </div>
             ) : recipeError ? (
               <div className="p-6 text-center">
-                <div className="text-red-500 mb-2">⚠️ Recipe loading failed</div>
+                <div className="text-red-500 mb-2">⚠️ {t.recipeLoadingFailed}</div>
                 <div className="text-sm text-gray-600 mb-4">
-                  Unable to load recipe details. Error: {(recipeError as Error).message}
+                  {t.unableToLoadRecipe}. {(recipeError as Error).message}
                 </div>
                 <Button 
                   onClick={() => setSelectedMealId(null)}
                   variant="outline"
                   size="sm"
                 >
-                  Close
+                  {t.close}
                 </Button>
               </div>
             ) : recipeData ? (
@@ -2258,11 +2250,11 @@ function MealPlannerMain() {
                           <p className="text-xs font-bold bg-gradient-to-r from-red-500 via-green-500 to-purple-500 bg-clip-text text-transparent">
                             {getIngredientColors(recipeData.ingredients || []).size}/6
                           </p>
-                          <p className="text-[10px] text-gray-500">{language === 'nl' ? 'Regenboog' : 'Rainbow'}</p>
+                          <p className="text-[10px] text-gray-500">{t.rainbow}</p>
                         </div>
                         <div>
                           <p className="text-xs font-bold text-cyan-600">{Math.round((recipeData.nutrition.carbohydrates || 0) - (recipeData.nutrition.fiber || 0))}g</p>
-                          <p className="text-[10px] text-gray-500">{language === 'nl' ? 'Netto koolh.' : 'Net carbs'}</p>
+                          <p className="text-[10px] text-gray-500">{t.netCarbs}</p>
                         </div>
                       </div>
 
