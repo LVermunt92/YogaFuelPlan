@@ -16,7 +16,6 @@ Preferred communication style: Simple, everyday language.
   - **Luteal Phase**: Recipes with B vitamins (legumes, whole grains), complex carbs, calcium, and magnesium
   - Apply multiple phase tags when recipes contain ingredients supporting multiple phases
   - Vegetarian/gluten-free/lactose-free recipes should ALWAYS be evaluated for menstrual tags to ensure adequate meal options for strict dietary filters
-
 **RECIPE VARIANT PREVENTION RULES** (CRITICAL - prevents duplicate recipes):
   - **NEVER create gluten-free variants** if base recipe already contains "Gluten-Free" tag (e.g., quinoa/rice/oat-based dishes are naturally gluten-free)
   - **NEVER create lactose-free variants** if base recipe already contains "Lactose-Free" tag (e.g., dishes with almond/coconut/oat milk are naturally lactose-free)
@@ -25,14 +24,12 @@ Preferred communication style: Simple, everyday language.
   - **Chickpea flour (gram flour) is NATURALLY GLUTEN-FREE** - never create separate gluten-free variants for chickpea flour recipes
   - **Check base recipe tags BEFORE creating any variant** - if tag exists, variant is unnecessary
   - **Portion sizing**: All recipes display ingredients for 2 servings (cooking batch), shopping lists calculate: ingredient amount × 2 servings × number of cooking sessions
-
 **REPLACEMENT INGREDIENT FILTERING** (CRITICAL - prevents inappropriate recipes):
   - **Naturally free ingredients** (quinoa, rice, oats, plant-based milk) can appear for ALL users
   - **Replacement ingredients** (gluten-free pasta, lactose-free milk, dairy-free cheese) ONLY appear when user selects that dietary restriction
   - Users WITHOUT gluten-free restriction should NEVER receive recipes with: gluten-free pasta, legume pasta, chickpea pasta, lentil pasta, gluten-free bread, gluten-free flour
   - Users WITHOUT lactose-free restriction should NEVER receive recipes with: lactose-free milk, lactose-free cheese, lactose-free yogurt, dairy-free cheese, vegan cheese
   - This ensures users with no dietary restrictions receive conventional ingredients, not specialty replacement products
-
 **INGREDIENT FORMAT STANDARDS** (CRITICAL - ensures consistent shopping lists):
   - **Bell peppers**: ALWAYS specify in pieces (e.g., "1/2 bell pepper, diced", "1 red bell pepper, sliced") - NEVER use grams
   - **Onions**: ALWAYS specify in pieces (e.g., "1 onion, diced", "1/2 red onion, sliced", "2 green onions") - NEVER use grams
@@ -55,13 +52,11 @@ Preferred communication style: Simple, everyday language.
     - **Fresh herbs (garnish)**: "10g fresh mint" or "10g fresh basil" - NEVER "fresh mint" or "fresh basil"
     - **Examples**: "20g fresh parsley, chopped", "10g fresh cilantro", "15g fresh basil leaves", "10g fresh dill"
   - When AI generates new recipes, it MUST follow these ingredient format rules to ensure shopping list accuracy and consistency
-
 **FULL NUTRITION KPIs FOR ALL NEW RECIPES** (CRITICAL):
   - Every new recipe MUST include estimates for ALL tracked KPIs in the nutrition object:
     - **Required**: calories, protein, carbohydrates, fats, fiber, sugar, sodium, vitaminK, iron, calcium, potassium, vitaminC, prepTime, costEuros, proteinPerEuro
     - **When applicable**: cocoaFlavanols (only for recipes containing cacao/cocoa/chocolate)
   - Never add a recipe with only basic macros - always include the full micronutrient set
-
 **RECIPE TAG POLICY** (CRITICAL - only functional tags allowed):
   - Tags are ONLY for dietary filtering and system logic, NOT for describing recipes
   - **Allowed dietary tags**: Vegetarian, Vegan, Gluten-Free, Lactose-Free, Dairy-Free, Nut-Free, Soy-Free, Pescatarian, Non-Vegetarian, Low-Carb, Keto
@@ -71,7 +66,6 @@ Preferred communication style: Simple, everyday language.
   - **Allowed system tags**: Ayurvedic, Weekend-Prep, custom, Viral, Social-Media
   - **NEVER add** descriptive tags like: cuisine types (Italian, Thai, Asian), cooking methods (One-Pan, Grilled, Roasted), ingredient names (Mushroom, Quinoa, Chocolate), texture/style (Creamy, Hearty, Spicy), or marketing terms (Superfood, Power-Bowl, Instagram-Inspired)
   - AI-generated recipes have automatic tag sanitization that strips non-functional tags
-
 **SIMPLIFIED INGREDIENT LIST PREFERENCE** (User's preferred style):
   - **Keep it simple**: Use format `[amount] [item]` without excessive detail
   - **Remove parenthetical explanations**: ❌ "35g chickpeas (canned, drained and rinsed)" → ✅ "35g chickpeas"
@@ -98,11 +92,11 @@ Preferred communication style: Simple, everyday language.
     - **Frontend**: React 18, TypeScript, Wouter for routing, TanStack React Query.
     - **Backend**: Express.js with TypeScript, RESTful API.
     - **Database**: PostgreSQL with Drizzle ORM.
-    - **Authentication**: JWT token-based (access and refresh tokens), stored in localStorage, with automatic refresh.
+    - **Authentication**: JWT token-based with automatic refresh.
 - **Feature Specifications**:
     - **User Management**: Secure authentication, persistent mobile login, password reset, isolated user data, route protection, interactive onboarding.
     - **Meal Planning**: Calculates protein targets, generates 7-day plans with variety and 1 anti-aging meal/day, creates shopping lists, and includes smart AI recipe generation. Plans normalize to Sunday start and are limited to current/next week.
-    - **Meal Prep Engine**: Adapts to user cooking schedules, supports batch cooking (2-day for breakfasts), meal distribution, and dietary fallbacks. Weekday meals ≤45 minutes prep time.
+    - **Meal Prep Engine**: Adapts to user cooking schedules, supports batch cooking, meal distribution, and dietary fallbacks. Weekday meals ≤45 minutes prep time.
     - **Dietary Support**: Ayurvedic dietary tags, seasonal adaptation, menstrual cycle phase tracking with recipe prioritization.
     - **Recipe Management**: Automated updates, Dutch translation, metric unit conversion, intelligent ingredient-based matching, automatic substitution, smart vegetarian filtering, enhanced high-protein database, user-created custom recipes.
     - **Shopping List Generation**: Consolidated lists with supermarket-ordered categories, dry goods separation, ingredient normalization, and admin-controlled ingredient mapping.
