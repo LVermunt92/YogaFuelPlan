@@ -62,6 +62,16 @@ Preferred communication style: Simple, everyday language.
     - **When applicable**: cocoaFlavanols (only for recipes containing cacao/cocoa/chocolate)
   - Never add a recipe with only basic macros - always include the full micronutrient set
 
+**RECIPE TAG POLICY** (CRITICAL - only functional tags allowed):
+  - Tags are ONLY for dietary filtering and system logic, NOT for describing recipes
+  - **Allowed dietary tags**: Vegetarian, Vegan, Gluten-Free, Lactose-Free, Dairy-Free, Nut-Free, Soy-Free, Pescatarian, Non-Vegetarian, Low-Carb, Keto
+  - **Allowed health tags**: Anti-Aging, Longevity, High-Protein, Protein-Rich, High-Fiber, Slow-Carb, Fermented
+  - **Allowed cycle tags**: Menstrual, Menstruation, Follicular, Ovulation, Luteal (+ Phase variants), cycleBased
+  - **Allowed seasonal tags**: January through December (month names only)
+  - **Allowed system tags**: Ayurvedic, Weekend-Prep, custom, Viral, Social-Media
+  - **NEVER add** descriptive tags like: cuisine types (Italian, Thai, Asian), cooking methods (One-Pan, Grilled, Roasted), ingredient names (Mushroom, Quinoa, Chocolate), texture/style (Creamy, Hearty, Spicy), or marketing terms (Superfood, Power-Bowl, Instagram-Inspired)
+  - AI-generated recipes have automatic tag sanitization that strips non-functional tags
+
 **SIMPLIFIED INGREDIENT LIST PREFERENCE** (User's preferred style):
   - **Keep it simple**: Use format `[amount] [item]` without excessive detail
   - **Remove parenthetical explanations**: ❌ "35g chickpeas (canned, drained and rinsed)" → ✅ "35g chickpeas"

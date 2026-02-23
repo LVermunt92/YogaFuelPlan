@@ -80,7 +80,7 @@ Return a JSON object matching this exact structure:
     "proteinPerEuro": number
   },
   "category": "${request.category}",
-  "tags": [${request.dietaryTags.map(tag => `"${tag}"`).join(', ')}],
+  "tags": [${request.dietaryTags.map(tag => `"${tag}"`).join(', ')}],  // ONLY use functional tags from this list: Vegetarian, Vegan, Gluten-Free, Lactose-Free, Dairy-Free, Nut-Free, Soy-Free, Pescatarian, Non-Vegetarian, Anti-Aging, Longevity, High-Protein, High-Fiber, Fermented, Menstrual, Follicular, Ovulation, Luteal, Ayurvedic, Low-Carb, Keto, Viral, Social-Media, Weekend-Prep, Slow-Carb, month names (January-December). Do NOT add descriptive tags like cuisine types, cooking methods, or ingredient names.
   "ingredients": ["ingredient 1", "ingredient 2", "..."],
   "wholeFoodLevel": "high|moderate|minimal",
   "vegetableContent": {
@@ -121,8 +121,28 @@ Ensure the recipe is practical, nutritious, and aligns with the dietary requirem
       throw new Error('Generated recipe is incomplete');
     }
 
-    // Ensure dietary tags are properly included
-    // (AI-generated tag removed per user request)
+    // Sanitize tags - only keep functional tags, strip any descriptive ones the AI may have added
+    const ALLOWED_TAGS = new Set([
+      'Vegetarian', 'Vegan', 'Gluten-Free', 'Lactose-Free', 'Dairy-Free',
+      'Nut-Free', 'Soy-Free', 'Pescatarian', 'Non-Vegetarian',
+      'Anti-Aging', 'Longevity', 'High-Protein', 'Protein-Rich', 'High-Fiber',
+      'Slow-Carb', 'Fermented',
+      'Menstrual', 'Menstruation', 'Follicular', 'Ovulation', 'Luteal',
+      'Follicular Phase', 'Menstrual Phase', 'Ovulation Phase', 'Luteal Phase', 'cycleBased',
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December',
+      'Ayurvedic', 'Weekend-Prep', 'custom',
+      'Viral', 'Social-Media', 'Low-Carb', 'Keto',
+    ]);
+    if (generatedRecipe.tags) {
+      generatedRecipe.tags = generatedRecipe.tags.filter((tag: string) => ALLOWED_TAGS.has(tag));
+    }
+    // Ensure requested dietary tags are always present (AI may have omitted them)
+    for (const tag of request.dietaryTags) {
+      if (!generatedRecipe.tags.includes(tag)) {
+        generatedRecipe.tags.push(tag);
+      }
+    }
 
     // Validate protein target is met (within 15% tolerance)
     const proteinDiff = Math.abs(generatedRecipe.nutrition.protein - request.targetProtein);
