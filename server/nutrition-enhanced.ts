@@ -6918,19 +6918,15 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     category: "lunch",
     tags: ["Vegetarian", "Gluten-Free", "Lactose-Free", "High-Fiber"],
     ingredients: [
-      "100g beetroot (cooked)",
-      "250g cooked chickpeas",
-      "30g tahini (2 tbsp + 1 tbsp for dressing)",
-      "1/2 tsp cumin",
-      "1 garlic clove",
-      "Juice of 1/2 lemon (+ 1 tbsp for dressing)",
-      "1 ice cube",
-      "150g broccoli (cut into steaks)",
-      "150g sweet potato (cubed)",
-      "100g baked tempeh or tofu",
-      "30ml olive oil (2 tbsp)",
-      "15ml warm water (1 tbsp)",
-      "Salt and pepper to taste"
+      "120g beetroot hummus (weekend prep)",
+      "150g broccoli",
+      "150g sweet potato",
+      "100g tofu",
+      "15g tahini",
+      "0.5 lemon",
+      "30ml olive oil",
+      "15ml warm water",
+      "Salt and pepper"
     ],
     wholeFoodLevel: "high",
     vegetableContent: {
@@ -6940,7 +6936,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     },
     recipe: {
       instructions: [
-        "Make the beetroot hummus: blend beetroot, chickpeas, 2 tbsp tahini, cumin, garlic, 1/2 lemon juice, and ice cube until smooth",
+        "Use pre-made beetroot hummus from weekend prep (or make fresh: blend 100g beetroot, 250g chickpeas, 2 tbsp tahini, cumin, garlic, 1/2 lemon juice, and ice cube until smooth)",
         "Roast sweet potato cubes in olive oil at 200°C for 25 minutes until golden",
         "Pan-sear broccoli steaks in olive oil until tender",
         "Bake tempeh or tofu seasoned with salt and pepper",
