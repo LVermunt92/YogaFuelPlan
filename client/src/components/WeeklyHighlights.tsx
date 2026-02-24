@@ -99,6 +99,8 @@ export function WeeklyHighlights({ menstrualPhase = "off" }: WeeklyHighlightsPro
   const { language } = useLanguage();
   const t = useTranslations(language);
   const [seasonOpen, setSeasonOpen] = useState(false);
+  const [cycleOpen, setCycleOpen] = useState(false);
+  const [marketsOpen, setMarketsOpen] = useState(false);
   
   const seasonNames = {
     winter: t.winter,
@@ -210,22 +212,30 @@ export function WeeklyHighlights({ menstrualPhase = "off" }: WeeklyHighlightsPro
         {/* Menstrual Cycle Information */}
         {menstrualInfo && (
           <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-lg">{menstrualInfo.icon}</span>
-              <h4 className="font-medium text-sm text-gray-700">
-                {language === 'nl' 
-                  ? `Cyclus ondersteuning: ${menstrualInfo.nameNl}` 
-                  : `Cycle support: ${menstrualInfo.nameEn}`}
-              </h4>
-            </div>
-            <p className="text-sm text-gray-600 leading-relaxed">
-              {language === 'nl' ? menstrualInfo.nl : menstrualInfo.en}
-            </p>
+            <button
+              className="flex items-center justify-between w-full p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+              onClick={() => setCycleOpen(o => !o)}
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-base shrink-0">{menstrualInfo.icon}</span>
+                <span className="text-sm font-medium text-gray-700">
+                  {language === 'nl'
+                    ? `Cyclus ondersteuning: ${menstrualInfo.nameNl}`
+                    : `Cycle support: ${menstrualInfo.nameEn}`}
+                </span>
+              </div>
+              <ChevronDown className={`h-4 w-4 text-gray-500 transition-transform shrink-0 ${cycleOpen ? 'rotate-180' : ''}`} />
+            </button>
+            {cycleOpen && (
+              <p className="text-sm text-gray-600 leading-relaxed mt-2 px-1">
+                {language === 'nl' ? menstrualInfo.nl : menstrualInfo.en}
+              </p>
+            )}
           </div>
         )}
-        
+
         {/* Seasonal Description */}
-        <div className={menstrualInfo ? "border-t border-gray-200 dark:border-gray-700 pt-4" : ""}>
+        <div>
           <button
             className="flex items-center justify-between w-full p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
             onClick={() => setSeasonOpen(o => !o)}
@@ -276,20 +286,26 @@ export function WeeklyHighlights({ menstrualPhase = "off" }: WeeklyHighlightsPro
         
         {/* Local Markets Section */}
         {seasonalInfo.localMarkets && (
-          <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-sm">🏪</span>
-              <h4 className="font-medium text-sm text-gray-700">
-                {language === 'nl' ? 'Lokale markten' : 'Local markets'}
-              </h4>
-            </div>
-            <ul className="space-y-1">
-              {seasonalInfo.localMarkets.map((market, index) => (
-                <li key={index} className="text-sm text-gray-600">
-                  • {market}
-                </li>
-              ))}
-            </ul>
+          <div>
+            <button
+              className="flex items-center justify-between w-full p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+              onClick={() => setMarketsOpen(o => !o)}
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-base shrink-0">🏪</span>
+                <span className="text-sm font-medium text-gray-700">
+                  {language === 'nl' ? 'Lokale markten' : 'Local markets'}
+                </span>
+              </div>
+              <ChevronDown className={`h-4 w-4 text-gray-500 transition-transform shrink-0 ${marketsOpen ? 'rotate-180' : ''}`} />
+            </button>
+            {marketsOpen && (
+              <ul className="mt-2 px-1 space-y-1">
+                {seasonalInfo.localMarkets.map((market, index) => (
+                  <li key={index} className="text-sm text-gray-600">• {market}</li>
+                ))}
+              </ul>
+            )}
           </div>
         )}
       </CardContent>
