@@ -239,38 +239,39 @@ export function WeeklyHighlights({ menstrualPhase = "off" }: WeeklyHighlightsPro
             <ChevronDown className={`h-4 w-4 text-gray-500 transition-transform shrink-0 ${seasonOpen ? 'rotate-180' : ''}`} />
           </button>
           {seasonOpen && (
-            <p className="text-sm text-gray-600 leading-relaxed mt-2 px-1">
-              {seasonalInfo.weekDescription}
-            </p>
+            <div className="mt-2 px-1 space-y-3">
+              <p className="text-sm text-gray-600 leading-relaxed">
+                {seasonalInfo.weekDescription}
+              </p>
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Leaf className="h-4 w-4 text-green-600" />
+                  <span className="text-sm font-medium text-gray-700">
+                    {language === 'nl' ? 'Piek Nederlandse seizoensgroenten' : 'Peak Dutch seasonal vegetables'}
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {seasonalInfo.monthlyProduce?.peak?.map((veg, index) => (
+                    <Badge
+                      key={index}
+                      variant="secondary"
+                      className="text-xs capitalize bg-green-50 text-green-700 hover:bg-green-100"
+                    >
+                      {veg}
+                    </Badge>
+                  )) || seasonalInfo.seasonalFoods.slice(0, 4).map((food, index) => (
+                    <Badge
+                      key={index}
+                      variant="secondary"
+                      className="text-xs capitalize bg-green-50 text-green-700 hover:bg-green-100"
+                    >
+                      {food}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            </div>
           )}
-        </div>
-        
-        <div>
-          <div className="flex items-center gap-2 mb-3">
-            <Leaf className="h-4 w-4 text-green-600" />
-            <h4 className="font-medium text-sm text-gray-700">
-              {language === 'nl' ? 'Piek Nederlandse seizoensgroenten' : 'Peak Dutch seasonal vegetables'}
-            </h4>
-          </div>
-          <div className="flex flex-wrap gap-1.5">
-            {seasonalInfo.monthlyProduce?.peak?.map((veg, index) => (
-              <Badge 
-                key={index} 
-                variant="secondary" 
-                className="text-xs capitalize bg-green-50 text-green-700 hover:bg-green-100"
-              >
-                {veg}
-              </Badge>
-            )) || seasonalInfo.seasonalFoods.slice(0, 4).map((food, index) => (
-              <Badge 
-                key={index} 
-                variant="secondary" 
-                className="text-xs capitalize bg-green-50 text-green-700 hover:bg-green-100"
-              >
-                {food}
-              </Badge>
-            ))}
-          </div>
         </div>
         
         {/* Local Markets Section */}
