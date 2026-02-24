@@ -156,8 +156,10 @@ const kpiMeta: Record<string, {
     fill: "#22c55e", textColor: "text-green-500", unit: "",
     labelEn: "Fermented", labelNl: "Gefermenteerd",
     dialogTitleEn: "Fermented foods for gut health", dialogTitleNl: "Gefermenteerde voedingsmiddelen voor darmgezondheid",
-    dialogDescEn: "Fermented foods contain probiotics that support gut health. Aim for 1 fermented food per day. Examples: yogurt, kefir, kimchi, sauerkraut, miso, tempeh.",
-    dialogDescNl: "Gefermenteerde voedingsmiddelen bevatten probiotica die de darmgezondheid ondersteunen. Streef naar 1 gefermenteerd voedingsmiddel per dag. Voorbeelden: yoghurt, kefir, kimchi, zuurkool, miso, tempeh.",
+    dialogDescEn: "Fermented foods contain probiotics that support gut health. The chart shows your weekly total — aim for at least 7 per week (1 per day). Examples: yogurt, kefir, kimchi, sauerkraut, miso, tempeh, sourdough bread.",
+    dialogDescNl: "Gefermenteerde voedingsmiddelen bevatten probiotica die de darmgezondheid ondersteunen. De grafiek toont je weektotaal — streef naar minimaal 7 per week (1 per dag). Voorbeelden: yoghurt, kefir, kimchi, zuurkool, miso, tempeh, zuurdesembrood.",
+    extraNoteEn: "Weekly target: 7 fermented foods",
+    extraNoteNl: "Weekdoel: 7 gefermenteerde voedingsmiddelen",
   },
   cocoaFlavanols: {
     fill: "#166534", textColor: "text-green-800", unit: "mg",
