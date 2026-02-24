@@ -4604,7 +4604,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     ingredients: [
       "1 drizzle of toasted sesame oil or olive oil",
       "½ tsp ground cumin",
-      "½ tsp hot smoked paprika or sweet paprika",
+      "½ tsp hot paprika powder or sweet paprika",
       "200g chopped tomatoes (½ tin)",
       "1.5 cloves garlic, peeled & minced",
       "1 tbsp tomato purée",
@@ -6379,7 +6379,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "1 tbsp olive oil",
       "2 tsp chili powder",
       "1 tsp cumin",
-      "1 tsp smoked paprika",
+      "1 tsp paprika powder",
       "1 cup beef broth",
       "¼ cup Greek yogurt for serving",
       "2 tbsp cilantro (chopped)"
@@ -6735,7 +6735,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "100g red bell pepper (roasted and peeled)",
       "250g cooked chickpeas (with 15ml liquid)",
       "30g tahini (2 tbsp)",
-      "1/2 tsp smoked paprika",
+      "1/2 tsp paprika powder",
       "1 small garlic clove",
       "Juice of 1/2 lemon",
       "1 ice cube",
@@ -8267,7 +8267,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     ingredients: [
       "15ml toasted sesame oil",
       "5ml ground cumin",
-      "5ml hot smoked paprika",
+      "5ml hot paprika powder",
       "400g canned chopped tomatoes",
       "3 cloves garlic, minced",
       "30ml tomato paste",
@@ -8539,7 +8539,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "130g sweet potato, cut into 2cm cubes",
       "5ml ground cumin",
       "2.5ml ground cinnamon",
-      "2.5ml smoked paprika",
+      "2.5ml paprika powder",
       "480g canned black beans (2 x 400g cans), drained and rinsed",
       "100g frozen edamame beans, defrosted",
       "2 large handfuls kale, stalks removed and torn into bite-sized pieces",
@@ -8562,7 +8562,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       instructions: [
         "Preheat oven to 200°C fan / 390°F",
         "Place sweet potato cubes on baking tray and drizzle lightly with olive oil",
-        "Sprinkle with ground cumin, cinnamon, smoked paprika and pinch of salt",
+        "Sprinkle with ground cumin, cinnamon, paprika powder and pinch of salt",
         "Using clean hands, rub oil and spices into sweet potatoes until evenly coated",
         "Bake for 40-45 minutes, turning halfway through to ensure even cooking",
         "While sweet potatoes roast, make tahini mustard dressing in medium bowl",
@@ -8814,7 +8814,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     ingredients: [
       "400g sweet potatoes, cut into thick fries",
       "15ml olive oil",
-      "2.5ml smoked paprika",
+      "2.5ml paprika powder",
       "150g halloumi cheese, sliced",
       "120g mixed salad leaves",
       "1 large tomato, diced",
@@ -8837,7 +8837,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     recipe: {
       instructions: [
         "Preheat oven to 220°C (200°C fan)",
-        "Cut sweet potatoes into thick fries, toss with olive oil, smoked paprika, salt and pepper",
+        "Cut sweet potatoes into thick fries, toss with olive oil, paprika powder, salt and pepper",
         "Arrange on baking tray and roast for 25-30 minutes until crispy outside and tender inside",
         "Meanwhile, prepare salad by mixing leaves, diced tomato, cucumber, and red onion in large bowl",
         "For sauce, whisk together Greek yogurt, tahini, minced garlic, lemon juice, cumin, salt and pepper",
@@ -8882,7 +8882,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     ingredients: [
       "400g sweet potatoes, cut into thick fries",
       "15ml olive oil",
-      "2.5ml smoked paprika",
+      "2.5ml paprika powder",
       "200g chicken breast, sliced into strips",
       "5ml ground cumin",
       "2.5ml garlic powder",
@@ -8907,7 +8907,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     recipe: {
       instructions: [
         "Preheat oven to 220°C (200°C fan)",
-        "Cut sweet potatoes into thick fries, toss with half the olive oil, smoked paprika, salt and pepper",
+        "Cut sweet potatoes into thick fries, toss with half the olive oil, paprika powder, salt and pepper",
         "Arrange on baking tray and roast for 25-30 minutes until crispy outside and tender inside",
         "Season chicken strips with cumin, garlic powder, oregano, salt and pepper",
         "Heat remaining olive oil in frying pan over medium-high heat",
@@ -9029,7 +9029,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     ingredients: [
       "400g sweet potatoes, cut into thick fries",
       "15ml olive oil",
-      "2.5ml smoked paprika",
+      "2.5ml paprika powder",
       "150g firm tofu, sliced and marinated in 15ml tamari",
       "120g mixed salad leaves",
       "1 large tomato, diced",
@@ -9053,7 +9053,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     recipe: {
       instructions: [
         "Preheat oven to 220°C (200°C fan)",
-        "Cut sweet potatoes into thick fries, toss with olive oil, smoked paprika, salt and pepper",
+        "Cut sweet potatoes into thick fries, toss with olive oil, paprika powder, salt and pepper",
         "Arrange on baking tray and roast for 25-30 minutes until crispy outside and tender inside",
         "Meanwhile, slice tofu and marinate in tamari for 10 minutes",
         "Prepare salad by mixing leaves, diced tomato, cucumber, and red onion in large bowl",
@@ -9709,7 +9709,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "1 lemon, juiced",
       "2 cloves garlic, minced",
       "5ml dried oregano",
-      "2.5ml smoked paprika",
+      "2.5ml paprika powder",
       "30ml fresh parsley, chopped",
       "15ml fresh mint, chopped",
       "15ml fresh dill, chopped",
@@ -9724,7 +9724,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     recipe: {
       instructions: [
         "If using fresh cauliflower, pulse florets in food processor until rice-sized pieces form",
-        "Season Beyond Meat crumbles with oregano, smoked paprika, salt, pepper, and half the minced garlic",
+        "Season Beyond Meat crumbles with oregano, paprika powder, salt, pepper, and half the minced garlic",
         "Heat 15ml olive oil in large frying pan over medium-high heat",
         "Cook seasoned Beyond Meat for 5-6 minutes until lightly browned and heated through, set aside",
         "In same pan, add cauliflower rice and remaining garlic, cook for 5-7 minutes until tender",
@@ -10693,7 +10693,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "15g fresh cilantro (chopped)",
       "2 tbsp green habanero dressing",
       "1 lime wedge",
-      "1 tsp smoked paprika"
+      "1 tsp paprika powder"
     ],
     wholeFoodLevel: "high",
     vegetableContent: {
@@ -10711,7 +10711,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     recipe: {
       instructions: [
         "Preheat oven to 200°C and cube sweet potato into 2cm pieces",
-        "Toss sweet potato with olive oil, smoked paprika, salt and pepper",
+        "Toss sweet potato with olive oil, paprika powder, salt and pepper",
         "Roast for 20-25 minutes until tender and slightly caramelized",
         "Cook brown rice according to package instructions and let cool slightly",
         "Rinse and drain black beans, season with salt and lime juice",
@@ -10844,7 +10844,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "15g fresh cilantro",
       "2 tbsp green habanero dressing",
       "1 tsp cumin",
-      "1/2 tsp smoked paprika",
+      "1/2 tsp paprika powder",
       "Salt and pepper"
     ],
     wholeFoodLevel: "high",
@@ -10863,7 +10863,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
     recipe: {
       instructions: [
         "Preheat oven to 200°C for sweet potato and salmon",
-        "Cube sweet potato and roast with olive oil and smoked paprika for 20 minutes",
+        "Cube sweet potato and roast with olive oil and paprika powder for 20 minutes",
         "Season salmon with cumin, paprika, salt, and pepper",
         "Pan-sear salmon for 3-4 minutes per side until just cooked through",
         "Let salmon rest for 2 minutes, then flake into bite-sized pieces",
@@ -11774,7 +11774,7 @@ const RAW_MEAL_DATABASE: MealOption[] = [
       "50g sweetcorn",
       "2 cloves garlic, minced",
       "5ml ground cumin",
-      "5ml smoked paprika",
+      "5ml paprika powder",
       "15ml olive oil",
       "Half lime, juiced",
       "Fresh coriander for garnish",
@@ -18336,7 +18336,7 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
     'turmeric': 'Pantry Essentials',
     'curry powder': 'Pantry Essentials',
     'garam masala': 'Pantry Essentials',
-    'smoked paprika': 'Pantry Essentials',
+    'paprika powder': 'Pantry Essentials',
     'cayenne pepper': 'Pantry Essentials',
     'red pepper flakes': 'Pantry Essentials',
     'chili flakes': 'Pantry Essentials',
@@ -19196,7 +19196,7 @@ export function getDefaultPortion(ingredient: string): { amount: number; unit: s
     'curry powder': { amount: 20, unit: 'g' },
     'garlic powder': { amount: 20, unit: 'g' },
     'onion powder': { amount: 20, unit: 'g' },
-    'smoked paprika': { amount: 20, unit: 'g' },
+    'paprika powder': { amount: 20, unit: 'g' },
     'dried oregano': { amount: 10, unit: 'g' },
     'dried basil': { amount: 10, unit: 'g' },
     'dried thyme': { amount: 10, unit: 'g' },
@@ -19931,7 +19931,7 @@ function formatAmount(amount: number, unit: string, ingredientName?: string): st
       ['oregano', 'basil', 'thyme', 'rosemary', 'sage', 'parsley', 'cilantro', 'mint', 'dill', 'chives',
        'paprika', 'cumin', 'coriander', 'turmeric', 'cinnamon', 'ginger', 'cardamom', 'nutmeg',
        'allspice', 'cloves', 'bay leaves', 'fennel', 'mustard seed', 'curry powder', 'chili powder',
-       'garlic powder', 'onion powder', 'black pepper', 'white pepper', 'cayenne', 'smoked paprika',
+       'garlic powder', 'onion powder', 'black pepper', 'white pepper', 'cayenne', 'paprika powder',
        'italian seasoning', 'herbs de provence', 'za\'atar', 'sumac', 'star anise'].some(spice => 
          lowerIngredient.includes(spice));
     

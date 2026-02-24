@@ -1051,7 +1051,17 @@ async function selectUnusedMealIntelligently(
   
   // LUNCH OPTIMIZATION: Prioritize balanced, energy-sustaining meals (NOT low-carb, save that for dinner)
   // Focus on slow carbs, fiber, and protein for sustained afternoon energy
+  // MINIMUM CARB REQUIREMENT: Lunch needs ≥40g carbs for sustained energy
   if (category === 'lunch' && unusedMeals.length > 1) {
+    const LUNCH_MIN_CARBS = 40;
+    const highCarbLunches = unusedMeals.filter(meal => (meal.nutrition?.carbohydrates || 0) >= LUNCH_MIN_CARBS);
+    if (highCarbLunches.length > 0) {
+      console.log(`🍽️ LUNCH CARB FILTER: ${highCarbLunches.length}/${unusedMeals.length} meals have ≥${LUNCH_MIN_CARBS}g carbs`);
+      unusedMeals = highCarbLunches;
+    } else {
+      console.log(`⚠️ LUNCH CARB FILTER: No meals with ≥${LUNCH_MIN_CARBS}g carbs, using all ${unusedMeals.length} options`);
+    }
+    
     console.log(`🍽️ LUNCH ENERGY: Applying balanced energy filtering for lunch meals (${unusedMeals.length} candidates)`);
     
     // Score meals based on sustained energy factors (NOT low-carb preference)
