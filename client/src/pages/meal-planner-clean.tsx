@@ -2215,103 +2215,150 @@ function MealPlannerMain() {
                     </div>
                   </CollapsibleTrigger>
                   <CollapsibleContent>
-                    <div className="mt-2 p-3 bg-gray-50 rounded-lg">
-                      {/* Row 1: Main macros (following KPI order) - Protein, Fats, Fiber, Calories */}
-                      <div className="grid grid-cols-4 gap-2 text-center">
-                        <div>
-                          <p className="text-xs font-bold text-emerald-600">{Math.round(recipeData.nutrition.protein)}g</p>
-                          <p className="text-[10px] text-gray-500">{t.protein}</p>
+                    <div className="mt-2 p-3 bg-gray-50 rounded-lg space-y-3">
+
+                      {/* Group 1: Macros & energy — blue family */}
+                      <div>
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-[10px] font-semibold uppercase tracking-wide text-blue-600">
+                            {language === 'nl' ? "Macro's & energie" : "Macros & energy"}
+                          </span>
+                          <div className="flex-1 border-t border-blue-200" />
                         </div>
-                        <div>
-                          <p className="text-xs font-bold text-yellow-600">{Math.round(recipeData.nutrition.fats || 0)}g</p>
-                          <p className="text-[10px] text-gray-500">{t.goodFats || 'Fats'}</p>
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-orange-500">{Math.round(recipeData.nutrition.fiber || 0)}g</p>
-                          <p className="text-[10px] text-gray-500">{t.fiber}</p>
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-blue-600">{Math.round(recipeData.nutrition.calories)}</p>
-                          <p className="text-[10px] text-gray-500">{t.calories}</p>
-                        </div>
-                      </div>
-                      
-                      {/* Row 2: Wellness metrics - Vegetables, Plant Diversity, Rainbow, Net Carbs */}
-                      <div className="grid grid-cols-4 gap-2 text-center mt-2 pt-2 border-t border-gray-200">
-                        <div>
-                          <p className="text-xs font-bold text-green-600">{estimateVegetableContent(recipeData.nutrition.fiber || 0)}g</p>
-                          <p className="text-[10px] text-gray-500">{t.vegetables || 'Vegetables'}</p>
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-green-700">{countPlantDiversity(recipeData.ingredients || [])}</p>
-                          <p className="text-[10px] text-gray-500">{t.plantDiversity || 'Plant div.'}</p>
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold bg-gradient-to-r from-red-500 via-green-500 to-purple-500 bg-clip-text text-transparent">
-                            {getIngredientColors(recipeData.ingredients || []).size}/6
-                          </p>
-                          <p className="text-[10px] text-gray-500">{t.rainbow}</p>
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-cyan-600">{Math.round((recipeData.nutrition.carbohydrates || 0) - (recipeData.nutrition.fiber || 0))}g</p>
-                          <p className="text-[10px] text-gray-500">{t.netCarbs}</p>
+                        <div className="grid grid-cols-5 gap-1 text-center">
+                          <div>
+                            <p className="text-xs font-bold text-blue-600">{Math.round(recipeData.nutrition.protein)}g</p>
+                            <p className="text-[10px] text-gray-500">{t.protein}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-sky-600">{Math.round(recipeData.nutrition.fats || 0)}g</p>
+                            <p className="text-[10px] text-gray-500">{t.goodFats || 'Fats'}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-sky-400">{Math.round(recipeData.nutrition.fiber || 0)}g</p>
+                            <p className="text-[10px] text-gray-500">{t.fiber}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-blue-700">{Math.round((recipeData.nutrition.carbohydrates || 0) - (recipeData.nutrition.fiber || 0))}g</p>
+                            <p className="text-[10px] text-gray-500">{t.netCarbs}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-blue-500">{Math.round(recipeData.nutrition.calories)}</p>
+                            <p className="text-[10px] text-gray-500">{t.calories}</p>
+                          </div>
                         </div>
                       </div>
 
-                      {/* Row 3: Micronutrients - Vitamin K, Zinc, Calcium, Potassium */}
-                      <div className="grid grid-cols-4 gap-2 text-center mt-2 pt-2 border-t border-gray-200">
-                        <div>
-                          <p className="text-xs font-bold text-green-600">{Math.round((recipeData.nutrition as any).vitaminK || 0)}µg</p>
-                          <p className="text-[10px] text-gray-500">{t.vitaminK || 'Vitamin K'}</p>
+                      {/* Group 2: Food quality — green family */}
+                      <div>
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-[10px] font-semibold uppercase tracking-wide text-green-600">
+                            {language === 'nl' ? 'Voedselkwaliteit' : 'Food quality'}
+                          </span>
+                          <div className="flex-1 border-t border-green-200" />
                         </div>
-                        <div>
-                          <p className="text-xs font-bold text-violet-500">{((recipeData.nutrition as any).zinc || 0).toFixed(1)}mg</p>
-                          <p className="text-[10px] text-gray-500">{t.zinc || 'Zinc'}</p>
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-slate-600">{Math.round((recipeData.nutrition as any).calcium || 0)}mg</p>
-                          <p className="text-[10px] text-gray-500">{t.calcium || 'Calcium'}</p>
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-teal-600">{Math.round((recipeData.nutrition as any).potassium || 0)}mg</p>
-                          <p className="text-[10px] text-gray-500">{t.potassium || 'Potassium'}</p>
-                        </div>
-                      </div>
-
-                      {/* Row 4: More nutrients - Iron, Vitamin C, Sugar, Sodium */}
-                      <div className="grid grid-cols-4 gap-2 text-center mt-2 pt-2 border-t border-gray-200">
-                        <div>
-                          <p className="text-xs font-bold text-red-600">{((recipeData.nutrition as any).iron || 0).toFixed(1)}mg</p>
-                          <p className="text-[10px] text-gray-500">{t.iron || 'Iron'}</p>
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-amber-500">{Math.round((recipeData.nutrition as any).vitaminC || 0)}mg</p>
-                          <p className="text-[10px] text-gray-500">{t.vitaminC || 'Vitamin C'}</p>
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-pink-500">{Math.round((recipeData.nutrition as any).sugar || 0)}g</p>
-                          <p className="text-[10px] text-gray-500">{t.sugar}</p>
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-gray-600">{Math.round((recipeData.nutrition as any).sodium || 0)}mg</p>
-                          <p className="text-[10px] text-gray-500">{t.sodium}</p>
+                        <div className="grid grid-cols-5 gap-1 text-center">
+                          <div>
+                            <p className="text-xs font-bold text-green-600">{estimateVegetableContent(recipeData.nutrition.fiber || 0)}g</p>
+                            <p className="text-[10px] text-gray-500">{t.vegetables || 'Vegetables'}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-green-700">{countPlantDiversity(recipeData.ingredients || [])}</p>
+                            <p className="text-[10px] text-gray-500">{t.plantDiversity || 'Plant div.'}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold bg-gradient-to-r from-red-500 via-green-500 to-purple-500 bg-clip-text text-transparent">
+                              {getIngredientColors(recipeData.ingredients || []).size}/6
+                            </p>
+                            <p className="text-[10px] text-gray-500">{t.rainbow}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-green-500">{recipeData.tags?.includes('Fermented') ? '✓' : '–'}</p>
+                            <p className="text-[10px] text-gray-500">{language === 'nl' ? 'Gefermenteerd' : 'Fermented'}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-green-800">{Math.round((recipeData.nutrition as any).cocoaFlavanols || 0)}mg</p>
+                            <p className="text-[10px] text-gray-500">{language === 'nl' ? 'Cacao' : 'Cocoa'}</p>
+                          </div>
                         </div>
                       </div>
 
-                      {/* Row 5: Omega-3 and Polyphenols */}
-                      <div className="grid grid-cols-2 gap-2 text-center mt-2 pt-2 border-t border-gray-200">
-                        <div>
-                          <p className="text-xs font-bold text-sky-500">{Math.round((recipeData.nutrition as any).omega3 || 0)}mg</p>
-                          <p className="text-[10px] text-gray-500">{t.omega3 || 'Omega-3'}</p>
+                      {/* Group 3: Vitamins & minerals — violet/purple family */}
+                      <div>
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-[10px] font-semibold uppercase tracking-wide text-violet-600">
+                            {language === 'nl' ? 'Vitamines & mineralen' : 'Vitamins & minerals'}
+                          </span>
+                          <div className="flex-1 border-t border-violet-200" />
                         </div>
-                        <div>
-                          <p className="text-xs font-bold text-purple-600">{Math.round((recipeData.nutrition as any).polyphenols || 0)}mg</p>
-                          <p className="text-[10px] text-gray-500">{t.polyphenols || 'Polyphenols'}</p>
+                        <div className="grid grid-cols-4 gap-1 text-center">
+                          <div>
+                            <p className="text-xs font-bold text-violet-600">{Math.round((recipeData.nutrition as any).vitaminK || 0)}µg</p>
+                            <p className="text-[10px] text-gray-500">{t.vitaminK || 'Vit. K'}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-violet-500">{((recipeData.nutrition as any).zinc || 0).toFixed(1)}mg</p>
+                            <p className="text-[10px] text-gray-500">{t.zinc || 'Zinc'}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-violet-700">{Math.round((recipeData.nutrition as any).calcium || 0)}mg</p>
+                            <p className="text-[10px] text-gray-500">{t.calcium || 'Calcium'}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-purple-500">{Math.round((recipeData.nutrition as any).potassium || 0)}mg</p>
+                            <p className="text-[10px] text-gray-500">{t.potassium || 'Potassium'}</p>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-4 gap-1 text-center mt-1">
+                          <div>
+                            <p className="text-xs font-bold text-purple-600">{((recipeData.nutrition as any).iron || 0).toFixed(1)}mg</p>
+                            <p className="text-[10px] text-gray-500">{t.iron || 'Iron'}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-fuchsia-600">{Math.round((recipeData.nutrition as any).vitaminC || 0)}mg</p>
+                            <p className="text-[10px] text-gray-500">{t.vitaminC || 'Vit. C'}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-indigo-600">{Math.round((recipeData.nutrition as any).omega3 || 0)}mg</p>
+                            <p className="text-[10px] text-gray-500">{t.omega3 || 'Omega-3'}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-violet-800">{Math.round((recipeData.nutrition as any).polyphenols || 0)}mg</p>
+                            <p className="text-[10px] text-gray-500">{t.polyphenols || 'Polyphenols'}</p>
+                          </div>
                         </div>
                       </div>
-                      
-                      {/* Row 6: Cost info */}
-                      <div className="grid grid-cols-2 gap-2 text-center mt-2 pt-2 border-t border-gray-200">
+
+                      {/* Group 4: Sugar & limits — amber family */}
+                      <div>
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-[10px] font-semibold uppercase tracking-wide text-amber-600">
+                            {language === 'nl' ? 'Suiker & limieten' : 'Sugar & limits'}
+                          </span>
+                          <div className="flex-1 border-t border-amber-200" />
+                        </div>
+                        <div className="grid grid-cols-4 gap-1 text-center">
+                          <div>
+                            <p className="text-xs font-bold text-amber-500">{Math.round((recipeData.nutrition as any).addedSugar || 0)}g</p>
+                            <p className="text-[10px] text-gray-500">{language === 'nl' ? 'Toegevoegd' : 'Added'}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-orange-400">{Math.round((recipeData.nutrition as any).freeSugar || 0)}g</p>
+                            <p className="text-[10px] text-gray-500">{language === 'nl' ? 'Vrije suiker' : 'Free sugar'}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-amber-400">{Math.round((recipeData.nutrition as any).intrinsicSugar || (recipeData.nutrition as any).sugar || 0)}g</p>
+                            <p className="text-[10px] text-gray-500">{language === 'nl' ? 'Gebonden' : 'Intrinsic'}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-amber-600">{Math.round((recipeData.nutrition as any).sodium || 0)}mg</p>
+                            <p className="text-[10px] text-gray-500">{t.sodium}</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Cost info */}
+                      <div className="grid grid-cols-2 gap-2 text-center pt-2 border-t border-gray-200">
                         <div>
                           <p className="text-xs font-bold text-gray-700">€{recipeData.nutrition.costEuros?.toFixed(2) || '0.00'}</p>
                           <p className="text-[10px] text-gray-500">{t.cost}</p>
