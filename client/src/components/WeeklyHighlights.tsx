@@ -98,6 +98,7 @@ export function WeeklyHighlights({ menstrualPhase = "off" }: WeeklyHighlightsPro
   const { coords } = useGeolocation();
   const { language } = useLanguage();
   const t = useTranslations(language);
+  const [seasonOpen, setSeasonOpen] = useState(false);
   
   const seasonNames = {
     winter: t.winter,
@@ -225,15 +226,23 @@ export function WeeklyHighlights({ menstrualPhase = "off" }: WeeklyHighlightsPro
         
         {/* Seasonal Description */}
         <div className={menstrualInfo ? "border-t border-gray-200 dark:border-gray-700 pt-4" : ""}>
-          <div className="flex items-center gap-2 mb-2">
-            <Calendar className="h-4 w-4 text-blue-600" />
-            <h4 className="font-medium text-sm text-gray-700">
-              {seasonNames[seasonalInfo.season]} {language === 'nl' ? 'voeding' : 'nutrition'}
-            </h4>
-          </div>
-          <p className="text-sm text-gray-600 leading-relaxed">
-            {seasonalInfo.weekDescription}
-          </p>
+          <button
+            className="flex items-center justify-between w-full p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+            onClick={() => setSeasonOpen(o => !o)}
+          >
+            <div className="flex items-center gap-2">
+              <Calendar className="h-4 w-4 text-gray-600 shrink-0" />
+              <span className="text-sm font-medium text-gray-700">
+                {seasonNames[seasonalInfo.season]} {language === 'nl' ? 'voeding' : 'nutrition'}
+              </span>
+            </div>
+            <ChevronDown className={`h-4 w-4 text-gray-500 transition-transform shrink-0 ${seasonOpen ? 'rotate-180' : ''}`} />
+          </button>
+          {seasonOpen && (
+            <p className="text-sm text-gray-600 leading-relaxed mt-2 px-1">
+              {seasonalInfo.weekDescription}
+            </p>
+          )}
         </div>
         
         <div>
