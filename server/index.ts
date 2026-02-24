@@ -149,23 +149,37 @@ app.use((req, res, next) => {
     // Already logged above, just prevent unhandled rejection
   });
 
-  // Development-only: Keep database alive during active development
-  if (process.env.NODE_ENV !== 'production') {
-    const { storage } = await import("./storage");
-    const keepAliveInterval = setInterval(async () => {
-      try {
-        await storage.getUser(1); // Simple query to keep database active
-        console.log('📡 Database keep-alive ping');
-      } catch (error) {
-        console.log('📡 Database keep-alive failed (normal if inactive)');
-      }
-    }, 4 * 60 * 1000); // Every 4 minutes
+  // Pre-warm database connection and recipe cache so users don't wait
+  (async () => {
+    try {
+      const { pool } = await import("./db");
+      console.time('⏱️  Database warm-up');
+      await pool.query('SELECT 1');
+      console.timeEnd('⏱️  Database warm-up');
+      console.log('✅ Database connection warm');
 
-    // Clear interval on shutdown
-    process.on('SIGTERM', () => clearInterval(keepAliveInterval));
-    process.on('SIGINT', () => clearInterval(keepAliveInterval));
-    console.log('📡 Database keep-alive enabled for development (pings every 4 minutes)');
-  }
+      const { getCompleteEnhancedMealDatabase } = await import("./nutrition-enhanced");
+      console.time('⏱️  Recipe cache warm-up');
+      const recipes = await getCompleteEnhancedMealDatabase();
+      console.timeEnd('⏱️  Recipe cache warm-up');
+      console.log(`✅ Recipe cache warm: ${recipes.length} recipes ready`);
+    } catch (error) {
+      console.warn('⚠️ Pre-warming failed (will load on first request):', (error as Error).message);
+    }
+  })();
+
+  // Keep database alive to prevent cold starts (Neon serverless sleeps after ~5 min)
+  const { pool: dbPool } = await import("./db");
+  const keepAliveInterval = setInterval(async () => {
+    try {
+      await dbPool.query('SELECT 1');
+    } catch (error) {
+    }
+  }, 3 * 60 * 1000); // Every 3 minutes
+
+  process.on('SIGTERM', () => clearInterval(keepAliveInterval));
+  process.on('SIGINT', () => clearInterval(keepAliveInterval));
+  console.log('📡 Database keep-alive enabled (pings every 3 minutes)');
 
   const server = await registerRoutes(app);
 

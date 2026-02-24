@@ -14,12 +14,11 @@ if (!connectionString || connectionString === 'postgresql://:::/' ) {
   );
 }
 
-// Create pool with connection configuration for standard PostgreSQL
 export const pool = new Pool({ 
   connectionString: connectionString,
   max: 10,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
+  idleTimeoutMillis: 60000,
+  connectionTimeoutMillis: 10000,
 });
 
 export const db = drizzle(pool, { schema });
