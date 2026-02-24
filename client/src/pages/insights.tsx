@@ -27,17 +27,384 @@ interface NutritionTargets {
   calories: number;
 }
 
+interface KPIValue {
+  value: number;
+  percentage: number;
+  target: number | null;
+  colors?: string[];
+}
+
+interface KPIGroupDef {
+  id: string;
+  titleEn: string;
+  titleNl: string;
+  bgColor: string;
+  borderColor: string;
+  kpis: string[];
+}
+
+const kpiGroups: KPIGroupDef[] = [
+  {
+    id: 'macros',
+    titleEn: 'Macros & energy',
+    titleNl: 'Macro\'s & energie',
+    bgColor: 'bg-blue-50 dark:bg-blue-950/30',
+    borderColor: 'border-blue-200 dark:border-blue-800',
+    kpis: ['protein', 'goodFats', 'fiber', 'netCarbs', 'calories'],
+  },
+  {
+    id: 'foodQuality',
+    titleEn: 'Food quality',
+    titleNl: 'Voedselkwaliteit',
+    bgColor: 'bg-green-50 dark:bg-green-950/30',
+    borderColor: 'border-green-200 dark:border-green-800',
+    kpis: ['vegetables', 'plantDiversity', 'rainbow', 'fermented', 'cocoaFlavanols'],
+  },
+  {
+    id: 'vitamins',
+    titleEn: 'Vitamins & minerals',
+    titleNl: 'Vitamines & mineralen',
+    bgColor: 'bg-violet-50 dark:bg-violet-950/30',
+    borderColor: 'border-violet-200 dark:border-violet-800',
+    kpis: ['vitaminK', 'zinc', 'calcium', 'potassium', 'iron', 'vitaminC', 'omega3', 'polyphenols'],
+  },
+  {
+    id: 'sugarLimits',
+    titleEn: 'Sugar & limits',
+    titleNl: 'Suiker & limieten',
+    bgColor: 'bg-amber-50 dark:bg-amber-950/30',
+    borderColor: 'border-amber-200 dark:border-amber-800',
+    kpis: ['addedSugar', 'freeSugar', 'intrinsicSugar', 'sodium'],
+  },
+];
+
+const kpiMeta: Record<string, {
+  fill: string;
+  textColor: string;
+  unit: string;
+  labelEn: string;
+  labelNl: string;
+  dialogTitleEn: string;
+  dialogTitleNl: string;
+  dialogDescEn: string;
+  dialogDescNl: string;
+  extraNoteEn?: string;
+  extraNoteNl?: string;
+  isRainbow?: boolean;
+  isInfoOnly?: boolean;
+  isWarnable?: boolean;
+  warnFill?: string;
+  warnTextColor?: string;
+}> = {
+  protein: {
+    fill: "#10b981", textColor: "text-emerald-600", unit: "g",
+    labelEn: "Protein", labelNl: "Eiwit",
+    dialogTitleEn: "Why protein matters", dialogTitleNl: "Waarom eiwit belangrijk is",
+    dialogDescEn: "", dialogDescNl: "",
+  },
+  goodFats: {
+    fill: "#eab308", textColor: "text-yellow-600", unit: "g",
+    labelEn: "Fats", labelNl: "Vetten",
+    dialogTitleEn: "Why healthy fats matter", dialogTitleNl: "Waarom gezonde vetten belangrijk zijn",
+    dialogDescEn: "", dialogDescNl: "",
+  },
+  fiber: {
+    fill: "#f97316", textColor: "text-orange-600", unit: "g",
+    labelEn: "Fiber", labelNl: "Vezels",
+    dialogTitleEn: "Why fiber matters", dialogTitleNl: "Waarom vezels belangrijk zijn",
+    dialogDescEn: "", dialogDescNl: "",
+    extraNoteEn: "", extraNoteNl: "",
+  },
+  netCarbs: {
+    fill: "#06b6d4", textColor: "text-cyan-600", unit: "g",
+    labelEn: "Net carbs", labelNl: "Netto koolh.",
+    dialogTitleEn: "About net carbs", dialogTitleNl: "Over netto koolhydraten",
+    dialogDescEn: "Net carbs are the digestible carbs your body uses for energy (total carbs minus fiber). They're an important fuel source — reducing refined carbs can be beneficial, but completely avoiding carbs may limit essential nutrients.",
+    dialogDescNl: "Netto koolhydraten zijn de verteerbare koolhydraten die je lichaam gebruikt voor energie (totale koolhydraten minus vezels). Ze zijn een belangrijke brandstofbron — het verminderen van geraffineerde koolhydraten kan gunstig zijn, maar koolhydraten volledig vermijden kan essentiële voedingsstoffen beperken.",
+  },
+  calories: {
+    fill: "#3b82f6", textColor: "text-blue-600", unit: "",
+    labelEn: "Calories", labelNl: "Calorieën",
+    dialogTitleEn: "About calories", dialogTitleNl: "Over calorieën",
+    dialogDescEn: "kcal reflect energy in food, not necessarily energy absorbed. Absorption varies with food type, processing, and macronutrients (e.g., whole nuts often yield fewer kcal than labels; protein has a higher digestion cost)",
+    dialogDescNl: "kcal weerspiegelen energie in voedsel, niet noodzakelijkelijk geabsorbeerde energie. Absorptie varieert met voedseltype, verwerking en macronutriënten (bijv. hele noten leveren vaak minder kcal dan op het etiket staat; eiwit heeft hogere verteringskosten)",
+  },
+  vegetables: {
+    fill: "#22c55e", textColor: "text-green-600", unit: "g",
+    labelEn: "Vegetables", labelNl: "Groenten",
+    dialogTitleEn: "Why vegetables matter", dialogTitleNl: "Waarom groenten belangrijk zijn",
+    dialogDescEn: "", dialogDescNl: "",
+  },
+  plantDiversity: {
+    fill: "#16a34a", textColor: "text-green-700", unit: "",
+    labelEn: "Plant diversity", labelNl: "Plantdiversiteit",
+    dialogTitleEn: "Why plant diversity matters", dialogTitleNl: "Waarom plantdiversiteit belangrijk is",
+    dialogDescEn: "", dialogDescNl: "",
+    extraNoteEn: "", extraNoteNl: "",
+  },
+  rainbow: {
+    fill: "url(#rainbowGradient)", textColor: "bg-gradient-to-r from-red-500 via-green-500 to-purple-500 bg-clip-text text-transparent", unit: "",
+    labelEn: "Rainbow", labelNl: "Regenboog",
+    isRainbow: true,
+    dialogTitleEn: "Why eating colorful foods matters", dialogTitleNl: "Waarom kleurrijk eten belangrijk is",
+    dialogDescEn: "Different colors represent different nutrients. Aim for 6 color groups per week (red, orange, yellow, green, purple, white) for optimal health.",
+    dialogDescNl: "Verschillende kleuren vertegenwoordigen verschillende voedingsstoffen. Streef naar 6 kleurgroepen per week (rood, oranje, geel, groen, paars, wit) voor optimale gezondheid.",
+  },
+  fermented: {
+    fill: "#a855f7", textColor: "text-purple-500", unit: "",
+    labelEn: "Fermented", labelNl: "Gefermenteerd",
+    dialogTitleEn: "Fermented foods for gut health", dialogTitleNl: "Gefermenteerde voedingsmiddelen voor darmgezondheid",
+    dialogDescEn: "Fermented foods contain probiotics that support gut health. Aim for 1 fermented food per day. Examples: yogurt, kefir, kimchi, sauerkraut, miso, tempeh.",
+    dialogDescNl: "Gefermenteerde voedingsmiddelen bevatten probiotica die de darmgezondheid ondersteunen. Streef naar 1 gefermenteerd voedingsmiddel per dag. Voorbeelden: yoghurt, kefir, kimchi, zuurkool, miso, tempeh.",
+  },
+  cocoaFlavanols: {
+    fill: "#8b5cf6", textColor: "text-purple-600", unit: "mg",
+    labelEn: "Cocoa flavanols", labelNl: "Cacao flavanolen",
+    dialogTitleEn: "Why cocoa flavanols matter", dialogTitleNl: "Waarom cacao flavanolen belangrijk zijn",
+    dialogDescEn: "", dialogDescNl: "",
+  },
+  vitaminK: {
+    fill: "#10b981", textColor: "text-emerald-600", unit: "mcg",
+    labelEn: "Vitamin K", labelNl: "Vitamine K",
+    dialogTitleEn: "Vitamin K for health", dialogTitleNl: "Vitamine K voor gezondheid",
+    dialogDescEn: "Vitamin K is essential for blood clotting and bone health. The recommended daily intake is 90 mcg for women and 120 mcg for men. Best sources: leafy greens, broccoli, Brussels sprouts.",
+    dialogDescNl: "Vitamine K is essentieel voor bloedstolling en botgezondheid. De aanbevolen dagelijkse inname is 90 mcg voor vrouwen en 120 mcg voor mannen. Beste bronnen: groene bladgroenten, broccoli, spruitjes.",
+  },
+  zinc: {
+    fill: "#8b5cf6", textColor: "text-violet-500", unit: "mg",
+    labelEn: "Zinc", labelNl: "Zink",
+    dialogTitleEn: "Zinc for health", dialogTitleNl: "Zink voor gezondheid",
+    dialogDescEn: "Zinc is essential for immune function, wound healing, and protein synthesis. The recommended daily intake is 8 mg for women and 11 mg for men. Best sources: meat, shellfish, legumes, seeds.",
+    dialogDescNl: "Zink is essentieel voor immuunfunctie, wondgenezing en eiwitopbouw. De aanbevolen dagelijkse inname is 8 mg voor vrouwen en 11 mg voor mannen. Beste bronnen: vlees, schaaldieren, peulvruchten, zaden.",
+  },
+  calcium: {
+    fill: "#64748b", textColor: "text-slate-600", unit: "mg",
+    labelEn: "Calcium", labelNl: "Calcium",
+    dialogTitleEn: "Calcium for health", dialogTitleNl: "Calcium voor gezondheid",
+    dialogDescEn: "Calcium is essential for strong bones and teeth, muscle function, and nerve signaling. The recommended daily intake is 1000mg for adults. Best sources: dairy, leafy greens, fortified foods, almonds.",
+    dialogDescNl: "Calcium is essentieel voor sterke botten en tanden, spierfunctie en zenuwsignalering. De aanbevolen dagelijkse inname is 1000mg voor volwassenen. Beste bronnen: zuivel, bladgroenten, verrijkte voedingsmiddelen, amandelen.",
+  },
+  potassium: {
+    fill: "#14b8a6", textColor: "text-teal-600", unit: "mg",
+    labelEn: "Potassium", labelNl: "Kalium",
+    dialogTitleEn: "Potassium for health", dialogTitleNl: "Kalium voor gezondheid",
+    dialogDescEn: "Potassium is essential for heart function, muscle contraction, and blood pressure regulation. The recommended intake is 3400mg for men and 2600mg for women. Best sources: bananas, potatoes, spinach, beans.",
+    dialogDescNl: "Kalium is essentieel voor hartfunctie, spiersamentrekking en bloeddrukregulatie. De aanbevolen inname is 3400mg voor mannen en 2600mg voor vrouwen. Beste bronnen: bananen, aardappelen, spinazie, bonen.",
+  },
+  iron: {
+    fill: "#dc2626", textColor: "text-red-600", unit: "mg",
+    labelEn: "Iron", labelNl: "IJzer",
+    dialogTitleEn: "Iron for health", dialogTitleNl: "IJzer voor gezondheid",
+    dialogDescEn: "Iron is essential for oxygen transport in the blood and energy production. The recommended intake is 8mg for men and 18mg for women (higher due to menstruation). Best sources: legumes, spinach, tofu, fortified cereals.",
+    dialogDescNl: "IJzer is essentieel voor zuurstoftransport in het bloed en energieproductie. De aanbevolen inname is 8mg voor mannen en 18mg voor vrouwen (hoger vanwege menstruatie). Beste bronnen: peulvruchten, spinazie, tofu, verrijkte granen.",
+  },
+  vitaminC: {
+    fill: "#f59e0b", textColor: "text-amber-500", unit: "mg",
+    labelEn: "Vitamin C", labelNl: "Vitamine C",
+    dialogTitleEn: "Vitamin C for health", dialogTitleNl: "Vitamine C voor gezondheid",
+    dialogDescEn: "Vitamin C is essential for immune function, collagen production, and iron absorption. The recommended intake is 90mg for men and 75mg for women. Best sources: citrus fruits, bell peppers, broccoli, strawberries.",
+    dialogDescNl: "Vitamine C is essentieel voor immuunfunctie, collageenproductie en ijzeropname. De aanbevolen inname is 90mg voor mannen en 75mg voor vrouwen. Beste bronnen: citrusvruchten, paprika, broccoli, aardbeien.",
+  },
+  omega3: {
+    fill: "#0ea5e9", textColor: "text-sky-500", unit: "mg",
+    labelEn: "Omega-3", labelNl: "Omega-3",
+    dialogTitleEn: "Omega-3 for health", dialogTitleNl: "Omega-3 voor gezondheid",
+    dialogDescEn: "Omega-3 fatty acids are essential for heart and brain health, reducing inflammation, and hormonal balance. The recommended intake is 1600mg for men and 1100mg for women. Best sources: chia seeds, flaxseed, walnuts, hemp seeds.",
+    dialogDescNl: "Omega-3 vetzuren zijn essentieel voor hart- en hersengezondheid, ontstekingsremming en hormonale balans. De aanbevolen inname is 1600mg voor mannen en 1100mg voor vrouwen. Beste bronnen: chiazaad, lijnzaad, walnoten, hennepzaad.",
+  },
+  polyphenols: {
+    fill: "#8b5cf6", textColor: "text-violet-500", unit: "mg",
+    labelEn: "Polyphenols", labelNl: "Polyfenolen",
+    dialogTitleEn: "Polyphenols for health", dialogTitleNl: "Polyfenolen voor gezondheid",
+    dialogDescEn: "Polyphenols are powerful antioxidants that reduce inflammation, support heart and brain health, and combat aging. Recommended intake: 500-1500mg daily. Best sources: berries, cocoa, olive oil, green tea, spices, leafy greens.",
+    dialogDescNl: "Polyfenolen zijn krachtige antioxidanten die ontstekingen verminderen, hart- en hersengezondheid ondersteunen, en veroudering tegengaan. Aanbevolen inname: 500-1500mg per dag. Beste bronnen: bessen, cacao, olijfolie, groene thee, kruiden, bladgroenten.",
+  },
+  addedSugar: {
+    fill: "#f472b6", textColor: "text-pink-400", unit: "g",
+    labelEn: "Added sugar", labelNl: "Toegevoegde suiker",
+    isWarnable: true, warnFill: "#ef4444", warnTextColor: "text-red-500",
+    dialogTitleEn: "Added sugar", dialogTitleNl: "Toegevoegde suiker",
+    dialogDescEn: "The American Heart Association recommends a maximum of 25g added sugar per day for women and 36g for men. Added sugars come from sweeteners, not whole foods like fruit.",
+    dialogDescNl: "De American Heart Association beveelt maximaal 25g toegevoegde suiker per dag aan voor vrouwen en 36g voor mannen. Toegevoegde suikers komen van zoetstoffen, niet van volle voedingsmiddelen zoals fruit.",
+  },
+  freeSugar: {
+    fill: "#f97316", textColor: "text-orange-500", unit: "g",
+    labelEn: "Free sugar", labelNl: "Vrije suiker",
+    isInfoOnly: true,
+    dialogTitleEn: "Free sugar", dialogTitleNl: "Vrije suiker",
+    dialogDescEn: "Free sugars are sugars no longer bound in cell structures. This includes fruit juices, smoothies, dried fruits, and purees. WHO advises to be mindful of these.",
+    dialogDescNl: "Vrije suikers zijn suikers die niet meer gebonden zijn in celstructuren. Dit omvat vruchtensappen, smoothies, gedroogd fruit en purees. WHO adviseert hier voorzichtig mee te zijn.",
+    extraNoteEn: "Informational - be mindful", extraNoteNl: "Informatief - wees voorzichtig",
+  },
+  intrinsicSugar: {
+    fill: "#a78bfa", textColor: "text-violet-400", unit: "g",
+    labelEn: "Intrinsic sugar", labelNl: "Gebonden suiker",
+    isInfoOnly: true,
+    dialogTitleEn: "Intrinsic sugar", dialogTitleNl: "Gebonden suiker",
+    dialogDescEn: "Intrinsic sugars are still bound within the cell structure of whole foods like fresh fruits, vegetables, and dairy. They are absorbed more slowly and provide health benefits. Typically not a main limit; for energy or glucose stability, total carbs and fiber are often more informative.",
+    dialogDescNl: "Gebonden suikers zitten nog vast in de celstructuur van volle voedingsmiddelen zoals vers fruit, groenten en zuivel. Ze worden langzamer opgenomen en bieden gezondheidsvoordelen. Meestal geen strikte limiet; voor energie of glucosestabiliteit zijn totale koolhydraten en vezels vaak informatiever.",
+    extraNoteEn: "Healthy - no strict limit", extraNoteNl: "Gezond - geen strikte limiet",
+  },
+  sodium: {
+    fill: "#6b7280", textColor: "text-gray-600", unit: "mg",
+    labelEn: "Sodium", labelNl: "Natrium",
+    isWarnable: true, warnFill: "#ef4444", warnTextColor: "text-red-500",
+    dialogTitleEn: "Sodium for health", dialogTitleNl: "Natrium voor gezondheid",
+    dialogDescEn: "Sodium is needed for fluid balance and nerve function, but too much raises blood pressure. The recommended max is 2300mg per day. Note: most sodium comes from processed foods.",
+    dialogDescNl: "Natrium is nodig voor vochtbalans en zenuwfunctie, maar te veel verhoogt de bloeddruk. De aanbevolen max is 2300mg per dag. Let op: de meeste natrium komt uit bewerkte voedingsmiddelen.",
+  },
+};
+
+function KPIChart({ id, data, language, t }: { id: string; data: KPIValue; language: string; t: any }) {
+  const meta = kpiMeta[id];
+  if (!meta) return null;
+
+  const isOver = data.percentage > 100;
+  const useWarn = meta.isWarnable && isOver;
+  const fillColor = useWarn ? meta.warnFill! : meta.fill;
+  const currentTextColor = useWarn ? meta.warnTextColor! : meta.textColor;
+
+  const displayValue = meta.isRainbow
+    ? `${data.value}/${data.target}`
+    : `${data.value}${meta.unit}`;
+
+  const percentageDisplay = meta.isInfoOnly
+    ? (language === "nl" ? "Info" : "Info")
+    : `${data.percentage}%`;
+
+  const chartData = meta.isInfoOnly
+    ? [{ value: 100, fill: fillColor }]
+    : [
+        { value: Math.min(data.percentage, 100), fill: fillColor },
+        { value: Math.max(100 - data.percentage, 0), fill: "#f3f4f6" },
+      ];
+
+  const dialogTitle = language === "nl" ? meta.dialogTitleNl : meta.dialogTitleEn;
+
+  let dialogDesc = language === "nl" ? meta.dialogDescNl : meta.dialogDescEn;
+  if (!dialogDesc) {
+    const tKey = id === 'goodFats' ? 'fatsTooltip' : `${id}Tooltip`;
+    dialogDesc = (t as any)[tKey] || '';
+  }
+  const dialogTitleFromT = (() => {
+    if (dialogDesc === '') {
+      const titleKey = id === 'protein' ? 'whyProteinMatters'
+        : id === 'goodFats' ? 'whyHealthyFatsMatters'
+        : id === 'fiber' ? 'whyFiberMatters'
+        : id === 'vegetables' ? 'whyVegetablesMatters'
+        : id === 'plantDiversity' ? 'whyPlantDiversityMatters'
+        : id === 'cocoaFlavanols' ? 'whyCocoaFlavanolsMatters'
+        : null;
+      if (titleKey) return (t as any)[titleKey] || dialogTitle;
+    }
+    return dialogTitle;
+  })();
+
+  const extraNote = meta.extraNoteEn
+    ? (language === "nl" ? meta.extraNoteNl : meta.extraNoteEn)
+    : null;
+
+  const fiberWarning = id === 'fiber' ? (t as any).fiberWarning : null;
+  const plantDiversityTarget = id === 'plantDiversity' ? (t as any).plantDiversityTarget : null;
+
+  const targetNote = (meta.isWarnable && data.target !== null) ? (
+    language === "nl"
+      ? `Doel: max ${data.target}${meta.unit} per dag`
+      : `Target: max ${data.target}${meta.unit} per day`
+  ) : null;
+
+  const rainbowColorsNote = (meta.isRainbow && data.colors) ? (
+    language === "nl"
+      ? `Je hebt ${data.value} van ${data.target} kleuren bereikt: ${data.colors.join(', ')}`
+      : `You've achieved ${data.value} of ${data.target} colors: ${data.colors.join(', ')}`
+  ) : null;
+
+  return (
+    <div className="text-center relative">
+      <div className="relative w-14 h-14 mx-auto">
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart>
+            <Pie
+              data={chartData}
+              cx="50%"
+              cy="50%"
+              innerRadius={14}
+              outerRadius={24}
+              startAngle={90}
+              endAngle={450}
+              dataKey="value"
+            />
+            {meta.isRainbow && (
+              <defs>
+                <linearGradient id="rainbowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#ef4444" />
+                  <stop offset="20%" stopColor="#f97316" />
+                  <stop offset="40%" stopColor="#eab308" />
+                  <stop offset="60%" stopColor="#22c55e" />
+                  <stop offset="80%" stopColor="#3b82f6" />
+                  <stop offset="100%" stopColor="#8b5cf6" />
+                </linearGradient>
+              </defs>
+            )}
+          </PieChart>
+        </ResponsiveContainer>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className={`text-xs font-bold ${currentTextColor}`}>{displayValue}</div>
+        </div>
+      </div>
+      <div className="flex items-center justify-center gap-0.5">
+        <h3 className={`text-[10px] font-semibold ${currentTextColor}`}>
+          {language === "nl" ? meta.labelNl : meta.labelEn}
+        </h3>
+        <Dialog>
+          <DialogTrigger asChild>
+            <button className="text-gray-600/60 hover:text-gray-600" data-testid={`info-${id}`}>
+              <Info className="h-2.5 w-2.5" />
+            </button>
+          </DialogTrigger>
+          <DialogContent className="max-w-sm">
+            <DialogHeader>
+              <DialogTitle>{dialogTitleFromT}</DialogTitle>
+              <DialogDescription className="text-sm pt-2">
+                {dialogDesc}
+                {fiberWarning && (
+                  <p className="text-xs text-amber-600 font-medium mt-2">{fiberWarning}</p>
+                )}
+                {plantDiversityTarget && (
+                  <p className="text-xs text-green-600 font-medium mt-2">{plantDiversityTarget}</p>
+                )}
+                {rainbowColorsNote && (
+                  <p className="text-xs text-gray-600 font-medium mt-2">{rainbowColorsNote}</p>
+                )}
+                {targetNote && (
+                  <p className={`text-xs font-medium mt-2 ${useWarn ? 'text-red-500' : 'text-gray-500'}`}>
+                    {targetNote}
+                  </p>
+                )}
+                {extraNote && (
+                  <p className={`text-xs font-medium mt-2 ${meta.textColor.replace('text-', 'text-')}`}>
+                    {extraNote}
+                  </p>
+                )}
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+      </div>
+      <p className="text-[10px] text-gray-500">{percentageDisplay}</p>
+    </div>
+  );
+}
+
 export default function Insights() {
   const { language } = useLanguage();
   const t = useTranslations(language);
 
-  // Get selected meal plan ID from localStorage (same as meal planner)
   const [selectedMealPlanId, setSelectedMealPlanId] = useState<number | null>(() => {
     const stored = localStorage.getItem('selectedMealPlan');
     return stored ? parseInt(stored) : null;
   });
 
-  // Fetch the specific meal plan with all its meals
   const { data: currentMealPlan } = useQuery<MealPlan>({
     queryKey: [`/api/meal-plans/${selectedMealPlanId}`],
     enabled: !!selectedMealPlanId,
@@ -54,11 +421,9 @@ export default function Insights() {
     queryKey: ["/api/nutrition/targets"],
   });
 
-  // Use shared color group mapping from kpi-config.ts
   const getIngredientColors = getColorsFromConfig;
 
-  // Calculate nutrition data from current meal plan (same logic as meal planner)
-  const calculateKPIs = () => {
+  const calculateKPIs = (): Record<string, KPIValue> | null => {
     if (!currentMealPlan?.meals) return null;
 
     const totalProtein = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.protein || 0), 0);
@@ -66,47 +431,20 @@ export default function Insights() {
     const totalFats = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fats || 0), 0);
     const totalCarbs = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.carbohydrates || 0), 0);
     const totalFiber = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fiber || 0), 0);
-    const totalVitaminK = currentMealPlan.meals.reduce((sum, meal) => {
-      return sum + ((meal as any).vitaminK || 0);
-    }, 0);
-    const totalZinc = currentMealPlan.meals.reduce((sum, meal) => {
-      return sum + ((meal as any).zinc || 0);
-    }, 0);
-    const totalCalcium = currentMealPlan.meals.reduce((sum, meal) => {
-      return sum + ((meal as any).calcium || 0);
-    }, 0);
-    const totalSugar = currentMealPlan.meals.reduce((sum, meal) => {
-      return sum + ((meal as any).sugar || 0);
-    }, 0);
-    const totalAddedSugar = currentMealPlan.meals.reduce((sum, meal) => {
-      return sum + ((meal as any).addedSugar || 0);
-    }, 0);
-    const totalFreeSugar = currentMealPlan.meals.reduce((sum, meal) => {
-      return sum + ((meal as any).freeSugar || 0);
-    }, 0);
-    const totalIntrinsicSugar = currentMealPlan.meals.reduce((sum, meal) => {
-      return sum + ((meal as any).intrinsicSugar || 0);
-    }, 0);
-    const totalVitaminC = currentMealPlan.meals.reduce((sum, meal) => {
-      return sum + ((meal as any).vitaminC || 0);
-    }, 0);
-    const totalSodium = currentMealPlan.meals.reduce((sum, meal) => {
-      return sum + ((meal as any).sodium || 0);
-    }, 0);
-    const totalPotassium = currentMealPlan.meals.reduce((sum, meal) => {
-      return sum + ((meal as any).potassium || 0);
-    }, 0);
-    const totalIron = currentMealPlan.meals.reduce((sum, meal) => {
-      return sum + ((meal as any).iron || 0);
-    }, 0);
-    const totalOmega3 = currentMealPlan.meals.reduce((sum, meal) => {
-      return sum + ((meal as any).omega3 || 0);
-    }, 0);
-    const totalPolyphenols = currentMealPlan.meals.reduce((sum, meal) => {
-      return sum + ((meal as any).polyphenols || 0);
-    }, 0);
+    const totalVitaminK = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).vitaminK || 0), 0);
+    const totalZinc = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).zinc || 0), 0);
+    const totalCalcium = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).calcium || 0), 0);
+    const totalSugar = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).sugar || 0), 0);
+    const totalAddedSugar = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).addedSugar || 0), 0);
+    const totalFreeSugar = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).freeSugar || 0), 0);
+    const totalIntrinsicSugar = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).intrinsicSugar || 0), 0);
+    const totalVitaminC = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).vitaminC || 0), 0);
+    const totalSodium = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).sodium || 0), 0);
+    const totalPotassium = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).potassium || 0), 0);
+    const totalIron = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).iron || 0), 0);
+    const totalOmega3 = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).omega3 || 0), 0);
+    const totalPolyphenols = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).polyphenols || 0), 0);
 
-    // Calculate Eating the Rainbow score
     const allColors = new Set<string>();
     currentMealPlan.meals.forEach(meal => {
       if (meal.ingredients && Array.isArray(meal.ingredients)) {
@@ -114,64 +452,40 @@ export default function Insights() {
         mealColors.forEach(color => allColors.add(color));
       }
     });
-    const totalColorGroups = 6; // red, orange, yellow, green, purple, white
+    const totalColorGroups = 6;
     const achievedColors = allColors.size;
     const rainbowScore = Math.round((achievedColors / totalColorGroups) * 100);
 
-    // Count fermented foods (meals with "Fermented" tag)
     const fermentedMealsCount = currentMealPlan.meals.filter(meal => {
       const tags = (meal as any).recipeTags;
       return tags && Array.isArray(tags) && tags.includes('Fermented');
     }).length;
-    const fermentedTarget = 7; // Target: 1 fermented food per day
+    const fermentedTarget = 7;
 
-    // Calculate daily averages: average per meal × 3 meals per day
-    // This shows what a typical day with 3 meals would look like
     const totalMeals = currentMealPlan.meals.length;
-    const avgPerMeal = {
-      protein: totalMeals > 0 ? totalProtein / totalMeals : 0,
-      calories: totalMeals > 0 ? totalCalories / totalMeals : 0,
-      fats: totalMeals > 0 ? totalFats / totalMeals : 0,
-      carbs: totalMeals > 0 ? totalCarbs / totalMeals : 0,
-      fiber: totalMeals > 0 ? totalFiber / totalMeals : 0,
-      vitaminK: totalMeals > 0 ? totalVitaminK / totalMeals : 0,
-      zinc: totalMeals > 0 ? totalZinc / totalMeals : 0,
-      calcium: totalMeals > 0 ? totalCalcium / totalMeals : 0,
-      sugar: totalMeals > 0 ? totalSugar / totalMeals : 0,
-      addedSugar: totalMeals > 0 ? totalAddedSugar / totalMeals : 0,
-      freeSugar: totalMeals > 0 ? totalFreeSugar / totalMeals : 0,
-      intrinsicSugar: totalMeals > 0 ? totalIntrinsicSugar / totalMeals : 0,
-      vitaminC: totalMeals > 0 ? totalVitaminC / totalMeals : 0,
-      sodium: totalMeals > 0 ? totalSodium / totalMeals : 0,
-      potassium: totalMeals > 0 ? totalPotassium / totalMeals : 0,
-      iron: totalMeals > 0 ? totalIron / totalMeals : 0,
-      omega3: totalMeals > 0 ? totalOmega3 / totalMeals : 0,
-      polyphenols: totalMeals > 0 ? totalPolyphenols / totalMeals : 0,
-    };
-    
-    const avgProteinPerDay = avgPerMeal.protein * 3;
-    const avgCaloriesPerDay = avgPerMeal.calories * 3;
-    const avgFatsPerDay = avgPerMeal.fats * 3;
-    const avgCarbsPerDay = avgPerMeal.carbs * 3;
-    const avgFiberPerDay = avgPerMeal.fiber * 3;
-    const avgVitaminKPerDay = avgPerMeal.vitaminK * 3;
-    const avgZincPerDay = avgPerMeal.zinc * 3;
-    const avgCalciumPerDay = avgPerMeal.calcium * 3;
-    const avgSugarPerDay = avgPerMeal.sugar * 3;
-    const avgAddedSugarPerDay = avgPerMeal.addedSugar * 3;
-    const avgFreeSugarPerDay = avgPerMeal.freeSugar * 3;
-    const avgIntrinsicSugarPerDay = avgPerMeal.intrinsicSugar * 3;
-    const avgVitaminCPerDay = avgPerMeal.vitaminC * 3;
-    const avgSodiumPerDay = avgPerMeal.sodium * 3;
-    const avgPotassiumPerDay = avgPerMeal.potassium * 3;
-    const avgIronPerDay = avgPerMeal.iron * 3;
-    const avgOmega3PerDay = avgPerMeal.omega3 * 3;
-    const avgPolyphenolsPerDay = avgPerMeal.polyphenols * 3;
+    const avg = (total: number) => totalMeals > 0 ? (total / totalMeals) * 3 : 0;
 
-    // Calculate net carbs (total carbs - fiber)
+    const avgProteinPerDay = avg(totalProtein);
+    const avgCaloriesPerDay = avg(totalCalories);
+    const avgFatsPerDay = avg(totalFats);
+    const avgCarbsPerDay = avg(totalCarbs);
+    const avgFiberPerDay = avg(totalFiber);
+    const avgVitaminKPerDay = avg(totalVitaminK);
+    const avgZincPerDay = avg(totalZinc);
+    const avgCalciumPerDay = avg(totalCalcium);
+    const avgSugarPerDay = avg(totalSugar);
+    const avgAddedSugarPerDay = avg(totalAddedSugar);
+    const avgFreeSugarPerDay = avg(totalFreeSugar);
+    const avgIntrinsicSugarPerDay = avg(totalIntrinsicSugar);
+    const avgVitaminCPerDay = avg(totalVitaminC);
+    const avgSodiumPerDay = avg(totalSodium);
+    const avgPotassiumPerDay = avg(totalPotassium);
+    const avgIronPerDay = avg(totalIron);
+    const avgOmega3PerDay = avg(totalOmega3);
+    const avgPolyphenolsPerDay = avg(totalPolyphenols);
+
     const avgNetCarbsPerDay = avgCarbsPerDay - avgFiberPerDay;
 
-    // Collect all meal ingredients for plant-based calculations
     const allMealIngredients: string[] = [];
     currentMealPlan.meals.forEach(meal => {
       if (meal.ingredients && Array.isArray(meal.ingredients)) {
@@ -179,58 +493,29 @@ export default function Insights() {
       }
     });
 
-    // Calculate actual vegetables from meal ingredients
     const totalVegetableGrams = calculateVegetableGrams(allMealIngredients);
     const avgVegetablesPerDay = Math.round(totalVegetableGrams / 7);
-    
-    // Calculate fat percentage of calories
+
     const fatCalories = avgFatsPerDay * 9;
     const fatPercentage = avgCaloriesPerDay > 0 ? (fatCalories / avgCaloriesPerDay) * 100 : 25;
-    
-    // Fiber target (gender-specific)
+
     const fiberTarget = nutritionTargets?.fiber || 30;
-    
-    // Cocoa flavanols - calculate from actual cocoa/chocolate ingredients
     const totalCocoaFlavanols = calculateCocoaFlavanols(allMealIngredients);
     const avgCocoaFlavanolsPerDay = Math.round(totalCocoaFlavanols / 7);
     const cocoaFlavanolsTarget = 500;
-    
-    // Plant diversity - count actual unique plants from all meal ingredients using shared utility
     const plantDiversityResult = countUniquePlants(allMealIngredients);
     const plantDiversityCount = plantDiversityResult.count;
     const plantDiversityTarget = 30;
-
-    // Vitamin K target (gender-specific)
-    const vitaminKTarget = userProfile?.gender === 'male' ? 120 : 90; // 120 mcg for men, 90 mcg for women
-
-    // Zinc target (gender-specific) - 11mg for men, 8mg for women
+    const vitaminKTarget = userProfile?.gender === 'male' ? 120 : 90;
     const zincTarget = userProfile?.gender === 'male' ? 11 : 8;
-
-    // Calcium target - 1000mg for adults (same for both genders)
     const calciumTarget = 1000;
-
-    // Sugar target (gender-specific) - AHA recommends max 25g for women, 36g for men
     const sugarTarget = userProfile?.gender === 'male' ? 36 : 25;
-
-    // Vitamin C target - 90mg for men, 75mg for women
     const vitaminCTarget = userProfile?.gender === 'male' ? 90 : 75;
-
-    // Sodium target - max 2300mg per day (less is better)
     const sodiumTarget = 2300;
-
-    // Potassium target - 3400mg for men, 2600mg for women
     const potassiumTarget = userProfile?.gender === 'male' ? 3400 : 2600;
-
-    // Iron target - 8mg for men, 18mg for women (higher for women due to menstruation)
     const ironTarget = userProfile?.gender === 'male' ? 8 : 18;
-
-    // Omega-3 target - 1100mg for women, 1600mg for men (ALA adequate intake)
     const omega3Target = userProfile?.gender === 'male' ? 1600 : 1100;
-
-    // Polyphenols target - 500-1500mg daily recommended, using 800mg as target
     const polyphenolsTarget = 800;
-
-    // Targets
     const proteinTarget = nutritionTargets?.protein || 95;
     const caloriesTarget = nutritionTargets?.calories || 2000;
     const netCarbsTarget = 160;
@@ -314,12 +599,12 @@ export default function Insights() {
       },
       freeSugar: {
         value: Math.round(avgFreeSugarPerDay),
-        percentage: 100, // Informational - no strict limit but should be mindful
+        percentage: 100,
         target: null
       },
       intrinsicSugar: {
         value: Math.round(avgIntrinsicSugarPerDay),
-        percentage: 100, // No strict limit for intrinsic sugar (bound in whole foods)
+        percentage: 100,
         target: null
       },
       vitaminC: {
@@ -360,7 +645,6 @@ export default function Insights() {
   return (
     <div className="min-h-screen bg-background">
       <div className="container py-6 lg:py-8">
-        {/* Header with back button */}
         <div className="mb-6">
           <Link href="/" className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
@@ -376,1100 +660,26 @@ export default function Insights() {
           </p>
         </div>
 
-        {/* Compact Nutrition Charts - Same format as meal planner */}
         {kpiData && (
-          <div className="bg-gray-50 p-3 sm:p-4 lg:p-6 rounded-lg w-full">
-            <p className="text-xs text-gray-500 italic text-center mb-3" data-testid="kpi-daily-average-label">
+          <div className="space-y-4">
+            <p className="text-xs text-gray-500 italic text-center" data-testid="kpi-daily-average-label">
               {t.kpiDailyAverageLabel}
             </p>
-            <div className="grid grid-cols-4 gap-2">
-            
-            {/* Protein Chart */}
-            <div className="text-center relative">
-              <div className="relative w-14 h-14 mx-auto">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={[
-                        { value: Math.min(kpiData.protein.percentage, 100), fill: "#10b981" },
-                        { value: Math.max(100 - kpiData.protein.percentage, 0), fill: "#f3f4f6" }
-                      ]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={14}
-                      outerRadius={24}
-                      startAngle={90}
-                      endAngle={450}
-                      dataKey="value"
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-xs font-bold text-emerald-600">{kpiData.protein.value}g</div>
+
+            {kpiGroups.map(group => (
+              <div key={group.id} className={`rounded-lg border ${group.borderColor} ${group.bgColor} p-3 sm:p-4`}>
+                <h2 className="text-sm font-semibold text-foreground mb-3">
+                  {language === "nl" ? group.titleNl : group.titleEn}
+                </h2>
+                <div className="grid grid-cols-4 gap-2">
+                  {group.kpis.map(kpiId => {
+                    const data = kpiData[kpiId];
+                    if (!data) return null;
+                    return <KPIChart key={kpiId} id={kpiId} data={data} language={language} t={t} />;
+                  })}
                 </div>
               </div>
-              <div className="flex items-center justify-center gap-0.5">
-                <h3 className="text-[10px] font-semibold text-emerald-600">{t.protein}</h3>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="text-emerald-600/60 hover:text-emerald-600" data-testid="info-protein">
-                      <Info className="h-2.5 w-2.5" />
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-sm">
-                    <DialogHeader>
-                      <DialogTitle>{t.whyProteinMatters}</DialogTitle>
-                      <DialogDescription className="text-sm pt-2">
-                        {t.proteinTooltip}
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
-              <p className="text-[10px] text-gray-500">{kpiData.protein.percentage}%</p>
-            </div>
-
-            {/* Good Fats */}
-            <div className="text-center relative">
-              <div className="relative w-14 h-14 mx-auto">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={[
-                        { value: kpiData.goodFats.percentage, fill: "#eab308" },
-                        { value: 100 - kpiData.goodFats.percentage, fill: "#f3f4f6" }
-                      ]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={14}
-                      outerRadius={24}
-                      startAngle={90}
-                      endAngle={450}
-                      dataKey="value"
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-xs font-bold text-yellow-600">{kpiData.goodFats.value}g</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-0.5">
-                <h3 className="text-[10px] font-semibold text-yellow-600">{t.goodFats || 'Fats'}</h3>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="text-yellow-600/60 hover:text-yellow-600" data-testid="info-fats">
-                      <Info className="h-2.5 w-2.5" />
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-sm">
-                    <DialogHeader>
-                      <DialogTitle>{t.whyHealthyFatsMatters}</DialogTitle>
-                      <DialogDescription className="text-sm pt-2">
-                        {t.fatsTooltip}
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
-              <p className="text-[10px] text-gray-500">{kpiData.goodFats.percentage}%</p>
-            </div>
-
-            {/* Fiber */}
-            <div className="text-center relative">
-              <div className="relative w-14 h-14 mx-auto">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={[
-                        { value: Math.min(kpiData.fiber.percentage, 100), fill: "#f97316" },
-                        { value: Math.max(100 - kpiData.fiber.percentage, 0), fill: "#f3f4f6" }
-                      ]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={14}
-                      outerRadius={24}
-                      startAngle={90}
-                      endAngle={450}
-                      dataKey="value"
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-xs font-bold text-orange-600">{kpiData.fiber.value}g</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-0.5">
-                <h3 className="text-[10px] font-semibold text-orange-600">{t.fiber}</h3>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="text-orange-600/60 hover:text-orange-600" data-testid="info-fiber">
-                      <Info className="h-2.5 w-2.5" />
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-sm">
-                    <DialogHeader>
-                      <DialogTitle>{t.whyFiberMatters}</DialogTitle>
-                      <DialogDescription className="text-sm pt-2">
-                        {t.fiberTooltip}
-                        <p className="text-xs text-amber-600 font-medium mt-2">{t.fiberWarning}</p>
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
-              <p className="text-[10px] text-gray-500">{kpiData.fiber.percentage}%</p>
-            </div>
-
-            {/* Vegetables */}
-            <div className="text-center relative">
-              <div className="relative w-14 h-14 mx-auto">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={[
-                        { value: Math.min(kpiData.vegetables.percentage, 100), fill: "#22c55e" },
-                        { value: Math.max(100 - kpiData.vegetables.percentage, 0), fill: "#f3f4f6" }
-                      ]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={14}
-                      outerRadius={24}
-                      startAngle={90}
-                      endAngle={450}
-                      dataKey="value"
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-xs font-bold text-green-600">{kpiData.vegetables.value}g</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-0.5">
-                <h3 className="text-[10px] font-semibold text-green-600">{t.vegetables}</h3>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="text-green-600/60 hover:text-green-600" data-testid="info-vegetables">
-                      <Info className="h-2.5 w-2.5" />
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-sm">
-                    <DialogHeader>
-                      <DialogTitle>{t.whyVegetablesMatters}</DialogTitle>
-                      <DialogDescription className="text-sm pt-2">
-                        {t.vegetablesTooltip}
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
-              <p className="text-[10px] text-gray-500">{kpiData.vegetables.percentage}%</p>
-            </div>
-
-            {/* Plant Diversity */}
-            <div className="text-center relative">
-              <div className="relative w-14 h-14 mx-auto">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={[
-                        { value: Math.min(kpiData.plantDiversity.percentage, 100), fill: "#16a34a" },
-                        { value: Math.max(100 - kpiData.plantDiversity.percentage, 0), fill: "#f3f4f6" }
-                      ]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={14}
-                      outerRadius={24}
-                      startAngle={90}
-                      endAngle={450}
-                      dataKey="value"
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-xs font-bold text-green-700">{kpiData.plantDiversity.value}</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-0.5">
-                <h3 className="text-[10px] font-semibold text-green-700">{t.plantDiversity}</h3>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="text-green-700/60 hover:text-green-700" data-testid="info-plant-diversity">
-                      <Info className="h-2.5 w-2.5" />
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-sm">
-                    <DialogHeader>
-                      <DialogTitle>{t.whyPlantDiversityMatters}</DialogTitle>
-                      <DialogDescription className="text-sm pt-2">
-                        {t.plantDiversityTooltip}
-                        <p className="text-xs text-green-600 font-medium mt-2">{t.plantDiversityTarget}</p>
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
-              <p className="text-[10px] text-gray-500">{kpiData.plantDiversity.percentage}%</p>
-            </div>
-
-            {/* Cocoa Flavanols */}
-            <div className="text-center relative">
-              <div className="relative w-14 h-14 mx-auto">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={[
-                        { value: Math.min(kpiData.cocoaFlavanols.percentage, 100), fill: "#8b5cf6" },
-                        { value: Math.max(100 - kpiData.cocoaFlavanols.percentage, 0), fill: "#f3f4f6" }
-                      ]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={14}
-                      outerRadius={24}
-                      startAngle={90}
-                      endAngle={450}
-                      dataKey="value"
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-xs font-bold text-purple-600">{kpiData.cocoaFlavanols.value}mg</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-0.5">
-                <h3 className="text-[10px] font-semibold text-purple-600">{t.cocoaFlavanols}</h3>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="text-purple-600/60 hover:text-purple-600" data-testid="info-cocoa">
-                      <Info className="h-2.5 w-2.5" />
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-sm">
-                    <DialogHeader>
-                      <DialogTitle>{t.whyCocoaFlavanolsMatters}</DialogTitle>
-                      <DialogDescription className="text-sm pt-2">
-                        {t.cocoaFlavanolsTooltip}
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
-              <p className="text-[10px] text-gray-500">{kpiData.cocoaFlavanols.percentage}%</p>
-            </div>
-
-            {/* Net Carbs */}
-            <div className="text-center relative">
-              <div className="relative w-14 h-14 mx-auto">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={[
-                        { value: Math.min(kpiData.netCarbs.percentage, 100), fill: "#06b6d4" },
-                        { value: Math.max(100 - kpiData.netCarbs.percentage, 0), fill: "#f3f4f6" }
-                      ]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={14}
-                      outerRadius={24}
-                      startAngle={90}
-                      endAngle={450}
-                      dataKey="value"
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-xs font-bold text-cyan-600">{kpiData.netCarbs.value}g</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-0.5">
-                <h3 className="text-[10px] font-semibold text-cyan-600">{language === "nl" ? "Netto koolh." : "Net carbs"}</h3>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="text-cyan-600/60 hover:text-cyan-600" data-testid="info-net-carbs">
-                      <Info className="h-2.5 w-2.5" />
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-sm">
-                    <DialogHeader>
-                      <DialogTitle>{language === "nl" ? "Over netto koolhydraten" : "About net carbs"}</DialogTitle>
-                      <DialogDescription className="text-sm pt-2">
-                        {language === "nl" 
-                          ? "Netto koolhydraten zijn de verteerbare koolhydraten die je lichaam gebruikt voor energie (totale koolhydraten minus vezels). Ze zijn een belangrijke brandstofbron — het verminderen van geraffineerde koolhydraten kan gunstig zijn, maar koolhydraten volledig vermijden kan essentiële voedingsstoffen beperken."
-                          : "Net carbs are the digestible carbs your body uses for energy (total carbs minus fiber). They're an important fuel source — reducing refined carbs can be beneficial, but completely avoiding carbs may limit essential nutrients."}
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
-              <p className="text-[10px] text-gray-500">{kpiData.netCarbs.percentage}%</p>
-            </div>
-
-            {/* Calories */}
-            <div className="text-center relative">
-              <div className="relative w-14 h-14 mx-auto">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={[
-                        { value: Math.min(kpiData.calories.percentage, 100), fill: "#3b82f6" },
-                        { value: Math.max(100 - kpiData.calories.percentage, 0), fill: "#f3f4f6" }
-                      ]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={14}
-                      outerRadius={24}
-                      startAngle={90}
-                      endAngle={450}
-                      dataKey="value"
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-xs font-bold text-blue-600">{kpiData.calories.value}</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-0.5">
-                <h3 className="text-[10px] font-semibold text-blue-600">{t.calories}</h3>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="text-blue-600/60 hover:text-blue-600" data-testid="info-calories">
-                      <Info className="h-2.5 w-2.5" />
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-sm">
-                    <DialogHeader>
-                      <DialogTitle>{language === "nl" ? "Over calorieën" : "About calories"}</DialogTitle>
-                      <DialogDescription className="text-sm pt-2">
-                        {language === "nl" 
-                          ? "kcal weerspiegelen energie in voedsel, niet noodzakelijkelijk geabsorbeerde energie. Absorptie varieert met voedseltype, verwerking en macronutriënten (bijv. hele noten leveren vaak minder kcal dan op het etiket staat; eiwit heeft hogere verteringskosten)"
-                          : "kcal reflect energy in food, not necessarily energy absorbed. Absorption varies with food type, processing, and macronutrients (e.g., whole nuts often yield fewer kcal than labels; protein has a higher digestion cost)"}
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
-              <p className="text-[10px] text-gray-500">{kpiData.calories.percentage}%</p>
-            </div>
-
-            {/* Eating the Rainbow */}
-            <div className="text-center relative">
-              <div className="relative w-14 h-14 mx-auto">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={[
-                        { value: Math.min(kpiData.rainbow.percentage, 100), fill: "url(#rainbowGradient)" },
-                        { value: Math.max(100 - kpiData.rainbow.percentage, 0), fill: "#f3f4f6" }
-                      ]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={14}
-                      outerRadius={24}
-                      startAngle={90}
-                      endAngle={450}
-                      dataKey="value"
-                    />
-                    <defs>
-                      <linearGradient id="rainbowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#ef4444" />
-                        <stop offset="20%" stopColor="#f97316" />
-                        <stop offset="40%" stopColor="#eab308" />
-                        <stop offset="60%" stopColor="#22c55e" />
-                        <stop offset="80%" stopColor="#3b82f6" />
-                        <stop offset="100%" stopColor="#8b5cf6" />
-                      </linearGradient>
-                    </defs>
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-xs font-bold bg-gradient-to-r from-red-500 via-green-500 to-purple-500 bg-clip-text text-transparent">{kpiData.rainbow.value}/{kpiData.rainbow.target}</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-0.5">
-                <h3 className="text-[10px] font-semibold bg-gradient-to-r from-red-500 via-green-500 to-purple-500 bg-clip-text text-transparent">
-                  {language === "nl" ? "Regenboog" : "Rainbow"}
-                </h3>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-rainbow">
-                      <Info className="h-2.5 w-2.5" />
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-sm">
-                    <DialogHeader>
-                      <DialogTitle>{language === "nl" ? "Waarom kleurrijk eten belangrijk is" : "Why eating colorful foods matters"}</DialogTitle>
-                      <DialogDescription className="text-sm pt-2">
-                        {language === "nl" 
-                          ? "Verschillende kleuren vertegenwoordigen verschillende voedingsstoffen. Streef naar 6 kleurgroepen per week (rood, oranje, geel, groen, paars, wit) voor optimale gezondheid."
-                          : "Different colors represent different nutrients. Aim for 6 color groups per week (red, orange, yellow, green, purple, white) for optimal health."}
-                        <p className="text-xs text-gray-600 font-medium mt-2">
-                          {language === "nl" 
-                            ? `Je hebt ${kpiData.rainbow.value} van ${kpiData.rainbow.target} kleuren bereikt: ${kpiData.rainbow.colors.join(', ')}`
-                            : `You've achieved ${kpiData.rainbow.value} of ${kpiData.rainbow.target} colors: ${kpiData.rainbow.colors.join(', ')}`}
-                        </p>
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
-              <p className="text-[10px] text-gray-500">{kpiData.rainbow.percentage}%</p>
-            </div>
-
-            {/* Fermented Foods */}
-            <div className="text-center relative">
-              <div className="relative w-14 h-14 mx-auto">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={[
-                        { value: Math.min(kpiData.fermented.percentage, 100), fill: "#a855f7" },
-                        { value: Math.max(100 - kpiData.fermented.percentage, 0), fill: "#f3f4f6" }
-                      ]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={14}
-                      outerRadius={24}
-                      startAngle={90}
-                      endAngle={450}
-                      dataKey="value"
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-xs font-bold text-purple-500">{kpiData.fermented.value}/{kpiData.fermented.target}</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-0.5">
-                <h3 className="text-[10px] font-semibold text-purple-500">
-                  {language === "nl" ? "Gefermenteerd" : "Fermented"}
-                </h3>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-fermented">
-                      <Info className="h-2.5 w-2.5" />
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-sm">
-                    <DialogHeader>
-                      <DialogTitle>{language === "nl" ? "Gefermenteerde voedingsmiddelen voor darmgezondheid" : "Fermented foods for gut health"}</DialogTitle>
-                      <DialogDescription className="text-sm pt-2">
-                        {language === "nl" 
-                          ? "Gefermenteerde voedingsmiddelen bevatten probiotica die de darmgezondheid ondersteunen. Streef naar 1 gefermenteerd voedingsmiddel per dag. Voorbeelden: yoghurt, kefir, kimchi, zuurkool, miso, tempeh."
-                          : "Fermented foods contain probiotics that support gut health. Aim for 1 fermented food per day. Examples: yogurt, kefir, kimchi, sauerkraut, miso, tempeh."}
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
-              <p className="text-[10px] text-gray-500">{kpiData.fermented.percentage}%</p>
-            </div>
-
-            {/* Vitamin K */}
-            <div className="text-center relative">
-              <div className="relative w-14 h-14 mx-auto">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={[
-                        { value: Math.min(kpiData.vitaminK.percentage, 100), fill: "#10b981" },
-                        { value: Math.max(100 - kpiData.vitaminK.percentage, 0), fill: "#f3f4f6" }
-                      ]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={14}
-                      outerRadius={24}
-                      startAngle={90}
-                      endAngle={450}
-                      dataKey="value"
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-xs font-bold text-emerald-600">{kpiData.vitaminK.value}mcg</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-0.5">
-                <h3 className="text-[10px] font-semibold text-emerald-600">
-                  {language === "nl" ? "Vitamine K" : "Vitamin K"}
-                </h3>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-vitamin-k">
-                      <Info className="h-2.5 w-2.5" />
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-sm">
-                    <DialogHeader>
-                      <DialogTitle>{language === "nl" ? "Vitamine K voor gezondheid" : "Vitamin K for health"}</DialogTitle>
-                      <DialogDescription className="text-sm pt-2">
-                        {language === "nl" 
-                          ? "Vitamine K is essentieel voor bloedstolling en botgezondheid. De aanbevolen dagelijkse inname is 90 mcg voor vrouwen en 120 mcg voor mannen. Beste bronnen: groene bladgroenten, broccoli, spruitjes."
-                          : "Vitamin K is essential for blood clotting and bone health. The recommended daily intake is 90 mcg for women and 120 mcg for men. Best sources: leafy greens, broccoli, Brussels sprouts."}
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
-              <p className="text-[10px] text-gray-500">{kpiData.vitaminK.percentage}%</p>
-            </div>
-
-            {/* Zinc Chart */}
-            <div className="text-center relative">
-              <div className="relative w-14 h-14 mx-auto">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={[
-                        { value: Math.min(kpiData.zinc.percentage, 100), fill: "#8b5cf6" },
-                        { value: Math.max(100 - kpiData.zinc.percentage, 0), fill: "#f3f4f6" }
-                      ]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={14}
-                      outerRadius={24}
-                      startAngle={90}
-                      endAngle={450}
-                      dataKey="value"
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-xs font-bold text-violet-500">{kpiData.zinc.value}mg</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-0.5">
-                <h3 className="text-[10px] font-semibold text-violet-500">
-                  {language === "nl" ? "Zink" : "Zinc"}
-                </h3>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-zinc">
-                      <Info className="h-2.5 w-2.5" />
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-sm">
-                    <DialogHeader>
-                      <DialogTitle>{language === "nl" ? "Zink voor gezondheid" : "Zinc for health"}</DialogTitle>
-                      <DialogDescription className="text-sm pt-2">
-                        {language === "nl" 
-                          ? "Zink is essentieel voor immuunfunctie, wondgenezing en eiwitopbouw. De aanbevolen dagelijkse inname is 8 mg voor vrouwen en 11 mg voor mannen. Beste bronnen: vlees, schaaldieren, peulvruchten, zaden."
-                          : "Zinc is essential for immune function, wound healing, and protein synthesis. The recommended daily intake is 8 mg for women and 11 mg for men. Best sources: meat, shellfish, legumes, seeds."}
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
-              <p className="text-[10px] text-gray-500">{kpiData.zinc.percentage}%</p>
-            </div>
-
-            {/* Calcium Chart */}
-            <div className="text-center relative">
-              <div className="relative w-14 h-14 mx-auto">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={[
-                        { value: Math.min(kpiData.calcium.percentage, 100), fill: "#64748b" },
-                        { value: Math.max(100 - kpiData.calcium.percentage, 0), fill: "#f3f4f6" }
-                      ]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={14}
-                      outerRadius={24}
-                      startAngle={90}
-                      endAngle={450}
-                      dataKey="value"
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-xs font-bold text-slate-600">{kpiData.calcium.value}mg</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-0.5">
-                <h3 className="text-[10px] font-semibold text-slate-600">
-                  {language === "nl" ? "Calcium" : "Calcium"}
-                </h3>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-calcium">
-                      <Info className="h-2.5 w-2.5" />
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-sm">
-                    <DialogHeader>
-                      <DialogTitle>{language === "nl" ? "Calcium voor gezondheid" : "Calcium for health"}</DialogTitle>
-                      <DialogDescription className="text-sm pt-2">
-                        {language === "nl" 
-                          ? "Calcium is essentieel voor sterke botten en tanden, spiercontractie en zenuwfunctie. De aanbevolen dagelijkse inname is 1000 mg voor volwassenen. Beste bronnen: zuivel, groene bladgroenten, tofu, amandelen."
-                          : "Calcium is essential for strong bones and teeth, muscle contraction, and nerve function. The recommended daily intake is 1000 mg for adults. Best sources: dairy, leafy greens, tofu, almonds."}
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
-              <p className="text-[10px] text-gray-500">{kpiData.calcium.percentage}%</p>
-            </div>
-
-            {/* Potassium Chart */}
-            <div className="text-center relative">
-              <div className="relative w-14 h-14 mx-auto">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={[
-                        { value: Math.min(kpiData.potassium.percentage, 100), fill: "#14b8a6" },
-                        { value: Math.max(100 - kpiData.potassium.percentage, 0), fill: "#f3f4f6" }
-                      ]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={14}
-                      outerRadius={24}
-                      startAngle={90}
-                      endAngle={450}
-                      dataKey="value"
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-xs font-bold text-teal-600">{kpiData.potassium.value}mg</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-0.5">
-                <h3 className="text-[10px] font-semibold text-teal-600">
-                  {language === "nl" ? "Kalium" : "Potassium"}
-                </h3>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-potassium">
-                      <Info className="h-2.5 w-2.5" />
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-sm">
-                    <DialogHeader>
-                      <DialogTitle>{language === "nl" ? "Kalium voor gezondheid" : "Potassium for health"}</DialogTitle>
-                      <DialogDescription className="text-sm pt-2">
-                        {language === "nl" 
-                          ? "Kalium is essentieel voor hartfunctie, spiersamentrekking en bloeddrukregulatie. De aanbevolen inname is 3400mg voor mannen en 2600mg voor vrouwen. Beste bronnen: bananen, aardappelen, spinazie, bonen."
-                          : "Potassium is essential for heart function, muscle contraction, and blood pressure regulation. The recommended intake is 3400mg for men and 2600mg for women. Best sources: bananas, potatoes, spinach, beans."}
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
-              <p className="text-[10px] text-gray-500">{kpiData.potassium.percentage}%</p>
-            </div>
-
-            {/* Iron Chart */}
-            <div className="text-center relative">
-              <div className="relative w-14 h-14 mx-auto">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={[
-                        { value: Math.min(kpiData.iron.percentage, 100), fill: "#dc2626" },
-                        { value: Math.max(100 - kpiData.iron.percentage, 0), fill: "#f3f4f6" }
-                      ]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={14}
-                      outerRadius={24}
-                      startAngle={90}
-                      endAngle={450}
-                      dataKey="value"
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-xs font-bold text-red-600">{kpiData.iron.value}mg</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-0.5">
-                <h3 className="text-[10px] font-semibold text-red-600">
-                  {language === "nl" ? "IJzer" : "Iron"}
-                </h3>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-iron">
-                      <Info className="h-2.5 w-2.5" />
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-sm">
-                    <DialogHeader>
-                      <DialogTitle>{language === "nl" ? "IJzer voor gezondheid" : "Iron for health"}</DialogTitle>
-                      <DialogDescription className="text-sm pt-2">
-                        {language === "nl" 
-                          ? "IJzer is essentieel voor zuurstoftransport in het bloed en energieproductie. De aanbevolen inname is 8mg voor mannen en 18mg voor vrouwen (hoger vanwege menstruatie). Beste bronnen: peulvruchten, spinazie, tofu, verrijkte granen."
-                          : "Iron is essential for oxygen transport in the blood and energy production. The recommended intake is 8mg for men and 18mg for women (higher due to menstruation). Best sources: legumes, spinach, tofu, fortified cereals."}
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
-              <p className="text-[10px] text-gray-500">{kpiData.iron.percentage}%</p>
-            </div>
-
-            {/* Omega-3 Chart */}
-            <div className="text-center relative">
-              <div className="relative w-14 h-14 mx-auto">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={[
-                        { value: Math.min(kpiData.omega3.percentage, 100), fill: "#0ea5e9" },
-                        { value: Math.max(100 - kpiData.omega3.percentage, 0), fill: "#f3f4f6" }
-                      ]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={14}
-                      outerRadius={24}
-                      startAngle={90}
-                      endAngle={450}
-                      dataKey="value"
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-xs font-bold text-sky-500">{kpiData.omega3.value}mg</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-0.5">
-                <h3 className="text-[10px] font-semibold text-sky-500">
-                  {language === "nl" ? "Omega-3" : "Omega-3"}
-                </h3>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-omega3">
-                      <Info className="h-2.5 w-2.5" />
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-sm">
-                    <DialogHeader>
-                      <DialogTitle>{language === "nl" ? "Omega-3 voor gezondheid" : "Omega-3 for health"}</DialogTitle>
-                      <DialogDescription className="text-sm pt-2">
-                        {language === "nl" 
-                          ? "Omega-3 vetzuren zijn essentieel voor hart- en hersengezondheid, ontstekingsremming en hormonale balans. De aanbevolen inname is 1600mg voor mannen en 1100mg voor vrouwen. Beste bronnen: chiazaad, lijnzaad, walnoten, hennepzaad."
-                          : "Omega-3 fatty acids are essential for heart and brain health, reducing inflammation, and hormonal balance. The recommended intake is 1600mg for men and 1100mg for women. Best sources: chia seeds, flaxseed, walnuts, hemp seeds."}
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
-              <p className="text-[10px] text-gray-500">{kpiData.omega3.percentage}%</p>
-            </div>
-
-            {/* Polyphenols Chart */}
-            <div className="text-center relative">
-              <div className="relative w-14 h-14 mx-auto">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={[
-                        { value: Math.min(kpiData.polyphenols.percentage, 100), fill: "#8b5cf6" },
-                        { value: Math.max(100 - kpiData.polyphenols.percentage, 0), fill: "#f3f4f6" }
-                      ]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={14}
-                      outerRadius={24}
-                      startAngle={90}
-                      endAngle={450}
-                      dataKey="value"
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-xs font-bold text-violet-500">{kpiData.polyphenols.value}mg</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-0.5">
-                <h3 className="text-[10px] font-semibold text-violet-500">
-                  {language === "nl" ? "Polyfenolen" : "Polyphenols"}
-                </h3>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-polyphenols">
-                      <Info className="h-2.5 w-2.5" />
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-sm">
-                    <DialogHeader>
-                      <DialogTitle>{language === "nl" ? "Polyfenolen voor gezondheid" : "Polyphenols for health"}</DialogTitle>
-                      <DialogDescription className="text-sm pt-2">
-                        {language === "nl" 
-                          ? "Polyfenolen zijn krachtige antioxidanten die ontstekingen verminderen, hart- en hersengezondheid ondersteunen, en veroudering tegengaan. Aanbevolen inname: 500-1500mg per dag. Beste bronnen: bessen, cacao, olijfolie, groene thee, kruiden, bladgroenten."
-                          : "Polyphenols are powerful antioxidants that reduce inflammation, support heart and brain health, and combat aging. Recommended intake: 500-1500mg daily. Best sources: berries, cocoa, olive oil, green tea, spices, leafy greens."}
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
-              <p className="text-[10px] text-gray-500">{kpiData.polyphenols.percentage}%</p>
-            </div>
-
-            {/* Vitamin C Chart */}
-            <div className="text-center relative">
-              <div className="relative w-14 h-14 mx-auto">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={[
-                        { value: Math.min(kpiData.vitaminC.percentage, 100), fill: "#f59e0b" },
-                        { value: Math.max(100 - kpiData.vitaminC.percentage, 0), fill: "#f3f4f6" }
-                      ]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={14}
-                      outerRadius={24}
-                      startAngle={90}
-                      endAngle={450}
-                      dataKey="value"
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-xs font-bold text-amber-500">{kpiData.vitaminC.value}mg</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-0.5">
-                <h3 className="text-[10px] font-semibold text-amber-500">
-                  {language === "nl" ? "Vitamine C" : "Vitamin C"}
-                </h3>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-vitamin-c">
-                      <Info className="h-2.5 w-2.5" />
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-sm">
-                    <DialogHeader>
-                      <DialogTitle>{language === "nl" ? "Vitamine C voor gezondheid" : "Vitamin C for health"}</DialogTitle>
-                      <DialogDescription className="text-sm pt-2">
-                        {language === "nl" 
-                          ? "Vitamine C is essentieel voor immuunfunctie, collageenproductie en ijzeropname. De aanbevolen inname is 90mg voor mannen en 75mg voor vrouwen. Beste bronnen: citrusvruchten, paprika, broccoli, aardbeien."
-                          : "Vitamin C is essential for immune function, collagen production, and iron absorption. The recommended intake is 90mg for men and 75mg for women. Best sources: citrus fruits, bell peppers, broccoli, strawberries."}
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
-              <p className="text-[10px] text-gray-500">{kpiData.vitaminC.percentage}%</p>
-            </div>
-
-            {/* Sodium Chart */}
-            <div className="text-center relative">
-              <div className="relative w-14 h-14 mx-auto">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={[
-                        { value: Math.min(kpiData.sodium.percentage, 100), fill: kpiData.sodium.percentage > 100 ? "#ef4444" : "#6b7280" },
-                        { value: Math.max(100 - kpiData.sodium.percentage, 0), fill: "#f3f4f6" }
-                      ]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={14}
-                      outerRadius={24}
-                      startAngle={90}
-                      endAngle={450}
-                      dataKey="value"
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className={`text-xs font-bold ${kpiData.sodium.percentage > 100 ? 'text-red-500' : 'text-gray-600'}`}>{kpiData.sodium.value}mg</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-0.5">
-                <h3 className={`text-[10px] font-semibold ${kpiData.sodium.percentage > 100 ? 'text-red-500' : 'text-gray-600'}`}>
-                  {language === "nl" ? "Natrium" : "Sodium"}
-                </h3>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="text-gray-600/60 hover:text-gray-600" data-testid="info-sodium">
-                      <Info className="h-2.5 w-2.5" />
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-sm">
-                    <DialogHeader>
-                      <DialogTitle>{language === "nl" ? "Natrium voor gezondheid" : "Sodium for health"}</DialogTitle>
-                      <DialogDescription className="text-sm pt-2">
-                        {language === "nl" 
-                          ? "Natrium is nodig voor vochtbalans en zenuwfunctie, maar te veel verhoogt de bloeddruk. De aanbevolen max is 2300mg per dag. Let op: de meeste natrium komt uit bewerkte voedingsmiddelen."
-                          : "Sodium is needed for fluid balance and nerve function, but too much raises blood pressure. The recommended max is 2300mg per day. Note: most sodium comes from processed foods."}
-                        <p className={`text-xs font-medium mt-2 ${kpiData.sodium.percentage > 100 ? 'text-red-500' : 'text-gray-500'}`}>
-                          {language === "nl" 
-                            ? `Doel: max ${kpiData.sodium.target}mg per dag`
-                            : `Target: max ${kpiData.sodium.target}mg per day`}
-                        </p>
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
-              <p className="text-[10px] text-gray-500">{kpiData.sodium.percentage}%</p>
-            </div>
-
-            {/* Added Sugar */}
-            <div className="text-center relative">
-              <div className="relative w-14 h-14 mx-auto">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={[
-                        { value: Math.min(kpiData.addedSugar.percentage, 100), fill: kpiData.addedSugar.percentage > 100 ? "#ef4444" : "#f472b6" },
-                        { value: Math.max(100 - kpiData.addedSugar.percentage, 0), fill: "#f3f4f6" }
-                      ]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={14}
-                      outerRadius={24}
-                      startAngle={90}
-                      endAngle={450}
-                      dataKey="value"
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className={`text-xs font-bold ${kpiData.addedSugar.percentage > 100 ? 'text-red-500' : 'text-pink-400'}`}>{kpiData.addedSugar.value}g</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-0.5">
-                <h3 className={`text-[10px] font-semibold ${kpiData.addedSugar.percentage > 100 ? 'text-red-500' : 'text-pink-400'}`}>
-                  {language === "nl" ? "Toegevoegde suiker" : "Added sugar"}
-                </h3>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="text-pink-400/60 hover:text-pink-400" data-testid="info-added-sugar">
-                      <Info className="h-2.5 w-2.5" />
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-sm">
-                    <DialogHeader>
-                      <DialogTitle>{language === "nl" ? "Toegevoegde suiker" : "Added sugar"}</DialogTitle>
-                      <DialogDescription className="text-sm pt-2">
-                        {language === "nl" 
-                          ? "De American Heart Association beveelt maximaal 25g toegevoegde suiker per dag aan voor vrouwen en 36g voor mannen. Toegevoegde suikers komen van zoetstoffen, niet van volle voedingsmiddelen zoals fruit."
-                          : "The American Heart Association recommends a maximum of 25g added sugar per day for women and 36g for men. Added sugars come from sweeteners, not whole foods like fruit."}
-                        <p className={`text-xs font-medium mt-2 ${kpiData.addedSugar.percentage > 100 ? 'text-red-500' : 'text-pink-500'}`}>
-                          {language === "nl" 
-                            ? `Doel: max ${kpiData.addedSugar.target}g per dag`
-                            : `Target: max ${kpiData.addedSugar.target}g per day`}
-                        </p>
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
-              <p className="text-[10px] text-gray-500">{kpiData.addedSugar.percentage}%</p>
-            </div>
-
-            {/* Free Sugar */}
-            <div className="text-center relative">
-              <div className="relative w-14 h-14 mx-auto">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={[
-                        { value: 100, fill: "#f97316" }
-                      ]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={14}
-                      outerRadius={24}
-                      startAngle={90}
-                      endAngle={450}
-                      dataKey="value"
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-xs font-bold text-orange-500">{kpiData.freeSugar.value}g</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-0.5">
-                <h3 className="text-[10px] font-semibold text-orange-500">
-                  {language === "nl" ? "Vrije suiker" : "Free sugar"}
-                </h3>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="text-orange-500/60 hover:text-orange-500" data-testid="info-free-sugar">
-                      <Info className="h-2.5 w-2.5" />
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-sm">
-                    <DialogHeader>
-                      <DialogTitle>{language === "nl" ? "Vrije suiker" : "Free sugar"}</DialogTitle>
-                      <DialogDescription className="text-sm pt-2">
-                        {language === "nl" 
-                          ? "Vrije suikers zijn suikers die niet meer gebonden zijn in celstructuren. Dit omvat vruchtensappen, smoothies, gedroogd fruit en purees. WHO adviseert hier voorzichtig mee te zijn."
-                          : "Free sugars are sugars no longer bound in cell structures. This includes fruit juices, smoothies, dried fruits, and purees. WHO advises to be mindful of these."}
-                        <p className="text-xs font-medium mt-2 text-orange-500">
-                          {language === "nl" 
-                            ? "Informatief - wees voorzichtig"
-                            : "Informational - be mindful"}
-                        </p>
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
-              <p className="text-[10px] text-gray-500">{language === "nl" ? "Info" : "Info"}</p>
-            </div>
-
-            {/* Intrinsic Sugar */}
-            <div className="text-center relative">
-              <div className="relative w-14 h-14 mx-auto">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={[
-                        { value: 100, fill: "#a78bfa" }
-                      ]}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={14}
-                      outerRadius={24}
-                      startAngle={90}
-                      endAngle={450}
-                      dataKey="value"
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-xs font-bold text-violet-400">{kpiData.intrinsicSugar.value}g</div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center gap-0.5">
-                <h3 className="text-[10px] font-semibold text-violet-400">
-                  {language === "nl" ? "Gebonden suiker" : "Intrinsic sugar"}
-                </h3>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="text-violet-400/60 hover:text-violet-400" data-testid="info-intrinsic-sugar">
-                      <Info className="h-2.5 w-2.5" />
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-sm">
-                    <DialogHeader>
-                      <DialogTitle>{language === "nl" ? "Gebonden suiker" : "Intrinsic sugar"}</DialogTitle>
-                      <DialogDescription className="text-sm pt-2">
-                        {language === "nl" 
-                          ? "Gebonden suikers zitten nog vast in de celstructuur van volle voedingsmiddelen zoals vers fruit, groenten en zuivel. Ze worden langzamer opgenomen en bieden gezondheidsvoordelen. Meestal geen strikte limiet; voor energie of glucosestabiliteit zijn totale koolhydraten en vezels vaak informatiever."
-                          : "Intrinsic sugars are still bound within the cell structure of whole foods like fresh fruits, vegetables, and dairy. They are absorbed more slowly and provide health benefits. Typically not a main limit; for energy or glucose stability, total carbs and fiber are often more informative."}
-                        <p className="text-xs font-medium mt-2 text-violet-500">
-                          {language === "nl" 
-                            ? "Gezond - geen strikte limiet"
-                            : "Healthy - no strict limit"}
-                        </p>
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
-              <p className="text-[10px] text-gray-500">{language === "nl" ? "Info" : "Info"}</p>
-            </div>
-
-            </div>
+            ))}
           </div>
         )}
 
