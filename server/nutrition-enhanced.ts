@@ -17152,7 +17152,7 @@ function hasReplacementIngredients(meal: MealOption, restriction: 'gluten-free' 
 
 export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTags: string[]): MealOption[] {
   // Filter out replacement ingredient recipes when restrictions aren't selected
-  const hasGlutenFreeRestriction = dietaryTags.includes('Gluten-Free');
+  const hasGlutenFreeRestriction = dietaryTags.includes('Gluten-Free') || dietaryTags.includes('Gluten-Low');
   const hasLactoseFreeRestriction = dietaryTags.includes('Lactose-Free');
   
   let filteredMeals = meals.filter(meal => {
@@ -17194,7 +17194,7 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
   
   return filteredMeals.filter(meal => {
     // Handle critical dietary restrictions that must be enforced
-    const criticalTags = ['Vegetarian', 'Vegan', 'Gluten-Free', 'Lactose-Free', 'dairy-free'];
+    const criticalTags = ['Vegetarian', 'Vegan', 'Gluten-Free', 'Gluten-Low', 'Lactose-Free', 'dairy-free'];
     const userCriticalTags = dietaryTags.filter(tag => criticalTags.includes(tag));
     
     // SMART VEGETARIAN FILTERING: Include meals that either:

@@ -20,6 +20,7 @@ const DIETARY_TAGS = [
   "Vegetarian",
   "Vegan", 
   "Gluten-Free",
+  "Gluten-Low",
   "Lactose-Free",
   "Dairy-Free",
   "Nut-Free",
