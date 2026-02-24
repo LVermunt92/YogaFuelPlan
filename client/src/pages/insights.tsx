@@ -38,8 +38,8 @@ interface KPIGroupDef {
   id: string;
   titleEn: string;
   titleNl: string;
-  bgColor: string;
-  borderColor: string;
+  titleColor: string;
+  dividerColor: string;
   kpis: string[];
 }
 
@@ -48,32 +48,32 @@ const kpiGroups: KPIGroupDef[] = [
     id: 'macros',
     titleEn: 'Macros & energy',
     titleNl: 'Macro\'s & energie',
-    bgColor: 'bg-blue-50 dark:bg-blue-950/30',
-    borderColor: 'border-blue-200 dark:border-blue-800',
+    titleColor: 'text-blue-600',
+    dividerColor: 'border-blue-200 dark:border-blue-700',
     kpis: ['protein', 'goodFats', 'fiber', 'netCarbs', 'calories'],
   },
   {
     id: 'foodQuality',
     titleEn: 'Food quality',
     titleNl: 'Voedselkwaliteit',
-    bgColor: 'bg-green-50 dark:bg-green-950/30',
-    borderColor: 'border-green-200 dark:border-green-800',
+    titleColor: 'text-green-600',
+    dividerColor: 'border-green-200 dark:border-green-700',
     kpis: ['vegetables', 'plantDiversity', 'rainbow', 'fermented', 'cocoaFlavanols'],
   },
   {
     id: 'vitamins',
     titleEn: 'Vitamins & minerals',
     titleNl: 'Vitamines & mineralen',
-    bgColor: 'bg-violet-50 dark:bg-violet-950/30',
-    borderColor: 'border-violet-200 dark:border-violet-800',
+    titleColor: 'text-violet-600',
+    dividerColor: 'border-violet-200 dark:border-violet-700',
     kpis: ['vitaminK', 'zinc', 'calcium', 'potassium', 'iron', 'vitaminC', 'omega3', 'polyphenols'],
   },
   {
     id: 'sugarLimits',
     titleEn: 'Sugar & limits',
     titleNl: 'Suiker & limieten',
-    bgColor: 'bg-amber-50 dark:bg-amber-950/30',
-    borderColor: 'border-amber-200 dark:border-amber-800',
+    titleColor: 'text-amber-600',
+    dividerColor: 'border-amber-200 dark:border-amber-700',
     kpis: ['addedSugar', 'freeSugar', 'intrinsicSugar', 'sodium'],
   },
 ];
@@ -96,47 +96,49 @@ const kpiMeta: Record<string, {
   warnFill?: string;
   warnTextColor?: string;
 }> = {
+  // Macros group — blue family
   protein: {
-    fill: "#10b981", textColor: "text-emerald-600", unit: "g",
+    fill: "#2563eb", textColor: "text-blue-600", unit: "g",
     labelEn: "Protein", labelNl: "Eiwit",
     dialogTitleEn: "Why protein matters", dialogTitleNl: "Waarom eiwit belangrijk is",
     dialogDescEn: "", dialogDescNl: "",
   },
   goodFats: {
-    fill: "#eab308", textColor: "text-yellow-600", unit: "g",
+    fill: "#0284c7", textColor: "text-sky-600", unit: "g",
     labelEn: "Fats", labelNl: "Vetten",
     dialogTitleEn: "Why healthy fats matter", dialogTitleNl: "Waarom gezonde vetten belangrijk zijn",
     dialogDescEn: "", dialogDescNl: "",
   },
   fiber: {
-    fill: "#f97316", textColor: "text-orange-600", unit: "g",
+    fill: "#38bdf8", textColor: "text-sky-400", unit: "g",
     labelEn: "Fiber", labelNl: "Vezels",
     dialogTitleEn: "Why fiber matters", dialogTitleNl: "Waarom vezels belangrijk zijn",
     dialogDescEn: "", dialogDescNl: "",
     extraNoteEn: "", extraNoteNl: "",
   },
   netCarbs: {
-    fill: "#06b6d4", textColor: "text-cyan-600", unit: "g",
+    fill: "#1d4ed8", textColor: "text-blue-700", unit: "g",
     labelEn: "Net carbs", labelNl: "Netto koolh.",
     dialogTitleEn: "About net carbs", dialogTitleNl: "Over netto koolhydraten",
     dialogDescEn: "Net carbs are the digestible carbs your body uses for energy (total carbs minus fiber). They're an important fuel source — reducing refined carbs can be beneficial, but completely avoiding carbs may limit essential nutrients.",
     dialogDescNl: "Netto koolhydraten zijn de verteerbare koolhydraten die je lichaam gebruikt voor energie (totale koolhydraten minus vezels). Ze zijn een belangrijke brandstofbron — het verminderen van geraffineerde koolhydraten kan gunstig zijn, maar koolhydraten volledig vermijden kan essentiële voedingsstoffen beperken.",
   },
   calories: {
-    fill: "#3b82f6", textColor: "text-blue-600", unit: "",
+    fill: "#3b82f6", textColor: "text-blue-500", unit: "",
     labelEn: "Calories", labelNl: "Calorieën",
     dialogTitleEn: "About calories", dialogTitleNl: "Over calorieën",
     dialogDescEn: "kcal reflect energy in food, not necessarily energy absorbed. Absorption varies with food type, processing, and macronutrients (e.g., whole nuts often yield fewer kcal than labels; protein has a higher digestion cost)",
     dialogDescNl: "kcal weerspiegelen energie in voedsel, niet noodzakelijkelijk geabsorbeerde energie. Absorptie varieert met voedseltype, verwerking en macronutriënten (bijv. hele noten leveren vaak minder kcal dan op het etiket staat; eiwit heeft hogere verteringskosten)",
   },
+  // Food quality group — green family
   vegetables: {
-    fill: "#22c55e", textColor: "text-green-600", unit: "g",
+    fill: "#16a34a", textColor: "text-green-600", unit: "g",
     labelEn: "Vegetables", labelNl: "Groenten",
     dialogTitleEn: "Why vegetables matter", dialogTitleNl: "Waarom groenten belangrijk zijn",
     dialogDescEn: "", dialogDescNl: "",
   },
   plantDiversity: {
-    fill: "#16a34a", textColor: "text-green-700", unit: "",
+    fill: "#15803d", textColor: "text-green-700", unit: "",
     labelEn: "Plant diversity", labelNl: "Plantdiversiteit",
     dialogTitleEn: "Why plant diversity matters", dialogTitleNl: "Waarom plantdiversiteit belangrijk is",
     dialogDescEn: "", dialogDescNl: "",
@@ -151,20 +153,21 @@ const kpiMeta: Record<string, {
     dialogDescNl: "Verschillende kleuren vertegenwoordigen verschillende voedingsstoffen. Streef naar 6 kleurgroepen per week (rood, oranje, geel, groen, paars, wit) voor optimale gezondheid.",
   },
   fermented: {
-    fill: "#a855f7", textColor: "text-purple-500", unit: "",
+    fill: "#22c55e", textColor: "text-green-500", unit: "",
     labelEn: "Fermented", labelNl: "Gefermenteerd",
     dialogTitleEn: "Fermented foods for gut health", dialogTitleNl: "Gefermenteerde voedingsmiddelen voor darmgezondheid",
     dialogDescEn: "Fermented foods contain probiotics that support gut health. Aim for 1 fermented food per day. Examples: yogurt, kefir, kimchi, sauerkraut, miso, tempeh.",
     dialogDescNl: "Gefermenteerde voedingsmiddelen bevatten probiotica die de darmgezondheid ondersteunen. Streef naar 1 gefermenteerd voedingsmiddel per dag. Voorbeelden: yoghurt, kefir, kimchi, zuurkool, miso, tempeh.",
   },
   cocoaFlavanols: {
-    fill: "#8b5cf6", textColor: "text-purple-600", unit: "mg",
+    fill: "#166534", textColor: "text-green-800", unit: "mg",
     labelEn: "Cocoa flavanols", labelNl: "Cacao flavanolen",
     dialogTitleEn: "Why cocoa flavanols matter", dialogTitleNl: "Waarom cacao flavanolen belangrijk zijn",
     dialogDescEn: "", dialogDescNl: "",
   },
+  // Vitamins & minerals group — violet/purple family
   vitaminK: {
-    fill: "#10b981", textColor: "text-emerald-600", unit: "mcg",
+    fill: "#7c3aed", textColor: "text-violet-600", unit: "mcg",
     labelEn: "Vitamin K", labelNl: "Vitamine K",
     dialogTitleEn: "Vitamin K for health", dialogTitleNl: "Vitamine K voor gezondheid",
     dialogDescEn: "Vitamin K is essential for blood clotting and bone health. The recommended daily intake is 90 mcg for women and 120 mcg for men. Best sources: leafy greens, broccoli, Brussels sprouts.",
@@ -178,49 +181,50 @@ const kpiMeta: Record<string, {
     dialogDescNl: "Zink is essentieel voor immuunfunctie, wondgenezing en eiwitopbouw. De aanbevolen dagelijkse inname is 8 mg voor vrouwen en 11 mg voor mannen. Beste bronnen: vlees, schaaldieren, peulvruchten, zaden.",
   },
   calcium: {
-    fill: "#64748b", textColor: "text-slate-600", unit: "mg",
+    fill: "#6d28d9", textColor: "text-violet-700", unit: "mg",
     labelEn: "Calcium", labelNl: "Calcium",
     dialogTitleEn: "Calcium for health", dialogTitleNl: "Calcium voor gezondheid",
     dialogDescEn: "Calcium is essential for strong bones and teeth, muscle function, and nerve signaling. The recommended daily intake is 1000mg for adults. Best sources: dairy, leafy greens, fortified foods, almonds.",
     dialogDescNl: "Calcium is essentieel voor sterke botten en tanden, spierfunctie en zenuwsignalering. De aanbevolen dagelijkse inname is 1000mg voor volwassenen. Beste bronnen: zuivel, bladgroenten, verrijkte voedingsmiddelen, amandelen.",
   },
   potassium: {
-    fill: "#14b8a6", textColor: "text-teal-600", unit: "mg",
+    fill: "#a855f7", textColor: "text-purple-500", unit: "mg",
     labelEn: "Potassium", labelNl: "Kalium",
     dialogTitleEn: "Potassium for health", dialogTitleNl: "Kalium voor gezondheid",
     dialogDescEn: "Potassium is essential for heart function, muscle contraction, and blood pressure regulation. The recommended intake is 3400mg for men and 2600mg for women. Best sources: bananas, potatoes, spinach, beans.",
     dialogDescNl: "Kalium is essentieel voor hartfunctie, spiersamentrekking en bloeddrukregulatie. De aanbevolen inname is 3400mg voor mannen en 2600mg voor vrouwen. Beste bronnen: bananen, aardappelen, spinazie, bonen.",
   },
   iron: {
-    fill: "#dc2626", textColor: "text-red-600", unit: "mg",
+    fill: "#9333ea", textColor: "text-purple-600", unit: "mg",
     labelEn: "Iron", labelNl: "IJzer",
     dialogTitleEn: "Iron for health", dialogTitleNl: "IJzer voor gezondheid",
     dialogDescEn: "Iron is essential for oxygen transport in the blood and energy production. The recommended intake is 8mg for men and 18mg for women (higher due to menstruation). Best sources: legumes, spinach, tofu, fortified cereals.",
     dialogDescNl: "IJzer is essentieel voor zuurstoftransport in het bloed en energieproductie. De aanbevolen inname is 8mg voor mannen en 18mg voor vrouwen (hoger vanwege menstruatie). Beste bronnen: peulvruchten, spinazie, tofu, verrijkte granen.",
   },
   vitaminC: {
-    fill: "#f59e0b", textColor: "text-amber-500", unit: "mg",
+    fill: "#c026d3", textColor: "text-fuchsia-600", unit: "mg",
     labelEn: "Vitamin C", labelNl: "Vitamine C",
     dialogTitleEn: "Vitamin C for health", dialogTitleNl: "Vitamine C voor gezondheid",
     dialogDescEn: "Vitamin C is essential for immune function, collagen production, and iron absorption. The recommended intake is 90mg for men and 75mg for women. Best sources: citrus fruits, bell peppers, broccoli, strawberries.",
     dialogDescNl: "Vitamine C is essentieel voor immuunfunctie, collageenproductie en ijzeropname. De aanbevolen inname is 90mg voor mannen en 75mg voor vrouwen. Beste bronnen: citrusvruchten, paprika, broccoli, aardbeien.",
   },
   omega3: {
-    fill: "#0ea5e9", textColor: "text-sky-500", unit: "mg",
+    fill: "#4f46e5", textColor: "text-indigo-600", unit: "mg",
     labelEn: "Omega-3", labelNl: "Omega-3",
     dialogTitleEn: "Omega-3 for health", dialogTitleNl: "Omega-3 voor gezondheid",
     dialogDescEn: "Omega-3 fatty acids are essential for heart and brain health, reducing inflammation, and hormonal balance. The recommended intake is 1600mg for men and 1100mg for women. Best sources: chia seeds, flaxseed, walnuts, hemp seeds.",
     dialogDescNl: "Omega-3 vetzuren zijn essentieel voor hart- en hersengezondheid, ontstekingsremming en hormonale balans. De aanbevolen inname is 1600mg voor mannen en 1100mg voor vrouwen. Beste bronnen: chiazaad, lijnzaad, walnoten, hennepzaad.",
   },
   polyphenols: {
-    fill: "#8b5cf6", textColor: "text-violet-500", unit: "mg",
+    fill: "#5b21b6", textColor: "text-violet-800", unit: "mg",
     labelEn: "Polyphenols", labelNl: "Polyfenolen",
     dialogTitleEn: "Polyphenols for health", dialogTitleNl: "Polyfenolen voor gezondheid",
     dialogDescEn: "Polyphenols are powerful antioxidants that reduce inflammation, support heart and brain health, and combat aging. Recommended intake: 500-1500mg daily. Best sources: berries, cocoa, olive oil, green tea, spices, leafy greens.",
     dialogDescNl: "Polyfenolen zijn krachtige antioxidanten die ontstekingen verminderen, hart- en hersengezondheid ondersteunen, en veroudering tegengaan. Aanbevolen inname: 500-1500mg per dag. Beste bronnen: bessen, cacao, olijfolie, groene thee, kruiden, bladgroenten.",
   },
+  // Sugar & limits group — amber/rose family
   addedSugar: {
-    fill: "#f472b6", textColor: "text-pink-400", unit: "g",
+    fill: "#f59e0b", textColor: "text-amber-500", unit: "g",
     labelEn: "Added sugar", labelNl: "Toegevoegde suiker",
     isWarnable: true, warnFill: "#ef4444", warnTextColor: "text-red-500",
     dialogTitleEn: "Added sugar", dialogTitleNl: "Toegevoegde suiker",
@@ -228,7 +232,7 @@ const kpiMeta: Record<string, {
     dialogDescNl: "De American Heart Association beveelt maximaal 25g toegevoegde suiker per dag aan voor vrouwen en 36g voor mannen. Toegevoegde suikers komen van zoetstoffen, niet van volle voedingsmiddelen zoals fruit.",
   },
   freeSugar: {
-    fill: "#f97316", textColor: "text-orange-500", unit: "g",
+    fill: "#fb923c", textColor: "text-orange-400", unit: "g",
     labelEn: "Free sugar", labelNl: "Vrije suiker",
     isInfoOnly: true,
     dialogTitleEn: "Free sugar", dialogTitleNl: "Vrije suiker",
@@ -237,7 +241,7 @@ const kpiMeta: Record<string, {
     extraNoteEn: "Informational - be mindful", extraNoteNl: "Informatief - wees voorzichtig",
   },
   intrinsicSugar: {
-    fill: "#a78bfa", textColor: "text-violet-400", unit: "g",
+    fill: "#fbbf24", textColor: "text-amber-400", unit: "g",
     labelEn: "Intrinsic sugar", labelNl: "Gebonden suiker",
     isInfoOnly: true,
     dialogTitleEn: "Intrinsic sugar", dialogTitleNl: "Gebonden suiker",
@@ -246,7 +250,7 @@ const kpiMeta: Record<string, {
     extraNoteEn: "Healthy - no strict limit", extraNoteNl: "Gezond - geen strikte limiet",
   },
   sodium: {
-    fill: "#6b7280", textColor: "text-gray-600", unit: "mg",
+    fill: "#d97706", textColor: "text-amber-600", unit: "mg",
     labelEn: "Sodium", labelNl: "Natrium",
     isWarnable: true, warnFill: "#ef4444", warnTextColor: "text-red-500",
     dialogTitleEn: "Sodium for health", dialogTitleNl: "Natrium voor gezondheid",
@@ -667,10 +671,12 @@ export default function Insights() {
             </p>
 
             {kpiGroups.map(group => (
-              <div key={group.id} className={`rounded-lg border ${group.borderColor} ${group.bgColor} p-3 sm:p-4`}>
-                <h2 className="text-sm font-semibold text-foreground mb-3">
-                  {language === "nl" ? group.titleNl : group.titleEn}
-                </h2>
+              <div key={group.id} className="pt-1">
+                <div className={`flex items-center gap-2 mb-3 pb-1 border-b ${group.dividerColor}`}>
+                  <h2 className={`text-xs font-semibold uppercase tracking-wide ${group.titleColor}`}>
+                    {language === "nl" ? group.titleNl : group.titleEn}
+                  </h2>
+                </div>
                 <div className="grid grid-cols-4 gap-2">
                   {group.kpis.map(kpiId => {
                     const data = kpiData[kpiId];
