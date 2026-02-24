@@ -672,11 +672,6 @@ export default function Insights() {
 
             {kpiGroups.map(group => (
               <div key={group.id} className="pt-1">
-                <div className={`flex items-center gap-2 mb-3 pb-1 border-b ${group.dividerColor}`}>
-                  <h2 className={`text-xs font-semibold uppercase tracking-wide ${group.titleColor}`}>
-                    {language === "nl" ? group.titleNl : group.titleEn}
-                  </h2>
-                </div>
                 <div className="grid grid-cols-4 gap-2">
                   {group.kpis.map(kpiId => {
                     const data = kpiData[kpiId];
