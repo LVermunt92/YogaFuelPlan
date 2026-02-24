@@ -2219,12 +2219,6 @@ function MealPlannerMain() {
 
                       {/* Group 1: Macros & energy — blue family */}
                       <div>
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="text-[10px] font-semibold uppercase tracking-wide text-blue-600">
-                            {language === 'nl' ? "Macro's & energie" : "Macros & energy"}
-                          </span>
-                          <div className="flex-1 border-t border-blue-200" />
-                        </div>
                         <div className="grid grid-cols-5 gap-1 text-center">
                           <div>
                             <p className="text-xs font-bold text-blue-600">{Math.round(recipeData.nutrition.protein)}g</p>
@@ -2251,12 +2245,6 @@ function MealPlannerMain() {
 
                       {/* Group 2: Food quality — green family */}
                       <div>
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="text-[10px] font-semibold uppercase tracking-wide text-green-600">
-                            {language === 'nl' ? 'Voedselkwaliteit' : 'Food quality'}
-                          </span>
-                          <div className="flex-1 border-t border-green-200" />
-                        </div>
                         <div className="grid grid-cols-5 gap-1 text-center">
                           <div>
                             <p className="text-xs font-bold text-green-600">{estimateVegetableContent(recipeData.nutrition.fiber || 0)}g</p>
@@ -2285,12 +2273,6 @@ function MealPlannerMain() {
 
                       {/* Group 3: Vitamins & minerals — violet/purple family */}
                       <div>
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="text-[10px] font-semibold uppercase tracking-wide text-violet-600">
-                            {language === 'nl' ? 'Vitamines & mineralen' : 'Vitamins & minerals'}
-                          </span>
-                          <div className="flex-1 border-t border-violet-200" />
-                        </div>
                         <div className="grid grid-cols-4 gap-1 text-center">
                           <div>
                             <p className="text-xs font-bold text-violet-600">{Math.round((recipeData.nutrition as any).vitaminK || 0)}µg</p>
@@ -2331,12 +2313,6 @@ function MealPlannerMain() {
 
                       {/* Group 4: Sugar & limits — amber family */}
                       <div>
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="text-[10px] font-semibold uppercase tracking-wide text-amber-600">
-                            {language === 'nl' ? 'Suiker & limieten' : 'Sugar & limits'}
-                          </span>
-                          <div className="flex-1 border-t border-amber-200" />
-                        </div>
                         <div className="grid grid-cols-4 gap-1 text-center">
                           <div>
                             <p className="text-xs font-bold text-amber-500">{Math.round((recipeData.nutrition as any).addedSugar || 0)}g</p>
