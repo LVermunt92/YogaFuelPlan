@@ -2626,30 +2626,20 @@ async function generateMealPrepPlan(
   // Create smart breakfast pool respecting weekday/weekend preferences
   const breakfastPool = [];
   
-  // Separate weekday and weekend breakfast options with more flexible filtering
+  // No prep-time filter on weekday breakfasts — all options are valid.
+  // Weekend-specific recipes (pancakes, quinoa breakfast bowl) are excluded from
+  // weekdays so they stay reserved as a weekend treat.
   const weekdayBreakfasts = breakfastOptions.filter(meal => {
-    // Weekday: prefer quick options but be more inclusive
     const name = meal.name.toLowerCase();
     const isWeekendSpecific = name.includes('pancake') || name.includes('quinoa breakfast bowl');
-    const hasQuickPrep = meal.nutrition.prepTime <= 15; // Increased from 10 to 15
-    const isQuickOption = name.includes('overnight') || name.includes('chia') || 
-                         name.includes('smoothie') || name.includes('kefir') ||
-                         name.includes('bowl') || name.includes('yogurt');
-    
-    return !isWeekendSpecific && (hasQuickPrep || isQuickOption);
+    return !isWeekendSpecific;
   });
-  
-  const weekendBreakfasts = breakfastOptions.filter(meal => {
-    // Weekend: include elaborate options and weekend-specific items
-    const name = meal.name.toLowerCase();
-    const isWeekendSpecific = name.includes('pancake') || name.includes('quinoa breakfast bowl');
-    const hasElaboratePrep = meal.nutrition.prepTime >= 10; // Decreased from 15 to 10
-    
-    return isWeekendSpecific || hasElaboratePrep;
-  });
-  
-  console.log(`📋 Weekday breakfasts (≤15min): ${weekdayBreakfasts.map(b => `${b.name} (${b.nutrition.prepTime}min)`).join(' | ')}`);
-  console.log(`🥞 Weekend breakfasts (≥10min): ${weekendBreakfasts.map(b => `${b.name} (${b.nutrition.prepTime}min)`).join(' | ')}`);
+
+  // Weekend includes everything (including weekend-specific items)
+  const weekendBreakfasts = breakfastOptions;
+
+  console.log(`📋 Weekday breakfasts (all prep times): ${weekdayBreakfasts.length} options`);
+  console.log(`🥞 Weekend breakfasts (all prep times): ${weekendBreakfasts.length} options`);
   
   // If both arrays are still empty, use all breakfast options as fallback
   if (weekdayBreakfasts.length === 0 && weekendBreakfasts.length === 0) {
