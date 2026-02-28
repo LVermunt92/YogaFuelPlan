@@ -933,22 +933,47 @@ function areMealsSimilar(meal1: string, meal2: string): boolean {
 }
 
 /**
- * Get recently used meals from meal history to prevent week-to-week repetition
+ * Get recently used meals by reading directly from past meal plans.
+ * This is reliable because the meals table is always populated — no
+ * separate history table required.
  */
 async function getRecentMealHistory(userId: number, weeksBack: number = 2): Promise<string[]> {
   try {
-    const db = storage;
-    const recentHistory = await db.getMealHistory(userId, weeksBack * 21); // 3 meals per day × 7 days × weeks
-    const recentMealNames = recentHistory.map(h => h.mealName);
-    
-    if (recentMealNames.length > 0) {
-      console.log(`📊 HISTORY CHECK: Found ${recentMealNames.length} recent meals from last ${weeksBack} weeks`);
-      console.log(`📊 Recent meals: ${recentMealNames.slice(0, 5).join(', ')}${recentMealNames.length > 5 ? '...' : ''}`);
+    // Fetch all meal plans for this user, most recent first
+    const allPlans = await storage.getMealPlans(userId);
+    if (!allPlans || allPlans.length === 0) return [];
+
+    // Sort by weekStart descending and take the most recent `weeksBack` plans
+    const sortedPlans = [...allPlans].sort(
+      (a, b) => new Date(b.weekStart).getTime() - new Date(a.weekStart).getTime()
+    );
+    const recentPlans = sortedPlans.slice(0, weeksBack);
+
+    // Collect all meal names from those plans
+    const mealNames: string[] = [];
+    for (const plan of recentPlans) {
+      const planWithMeals = await storage.getMealPlanWithMeals(plan.id);
+      if (planWithMeals?.meals) {
+        for (const meal of planWithMeals.meals) {
+          const name = (meal as any).foodDescription;
+          if (name && name !== 'Eating out') {
+            // Strip portion/leftover notes in parentheses
+            mealNames.push(name.split(' (')[0].trim());
+          }
+        }
+      }
     }
-    
-    return recentMealNames;
+
+    if (mealNames.length > 0) {
+      console.log(`📊 HISTORY CHECK: Found ${mealNames.length} meals across last ${recentPlans.length} plan(s)`);
+      console.log(`📊 Recent meals: ${mealNames.slice(0, 5).join(', ')}${mealNames.length > 5 ? '...' : ''}`);
+    } else {
+      console.log(`📊 HISTORY CHECK: No previous meal plans found for user ${userId}`);
+    }
+
+    return mealNames;
   } catch (error) {
-    console.warn('Failed to fetch meal history for variety checking:', error);
+    console.warn('Failed to fetch recent meal plans for variety checking:', error);
     return [];
   }
 }
