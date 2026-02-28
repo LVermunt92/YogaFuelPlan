@@ -998,8 +998,10 @@ async function selectUnusedMealIntelligently(
     throw new Error('No available meals to select from');
   }
   
-  // Get recent meal history to prevent week-to-week repetition
-  const recentMealHistory = userId ? await getRecentMealHistory(userId, 2) : [];
+  // Get recent meal history to prevent week-to-week repetition.
+  // Look back only 1 plan (not 2) so the pool isn't exhausted for users
+  // with small dietary-restricted recipe sets.
+  const recentMealHistory = userId ? await getRecentMealHistory(userId, 1) : [];
   
   console.log(`🔍 VARIETY DEBUG: Starting with ${availableMeals.length} available meals for ${category}`);
   console.log(`🔍 VARIETY DEBUG: Used meals in current week: ${Array.from(usedMeals).join(', ')}`);
