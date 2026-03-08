@@ -165,8 +165,8 @@ export default function Profile() {
     enabled: !!authUser?.id,
   });
 
-  // Fetch nutrition targets
-  const { data: nutritionTargets, isLoading: nutritionLoading } = useQuery<NutritionTargets>({
+  // Fetch nutrition targets (used as fallback before formData is populated)
+  const { data: serverNutritionTargets, isLoading: nutritionLoading } = useQuery<NutritionTargets>({
     queryKey: ['/api/nutrition/targets', authUser?.id],
     enabled: !!authUser?.id && !!user,
   });
@@ -273,6 +273,32 @@ export default function Profile() {
       setIsFormInitialized(true);
     }
   }, [user, isFormInitialized]);
+
+  // Compute nutrition targets live from formData — updates instantly when any field changes
+  const nutritionTargets = useMemo((): NutritionTargets => {
+    const weight = parseFloat(formData.weight) || 0;
+    const height = parseFloat(formData.height) || 0;
+    const age = parseInt(formData.age) || 0;
+    if (weight > 0 && age > 0) {
+      return computeNutritionTargets(
+        weight, height, age,
+        formData.gender || 'female',
+        formData.activityLevel || 'moderate',
+        formData.trainingType || 'endurance',
+        formData.goal || 'maintain',
+        user?.weightLossWeekNumber ?? undefined
+      );
+    }
+    return serverNutritionTargets ?? {
+      protein: 0, carbohydrates: 0, fats: 0, calories: 0, fiber: 30,
+      maintenanceCalories: 0, bmr: 0, proteinFactor: 1.6, palValue: 1.75,
+      carbFactor: 6.5, fatPercentage: 25,
+    };
+  }, [
+    formData.weight, formData.height, formData.age, formData.gender,
+    formData.activityLevel, formData.trainingType, formData.goal,
+    user?.weightLossWeekNumber, serverNutritionTargets
+  ]);
 
   // Update profile mutation
   const updateProfileMutation = useMutation({
