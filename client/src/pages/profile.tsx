@@ -373,11 +373,6 @@ export default function Profile() {
     }
     
     setFormData(updatedFormData);
-    
-    // Invalidate nutrition targets to trigger recalculation when training type or goal changes
-    if (field === 'trainingType' || field === 'goal' || field === 'activityLevel') {
-      queryClient.invalidateQueries({ queryKey: ['/api/nutrition/targets', authUser?.id] });
-    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -795,7 +790,7 @@ export default function Profile() {
                   Fill in your weight, age and health goals above to see your personalised nutrition targets.
                 </div>
               ) : (
-              
+              <>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg">
                   <div className="text-sm font-medium text-emerald-800 mb-1">Protein</div>
@@ -888,6 +883,7 @@ export default function Profile() {
                   </div>
                 </div>
               </div>
+              </>
               )}
             </div>
 
