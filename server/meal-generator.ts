@@ -1212,10 +1212,20 @@ async function selectUnusedMealIntelligently(
           console.log(`🥚 INTELLIGENT MATCH BLOCKED: "${candidateMeal.name}" contains eggs and day already has egg meal`);
         }
         
+        // Also check cross-week history — ingredient matching must NOT override
+        // the history block. Without this check the same meal can be reselected
+        // every regeneration just because it matches a leftover ingredient.
+        const isInRecentHistory = recentMealHistory.some(historyMeal =>
+          areMealsSimilar(candidateMeal.name, historyMeal)
+        );
+        if (isInRecentHistory) {
+          console.log(`🚫 INTELLIGENT MATCH BLOCKED BY HISTORY: "${candidateMeal.name}" was used in a recent plan`);
+        }
+        
         // For intelligent ingredient matches, prioritize using ingredients over availability restrictions
-        // Only reject if already used, too similar, or blocked by egg limit
-        const isAvailable = !isUsed && !isSimilarToGlobal && !eggBlocked;
-        console.log(`🎯 INTELLIGENT PRIORITY: Allowing ingredient match even if not in filtered list (available=${isInAvailableList}, eggBlocked=${eggBlocked})`);
+        // Only reject if already used, too similar, blocked by egg limit, or in recent history
+        const isAvailable = !isUsed && !isSimilarToGlobal && !eggBlocked && !isInRecentHistory;
+        console.log(`🎯 INTELLIGENT PRIORITY: Allowing ingredient match even if not in filtered list (available=${isInAvailableList}, eggBlocked=${eggBlocked}, recentHistory=${isInRecentHistory})`);
             
         if (isAvailable) {
           console.log(`🎯✨ Selected intelligent match: "${candidateMeal.name}" using ingredients: [${usedIngredients.join(', ')}]`);
