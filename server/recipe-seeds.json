@@ -60970,5 +60970,49 @@
       "Follicular",
       "Weekend-Prep"
     ]
+  },
+  {
+    "id": "10960",
+    "name": "Banana with honey and granola",
+    "category": "breakfast",
+    "ingredients": [
+      "1 banana",
+      "40g granola",
+      "15ml honey"
+    ],
+    "instructions": [
+      "Peel and slice the banana",
+      "Place banana slices in a bowl",
+      "Sprinkle granola over the banana",
+      "Drizzle with honey",
+      "Serve immediately"
+    ],
+    "portion": "1 serving",
+    "nutrition": {
+      "calories": 330,
+      "protein": 5,
+      "carbohydrates": 64,
+      "fats": 7,
+      "fiber": 5,
+      "sugar": 34,
+      "sodium": 50,
+      "iron": 1.3,
+      "calcium": 25,
+      "potassium": 520,
+      "vitaminC": 10,
+      "vitaminK": 2,
+      "prepTime": 5,
+      "costEuros": 0.65,
+      "proteinPerEuro": 7.7,
+      "polyphenols": 20
+    },
+    "tags": [
+      "Vegetarian",
+      "Lactose-Free",
+      "Follicular",
+      "Ovulation",
+      "Luteal",
+      "Pre-Workout"
+    ]
   }
 ]
