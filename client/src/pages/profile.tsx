@@ -216,6 +216,7 @@ export default function Profile() {
       // Update the query cache directly instead of invalidating to prevent form reset
       if (updatedData && authUser?.id) {
         queryClient.setQueryData(['/api/users', authUser.id, 'profile'], updatedData);
+        queryClient.invalidateQueries({ queryKey: ['/api/nutrition/targets', authUser.id] });
         
         const dynamicProteinTarget = calculateProteinTarget(updatedData.age, updatedData.activityLevel, updatedData.gender);
         
