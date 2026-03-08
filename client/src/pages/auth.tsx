@@ -13,7 +13,7 @@ import { useTranslations } from "@/lib/translations";
 import { Languages, Info } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
-import { apiRequest } from "@/lib/queryClient";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 import { setTokens } from "@/lib/auth-storage";
 import { z } from "zod";
 import { WelcomeDialog } from "@/components/WelcomeDialog";
@@ -85,6 +85,9 @@ export default function Auth() {
     onSuccess: (data) => {
       // Store JWT tokens in localStorage
       setTokens(data.accessToken, data.refreshToken);
+      
+      // Clear any cached data from a previous user's session before logging in
+      queryClient.clear();
       
       login(data.user);
       toast({

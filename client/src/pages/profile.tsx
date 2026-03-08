@@ -781,8 +781,7 @@ export default function Profile() {
           </div>
 
           {/* Nutrition Targets */}
-          {nutritionTargets && (
-            <div className="card-clean">
+          <div className="card-clean">
               <div className="mb-6">
                 <h2 className="text-xl font-semibold text-foreground mb-2">
                   {t.nutritionTargets || 'Nutrition Targets'}
@@ -791,6 +790,11 @@ export default function Profile() {
                   Daily targets calculated based on your activity level, age, and physiology
                 </p>
               </div>
+              {!formData.weight || !formData.age ? (
+                <div className="p-6 bg-gray-50 border border-gray-200 rounded-lg text-center text-gray-500 text-sm">
+                  Fill in your weight, age and health goals above to see your personalised nutrition targets.
+                </div>
+              ) : (
               
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg">
@@ -884,8 +888,8 @@ export default function Profile() {
                   </div>
                 </div>
               </div>
+              )}
             </div>
-          )}
 
           {/* Meal Planning Preferences */}
           <div className="card-clean">
