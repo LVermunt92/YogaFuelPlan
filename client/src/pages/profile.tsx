@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -80,6 +80,75 @@ interface NutritionTargets {
     isMaintenanceWeek: boolean;
     calorieReductionPercent: number;
     nextMaintenanceWeek: number;
+  };
+}
+
+// Mirror of server/nutrition-calculator.ts — keeps targets in sync with formData changes
+const PROTEIN_FACTORS: Record<string, Record<string, number>> = {
+  sedentary: { mobility: 1.0, endurance: 1.2, strength: 1.4, mixed: 1.4 },
+  light:     { mobility: 1.2, endurance: 1.4, strength: 1.6, mixed: 1.6 },
+  moderate:  { mobility: 1.4, endurance: 1.6, strength: 1.8, mixed: 1.9 },
+  high:      { mobility: 1.5, endurance: 1.8, strength: 2.0, mixed: 2.1 },
+  athlete:   { mobility: 1.6, endurance: 2.0, strength: 2.2, mixed: 2.3 },
+};
+const PAL_VALUES: Record<string, number> = { sedentary: 1.35, light: 1.55, moderate: 1.75, high: 1.95, athlete: 2.20 };
+const CARB_FACTORS: Record<string, number> = { mobility: 2.5, endurance: 6.5, strength: 4.0, mixed: 5.0 };
+const FAT_PERCENTAGES: Record<string, number> = { mobility: 0.325, endurance: 0.25, strength: 0.30, mixed: 0.275 };
+const GOAL_FACTORS: Record<string, number> = { lose_fat: 0.85, maintain: 1.00, bulk: 1.10 };
+
+function computeNutritionTargets(
+  weight: number, height: number, age: number, gender: string,
+  activityLevel: string, trainingType: string, goal: string,
+  weightLossWeekNumber?: number
+): NutritionTargets {
+  const act = activityLevel || 'moderate';
+  const train = trainingType || 'endurance';
+  const proteinFactor = PROTEIN_FACTORS[act]?.[train] ?? 1.6;
+  const palValue = PAL_VALUES[act] ?? 1.75;
+  const carbFactor = CARB_FACTORS[train] ?? 6.5;
+  const fatPercentage = FAT_PERCENTAGES[train] ?? 0.25;
+
+  const estHeight = height || (gender === 'male' ? 175 : 162);
+  const bmr = gender === 'male'
+    ? (10 * weight) + (6.25 * estHeight) - (5 * age) + 5
+    : (10 * weight) + (6.25 * estHeight) - (5 * age) - 161;
+  const maintenanceCalories = bmr * palValue;
+
+  let goalFactor = GOAL_FACTORS[goal] ?? 1.00;
+  let weightLossInfo: NutritionTargets['weightLossInfo'];
+  if (goal === 'lose_fat' && weightLossWeekNumber && weightLossWeekNumber > 0) {
+    const isMaint = weightLossWeekNumber % 6 === 0;
+    goalFactor = isMaint ? 1.00 : 0.85;
+    weightLossInfo = {
+      weekNumber: weightLossWeekNumber,
+      isMaintenanceWeek: isMaint,
+      calorieReductionPercent: isMaint ? 0 : 15,
+      nextMaintenanceWeek: isMaint ? weightLossWeekNumber + 6 : Math.ceil(weightLossWeekNumber / 6) * 6,
+    };
+  }
+
+  const targetCalories = maintenanceCalories * goalFactor;
+  const proteinGrams = weight * proteinFactor;
+  const carbGrams = weight * carbFactor;
+  const fatKcalTarget = targetCalories * fatPercentage;
+  const remainingKcal = Math.max(targetCalories - proteinGrams * 4 - carbGrams * 4, 0);
+  const fatGrams = Math.max(Math.min(fatKcalTarget, remainingKcal), 0) / 9;
+
+  const round = (v: number, inc: number) => Math.round(v / inc) * inc;
+
+  return {
+    protein: Math.max(round(proteinGrams, 5), 0),
+    carbohydrates: Math.max(round(carbGrams, 5), 0),
+    fats: Math.max(round(fatGrams, 5), 0),
+    calories: Math.max(round(targetCalories, 10), 0),
+    fiber: gender === 'male' ? 40 : 30,
+    maintenanceCalories: Math.round(maintenanceCalories),
+    bmr: Math.round(bmr),
+    proteinFactor,
+    palValue,
+    carbFactor,
+    fatPercentage: fatPercentage * 100,
+    weightLossInfo,
   };
 }
 
