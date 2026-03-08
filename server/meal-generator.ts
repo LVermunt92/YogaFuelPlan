@@ -1444,17 +1444,10 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
   console.log(`🔍 USER DEBUG: cookingDaysPerWeek=${user?.cookingDaysPerWeek}, eatingDaysAtHome=${user?.eatingDaysAtHome}`);
   console.log(`🔍 USER DEBUG: useOnlyMyRecipes=${user?.useOnlyMyRecipes}, user.id=${user?.id}`);
   
-  // Check if we should use meal prep mode (cooking days < eating days).
-  // Only enter meal prep mode when there are 2+ leftover days (eatingDays - cookingDays >= 2).
-  // When there is only 1 leftover day (e.g. 4/5, 6/7) the hardcoded every-other-day leftover
-  // pattern in generateMealPrepPlan would produce only half the expected unique meal combinations.
-  // Regular mode gives a unique meal every eating day and handles the serving multiplier for
-  // larger batch sizes, which is exactly what users with a near-1:1 ratio expect.
-  const leftoverDaysNeeded = userEatingDays - userCookingDays;
-  const useMealPrepMode = userCookingDays < userEatingDays && leftoverDaysNeeded >= 2;
-  console.log(`🍳 Meal prep mode check: ${userCookingDays} cooking < ${userEatingDays} eating? leftoverDays=${leftoverDaysNeeded}, useMealPrep=${useMealPrepMode}`);
-  if (useMealPrepMode) {
-    console.log(`🎯 ENTERING MEAL PREP MODE: ${userCookingDays} cooking days for ${userEatingDays} eating days (${leftoverDaysNeeded} leftover days)`);
+  // Check if we should use meal prep mode (cooking days < eating days)
+  console.log(`🍳 Meal prep mode check: ${userCookingDays} cooking < ${userEatingDays} eating? ${userCookingDays < userEatingDays}`);
+  if (userCookingDays < userEatingDays) {
+    console.log(`🎯 ENTERING MEAL PREP MODE: ${userCookingDays} cooking days for ${userEatingDays} eating days`);
     console.log(`🔍 CALLING MEAL PREP with user: ${user?.id}, useOnlyMyRecipes: ${user?.useOnlyMyRecipes}`);
     console.log(`🔍 MEAL PREP USER OBJECT:`, JSON.stringify(user, null, 2));
     
