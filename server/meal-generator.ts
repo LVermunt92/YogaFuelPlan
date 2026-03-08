@@ -943,15 +943,30 @@ async function getRecentMealHistory(userId: number, weeksBack: number = 2): Prom
     const allPlans = await storage.getMealPlans(userId);
     if (!allPlans || allPlans.length === 0) return [];
 
-    // Sort by weekStart descending and take the most recent `weeksBack` plans
-    const sortedPlans = [...allPlans].sort(
-      (a, b) => new Date(b.weekStart).getTime() - new Date(a.weekStart).getTime()
-    );
-    const recentPlans = sortedPlans.slice(0, weeksBack);
+    // Sort by weekStart DESC, then by ID DESC so that the most recently
+    // generated plan for a given week always comes first.  This prevents
+    // a re-generation from ignoring its own previous output just because
+    // another plan with the same weekStart has a lower ID.
+    const sortedPlans = [...allPlans].sort((a, b) => {
+      const weekDiff = new Date(b.weekStart).getTime() - new Date(a.weekStart).getTime();
+      if (weekDiff !== 0) return weekDiff;
+      return b.id - a.id; // most recently created plan for the same week wins
+    });
+
+    // Always include every plan that shares the most-recent weekStart (all
+    // regenerations of the current week), plus one plan from the previous week.
+    const latestWeekStart = sortedPlans[0]?.weekStart;
+    const currentWeekPlans = sortedPlans.filter(p => p.weekStart === latestWeekStart);
+    const previousWeekPlan = sortedPlans.find(p => p.weekStart !== latestWeekStart);
+    const plansToCheck = previousWeekPlan
+      ? [...currentWeekPlans, previousWeekPlan]
+      : currentWeekPlans;
+
+    console.log(`📊 HISTORY CHECK: Checking ${plansToCheck.length} plan(s) — ${currentWeekPlans.length} from current week + ${previousWeekPlan ? 1 : 0} from previous week`);
 
     // Collect all meal names from those plans
     const mealNames: string[] = [];
-    for (const plan of recentPlans) {
+    for (const plan of plansToCheck) {
       const planWithMeals = await storage.getMealPlanWithMeals(plan.id);
       if (planWithMeals?.meals) {
         for (const meal of planWithMeals.meals) {
@@ -965,8 +980,8 @@ async function getRecentMealHistory(userId: number, weeksBack: number = 2): Prom
     }
 
     if (mealNames.length > 0) {
-      console.log(`📊 HISTORY CHECK: Found ${mealNames.length} meals across last ${recentPlans.length} plan(s)`);
-      console.log(`📊 Recent meals: ${mealNames.slice(0, 5).join(', ')}${mealNames.length > 5 ? '...' : ''}`);
+      console.log(`📊 HISTORY CHECK: Found ${mealNames.length} meals to avoid (plans: ${plansToCheck.map(p => p.id).join(', ')})`);
+      console.log(`📊 Recent meals: ${mealNames.slice(0, 8).join(', ')}${mealNames.length > 8 ? '...' : ''}`);
     } else {
       console.log(`📊 HISTORY CHECK: No previous meal plans found for user ${userId}`);
     }
