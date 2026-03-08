@@ -60913,5 +60913,62 @@
     "dutch_instructions": null,
     "polyphenols": 108.5,
     "cocoa_flavanols": 0
+  },
+  {
+    "id": "10959",
+    "name": "Rhubarb & Apple Crumble",
+    "category": "breakfast",
+    "ingredients": [
+      "50g rhubarb",
+      "1/3 apple",
+      "6g coconut sugar",
+      "1/6 lime",
+      "3g cornflour",
+      "25g rolled oats",
+      "25g plain flour",
+      "6ml olive oil",
+      "10ml maple syrup",
+      "1g flaky sea salt"
+    ],
+    "instructions": [
+      "Preheat oven to 180°C / 160°C fan",
+      "Place rhubarb, apple, coconut sugar, lime juice, and cornflour in a bowl and toss until the fruit is evenly coated",
+      "Tip fruit mixture into a small baking dish",
+      "In a separate bowl, combine rolled oats, flour, and sea salt",
+      "Add olive oil and maple syrup to the oat mixture",
+      "Rub between fingertips until a rough crumbly texture forms",
+      "Sprinkle crumble topping evenly over the fruit",
+      "Bake for 45-50 minutes until golden brown and fruit is soft"
+    ],
+    "portion": "1 serving",
+    "nutrition": {
+      "calories": 340,
+      "protein": 6,
+      "carbohydrates": 60,
+      "fats": 8,
+      "fiber": 5,
+      "sugar": 19,
+      "sodium": 70,
+      "iron": 1.5,
+      "calcium": 70,
+      "potassium": 225,
+      "vitaminC": 8,
+      "vitaminK": 15,
+      "prepTime": 60,
+      "costEuros": 0.6,
+      "proteinPerEuro": 10,
+      "polyphenols": 30
+    },
+    "tags": [
+      "March",
+      "April",
+      "May",
+      "June",
+      "Vegetarian",
+      "Lactose-Free",
+      "Menstrual",
+      "Follicular",
+      "Weekend-Prep"
+    ]
   }
 ]
