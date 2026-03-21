@@ -17152,14 +17152,21 @@ export async function findRecipeByName(mealDescription: string): Promise<MealOpt
 }
 
 // Function to get meals from unified database filtered by dietary requirements
-export async function getEnhancedMealsByCategory(category: 'breakfast' | 'lunch' | 'dinner' | 'snack' | 'dessert' | 'smoothie'): Promise<MealOption[]> {
+export async function getEnhancedMealsByCategory(category: 'breakfast' | 'lunch' | 'dinner' | 'snack' | 'dessert' | 'smoothie' | 'weekend-prep'): Promise<MealOption[]> {
   const unifiedDatabase = await getCompleteEnhancedMealDatabase();
 
   // Lunch and dinner share the same recipe pool — a meal tagged as lunch can be served
   // for dinner and vice versa, so there is no need to duplicate recipes.
-  const categoriesToInclude = (category === 'lunch' || category === 'dinner')
-    ? ['lunch', 'dinner']
-    : [category];
+  // Weekend-prep recipes are also included in all regular meal pools so they still
+  // appear during planning (they are batch-prepared and fit multiple meal contexts).
+  let categoriesToInclude: string[];
+  if (category === 'lunch' || category === 'dinner') {
+    categoriesToInclude = ['lunch', 'dinner', 'weekend-prep'];
+  } else if (category === 'breakfast') {
+    categoriesToInclude = ['breakfast', 'weekend-prep'];
+  } else {
+    categoriesToInclude = [category];
+  }
 
   const categoryMeals = unifiedDatabase.filter(meal => categoriesToInclude.includes(meal.category));
   
@@ -17325,7 +17332,7 @@ export function filterEnhancedMealsByDietaryTags(meals: MealOption[], dietaryTag
   });
 }
 
-export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' | 'lunch' | 'dinner' | 'snack' | 'dessert' | 'smoothie', dietaryTags: string[] = [], userId?: number): Promise<MealOption[]> {
+export async function getEnhancedMealsForCategoryAndDiet(category: 'breakfast' | 'lunch' | 'dinner' | 'snack' | 'dessert' | 'smoothie' | 'weekend-prep', dietaryTags: string[] = [], userId?: number): Promise<MealOption[]> {
   console.log(`🎯 STREAMLINED APPROACH: category=${category}, userId=${userId}, tags=[${dietaryTags.join(', ')}]`);
   
   // Start with curated database meals

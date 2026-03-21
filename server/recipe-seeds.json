@@ -8640,7 +8640,7 @@
   {
     "id": "10081",
     "name": "High-protein smoothie bowl with granola",
-    "category": "breakfast",
+    "category": "weekend-prep",
     "ingredients": [
       "1 vanilla protein powder",
       "150g frozen berries",
@@ -17800,7 +17800,7 @@
   {
     "id": "10167",
     "name": "Cacao Granola",
-    "category": "breakfast",
+    "category": "weekend-prep",
     "ingredients": [
       "200g oats",
       "30g raw cacao powder",
@@ -21263,7 +21263,7 @@
   {
     "id": "10200",
     "name": "Beetroot Hummus",
-    "category": "lunch",
+    "category": "weekend-prep",
     "ingredients": [
       "150g cooked chickpeas",
       "100g cooked beetroot",
@@ -21566,7 +21566,7 @@
   {
     "id": "10203",
     "name": "Protein Granola",
-    "category": "breakfast",
+    "category": "weekend-prep",
     "ingredients": [
       "150g rolled oats",
       "1 vanilla protein powder",
@@ -34762,7 +34762,7 @@
   {
     "id": "110081",
     "name": "High-protein smoothie bowl with granola",
-    "category": "breakfast",
+    "category": "weekend-prep",
     "ingredients": [
       "1 vanilla protein powder",
       "150g frozen berries",
@@ -45953,7 +45953,7 @@
   {
     "id": "210081",
     "name": "High-protein smoothie bowl with granola",
-    "category": "breakfast",
+    "category": "weekend-prep",
     "ingredients": [
       "1 vanilla protein powder",
       "150g frozen berries",
@@ -57265,7 +57265,7 @@
   {
     "id": "310247",
     "name": "Coffee caramel banana breakfast bowl",
-    "category": "breakfast",
+    "category": "weekend-prep",
     "ingredients": [
       "50g oats",
       "1 banana",
@@ -59273,7 +59273,7 @@
   {
     "id": "310501",
     "name": "Cassava tortillas (weekend meal prep)",
-    "category": "snack",
+    "category": "weekend-prep",
     "ingredients": [
       "1kg fresh cassava",
       "2g salt"
@@ -60326,7 +60326,7 @@
   {
     "id": "310511",
     "name": "Baba ganoush",
-    "category": "dinner",
+    "category": "weekend-prep",
     "ingredients": [
       "1 aubergine",
       "1 clove garlic",
@@ -60450,7 +60450,7 @@
   {
     "id": "310512",
     "name": "Chocolate protein pudding",
-    "category": "breakfast",
+    "category": "weekend-prep",
     "ingredients": [
       "1/3 banana",
       "20g hemp seeds",
@@ -60716,7 +60716,7 @@
   {
     "id": "10959",
     "name": "Rhubarb & Apple Crumble",
-    "category": "breakfast",
+    "category": "weekend-prep",
     "ingredients": [
       "50g rhubarb",
       "1/3 apple",

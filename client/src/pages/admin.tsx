@@ -2788,6 +2788,7 @@ function AdminPanelMain() {
                         <SelectItem value="lunch-dinner">Lunch &amp; Dinner</SelectItem>
                         <SelectItem value="lunch">Lunch only</SelectItem>
                         <SelectItem value="dinner">Dinner only</SelectItem>
+                        <SelectItem value="weekend-prep">Weekend prep</SelectItem>
                         <SelectItem value="snack">Snack</SelectItem>
                         <SelectItem value="dessert">Dessert</SelectItem>
                         <SelectItem value="smoothie">Smoothie</SelectItem>
