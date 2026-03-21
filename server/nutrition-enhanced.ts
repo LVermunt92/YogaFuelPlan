@@ -16995,9 +16995,68 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
     if (hasDairyIngredients && !recipe.tags.includes('Lactose-Free')) {
       variants.push(lactoseFreeVersion);
     }
+
+    // 4. COMBINED GLUTEN-FREE + LACTOSE-FREE VERSION
+    // Only create when recipe contains BOTH gluten AND dairy — applies both substitutions at once.
+    const needsCombinedVariant =
+      hasGlutenIngredients && hasDairyIngredients &&
+      !recipe.tags.includes('Gluten-Free') && !recipe.tags.includes('Lactose-Free');
+
+    if (needsCombinedVariant) {
+      const applyGlutenFreeSubstitutions = (ingredient: string): string => {
+        if (ingredient.toLowerCase().includes('pasta') && !ingredient.toLowerCase().includes('gluten-free')) {
+          return ingredient.toLowerCase().includes('wheat')
+            ? ingredient.replace(/.*pasta/gi, 'gluten-free pasta (rice or chickpea)')
+            : ingredient.replace('pasta', 'gluten-free pasta (rice or chickpea)');
+        }
+        if (ingredient.toLowerCase().includes('flour') && !ingredient.toLowerCase().includes('gluten-free')) {
+          return ingredient.replace('flour', 'gluten-free flour blend');
+        }
+        if (ingredient.toLowerCase().includes('bread') && !ingredient.toLowerCase().includes('gluten-free')) {
+          return ingredient.replace('bread', 'gluten-free bread');
+        }
+        if (ingredient.toLowerCase().includes('soy sauce') && !ingredient.toLowerCase().includes('gluten-free')) {
+          return ingredient.replace('soy sauce', 'gluten-free tamari');
+        }
+        if (ingredient.toLowerCase().includes('wheat')) {
+          return ingredient.replace(/wheat/gi, 'gluten-free grain');
+        }
+        return ingredient;
+      };
+
+      const applyLactoseFreeSubstitutions = (ingredient: string): string => {
+        if (ingredient.toLowerCase().includes('milk') && !ingredient.toLowerCase().includes('almond') && !ingredient.toLowerCase().includes('coconut') && !ingredient.toLowerCase().includes('oat')) {
+          return ingredient.replace(/milk/gi, 'plant-based milk');
+        }
+        if (ingredient.toLowerCase().includes('cream') && !ingredient.toLowerCase().includes('coconut')) {
+          return ingredient.replace(/cream/gi, 'coconut cream');
+        }
+        if (ingredient.toLowerCase().includes('butter') && !ingredient.toLowerCase().includes('nut') && !ingredient.toLowerCase().includes('peanut') && !ingredient.toLowerCase().includes('almond') && !ingredient.toLowerCase().includes('cashew') && !ingredient.toLowerCase().includes('coconut')) {
+          return ingredient.replace(/butter/gi, 'vegan butter');
+        }
+        if (ingredient.toLowerCase().includes('cheese') && !ingredient.toLowerCase().includes('vegan')) {
+          return ingredient.replace(/cheese/gi, 'vegan cheese');
+        }
+        if (ingredient.toLowerCase().includes('yogurt') && !ingredient.toLowerCase().includes('coconut')) {
+          return ingredient.replace(/yogurt/gi, 'coconut yogurt');
+        }
+        if (ingredient.toLowerCase().includes('parmesan')) {
+          return ingredient.replace(/parmesan/gi, 'nutritional yeast');
+        }
+        return ingredient;
+      };
+
+      const combinedVariant: MealOption = {
+        ...recipe,
+        id: baseId + 400000, // Deterministic ID: base + 400000 (combined GF+LF)
+        tags: [...recipe.tags.filter(tag => tag !== 'wheat'), 'Gluten-Free', 'Lactose-Free', 'dairy-free'],
+        ingredients: recipe.ingredients?.map(ing => applyLactoseFreeSubstitutions(applyGlutenFreeSubstitutions(ing))),
+      };
+      variants.push(combinedVariant);
+    }
   }
   
-  console.log(`🔄 AUTO-GENERATED: Created ${variants.length} dietary variants (gluten-free, lactose-free, vegetarian versions)`);
+  console.log(`🔄 AUTO-GENERATED: Created ${variants.length} dietary variants (gluten-free, lactose-free, combined GF+LF, vegetarian versions)`);
   return variants;
 }
 
