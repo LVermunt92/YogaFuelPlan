@@ -1671,7 +1671,11 @@ function AdminPanelMain() {
     
     // Apply category filter
     if (categoryFilter && categoryFilter !== 'all-categories') {
-      filtered = filtered.filter(recipe => recipe.category === categoryFilter);
+      if (categoryFilter === 'lunch-dinner') {
+        filtered = filtered.filter(recipe => recipe.category === 'lunch' || recipe.category === 'dinner');
+      } else {
+        filtered = filtered.filter(recipe => recipe.category === categoryFilter);
+      }
     }
     
     // Apply tags filter
@@ -2781,8 +2785,9 @@ function AdminPanelMain() {
                       <SelectContent>
                         <SelectItem value="all-categories">All categories</SelectItem>
                         <SelectItem value="breakfast">Breakfast</SelectItem>
-                        <SelectItem value="lunch">Lunch</SelectItem>
-                        <SelectItem value="dinner">Dinner</SelectItem>
+                        <SelectItem value="lunch-dinner">Lunch &amp; Dinner</SelectItem>
+                        <SelectItem value="lunch">Lunch only</SelectItem>
+                        <SelectItem value="dinner">Dinner only</SelectItem>
                         <SelectItem value="snack">Snack</SelectItem>
                         <SelectItem value="dessert">Dessert</SelectItem>
                         <SelectItem value="smoothie">Smoothie</SelectItem>
