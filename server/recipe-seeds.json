@@ -60813,5 +60813,104 @@
       "Luteal",
       "Pre-Workout"
     ]
+  },
+  {
+    "id": "10961",
+    "name": "10-minute butter beans with rocket pesto",
+    "category": "dinner",
+    "ingredients": [
+      "250g butter beans",
+      "1/2 lemon",
+      "10ml extra virgin olive oil",
+      "1g sumac",
+      "2g salt",
+      "1g black pepper",
+      "1/4 clove garlic",
+      "15g pine nuts",
+      "15g rocket",
+      "10ml olive oil"
+    ],
+    "instructions": [
+      "To make the beans, simply combine the butter beans, lemon zest, a good glug of olive oil, a pinch of flaky sea salt (taste the beans before adding salt, as they may be sufficiently seasoned), black pepper and a squeeze of lemon juice",
+      "For the pesto, add all the ingredients to a mini-chopper and blitz until you have a coarse paste, adding a splash of water to loosen as needed",
+      "To serve, tip the beans onto a large plate or shallow bowl, and spoon over the pesto, adding handful of rocket and a generous pinch of sumac (if using) to garnish. Delicious with fresh sourdough bread"
+    ],
+    "portion": "1 serving",
+    "nutrition": {
+      "fats": 30,
+      "iron": 5.8,
+      "zinc": 2,
+      "fiber": 13,
+      "sugar": 3,
+      "omega3": 0,
+      "sodium": 420,
+      "calcium": 110,
+      "protein": 24,
+      "calories": 575,
+      "prepTime": 10,
+      "vitaminC": 15,
+      "vitaminK": 128.1,
+      "costEuros": 3.2,
+      "potassium": 920,
+      "polyphenols": 100,
+      "carbohydrates": 45,
+      "proteinPerEuro": 7.5
+    },
+    "tags": [
+      "July",
+      "Menstrual",
+      "Low-Carb",
+      "November",
+      "High-Protein",
+      "Follicular",
+      "Gluten-Free",
+      "Ovulation",
+      "High-Fiber",
+      "June",
+      "Luteal",
+      "August",
+      "Vegan",
+      "September",
+      "Soy-Free",
+      "Vegetarian",
+      "October",
+      "dairy-free",
+      "Lactose-Free",
+      "Gluten-Low"
+    ],
+    "whole_food_level": "high",
+    "vegetable_content": {
+      "benefits": [
+        "High protein from butter beans",
+        "Heart-healthy fats from pine nuts",
+        "Peppery rocket adds vitamins"
+      ],
+      "servings": 1,
+      "vegetables": [
+        "rocket"
+      ]
+    },
+    "recipe_benefits": [],
+    "recipe_tips": [
+      "To batch cook or save leftovers, store the beans and pesto in separate sealed containers in the fridge for up to 3 days",
+      "Use good quality butter beans and olive oil - you'll really notice the difference",
+      "The pesto can be made with basil instead of rocket for a more traditional flavor"
+    ],
+    "recipe_notes": "This is quick and easy cooking at its best, showcasing what you can do with a few simple ingredients. Perfect as a lazy lunch, or as part of a bigger spread with lots of tasty dips and nourishing salads",
+    "source": "custom",
+    "variant_of": null,
+    "variant_type": null,
+    "active": true,
+    "created_by": null,
+    "updated_by": null,
+    "created_at": "2025-10-12T12:39:46.163Z",
+    "updated_at": "2026-02-24T21:30:34.722Z",
+    "prep_time": 30,
+    "default_batch_servings": 1,
+    "dutch_name": null,
+    "dutch_ingredients": null,
+    "dutch_instructions": null,
+    "polyphenols": 174.2,
+    "cocoa_flavanols": 0
   }
 ]
