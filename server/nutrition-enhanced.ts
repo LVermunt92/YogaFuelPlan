@@ -16986,11 +16986,13 @@ function generateDietaryVariants(recipes: MealOption[]): MealOption[] {
       console.log(`🐟 SKIPPING vegetarian variant for "${recipe.name}" - contains fish/seafood (no widely available plant-based alternative)`);
     }
     
-    // Add all applicable variants (but only if they're different from the original)
-    if (hasGlutenIngredients || !recipe.tags.includes('Gluten-Free')) {
+    // Add variants ONLY when substitution is actually needed.
+    // Never create a GF/LF variant if the recipe is already naturally free of that ingredient.
+    // This prevents duplicate in-memory recipes for naturally GF/LF dishes.
+    if (hasGlutenIngredients && !recipe.tags.includes('Gluten-Free')) {
       variants.push(glutenFreeVersion);
     }
-    if (hasDairyIngredients || !recipe.tags.includes('Lactose-Free')) {
+    if (hasDairyIngredients && !recipe.tags.includes('Lactose-Free')) {
       variants.push(lactoseFreeVersion);
     }
   }
