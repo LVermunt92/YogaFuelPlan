@@ -17154,9 +17154,16 @@ export async function findRecipeByName(mealDescription: string): Promise<MealOpt
 // Function to get meals from unified database filtered by dietary requirements
 export async function getEnhancedMealsByCategory(category: 'breakfast' | 'lunch' | 'dinner' | 'snack' | 'dessert' | 'smoothie'): Promise<MealOption[]> {
   const unifiedDatabase = await getCompleteEnhancedMealDatabase();
-  const categoryMeals = unifiedDatabase.filter(meal => meal.category === category);
+
+  // Lunch and dinner share the same recipe pool — a meal tagged as lunch can be served
+  // for dinner and vice versa, so there is no need to duplicate recipes.
+  const categoriesToInclude = (category === 'lunch' || category === 'dinner')
+    ? ['lunch', 'dinner']
+    : [category];
+
+  const categoryMeals = unifiedDatabase.filter(meal => categoriesToInclude.includes(meal.category));
   
-  console.log(`📋 ${category.charAt(0).toUpperCase() + category.slice(1)} recipes available: ${categoryMeals.length}`);
+  console.log(`📋 ${category.charAt(0).toUpperCase() + category.slice(1)} recipes available: ${categoryMeals.length} (pool: ${categoriesToInclude.join('+')})`);
   console.log(`📋 ${category} sample recipes: ${categoryMeals.slice(0, 5).map(m => m.name).join(', ')}`);
   return categoryMeals;
 }
