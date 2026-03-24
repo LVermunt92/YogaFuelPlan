@@ -61085,5 +61085,70 @@
     "polyphenols": 30,
     "cocoa_flavanols": 0,
     "default_batch_servings": 1
+  },
+  {
+    "id": "10966",
+    "name": "Rosemary & tamari seed clusters",
+    "category": "weekend-prep",
+    "ingredients": [
+      "50g pumpkin seeds",
+      "50g linseeds",
+      "50g sunflower seeds",
+      "50g sesame seeds",
+      "100g hazelnuts",
+      "5g fresh rosemary",
+      "1g chilli flakes",
+      "2g paprika powder",
+      "23ml tamari",
+      "23ml maple syrup",
+      "23ml olive oil"
+    ],
+    "instructions": [
+      "Preheat oven to 160°C. Line a baking tray with baking parchment.",
+      "Mix all ingredients together in a large bowl until well combined. Transfer to the baking tray and spread out evenly. Bake for 18-20 minutes until toasted and golden.",
+      "Remove from the oven and leave to cool on a wire rack. Gently break into clusters and transfer to a dry, sterilised jar. Store in a cool place for up to 2 weeks, or in the freezer for up to 1 month."
+    ],
+    "portion": "1 batch (makes ~10 servings)",
+    "nutrition": {
+      "calories": 204,
+      "protein": 6,
+      "carbohydrates": 8,
+      "fats": 18,
+      "fiber": 3,
+      "sugar": 2,
+      "sodium": 115,
+      "iron": 2,
+      "calcium": 80,
+      "potassium": 200,
+      "vitaminK": 8,
+      "vitaminC": 1,
+      "prepTime": 30,
+      "costEuros": 0.34,
+      "proteinPerEuro": 17.6,
+      "polyphenols": 40,
+      "cocoaFlavanols": 0
+    },
+    "tags": [
+      "Vegan",
+      "Vegetarian",
+      "Gluten-Free",
+      "Lactose-Free",
+      "Dairy-Free",
+      "Weekend-Prep",
+      "Anti-Aging",
+      "High-Fiber",
+      "Follicular",
+      "Luteal"
+    ],
+    "recipe_tips": [
+      "For a nut-free version, swap hazelnuts for buckwheat groats.",
+      "Use as a topping on soups, salads, or yogurt bowls throughout the week."
+    ],
+    "whole_food_level": "high",
+    "source": "custom",
+    "active": true,
+    "polyphenols": 40,
+    "cocoa_flavanols": 0,
+    "default_batch_servings": 1
   }
 ]
