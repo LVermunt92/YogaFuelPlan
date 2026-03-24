@@ -61019,5 +61019,71 @@
     "polyphenols": 150,
     "cocoa_flavanols": 0,
     "default_batch_servings": 1
+  },
+  {
+    "id": "10965",
+    "name": "Lemon & lime courgette almond cake",
+    "category": "snack",
+    "ingredients": [
+      "20g ground flaxseeds",
+      "200g courgettes",
+      "175g self-raising flour",
+      "75g ground almonds",
+      "2g baking powder",
+      "2g salt",
+      "175g coconut sugar",
+      "75ml olive oil",
+      "100ml plant-based milk",
+      "1 lemon",
+      "1 lime",
+      "30g flaked almonds"
+    ],
+    "instructions": [
+      "Preheat oven to 160°C. Line a 1kg loaf tin with baking parchment. Mix flaxseeds with 90ml (6 tablespoons) of water in a small bowl and set aside for 10 minutes to thicken.",
+      "Tip the courgette into a clean tea towel and squeeze out as much liquid as possible. Set aside.",
+      "Sift the flour into a large bowl, then stir in the ground almonds, baking powder, salt and coconut sugar.",
+      "Pour in the olive oil and plant-based milk, fold together until just combined. Add the courgette, lemon zest, lime zest and flaxseed mixture, and briefly mix. Pour the batter into the tin — it will be quite thick. Scatter the flaked almonds on top.",
+      "Bake for 70-80 minutes until golden and a skewer inserted into the middle comes out clean. Cool in the tin for 15-20 minutes before slicing."
+    ],
+    "portion": "1 batch (makes ~12 slices)",
+    "nutrition": {
+      "calories": 460,
+      "protein": 8,
+      "carbohydrates": 56,
+      "fats": 23,
+      "fiber": 3,
+      "sugar": 30,
+      "sodium": 120,
+      "iron": 1,
+      "calcium": 55,
+      "potassium": 180,
+      "vitaminK": 4,
+      "vitaminC": 8,
+      "prepTime": 100,
+      "costEuros": 0.95,
+      "proteinPerEuro": 8.4,
+      "polyphenols": 30,
+      "cocoaFlavanols": 0
+    },
+    "tags": [
+      "Vegan",
+      "Vegetarian",
+      "Lactose-Free",
+      "Dairy-Free",
+      "Follicular",
+      "Luteal"
+    ],
+    "recipe_tips": [
+      "Store in an airtight container for up to 4 days, or freeze slices individually for up to 3 months."
+    ],
+    "recipe_notes": [
+      "This is a vegan courgette loaf cake — the flaxseed acts as an egg replacer, and the grated courgette keeps the crumb wonderfully moist."
+    ],
+    "whole_food_level": "medium",
+    "source": "custom",
+    "active": true,
+    "polyphenols": 30,
+    "cocoa_flavanols": 0,
+    "default_batch_servings": 1
   }
 ]
