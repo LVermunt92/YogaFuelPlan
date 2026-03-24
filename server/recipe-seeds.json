@@ -61150,5 +61150,70 @@
     "polyphenols": 40,
     "cocoa_flavanols": 0,
     "default_batch_servings": 1
+  },
+  {
+    "id": "10967",
+    "name": "Curried cauliflower soup with toasted seeds",
+    "category": "lunch",
+    "ingredients": [
+      "200g cauliflower florets",
+      "½ onion",
+      "1 clove garlic",
+      "2g curry powder",
+      "8ml olive oil",
+      "13g flaked almonds",
+      "13g pumpkin seeds",
+      "100ml coconut milk",
+      "200ml vegetable stock",
+      "1g salt",
+      "1g black pepper"
+    ],
+    "instructions": [
+      "Preheat oven to 200°C. Toss the cauliflower, onion, garlic, curry powder, olive oil, salt and black pepper together on a large baking tray. Spread out in a single layer and roast for 20-25 minutes until tender and deeply golden.",
+      "Meanwhile, tip the flaked almonds and pumpkin seeds onto a small baking tray and place on a lower shelf for 5-6 minutes until golden. Watch carefully so they do not catch.",
+      "When the cauliflower is cooked, allow to cool slightly. Transfer to a blender, pour in the coconut milk and vegetable stock and blitz until completely smooth — it should be the consistency of double cream. Add a little more stock if needed and adjust seasoning.",
+      "Reheat if necessary, then pour into a bowl and scatter over the toasted almonds and pumpkin seeds. Drizzle with a little extra olive oil to serve."
+    ],
+    "portion": "1 serving",
+    "nutrition": {
+      "calories": 500,
+      "protein": 15,
+      "carbohydrates": 26,
+      "fats": 41,
+      "fiber": 6,
+      "sugar": 6,
+      "sodium": 650,
+      "iron": 2,
+      "calcium": 55,
+      "potassium": 650,
+      "vitaminK": 30,
+      "vitaminC": 90,
+      "prepTime": 40,
+      "costEuros": 1.4,
+      "proteinPerEuro": 10.7,
+      "polyphenols": 50,
+      "cocoaFlavanols": 0
+    },
+    "tags": [
+      "Vegan",
+      "Vegetarian",
+      "Gluten-Free",
+      "Lactose-Free",
+      "Dairy-Free",
+      "Anti-Aging",
+      "High-Fiber",
+      "Follicular",
+      "Luteal"
+    ],
+    "recipe_tips": [
+      "This recipe is best made as a full batch (×4) and stored in the fridge for up to 4 days, or frozen for up to 3 months.",
+      "Serve with toasted sourdough for a more filling meal."
+    ],
+    "whole_food_level": "high",
+    "source": "custom",
+    "active": true,
+    "polyphenols": 50,
+    "cocoa_flavanols": 0,
+    "default_batch_servings": 1
   }
 ]
