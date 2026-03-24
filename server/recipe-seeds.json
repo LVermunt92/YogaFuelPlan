@@ -60813,5 +60813,63 @@
       "Luteal",
       "Pre-Workout"
     ]
+  },
+  {
+    "id": "10962",
+    "name": "Dark chocolate date bites",
+    "category": "snack",
+    "ingredients": [
+      "50g desiccated coconut",
+      "50g puffed quinoa",
+      "100g mixed seeds",
+      "200g dark chocolate",
+      "30ml coconut oil",
+      "250g Medjool dates",
+      "100g cashew butter",
+      "1g sea salt"
+    ],
+    "instructions": [
+      "Preheat oven to 160°C. Line a 20x20cm baking tin with baking parchment.",
+      "Spread desiccated coconut, puffed quinoa and seeds on a baking tray in an even layer. Roast for 10-15 minutes until golden. Remove and leave to cool.",
+      "Melt dark chocolate and coconut oil in a bain-marie or in a heatproof bowl in the microwave on a low heat setting. Stir until smooth, then set aside.",
+      "Add dates, cashew butter and salt to a food processor. Blend for a few minutes until a coarse paste forms. Pour in the melted chocolate and toasted quinoa mixture, then pulse briefly until just combined.",
+      "Transfer the mixture to the lined tin and press down firmly into a smooth, even layer. Chill in the fridge for at least 1 hour until firm, then slice into bites."
+    ],
+    "portion": "1 batch (makes ~16 bites)",
+    "nutrition": {
+      "calories": 475,
+      "protein": 9,
+      "carbohydrates": 45,
+      "fats": 30,
+      "fiber": 8,
+      "sugar": 28,
+      "sodium": 50,
+      "iron": 4,
+      "calcium": 25,
+      "potassium": 530,
+      "vitaminK": 5,
+      "vitaminC": 1,
+      "prepTime": 90,
+      "costEuros": 1.4,
+      "proteinPerEuro": 6.4
+    },
+    "tags": [
+      "Vegan",
+      "Vegetarian",
+      "Gluten-Free",
+      "Lactose-Free",
+      "Dairy-Free",
+      "Anti-Aging",
+      "Menstrual",
+      "Luteal",
+      "High-Fiber",
+      "Soy-Free"
+    ],
+    "whole_food_level": "high",
+    "source": "custom",
+    "active": true,
+    "polyphenols": 500,
+    "cocoa_flavanols": 150,
+    "default_batch_servings": 1
   }
 ]
