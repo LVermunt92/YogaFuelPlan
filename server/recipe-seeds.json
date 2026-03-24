@@ -60945,5 +60945,79 @@
     "polyphenols": 120,
     "cocoa_flavanols": 0,
     "default_batch_servings": 1
+  },
+  {
+    "id": "10964",
+    "name": "Vegan lentil & bean bolognese",
+    "category": "lunch",
+    "ingredients": [
+      "8ml olive oil",
+      "1/4 onion",
+      "1/2 carrot",
+      "20g celery",
+      "1 clove garlic",
+      "1g mixed dried herbs",
+      "8g tomato purée",
+      "1 bay leaf",
+      "60g brown lentils",
+      "60g cannellini beans",
+      "200g chopped tomatoes",
+      "70g firm tofu",
+      "4ml maple syrup",
+      "2ml tamari",
+      "50g spinach",
+      "10g fresh basil",
+      "1g salt",
+      "1g black pepper",
+      "75g pappardelle"
+    ],
+    "instructions": [
+      "Warm olive oil in a large saucepan over medium-low heat. Add the onion, carrot, celery, garlic and a pinch of salt. Cook for 20-25 minutes until soft and translucent.",
+      "Stir in the dried herbs, tomato purée, bay leaf, lentils, cannellini beans and chopped tomatoes. Pat tofu dry and crumble into the pan in very small pieces. Bring to the boil, then reduce heat and simmer with the lid off for 35-40 minutes until most of the liquid has reduced and the mixture has thickened.",
+      "Add the maple syrup and tamari and season to taste. Gently mash with a potato masher or fork to break down the vegetables slightly and thicken the sauce — it should be thick but not completely smooth.",
+      "Return the pan to a low heat and stir in the spinach and half the basil until wilted. Taste and adjust seasoning.",
+      "Serve over cooked pappardelle with the remaining basil scattered on top."
+    ],
+    "portion": "1 serving",
+    "nutrition": {
+      "calories": 635,
+      "protein": 28,
+      "carbohydrates": 100,
+      "fats": 11,
+      "fiber": 14,
+      "sugar": 8,
+      "sodium": 350,
+      "iron": 5,
+      "calcium": 100,
+      "potassium": 1050,
+      "vitaminK": 220,
+      "vitaminC": 35,
+      "prepTime": 60,
+      "costEuros": 3.25,
+      "proteinPerEuro": 8.6,
+      "polyphenols": 150,
+      "cocoaFlavanols": 0
+    },
+    "tags": [
+      "Vegan",
+      "Vegetarian",
+      "Lactose-Free",
+      "Dairy-Free",
+      "High-Fiber",
+      "High-Protein",
+      "Anti-Aging",
+      "Menstrual",
+      "Follicular",
+      "Luteal"
+    ],
+    "recipe_tips": [
+      "This is a great batch cooking recipe — store in the freezer for up to 3 months or the fridge for up to a week."
+    ],
+    "whole_food_level": "high",
+    "source": "custom",
+    "active": true,
+    "polyphenols": 150,
+    "cocoa_flavanols": 0,
+    "default_batch_servings": 1
   }
 ]
