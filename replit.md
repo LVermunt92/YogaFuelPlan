@@ -72,7 +72,7 @@ Preferred communication style: Simple, everyday language.
     - **Data Flow**: User input drives meal generation, stored in PostgreSQL, displayed via React Query.
     - **Database Schema**: Comprehensive user profiles, weekly meal plans, individual meals, meal history, favorite meals, and user-created custom recipes.
     - **Performance Indexes**: `recipes` table has GIN index on `tags[]`, B-tree indexes on `category`, `active`, `name`, functional index on `nutrition->>'calories'`, and GIN trigram index on `name` for fuzzy matching. `pg_trgm` extension enabled.
-    - **Precomputed Columns**: `recipes.contains_eggs` (boolean), `recipes.resistant_starch_score` (real, 0–42), `recipes.longevity_score` (smallint, 0–3) are populated at recipe write time and eliminate runtime regex/scanning during meal plan generation.
+    - **Precomputed Columns**: `recipes.contains_eggs` (boolean), `recipes.resistant_starch_score` (real, 0–42), `recipes.longevity_score` (smallint, 0–3) are populated at recipe write time and eliminate runtime regex/scanning during meal plan generation. `recipes.protein_g`, `recipes.carbs_g`, `recipes.fiber_g` are extracted from JSONB for indexed range queries — avoids JSONB cast on every calorie/carb/protein filter.
     - **Unified Recipe Database**: Consolidated all recipe databases into a single system with pre-translated recipes.
 
 # External Dependencies

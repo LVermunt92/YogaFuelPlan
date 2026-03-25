@@ -82,9 +82,14 @@ export const recipes = pgTable("recipes", {
   active: boolean("active").default(true),
   
   // Precomputed columns for fast filtering (avoids runtime regex/scanning)
-  containsEggs: boolean("contains_eggs").default(false),         // true if recipe has egg ingredients
-  resistantStarchScore: real("resistant_starch_score").default(0), // 0–20 score based on RS ingredient content
-  longevityScore: smallint("longevity_score").default(0),         // 0–3 based on Anti-Aging/Longevity tags
+  containsEggs: boolean("contains_eggs").default(false),           // true if recipe has egg ingredients
+  resistantStarchScore: real("resistant_starch_score").default(0), // 0–42 score based on RS ingredient content
+  longevityScore: smallint("longevity_score").default(0),          // 0–3 based on Anti-Aging/Longevity tags
+
+  // Extracted nutritional columns for indexed range queries (avoids JSONB cast at query time)
+  proteinG: real("protein_g").default(0),  // grams — enables indexed protein filtering/sorting
+  carbsG: real("carbs_g").default(0),      // grams — enables indexed low-carb dinner filter (≤50g)
+  fiberG: real("fiber_g").default(0),      // grams — enables indexed high-fiber filtering
   
   // Dutch translations (cached from OpenAI)
   dutchName: text("dutch_name"),
