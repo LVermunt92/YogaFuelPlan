@@ -777,97 +777,73 @@ export default function Profile() {
 
           {/* Nutrition Targets */}
           <div className="card-clean">
-              <div className="mb-6">
-                <h2 className="text-xl font-semibold text-foreground mb-2">
+              <div className="mb-3">
+                <h2 className="text-xl font-semibold text-foreground">
                   {t.nutritionTargets || 'Nutrition Targets'}
                 </h2>
-                <p className="text-sm text-gray-500">
-                  Calculated from your weight, height, age, gender, activity level, training type, and goal using the Mifflin-St Jeor formula
-                </p>
               </div>
               {!formData.weight || !formData.age ? (
-                <div className="p-6 bg-gray-50 border border-gray-200 rounded-lg text-center text-gray-500 text-sm">
+                <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg text-center text-gray-500 text-sm">
                   Fill in your weight, age and health goals above to see your personalised nutrition targets.
                 </div>
               ) : (
               <>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg">
-                  <div className="text-sm font-medium text-emerald-800 mb-1">Protein</div>
-                  <div className="text-2xl font-bold text-emerald-900">{Math.round(nutritionTargets.protein)}g</div>
-                  <div className="text-xs text-emerald-600 mt-1">
-                    {nutritionTargets.proteinFactor}g per kg · 
-                    {formData.trainingType === 'strength' ? ' strength' :
-                     formData.trainingType === 'endurance' ? ' endurance' :
-                     formData.trainingType === 'mobility' ? ' mobility' : ' mixed'} training
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
+                  <div className="text-xs font-medium text-emerald-800 mb-0.5">Protein</div>
+                  <div className="text-xl font-bold text-emerald-900">{Math.round(nutritionTargets.protein)}g</div>
+                  <div className="text-xs text-emerald-600 mt-0.5">
+                    {nutritionTargets.proteinFactor}g/kg
                   </div>
                 </div>
                 
-                <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                  <div className="text-sm font-medium text-yellow-800 mb-1">Healthy Fats</div>
-                  <div className="text-2xl font-bold text-yellow-900">{Math.round(nutritionTargets.fats)}g</div>
-                  <div className="text-xs text-yellow-600 mt-1">
-                    {Math.round(nutritionTargets.fatPercentage)}% of calories ·{' '}
-                    {formData.trainingType === 'mobility' ? 'higher fat' :
-                     formData.trainingType === 'endurance' ? 'lower fat' :
-                     formData.trainingType === 'strength' ? 'moderate fat' : 'balanced'}
+                <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <div className="text-xs font-medium text-yellow-800 mb-0.5">Fats</div>
+                  <div className="text-xl font-bold text-yellow-900">{Math.round(nutritionTargets.fats)}g</div>
+                  <div className="text-xs text-yellow-600 mt-0.5">
+                    {Math.round(nutritionTargets.fatPercentage)}% of kcal
                   </div>
                 </div>
                 
-                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                  <div className="text-sm font-medium text-blue-800 mb-1">Carbohydrates</div>
-                  <div className="text-2xl font-bold text-blue-900">{Math.round(nutritionTargets.carbohydrates)}g</div>
-                  <div className="text-xs text-blue-600 mt-1">
-                    {nutritionTargets.carbFactor}g per kg ·{' '}
-                    {formData.trainingType === 'endurance' ? 'high carb' :
-                     formData.trainingType === 'strength' ? 'moderate carb' :
-                     formData.trainingType === 'mobility' ? 'low carb' : 'mixed carb'}
+                <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  <div className="text-xs font-medium text-blue-800 mb-0.5">Carbs</div>
+                  <div className="text-xl font-bold text-blue-900">{Math.round(nutritionTargets.carbohydrates)}g</div>
+                  <div className="text-xs text-blue-600 mt-0.5">
+                    {nutritionTargets.carbFactor}g/kg
                   </div>
                 </div>
                 
-                <div className="p-4 bg-orange-50 border border-orange-200 rounded-lg">
-                  <div className="text-sm font-medium text-orange-800 mb-1">Total Calories</div>
-                  <div className="text-2xl font-bold text-orange-900">{Math.round(nutritionTargets.calories)}</div>
-                  <div className="text-xs text-orange-600 mt-1">
+                <div className="p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                  <div className="text-xs font-medium text-orange-800 mb-0.5">Calories</div>
+                  <div className="text-xl font-bold text-orange-900">{Math.round(nutritionTargets.calories)}</div>
+                  <div className="text-xs text-orange-600 mt-0.5">
                     {formData.goal === 'lose_fat' ? '−15% deficit' : 
-                     formData.goal === 'bulk' ? '+10% surplus' : 'maintenance'} · PAL {nutritionTargets.palValue}
+                     formData.goal === 'bulk' ? '+10% surplus' : 'maintenance'}
                   </div>
                 </div>
               </div>
               
               {/* Weight Loss Progress Information */}
               {nutritionTargets.weightLossInfo && (
-                <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
-                  <div className="text-sm font-medium text-green-900 mb-2 flex items-center gap-2">
-                    <TrendingUp className="h-4 w-4" />
-                    Weight Loss Progress
+                <div className="mt-3 p-3 bg-green-50 rounded-lg border border-green-200">
+                  <div className="text-xs font-medium text-green-900 mb-2 flex items-center gap-2">
+                    <TrendingUp className="h-3 w-3" />
+                    Weight loss progress
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                    <div className="text-green-800">
-                      <span className="font-medium">Current Week:</span> Week {nutritionTargets.weightLossInfo.weekNumber}
-                    </div>
-                    <div className="text-green-800">
-                      <span className="font-medium">Week Type:</span>{' '}
+                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-green-800">
+                    <span><span className="font-medium">Week:</span> {nutritionTargets.weightLossInfo.weekNumber}</span>
+                    <span>
                       {nutritionTargets.weightLossInfo.isMaintenanceWeek ? (
-                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
-                          Maintenance Week 🎯
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full font-medium">
+                          Maintenance week
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-medium">
-                          Deficit Week (-{nutritionTargets.weightLossInfo.calorieReductionPercent}%)
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-orange-100 text-orange-700 rounded-full font-medium">
+                          Deficit −{nutritionTargets.weightLossInfo.calorieReductionPercent}%
                         </span>
                       )}
-                    </div>
-                    <div className="text-green-800">
-                      <span className="font-medium">Next Maintenance:</span> Week {nutritionTargets.weightLossInfo.nextMaintenanceWeek}
-                    </div>
-                  </div>
-                  <div className="mt-3 text-xs text-green-700">
-                    {nutritionTargets.weightLossInfo.isMaintenanceWeek ? (
-                      <p>✨ This is a maintenance week! Eat at your normal maintenance calories to prevent metabolic adaptation.</p>
-                    ) : (
-                      <p>🔥 You're in a calorie deficit week. After 5 weeks, you'll have a maintenance week to support long-term success.</p>
-                    )}
+                    </span>
+                    <span><span className="font-medium">Next maintenance:</span> week {nutritionTargets.weightLossInfo.nextMaintenanceWeek}</span>
                   </div>
                 </div>
               )}
