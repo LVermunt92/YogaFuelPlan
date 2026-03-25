@@ -768,29 +768,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Translate meal names and types if Dutch is requested
       if (language === 'nl' && mealPlan.meals) {
-        // Collect unique recipe IDs for batch translation lookup
+        // Collect unique recipe IDs — convert integers to strings so they match
+        // the text-typed recipe_id column in recipe_translations
         const recipeIds = mealPlan.meals
-          .map(meal => meal.recipeId)
-          .filter((id): id is string => id != null && id !== undefined);
+          .map(meal => meal.recipeId != null ? String(meal.recipeId) : null)
+          .filter((id): id is string => id != null);
         
         // Batch fetch pre-translated recipes from database
         const preTranslatedRecipes = recipeIds.length > 0
           ? await storage.getBatchRecipeTranslations(recipeIds, language)
           : [];
         
-        // Create a lookup map for quick access
+        // Create a lookup map keyed by string ID for reliable matching
         const translationMap = new Map(
-          preTranslatedRecipes.map(tr => [tr.recipeId, tr.name])
+          preTranslatedRecipes.map(tr => [String(tr.recipeId), tr.name])
         );
         
         // Translate meals using pre-translated database or fallback to on-demand
         const translatedMeals = await Promise.all(mealPlan.meals.map(async meal => {
           let translatedName = meal.foodDescription;
+          const recipeIdStr = meal.recipeId != null ? String(meal.recipeId) : null;
           
           // Check if we have a pre-translated version in the database
-          if (meal.recipeId && translationMap.has(meal.recipeId)) {
-            translatedName = translationMap.get(meal.recipeId)!;
-            console.log(`✅ Using pre-translated recipe: ${meal.recipeId} -> ${translatedName}`);
+          if (recipeIdStr && translationMap.has(recipeIdStr)) {
+            translatedName = translationMap.get(recipeIdStr)!;
+            console.log(`✅ Using pre-translated recipe: ${recipeIdStr} -> ${translatedName}`);
           } else {
             // Fall back to on-demand translation
             console.log(`🔄 Translating recipe ID: ${meal.recipeId} - ${meal.foodDescription}`);
