@@ -1220,9 +1220,9 @@ function MealPlannerMain() {
             </div>
           )}
 
-          {/* 3. Weekly highlights (seasonal + menstrual cycle) */}
+          {/* 3. Weekly highlights (seasonal + menstrual cycle — cycle hidden for male users) */}
           <div className="container">
-            <WeeklyHighlights menstrualPhase={userProfile?.menstrualPhase || undefined} />
+            <WeeklyHighlights menstrualPhase={userProfile?.gender === 'male' ? undefined : (userProfile?.menstrualPhase || undefined)} />
           </div>
 
           {/* 4. Health Tracking (Oura Ring) */}

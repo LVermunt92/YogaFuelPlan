@@ -1053,30 +1053,32 @@ export default function Profile() {
             </div>
             
             <div className="space-y-6">
-              {/* Menstrual Cycle Phase */}
-              <div className="p-4 border rounded-lg bg-pink-50 border-pink-200">
-                <Label htmlFor="menstrualPhase" className="text-sm font-medium text-foreground mb-2 block">
-                  Current menstrual cycle phase
-                </Label>
-                <p className="text-xs text-muted-foreground mb-3">
-                  Select your current cycle phase to optimize meal recommendations with phase-specific nutrients
-                </p>
-                <Select
-                  value={formData.menstrualPhase}
-                  onValueChange={(value) => setFormData(prev => ({ ...prev, menstrualPhase: value }))}
-                >
-                  <SelectTrigger className="input-clean">
-                    <SelectValue placeholder="Select your current phase" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="off">Don't include cycle-specific optimization</SelectItem>
-                    <SelectItem value="menstrual">Menstrual - Days 1-5 (bleeding phase)</SelectItem>
-                    <SelectItem value="follicular">Follicular - Days 1-13 (post-menstruation)</SelectItem>
-                    <SelectItem value="ovulation">Ovulation - Days 12-16 (ovulatory phase)</SelectItem>
-                    <SelectItem value="luteal">Luteal - Days 15-28 (pre-menstruation)</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              {/* Menstrual Cycle Phase — female only */}
+              {formData.gender !== 'male' && (
+                <div className="p-4 border rounded-lg bg-pink-50 border-pink-200">
+                  <Label htmlFor="menstrualPhase" className="text-sm font-medium text-foreground mb-2 block">
+                    Current menstrual cycle phase
+                  </Label>
+                  <p className="text-xs text-muted-foreground mb-3">
+                    Select your current cycle phase to optimize meal recommendations with phase-specific nutrients
+                  </p>
+                  <Select
+                    value={formData.menstrualPhase}
+                    onValueChange={(value) => setFormData(prev => ({ ...prev, menstrualPhase: value }))}
+                  >
+                    <SelectTrigger className="input-clean">
+                      <SelectValue placeholder="Select your current phase" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="off">Don't include cycle-specific optimization</SelectItem>
+                      <SelectItem value="menstrual">Menstrual - Days 1-5 (bleeding phase)</SelectItem>
+                      <SelectItem value="follicular">Follicular - Days 1-13 (post-menstruation)</SelectItem>
+                      <SelectItem value="ovulation">Ovulation - Days 12-16 (ovulatory phase)</SelectItem>
+                      <SelectItem value="luteal">Luteal - Days 15-28 (pre-menstruation)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
 
               {/* Low-Carb Dinner Setting */}
               <div className="p-4 border rounded-lg bg-green-50 border-green-200">
