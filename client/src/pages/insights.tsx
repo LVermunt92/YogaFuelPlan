@@ -66,7 +66,7 @@ const kpiGroups: KPIGroupDef[] = [
     titleNl: 'Vitamines & mineralen',
     titleColor: 'text-violet-600',
     dividerColor: 'border-violet-200 dark:border-violet-700',
-    kpis: ['vitaminK', 'zinc', 'calcium', 'potassium', 'iron', 'vitaminC', 'omega3', 'polyphenols'],
+    kpis: ['vitaminK', 'zinc', 'calcium', 'potassium', 'iron', 'vitaminC', 'omega3', 'polyphenols', 'selenium', 'sulforaphane'],
   },
   {
     id: 'sugarLimits',
@@ -223,6 +223,22 @@ const kpiMeta: Record<string, {
     dialogTitleEn: "Polyphenols for health", dialogTitleNl: "Polyfenolen voor gezondheid",
     dialogDescEn: "Polyphenols are powerful antioxidants that reduce inflammation, support heart and brain health, and combat aging. Recommended intake: 500-1500mg daily. Best sources: berries, cocoa, olive oil, green tea, spices, leafy greens.",
     dialogDescNl: "Polyfenolen zijn krachtige antioxidanten die ontstekingen verminderen, hart- en hersengezondheid ondersteunen, en veroudering tegengaan. Aanbevolen inname: 500-1500mg per dag. Beste bronnen: bessen, cacao, olijfolie, groene thee, kruiden, bladgroenten.",
+  },
+  selenium: {
+    fill: "#0891b2", textColor: "text-cyan-600", unit: "mcg",
+    labelEn: "Selenium", labelNl: "Selenium",
+    dialogTitleEn: "Selenium for health", dialogTitleNl: "Selenium voor gezondheid",
+    dialogDescEn: "Selenium is an essential antioxidant mineral that supports thyroid function, immune health, and DNA synthesis. The recommended daily intake is 55 mcg for adults. Best sources: Brazil nuts (1 nut covers the daily need), eggs, mushrooms, sunflower seeds, legumes.",
+    dialogDescNl: "Selenium is een essentieel antioxidant mineraal dat de schildklierfunctie, immuungezondheid en DNA-synthese ondersteunt. De aanbevolen dagelijkse inname is 55 mcg voor volwassenen. Beste bronnen: Brazilnoten (1 noot dekt de dagelijkse behoefte), eieren, paddenstoelen, zonnebloempitten, peulvruchten.",
+  },
+  sulforaphane: {
+    fill: "#059669", textColor: "text-emerald-600", unit: "mg",
+    labelEn: "Sulforaphane", labelNl: "Sulforafaan",
+    dialogTitleEn: "Sulforaphane for health", dialogTitleNl: "Sulforafaan voor gezondheid",
+    dialogDescEn: "Sulforaphane is a powerful phytonutrient from cruciferous vegetables that activates the body's antioxidant and detox pathways (Nrf2), reduces inflammation, and has shown anti-cancer potential. Research suggests 3-7mg daily is beneficial. Best sources: broccoli sprouts, broccoli, cauliflower, Brussels sprouts, kale. Tip: let chopped broccoli rest 5 minutes before cooking to maximise formation.",
+    dialogDescNl: "Sulforafaan is een krachtig fytonutriënt uit kruisbloemige groenten dat de antioxidant- en detoxpathways van het lichaam activeert (Nrf2), ontstekingen vermindert en kankerremmend potentieel heeft. Onderzoek suggereert dat 3-7mg per dag gunstig is. Beste bronnen: broccoli scheuten, broccoli, bloemkool, spruitjes, boerenkool. Tip: laat gesneden broccoli 5 minuten rusten voor het koken om de vorming te maximaliseren.",
+    extraNoteEn: "Target: 7mg/day — eat cruciferous vegetables daily",
+    extraNoteNl: "Doel: 7mg/dag — eet dagelijks kruisbloemige groenten",
   },
   // Sugar & limits group — amber/rose family
   addedSugar: {
@@ -450,6 +466,8 @@ export default function Insights() {
     const totalIron = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).iron || 0), 0);
     const totalOmega3 = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).omega3 || 0), 0);
     const totalPolyphenols = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).polyphenols || 0), 0);
+    const totalSelenium = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).selenium || 0), 0);
+    const totalSulforaphane = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).sulforaphane || 0), 0);
 
     const allColors = new Set<string>();
     currentMealPlan.meals.forEach(meal => {
@@ -489,6 +507,8 @@ export default function Insights() {
     const avgIronPerDay = avg(totalIron);
     const avgOmega3PerDay = avg(totalOmega3);
     const avgPolyphenolsPerDay = avg(totalPolyphenols);
+    const avgSeleniumPerDay = avg(totalSelenium);
+    const avgSulforaphanePerDay = avg(totalSulforaphane);
 
     const avgNetCarbsPerDay = avgCarbsPerDay - avgFiberPerDay;
 
@@ -522,6 +542,8 @@ export default function Insights() {
     const ironTarget = userProfile?.gender === 'male' ? 8 : 18;
     const omega3Target = userProfile?.gender === 'male' ? 1600 : 1100;
     const polyphenolsTarget = 800;
+    const seleniumTarget = 55;
+    const sulforaphaneTarget = 7;
     const proteinTarget = nutritionTargets?.protein || 95;
     const caloriesTarget = nutritionTargets?.calories || 2000;
     const netCarbsTarget = 160;
@@ -642,6 +664,16 @@ export default function Insights() {
         value: Math.round(avgPolyphenolsPerDay),
         percentage: Math.round((avgPolyphenolsPerDay / polyphenolsTarget) * 100),
         target: polyphenolsTarget
+      },
+      selenium: {
+        value: Math.round(avgSeleniumPerDay * 10) / 10,
+        percentage: Math.round((avgSeleniumPerDay / seleniumTarget) * 100),
+        target: seleniumTarget
+      },
+      sulforaphane: {
+        value: Math.round(avgSulforaphanePerDay * 10) / 10,
+        percentage: Math.round((avgSulforaphanePerDay / sulforaphaneTarget) * 100),
+        target: sulforaphaneTarget
       }
     };
   };

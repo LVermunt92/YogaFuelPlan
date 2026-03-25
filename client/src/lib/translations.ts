@@ -53,6 +53,8 @@ export const translations = {
     zinc: "Zinc",
     omega3: "Omega-3",
     polyphenols: "Polyphenols",
+    selenium: "Selenium",
+    sulforaphane: "Sulforaphane",
     vegetables: "Vegetables",
     fruitsStarches: "Fruits/starches",
     
@@ -708,6 +710,8 @@ export const translations = {
     zinc: "Zink",
     omega3: "Omega-3",
     polyphenols: "Polyfenolen",
+    selenium: "Selenium",
+    sulforaphane: "Sulforafaan",
     fiber: "Vezels",
     fruitsStarches: "Fruit/zetmeel",
     sugar: "Suiker",

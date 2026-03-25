@@ -2309,6 +2309,16 @@ function MealPlannerMain() {
                             <p className="text-[10px] text-gray-500">{t.polyphenols || 'Polyphenols'}</p>
                           </div>
                         </div>
+                        <div className="grid grid-cols-2 gap-1 text-center mt-1">
+                          <div>
+                            <p className="text-xs font-bold text-cyan-600">{((recipeData.nutrition as any).selenium || 0).toFixed(1)}µg</p>
+                            <p className="text-[10px] text-gray-500">{t.selenium || 'Selenium'}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-emerald-600">{((recipeData.nutrition as any).sulforaphane || 0).toFixed(1)}mg</p>
+                            <p className="text-[10px] text-gray-500">{t.sulforaphane || 'Sulforaphane'}</p>
+                          </div>
+                        </div>
                       </div>
 
                       {/* Group 4: Sugar & limits — amber family */}
