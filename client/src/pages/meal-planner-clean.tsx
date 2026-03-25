@@ -2421,6 +2421,20 @@ function MealPlannerMain() {
                     <ShoppingCart className="w-4 h-4" />
                     {t.ingredients}
                   </h4>
+                  {(() => {
+                    const selectedMeal = currentMealPlan?.meals?.find(m => m.id === selectedMealId);
+                    const match = (selectedMeal?.portion || '').match(/\(([+-]?\d+)%\)/);
+                    if (!match) return null;
+                    const pct = parseInt(match[1]);
+                    return (
+                      <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 flex items-start gap-2 mb-3">
+                        <Info className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
+                        {language === 'nl'
+                          ? `Hoeveelheden zijn gebaseerd op het standaardrecept. Jouw portie is ${pct > 0 ? '+' : ''}${pct}% aangepast op basis van jouw doelstelling.`
+                          : `Amounts are based on the standard recipe. Your portion is ${pct > 0 ? '+' : ''}${pct}% adjusted based on your goal.`}
+                      </p>
+                    );
+                  })()}
                   <div className="grid grid-cols-2 gap-2">
                     {recipeData?.ingredients?.map((ingredient, index) => (
                       <div key={index} className="flex items-center gap-2 text-sm text-gray-500">
