@@ -62940,5 +62940,94 @@
     "polyphenols": 50,
     "cocoa_flavanols": 0,
     "default_batch_servings": 1
+  },
+  {
+    "id": "10968",
+    "name": "Homemade pumpkin puree",
+    "category": "breakfast",
+    "ingredients": [
+      "700g pumpkin",
+      "10ml olive oil",
+      "2g salt"
+    ],
+    "instructions": [
+      "Preheat oven to 200°C",
+      "Cut pumpkin in half and scoop out the seeds (hokkaido skin is edible and does not need peeling; peel butternut or other varieties)",
+      "Cut into large chunks and spread on a baking tray lined with parchment",
+      "Brush with olive oil and sprinkle with salt",
+      "Roast for 40-45 minutes until completely soft and lightly caramelised",
+      "Let cool for 10 minutes",
+      "Scoop the flesh into a blender and blend until completely smooth, adding a splash of water if needed",
+      "Store in an airtight container in the fridge for up to 5 days — use 60ml per serving of pumpkin spice chia pudding"
+    ],
+    "portion": "~350ml (6 × 60ml servings)",
+    "nutrition": {
+      "calories": 30,
+      "protein": 0.7,
+      "carbohydrates": 4,
+      "fats": 1.7,
+      "fiber": 1.0,
+      "sugar": 3,
+      "sodium": 120,
+      "vitaminC": 5,
+      "vitaminK": 1,
+      "vitaminK2": 0,
+      "potassium": 280,
+      "calcium": 10,
+      "iron": 0.5,
+      "selenium": 0,
+      "sulforaphane": 0,
+      "polyphenols": 20,
+      "omega3": 0,
+      "prepTime": 50,
+      "costEuros": 0.21,
+      "proteinPerEuro": 3.3
+    },
+    "tags": [
+      "Weekend-Prep",
+      "Gluten-Free",
+      "Lactose-Free",
+      "Vegetarian",
+      "October",
+      "November",
+      "September",
+      "December",
+      "Menstrual",
+      "Follicular",
+      "Ovulation",
+      "Luteal"
+    ],
+    "wholeFoodLevel": "high",
+    "vegetableContent": {
+      "vegetables": [
+        "pumpkin"
+      ]
+    },
+    "dutchName": "Zelfgemaakte pompoenpuree",
+    "dutchIngredients": [
+      "700g pompoen",
+      "10ml olijfolie",
+      "2g zout"
+    ],
+    "dutchInstructions": [
+      "Verwarm de oven voor op 200°C",
+      "Snijd de pompoen doormidden en schep de zaden eruit (hokkaido hoeft niet geschild te worden; schil butternut of andere soorten wel)",
+      "Snijd in grote stukken en verdeel over een met bakpapier beklede bakplaat",
+      "Bestrijk met olijfolie en bestrooi met zout",
+      "Rooster 40-45 minuten totdat de pompoen volledig gaar en licht gekaramelliseerd is",
+      "Laat 10 minuten afkoelen",
+      "Schep het vruchtvlees in een blender en blend tot een gladde puree, voeg een scheutje water toe als het te dik is",
+      "Bewaar in een luchtdichte pot in de koelkast voor maximaal 5 dagen — gebruik 60ml per portie pompoenkruiden chia pudding"
+    ],
+    "prepTime": 50,
+    "defaultBatchServings": 2,
+    "source": "manual",
+    "active": true,
+    "containsEggs": false,
+    "resistantStarchScore": 0,
+    "longevityScore": 1,
+    "proteinG": 0.7,
+    "carbsG": 4.0,
+    "fiberG": 1.0
   }
 ]
