@@ -1434,60 +1434,55 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const language = (req.query.language as 'en' | 'nl') || 'en';
       console.log(`Looking for meal ID: ${mealId}, language: ${language}`);
       
-      // Search through all meal plans to find the specific meal
-      let targetMeal = null;
-      const allMealPlans = await storage.getMealPlans();
-      console.log(`Found ${allMealPlans.length} meal plans to search`);
-      
-      for (const plan of allMealPlans) {
-        const planWithMeals = await storage.getMealPlanWithMeals(plan.id);
-        if (planWithMeals) {
-          console.log(`Plan ${plan.id} has ${planWithMeals.meals.length} meals`);
-          for (const meal of planWithMeals.meals) {
-            if (meal.id === mealId) {
-              targetMeal = meal;
-              console.log(`Found meal: "${meal.foodDescription}"`);
-              break;
-            }
-          }
-        }
-        if (targetMeal) break;
-      }
+      // Direct DB lookup — single query instead of scanning all meal plans
+      const targetMeal = await storage.getMealById(mealId);
 
       if (!targetMeal) {
         console.log(`Meal with ID ${mealId} not found`);
         return res.status(404).json({ message: "Meal not found" });
       }
 
+      console.log(`Found meal: "${targetMeal.foodDescription}"`);
+
       // Find recipe by stored ID from meal database
-      const { getCompleteEnhancedMealDatabase, findRecipeByName } = await import("./nutrition-enhanced");
+      const { findRecipeByName } = await import("./nutrition-enhanced");
       
       console.log(`🔄 Translating recipe ID: ${targetMeal.recipeId} - ${targetMeal.foodDescription}`);
       
-      let mealOption = null;
+      let mealOption: any = null;
       
-      // If meal has a stored recipe ID, use it for fast lookup
+      // Direct DB lookup by recipe ID — no full cache scan
       if (targetMeal.recipeId) {
-        const allRecipes = await getCompleteEnhancedMealDatabase();
-        mealOption = allRecipes.find(recipe => recipe.id === targetMeal.recipeId);
-        
-        if (mealOption) {
-          console.log(`✅ Found recipe by ID: ${mealOption.id} - ${mealOption.name}`);
+        const dbRecipe = await storage.getRecipeById(String(targetMeal.recipeId));
+        if (dbRecipe) {
+          const nutritionData = dbRecipe.nutrition as any || {};
+          const vegContent = dbRecipe.vegetableContent as any || {};
+          mealOption = {
+            id: dbRecipe.id,
+            name: dbRecipe.name,
+            category: dbRecipe.category,
+            ingredients: dbRecipe.ingredients,
+            portion: dbRecipe.portion,
+            wholeFoodLevel: dbRecipe.wholeFoodLevel || 'moderate',
+            nutrition: nutritionData,
+            tags: dbRecipe.tags || [],
+            vegetableContent: vegContent.vegetables || [],
+            recipe: {
+              name: dbRecipe.name,
+              instructions: dbRecipe.instructions,
+              tips: dbRecipe.recipeTips || [],
+              notes: dbRecipe.recipeNotes ? [dbRecipe.recipeNotes] : []
+            }
+          };
+          console.log(`✅ Found recipe by ID: ${dbRecipe.id} - ${dbRecipe.name}`);
         } else {
           console.log(`⚠️  Recipe ID ${targetMeal.recipeId} not found in database, trying name lookup...`);
         }
       }
       
-      // Fallback: Check admin modifications or lookup by name
+      // Fallback: lookup by name
       if (!mealOption) {
-        const modifiedRecipes = await getModifiedRecipeDatabase();
-        mealOption = modifiedRecipes.find(recipe => 
-          recipe.name === targetMeal.foodDescription || recipe.id === targetMeal.foodDescription
-        );
-        
-        if (!mealOption) {
-          mealOption = await findRecipeByName(targetMeal.foodDescription);
-        }
+        mealOption = await findRecipeByName(targetMeal.foodDescription);
       }
 
       // If recipe not found in database, generate with AI
@@ -3600,9 +3595,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const allMealPlans = await storage.getMealPlans();
       const totalMealPlans = allMealPlans.length;
 
-      // Get total recipes
-      const allRecipes = await storage.getAllRecipes(true);
-      const totalRecipes = allRecipes.length;
+      // Get total recipes — COUNT query only, no data load
+      const totalRecipes = await storage.countRecipes(true);
 
       // Calculate average protein target
       const usersWithProtein = allUsers.filter(u => u.proteinTarget);
@@ -3945,56 +3939,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
         limit = '50'
       } = req.query;
 
-      let recipes = await getModifiedRecipeDatabase();
-
-      // Apply filters
-      if (search) {
-        const searchTerm = search.toString().toLowerCase();
-        recipes = recipes.filter(recipe => 
-          recipe.name.toLowerCase().includes(searchTerm) ||
-          recipe.ingredients.some(ing => ing.toLowerCase().includes(searchTerm))
-        );
-      }
-
-      if (category) {
-        recipes = recipes.filter(recipe => recipe.category === category);
-      }
-
-      if (tags) {
-        const tagList = tags.toString().split(',').map(tag => tag.trim());
-        recipes = recipes.filter(recipe => 
-          tagList.every(tag => recipe.tags.includes(tag))
-        );
-      }
-
-      if (minProtein) {
-        recipes = recipes.filter(recipe => recipe.nutrition.protein >= parseInt(minProtein.toString()));
-      }
-
-      if (maxProtein) {
-        recipes = recipes.filter(recipe => recipe.nutrition.protein <= parseInt(maxProtein.toString()));
-      }
-
-      if (minPrepTime) {
-        recipes = recipes.filter(recipe => recipe.nutrition.prepTime >= parseInt(minPrepTime.toString()));
-      }
-
-      if (maxPrepTime) {
-        recipes = recipes.filter(recipe => recipe.nutrition.prepTime <= parseInt(maxPrepTime.toString()));
-      }
-
-      // Pagination
       const pageNum = parseInt(page.toString());
       const limitNum = parseInt(limit.toString());
-      const startIndex = (pageNum - 1) * limitNum;
-      const paginatedRecipes = recipes.slice(startIndex, startIndex + limitNum);
+
+      // All filtering pushed to the database — uses indexed columns
+      const { recipes: rows, total } = await storage.getRecipesFiltered(
+        {
+          search: search ? search.toString() : undefined,
+          category: category ? category.toString() : undefined,
+          tags: tags ? tags.toString().split(',').map(t => t.trim()).filter(Boolean) : undefined,
+          minProtein: minProtein ? parseInt(minProtein.toString()) : undefined,
+          maxProtein: maxProtein ? parseInt(maxProtein.toString()) : undefined,
+          minPrepTime: minPrepTime ? parseInt(minPrepTime.toString()) : undefined,
+          maxPrepTime: maxPrepTime ? parseInt(maxPrepTime.toString()) : undefined,
+        },
+        pageNum,
+        limitNum
+      );
 
       res.json({
-        recipes: paginatedRecipes,
-        total: recipes.length,
+        recipes: rows,
+        total,
         page: pageNum,
         limit: limitNum,
-        totalPages: Math.ceil(recipes.length / limitNum)
+        totalPages: Math.ceil(total / limitNum)
       });
     } catch (error) {
       console.error("Error fetching recipes:", error);
@@ -4102,8 +4070,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const recipeId = req.params.id;
-      const recipes = await getCompleteEnhancedMealDatabase();
-      const recipe = recipes.find(r => (r.id || r.name) === recipeId);
+      const recipe = await storage.getRecipeById(recipeId);
 
       if (!recipe) {
         return res.status(404).json({ message: "Recipe not found" });

@@ -185,6 +185,20 @@ export interface IStorage {
   createRecipe(data: InsertRecipe): Promise<Recipe>;
   updateRecipe(id: string, updates: UpdateRecipe): Promise<Recipe>;
   deleteRecipe(id: string): Promise<void>;
+
+  // Efficient query methods (DB-first, avoid full table loads)
+  getRecipesForGeneration(): Promise<Recipe[]>; // lightweight — no instructions/Dutch/tips
+  countRecipes(activeOnly?: boolean): Promise<number>;
+  getMealById(id: number): Promise<Meal | undefined>;
+  getRecipesFiltered(filters: {
+    search?: string;
+    category?: string;
+    tags?: string[];
+    minProtein?: number;
+    maxProtein?: number;
+    minPrepTime?: number;
+    maxPrepTime?: number;
+  }, page: number, limit: number): Promise<{ recipes: Recipe[]; total: number }>;
   
   // AI Recipe methods
   upsertAiRecipe(data: InsertAiRecipe): Promise<AiRecipe>;
@@ -893,6 +907,22 @@ export class MemStorage implements IStorage {
   }
 
   async updateRecipe(id: string, updates: UpdateRecipe): Promise<Recipe> {
+    throw new Error("Recipe database requires DatabaseStorage implementation");
+  }
+
+  async getRecipesForGeneration(): Promise<Recipe[]> {
+    throw new Error("Recipe database requires DatabaseStorage implementation");
+  }
+
+  async countRecipes(activeOnly?: boolean): Promise<number> {
+    throw new Error("Recipe database requires DatabaseStorage implementation");
+  }
+
+  async getMealById(id: number): Promise<Meal | undefined> {
+    throw new Error("Meal lookup requires DatabaseStorage implementation");
+  }
+
+  async getRecipesFiltered(filters: any, page: number, limit: number): Promise<{ recipes: Recipe[]; total: number }> {
     throw new Error("Recipe database requires DatabaseStorage implementation");
   }
 
@@ -2066,6 +2096,127 @@ export class DatabaseStorage implements IStorage {
     await db
       .delete(recipes)
       .where(eq(recipes.id, id));
+  }
+
+  // ─── DB-first efficient query methods ────────────────────────────────────────
+
+  async getRecipesForGeneration(): Promise<Recipe[]> {
+    // Selects only the fields needed by the meal generator — excludes instructions,
+    // Dutch translations, tips, notes (only needed when displaying a recipe card).
+    // This keeps the in-memory recipe cache lean.
+    return db
+      .select({
+        id: recipes.id,
+        name: recipes.name,
+        category: recipes.category,
+        ingredients: recipes.ingredients,
+        instructions: sql<string[]>`ARRAY[]::text[]`, // empty — not needed for generation
+        portion: recipes.portion,
+        nutrition: recipes.nutrition,
+        tags: recipes.tags,
+        wholeFoodLevel: recipes.wholeFoodLevel,
+        vegetableContent: recipes.vegetableContent,
+        prepTime: recipes.prepTime,
+        defaultBatchServings: recipes.defaultBatchServings,
+        source: recipes.source,
+        variantOf: recipes.variantOf,
+        variantType: recipes.variantType,
+        active: recipes.active,
+        containsEggs: recipes.containsEggs,
+        resistantStarchScore: recipes.resistantStarchScore,
+        longevityScore: recipes.longevityScore,
+        proteinG: recipes.proteinG,
+        carbsG: recipes.carbsG,
+        fiberG: recipes.fiberG,
+        // Excluded: dutchName, dutchIngredients, dutchInstructions,
+        //           recipeBenefits, recipeTips, recipeNotes,
+        //           createdBy, updatedBy, createdAt, updatedAt
+        dutchName: sql<string | null>`NULL::text`,
+        dutchIngredients: sql<string[]>`ARRAY[]::text[]`,
+        dutchInstructions: sql<string[]>`ARRAY[]::text[]`,
+        recipeBenefits: sql<string[]>`ARRAY[]::text[]`,
+        recipeTips: sql<string[]>`ARRAY[]::text[]`,
+        recipeNotes: sql<string | null>`NULL::text`,
+        createdBy: sql<number | null>`NULL::integer`,
+        updatedBy: sql<number | null>`NULL::integer`,
+        createdAt: recipes.createdAt,
+        updatedAt: recipes.updatedAt,
+      })
+      .from(recipes)
+      .where(eq(recipes.active, true)) as unknown as Recipe[];
+  }
+
+  async countRecipes(activeOnly = true): Promise<number> {
+    const [row] = await db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(recipes)
+      .where(activeOnly ? eq(recipes.active, true) : undefined);
+    return row?.count ?? 0;
+  }
+
+  async getMealById(id: number): Promise<Meal | undefined> {
+    const [meal] = await db
+      .select()
+      .from(meals)
+      .where(eq(meals.id, id))
+      .limit(1);
+    return meal;
+  }
+
+  async getRecipesFiltered(
+    filters: {
+      search?: string;
+      category?: string;
+      tags?: string[];
+      minProtein?: number;
+      maxProtein?: number;
+      minPrepTime?: number;
+      maxPrepTime?: number;
+    },
+    page: number,
+    limit: number
+  ): Promise<{ recipes: Recipe[]; total: number }> {
+    const conditions = [eq(recipes.active, true)];
+
+    if (filters.search) {
+      // Trigram index on name + GIN on ingredients not indexed, so limit to name only
+      conditions.push(sql`${recipes.name} ILIKE ${'%' + filters.search + '%'}`);
+    }
+    if (filters.category) {
+      conditions.push(eq(recipes.category, filters.category));
+    }
+    if (filters.tags && filters.tags.length > 0) {
+      conditions.push(sql`${recipes.tags} @> ${filters.tags}::text[]`);
+    }
+    if (filters.minProtein !== undefined) {
+      conditions.push(gte(recipes.proteinG, filters.minProtein));
+    }
+    if (filters.maxProtein !== undefined) {
+      conditions.push(lte(recipes.proteinG, filters.maxProtein));
+    }
+    if (filters.minPrepTime !== undefined) {
+      conditions.push(gte(recipes.prepTime, filters.minPrepTime));
+    }
+    if (filters.maxPrepTime !== undefined) {
+      conditions.push(lte(recipes.prepTime, filters.maxPrepTime));
+    }
+
+    const where = and(...conditions);
+
+    const [{ total }] = await db
+      .select({ total: sql<number>`count(*)::int` })
+      .from(recipes)
+      .where(where);
+
+    const rows = await db
+      .select()
+      .from(recipes)
+      .where(where)
+      .orderBy(desc(recipes.longevityScore), recipes.name)
+      .limit(limit)
+      .offset((page - 1) * limit);
+
+    return { recipes: rows, total };
   }
 
   // AI Recipe methods

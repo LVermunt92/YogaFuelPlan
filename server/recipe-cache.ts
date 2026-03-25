@@ -49,7 +49,8 @@ class RecipeCache {
     this.cachePromise = (async () => {
       // Load all active recipes from database
       const { storage } = await import('./storage');
-      const dbRecipes = await storage.getAllRecipes(true); // Only active recipes
+      // Lightweight load — excludes instructions/Dutch/tips/notes not needed for generation
+      const dbRecipes = await storage.getRecipesForGeneration();
       
       // Convert database Recipe format to MealOption format
       const mealOptions: MealOption[] = dbRecipes.map(recipe => {
