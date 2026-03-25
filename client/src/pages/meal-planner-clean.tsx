@@ -2065,7 +2065,7 @@ function MealPlannerMain() {
                     </div>
                   </div>
 
-                  {(currentMealPlan?.weekendMealPrepEnabled || weekendMealPrepEnabled) && (() => {
+                  {weekendMealPrepEnabled && (() => {
                     if (weekendPrepRecipes.length === 0) return null;
                     
                     const prepRecipes = weekendPrepRecipes.map(r => ({
