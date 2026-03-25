@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean, timestamp, real, date, unique, varchar, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, smallint, boolean, timestamp, real, date, unique, varchar, jsonb } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -80,6 +80,11 @@ export const recipes = pgTable("recipes", {
   
   // Status
   active: boolean("active").default(true),
+  
+  // Precomputed columns for fast filtering (avoids runtime regex/scanning)
+  containsEggs: boolean("contains_eggs").default(false),         // true if recipe has egg ingredients
+  resistantStarchScore: real("resistant_starch_score").default(0), // 0–20 score based on RS ingredient content
+  longevityScore: smallint("longevity_score").default(0),         // 0–3 based on Anti-Aging/Longevity tags
   
   // Dutch translations (cached from OpenAI)
   dutchName: text("dutch_name"),
