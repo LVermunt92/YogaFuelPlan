@@ -872,55 +872,6 @@ export default function Profile() {
                 </div>
               )}
               
-              <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                <div className="text-sm font-medium text-blue-900 mb-3">How your targets are calculated</div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-3 text-sm text-blue-800">
-                  <div>
-                    <div className="text-xs text-blue-600 uppercase tracking-wide mb-0.5">Step 1 — BMR (Mifflin-St Jeor)</div>
-                    <span className="font-medium">{Math.round(nutritionTargets.bmr)} kcal</span>
-                    <span className="text-xs text-blue-600 ml-1">base metabolic rate</span>
-                  </div>
-                  <div>
-                    <div className="text-xs text-blue-600 uppercase tracking-wide mb-0.5">Step 2 — Activity Level (PAL)</div>
-                    <span className="font-medium">× {nutritionTargets.palValue}</span>
-                    <span className="text-xs text-blue-600 ml-1">= {Math.round(nutritionTargets.maintenanceCalories)} kcal maintenance</span>
-                  </div>
-                  <div>
-                    <div className="text-xs text-blue-600 uppercase tracking-wide mb-0.5">Step 3 — Goal</div>
-                    <span className="font-medium">
-                      {formData.goal === 'lose_fat' ? '× 0.85 (−15%)' : formData.goal === 'bulk' ? '× 1.10 (+10%)' : '× 1.00'}
-                    </span>
-                    <span className="text-xs text-blue-600 ml-1">= {Math.round(nutritionTargets.calories)} kcal target</span>
-                  </div>
-                  <div>
-                    <div className="text-xs text-blue-600 uppercase tracking-wide mb-0.5">Protein (training type)</div>
-                    <span className="font-medium">{nutritionTargets.proteinFactor}g/kg</span>
-                    <span className="text-xs text-blue-600 ml-1">
-                      {formData.trainingType === 'strength' ? 'strength → higher need' :
-                       formData.trainingType === 'endurance' ? 'endurance → moderate need' :
-                       formData.trainingType === 'mobility' ? 'mobility → lower need' : 'mixed → high need'}
-                    </span>
-                  </div>
-                  <div>
-                    <div className="text-xs text-blue-600 uppercase tracking-wide mb-0.5">Carbs (training type)</div>
-                    <span className="font-medium">{nutritionTargets.carbFactor}g/kg</span>
-                    <span className="text-xs text-blue-600 ml-1">
-                      {formData.trainingType === 'endurance' ? 'endurance → high glycogen demand' :
-                       formData.trainingType === 'strength' ? 'strength → moderate glycogen' :
-                       formData.trainingType === 'mobility' ? 'mobility → low carb need' : 'mixed'}
-                    </span>
-                  </div>
-                  <div>
-                    <div className="text-xs text-blue-600 uppercase tracking-wide mb-0.5">Fat allocation (training type)</div>
-                    <span className="font-medium">{Math.round(nutritionTargets.fatPercentage)}% of calories</span>
-                    <span className="text-xs text-blue-600 ml-1">
-                      {formData.trainingType === 'mobility' ? 'mobility → fat-adapted' :
-                       formData.trainingType === 'endurance' ? 'endurance → carb priority' :
-                       formData.trainingType === 'strength' ? 'strength → balanced' : 'mixed'}
-                    </span>
-                  </div>
-                </div>
-              </div>
               </>
               )}
             </div>
