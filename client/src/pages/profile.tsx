@@ -782,7 +782,7 @@ export default function Profile() {
                   {t.nutritionTargets || 'Nutrition Targets'}
                 </h2>
                 <p className="text-sm text-gray-500">
-                  Daily targets calculated based on your activity level, age, and physiology
+                  Calculated from your weight, height, age, gender, activity level, training type, and goal using the Mifflin-St Jeor formula
                 </p>
               </div>
               {!formData.weight || !formData.age ? (
@@ -796,9 +796,10 @@ export default function Profile() {
                   <div className="text-sm font-medium text-emerald-800 mb-1">Protein</div>
                   <div className="text-2xl font-bold text-emerald-900">{Math.round(nutritionTargets.protein)}g</div>
                   <div className="text-xs text-emerald-600 mt-1">
-                    {formData.activityLevel === 'high' || formData.activityLevel === 'athlete' 
-                      ? 'High Protein Target' 
-                      : 'Standard Target'}
+                    {nutritionTargets.proteinFactor}g per kg · 
+                    {formData.trainingType === 'strength' ? ' strength' :
+                     formData.trainingType === 'endurance' ? ' endurance' :
+                     formData.trainingType === 'mobility' ? ' mobility' : ' mixed'} training
                   </div>
                 </div>
                 
@@ -806,7 +807,10 @@ export default function Profile() {
                   <div className="text-sm font-medium text-yellow-800 mb-1">Healthy Fats</div>
                   <div className="text-2xl font-bold text-yellow-900">{Math.round(nutritionTargets.fats)}g</div>
                   <div className="text-xs text-yellow-600 mt-1">
-                    {Math.round(nutritionTargets.fatPercentage)}% of calories
+                    {Math.round(nutritionTargets.fatPercentage)}% of calories ·{' '}
+                    {formData.trainingType === 'mobility' ? 'higher fat' :
+                     formData.trainingType === 'endurance' ? 'lower fat' :
+                     formData.trainingType === 'strength' ? 'moderate fat' : 'balanced'}
                   </div>
                 </div>
                 
@@ -814,8 +818,10 @@ export default function Profile() {
                   <div className="text-sm font-medium text-blue-800 mb-1">Carbohydrates</div>
                   <div className="text-2xl font-bold text-blue-900">{Math.round(nutritionTargets.carbohydrates)}g</div>
                   <div className="text-xs text-blue-600 mt-1">
-                    {formData.trainingType === 'endurance' ? 'Endurance Focus' : 
-                     formData.trainingType === 'strength' ? 'Strength Focus' : 'General'}
+                    {nutritionTargets.carbFactor}g per kg ·{' '}
+                    {formData.trainingType === 'endurance' ? 'high carb' :
+                     formData.trainingType === 'strength' ? 'moderate carb' :
+                     formData.trainingType === 'mobility' ? 'low carb' : 'mixed carb'}
                   </div>
                 </div>
                 
@@ -823,8 +829,8 @@ export default function Profile() {
                   <div className="text-sm font-medium text-orange-800 mb-1">Total Calories</div>
                   <div className="text-2xl font-bold text-orange-900">{Math.round(nutritionTargets.calories)}</div>
                   <div className="text-xs text-orange-600 mt-1">
-                    {formData.goal === 'lose_fat' ? 'Weight Loss' : 
-                     formData.goal === 'bulk' ? 'Weight Gain' : 'Maintenance'}
+                    {formData.goal === 'lose_fat' ? '−15% deficit' : 
+                     formData.goal === 'bulk' ? '+10% surplus' : 'maintenance'} · PAL {nutritionTargets.palValue}
                   </div>
                 </div>
               </div>
@@ -867,19 +873,51 @@ export default function Profile() {
               )}
               
               <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                <div className="text-sm font-medium text-blue-900 mb-2">Calculation Details</div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-blue-800">
+                <div className="text-sm font-medium text-blue-900 mb-3">How your targets are calculated</div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-3 text-sm text-blue-800">
                   <div>
-                    <span className="font-medium">BMR:</span> {Math.round(nutritionTargets.bmr)} calories
+                    <div className="text-xs text-blue-600 uppercase tracking-wide mb-0.5">Step 1 — BMR (Mifflin-St Jeor)</div>
+                    <span className="font-medium">{Math.round(nutritionTargets.bmr)} kcal</span>
+                    <span className="text-xs text-blue-600 ml-1">base metabolic rate</span>
                   </div>
                   <div>
-                    <span className="font-medium">Maintenance:</span> {Math.round(nutritionTargets.maintenanceCalories)} calories
+                    <div className="text-xs text-blue-600 uppercase tracking-wide mb-0.5">Step 2 — Activity Level (PAL)</div>
+                    <span className="font-medium">× {nutritionTargets.palValue}</span>
+                    <span className="text-xs text-blue-600 ml-1">= {Math.round(nutritionTargets.maintenanceCalories)} kcal maintenance</span>
                   </div>
                   <div>
-                    <span className="font-medium">Activity Factor:</span> {nutritionTargets.palValue}
+                    <div className="text-xs text-blue-600 uppercase tracking-wide mb-0.5">Step 3 — Goal</div>
+                    <span className="font-medium">
+                      {formData.goal === 'lose_fat' ? '× 0.85 (−15%)' : formData.goal === 'bulk' ? '× 1.10 (+10%)' : '× 1.00'}
+                    </span>
+                    <span className="text-xs text-blue-600 ml-1">= {Math.round(nutritionTargets.calories)} kcal target</span>
                   </div>
                   <div>
-                    <span className="font-medium">Protein Factor:</span> {nutritionTargets.proteinFactor}g/kg
+                    <div className="text-xs text-blue-600 uppercase tracking-wide mb-0.5">Protein (training type)</div>
+                    <span className="font-medium">{nutritionTargets.proteinFactor}g/kg</span>
+                    <span className="text-xs text-blue-600 ml-1">
+                      {formData.trainingType === 'strength' ? 'strength → higher need' :
+                       formData.trainingType === 'endurance' ? 'endurance → moderate need' :
+                       formData.trainingType === 'mobility' ? 'mobility → lower need' : 'mixed → high need'}
+                    </span>
+                  </div>
+                  <div>
+                    <div className="text-xs text-blue-600 uppercase tracking-wide mb-0.5">Carbs (training type)</div>
+                    <span className="font-medium">{nutritionTargets.carbFactor}g/kg</span>
+                    <span className="text-xs text-blue-600 ml-1">
+                      {formData.trainingType === 'endurance' ? 'endurance → high glycogen demand' :
+                       formData.trainingType === 'strength' ? 'strength → moderate glycogen' :
+                       formData.trainingType === 'mobility' ? 'mobility → low carb need' : 'mixed'}
+                    </span>
+                  </div>
+                  <div>
+                    <div className="text-xs text-blue-600 uppercase tracking-wide mb-0.5">Fat allocation (training type)</div>
+                    <span className="font-medium">{Math.round(nutritionTargets.fatPercentage)}% of calories</span>
+                    <span className="text-xs text-blue-600 ml-1">
+                      {formData.trainingType === 'mobility' ? 'mobility → fat-adapted' :
+                       formData.trainingType === 'endurance' ? 'endurance → carb priority' :
+                       formData.trainingType === 'strength' ? 'strength → balanced' : 'mixed'}
+                    </span>
                   </div>
                 </div>
               </div>
