@@ -125,7 +125,8 @@ export const meals = pgTable("meals", {
   freeSugar: real("free_sugar").default(0), // grams (added + juices/dried fruits - not bound in cell walls)
   intrinsicSugar: real("intrinsic_sugar").default(0), // grams (naturally bound in whole fruits, vegetables, dairy)
   sodium: real("sodium").default(0), // mg
-  vitaminK: real("vitamin_k").default(0), // mcg (micrograms)
+  vitaminK: real("vitamin_k").default(0), // mcg (micrograms) - K1 (phylloquinone, blood clotting, leafy greens)
+  vitaminK2: real("vitamin_k2").default(0), // mcg (micrograms) - K2 (menaquinone, bone/cardiovascular health)
   zinc: real("zinc").default(0), // mg (milligrams)
   calcium: real("calcium").default(0), // mg (milligrams)
   potassium: real("potassium").default(0), // mg (milligrams)

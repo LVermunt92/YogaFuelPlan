@@ -2309,7 +2309,11 @@ function MealPlannerMain() {
                             <p className="text-[10px] text-gray-500">{t.polyphenols || 'Polyphenols'}</p>
                           </div>
                         </div>
-                        <div className="grid grid-cols-2 gap-1 text-center mt-1">
+                        <div className="grid grid-cols-3 gap-1 text-center mt-1">
+                          <div>
+                            <p className="text-xs font-bold text-violet-700">{Math.round((recipeData.nutrition as any).vitaminK2 || 0)}µg</p>
+                            <p className="text-[10px] text-gray-500">{t.vitaminK2 || 'Vit. K2'}</p>
+                          </div>
                           <div>
                             <p className="text-xs font-bold text-cyan-600">{((recipeData.nutrition as any).selenium || 0).toFixed(1)}µg</p>
                             <p className="text-[10px] text-gray-500">{t.selenium || 'Selenium'}</p>

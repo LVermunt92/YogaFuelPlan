@@ -66,7 +66,7 @@ const kpiGroups: KPIGroupDef[] = [
     titleNl: 'Vitamines & mineralen',
     titleColor: 'text-violet-600',
     dividerColor: 'border-violet-200 dark:border-violet-700',
-    kpis: ['vitaminK', 'zinc', 'calcium', 'potassium', 'iron', 'vitaminC', 'omega3', 'polyphenols', 'selenium', 'sulforaphane'],
+    kpis: ['vitaminK', 'vitaminK2', 'zinc', 'calcium', 'potassium', 'iron', 'vitaminC', 'omega3', 'polyphenols', 'selenium', 'sulforaphane'],
   },
   {
     id: 'sugarLimits',
@@ -170,10 +170,19 @@ const kpiMeta: Record<string, {
   // Vitamins & minerals group — violet/purple family
   vitaminK: {
     fill: "#7c3aed", textColor: "text-violet-600", unit: "mcg",
-    labelEn: "Vitamin K", labelNl: "Vitamine K",
-    dialogTitleEn: "Vitamin K for health", dialogTitleNl: "Vitamine K voor gezondheid",
-    dialogDescEn: "Vitamin K is essential for blood clotting and bone health. The recommended daily intake is 90 mcg for women and 120 mcg for men. Best sources: leafy greens, broccoli, Brussels sprouts.",
-    dialogDescNl: "Vitamine K is essentieel voor bloedstolling en botgezondheid. De aanbevolen dagelijkse inname is 90 mcg voor vrouwen en 120 mcg voor mannen. Beste bronnen: groene bladgroenten, broccoli, spruitjes.",
+    labelEn: "Vitamin K1", labelNl: "Vitamine K1",
+    dialogTitleEn: "Vitamin K1 for health", dialogTitleNl: "Vitamine K1 voor gezondheid",
+    dialogDescEn: "Vitamin K1 (phylloquinone) is found mainly in leafy green vegetables and is primarily involved in blood clotting. The recommended daily intake is 90 mcg for women and 120 mcg for men. Best sources: kale, spinach, broccoli, Brussels sprouts, parsley.",
+    dialogDescNl: "Vitamine K1 (fylloquinon) is voornamelijk te vinden in groene bladgroenten en is primair betrokken bij de bloedstolling. De aanbevolen dagelijkse inname is 90 mcg voor vrouwen en 120 mcg voor mannen. Beste bronnen: boerenkool, spinazie, broccoli, spruitjes, peterselie.",
+  },
+  vitaminK2: {
+    fill: "#6d28d9", textColor: "text-violet-700", unit: "mcg",
+    labelEn: "Vitamin K2", labelNl: "Vitamine K2",
+    dialogTitleEn: "Vitamin K2 for health", dialogTitleNl: "Vitamine K2 voor gezondheid",
+    dialogDescEn: "Vitamin K2 (menaquinone) directs calcium into bones and away from arteries — critical for bone density and cardiovascular health. Unlike K1, it has a much longer half-life in the body. No official RDA exists, but research suggests 100-200 mcg MK-7/day is beneficial. Best sources: natto (highest), aged hard cheeses (gouda, parmesan), eggs, fermented foods, tempeh.",
+    dialogDescNl: "Vitamine K2 (menaquinon) stuurt calcium naar botten en weg van slagaders — cruciaal voor botdichtheid en cardiovasculaire gezondheid. In tegenstelling tot K1 heeft het een veel langere halfwaardetijd in het lichaam. Er is geen officiële ADH, maar onderzoek suggereert dat 100-200 mcg MK-7/dag gunstig is. Beste bronnen: natto (hoogste), belegen harde kazen (gouda, parmezaan), eieren, gefermenteerde voedingsmiddelen, tempeh.",
+    extraNoteEn: "Target: 150 mcg/day — eat eggs, aged cheese, fermented foods",
+    extraNoteNl: "Doel: 150 mcg/dag — eet eieren, belegen kaas, gefermenteerde voeding",
   },
   zinc: {
     fill: "#8b5cf6", textColor: "text-violet-500", unit: "mg",
@@ -454,6 +463,7 @@ export default function Insights() {
     const totalCarbs = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.carbohydrates || 0), 0);
     const totalFiber = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fiber || 0), 0);
     const totalVitaminK = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).vitaminK || 0), 0);
+    const totalVitaminK2 = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).vitaminK2 || 0), 0);
     const totalZinc = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).zinc || 0), 0);
     const totalCalcium = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).calcium || 0), 0);
     const totalSugar = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).sugar || 0), 0);
@@ -495,6 +505,7 @@ export default function Insights() {
     const avgCarbsPerDay = avg(totalCarbs);
     const avgFiberPerDay = avg(totalFiber);
     const avgVitaminKPerDay = avg(totalVitaminK);
+    const avgVitaminK2PerDay = avg(totalVitaminK2);
     const avgZincPerDay = avg(totalZinc);
     const avgCalciumPerDay = avg(totalCalcium);
     const avgSugarPerDay = avg(totalSugar);
@@ -533,6 +544,7 @@ export default function Insights() {
     const plantDiversityCount = plantDiversityResult.count;
     const plantDiversityTarget = 30;
     const vitaminKTarget = userProfile?.gender === 'male' ? 120 : 90;
+    const vitaminK2Target = 150;
     const zincTarget = userProfile?.gender === 'male' ? 11 : 8;
     const calciumTarget = 1000;
     const sugarTarget = userProfile?.gender === 'male' ? 36 : 25;
@@ -604,6 +616,11 @@ export default function Insights() {
         value: Math.round(avgVitaminKPerDay),
         percentage: Math.round((avgVitaminKPerDay / vitaminKTarget) * 100),
         target: vitaminKTarget
+      },
+      vitaminK2: {
+        value: Math.round(avgVitaminK2PerDay),
+        percentage: Math.round((avgVitaminK2PerDay / vitaminK2Target) * 100),
+        target: vitaminK2Target
       },
       zinc: {
         value: Math.round(avgZincPerDay * 10) / 10,
