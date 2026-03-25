@@ -376,13 +376,13 @@ function calculateTDEE(user: User): number {
     bmr = (maleBmr + femaleBmr) / 2;
   }
 
-  // Activity level multipliers
+  // Activity level multipliers — kept in sync with nutrition-calculator.ts and profile.tsx
   const activityMultipliers = {
-    'sedentary': 1.2,    // Little/no exercise
-    'light': 1.375,      // Exercise 1-3 days/week
-    'moderate': 1.55,    // Exercise 3-5 days/week
-    'high': 1.725,       // Exercise 6-7 days/week
-    'athlete': 1.9       // Intense exercise 6-7 days/week
+    'sedentary': 1.35,
+    'light':     1.55,
+    'moderate':  1.75,
+    'high':      1.95,
+    'athlete':   2.20,
   };
 
   const activityLevel = user.activityLevel || 'moderate';
@@ -400,38 +400,36 @@ function calculateTDEE(user: User): number {
  * Includes maintenance week logic: every 6th week returns to normal calories
  */
 function calculateTargetDailyCalories(user: User): number {
-  // Calculate TDEE (full daily energy needs)
   const tdee = calculateTDEE(user);
-  
-  if (!user.weight || !user.goalWeight) {
-    console.log(`🎯 No weight goals set, using full TDEE: ${tdee} kcal/day`);
-    return tdee;
+
+  // Determine effective goal — explicit goal field takes priority,
+  // fall back to inferring from goalWeight if goal is unset or 'maintain'
+  let effectiveGoal = user.goal || 'maintain';
+  if ((!user.goal || user.goal === 'maintain') && user.weight && user.goalWeight) {
+    const diff = user.goalWeight - user.weight;
+    if (diff < -0.5) effectiveGoal = 'lose_fat';
+    else if (diff > 0.5) effectiveGoal = 'bulk';
   }
 
-  const weightDifference = user.goalWeight - user.weight;
-  const isLosingWeight = weightDifference < 0;
-  const isGainingWeight = weightDifference > 0;
-
-  if (isLosingWeight) {
-    // Check if this is a maintenance week (every 6th week)
+  if (effectiveGoal === 'lose_fat') {
     const weekNumber = user.weightLossWeekNumber || 1;
     const isMaintenanceWeek = weekNumber % 6 === 0;
-    
     if (isMaintenanceWeek) {
-      console.log(`🔄 MAINTENANCE WEEK ${weekNumber}: Full TDEE = ${tdee} kcal/day (no reduction)`);
+      console.log(`🔄 MAINTENANCE WEEK ${weekNumber}: Full TDEE = ${tdee} kcal/day`);
       return tdee;
-    } else {
-      const targetCalories = Math.round(tdee * 0.85); // Max 15% calorie reduction
-      console.log(`📉 WEIGHT LOSS WEEK ${weekNumber}: Target = ${targetCalories} kcal/day (TDEE ${tdee} × 0.85)`);
-      return targetCalories;
     }
-  } else if (isGainingWeight) {
-    const targetCalories = Math.round(tdee * 1.15); // 15% surplus for weight gain
-    console.log(`📈 WEIGHT GAIN: Target = ${targetCalories} kcal/day (TDEE ${tdee} × 1.15)`);
-    return targetCalories;
+    const target = Math.round(tdee * 0.85);
+    console.log(`📉 WEIGHT LOSS WEEK ${weekNumber}: ${target} kcal/day (TDEE ${tdee} × 0.85)`);
+    return target;
   }
 
-  console.log(`⚖️ MAINTENANCE: Target = ${tdee} kcal/day (full TDEE)`);
+  if (effectiveGoal === 'bulk') {
+    const target = Math.round(tdee * 1.10); // +10% surplus — aligned with nutrition-calculator.ts
+    console.log(`📈 BULK: ${target} kcal/day (TDEE ${tdee} × 1.10)`);
+    return target;
+  }
+
+  console.log(`⚖️ MAINTENANCE: ${tdee} kcal/day`);
   return tdee;
 }
 

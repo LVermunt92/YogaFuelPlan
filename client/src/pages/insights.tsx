@@ -23,6 +23,7 @@ interface MealPlan {
 
 interface NutritionTargets {
   protein: number;
+  carbohydrates: number;
   fiber: number;
   calories: number;
 }
@@ -558,7 +559,9 @@ export default function Insights() {
     const sulforaphaneTarget = 7;
     const proteinTarget = nutritionTargets?.protein || 95;
     const caloriesTarget = nutritionTargets?.calories || 2000;
-    const netCarbsTarget = 160;
+    const netCarbsTarget = nutritionTargets
+      ? Math.max(Math.round((nutritionTargets.carbohydrates || 200) - (nutritionTargets.fiber || 30)), 50)
+      : 160;
 
     return {
       protein: {
