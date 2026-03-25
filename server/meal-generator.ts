@@ -2191,6 +2191,8 @@ export async function generateWeeklyMealPlan(request: MealPlanRequest, user?: Us
         calcium: Math.round((selectedMeal.nutrition.calcium || 0) * portionMultiplier),
         omega3: Math.round((selectedMeal.nutrition.omega3 || 0) * portionMultiplier),
         polyphenols: Math.round((selectedMeal.nutrition.polyphenols || 0) * portionMultiplier),
+        selenium: Math.round(((selectedMeal.nutrition as any).selenium || 0) * portionMultiplier * 10) / 10,
+        sulforaphane: Math.round(((selectedMeal.nutrition as any).sulforaphane || 0) * portionMultiplier * 10) / 10,
         prepTime: prepTimeForDay,
         isLeftover: isLeftover, // Boolean flag instead of string marker
       };
