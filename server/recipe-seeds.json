@@ -63019,5 +63019,92 @@
     "proteinG": 0.7,
     "carbsG": 4.0,
     "fiberG": 1.0
+  },
+  {
+    "id": "10969",
+    "name": "Green pea & spinach gnocchi",
+    "category": "dinner",
+    "ingredients": [
+      "250g gnocchi",
+      "75g frozen peas",
+      "100g spinach",
+      "1 clove garlic",
+      "15g basil",
+      "25g pine nuts",
+      "10g nutritional yeast",
+      "14ml olive oil",
+      "1/2 lemon",
+      "1g sea salt",
+      "1g black pepper"
+    ],
+    "instructions": [
+      "Bring a large saucepan of salted water to the boil. Add the peas (sauce portion), spinach and garlic. Cook for 1 minute.",
+      "Lift the vegetables out with a slotted spoon, reserving the cooking water.",
+      "Transfer the vegetables to a blender. Add the basil, pine nuts, nutritional yeast, olive oil, lemon zest and juice. Blitz until smooth, adding a splash of cooking water to loosen if needed. Set aside.",
+      "Return the pan of water to the boil. Add the gnocchi and remaining peas. Cook for 2-3 minutes until just done. Drain, reserving a mugful of cooking water.",
+      "Return the gnocchi to the pan. Pour in the green sauce with a splash of cooking water. Stir gently over low heat until everything is warmed through.",
+      "Season with sea salt and black pepper. Serve with extra basil and a drizzle of olive oil."
+    ],
+    "portion": "1 bowl",
+    "nutrition": {
+      "calories": 750,
+      "protein": 25,
+      "carbohydrates": 89,
+      "fats": 33,
+      "fiber": 12,
+      "sugar": 5,
+      "sodium": 440,
+      "vitaminC": 56,
+      "vitaminK": 558,
+      "vitaminK2": 1,
+      "potassium": 1000,
+      "calcium": 150,
+      "iron": 5,
+      "selenium": 2,
+      "sulforaphane": 0,
+      "polyphenols": 220,
+      "omega3": 120,
+      "prepTime": 30,
+      "costEuros": 5.4,
+      "proteinPerEuro": 4.6
+    },
+    "tags": [
+      "Vegetarian",
+      "Lactose-Free",
+      "Menstrual",
+      "Follicular"
+    ],
+    "wholeFoodLevel": "medium",
+    "dutchName": "Gnocchi met groene erwten en spinazie",
+    "dutchIngredients": [
+      "250g gnocchi",
+      "75g diepvrieserwten",
+      "100g spinazie",
+      "1 teen knoflook",
+      "15g basilicum",
+      "25g pijnboompitten",
+      "10g voedingsgist",
+      "14ml olijfolie",
+      "1/2 citroen",
+      "1g zeezout",
+      "1g zwarte peper"
+    ],
+    "dutchInstructions": [
+      "Breng een grote pan gezouten water aan de kook. Voeg de erwten (voor de saus), spinazie en knoflook toe. Kook 1 minuut.",
+      "Schep de groenten eruit met een schuimspaan en bewaar het kookwater.",
+      "Doe de groenten in een blender. Voeg basilicum, pijnboompitten, voedingsgist, olijfolie, citroenrasp en -sap toe. Blender tot een gladde saus en voeg zo nodig een scheutje kookwater toe.",
+      "Breng het water opnieuw aan de kook. Voeg de gnocchi en resterende erwten toe. Kook 2-3 minuten tot net gaar. Giet af en bewaar een mok kookwater.",
+      "Doe de gnocchi terug in de pan. Voeg de groene saus toe met een scheutje kookwater. Roer zachtjes op laag vuur tot alles warm is.",
+      "Breng op smaak met zeezout en zwarte peper. Serveer met extra basilicum en een scheutje olijfolie."
+    ],
+    "active": true,
+    "containsEggs": false,
+    "resistantStarchScore": 2.0,
+    "longevityScore": 2,
+    "proteinG": 25.0,
+    "carbsG": 89.0,
+    "fiberG": 12.0,
+    "defaultBatchServings": 2,
+    "prepTime": 30
   }
 ]
