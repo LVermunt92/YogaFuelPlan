@@ -18052,88 +18052,11 @@ export async function generateEnhancedShoppingList(
         }
       });
     } else {
-      // Log missing meal recipes to help debug grocery list issues
-      console.warn(`⚠️ GROCERY LIST WARNING: Recipe not found for meal "${cleanMealName}" (original: "${meal.foodDescription}"). This meal's ingredients will be missing from shopping list!`);
-      
-      // Try fallback search with more flexible matching
-      const allRecipes = await getCompleteEnhancedMealDatabase();
-      const fallbackMeal = allRecipes.find(m => 
-        m.name.toLowerCase().includes(cleanMealName.split(' ').slice(0, 2).join(' ').toLowerCase()) ||
-        cleanMealName.toLowerCase().includes(m.name.split(' ').slice(0, 2).join(' ').toLowerCase())
-      );
-      
-      if (fallbackMeal) {
-        console.log(`🔄 FALLBACK: Found similar recipe "${fallbackMeal.name}" for "${cleanMealName}"`);
-        
-        // Apply dietary substitutions to fallback ingredients as well
-        const substitutionResult = substituteIngredients(fallbackMeal.ingredients, dietaryTags);
-        const substitutedIngredients = substitutionResult.ingredients;
-        
-        // Log substitutions for debugging
-        if (substitutionResult.substitutions.length > 0) {
-          console.log(`🔄 Applied ${substitutionResult.substitutions.length} dietary substitutions for fallback ${fallbackMeal.name}`);
-        }
-        
-        substitutedIngredients.forEach(ingredient => {
-          const cleanIngredient = cleanIngredientName(ingredient);
-          
-          // Skip water-related ingredients - people have tap water
-          if (isWaterIngredient(cleanIngredient)) {
-            return;
-          }
-          
-          // Skip empty ingredient names
-          if (!cleanIngredient || cleanIngredient.trim() === '') {
-            return;
-          }
-          
-          // FINAL FILTER: Block cooking instructions that slip through recipe parsing
-          const forbiddenInstructions = [
-            'cut into 1cm pieces', 'finely', 'melted', 'roughly', 'chopped', 'diced', 'sliced', 'minced'
-          ];
-          if (forbiddenInstructions.includes(cleanIngredient.toLowerCase())) {
-            console.warn(`🚫 SHOPPING LIST: Blocking cooking instruction: "${cleanIngredient}"`);
-            return;
-          }
-          
-          // Skip ingredients that user already has (leftover ingredients)
-          const isLeftoverIngredient = leftoverIngredients.some(leftover => {
-            const cleanLeftover = cleanIngredientName(leftover.toLowerCase());
-            return cleanLeftover === cleanIngredient || 
-                   cleanIngredient.includes(cleanLeftover) || 
-                   cleanLeftover.includes(cleanIngredient);
-          });
-          
-          if (isLeftoverIngredient) {
-            console.log(`🥬 EXCLUDING from shopping list (already have): ${cleanIngredient}`);
-            return;
-          }
-          
-          const existing = ingredientAmounts.get(cleanIngredient);
-          // Parse actual quantity from ingredient string (recipes already stored for 2 servings)
-          const parsedAmount = parseIngredientAmount(ingredient);
-          
-          if (existing) {
-            existing.count += 1;
-            const existUnit = existing.unit.replace(/s$/, '');
-            const newUnit = parsedAmount.unit.replace(/s$/, '');
-            if (existUnit === newUnit) {
-              existing.totalAmount += parsedAmount.amount;
-            } else {
-              console.warn(`⚠️ UNIT MISMATCH SKIPPED (fallback): "${cleanIngredient}" has ${existing.totalAmount} ${existing.unit} but got ${parsedAmount.amount} ${parsedAmount.unit} - skipping`);
-            }
-          } else {
-            ingredientAmounts.set(cleanIngredient, { 
-              totalAmount: parsedAmount.amount, 
-              unit: parsedAmount.unit, 
-              count: 1 
-            });
-          }
-        });
-      } else {
-        console.error(`❌ CRITICAL: No fallback recipe found for "${cleanMealName}". User will be missing ingredients!`);
-      }
+      // Recipe not found by ID or exact name — skip rather than risk a wrong fuzzy match
+      console.warn(`⚠️ GROCERY LIST: No recipe found for "${cleanMealName}" (id: ${meal.recipeId ?? 'none'}). Skipping to avoid incorrect ingredients.`);
     }
+    // Removed: dangerous fuzzy fallback that matched first-2-words and caused wrong recipes
+    // (e.g. "Black bean quesadillas" incorrectly matched "Lean beef and black bean power chili")
   }
 
   // Categorize ingredients following supermarket layout order

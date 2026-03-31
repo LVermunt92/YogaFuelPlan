@@ -81,7 +81,7 @@ async function generateShoppingListInBackground(
     if (recipeIds.length > 0) {
       const result = await pool.query(
         `SELECT id, ingredients, (nutrition->>'calories')::float AS calories
-         FROM recipes WHERE id = ANY($1)`,
+         FROM recipes WHERE id = ANY($1::text[])`,
         [recipeIds]
       );
       result.rows.forEach((row: { id: string; ingredients: string[]; calories: number }) => {
@@ -1904,29 +1904,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const dietaryTags = user?.dietaryTags || [];
       const leftoverIngredients = user?.leftovers || [];
 
-      // Fetch recipe ingredients from DB by ID (authoritative, prevents wrong fallback matches)
-      const mealRecipeIds = [...new Set(
-        (mealPlan.meals as any[])
-          .filter((m: any) => m.recipeId && !m.isLeftover)
-          .map((m: any) => String(m.recipeId))
-      )];
+      // Build recipe-ingredients map from the already-joined ingredients on mealPlan.meals
+      // (getMealPlanWithMeals LEFT JOINs recipes.ingredients onto each meal — no extra query needed)
       const getListDbRecipeIngredients = new Map<string, { ingredients: string[]; calories: number }>();
-      if (mealRecipeIds.length > 0) {
-        const recipeRows = await pool.query(
-          `SELECT id, ingredients, (nutrition->>'calories')::float AS calories
-           FROM recipes WHERE id = ANY($1)`,
-          [mealRecipeIds]
-        );
-        recipeRows.rows.forEach((row: any) => {
-          getListDbRecipeIngredients.set(String(row.id), {
-            ingredients: row.ingredients || [],
-            calories: row.calories || 0,
-          });
-        });
+      const recipeIdsForCalories: string[] = [];
+      for (const m of mealPlan.meals as any[]) {
+        const rid = m.recipeId ? String(m.recipeId) : null;
+        if (rid && Array.isArray(m.ingredients) && m.ingredients.length > 0) {
+          if (!getListDbRecipeIngredients.has(rid)) {
+            // calories=0 placeholder; will be filled by the calories query below
+            getListDbRecipeIngredients.set(rid, { ingredients: m.ingredients, calories: 0 });
+            recipeIdsForCalories.push(rid);
+          }
+        }
       }
+      // Fetch original recipe calories (needed for portion-scaling ratio)
+      if (recipeIdsForCalories.length > 0) {
+        try {
+          const calRows = await pool.query(
+            `SELECT id, (nutrition->>'calories')::float AS calories FROM recipes WHERE id = ANY($1::text[])`,
+            [recipeIdsForCalories]
+          );
+          calRows.rows.forEach((row: any) => {
+            const entry = getListDbRecipeIngredients.get(String(row.id));
+            if (entry) entry.calories = row.calories || 0;
+          });
+        } catch (calErr) {
+          console.warn(`⚠️ SHOPPING LIST: Could not fetch recipe calories, scaling ratio will be 1.0:`, calErr);
+        }
+      }
+      console.log(`🗄️ SHOPPING LIST (GET): Loaded ${getListDbRecipeIngredients.size} recipes via joined ingredients for plan ${id}`);
 
       // ALWAYS generate shopping list with English recipes first
-      let shoppingList = await generateEnhancedShoppingList(mealPlan.meals, 'en', dietaryTags, leftoverIngredients, getListDbRecipeIngredients);
+      // Deduplicate meals by ID — getMealPlanWithMeals multi-condition JOIN can produce
+      // duplicate meal rows when a variant recipe matches the same meal (e.g. recipe 110150 for 10150)
+      const seenMealIds = new Set<number>();
+      const uniqueMeals = (mealPlan.meals as any[]).filter((m: any) => {
+        if (seenMealIds.has(m.id)) return false;
+        seenMealIds.add(m.id);
+        return true;
+      });
+
+      let shoppingList = await generateEnhancedShoppingList(uniqueMeals, 'en', dietaryTags, leftoverIngredients, getListDbRecipeIngredients);
       
       // Then translate individual ingredient names if Dutch is requested
       if (language === 'nl') {
