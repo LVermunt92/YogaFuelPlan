@@ -33303,9 +33303,9 @@
       "2 bananas",
       "80g frozen açaí",
       "55g frozen mixed berries",
-      "3 frozen strawberries",
+      "50g frozen strawberries",
       "22g protein powder",
-      "15ml almond butter",
+      "15g almond butter",
       "30g cacao granola",
       "1/2 banana",
       "30g berries",
@@ -33390,9 +33390,9 @@
       "2 bananas",
       "80g frozen açaí",
       "55g frozen mixed berries",
-      "3 frozen strawberries",
+      "50g bevroren aardbeien",
       "22g protein powder",
-      "15ml almond butter",
+      "15g amandelboter",
       "30g cacao granola",
       "1/2 banana",
       "30g berries",
@@ -35940,10 +35940,10 @@
       "1 bell pepper",
       "100g broccoli florets",
       "1 carrot",
-      "2 tbsp gluten-free tamari",
-      "1 tbsp sesame oil",
+      "30ml tamari",
+      "15ml sesame oil",
       "2 cloves garlic",
-      "1 tsp sesame seeds"
+      "3g sesame seeds"
     ],
     "instructions": [
       "Cook quinoa according to package instructions",
@@ -36034,10 +36034,10 @@
       "1 bell pepper",
       "100g broccoli florets",
       "1 carrot",
-      "2 tbsp gluten-free tamari",
-      "1 tbsp sesame oil",
+      "30ml tamari",
+      "15ml sesamolie",
       "2 cloves garlic",
-      "1 tsp sesame seeds"
+      "3g sesamzaadjes"
     ],
     "dutch_instructions": [
       "Cook quinoa according to package instructions",
@@ -51576,13 +51576,13 @@
     "name": "Pre-Workout Protein Smoothie",
     "category": "breakfast",
     "ingredients": [
-      "1 vanilla protein powder",
+      "30g protein powder",
       "150g mixed berries",
       "1 medium banana",
-      "200ml almond milk",
-      "1 tbsp almond butter",
-      "1 tsp chia seeds",
-      "1 tsp maple syrup",
+      "200ml plant-based milk",
+      "15g almond butter",
+      "3g chia seeds",
+      "5ml maple syrup",
       "5 ice cubes"
     ],
     "instructions": [
@@ -58862,8 +58862,8 @@
     "ingredients": [
       "50g oats",
       "1 banana",
-      "150g coconut yoghurt",
-      "100ml coconut milk",
+      "150g plant-based yoghurt",
+      "100ml plant-based milk",
       "2 Medjool dates",
       "5g instant coffee powder",
       "10ml maple syrup",
@@ -58937,8 +58937,8 @@
     "dutch_ingredients": [
       "50g havermout",
       "1 banaan",
-      "150g kokosyoghurt",
-      "100ml kokosmelk",
+      "150g plantaardige yoghurt",
+      "100ml plantaardige melk",
       "2 Medjool dadels",
       "5g oploskoffiepoeder",
       "10ml ahornsiroop",
@@ -59998,7 +59998,7 @@
     "ingredients": [
       "3 cloves garlic",
       "250g passata",
-      "22ml capers",
+      "22g capers",
       "22ml caper brine",
       "60g kalamata olives",
       "10g fresh basil",
