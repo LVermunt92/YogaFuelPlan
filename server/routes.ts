@@ -1,6 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import "./types"; // Import session types
+import { pool } from "./db";
 import { storage } from "./storage";
 import { generateWeeklyMealPlan } from "./meal-generator";
 import { mealPlanRequestSchema } from "@shared/schema";
@@ -67,8 +68,32 @@ async function generateShoppingListInBackground(
     const user = await storage.getUser(userId);
     const dietaryTags = user?.dietaryTags || [];
     const leftoverIngredients = user?.leftovers || [];
-    
-    let shoppingList = await generateEnhancedShoppingList(savedMeals, 'en', dietaryTags, leftoverIngredients);
+
+    // Build an ID-keyed map of recipe ingredients from the database.
+    // This is the authoritative source and avoids wrong name-based fallback matches.
+    const recipeIds = [...new Set(
+      savedMeals
+        .filter(m => m.recipeId && !m.isLeftover)
+        .map(m => String(m.recipeId))
+    )];
+
+    const dbRecipeIngredients = new Map<string, { ingredients: string[]; calories: number }>();
+    if (recipeIds.length > 0) {
+      const result = await pool.query(
+        `SELECT id, ingredients, (nutrition->>'calories')::float AS calories
+         FROM recipes WHERE id = ANY($1)`,
+        [recipeIds]
+      );
+      result.rows.forEach((row: { id: string; ingredients: string[]; calories: number }) => {
+        dbRecipeIngredients.set(String(row.id), {
+          ingredients: row.ingredients || [],
+          calories: row.calories || 0,
+        });
+      });
+      console.log(`🗄️ SHOPPING LIST: Loaded ${dbRecipeIngredients.size} recipes from DB by ID`);
+    }
+
+    let shoppingList = await generateEnhancedShoppingList(savedMeals, 'en', dietaryTags, leftoverIngredients, dbRecipeIngredients);
     
     // Convert shopping list to persistent format and save it
     const itemsToSave = shoppingList.map((item, index) => {
@@ -1879,8 +1904,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const dietaryTags = user?.dietaryTags || [];
       const leftoverIngredients = user?.leftovers || [];
 
+      // Fetch recipe ingredients from DB by ID (authoritative, prevents wrong fallback matches)
+      const mealRecipeIds = [...new Set(
+        (mealPlan.meals as any[])
+          .filter((m: any) => m.recipeId && !m.isLeftover)
+          .map((m: any) => String(m.recipeId))
+      )];
+      const getListDbRecipeIngredients = new Map<string, { ingredients: string[]; calories: number }>();
+      if (mealRecipeIds.length > 0) {
+        const recipeRows = await pool.query(
+          `SELECT id, ingredients, (nutrition->>'calories')::float AS calories
+           FROM recipes WHERE id = ANY($1)`,
+          [mealRecipeIds]
+        );
+        recipeRows.rows.forEach((row: any) => {
+          getListDbRecipeIngredients.set(String(row.id), {
+            ingredients: row.ingredients || [],
+            calories: row.calories || 0,
+          });
+        });
+      }
+
       // ALWAYS generate shopping list with English recipes first
-      let shoppingList = await generateEnhancedShoppingList(mealPlan.meals, 'en', dietaryTags, leftoverIngredients);
+      let shoppingList = await generateEnhancedShoppingList(mealPlan.meals, 'en', dietaryTags, leftoverIngredients, getListDbRecipeIngredients);
       
       // Then translate individual ingredient names if Dutch is requested
       if (language === 'nl') {

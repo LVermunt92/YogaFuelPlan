@@ -17630,7 +17630,13 @@ export interface ShoppingListItem {
   unit: string;
 }
 
-export async function generateEnhancedShoppingList(meals: { foodDescription: string; isLeftover?: boolean; calories?: number; protein?: number }[], language: string = 'en', dietaryTags: string[] = [], leftoverIngredients: string[] = []): Promise<ShoppingListItem[]> {
+export async function generateEnhancedShoppingList(
+  meals: { foodDescription: string; recipeId?: string | number | null; isLeftover?: boolean; calories?: number; protein?: number }[],
+  language: string = 'en',
+  dietaryTags: string[] = [],
+  leftoverIngredients: string[] = [],
+  dbRecipeIngredients: Map<string, { ingredients: string[]; calories: number }> = new Map()
+): Promise<ShoppingListItem[]> {
   const ingredientAmounts = new Map<string, { totalAmount: number; unit: string; count: number }>();
   
   // Debug: log that we're applying substitutions
@@ -17668,8 +17674,27 @@ export async function generateEnhancedShoppingList(meals: { foodDescription: str
       .replace(/\s*\(Vegan\)/gi, '')
       .trim();
     
-    const allRecipes = await getCompleteEnhancedMealDatabase();
-    const mealOption = allRecipes.find(m => m.name === cleanMealName);
+    // PRIMARY: look up recipe by ID from the database (authoritative, avoids name-collision fallbacks)
+    const recipeId = meal.recipeId ? String(meal.recipeId) : null;
+    const dbRecipe = recipeId ? dbRecipeIngredients.get(recipeId) : null;
+
+    let mealOption: any = null;
+    if (dbRecipe) {
+      console.log(`✅ SHOPPING LIST: Using DB recipe ID ${recipeId} for "${cleanMealName}"`);
+      mealOption = {
+        name: cleanMealName,
+        nutrition: { calories: dbRecipe.calories },
+        ingredients: dbRecipe.ingredients,
+      };
+    } else {
+      // FALLBACK: name-match in hardcoded database (for meals without a recipeId)
+      const allRecipes = await getCompleteEnhancedMealDatabase();
+      mealOption = allRecipes.find((m: any) => m.name === cleanMealName);
+      if (mealOption) {
+        console.log(`📖 SHOPPING LIST: Using hardcoded DB match for "${cleanMealName}"`);
+      }
+    }
+
     if (mealOption) {
       // Calculate ingredient scaling ratio based on adjusted vs original meal calories
       // This accounts for portion adjustments in the meal plan
