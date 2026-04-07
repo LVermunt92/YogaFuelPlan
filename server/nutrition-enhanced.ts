@@ -22,9 +22,13 @@ export interface NutritionInfo {
   calcium?: number; // mg
   iron?: number; // mg
   vitaminC?: number; // mg
-  vitaminK?: number; // mcg
+  vitaminK?: number; // mcg - K1 phylloquinone (leafy greens)
+  vitaminK2?: number; // mcg - K2 menaquinone (fermented foods, eggs, meat)
   zinc?: number; // mg
   omega3?: number; // mg - ALA, EPA, DHA combined
+  selenium?: number; // mcg - antioxidant mineral
+  sulforaphane?: number; // mg - cruciferous vegetable phytonutrient
+  cocoaFlavanols?: number; // mg - cocoa/dark chocolate flavanols
   costEuros?: number;
   proteinPerEuro?: number;
 }

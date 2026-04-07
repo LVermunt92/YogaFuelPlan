@@ -309,6 +309,10 @@ export const aiRecipes = pgTable("ai_recipes", {
   fiber: real("fiber").default(0),
   sugar: real("sugar").default(0),
   sodium: real("sodium").default(0),
+  vitaminK: real("vitamin_k").default(0), // mcg
+  vitaminK2: real("vitamin_k2").default(0), // mcg
+  selenium: real("selenium").default(0), // mcg
+  sulforaphane: real("sulforaphane").default(0), // mg
   cocoaFlavanols: real("cocoa_flavanols").default(0), // mg
   
   // Meal info

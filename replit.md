@@ -33,8 +33,11 @@ Preferred communication style: Simple, everyday language.
   - **Fresh herbs**: ALWAYS specify in grams, NEVER "handful" or unspecified.
   - When AI generates new recipes, it MUST follow these ingredient format rules.
 **FULL NUTRITION KPIs FOR ALL NEW RECIPES** (CRITICAL):
-  - Every new recipe MUST include estimates for ALL tracked KPIs in the nutrition object: calories, protein, carbohydrates, fats, fiber, sugar, sodium, vitaminK, iron, calcium, potassium, vitaminC, prepTime, costEuros, proteinPerEuro.
-  - cocoaFlavanols when applicable.
+  - Every new recipe MUST include estimates for ALL tracked KPIs in the nutrition object: calories, protein, carbohydrates, fats, fiber, sugar, sodium, vitaminK, vitaminK2, iron, calcium, potassium, vitaminC, selenium, sulforaphane, prepTime, costEuros, proteinPerEuro.
+  - cocoaFlavanols when applicable (only for recipes with cacao or dark chocolate).
+  - vitaminK2: only non-zero for fermented foods, eggs, meat/poultry, dairy — 0 for most plant-based dishes.
+  - selenium: present in Brazil nuts, fish, eggs, meat, legumes/grains; 0 only if genuinely absent.
+  - sulforaphane: ONLY in cruciferous vegetables (broccoli ~30mg/100g, kale ~20mg/100g, cauliflower ~15mg/100g, cabbage ~10mg/100g); 0 otherwise.
   - Never add a recipe with only basic macros - always include the full micronutrient set.
 **RECIPE TAG POLICY** (CRITICAL - only functional tags allowed):
   - Tags are ONLY for dietary filtering and system logic, NOT for describing recipes.
