@@ -239,6 +239,7 @@ export const translations = {
     // Meal Types
     breakfast: "Breakfast",
     lunch: "Lunch",
+    snack: "Snack",
     dinner: "Dinner",
     
     // Portion sizes  
@@ -976,6 +977,7 @@ export const translations = {
     // Meal Types
     breakfast: "Ontbijt",
     lunch: "Lunch",
+    snack: "Tussendoortje",
     dinner: "Diner",
     ontbijt: "Ontbijt", // Server-side translation
     diner: "Diner", // Server-side translation

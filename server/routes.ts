@@ -846,6 +846,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             foodDescription: translatedName,
             mealType: meal.mealType === 'breakfast' ? 'ontbijt' : 
                      meal.mealType === 'lunch' ? 'lunch' : 
+                     meal.mealType === 'snack' ? 'snack' :
                      meal.mealType === 'dinner' ? 'diner' : meal.mealType
           };
         }));

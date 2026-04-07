@@ -3211,6 +3211,66 @@ async function generateMealPrepPlan(
   // Apply TDEE-based portion adjustment to match target daily calories
   const adjustedMeals = applyTDEEBasedPortionAdjustment(meals, user);
 
+  // Generate afternoon snacks (one per day for days 2-7, snacks are NOT TDEE-scaled)
+  try {
+    const snackPool = await getEnhancedMealsForCategoryAndDiet('snack', dietaryTags, userId);
+    if (snackPool.length > 0) {
+      console.log(`\n🍎 AFTERNOON SNACK GENERATION: ${snackPool.length} snacks available`);
+      const usedSnackIds = new Set<string>();
+
+      for (let day = 2; day <= 7; day++) {
+        const hasRealMeals = adjustedMeals.some(m => m.day === day && m.foodDescription !== 'Eating out');
+        if (!hasRealMeals) continue;
+
+        let available = snackPool.filter(s => !usedSnackIds.has(String(s.id)));
+        if (available.length === 0) {
+          usedSnackIds.clear();
+          available = snackPool;
+        }
+
+        const snack = available[Math.floor(Math.random() * available.length)];
+        usedSnackIds.add(String(snack.id));
+
+        const snackNutrition = snack.nutrition as any;
+        adjustedMeals.push({
+          mealPlanId: 0,
+          day,
+          mealType: 'snack',
+          foodDescription: snack.name,
+          portion: snack.portion || '1 serving',
+          protein: Math.round(snackNutrition.protein || 0),
+          calories: Math.round(snackNutrition.calories || 0),
+          carbohydrates: Math.round(snackNutrition.carbohydrates || 0),
+          fats: Math.round(snackNutrition.fats || 0),
+          fiber: Math.round(snackNutrition.fiber || 0),
+          sugar: Math.round(snackNutrition.sugar || 0),
+          addedSugar: 0,
+          freeSugar: 0,
+          intrinsicSugar: 0,
+          sodium: Math.round(snackNutrition.sodium || 0),
+          potassium: Math.round(snackNutrition.potassium || 0),
+          iron: Math.round((snackNutrition.iron || 0) * 10) / 10,
+          vitaminC: Math.round(snackNutrition.vitaminC || 0),
+          vitaminK: Math.round(snackNutrition.vitaminK || 0),
+          vitaminK2: Math.round(snackNutrition.vitaminK2 || 0),
+          zinc: Math.round((snackNutrition.zinc || 0) * 10) / 10,
+          calcium: Math.round(snackNutrition.calcium || 0),
+          omega3: Math.round(snackNutrition.omega3 || 0),
+          polyphenols: Math.round(snackNutrition.polyphenols || 0),
+          selenium: Math.round(snackNutrition.selenium || 0),
+          sulforaphane: Math.round(snackNutrition.sulforaphane || 0),
+          prepTime: snackNutrition.prepTime || 10,
+          recipeId: String(snack.id),
+          isLeftover: false,
+        });
+
+        console.log(`🍎 Day ${day} snack: ${snack.name} (${Math.round(snackNutrition.calories || 0)} kcal)`);
+      }
+    }
+  } catch (err) {
+    console.warn('⚠️ Snack generation failed, continuing without snacks:', err);
+  }
+
   // Recalculate protein after TDEE adjustment
   const daysWithAdjustedMeals = new Set();
   let adjustedTotalProtein = 0;

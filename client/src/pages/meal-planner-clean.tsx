@@ -1788,6 +1788,7 @@ function MealPlannerMain() {
                       
                       const breakfast = dayMeals.find(meal => meal.mealType === 'breakfast' || meal.mealType === 'ontbijt');
                       const lunch = dayMeals.find(meal => meal.mealType === 'lunch');
+                      const snack = dayMeals.find(meal => meal.mealType === 'snack');
                       const dinner = dayMeals.find(meal => meal.mealType === 'dinner' || meal.mealType === 'diner');
                       const dailyProtein = dayMeals.reduce((sum, meal) => sum + meal.protein, 0);
                       
@@ -1915,6 +1916,19 @@ function MealPlannerMain() {
                                 </div>
                               )}
                               
+                              {snack && (
+                                <div
+                                  className="relative cursor-pointer hover:opacity-90 p-3 border-l-4 rounded-r-lg border-amber-400 bg-amber-50 dark:bg-amber-950/20"
+                                  onClick={() => setSelectedMealId(snack.id)}
+                                >
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <div className="text-xs font-medium text-amber-700">{(t as any).snack?.toUpperCase() || 'SNACK'}</div>
+                                  </div>
+                                  <div className="text-sm font-medium text-gray-900 mb-1">{snack.foodDescription}</div>
+                                  <div className="text-sm text-gray-600"><span className="text-emerald-600">{snack.protein}g {t.protein.toLowerCase()}</span> • {snack.prepTime} min</div>
+                                </div>
+                              )}
+
                               {dinner && (
                                 <div 
                                   className={`relative cursor-pointer hover:opacity-90 p-3 border-l-4 rounded-r-lg ${
@@ -1965,9 +1979,10 @@ function MealPlannerMain() {
                           <thead className="bg-gray-50">
                             <tr>
                               <th className="w-20 px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.day}</th>
-                              <th className="w-60 px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.breakfast}</th>
-                              <th className="w-60 px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.lunch}</th>
-                              <th className="w-60 px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.dinner}</th>
+                              <th className="w-48 px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.breakfast}</th>
+                              <th className="w-48 px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.lunch}</th>
+                              <th className="w-40 px-2 py-3 text-left text-xs font-medium text-amber-600 uppercase tracking-wider">{(t as any).snack || 'Snack'}</th>
+                              <th className="w-48 px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.dinner}</th>
                               <th className="w-24 px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.protein}</th>
                             </tr>
                           </thead>
@@ -1980,6 +1995,7 @@ function MealPlannerMain() {
                               
                               const breakfast = dayMeals.find(meal => meal.mealType === 'breakfast' || meal.mealType === 'ontbijt');
                               const lunch = dayMeals.find(meal => meal.mealType === 'lunch');
+                              const snack = dayMeals.find(meal => meal.mealType === 'snack');
                               const dinner = dayMeals.find(meal => meal.mealType === 'dinner' || meal.mealType === 'diner');
                               const dailyProtein = dayMeals.reduce((sum, meal) => sum + meal.protein, 0);
                               
@@ -2034,6 +2050,17 @@ function MealPlannerMain() {
                                         )}
                                         <div className="text-xs font-medium text-gray-900 mb-1 line-clamp-3">{lunch.foodDescription}</div>
                                         <div className="text-xs text-gray-500"><span className="text-emerald-600">{lunch.protein}g</span> • {lunch.prepTime}min</div>
+                                      </div>
+                                    )}
+                                  </td>
+                                  <td className="px-2 py-4">
+                                    {snack && (
+                                      <div
+                                        className="relative cursor-pointer hover:bg-amber-100 p-2 rounded border-l-2 border-amber-400 bg-amber-50"
+                                        onClick={() => setSelectedMealId(snack.id)}
+                                      >
+                                        <div className="text-xs font-medium text-gray-900 mb-1 line-clamp-3">{snack.foodDescription}</div>
+                                        <div className="text-xs text-gray-500"><span className="text-emerald-600">{snack.protein}g</span> • {snack.prepTime}min</div>
                                       </div>
                                     )}
                                   </td>

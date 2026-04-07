@@ -663,7 +663,7 @@ export class MemStorage implements IStorage {
       .filter(meal => meal.mealPlanId === id)
       .sort((a, b) => {
         if (a.day !== b.day) return a.day - b.day;
-        const mealOrder = { breakfast: 1, lunch: 2, dinner: 3 };
+        const mealOrder = { breakfast: 1, lunch: 2, snack: 3, dinner: 4 };
         return mealOrder[a.mealType as keyof typeof mealOrder] - 
                mealOrder[b.mealType as keyof typeof mealOrder];
       });
