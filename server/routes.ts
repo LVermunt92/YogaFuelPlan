@@ -3981,6 +3981,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // GET /api/evening-prep-recipes/:mealPlanId - Get evening prep recipes needed for a meal plan
+  app.get("/api/evening-prep-recipes/:mealPlanId", async (req, res) => {
+    try {
+      const userId = getUserIdFromToken(req);
+      if (!userId) return res.status(401).json({ message: "Not authenticated" });
+      const mealPlanId = parseInt(req.params.mealPlanId);
+      if (isNaN(mealPlanId)) return res.status(400).json({ message: "Invalid meal plan ID" });
+      const result = await db.execute(sql`
+        SELECT DISTINCT wp.id, wp.name, wp.dutch_name, wp.prep_time,
+          (wp.nutrition->>'protein')::float as protein,
+          (wp.nutrition->>'calories')::float as calories,
+          wp.portion
+        FROM recipes wp
+        JOIN meals m ON m.meal_plan_id = ${mealPlanId}
+        LEFT JOIN recipes mr ON mr.id = m.recipe_id::text
+        WHERE 'Evening-Prep' = ANY(wp.tags) AND wp.active = true
+        AND (
+          m.recipe_id::text = wp.id
+          OR EXISTS (
+            SELECT 1 FROM unnest(mr.ingredients) ing
+            WHERE lower(ing) LIKE '%' || lower(wp.name) || '%'
+          )
+        )
+        ORDER BY wp.prep_time DESC
+      `);
+      res.json(result.rows);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
   // GET /api/weekend-prep-recipes/:mealPlanId - Get weekend prep recipes needed for a meal plan
   app.get("/api/weekend-prep-recipes/:mealPlanId", async (req, res) => {
     try {

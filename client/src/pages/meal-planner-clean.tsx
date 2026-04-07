@@ -634,6 +634,11 @@ function MealPlannerMain() {
     enabled: ouraStatus?.connected === true && !!authUser?.id,
   });
 
+  const { data: eveningPrepRecipes = [] } = useQuery<{ id: string; name: string; dutch_name: string; prep_time: number; protein: number; calories: number; portion: string }[]>({
+    queryKey: [`/api/evening-prep-recipes/${selectedMealPlan}`],
+    enabled: !!selectedMealPlan,
+  });
+
   const { data: weekendPrepRecipes = [] } = useQuery<{ id: string; name: string; dutch_name: string; prep_time: number; protein: number; calories: number; portion: string }[]>({
     queryKey: [`/api/weekend-prep-recipes/${selectedMealPlan}`],
     enabled: !!authUser?.id && !!selectedMealPlan,
@@ -2155,6 +2160,65 @@ function MealPlannerMain() {
                                       <td className="px-3 py-3 text-sm font-medium text-gray-900">{recipe.name}</td>
                                       <td className="px-3 py-3 text-xs text-gray-500">{recipe.portion}</td>
                                       <td className="px-3 py-3 text-xs font-bold text-emerald-600">{recipe.protein}g</td>
+                                      <td className="px-3 py-3 text-xs text-gray-500">{recipe.prepTime} min</td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })()}
+
+                  {eveningPrepRecipes.length > 0 && (() => {
+                    const epRecipes = eveningPrepRecipes.map(r => ({
+                      name: language === 'nl' && r.dutch_name ? r.dutch_name : r.name,
+                      prepTime: r.prep_time || 0,
+                      protein: r.protein || 0,
+                      portion: r.portion || '',
+                      recipeId: r.id,
+                    }));
+                    const totalEpTime = epRecipes.reduce((sum, r) => sum + r.prepTime, 0);
+                    return (
+                      <div className="mt-4">
+                        <div className="flex justify-between items-center p-3 font-semibold text-base border rounded-lg bg-white border-gray-200 mb-2">
+                          <div className="flex items-center gap-2">
+                            <span className="text-gray-900">{(t as any).eveningPrepOverview || 'Evening prep'}</span>
+                          </div>
+                          <span className="text-indigo-600 text-sm">{totalEpTime} min</span>
+                        </div>
+
+                        <div className="block sm:hidden space-y-2">
+                          {epRecipes.map((recipe, idx) => (
+                            <div key={idx} className="p-3 border-l-4 border-indigo-400 bg-indigo-50 rounded-r-lg">
+                              <div className="text-sm font-medium text-gray-900 mb-1">{recipe.name}</div>
+                              <div className="text-sm text-gray-600">
+                                <span className="text-indigo-600">{recipe.protein}g {t.protein.toLowerCase()}</span> • {recipe.prepTime} min • {recipe.portion}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        <div className="hidden sm:block">
+                          <div className="w-full overflow-x-auto">
+                            <div className="bg-white rounded-lg border min-w-[400px]">
+                              <table className="w-full">
+                                <thead className="bg-gray-50">
+                                  <tr>
+                                    <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.recipe}</th>
+                                    <th className="w-24 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.portion}</th>
+                                    <th className="w-24 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.protein}</th>
+                                    <th className="w-24 px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{t.prepTime}</th>
+                                  </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-gray-200">
+                                  {epRecipes.map((recipe, idx) => (
+                                    <tr key={idx} className="hover:bg-gray-50">
+                                      <td className="px-3 py-3 text-sm font-medium text-gray-900">{recipe.name}</td>
+                                      <td className="px-3 py-3 text-xs text-gray-500">{recipe.portion}</td>
+                                      <td className="px-3 py-3 text-xs font-bold text-indigo-600">{recipe.protein}g</td>
                                       <td className="px-3 py-3 text-xs text-gray-500">{recipe.prepTime} min</td>
                                     </tr>
                                   ))}

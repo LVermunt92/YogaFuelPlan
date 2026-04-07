@@ -248,6 +248,7 @@ export const translations = {
     
     // Meal prep overview
     mealPrepOverview: "Weekend meal prep",
+    eveningPrepOverview: "Evening prep",
     cookingSession: "Cooking session",
     totalPrepTime: "Total prep time",
     mealsServed: "Meals served",
@@ -987,6 +988,7 @@ export const translations = {
     
     // Meal prep overview
     mealPrepOverview: "Weekend maaltijdbereiding",
+    eveningPrepOverview: "Avondbereiding",
     cookingSession: "Kooksessie",
     totalPrepTime: "Totale bereidingstijd",
     mealsServed: "Maaltijden geserveerd",
