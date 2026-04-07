@@ -26,8 +26,8 @@ import { cleanIngredientList } from './ingredient-cleaner';
 import { isExemptFromMealPlanRequirements } from '@shared/admin-utils';
 import { getSeasonalInfo, getCurrentSeasonMonths, AMSTERDAM_MONTHLY_PRODUCE } from './seasonal-advisor';
 import { db } from './db';
-import { recipes as recipesTable } from '@shared/schema';
-import { isNull, isNotNull, sql } from 'drizzle-orm';
+import { recipes as recipesTable, recipeTranslations } from '@shared/schema';
+import { isNull, isNotNull, sql, inArray } from 'drizzle-orm';
 import { updateAllRecipePolyphenols } from './calculate-polyphenols';
 
 // Helper function to parse quantity and unit from totalAmount string (e.g., "200g" -> {quantity: 200, unit: "g"})
@@ -1296,14 +1296,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/translate/batch-dutch", async (req, res) => {
     try {
       const maxRecipes = req.body.maxRecipes ? parseInt(req.body.maxRecipes as string) : 10;
+      // Optional: specific recipe IDs to translate (skips the "untranslated" filter)
+      const targetIds: string[] | undefined = Array.isArray(req.body.recipeIds) ? req.body.recipeIds.map(String) : undefined;
       
-      // Get recipes that don't have Dutch translations yet
-      const untranslatedRecipes = await db.select()
-        .from(recipesTable)
-        .where(isNull(recipesTable.dutchName))
-        .limit(maxRecipes);
+      // Get the recipes to translate
+      let recipesToTranslate: any[];
+      if (targetIds && targetIds.length > 0) {
+        recipesToTranslate = await db.select()
+          .from(recipesTable)
+          .where(inArray(recipesTable.id, targetIds));
+      } else {
+        recipesToTranslate = await db.select()
+          .from(recipesTable)
+          .where(isNull(recipesTable.dutchName))
+          .limit(maxRecipes);
+      }
       
-      if (untranslatedRecipes.length === 0) {
+      if (recipesToTranslate.length === 0) {
         return res.json({
           success: true,
           message: "All recipes already have Dutch translations!",
@@ -1311,14 +1320,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
       
-      console.log(`🔄 Starting batch Dutch translation for ${untranslatedRecipes.length} recipes...`);
+      console.log(`🔄 Starting batch Dutch translation for ${recipesToTranslate.length} recipes...`);
       
       let translatedCount = 0;
       const results: any[] = [];
       
-      for (const recipe of untranslatedRecipes) {
+      for (const recipe of recipesToTranslate) {
         try {
-          // Translate using the enhanced translator (which now saves to DB)
+          // Force fresh AI translation (bypass DB cache for targeted requests)
           const translated = await translateRecipeEnhanced({
             id: recipe.id,
             name: recipe.name,
@@ -1326,15 +1335,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
             instructions: recipe.instructions || []
           }, 'nl');
           
-          if (translated.translationMethod === 'ai-enhanced') {
-            translatedCount++;
-            results.push({
-              id: recipe.id,
-              originalName: recipe.name,
-              dutchName: translated.name,
-              method: translated.translationMethod
+          const dutchName = translated.name;
+          const dutchIngredients: string[] = translated.ingredients || [];
+          const dutchInstructions: string[] = translated.instructions || [];
+
+          // Also save to recipe_translations table (fast-lookup path used by meal plan route)
+          await db.insert(recipeTranslations)
+            .values({
+              recipeId: String(recipe.id),
+              language: 'nl',
+              name: dutchName,
+              ingredients: dutchIngredients,
+              instructions: dutchInstructions,
+              tips: translated.tips || [],
+              notes: translated.notes || [],
+            })
+            .onConflictDoUpdate({
+              target: [recipeTranslations.recipeId, recipeTranslations.language],
+              set: {
+                name: dutchName,
+                ingredients: dutchIngredients,
+                instructions: dutchInstructions,
+                tips: translated.tips || [],
+                notes: translated.notes || [],
+                translatedAt: new Date(),
+              }
             });
-          }
+
+          translatedCount++;
+          results.push({
+            id: recipe.id,
+            originalName: recipe.name,
+            dutchName,
+            method: translated.translationMethod
+          });
         } catch (error: any) {
           if (error.status === 429 || error.code === 'insufficient_quota') {
             console.log('OpenAI quota reached, stopping batch translation');
@@ -1348,7 +1382,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         success: true,
         message: `Translated ${translatedCount} recipes to Dutch`,
         translatedCount,
-        totalUntranslated: untranslatedRecipes.length,
+        totalUntranslated: recipesToTranslate.length,
         results
       });
     } catch (error) {
