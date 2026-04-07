@@ -17631,7 +17631,7 @@ export interface ShoppingListItem {
 }
 
 export async function generateEnhancedShoppingList(
-  meals: { foodDescription: string; recipeId?: string | number | null; isLeftover?: boolean; calories?: number; protein?: number }[],
+  meals: { foodDescription: string; recipeId?: string | number | null; isLeftover?: boolean; calories?: number; protein?: number; mealType?: string }[],
   language: string = 'en',
   dietaryTags: string[] = [],
   leftoverIngredients: string[] = [],
@@ -17700,9 +17700,16 @@ export async function generateEnhancedShoppingList(
       // This accounts for portion adjustments in the meal plan
       const originalCalories = mealOption.nutrition?.calories || 1;
       const adjustedCalories = meal.calories || originalCalories;
-      const ingredientScalingRatio = adjustedCalories / originalCalories;
+      const tdeeRatio = adjustedCalories / originalCalories;
+
+      // Recipes are stored as 1-serving amounts in the DB.
+      // Lunch/dinner are batch-cooked for 2 servings (the meal + its leftover).
+      // Breakfast is prepared fresh each time (1 serving).
+      const isBreakfast = (meal.mealType || '').toLowerCase() === 'breakfast';
+      const batchMultiplier = isBreakfast ? 1 : 2;
+      const ingredientScalingRatio = tdeeRatio * batchMultiplier;
       
-      console.log(`📊 Shopping list scaling for "${cleanMealName}": ${adjustedCalories} kcal / ${originalCalories} kcal = ${ingredientScalingRatio.toFixed(2)}x`);
+      console.log(`📊 Shopping list scaling for "${cleanMealName}": ${adjustedCalories} kcal / ${originalCalories} kcal = ${tdeeRatio.toFixed(2)}x TDEE × ${batchMultiplier}x batch = ${ingredientScalingRatio.toFixed(2)}x total`);
       
       // Apply dietary substitutions to ingredients before processing
       const substitutionResult = substituteIngredients(mealOption.ingredients, dietaryTags);
