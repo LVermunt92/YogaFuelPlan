@@ -87,6 +87,8 @@ const ingredientTranslations: Record<string, string> = {
   'black beans': 'zwarte bonen',
   'kidney beans': 'kidneybonen',
   'white beans': 'witte bonen',
+  'cannellini beans': 'cannellini bonen',
+  'butter beans': 'boterbonen',
   'quinoa': 'quinoa',
   
   // Dairy & Alternatives
@@ -1173,13 +1175,22 @@ export function translateMealPlan(mealPlan: any, language: 'en' | 'nl'): any {
 // Category translations for shopping lists
 const categoryTranslations: Record<string, string> = {
   'Proteins': 'Eiwitten',
+  'Protein': 'Eiwitten',
   'Grains & Starches': 'Granen & Zetmeel',
+  'Grains, Pasta & Canned Goods': 'Granen, Pasta & Conserven',
   'Nuts & Seeds': 'Noten & Zaden',
+  'Nuts, Seeds & Spreads': 'Noten, Zaden & Spreads',
   'Vegetables': 'Groenten',
   'Fruits': 'Fruit',
-  'Dairy Alternatives': 'Zuivelalternatieven', 
+  'Dairy Alternatives': 'Zuivelalternatieven',
+  'Dairy & Cheese': 'Zuivel & Kaas',
+  'Dairy & Eggs': 'Zuivel & Eieren',
   'Fresh Herbs': 'Verse Kruiden',
   'Pantry Items': 'Voorraadkast',
+  'Pantry Essentials': 'Voorraadkast',
+  'Baking & Cooking Basics': 'Bakken & Koken Basis',
+  'Plant-Based Alternatives': 'Plantaardige Alternatieven',
+  'Other Dry Goods': 'Overige Droge Waren',
   'Other': 'Overig'
 };
 

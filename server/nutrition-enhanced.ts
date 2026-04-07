@@ -18305,6 +18305,9 @@ export async function generateEnhancedShoppingList(
     'white beans': 'Grains, Pasta & Canned Goods',
     'kidney beans': 'Grains, Pasta & Canned Goods',
     'mung beans': 'Grains, Pasta & Canned Goods',
+    'cannellini beans': 'Grains, Pasta & Canned Goods',
+    'butter beans': 'Grains, Pasta & Canned Goods',
+    'mixed beans': 'Grains, Pasta & Canned Goods',
     'black-eyed peas': 'Grains, Pasta & Canned Goods',
     'black eyed peas': 'Grains, Pasta & Canned Goods',
     'black-eyed beans': 'Grains, Pasta & Canned Goods',
@@ -19486,6 +19489,10 @@ function cleanIngredientName(ingredient: string): string {
   // Handle specific bean types BEFORE removing descriptive words (including canned versions)
   if (cleaned.includes('black beans') || cleaned === 'black beans' || cleaned.includes('can black beans')) {
     cleaned = 'black beans';
+  } else if (cleaned.includes('cannellini') || cleaned === 'cannellini beans') {
+    cleaned = 'cannellini beans';
+  } else if (cleaned.includes('butter beans') || cleaned === 'butter beans' || cleaned.includes('butterbeans')) {
+    cleaned = 'butter beans';
   } else if (cleaned.includes('white beans') || cleaned === 'white beans' || cleaned.includes('can white beans')) {
     cleaned = 'white beans';
   } else if (cleaned.includes('kidney beans') || cleaned === 'kidney beans' || cleaned.includes('can kidney beans')) {
