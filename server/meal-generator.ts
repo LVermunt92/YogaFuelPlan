@@ -515,8 +515,8 @@ function applyTDEEBasedPortionAdjustment(meals: InsertMeal[], user: User | undef
   console.log(`   Actual meal plan: ${Math.round(actualDailyCalories)} kcal/day (${Math.round(actualTotalCalories)} kcal/week)`);
   console.log(`   Adjustment factor: ${adjustmentFactor.toFixed(3)}x`);
   
-  // Don't apply extreme adjustments (keep between 0.7 and 1.3)
-  const cappedFactor = Math.max(0.7, Math.min(1.3, adjustmentFactor));
+  // Don't apply extreme adjustments (keep between 0.7 and 1.75)
+  const cappedFactor = Math.max(0.7, Math.min(1.75, adjustmentFactor));
   if (cappedFactor !== adjustmentFactor) {
     console.log(`   ⚠️ Factor capped from ${adjustmentFactor.toFixed(3)}x to ${cappedFactor.toFixed(3)}x for safety`);
   }

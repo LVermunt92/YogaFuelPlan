@@ -872,11 +872,17 @@ function MealPlannerMain() {
     const plantDiversityCount = Math.min(Math.round(avgFiberPerDay), 30);
     const plantDiversityTarget = 30; // 30 different plant foods per week
 
-    // Get user's protein target (default to 95g if not available)
+    // Get user's protein and calorie targets
     const proteinTarget = nutritionTargets?.protein || 95;
     const proteinPercentage = proteinTarget > 0 ? (avgProteinPerDay / proteinTarget) * 100 : 0;
+    const caloriesTarget = nutritionTargets?.calories || 2000;
 
     return {
+      calories: {
+        value: Math.round(avgCaloriesPerDay),
+        percentage: Math.round((avgCaloriesPerDay / caloriesTarget) * 100),
+        target: Math.round(caloriesTarget)
+      },
       protein: {
         value: Math.round(avgProteinPerDay),
         percentage: Math.round(proteinPercentage),
