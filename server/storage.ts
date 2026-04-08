@@ -1236,6 +1236,11 @@ export class DatabaseStorage implements IStorage {
       addedSugar: meals.addedSugar,
       freeSugar: meals.freeSugar,
       intrinsicSugar: meals.intrinsicSugar,
+      vitaminK2: meals.vitaminK2,
+      selenium: meals.selenium,
+      sulforaphane: meals.sulforaphane,
+      cocoaFlavanols: meals.cocoaFlavanols,
+      saturatedFat: meals.saturatedFat,
       recipeTags: recipes.tags,
       ingredients: recipes.ingredients
     }).from(meals)
