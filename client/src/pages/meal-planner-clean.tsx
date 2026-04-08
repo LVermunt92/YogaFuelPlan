@@ -833,9 +833,11 @@ function MealPlannerMain() {
     const totalSugar = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.sugar || 0), 0);
 
     const totalMeals = currentMealPlan.meals.length;
-    const planDays = 7;
 
-    // Calculate true daily averages by dividing weekly totals by 7 days
+    // Count unique days actually present in the plan — dynamic, works for any plan length
+    const planDays = new Set(currentMealPlan.meals.map(m => m.day)).size || 1;
+
+    // Calculate true daily averages by dividing by the number of actual plan days
     const avgProteinPerDay = totalProtein / planDays;
     const avgCaloriesPerDay = totalCalories / planDays;
     const avgFatsPerDay = totalFats / planDays;
@@ -856,9 +858,16 @@ function MealPlannerMain() {
     // Use gender-specific fiber target from nutrition calculator (30g women, 40g men)
     const fiberTarget = nutritionTargets?.fiber || 30; // Default to 30g if not loaded yet
     
-    // Sum actual cocoaFlavanols from meal data and average over 7 days
+    // Sum actual cocoaFlavanols from meal data
     const totalCocoaFlavanols = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).cocoaFlavanols || 0), 0);
-    const avgCocoaFlavanolsPerDay = totalCocoaFlavanols / 7;
+    const avgCocoaFlavanolsPerDay = totalCocoaFlavanols / planDays;
+
+    // Saturated and unsaturated fat from real meal data
+    const totalSatFat = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).saturatedFat || 0), 0);
+    const avgSatFatPerDay = totalSatFat / planDays;
+    const avgUnsatFatPerDay = Math.max(0, avgFatsPerDay - avgSatFatPerDay);
+    // WHO target: saturated fat < 10% of total calories (≈ 22g for 2000 kcal)
+    const satFatTarget = Math.round((nutritionTargets?.calories || 2000) * 0.10 / 9);
     const cocoaFlavanolsTarget = 500; // mg/day (400-600mg recommended)
     
     // Count distinct plant foods across all meals this week using real ingredients
@@ -884,6 +893,16 @@ function MealPlannerMain() {
       },
       goodFats: {
         value: Math.round(avgFatsPerDay),
+        percentage: Math.round(Math.min(fatPercentage, 100)),
+        target: '25-35%'
+      },
+      saturatedFat: {
+        value: Math.round(avgSatFatPerDay * 10) / 10,
+        percentage: Math.round(Math.min((avgSatFatPerDay / satFatTarget) * 100, 100)),
+        target: `<${satFatTarget}g/day`
+      },
+      unsaturatedFat: {
+        value: Math.round(avgUnsatFatPerDay * 10) / 10,
         percentage: Math.round(Math.min(fatPercentage, 100)),
         target: '25-35%'
       },
@@ -1170,15 +1189,16 @@ function MealPlannerMain() {
                 <p className="text-[10px] text-gray-500">{kpiData.vegetables.percentage}%</p>
               </div>
 
-              {/* Good Fats Chart */}
+              {/* Fats Chart — shows sat/unsat split */}
               <div className="text-center relative">
                 <div className="relative w-14 h-14 mx-auto">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
                         data={[
-                          { value: kpiData.goodFats.percentage, fill: "#eab308" },
-                          { value: 100 - kpiData.goodFats.percentage, fill: "#f3f4f6" }
+                          { value: kpiData.unsaturatedFat.value, fill: "#eab308" },
+                          { value: kpiData.saturatedFat.value, fill: "#f97316" },
+                          { value: Math.max(0, 100 - kpiData.goodFats.value), fill: "#f3f4f6" }
                         ]}
                         cx="50%"
                         cy="50%"
@@ -1213,7 +1233,8 @@ function MealPlannerMain() {
                     </DialogContent>
                   </Dialog>
                 </div>
-                <p className="text-[10px] text-gray-500">{kpiData.goodFats.percentage}%</p>
+                <p className="text-[10px] text-yellow-600">{kpiData.unsaturatedFat.value}g</p>
+                <p className="text-[10px] text-orange-500">{kpiData.saturatedFat.value}g</p>
               </div>
 
               </div>
@@ -2313,6 +2334,8 @@ function MealPlannerMain() {
                           <div>
                             <p className="text-xs font-bold text-sky-600">{Math.round(recipeData.nutrition.fats || 0)}g</p>
                             <p className="text-[10px] text-gray-500">{t.goodFats || 'Fats'}</p>
+                            <p className="text-[9px] text-yellow-600">{Math.round((recipeData.nutrition.fats || 0) - ((recipeData.nutrition as any).saturatedFat || 0))}g {(t as any).unsaturatedFat || 'unsat'}</p>
+                            <p className="text-[9px] text-orange-500">{Math.round((recipeData.nutrition as any).saturatedFat || 0)}g {(t as any).saturatedFat || 'sat'}</p>
                           </div>
                           <div>
                             <p className="text-xs font-bold text-sky-400">{Math.round(recipeData.nutrition.fiber || 0)}g</p>
