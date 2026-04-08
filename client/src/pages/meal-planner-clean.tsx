@@ -833,26 +833,15 @@ function MealPlannerMain() {
     const totalSugar = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.sugar || 0), 0);
 
     const totalMeals = currentMealPlan.meals.length;
+    const planDays = 7;
 
-    console.log('KPI Debug:', { totalProtein, totalCalories, totalFats, totalCarbs, totalFiber, totalSugar, totalMeals });
-
-    // Calculate daily averages: average per meal × 3 meals per day
-    // This shows what a typical day with 3 meals would look like
-    const avgPerMeal = {
-      protein: totalMeals > 0 ? totalProtein / totalMeals : 0,
-      calories: totalMeals > 0 ? totalCalories / totalMeals : 0,
-      fats: totalMeals > 0 ? totalFats / totalMeals : 0,
-      carbs: totalMeals > 0 ? totalCarbs / totalMeals : 0,
-      fiber: totalMeals > 0 ? totalFiber / totalMeals : 0,
-      sugar: totalMeals > 0 ? totalSugar / totalMeals : 0,
-    };
-    
-    const avgProteinPerDay = avgPerMeal.protein * 3;
-    const avgCaloriesPerDay = avgPerMeal.calories * 3;
-    const avgFatsPerDay = avgPerMeal.fats * 3;
-    const avgCarbsPerDay = avgPerMeal.carbs * 3;
-    const avgFiberPerDay = avgPerMeal.fiber * 3;
-    const avgSugarPerDay = avgPerMeal.sugar * 3;
+    // Calculate true daily averages by dividing weekly totals by 7 days
+    const avgProteinPerDay = totalProtein / planDays;
+    const avgCaloriesPerDay = totalCalories / planDays;
+    const avgFatsPerDay = totalFats / planDays;
+    const avgCarbsPerDay = totalCarbs / planDays;
+    const avgFiberPerDay = totalFiber / planDays;
+    const avgSugarPerDay = totalSugar / planDays;
 
     // Estimate vegetables from fiber (roughly 30g fiber = 400g vegetables)
     const avgVegetablesPerDay = avgFiberPerDay * 13.3; // Approximate: 1g fiber ≈ 13.3g vegetables
@@ -867,14 +856,14 @@ function MealPlannerMain() {
     // Use gender-specific fiber target from nutrition calculator (30g women, 40g men)
     const fiberTarget = nutritionTargets?.fiber || 30; // Default to 30g if not loaded yet
     
-    // Estimate cocoa flavanols from protein (recipes with cocoa usually have 15-20g protein)
-    // Average dark chocolate/cocoa recipes contain ~500mg flavanols per serving
-    const avgCocoaFlavanolsPerDay = Math.min(avgProteinPerDay * 8, 500); // Conservative estimate
+    // Sum actual cocoaFlavanols from meal data and average over 7 days
+    const totalCocoaFlavanols = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).cocoaFlavanols || 0), 0);
+    const avgCocoaFlavanolsPerDay = totalCocoaFlavanols / 7;
     const cocoaFlavanolsTarget = 500; // mg/day (400-600mg recommended)
     
-    // Estimate plant diversity from fiber (higher fiber = more diverse plants)
-    // Rough estimate: 1g fiber ≈ 1 plant food type
-    const plantDiversityCount = Math.min(Math.round(avgFiberPerDay), 30);
+    // Count distinct plant foods across all meals this week using real ingredients
+    const allWeekIngredients = currentMealPlan.meals.flatMap(meal => (meal as any).ingredients || []);
+    const plantDiversityCount = Math.min(countPlantDiversity(allWeekIngredients), 30);
     const plantDiversityTarget = 30; // 30 different plant foods per week
 
     // Get user's protein and calorie targets
