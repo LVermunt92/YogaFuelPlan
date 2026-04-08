@@ -51,7 +51,7 @@ const kpiGroups: KPIGroupDef[] = [
     titleNl: 'Macro\'s & energie',
     titleColor: 'text-blue-600',
     dividerColor: 'border-blue-200 dark:border-blue-700',
-    kpis: ['protein', 'goodFats', 'fiber', 'netCarbs', 'calories'],
+    kpis: ['protein', 'goodFats', 'unsaturatedFat', 'saturatedFat', 'fiber', 'netCarbs', 'calories'],
   },
   {
     id: 'foodQuality',
@@ -106,9 +106,24 @@ const kpiMeta: Record<string, {
   },
   goodFats: {
     fill: "#0284c7", textColor: "text-sky-600", unit: "g",
-    labelEn: "Fats", labelNl: "Vetten",
+    labelEn: "Fats total", labelNl: "Vetten totaal",
     dialogTitleEn: "Why healthy fats matter", dialogTitleNl: "Waarom gezonde vetten belangrijk zijn",
     dialogDescEn: "", dialogDescNl: "",
+  },
+  unsaturatedFat: {
+    fill: "#eab308", textColor: "text-yellow-600", unit: "g",
+    labelEn: "Unsat. fat", labelNl: "Onverz. vet",
+    dialogTitleEn: "About unsaturated fat", dialogTitleNl: "Over onverzadigd vet",
+    dialogDescEn: "Unsaturated fats (monounsaturated and polyunsaturated) are the healthy fats found in olive oil, nuts, seeds, avocado and fatty fish. They support heart health, reduce inflammation and aid absorption of fat-soluble vitamins. Aim for these to make up the majority of your fat intake.",
+    dialogDescNl: "Onverzadigde vetten (enkelvoudig en meervoudig onverzadigd) zijn de gezonde vetten in olijfolie, noten, zaden, avocado en vette vis. Ze ondersteunen de hartgezondheid, verminderen ontstekingen en helpen bij de opname van vetoplosbare vitamines. Streef ernaar dat deze het grootste deel van je vetinname vormen.",
+  },
+  saturatedFat: {
+    fill: "#f97316", textColor: "text-orange-500", unit: "g",
+    labelEn: "Sat. fat", labelNl: "Verz. vet",
+    dialogTitleEn: "About saturated fat", dialogTitleNl: "Over verzadigd vet",
+    dialogDescEn: "Saturated fat is found mainly in animal products (butter, cheese, meat) and tropical oils (coconut, palm). Excess intake raises LDL cholesterol and cardiovascular risk. WHO recommends keeping saturated fat below 10% of total calories — roughly 22g on a 2000 kcal diet.",
+    dialogDescNl: "Verzadigd vet komt voornamelijk voor in dierlijke producten (boter, kaas, vlees) en tropische oliën (kokos, palm). Te veel inname verhoogt het LDL-cholesterol en het cardiovasculaire risico. De WHO beveelt aan verzadigd vet onder 10% van de totale calorieën te houden — ongeveer 22g bij 2000 kcal.",
+    isWarnable: true,
   },
   fiber: {
     fill: "#38bdf8", textColor: "text-sky-400", unit: "g",
@@ -498,7 +513,9 @@ export default function Insights() {
     const fermentedTarget = 7;
 
     const totalMeals = currentMealPlan.meals.length;
-    const avg = (total: number) => totalMeals > 0 ? (total / totalMeals) * 3 : 0;
+    // Divide by actual unique days in the plan — dynamic, not hardcoded
+    const planDays = new Set(currentMealPlan.meals.map(m => (m as any).day)).size || 1;
+    const avg = (total: number) => total / planDays;
 
     const avgProteinPerDay = avg(totalProtein);
     const avgCaloriesPerDay = avg(totalCalories);
@@ -532,14 +549,20 @@ export default function Insights() {
     });
 
     const totalVegetableGrams = calculateVegetableGrams(allMealIngredients);
-    const avgVegetablesPerDay = Math.round(totalVegetableGrams / 7);
+    const avgVegetablesPerDay = Math.round(totalVegetableGrams / planDays);
 
     const fatCalories = avgFatsPerDay * 9;
     const fatPercentage = avgCaloriesPerDay > 0 ? (fatCalories / avgCaloriesPerDay) * 100 : 25;
 
     const fiberTarget = nutritionTargets?.fiber || 30;
     const totalCocoaFlavanols = calculateCocoaFlavanols(allMealIngredients);
-    const avgCocoaFlavanolsPerDay = Math.round(totalCocoaFlavanols / 7);
+    const avgCocoaFlavanolsPerDay = Math.round(totalCocoaFlavanols / planDays);
+
+    // Saturated and unsaturated fat from real meal data
+    const totalSatFat = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).saturatedFat || 0), 0);
+    const avgSatFatPerDay = totalSatFat / planDays;
+    const avgUnsatFatPerDay = Math.max(0, avgFatsPerDay - avgSatFatPerDay);
+    const satFatTarget = Math.round((nutritionTargets?.calories || 2000) * 0.10 / 9);
     const cocoaFlavanolsTarget = 500;
     const plantDiversityResult = countUniquePlants(allMealIngredients);
     const plantDiversityCount = plantDiversityResult.count;
@@ -573,6 +596,16 @@ export default function Insights() {
         value: Math.round(avgFatsPerDay),
         percentage: Math.round(Math.min(fatPercentage, 100)),
         target: 30
+      },
+      unsaturatedFat: {
+        value: Math.round(avgUnsatFatPerDay * 10) / 10,
+        percentage: Math.round(Math.min(fatPercentage, 100)),
+        target: 30
+      },
+      saturatedFat: {
+        value: Math.round(avgSatFatPerDay * 10) / 10,
+        percentage: Math.round(Math.min((avgSatFatPerDay / satFatTarget) * 100, 100)),
+        target: satFatTarget
       },
       fiber: {
         value: Math.round(avgFiberPerDay),
