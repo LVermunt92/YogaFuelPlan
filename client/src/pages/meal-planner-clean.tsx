@@ -825,19 +825,25 @@ function MealPlannerMain() {
   const calculateKPIs = () => {
     if (!currentMealPlan?.meals) return null;
 
-    const totalProtein = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.protein || 0), 0);
-    const totalCalories = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.calories || 0), 0);
-    const totalFats = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fats || 0), 0);
-    const totalCarbs = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.carbohydrates || 0), 0);
-    const totalFiber = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fiber || 0), 0);
-    const totalSugar = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.sugar || 0), 0);
+    // Exclude "Eating out" entries and days with <2 real tracked meals
+    // so eating-out days don't drag the daily averages down
+    const trackedMeals = currentMealPlan.meals.filter(m => m.foodDescription !== 'Eating out');
+    const dayMealCount = new Map<number, number>();
+    trackedMeals.forEach(m => dayMealCount.set(m.day, (dayMealCount.get(m.day) || 0) + 1));
+    const fullDaySet = new Set(
+      [...dayMealCount.entries()].filter(([, count]) => count >= 2).map(([d]) => d)
+    );
+    const kpiMeals = trackedMeals.filter(m => fullDaySet.has(m.day));
+    const planDays = fullDaySet.size || 1;
 
-    const totalMeals = currentMealPlan.meals.length;
+    const totalProtein = kpiMeals.reduce((sum, meal) => sum + (meal.protein || 0), 0);
+    const totalCalories = kpiMeals.reduce((sum, meal) => sum + (meal.calories || 0), 0);
+    const totalFats = kpiMeals.reduce((sum, meal) => sum + (meal.fats || 0), 0);
+    const totalCarbs = kpiMeals.reduce((sum, meal) => sum + (meal.carbohydrates || 0), 0);
+    const totalFiber = kpiMeals.reduce((sum, meal) => sum + (meal.fiber || 0), 0);
+    const totalSugar = kpiMeals.reduce((sum, meal) => sum + (meal.sugar || 0), 0);
 
-    // Count unique days actually present in the plan — dynamic, works for any plan length
-    const planDays = new Set(currentMealPlan.meals.map(m => m.day)).size || 1;
-
-    // Calculate true daily averages by dividing by the number of actual plan days
+    // Calculate true daily averages by dividing by the number of full plan days
     const avgProteinPerDay = totalProtein / planDays;
     const avgCaloriesPerDay = totalCalories / planDays;
     const avgFatsPerDay = totalFats / planDays;
@@ -859,11 +865,11 @@ function MealPlannerMain() {
     const fiberTarget = nutritionTargets?.fiber || 30; // Default to 30g if not loaded yet
     
     // Sum actual cocoaFlavanols from meal data
-    const totalCocoaFlavanols = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).cocoaFlavanols || 0), 0);
+    const totalCocoaFlavanols = kpiMeals.reduce((sum, meal) => sum + ((meal as any).cocoaFlavanols || 0), 0);
     const avgCocoaFlavanolsPerDay = totalCocoaFlavanols / planDays;
 
     // Saturated and unsaturated fat from real meal data
-    const totalSatFat = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).saturatedFat || 0), 0);
+    const totalSatFat = kpiMeals.reduce((sum, meal) => sum + ((meal as any).saturatedFat || 0), 0);
     const avgSatFatPerDay = totalSatFat / planDays;
     const avgUnsatFatPerDay = Math.max(0, avgFatsPerDay - avgSatFatPerDay);
     // WHO target: saturated fat < 10% of total calories (≈ 22g for 2000 kcal)

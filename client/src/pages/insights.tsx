@@ -473,30 +473,49 @@ export default function Insights() {
   const calculateKPIs = (): Record<string, KPIValue> | null => {
     if (!currentMealPlan?.meals) return null;
 
-    const totalProtein = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.protein || 0), 0);
-    const totalCalories = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.calories || 0), 0);
-    const totalFats = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fats || 0), 0);
-    const totalCarbs = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.carbohydrates || 0), 0);
-    const totalFiber = currentMealPlan.meals.reduce((sum, meal) => sum + (meal.fiber || 0), 0);
-    const totalVitaminK = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).vitaminK || 0), 0);
-    const totalVitaminK2 = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).vitaminK2 || 0), 0);
-    const totalZinc = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).zinc || 0), 0);
-    const totalCalcium = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).calcium || 0), 0);
-    const totalSugar = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).sugar || 0), 0);
-    const totalAddedSugar = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).addedSugar || 0), 0);
-    const totalFreeSugar = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).freeSugar || 0), 0);
-    const totalIntrinsicSugar = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).intrinsicSugar || 0), 0);
-    const totalVitaminC = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).vitaminC || 0), 0);
-    const totalSodium = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).sodium || 0), 0);
-    const totalPotassium = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).potassium || 0), 0);
-    const totalIron = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).iron || 0), 0);
-    const totalOmega3 = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).omega3 || 0), 0);
-    const totalPolyphenols = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).polyphenols || 0), 0);
-    const totalSelenium = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).selenium || 0), 0);
-    const totalSulforaphane = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).sulforaphane || 0), 0);
+    // Exclude "Eating out" entries — they have 0 nutrition and skew daily averages.
+    // Then only count days with ≥2 real tracked meals so partial eating-out days
+    // don't pull the daily average down.
+    const trackedMeals = currentMealPlan.meals.filter(
+      m => (m as any).foodDescription !== 'Eating out'
+    );
+    const dayMealCount = new Map<number, number>();
+    trackedMeals.forEach(m => {
+      const d = (m as any).day as number;
+      dayMealCount.set(d, (dayMealCount.get(d) || 0) + 1);
+    });
+    const fullDaySet = new Set(
+      [...dayMealCount.entries()].filter(([, count]) => count >= 2).map(([d]) => d)
+    );
+    // All nutrition totals are from full days only so avg() denominator is consistent
+    const meals = trackedMeals.filter(m => fullDaySet.has((m as any).day as number));
+    const planDays = fullDaySet.size || 1;
+    const avg = (total: number) => total / planDays;
+
+    const totalProtein = meals.reduce((sum, meal) => sum + (meal.protein || 0), 0);
+    const totalCalories = meals.reduce((sum, meal) => sum + (meal.calories || 0), 0);
+    const totalFats = meals.reduce((sum, meal) => sum + (meal.fats || 0), 0);
+    const totalCarbs = meals.reduce((sum, meal) => sum + (meal.carbohydrates || 0), 0);
+    const totalFiber = meals.reduce((sum, meal) => sum + (meal.fiber || 0), 0);
+    const totalVitaminK = meals.reduce((sum, meal) => sum + ((meal as any).vitaminK || 0), 0);
+    const totalVitaminK2 = meals.reduce((sum, meal) => sum + ((meal as any).vitaminK2 || 0), 0);
+    const totalZinc = meals.reduce((sum, meal) => sum + ((meal as any).zinc || 0), 0);
+    const totalCalcium = meals.reduce((sum, meal) => sum + ((meal as any).calcium || 0), 0);
+    const totalSugar = meals.reduce((sum, meal) => sum + ((meal as any).sugar || 0), 0);
+    const totalAddedSugar = meals.reduce((sum, meal) => sum + ((meal as any).addedSugar || 0), 0);
+    const totalFreeSugar = meals.reduce((sum, meal) => sum + ((meal as any).freeSugar || 0), 0);
+    const totalIntrinsicSugar = meals.reduce((sum, meal) => sum + ((meal as any).intrinsicSugar || 0), 0);
+    const totalVitaminC = meals.reduce((sum, meal) => sum + ((meal as any).vitaminC || 0), 0);
+    const totalSodium = meals.reduce((sum, meal) => sum + ((meal as any).sodium || 0), 0);
+    const totalPotassium = meals.reduce((sum, meal) => sum + ((meal as any).potassium || 0), 0);
+    const totalIron = meals.reduce((sum, meal) => sum + ((meal as any).iron || 0), 0);
+    const totalOmega3 = meals.reduce((sum, meal) => sum + ((meal as any).omega3 || 0), 0);
+    const totalPolyphenols = meals.reduce((sum, meal) => sum + ((meal as any).polyphenols || 0), 0);
+    const totalSelenium = meals.reduce((sum, meal) => sum + ((meal as any).selenium || 0), 0);
+    const totalSulforaphane = meals.reduce((sum, meal) => sum + ((meal as any).sulforaphane || 0), 0);
 
     const allColors = new Set<string>();
-    currentMealPlan.meals.forEach(meal => {
+    meals.forEach(meal => {
       if (meal.ingredients && Array.isArray(meal.ingredients)) {
         const mealColors = getIngredientColors(meal.ingredients);
         mealColors.forEach(color => allColors.add(color));
@@ -506,16 +525,11 @@ export default function Insights() {
     const achievedColors = allColors.size;
     const rainbowScore = Math.round((achievedColors / totalColorGroups) * 100);
 
-    const fermentedMealsCount = currentMealPlan.meals.filter(meal => {
+    const fermentedMealsCount = meals.filter(meal => {
       const tags = (meal as any).recipeTags;
       return tags && Array.isArray(tags) && tags.includes('Fermented');
     }).length;
     const fermentedTarget = 7;
-
-    const totalMeals = currentMealPlan.meals.length;
-    // Divide by actual unique days in the plan — dynamic, not hardcoded
-    const planDays = new Set(currentMealPlan.meals.map(m => (m as any).day)).size || 1;
-    const avg = (total: number) => total / planDays;
 
     const avgProteinPerDay = avg(totalProtein);
     const avgCaloriesPerDay = avg(totalCalories);
@@ -542,7 +556,7 @@ export default function Insights() {
     const avgNetCarbsPerDay = avgCarbsPerDay - avgFiberPerDay;
 
     const allMealIngredients: string[] = [];
-    currentMealPlan.meals.forEach(meal => {
+    meals.forEach(meal => {
       if (meal.ingredients && Array.isArray(meal.ingredients)) {
         allMealIngredients.push(...meal.ingredients);
       }
@@ -559,7 +573,7 @@ export default function Insights() {
     const avgCocoaFlavanolsPerDay = Math.round(totalCocoaFlavanols / planDays);
 
     // Saturated and unsaturated fat from real meal data
-    const totalSatFat = currentMealPlan.meals.reduce((sum, meal) => sum + ((meal as any).saturatedFat || 0), 0);
+    const totalSatFat = meals.reduce((sum, meal) => sum + ((meal as any).saturatedFat || 0), 0);
     const avgSatFatPerDay = totalSatFat / planDays;
     const avgUnsatFatPerDay = Math.max(0, avgFatsPerDay - avgSatFatPerDay);
     const satFatTarget = Math.round((nutritionTargets?.calories || 2000) * 0.10 / 9);
