@@ -17,8 +17,14 @@ if (!connectionString || connectionString === 'postgresql://:::/' ) {
 export const pool = new Pool({ 
   connectionString: connectionString,
   max: 10,
-  idleTimeoutMillis: 60000,
+  idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 10000,
+});
+
+// Prevent unhandled 'error' events from crashing the server when the database
+// terminates idle connections (happens regularly with managed/serverless Postgres).
+pool.on('error', (err) => {
+  console.warn('⚠️ Database pool idle client error (connection reset by server — safe to ignore):', err.message);
 });
 
 export const db = drizzle(pool, { schema });
