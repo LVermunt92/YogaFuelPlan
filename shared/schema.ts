@@ -129,6 +129,7 @@ export const meals = pgTable("meals", {
   calories: real("calories").default(0), // kcal
   carbohydrates: real("carbohydrates").default(0), // grams
   fats: real("fats").default(0), // grams
+  saturatedFat: real("saturated_fat").default(0), // grams
   fiber: real("fiber").default(0), // grams
   sugar: real("sugar").default(0), // grams (total sugar - kept for backwards compatibility)
   addedSugar: real("added_sugar").default(0), // grams (from sweeteners: honey, maple syrup, sugar, etc.)
