@@ -22355,7 +22355,7 @@
   {
     "id": "10206",
     "name": "Guacamole & Chips",
-    "category": "lunch",
+    "category": "snack",
     "ingredients": [
       "2 ripe avocados",
       "1 lime",
@@ -22418,7 +22418,8 @@
       "Lactose-Free",
       "Vegetarian",
       "July",
-      "Gluten-Low"
+      "Gluten-Low",
+      "Weekend-Snack"
     ],
     "whole_food_level": "high",
     "vegetable_content": {

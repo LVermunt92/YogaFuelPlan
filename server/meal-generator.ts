@@ -3223,14 +3223,22 @@ async function generateMealPrepPlan(
       console.log(`\n🍎 AFTERNOON SNACK GENERATION: ${snackPool.length} snacks available`);
       const usedSnackIds = new Set<string>();
 
+      // Split pool: Weekend-Snack tagged items are preferred on Friday (day 6) and Saturday (day 7)
+      const weekendSnackPool = snackPool.filter(s => Array.isArray((s as any).tags) && (s as any).tags.includes('Weekend-Snack'));
+      const regularSnackPool = snackPool.filter(s => !Array.isArray((s as any).tags) || !(s as any).tags.includes('Weekend-Snack'));
+
       for (let day = 2; day <= 7; day++) {
         const hasRealMeals = adjustedMeals.some(m => m.day === day && m.foodDescription !== 'Eating out');
         if (!hasRealMeals) continue;
 
-        let available = snackPool.filter(s => !usedSnackIds.has(String(s.id)));
+        // Day 6 = Friday, Day 7 = Saturday: prefer Weekend-Snack pool; fall back to full pool if empty
+        const isWeekendDay = day === 6 || day === 7;
+        const preferredPool = isWeekendDay && weekendSnackPool.length > 0 ? weekendSnackPool : regularSnackPool.length > 0 ? regularSnackPool : snackPool;
+
+        let available = preferredPool.filter(s => !usedSnackIds.has(String(s.id)));
         if (available.length === 0) {
           usedSnackIds.clear();
-          available = snackPool;
+          available = preferredPool;
         }
 
         const snack = available[Math.floor(Math.random() * available.length)];
