@@ -62885,5 +62885,200 @@
     "fiberG": 12.0,
     "defaultBatchServings": 2,
     "prepTime": 30
+  },
+  {
+    "id": "10970",
+    "name": "Mango chia pudding with quark",
+    "dutch_name": "Mango chia pudding met kwark",
+    "category": "breakfast",
+    "ingredients": [
+      "300ml plant-based milk",
+      "300g mango",
+      "40g chia seeds",
+      "20ml agave syrup",
+      "400g low-fat quark",
+      "10g shredded coconut"
+    ],
+    "dutch_ingredients": [
+      "300ml plantaardige melk",
+      "300g mango",
+      "40g chiazaad",
+      "20ml agavesiroop",
+      "400g magere kwark",
+      "10g geraspte kokos"
+    ],
+    "instructions": [
+      "Blend 200g of the mango with the plant-based milk and agave syrup until smooth.",
+      "Divide into 2 glasses and stir in the chia seeds. Allow to set for 5 minutes.",
+      "Slice the remaining mango.",
+      "Serve topped with quark, mango slices, and shredded coconut."
+    ],
+    "dutch_instructions": [
+      "Blend 200g van de mango met de plantaardige melk en agavesiroop tot een gladde massa.",
+      "Verdeel over 2 glazen en roer de chiazaden erdoor. Laat 5 minuten opstijven.",
+      "Snijd de resterende mango in plakjes.",
+      "Serveer met kwark, mangoplakjes en geraspte kokos."
+    ],
+    "tags": [
+      "Vegetarian",
+      "Gluten-Free",
+      "High-Protein",
+      "Follicular",
+      "Ovulation"
+    ],
+    "nutrition": {
+      "calories": 420,
+      "protein": 29,
+      "carbohydrates": 54,
+      "fats": 13,
+      "fiber": 9,
+      "sugar": 35,
+      "sodium": 55,
+      "calcium": 300,
+      "iron": 2,
+      "potassium": 430,
+      "vitaminC": 36,
+      "vitaminK": 6,
+      "vitaminK2": 1,
+      "selenium": 6,
+      "sulforaphane": 0,
+      "omega3": 2.4,
+      "saturatedFat": 4.5,
+      "prepTime": 10,
+      "costEuros": 1.8,
+      "proteinPerEuro": 16.1
+    },
+    "recipe_benefits": [
+      "High-protein breakfast with omega-3 from chia seeds, vitamin C from mango, and calcium from quark"
+    ],
+    "recipe_tips": [
+      "Allow the chia seeds to set for at least 5 minutes for a thicker pudding texture.",
+      "Use frozen mango for a colder, thicker smoothie base."
+    ],
+    "whole_food_level": 4,
+    "vegetable_content": 2,
+    "active": true,
+    "default_batch_servings": 2,
+    "portion": 2,
+    "source": "User recipe",
+    "contains_eggs": false,
+    "resistant_starch_score": 0,
+    "longevity_score": 1,
+    "protein_g": 29,
+    "carbs_g": 54,
+    "fiber_g": 9,
+    "prep_time": 10
+  },
+  {
+    "id": "10971",
+    "name": "Honey soy chicken stir-fry",
+    "dutch_name": "Honing-soja kip roerbak",
+    "category": "dinner",
+    "ingredients": [
+      "320g chicken breast",
+      "15g cornstarch",
+      "25ml dark soy sauce",
+      "15ml light soy sauce",
+      "10ml honey",
+      "10ml rice vinegar",
+      "5ml fish sauce",
+      "40g cashews",
+      "1/2 onion",
+      "1/2 red bell pepper",
+      "1/4 cucumber",
+      "10g fresh ginger",
+      "2 garlic cloves",
+      "1g white pepper",
+      "15ml neutral oil",
+      "160g jasmine rice",
+      "2 spring onions",
+      "5g sesame seeds"
+    ],
+    "dutch_ingredients": [
+      "320g kipfilet",
+      "15g maizena",
+      "25ml donkere sojasaus",
+      "15ml lichte sojasaus",
+      "10ml honing",
+      "10ml rijstazijn",
+      "5ml vissaus",
+      "40g cashewnoten",
+      "1/2 ui",
+      "1/2 rode paprika",
+      "1/4 komkommer",
+      "10g verse gember",
+      "2 teentjes knoflook",
+      "1g witte peper",
+      "15ml neutrale olie",
+      "160g jasmijnrijst",
+      "2 lente-uitjes",
+      "5g sesamzaad"
+    ],
+    "instructions": [
+      "Toss the chicken strips with the cornstarch, 10ml dark soy sauce, and white pepper. Set aside.",
+      "Mix the remaining 15ml dark soy sauce, light soy sauce, honey, rice vinegar, and fish sauce in a small bowl to make the sauce.",
+      "Heat oil in a wok over high heat. Fry the cashews 2-3 minutes until golden, then remove and set aside.",
+      "Add chicken to the wok and cook 5-6 minutes, separating pieces, until golden and cooked through. Remove from pan.",
+      "Add a little more oil if needed and stir-fry the onion for 2-3 minutes. Add bell pepper and ginger, stir-fry 4-5 minutes. Add garlic and cook 30 seconds.",
+      "Return chicken and cashews to the pan, pour in the sauce, and stir until everything is glossy and slightly sticky.",
+      "Cook the rice according to package instructions. Serve the stir-fry over rice, topped with spring onion and sesame seeds."
+    ],
+    "dutch_instructions": [
+      "Meng de kipstrips met de maizena, 10ml donkere sojasaus en witte peper. Zet apart.",
+      "Meng de overige 15ml donkere sojasaus, lichte sojasaus, honing, rijstazijn en vissaus in een klein kommetje.",
+      "Verhit olie in een wok op hoog vuur. Bak de cashewnoten 2-3 minuten tot goudbruin en leg ze apart.",
+      "Voeg de kip toe en bak 5-6 minuten, stukken losschudden, tot goudbruin en gaar. Leg apart.",
+      "Voeg eventueel extra olie toe en roerbak de ui 2-3 minuten. Voeg paprika en gember toe, roerbak 4-5 minuten. Voeg knoflook toe en bak 30 seconden.",
+      "Leg de kip en cashewnoten terug in de pan, giet de saus erbij en roer tot alles glanzend en licht plakkerig is.",
+      "Kook de rijst volgens de verpakking. Serveer met rijst, gegarneerd met lente-ui en sesamzaad."
+    ],
+    "tags": [
+      "Lactose-Free",
+      "High-Protein",
+      "Follicular",
+      "Menstrual"
+    ],
+    "nutrition": {
+      "calories": 730,
+      "protein": 42,
+      "carbohydrates": 85,
+      "fats": 21,
+      "fiber": 2,
+      "sugar": 7,
+      "sodium": 1280,
+      "calcium": 55,
+      "iron": 2,
+      "potassium": 660,
+      "vitaminC": 30,
+      "vitaminK": 5,
+      "vitaminK2": 2,
+      "selenium": 27,
+      "sulforaphane": 0,
+      "omega3": 0.3,
+      "saturatedFat": 3.5,
+      "prepTime": 25,
+      "costEuros": 3.65,
+      "proteinPerEuro": 11.5
+    },
+    "recipe_benefits": [
+      "High-protein stir-fry with lean chicken, healthy cashew fats, and anti-inflammatory ginger"
+    ],
+    "recipe_tips": [
+      "Keep the heat high throughout for proper stir-fry texture.",
+      "Prep all vegetables before you start cooking as everything moves fast once the wok is hot."
+    ],
+    "whole_food_level": 3,
+    "vegetable_content": 2,
+    "active": true,
+    "default_batch_servings": 2,
+    "portion": 2,
+    "source": "User recipe",
+    "contains_eggs": false,
+    "resistant_starch_score": 2,
+    "longevity_score": 1,
+    "protein_g": 42,
+    "carbs_g": 85,
+    "fiber_g": 2,
+    "prep_time": 25
   }
 ]
