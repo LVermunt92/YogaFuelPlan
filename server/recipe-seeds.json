@@ -63764,5 +63764,106 @@
     "carbs_g": 29,
     "fiber_g": 2,
     "prep_time": 40
+  },
+  {
+    "id": "10979",
+    "name": "Lemon poppy seed blondies",
+    "dutch_name": "Citroen-maanzaad blondies",
+    "category": "snack",
+    "ingredients": [
+      "125g oat flour",
+      "80g almond flour",
+      "10g baking powder",
+      "1g salt",
+      "125ml plant-based milk",
+      "2 eggs",
+      "100g applesauce",
+      "60g honey",
+      "5ml vanilla extract",
+      "15g poppy seeds",
+      "1 lemon",
+      "100g vegan white chocolate",
+      "60g lemon curd"
+    ],
+    "dutch_ingredients": [
+      "125g havermoutmeel",
+      "80g amandelmeel",
+      "10g bakpoeder",
+      "1g zout",
+      "125ml plantaardige melk",
+      "2 eieren",
+      "100g appelmoes",
+      "60g honing",
+      "5ml vanille-extract",
+      "15g maanzaad",
+      "1 citroen",
+      "100g (veganistische) witte chocolade",
+      "60g lemon curd"
+    ],
+    "instructions": [
+      "Preheat oven to 175°C. Line a square baking tin with baking paper.",
+      "Whisk the eggs with the plant-based milk, applesauce, honey, and vanilla extract in a large bowl.",
+      "Add the oat flour, almond flour, baking powder, poppy seeds, and salt. Mix well. Stir in the lemon zest and half of the chopped white chocolate.",
+      "Pour the batter into the prepared tin. Spoon the lemon curd over the top in small spoonfuls and swirl through the batter with a skewer or knife. Scatter the remaining white chocolate on top.",
+      "Bake for 35-40 minutes until golden and a skewer inserted in the centre comes out clean.",
+      "Let cool completely in the tin before slicing into 9 pieces. Serve with extra lemon curd and a sprinkle of poppy seeds."
+    ],
+    "dutch_instructions": [
+      "Verwarm de oven voor op 175°C. Bekleed een vierkante bakvorm met bakpapier.",
+      "Klop de eieren met de plantaardige melk, appelmoes, honing en vanille-extract in een grote kom.",
+      "Voeg het havermoutmeel, amandelmeel, bakpoeder, maanzaad en zout toe. Mix goed. Roer de citroenschil en de helft van de gehakte witte chocolade erdoor.",
+      "Giet het beslag in de bakvorm. Schep de lemon curd in kleine dotjes over het beslag en tril er doorheen met een satéprikker of mes. Strooi de resterende witte chocolade erover.",
+      "Bak 35-40 minuten tot goudbruin en een prikker er schoon uitkomt.",
+      "Laat volledig afkoelen in de vorm voor het snijden in 9 stukken. Serveer met extra lemon curd en een beetje maanzaad."
+    ],
+    "tags": [
+      "Vegetarian",
+      "Gluten-Free",
+      "Follicular",
+      "Menstrual"
+    ],
+    "nutrition": {
+      "calories": 232,
+      "protein": 6,
+      "carbohydrates": 28,
+      "fats": 11,
+      "fiber": 2,
+      "sugar": 15,
+      "sodium": 150,
+      "calcium": 70,
+      "iron": 1,
+      "potassium": 70,
+      "vitaminC": 2,
+      "vitaminK": 2,
+      "vitaminK2": 1,
+      "selenium": 7,
+      "sulforaphane": 0,
+      "omega3": 0.2,
+      "saturatedFat": 3.5,
+      "prepTime": 50,
+      "costEuros": 0.67,
+      "proteinPerEuro": 9.0
+    },
+    "recipe_benefits": [
+      "Naturally sweetened blondie with selenium from eggs, calcium from almond flour and poppy seeds, and fiber from oat flour"
+    ],
+    "recipe_tips": [
+      "Use certified gluten-free oat flour if you need to be strict about gluten cross-contamination.",
+      "Do not overbake — a slightly soft centre sets firmer as it cools, giving a fudgier texture.",
+      "Cool completely before slicing or the blondies will crumble."
+    ],
+    "source": "User recipe",
+    "active": true,
+    "default_batch_servings": 9,
+    "portion": 1,
+    "whole_food_level": 3,
+    "vegetable_content": 1,
+    "contains_eggs": true,
+    "resistant_starch_score": 0,
+    "longevity_score": 1,
+    "protein_g": 6,
+    "carbs_g": 28,
+    "fiber_g": 2,
+    "prep_time": 50
   }
 ]
