@@ -63865,5 +63865,94 @@
     "carbs_g": 28,
     "fiber_g": 2,
     "prep_time": 50
+  },
+  {
+    "id": "10980",
+    "name": "Hot honey shrimp loaded cucumber",
+    "dutch_name": "Hete honing garnalen in komkommer",
+    "category": "lunch",
+    "ingredients": [
+      "150g brown rice",
+      "200g shrimp",
+      "30ml olive oil",
+      "40g edamame beans",
+      "1 cucumber",
+      "10g sesame seeds",
+      "20g honey",
+      "30g sriracha mayo"
+    ],
+    "dutch_ingredients": [
+      "150g zilvervliesrijst",
+      "200g garnalen",
+      "30ml olijfolie",
+      "40g edamamebonen",
+      "1 komkommer",
+      "10g sesamzaad",
+      "20g honing",
+      "30g sriracha mayo"
+    ],
+    "instructions": [
+      "Cook the brown rice according to package instructions.",
+      "Cook the shrimp in olive oil over medium-high heat for 2-3 minutes per side until pink and cooked through. Drizzle with honey in the last 30 seconds and toss to coat.",
+      "Cut the cucumber in half lengthwise and scoop out some of the seeds from the centre to create a hollow.",
+      "Fill each cucumber half with brown rice, shrimp, and edamame beans.",
+      "Drizzle with sriracha mayo and top with sesame seeds. Serve immediately."
+    ],
+    "dutch_instructions": [
+      "Kook de zilvervliesrijst volgens de verpakking.",
+      "Bak de garnalen in olijfolie op middelhoog vuur 2-3 minuten per kant tot ze roze en gaar zijn. Besprenkel de laatste 30 seconden met honing en schep goed om.",
+      "Snijd de komkommer in de lengte doormidden en schep met een lepel wat van de pitjes eruit om een holte te maken.",
+      "Vul elke komkommerhelft met zilvervliesrijst, garnalen en edamamebonen.",
+      "Besprenkel met sriracha mayo en bestrooi met sesamzaad. Direct serveren."
+    ],
+    "tags": [
+      "Gluten-Free",
+      "Lactose-Free",
+      "High-Protein",
+      "Follicular",
+      "Menstrual"
+    ],
+    "nutrition": {
+      "calories": 680,
+      "protein": 30,
+      "carbohydrates": 71,
+      "fats": 31,
+      "fiber": 4,
+      "sugar": 10,
+      "sodium": 320,
+      "calcium": 120,
+      "iron": 2,
+      "potassium": 520,
+      "vitaminC": 5,
+      "vitaminK": 12,
+      "vitaminK2": 0,
+      "selenium": 45,
+      "sulforaphane": 0,
+      "omega3": 0.3,
+      "saturatedFat": 4.5,
+      "prepTime": 20,
+      "costEuros": 3.41,
+      "proteinPerEuro": 8.8
+    },
+    "recipe_benefits": [
+      "High-protein meal with exceptional selenium from shrimp, complete protein from edamame, and resistant starch from brown rice"
+    ],
+    "recipe_tips": [
+      "Pat the shrimp dry before cooking for a better sear.",
+      "Add the honey right at the end to avoid burning — it caramelises very quickly over high heat."
+    ],
+    "source": "User recipe",
+    "active": true,
+    "default_batch_servings": 2,
+    "portion": 2,
+    "whole_food_level": 4,
+    "vegetable_content": 2,
+    "contains_eggs": true,
+    "resistant_starch_score": 1,
+    "longevity_score": 1,
+    "protein_g": 30,
+    "carbs_g": 71,
+    "fiber_g": 4,
+    "prep_time": 20
   }
 ]
