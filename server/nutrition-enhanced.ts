@@ -19156,8 +19156,37 @@ export function getDefaultPortion(ingredient: string): { amount: number; unit: s
     'eggs': { amount: 2, unit: 'pieces' }, // 2 large eggs
     'nutritional yeast': { amount: 15, unit: 'g' }, // 2 tbsp = ~15g
     'coconut yogurt': { amount: 120, unit: 'g' }, // 0.5 cup = ~120g
-    'cherry tomatoes': { amount: 150, unit: 'g' }, // 1 cup = ~150g
-    'tomatoes': { amount: 2, unit: 'pieces' }, // 2 medium tomatoes
+    // Tomatoes: fresh varieties → pieces; canned/tinned varieties → grams
+    'cherry tomatoes': { amount: 150, unit: 'g' }, // cherry tomatoes always in grams
+    'tomato': { amount: 1, unit: 'piece' }, // 1 fresh tomato
+    'tomatoes': { amount: 2, unit: 'pieces' }, // 2 fresh tomatoes
+    'fresh tomato': { amount: 1, unit: 'piece' },
+    'fresh tomatoes': { amount: 2, unit: 'pieces' },
+    'medium tomato': { amount: 1, unit: 'piece' },
+    'medium tomatoes': { amount: 2, unit: 'pieces' },
+    'large tomato': { amount: 1, unit: 'piece' },
+    'large tomatoes': { amount: 2, unit: 'pieces' },
+    'small tomato': { amount: 1, unit: 'piece' },
+    'small tomatoes': { amount: 2, unit: 'pieces' },
+    'roma tomato': { amount: 1, unit: 'piece' },
+    'roma tomatoes': { amount: 2, unit: 'pieces' },
+    'plum tomato': { amount: 1, unit: 'piece' },
+    'plum tomatoes': { amount: 2, unit: 'pieces' },
+    'vine tomato': { amount: 1, unit: 'piece' },
+    'vine tomatoes': { amount: 2, unit: 'pieces' },
+    'beefsteak tomato': { amount: 1, unit: 'piece' },
+    'heirloom tomato': { amount: 1, unit: 'piece' },
+    // Canned/tinned tomatoes → always grams (standard 400g can)
+    'canned tomatoes': { amount: 400, unit: 'g' },
+    'canned diced tomatoes': { amount: 400, unit: 'g' },
+    'canned crushed tomatoes': { amount: 400, unit: 'g' },
+    'canned whole tomatoes': { amount: 400, unit: 'g' },
+    'tinned tomatoes': { amount: 400, unit: 'g' },
+    'tinned diced tomatoes': { amount: 400, unit: 'g' },
+    'crushed tomatoes': { amount: 400, unit: 'g' },
+    'diced tomatoes': { amount: 400, unit: 'g' },
+    'chopped tomatoes': { amount: 400, unit: 'g' },
+    'passata': { amount: 400, unit: 'g' },
     'lime': { amount: 1, unit: 'piece' }, // 1 lime
     'bell pepper': { amount: 1, unit: 'piece' }, // 1 bell pepper (singular)
     'bell peppers': { amount: 2, unit: 'pieces' }, // 2 medium peppers

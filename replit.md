@@ -26,6 +26,9 @@ Preferred communication style: Simple, everyday language.
   - This ensures users with no dietary restrictions receive conventional ingredients, not specialty replacement products.
 **INGREDIENT FORMAT STANDARDS** (CRITICAL - ensures consistent shopping lists):
   - **Bell peppers, Onions, Zucchini, Aubergine/Eggplant, Lemon/Lime, Avocado, Portobello mushrooms**: ALWAYS specify in pieces.
+  - **Fresh tomatoes** (regular, roma, plum, vine, beefsteak): ALWAYS specify in pieces (e.g., "2 tomatoes", "1 roma tomato").
+  - **Cherry tomatoes / grape tomatoes**: ALWAYS specify in grams (e.g., "150g cherry tomatoes").
+  - **Canned/tinned tomatoes, passata, crushed tomatoes, chopped tomatoes**: ALWAYS specify in grams (e.g., "400g canned tomatoes", "200g passata"). NEVER use "1 can" without the gram weight.
   - **Ginger, Mushrooms (regular)**: ALWAYS specify in grams.
   - **Cauliflower**: Use cauliflower rice or florets in grams.
   - **Plant-based milk**: ALWAYS use "plant-based milk" instead of specific types, except for coconut milk in curries.
