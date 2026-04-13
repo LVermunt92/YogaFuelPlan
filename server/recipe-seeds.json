@@ -63555,5 +63555,108 @@
     "carbs_g": 68,
     "fiber_g": 9,
     "prep_time": 30
+  },
+  {
+    "id": "10977",
+    "name": "Miso maple carrots with crunchy quinoa",
+    "dutch_name": "Miso-esdoorn wortelen met krokante quinoa",
+    "category": "dinner",
+    "ingredients": [
+      "280g carrots",
+      "10g white miso",
+      "15ml maple syrup",
+      "15g tahini",
+      "10ml tamari",
+      "2 garlic cloves",
+      "5g fresh ginger",
+      "20ml rice vinegar",
+      "20ml sesame oil",
+      "10ml olive oil",
+      "40g quinoa",
+      "10g fresh parsley",
+      "2g salt",
+      "1g black pepper"
+    ],
+    "dutch_ingredients": [
+      "280g wortelen",
+      "10g witte miso",
+      "15ml ahornsiroop",
+      "15g tahin",
+      "10ml tamari",
+      "2 teentjes knoflook",
+      "5g verse gember",
+      "20ml rijstazijn",
+      "20ml sesamolie",
+      "10ml olijfolie",
+      "40g quinoa",
+      "10g verse peterselie",
+      "2g zout",
+      "1g zwarte peper"
+    ],
+    "instructions": [
+      "Cook the quinoa in water, then spread on a plate to cool completely.",
+      "Preheat oven to 190°C. Whisk together the miso, maple syrup, tahini, tamari, garlic, ginger, rice vinegar, and 15ml sesame oil into a thick paste. Set aside.",
+      "Toss the carrots with the olive oil on a baking sheet, spread out, and roast for 20 minutes, tossing halfway through.",
+      "Brush the carrots with a quarter of the miso-maple sauce, then return to the oven for a further 4-6 minutes until sticky and glazed.",
+      "Increase oven to 220°C. Toss the cooled quinoa with the remaining 5ml sesame oil and a splash of tamari. Spread on a baking sheet and bake for 20-25 minutes, stirring halfway, until crispy.",
+      "Thin the remaining miso-maple sauce with 60ml water. Transfer the carrots to a platter, top with the crispy quinoa, drizzle over the thinned sauce, and garnish with chopped parsley."
+    ],
+    "dutch_instructions": [
+      "Kook de quinoa in water en spreid uit op een bord om volledig af te koelen.",
+      "Verwarm de oven voor op 190°C. Klop de miso, ahornsiroop, tahin, tamari, knoflook, gember, rijstazijn en 15ml sesamolie samen tot een dikke pasta. Zet apart.",
+      "Schep de wortelen om met olijfolie op een bakplaat, spreid uit en rooster 20 minuten, halverwege omscheppen.",
+      "Smeer een kwart van de miso-ahornpasta over de wortelen en zet 4-6 minuten terug in de oven tot ze plakkerig en geglazuurd zijn.",
+      "Verhoog de oventemperatuur naar 220°C. Schep de afgekoelde quinoa om met de resterende 5ml sesamolie en een scheutje tamari. Spreid uit op een bakplaat en bak 20-25 minuten, halverwege omscheppen, tot krokant.",
+      "Verdun de resterende miso-ahornpasta met 60ml water. Leg de wortelen op een schaal, verdeel de krokante quinoa erover, besprenkel met de verdunde saus en garneer met gehakte peterselie."
+    ],
+    "tags": [
+      "Vegetarian",
+      "Gluten-Free",
+      "Lactose-Free",
+      "Follicular",
+      "Luteal"
+    ],
+    "nutrition": {
+      "calories": 360,
+      "protein": 7,
+      "carbohydrates": 37,
+      "fats": 20,
+      "fiber": 6,
+      "sugar": 9,
+      "sodium": 970,
+      "calcium": 40,
+      "iron": 2,
+      "potassium": 510,
+      "vitaminC": 20,
+      "vitaminK": 80,
+      "vitaminK2": 1,
+      "selenium": 3,
+      "sulforaphane": 0,
+      "omega3": 0.3,
+      "saturatedFat": 2.8,
+      "prepTime": 60,
+      "costEuros": 1.75,
+      "proteinPerEuro": 4.0
+    },
+    "recipe_benefits": [
+      "Antioxidant-rich dish with beta-carotene from carrots, gut-supporting fermented miso, and complete protein from quinoa. Parsley adds exceptional vitamin K."
+    ],
+    "recipe_tips": [
+      "Cool the quinoa fully before baking — warm quinoa won't crisp up properly.",
+      "Reserve most of the miso-maple sauce for drizzling at the end rather than brushing onto the carrots, as this is where most of the flavour comes through."
+    ],
+    "source": "User recipe",
+    "active": true,
+    "default_batch_servings": 2,
+    "portion": 2,
+    "whole_food_level": 5,
+    "vegetable_content": 4,
+    "contains_eggs": false,
+    "resistant_starch_score": 1,
+    "longevity_score": 2,
+    "protein_g": 7,
+    "carbs_g": 37,
+    "fiber_g": 6,
+    "prep_time": 60
   }
 ]
