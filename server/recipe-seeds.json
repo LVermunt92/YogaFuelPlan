@@ -63080,5 +63080,98 @@
     "carbs_g": 85,
     "fiber_g": 2,
     "prep_time": 25
+  },
+  {
+    "id": "10972",
+    "name": "Pistachio protein cakes",
+    "dutch_name": "Pistache proteïne cakeje",
+    "category": "breakfast",
+    "ingredients": [
+      "170g 0% Greek yogurt",
+      "2 eggs",
+      "30g vanilla whey protein",
+      "30g pistachio paste",
+      "15g shelled pistachios",
+      "15g monk fruit sweetener",
+      "5ml vanilla extract",
+      "1g salt"
+    ],
+    "dutch_ingredients": [
+      "170g magere Griekse yoghurt",
+      "2 eieren",
+      "30g vanille eiwitpoeder (whey)",
+      "30g pistachepasta",
+      "15g gepelde pistachenoten",
+      "15g monniksfruit zoetstof",
+      "5ml vanille-extract",
+      "1g zout"
+    ],
+    "instructions": [
+      "Preheat oven to 180°C.",
+      "Add all ingredients except the pistachios into a blender.",
+      "Blend until smooth.",
+      "Pour into 2 ramekins.",
+      "Sprinkle crushed pistachios on top.",
+      "Bake 9-12 minutes (soft center is better).",
+      "Let rest 1-2 minutes and serve."
+    ],
+    "dutch_instructions": [
+      "Verwarm de oven voor op 180°C.",
+      "Doe alle ingrediënten behalve de pistachenoten in een blender.",
+      "Mix tot een gladde massa.",
+      "Giet in 2 ramekins.",
+      "Strooi de gehakte pistachenoten over het beslag.",
+      "Bak 9-12 minuten (zacht van binnen is beter).",
+      "Laat 1-2 minuten rusten en serveer."
+    ],
+    "tags": [
+      "Vegetarian",
+      "Gluten-Free",
+      "High-Protein",
+      "Follicular",
+      "Menstrual"
+    ],
+    "nutrition": {
+      "calories": 270,
+      "protein": 26,
+      "carbohydrates": 18,
+      "fats": 10,
+      "fiber": 3,
+      "sugar": 5,
+      "sodium": 150,
+      "calcium": 300,
+      "iron": 2,
+      "potassium": 465,
+      "vitaminC": 1,
+      "vitaminK": 5,
+      "vitaminK2": 6,
+      "selenium": 35,
+      "sulforaphane": 0,
+      "omega3": 0.3,
+      "saturatedFat": 3.0,
+      "prepTime": 15,
+      "costEuros": 2.6,
+      "proteinPerEuro": 10.0
+    },
+    "recipe_benefits": [
+      "High-protein breakfast packed with calcium from Greek yogurt, selenium from eggs, and healthy fats from pistachios"
+    ],
+    "recipe_tips": [
+      "A soft center gives a better texture - do not overbake.",
+      "Use a good quality pistachio paste for the best flavour."
+    ],
+    "source": "User recipe",
+    "active": true,
+    "default_batch_servings": 2,
+    "portion": 2,
+    "whole_food_level": 3,
+    "vegetable_content": 1,
+    "contains_eggs": true,
+    "resistant_starch_score": 0,
+    "longevity_score": 1,
+    "protein_g": 26,
+    "carbs_g": 18,
+    "fiber_g": 3,
+    "prep_time": 15
   }
 ]
