@@ -64044,5 +64044,100 @@
     "carbs_g": 51,
     "fiber_g": 4,
     "prep_time": 10
+  },
+  {
+    "id": "10982",
+    "name": "Banana chocolate rice paper croissants",
+    "dutch_name": "Banaan-chocolade rijstpapier croissants",
+    "category": "breakfast",
+    "ingredients": [
+      "12 rice paper sheets",
+      "3 eggs",
+      "20ml plant-based milk",
+      "20g coconut sugar",
+      "5g ghee",
+      "150g banana",
+      "8g cinnamon",
+      "30g dark chocolate chips",
+      "15ml neutral oil"
+    ],
+    "dutch_ingredients": [
+      "12 rijstpapiervellen",
+      "3 eieren",
+      "20ml plantaardige melk",
+      "20g kokosbloesemsuiker",
+      "5g ghi",
+      "150g banaan",
+      "8g kaneel",
+      "30g pure chocoladestukjes",
+      "15ml neutrale olie"
+    ],
+    "instructions": [
+      "Whisk the eggs, plant-based milk, coconut sugar, and melted ghee together in a shallow bowl.",
+      "Slice the banana and toss with cinnamon and a pinch of coconut sugar.",
+      "Dip one rice paper sheet into the egg mixture, let the excess drip off, then lay flat. Dip a second sheet and stack on top.",
+      "Place a few banana slices and a small handful of chocolate chips in the centre.",
+      "Fold the sides in and roll tightly into a croissant shape.",
+      "Heat neutral oil in a pan over medium heat. Cook the croissants for 2-3 minutes per side until golden and crispy.",
+      "Repeat with remaining rice paper and filling. Serve warm."
+    ],
+    "dutch_instructions": [
+      "Klop de eieren, plantaardige melk, kokosbloesemsuiker en gesmolten ghi samen in een ondiepe kom.",
+      "Snijd de banaan in plakjes en schep om met kaneel en een snufje kokosbloesemsuiker.",
+      "Doop een rijstpapiervel in het eiermengsel, laat het overtollige vocht afdruppelen en leg plat neer. Doop een tweede vel en leg er bovenop.",
+      "Leg een paar banaanplakjes en een klein handje chocoladestukjes in het midden.",
+      "Vouw de zijkanten naar binnen en rol strak op in de vorm van een croissant.",
+      "Verhit neutrale olie in een pan op middelhoog vuur. Bak de croissants 2-3 minuten per kant tot goudbruin en krokant.",
+      "Herhaal met de rest van het rijstpapier en vulling. Warm serveren."
+    ],
+    "tags": [
+      "Vegetarian",
+      "Gluten-Free",
+      "Lactose-Free",
+      "Follicular"
+    ],
+    "nutrition": {
+      "calories": 180,
+      "protein": 4,
+      "carbohydrates": 24,
+      "fats": 8,
+      "fiber": 1,
+      "sugar": 6,
+      "sodium": 70,
+      "calcium": 25,
+      "iron": 1,
+      "potassium": 190,
+      "vitaminC": 2,
+      "vitaminK": 1,
+      "vitaminK2": 1,
+      "selenium": 10,
+      "sulforaphane": 0,
+      "omega3": 0.1,
+      "saturatedFat": 2.5,
+      "prepTime": 20,
+      "costEuros": 0.7,
+      "proteinPerEuro": 5.7
+    },
+    "recipe_benefits": [
+      "Light gluten-free breakfast with selenium from eggs and natural sweetness from banana — crispy outside, soft and melty inside"
+    ],
+    "recipe_tips": [
+      "Work with one or two croissants at a time — dipped rice paper dries out quickly once out of the egg mixture.",
+      "Keep the heat medium, not high, so the croissants cook through before the outside browns too much.",
+      "Use coconut oil instead of ghee for a fully dairy-free version."
+    ],
+    "source": "User recipe",
+    "active": true,
+    "default_batch_servings": 6,
+    "portion": 1,
+    "whole_food_level": 4,
+    "vegetable_content": 1,
+    "contains_eggs": true,
+    "resistant_starch_score": 0,
+    "longevity_score": 1,
+    "protein_g": 4,
+    "carbs_g": 24,
+    "fiber_g": 1,
+    "prep_time": 20
   }
 ]
