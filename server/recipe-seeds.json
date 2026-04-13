@@ -14219,6 +14219,7 @@
       "5g dried oregano",
       "5g dried basil",
       "350ml vegetable stock",
+      "20g parmesan",
       "10g fresh parsley",
       "3g salt",
       "2g black pepper"
@@ -14237,16 +14238,16 @@
     ],
     "portion": "1 serving",
     "nutrition": {
-      "fats": 9,
+      "fats": 12,
       "iron": 2,
       "zinc": 2,
       "fiber": 13,
       "sugar": 7,
       "omega3": 0,
-      "sodium": 450,
-      "calcium": 75,
-      "protein": 28,
-      "calories": 420,
+      "sodium": 530,
+      "calcium": 190,
+      "protein": 32,
+      "calories": 460,
       "prepTime": 35,
       "vitaminC": 15,
       "costEuros": 4,
@@ -14256,7 +14257,8 @@
       "proteinPerEuro": 6.2,
       "selenium": 19,
       "sulforaphane": 0,
-      "vitaminK2": 0
+      "vitaminK2": 0,
+      "saturatedFat": 4.1
     },
     "tags": [
       "July",
