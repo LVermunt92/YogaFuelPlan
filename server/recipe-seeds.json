@@ -63261,5 +63261,85 @@
     "carbs_g": 29,
     "fiber_g": 4,
     "prep_time": 20
+  },
+  {
+    "id": "10974",
+    "name": "Sweet potato chocolate brownies",
+    "dutch_name": "Zoete aardappel brownies",
+    "category": "snack",
+    "ingredients": [
+      "1 sweet potato (approx. 300g)",
+      "100g dark chocolate"
+    ],
+    "dutch_ingredients": [
+      "1 zoete aardappel (ca. 300g)",
+      "100g pure chocolade"
+    ],
+    "instructions": [
+      "Preheat oven to 200°C.",
+      "Roast the sweet potato whole for about 1 hour until completely soft.",
+      "Carefully slice open the hot sweet potato and add the dark chocolate inside. Squeeze the potato around the chocolate and leave for 5 minutes to melt.",
+      "Scoop out the flesh and mashed chocolate, mix thoroughly until smooth and well combined.",
+      "Spread the mixture into a lined baking dish and bake at 200°C for 15-20 minutes.",
+      "Remove from the oven and let cool completely. Optionally drizzle with extra melted chocolate and refrigerate until set before slicing."
+    ],
+    "dutch_instructions": [
+      "Verwarm de oven voor op 200°C.",
+      "Rooster de zoete aardappel heel gedurende ongeveer 1 uur tot volledig zacht.",
+      "Snijd de hete zoete aardappel voorzichtig open en voeg de pure chocolade toe. Druk de aardappel om de chocolade heen en laat 5 minuten staan zodat de chocolade smelt.",
+      "Schep het vruchtvlees en de gesmolten chocolade eruit en meng goed door elkaar tot een gladde massa.",
+      "Spreid het mengsel uit in een beklede ovenschaal en bak 15-20 minuten op 200°C.",
+      "Haal uit de oven en laat volledig afkoelen. Optioneel: besprenkel met extra gesmolten chocolade en zet in de koelkast tot de chocolade hard is voor het snijden."
+    ],
+    "tags": [
+      "Vegetarian",
+      "Gluten-Free",
+      "Anti-Aging",
+      "Weekend-Prep",
+      "Lactose-Free"
+    ],
+    "nutrition": {
+      "calories": 400,
+      "protein": 6,
+      "carbohydrates": 58,
+      "fats": 17,
+      "fiber": 7,
+      "sugar": 28,
+      "sodium": 30,
+      "calcium": 65,
+      "iron": 3,
+      "potassium": 715,
+      "vitaminC": 22,
+      "vitaminK": 4,
+      "vitaminK2": 0,
+      "selenium": 2,
+      "sulforaphane": 0,
+      "omega3": 0,
+      "saturatedFat": 10.0,
+      "cocoaFlavanols": 150,
+      "prepTime": 90,
+      "costEuros": 0.85,
+      "proteinPerEuro": 7.1
+    },
+    "recipe_benefits": [
+      "Two-ingredient brownie with cocoa flavanols from dark chocolate and beta-carotene, vitamin C, and potassium from sweet potato"
+    ],
+    "recipe_tips": [
+      "Use a medium-large sweet potato for the best texture.",
+      "Chilling in the fridge for at least 30 minutes before slicing gives cleaner cuts and a fudgier texture."
+    ],
+    "source": "User recipe",
+    "active": true,
+    "default_batch_servings": 2,
+    "portion": 1,
+    "whole_food_level": 5,
+    "vegetable_content": 3,
+    "contains_eggs": false,
+    "resistant_starch_score": 1,
+    "longevity_score": 2,
+    "protein_g": 6,
+    "carbs_g": 58,
+    "fiber_g": 7,
+    "prep_time": 90
   }
 ]
