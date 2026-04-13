@@ -30,6 +30,8 @@ Preferred communication style: Simple, everyday language.
   - **Cherry tomatoes / grape tomatoes**: ALWAYS specify in grams (e.g., "150g cherry tomatoes").
   - **Canned/tinned tomatoes, passata, crushed tomatoes, chopped tomatoes**: ALWAYS specify in grams (e.g., "400g canned tomatoes", "200g passata"). NEVER use "1 can" without the gram weight.
   - **Ginger, Mushrooms (regular)**: ALWAYS specify in grams.
+  - **Lentils** (red, green, brown, black, puy, beluga, yellow): ALWAYS specify as dry weight in grams (e.g., "150g red lentils"). NEVER use cooked weight or omit the gram amount.
+  - **Rice** (basmati, jasmine, brown, white, wild, black) and other grains (quinoa, millet, buckwheat, bulgur, couscous): ALWAYS specify as dry weight in grams (e.g., "160g basmati rice", "80g quinoa"). NEVER say "cooked rice" or omit the gram amount.
   - **Cauliflower**: Use cauliflower rice or florets in grams.
   - **Plant-based milk**: ALWAYS use "plant-based milk" instead of specific types, except for coconut milk in curries.
   - **Pantry items and seasonings (Salt, Black pepper, Olive oil, Chili flakes)**: ALWAYS specify in grams/ml, NEVER "to taste" or vague descriptions.

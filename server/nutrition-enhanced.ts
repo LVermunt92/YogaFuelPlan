@@ -19142,8 +19142,34 @@ export function getDefaultPortion(ingredient: string): { amount: number; unit: s
     'ripe avocado': { amount: 1, unit: 'piece' }, // 1 medium ripe avocado
     'lemon': { amount: 1, unit: 'piece' }, // 1 lemon
     'lemons': { amount: 2, unit: 'pieces' }, // 2 lemons
-    'quinoa': { amount: 85, unit: 'g' }, // 0.5 cup dry = ~85g
-    'brown rice': { amount: 95, unit: 'g' }, // 0.5 cup dry = ~95g
+    // Lentils — always dry weight in grams (per 2-serving batch)
+    'lentils': { amount: 150, unit: 'g' },
+    'red lentils': { amount: 150, unit: 'g' },
+    'green lentils': { amount: 150, unit: 'g' },
+    'brown lentils': { amount: 150, unit: 'g' },
+    'black lentils': { amount: 150, unit: 'g' },
+    'beluga lentils': { amount: 150, unit: 'g' },
+    'puy lentils': { amount: 150, unit: 'g' },
+    'french lentils': { amount: 150, unit: 'g' },
+    'yellow lentils': { amount: 150, unit: 'g' },
+    'split red lentils': { amount: 150, unit: 'g' },
+    // Rice — always dry weight in grams (per 2-serving batch)
+    'rice': { amount: 160, unit: 'g' },
+    'brown rice': { amount: 160, unit: 'g' },
+    'basmati rice': { amount: 160, unit: 'g' },
+    'white rice': { amount: 160, unit: 'g' },
+    'jasmine rice': { amount: 160, unit: 'g' },
+    'wild rice': { amount: 160, unit: 'g' },
+    'black rice': { amount: 160, unit: 'g' },
+    'red rice': { amount: 160, unit: 'g' },
+    'arborio rice': { amount: 160, unit: 'g' },
+    'sushi rice': { amount: 160, unit: 'g' },
+    // Quinoa & other grains — always dry weight in grams
+    'quinoa': { amount: 160, unit: 'g' },
+    'millet': { amount: 160, unit: 'g' },
+    'buckwheat': { amount: 160, unit: 'g' },
+    'bulgur': { amount: 150, unit: 'g' },
+    'couscous': { amount: 150, unit: 'g' },
     'brown rice cake': { amount: 1, unit: 'piece' }, // 1 brown rice cake
     'spinach': { amount: 60, unit: 'g' }, // 2 cups fresh = ~60g
     'plant-based milk': { amount: 240, unit: 'ml' }, // 1 cup = 240ml (any plant milk: almond, oat, soy)
