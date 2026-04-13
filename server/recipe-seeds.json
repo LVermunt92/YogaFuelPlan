@@ -64139,5 +64139,99 @@
     "carbs_g": 24,
     "fiber_g": 1,
     "prep_time": 20
+  },
+  {
+    "id": "10983",
+    "name": "Baked rice paper croissants",
+    "dutch_name": "Gebakken rijstpapier croissants",
+    "category": "breakfast",
+    "ingredients": [
+      "6 rice paper sheets",
+      "2 eggs",
+      "60ml plant-based milk",
+      "20g coconut sugar",
+      "2.5ml vanilla extract",
+      "15g butter",
+      "1g cinnamon",
+      "1g baking powder",
+      "5g coconut sugar for topping"
+    ],
+    "dutch_ingredients": [
+      "6 rijstpapiervellen",
+      "2 eieren",
+      "60ml plantaardige melk",
+      "20g kokosbloesemsuiker",
+      "2.5ml vanille-extract",
+      "15g boter",
+      "1g kaneel",
+      "1g bakpoeder",
+      "5g kokosbloesemsuiker voor de topping"
+    ],
+    "instructions": [
+      "Preheat the oven to 175°C. Line a baking sheet with parchment paper.",
+      "Whisk together the eggs, plant-based milk, coconut sugar, vanilla extract, melted butter, cinnamon, and baking powder until smooth.",
+      "Dip 3 rice paper sheets into the egg mixture one at a time, letting each soak briefly, then stack them on top of each other.",
+      "Cut the stacked rice papers into a large triangle. Arrange the extra cut pieces along the sides of the triangle to build up the croissant layers.",
+      "Roll from the wide end toward the tip to form a croissant shape. Place on the parchment-lined baking sheet.",
+      "Repeat with the remaining 3 rice papers to make the second croissant.",
+      "Sprinkle coconut sugar over the tops and bake for 30-35 minutes until golden and puffy. Enjoy warm."
+    ],
+    "dutch_instructions": [
+      "Verwarm de oven voor op 175°C. Bekleed een bakplaat met bakpapier.",
+      "Klop de eieren, plantaardige melk, kokosbloesemsuiker, vanille-extract, gesmolten boter, kaneel en bakpoeder samen tot een glad mengsel.",
+      "Doop 3 rijstpapiervellen één voor één in het eiermengsel en laat elk vel kort weken, leg ze daarna op elkaar.",
+      "Snijd de gestapelde rijstpapiervellen in een grote driehoek. Leg de extra stukjes langs de zijkanten van de driehoek om de croissantlagen te creëren.",
+      "Rol van de brede kant naar de punt om een croissantvorm te maken. Leg op de met bakpapier beklede bakplaat.",
+      "Herhaal met de resterende 3 rijstpapiervellen voor de tweede croissant.",
+      "Bestrooi de bovenkant met kokosbloesemsuiker en bak 30-35 minuten tot goudbruin en luchtig. Warm serveren."
+    ],
+    "tags": [
+      "Vegetarian",
+      "Gluten-Free",
+      "Follicular"
+    ],
+    "nutrition": {
+      "calories": 260,
+      "protein": 6,
+      "carbohydrates": 29,
+      "fats": 12,
+      "fiber": 0,
+      "sugar": 12,
+      "sodium": 150,
+      "calcium": 45,
+      "iron": 1,
+      "potassium": 90,
+      "vitaminC": 0,
+      "vitaminK": 1,
+      "vitaminK2": 2,
+      "selenium": 30,
+      "sulforaphane": 0,
+      "omega3": 0.1,
+      "saturatedFat": 6,
+      "prepTime": 50,
+      "costEuros": 1.0,
+      "proteinPerEuro": 6.0
+    },
+    "recipe_benefits": [
+      "Gluten-free viral rice paper croissants — crispy golden shell with a soft, eggy inside and no wheat in sight"
+    ],
+    "recipe_tips": [
+      "The triangle folding and layering is what creates the croissant effect — take your time getting the shape right before rolling.",
+      "Soak each rice paper sheet briefly, not too long, or they get too soft to handle cleanly.",
+      "Swap butter for coconut oil or vegan butter to make these lactose-free."
+    ],
+    "source": "User recipe",
+    "active": true,
+    "default_batch_servings": 2,
+    "portion": 1,
+    "whole_food_level": 4,
+    "vegetable_content": 0,
+    "contains_eggs": true,
+    "resistant_starch_score": 0,
+    "longevity_score": 1,
+    "protein_g": 6,
+    "carbs_g": 29,
+    "fiber_g": 0,
+    "prep_time": 50
   }
 ]
