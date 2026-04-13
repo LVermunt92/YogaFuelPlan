@@ -63954,5 +63954,95 @@
     "carbs_g": 71,
     "fiber_g": 4,
     "prep_time": 20
+  },
+  {
+    "id": "10981",
+    "name": "Mango sticky rice oatmeal",
+    "dutch_name": "Mango sticky rice havermout",
+    "category": "breakfast",
+    "ingredients": [
+      "60g rolled oats",
+      "320ml coconut milk",
+      "160ml water",
+      "15ml maple syrup",
+      "5ml vanilla extract",
+      "1g salt",
+      "1 mango",
+      "10g sesame seeds",
+      "10g coconut flakes"
+    ],
+    "dutch_ingredients": [
+      "60g havervlokken",
+      "320ml kokosmelk",
+      "160ml water",
+      "15ml ahornsiroop",
+      "5ml vanille-extract",
+      "1g zout",
+      "1 mango",
+      "10g sesamzaad",
+      "10g kokosrasp"
+    ],
+    "instructions": [
+      "Combine the oats, coconut milk, water, maple syrup, vanilla extract, and salt in a saucepan.",
+      "Cook over medium heat, stirring continuously, until the oats absorb the liquid and become thick and creamy — about 5-7 minutes.",
+      "Divide into 2 bowls. Slice the mango and arrange on top.",
+      "Drizzle with a little extra coconut milk, then top with sesame seeds and coconut flakes."
+    ],
+    "dutch_instructions": [
+      "Combineer de havervlokken, kokosmelk, water, ahornsiroop, vanille-extract en zout in een steelpan.",
+      "Kook op middelhoog vuur, al roerend, tot de haver het vocht heeft opgenomen en dik en romig is — ongeveer 5-7 minuten.",
+      "Verdeel over 2 kommen. Snijd de mango in plakjes en leg op de havermout.",
+      "Besprenkel met een beetje extra kokosmelk en bestrooi met sesamzaad en kokosrasp."
+    ],
+    "tags": [
+      "Vegetarian",
+      "Gluten-Free",
+      "Lactose-Free",
+      "Follicular",
+      "Ovulation"
+    ],
+    "nutrition": {
+      "calories": 570,
+      "protein": 9,
+      "carbohydrates": 51,
+      "fats": 41,
+      "fiber": 4,
+      "sugar": 17,
+      "sodium": 300,
+      "calcium": 85,
+      "iron": 2,
+      "potassium": 570,
+      "vitaminC": 36,
+      "vitaminK": 6,
+      "vitaminK2": 0,
+      "selenium": 3,
+      "sulforaphane": 0,
+      "omega3": 0.1,
+      "saturatedFat": 30,
+      "prepTime": 10,
+      "costEuros": 1.5,
+      "proteinPerEuro": 6.0
+    },
+    "recipe_benefits": [
+      "Creamy Thai-inspired breakfast with vitamin C from mango, medium-chain triglycerides from coconut milk, and sustained energy from oats"
+    ],
+    "recipe_tips": [
+      "Use certified gluten-free oats if you need to be strict about cross-contamination.",
+      "Stir continuously — the coconut milk can catch on the bottom of the pan if left unattended.",
+      "Save a splash of coconut milk to drizzle over the top at the end for the authentic sticky rice look."
+    ],
+    "source": "User recipe",
+    "active": true,
+    "default_batch_servings": 2,
+    "portion": 2,
+    "whole_food_level": 5,
+    "vegetable_content": 1,
+    "contains_eggs": false,
+    "resistant_starch_score": 0,
+    "longevity_score": 1,
+    "protein_g": 9,
+    "carbs_g": 51,
+    "fiber_g": 4,
+    "prep_time": 10
   }
 ]
