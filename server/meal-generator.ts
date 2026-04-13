@@ -2816,6 +2816,9 @@ async function generateMealPrepPlan(
           calcium: Math.round(((selectedBreakfast.nutrition as any).calcium || 0) * portionFactor),
           omega3: Math.round(((selectedBreakfast.nutrition as any).omega3 || 0) * portionFactor),
           polyphenols: Math.round(((selectedBreakfast.nutrition as any).polyphenols || 0) * portionFactor),
+          selenium: Math.round(((selectedBreakfast.nutrition as any).selenium || 0) * portionFactor * 10) / 10,
+          sulforaphane: Math.round(((selectedBreakfast.nutrition as any).sulforaphane || 0) * portionFactor * 10) / 10,
+          cocoaFlavanols: Math.round(((selectedBreakfast.nutrition as any).cocoaFlavanols || 0) * portionFactor),
           prepTime: prepTime,
           isLeftover: isBreakfastLeftover,
         });
@@ -2986,6 +2989,9 @@ async function generateMealPrepPlan(
           calcium: Math.round(((lunchMeal.nutrition as any).calcium || 0) * portionFactor),
           omega3: Math.round(((lunchMeal.nutrition as any).omega3 || 0) * portionFactor),
           polyphenols: Math.round(((lunchMeal.nutrition as any).polyphenols || 0) * portionFactor),
+          selenium: Math.round(((lunchMeal.nutrition as any).selenium || 0) * portionFactor * 10) / 10,
+          sulforaphane: Math.round(((lunchMeal.nutrition as any).sulforaphane || 0) * portionFactor * 10) / 10,
+          cocoaFlavanols: Math.round(((lunchMeal.nutrition as any).cocoaFlavanols || 0) * portionFactor),
           prepTime: prepTime,
           isLeftover: isLunchLeftover, // Boolean flag instead of string marker
         });
@@ -3151,6 +3157,9 @@ async function generateMealPrepPlan(
           calcium: Math.round(((dinnerMeal.nutrition as any).calcium || 0) * portionFactor),
           omega3: Math.round(((dinnerMeal.nutrition as any).omega3 || 0) * portionFactor),
           polyphenols: Math.round(((dinnerMeal.nutrition as any).polyphenols || 0) * portionFactor),
+          selenium: Math.round(((dinnerMeal.nutrition as any).selenium || 0) * portionFactor * 10) / 10,
+          sulforaphane: Math.round(((dinnerMeal.nutrition as any).sulforaphane || 0) * portionFactor * 10) / 10,
+          cocoaFlavanols: Math.round(((dinnerMeal.nutrition as any).cocoaFlavanols || 0) * portionFactor),
           prepTime: prepTime,
           isLeftover: isDinnerLeftover, // Boolean flag instead of string marker
         });
@@ -3273,6 +3282,7 @@ async function generateMealPrepPlan(
           polyphenols: Math.round(snackNutrition.polyphenols || 0),
           selenium: Math.round(snackNutrition.selenium || 0),
           sulforaphane: Math.round(snackNutrition.sulforaphane || 0),
+          cocoaFlavanols: Math.round((snackNutrition as any).cocoaFlavanols || 0),
           prepTime: snackNutrition.prepTime || 10,
           recipeId: String(snack.id),
           isLeftover: false,
