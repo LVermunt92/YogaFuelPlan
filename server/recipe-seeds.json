@@ -63658,5 +63658,111 @@
     "carbs_g": 37,
     "fiber_g": 6,
     "prep_time": 60
+  },
+  {
+    "id": "10978",
+    "name": "Carrot cake banana muffins",
+    "dutch_name": "Worteltaart-banaan muffins",
+    "category": "snack",
+    "ingredients": [
+      "120g gluten-free flour",
+      "60g almond flour",
+      "4g baking powder",
+      "3g speculaas spice",
+      "2g baking soda",
+      "1g salt",
+      "2 ripe bananas",
+      "90g maple syrup",
+      "100g applesauce",
+      "1/2 orange",
+      "200g carrot",
+      "200g plant-based cream cheese",
+      "30g maple syrup",
+      "30g chopped walnuts",
+      "15ml neutral oil"
+    ],
+    "dutch_ingredients": [
+      "120g glutenvrij bloem",
+      "60g amandelmeel",
+      "4g bakpoeder (glutenvrij)",
+      "3g speculaaskruiden",
+      "2g baksoda",
+      "1g zout",
+      "2 rijpe bananen",
+      "90g ahornsiroop",
+      "100g appelmoes",
+      "1/2 sinaasappel",
+      "200g wortel",
+      "200g plantaardige roomkaas",
+      "30g ahornsiroop",
+      "30g gehakte walnoten",
+      "15ml neutrale olie"
+    ],
+    "instructions": [
+      "Preheat oven to 180°C. Grease a 10-hole muffin tin with neutral oil.",
+      "Combine the gluten-free flour, almond flour, baking powder, speculaas spice, baking soda, and salt in a bowl.",
+      "In a separate bowl, mash the bananas until smooth. Mix in the 90g maple syrup, applesauce, and the zest and juice of half the orange.",
+      "Add the wet mixture to the dry ingredients and stir until just combined. Fold in the finely grated carrot.",
+      "Divide the batter evenly across the muffin tin. Bake for 25 minutes, or until a skewer inserted in the centre comes out clean. Let cool completely in the tin.",
+      "Beat the plant-based cream cheese with the 30g maple syrup and a little orange zest until smooth. Spread over the cooled muffins and top with chopped walnuts."
+    ],
+    "dutch_instructions": [
+      "Verwarm de oven voor op 180°C. Vet een muffinvorm met 10 holtes in met neutrale olie.",
+      "Meng de glutenvrije bloem, amandelmeel, bakpoeder, speculaaskruiden, baksoda en zout in een kom.",
+      "Prak in een andere kom de bananen glad. Roer de 90g ahornsiroop, appelmoes en rasp en sap van een halve sinaasappel erdoor.",
+      "Voeg het natte mengsel toe aan de droge ingrediënten en roer tot net gecombineerd. Schep de fijn geraspte wortel erdoor.",
+      "Verdeel het beslag gelijkmatig over de muffinvorm. Bak 25 minuten, of tot een prikker er schoon uitkomt. Laat volledig afkoelen in de vorm.",
+      "Klop de plantaardige roomkaas met de 30g ahornsiroop en een beetje sinaasappelrasp glad. Smeer over de afgekoelde muffins en bestrooi met gehakte walnoten."
+    ],
+    "tags": [
+      "Vegetarian",
+      "Gluten-Free",
+      "Lactose-Free",
+      "Follicular",
+      "Luteal"
+    ],
+    "nutrition": {
+      "calories": 235,
+      "protein": 3,
+      "carbohydrates": 29,
+      "fats": 11,
+      "fiber": 2,
+      "sugar": 13,
+      "sodium": 120,
+      "calcium": 25,
+      "iron": 1,
+      "potassium": 170,
+      "vitaminC": 2,
+      "vitaminK": 2,
+      "vitaminK2": 0,
+      "selenium": 1,
+      "sulforaphane": 0,
+      "omega3": 0.4,
+      "saturatedFat": 3.0,
+      "prepTime": 40,
+      "costEuros": 0.77,
+      "proteinPerEuro": 3.9
+    },
+    "recipe_benefits": [
+      "Egg-free muffin sweetened naturally with banana and maple syrup, with beta-carotene from carrots and vitamin E and healthy fats from almond flour"
+    ],
+    "recipe_tips": [
+      "Use very ripe bananas for natural sweetness and best binding — the riper the better.",
+      "Do not overmix once the wet and dry ingredients are combined or the muffins will be dense.",
+      "Cool completely before frosting or the cream cheese will melt off."
+    ],
+    "source": "User recipe",
+    "active": true,
+    "default_batch_servings": 10,
+    "portion": 1,
+    "whole_food_level": 3,
+    "vegetable_content": 2,
+    "contains_eggs": false,
+    "resistant_starch_score": 0,
+    "longevity_score": 1,
+    "protein_g": 3,
+    "carbs_g": 29,
+    "fiber_g": 2,
+    "prep_time": 40
   }
 ]
