@@ -2786,7 +2786,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             cleaned.includes('pear') || cleaned.includes('plum') ||
             cleaned.includes('kiwi') || cleaned.includes('mango') ||
             cleaned.includes('pineapple') || cleaned.includes('lime') ||
-            cleaned.includes('lemon')) {
+            cleaned.includes('lemon') || cleaned.includes('avocado')) {
           return 'Groente & fruit';
         } else if (cleaned.includes('milk') || cleaned.includes('cheese') ||
                   cleaned.includes('egg') || cleaned.includes('yogurt') ||
@@ -2895,6 +2895,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         };
       };
 
+      // Normalize ingredient display names: strip descriptive adjectives that add no shopping value
+      const normalizeIngredientName = (name: string): string => {
+        return name
+          .replace(/\bripe\s+/gi, '')       // "ripe avocado" → "avocado"
+          .replace(/\bfresh\s+(?=tomato)/gi, '') // "fresh tomatoes" → "tomatoes" (keep for herbs)
+          .replace(/\s+/g, ' ')
+          .trim();
+      };
+
       const analysis = ingredients.map((ingredient: string) => {
         const parsed = parseIngredient(ingredient);
         // Format the display: combine quantity and unit for display, but show ingredient name separately
@@ -2904,7 +2913,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         return {
           ingredient,
-          normalizedIngredient: parsed.name, // Just the ingredient name without quantity/unit
+          normalizedIngredient: normalizeIngredientName(parsed.name), // Just the ingredient name without quantity/unit
           quantity: parsed.quantity,
           unit: parsed.unit,
           quantityDisplay, // e.g., "15ml" or "200g"
