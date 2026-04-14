@@ -19363,6 +19363,10 @@ function cleanIngredientName(ingredient: string): string {
   cleaned = cleaned.replace(/\s*\(([^)]*\bsliced\b[^)]*)\)/gi, ''); // Remove (sliced) and variations
   cleaned = cleaned.replace(/\s*\(([^)]*\bminced\b[^)]*)\)/gi, ''); // Remove (minced) and variations
   
+  // Remove preparation notes after a comma (e.g. "aubergine, cut into chunks" → "aubergine")
+  // This prevents filter patterns like /into\s+chunks/ from accidentally dropping real ingredients
+  cleaned = cleaned.replace(/,.*$/, '').trim();
+  
   // Remove leading measurements and quantities (including fractions, numbers, and decimals)
   // Updated to catch decimal amounts like ".5ml", "0.5ml", "2.5g", etc.
   // Added word boundary \b after units to prevent matching "g" from "garlic" as "grams"
