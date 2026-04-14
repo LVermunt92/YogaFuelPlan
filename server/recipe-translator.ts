@@ -57,6 +57,15 @@ export interface TranslatedRecipe {
 
 // Common ingredient translations (English -> Dutch)
 const ingredientTranslations: Record<string, string> = {
+  // Special phrases (must come before single-word matches — they're longer and sort first)
+  'juice of': 'sap van',
+  'plant-based milk': 'plantaardige melk',
+  'plant-based melk': 'plantaardige melk',
+  'hot chilli powder': 'hete chilipoeder',
+  'hot chili powder': 'hete chilipoeder',
+  'chilli powder': 'chilipoeder',
+  'chilli flakes': 'chilivlokken',
+  'chili flakes': 'chilivlokken',
   // Proteins
   'chicken': 'kip',
   'chicken breast': 'kipfilet',

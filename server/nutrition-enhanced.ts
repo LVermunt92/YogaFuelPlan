@@ -19017,10 +19017,23 @@ export function multiplyIngredientAmount(ingredientString: string, multiplier: n
         console.log(`🔢 Rounding piece ingredient: ${newAmount.toFixed(2)} → ${roundedAmount} for "${ingredientString}"`);
         newAmount = roundedAmount;
       } else if (unitMatch) {
-        // Round grams/ml to nearest 10 (-1 decimal: 237g → 240g, 143g → 140g)
+        // Tiered rounding based on magnitude to preserve small measurements
         const beforeRound = newAmount;
-        newAmount = Math.round(newAmount / 10) * 10;
-        console.log(`🔢 Rounding ${unitMatch[1]} to nearest 10: ${beforeRound.toFixed(1)}${unitMatch[1]} → ${newAmount}${unitMatch[1]} for "${ingredientString}"`);
+        if (newAmount >= 50) {
+          // Large amounts: round to nearest 10 (e.g., 237ml → 240ml)
+          newAmount = Math.round(newAmount / 10) * 10;
+        } else if (newAmount >= 10) {
+          // Medium amounts: round to nearest 5 (e.g., 23g → 25g)
+          newAmount = Math.round(newAmount / 5) * 5;
+        } else {
+          // Small amounts: round to nearest 1 (e.g., 4g → 4g, 0.5g → 1g)
+          newAmount = Math.round(newAmount);
+          // Ensure we never go below 1 for measurable quantities
+          if (newAmount === 0 && beforeRound > 0) newAmount = 1;
+        }
+        if (beforeRound !== newAmount) {
+          console.log(`🔢 Rounding ${unitMatch[1]}: ${beforeRound.toFixed(1)} → ${newAmount} for "${ingredientString}"`);
+        }
       } else {
         // Round all other numeric measurements to nearest 0.5 (e.g., 2.3 → 2.5)
         const beforeRound = newAmount;

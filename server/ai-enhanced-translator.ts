@@ -116,10 +116,11 @@ Only return the translated tip, nothing else.`;
   } catch (error: any) {
     console.error('AI translation error:', error);
     
-    // Handle quota errors gracefully
+    // Rethrow quota errors so translateRecipeEnhanced can fall back to pattern-based translation
+    // (do NOT silently return original text — that would cause English "Dutch translations" to be saved)
     if (error.status === 429 || error.code === 'insufficient_quota') {
-      console.warn('OpenAI quota exceeded, falling back to original text');
-      return text; // Return original text instead of crashing
+      console.warn('OpenAI quota exceeded in translateWithAI, rethrowing for fallback');
+      throw error;
     }
     
     throw error;
